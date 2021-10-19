@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
+using System;
+using System.IO;
 using Tutor.Core.ContentModel;
 using Tutor.Core.InstructorModel.Instructors;
 using Tutor.Core.LearnerModel;
@@ -18,9 +18,9 @@ using Tutor.Core.ProgressModel;
 using Tutor.Infrastructure.Database;
 using Tutor.Infrastructure.Database.Repositories;
 using Tutor.Web.Controllers.Content.Mappers;
-using Tutor.Web.Controllers.KeycloakAuth;
 using Tutor.Web.Security;
 using Tutor.Web.Security.IAM;
+using Tutor.Web.Security.IAM.Keycloak;
 
 namespace Tutor.Web
 {

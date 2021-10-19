@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
 
-namespace Tutor.Web.Controllers.KeycloakAuth
+namespace Tutor.Web.Security.IAM.Keycloak
 {
     public class KeycloakRoleHandler : AuthorizationHandler<KeycloakRole>
     {

@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Tutor.Core.LearnerModel.Learners;
 
-namespace Tutor.Web.Security.IAM
+namespace Tutor.Web.Security.IAM.Keycloak
 {
     public class KeycloakAuthProvider : IAuthProvider
     {
