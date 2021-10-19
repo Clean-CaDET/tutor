@@ -11,6 +11,7 @@ using System;
 using System.IO;
 using Tutor.Core.ContentModel;
 using Tutor.Core.InstructorModel.Instructors;
+using Tutor.Core.KnowledgeComponentModel;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.Workspaces;
 using Tutor.Core.ProgressModel.Feedback;
@@ -60,11 +61,13 @@ namespace Tutor.Web
                     });
             });
 
-            
 
             services.AddScoped<IContentService, ContentService>();
             services.AddScoped<ILectureRepository, LectureDatabaseRepository>();
             services.AddScoped<ILearningObjectRepository, LearningObjectDatabaseRepository>();
+
+            services.AddScoped<IKCRepository, KCDatabaseRepository>();
+            services.AddScoped<IKCService, KCService>();
 
             services.AddScoped<IProgressService, ProgressService>();
             services.AddScoped<IProgressRepository, ProgressDatabaseRepository>();
