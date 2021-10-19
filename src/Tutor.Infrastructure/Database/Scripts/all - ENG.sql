@@ -482,3 +482,19 @@ INSERT INTO public."QuestionAnswers"(
 INSERT INTO public."QuestionAnswers"(
 	"Id", "Text", "IsCorrect", "Feedback", "QuestionId")
 	VALUES (26, 'When we write clean functions, our clients can read and understand our code.', false, 'The claim is not correct. Clean functions that describe business logic should be readable by our clients, as they mostly consist of names (e.g., objects and method invocations). However, there is a significant part of an application''s code that is technically-focused - HTTP request processing, database interaction, cryptography, message queues are all valid concerns not understood by most of our clients.', 66);
+
+INSERT INTO public."KnowledgeComponents"(
+    "Id", "Name", "KnowledgeComponentId")
+VALUES (1, 'Clean functions', null);
+
+INSERT INTO public."KnowledgeComponents"(
+    "Id", "Name", "KnowledgeComponentId")
+VALUES (2, 'Clean names', 1);
+
+INSERT INTO public."KnowledgeComponents"(
+    "Id", "Name", "KnowledgeComponentId")
+VALUES (3, 'Parameter list reduction', 1);
+
+INSERT INTO public."KnowledgeComponents"(
+    "Id", "Name", "KnowledgeComponentId")
+VALUES (4, 'Short functions', 1);
