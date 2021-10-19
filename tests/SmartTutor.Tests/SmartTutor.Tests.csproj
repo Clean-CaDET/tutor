@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SmartTutor\SmartTutor.csproj" />
+    <ProjectReference Include="..\..\src\SmartTutor\SmartTutor.csproj" />
   </ItemGroup>
 
 </Project>
