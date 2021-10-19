@@ -1,6 +1,3 @@
-DELETE FROM public."IssueAdviceLearningObjectSummary";
-DELETE FROM public."Advice";
-
 DELETE FROM public."ArrangeTaskContainerSubmissions";
 DELETE FROM public."ArrangeTaskSubmissions";
 DELETE FROM public."ChallengeSubmissions";
@@ -496,34 +493,3 @@ INSERT INTO public."QuestionAnswers"(
 INSERT INTO public."QuestionAnswers"(
 	"Id", "Text", "IsCorrect", "Feedback", "QuestionId")
 	VALUES (26, 'When we write clean functions, our clients can read and understand our code.', false, 'The claim is not correct. Clean functions that describe business logic should be readable by our clients, as they mostly consist of names (e.g., objects and method invocations). However, there is a significant part of an application''s code that is technically-focused - HTTP request processing, database interaction, cryptography, message queues are all valid concerns not understood by most of our clients.', 66);
-
-
---=== CODE QUALITY ADVICE
-INSERT INTO public."Advice"(
-	"Id", "IssueType")
-	VALUES (1, 'LONG_METHOD');
-	
-INSERT INTO public."IssueAdviceLearningObjectSummary"(
-	"AdviceId", "SummariesId")
-	VALUES (1, 30);
-INSERT INTO public."IssueAdviceLearningObjectSummary"(
-	"AdviceId", "SummariesId")
-	VALUES (1, 33);
-INSERT INTO public."IssueAdviceLearningObjectSummary"(
-	"AdviceId", "SummariesId")
-	VALUES (1, 40);
-INSERT INTO public."IssueAdviceLearningObjectSummary"(
-	"AdviceId", "SummariesId")
-	VALUES (1, 43);
-INSERT INTO public."IssueAdviceLearningObjectSummary"(
-	"AdviceId", "SummariesId")
-	VALUES (1, 45);
-INSERT INTO public."IssueAdviceLearningObjectSummary"(
-	"AdviceId", "SummariesId")
-	VALUES (1, 60);
-INSERT INTO public."IssueAdviceLearningObjectSummary"(
-	"AdviceId", "SummariesId")
-	VALUES (1, 62);
-INSERT INTO public."IssueAdviceLearningObjectSummary"(
-	"AdviceId", "SummariesId")
-	VALUES (1, 63);

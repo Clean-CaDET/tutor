@@ -20,8 +20,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DataSetExplorer\DataSetExplorer.csproj" />
-  </ItemGroup>
-
 </Project>

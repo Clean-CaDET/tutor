@@ -19,8 +19,4 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\CodeModel\CodeModel.csproj" />
-  </ItemGroup>
 </Project>

@@ -11,7 +11,6 @@ using SmartTutor.LearnerModel.Learners;
 using SmartTutor.ProgressModel.Feedback;
 using SmartTutor.ProgressModel.Progress;
 using SmartTutor.ProgressModel.Submissions;
-using SmartTutor.QualityAnalysis;
 
 namespace SmartTutor.Database
 {
@@ -51,7 +50,6 @@ namespace SmartTutor.Database
         public DbSet<LearningObjectFeedback> LearningObjectFeedback { get; set; }
         #endregion
         public DbSet<Learner> Learners { get; set; }
-        public DbSet<IssueAdvice> Advice { get; set; }
 
         public SmartTutorContext(DbContextOptions<SmartTutorContext> options) : base(options)
         {
@@ -70,10 +68,6 @@ namespace SmartTutor.Database
             modelBuilder.Entity<Learner>()
                 .OwnsOne(l => l.Workspace)
                 .Property(w => w.Path).HasColumnName("WorkspacePath");
-
-            modelBuilder.Entity<IssueAdvice>()
-                .HasMany(a => a.Summaries)
-                .WithMany("Advice");
         }
 
         private static void ConfigureChallenge(ModelBuilder modelBuilder)

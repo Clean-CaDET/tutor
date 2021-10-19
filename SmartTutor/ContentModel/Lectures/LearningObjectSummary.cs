@@ -1,6 +1,3 @@
-using SmartTutor.QualityAnalysis;
-using System.Collections.Generic;
-
 namespace SmartTutor.ContentModel.Lectures
 {
     public class LearningObjectSummary
@@ -14,8 +11,5 @@ namespace SmartTutor.ContentModel.Lectures
             Id = id;
             Description = description;
         }
-
-        //TODO: Remove if EF6 supports unidirectional many-to-many
-        private List<IssueAdvice> Advice { get; set; }
     }
 }

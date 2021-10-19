@@ -22,8 +22,6 @@ using SmartTutor.ProgressModel;
 using SmartTutor.ProgressModel.Feedback.Repository;
 using SmartTutor.ProgressModel.Progress.Repository;
 using SmartTutor.ProgressModel.Submissions.Repository;
-using SmartTutor.QualityAnalysis;
-using SmartTutor.QualityAnalysis.Repository;
 using SmartTutor.Security;
 using SmartTutor.Security.IAM;
 using System;
@@ -85,9 +83,6 @@ namespace SmartTutor
 
             services.AddScoped<IInstructor, VARKRecommender>();
 
-            services.AddScoped<ICodeQualityAnalyzer, CaDETQualityAnalyzer>();
-            services.AddScoped<IAdviceRepository, AdviceDatabaseRepository>();
-            
             services.AddScoped<IAuthProvider, KeycloakAuthProvider>();
 
             if (!bool.Parse(Environment.GetEnvironmentVariable("KEYCLOAK_ON") ?? "false")) return;

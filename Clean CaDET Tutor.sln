@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartTutor", "SmartTutor\SmartTutor.csproj", "{356281E2-C14E-48C8-A8D9-F7212FFF602E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartTutor.Tests", "SmartTutorTests\SmartTutor.Tests.csproj", "{AA91C49E-7FFA-48B5-9EF2-DE7746D5A483}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{356281E2-C14E-48C8-A8D9-F7212FFF602E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{356281E2-C14E-48C8-A8D9-F7212FFF602E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{356281E2-C14E-48C8-A8D9-F7212FFF602E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{356281E2-C14E-48C8-A8D9-F7212FFF602E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA91C49E-7FFA-48B5-9EF2-DE7746D5A483}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA91C49E-7FFA-48B5-9EF2-DE7746D5A483}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA91C49E-7FFA-48B5-9EF2-DE7746D5A483}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA91C49E-7FFA-48B5-9EF2-DE7746D5A483}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {286C03E9-DD45-4225-B4CF-64C1440F0513}
+	EndGlobalSection
+EndGlobal
