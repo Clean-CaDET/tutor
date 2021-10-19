@@ -7,6 +7,7 @@ using Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.Met
 using Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.NameChecker;
 using Tutor.Core.ContentModel.LearningObjects.Questions;
 using Tutor.Core.ContentModel.Lectures;
+using Tutor.Core.KnowledgeComponentModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel.Learners;
 using Tutor.Core.ProgressModel.Feedback;
 using Tutor.Core.ProgressModel.Progress;
@@ -49,6 +50,14 @@ namespace Tutor.Infrastructure.Database
         public DbSet<QuestionSubmission> QuestionSubmissions { get; set; }
         public DbSet<LearningObjectFeedback> LearningObjectFeedback { get; set; }
         #endregion
+
+        #region Knowledge components
+
+        public DbSet<KnowledgeComponent> KnowledgeComponents { get; set; }
+        public DbSet<KnowledgeComponentProgress> KnowledgeComponentsProgresses { get; set; }
+
+        #endregion
+
         public DbSet<Learner> Learners { get; set; }
 
         public TutorContext(DbContextOptions<TutorContext> options) : base(options)
