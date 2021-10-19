@@ -5,7 +5,6 @@ DELETE FROM public."QuestionSubmissions";
 DELETE FROM public."NodeProgresses";
 DELETE FROM public."LearningObjectFeedback";
 
-DELETE FROM public."CourseEnrollment";
 DELETE FROM public."Learners";
 
 DELETE FROM public."Texts";
@@ -29,39 +28,18 @@ DELETE FROM public."Lectures";
 DELETE FROM public."Courses";
 
 INSERT INTO public."Learners"(
-	"Id", "StudentIndex", "VisualScore", "AuralScore", "ReadWriteScore", "KinaestheticScore", "WorkspacePath")
-	VALUES (1, 'SU-1-2021', 1, 2, 3, 4, 'C:/Smart-Tutor/1/Workspace');
+	"Id", "StudentIndex", "WorkspacePath")
+	VALUES (1, 'SU-1-2021', 'C:/Smart-Tutor/1/Workspace');
 INSERT INTO public."Learners"(
-	"Id", "StudentIndex", "VisualScore", "AuralScore", "ReadWriteScore", "KinaestheticScore", "WorkspacePath")
-	VALUES (2, 'SU-2-2021', 4, 3, 2, 1, 'C:/Smart-Tutor/2/Workspace');
+	"Id", "StudentIndex", "WorkspacePath")
+	VALUES (2, 'SU-2-2021', 'C:/Smart-Tutor/2/Workspace');
 INSERT INTO public."Learners"(
-	"Id", "StudentIndex", "VisualScore", "AuralScore", "ReadWriteScore", "KinaestheticScore", "WorkspacePath")
-	VALUES (3, 'SU-3-2021', 1, 4, 3, 2, 'C:/Smart-Tutor/3/Workspace');
-INSERT INTO public."Learners"(
-    "Id", "StudentIndex", "VisualScore", "AuralScore", "ReadWriteScore", "KinaestheticScore", "WorkspacePath")
-    VALUES (4, 'SU-4-2021', 1, 4, 3, 2, 'C:/Smart-Tutor/3/Workspace');
+	"Id", "StudentIndex", "WorkspacePath")
+	VALUES (3, 'SU-3-2021', 'C:/Smart-Tutor/3/Workspace');
 
 INSERT INTO public."Courses"(
 	"Id")
 	VALUES (1);
-INSERT INTO public."Courses"(
-    "Id")
-    VALUES (2);
-
-
-INSERT INTO public."CourseEnrollment"(
-	"Id", "CourseId", "LearnerId")
-	VALUES (1, 1, 1);
-INSERT INTO public."CourseEnrollment"(
-	"Id", "CourseId", "LearnerId")
-	VALUES (2, 1, 2);
-INSERT INTO public."CourseEnrollment"(
-	"Id", "CourseId", "LearnerId")
-	VALUES (3, 1, 3);
-INSERT INTO public."CourseEnrollment"(
-    "Id", "CourseId", "LearnerId")
-    VALUES (4, 2, 4);
-
 
 INSERT INTO public."Lectures"(
 	"Id", "Name", "Description", "CourseId")
@@ -78,7 +56,8 @@ INSERT INTO public."Lectures"(
 INSERT INTO public."Lectures"(
 	"Id", "Name", "Description", "CourseId")
 	VALUES (4, 'Spregnutost', 'Dva gusto spregnuta softverska modula u velikom stepenu zavise jedan od drugog i često se ponašaju kao jedan veliki modul. Ovakvi moduli imaju puno međusobnih veza (poput upotrebe atributa ili poziva metoda) i znaju razne detalje jedan o drugom. Izmena jednog takvog modula gotovo uvek povlači modifikaciju (i bagove) drugog. Ako je sistem prepun ovakvih sprega, postaje trom i težak za izmenu. Sa druge strane, ako modul sakriva mnoštvo logike iza jednostavnog API-a, značajno je ograničena mogućnost sprezanja sa takvim modulom. Kroz ovu lekciju učimo da pravimo ovakve module.', 1);
-
+	
+	
 	
 --== Naming ==- FK Node	
 INSERT INTO public."KnowledgeNodes"(
@@ -828,9 +807,7 @@ INSERT INTO public."QuestionAnswers"(
 INSERT INTO public."QuestionAnswers"(
 	"Id", "Text", "IsCorrect", "Feedback", "QuestionId")
 	VALUES (26, 'Kada pišemo čiste funkcije, naši klijenti mogu da čitaju i razumeju naš kod.', false, 'Izjava nije tačna. Čiste funkcije koje opisuju poslovnu logiku treba da budu razumljive našim klijentima. Međutim, ne treba zaboraviti značajan deo logike koja će omogućiti obradu HTTP zahteva, interakciju sa bazom, kriptografiju i ostale tehničke detalje koji su poznati inženjnerima softvera, ali ne i ljudima za koje se pravi softver.', 66);
-	
-	
-	
+
 
 --== Cohesion ==- FK Node	
 INSERT INTO public."KnowledgeNodes"(
@@ -1011,7 +988,7 @@ INSERT INTO public."LearningObjects"(
 	VALUES (111, 111);
 INSERT INTO public."Images"(
 	"Id", "Url", "Caption")
-	VALUES (111, 'https://i.ibb.co/w6T0Mg5/RS-structural-formula.png', 'Izračunaj vrednost strukturalne kohezije za prethodni primer (pre i posle refaktorisanja).');
+	VALUES (111, 'https://i.ibb.co/w6T0Mg5/RS-structural-formula.png', 'Izračunaj vrednost strukturalne kohezije za proizvoljan primer koda kako bi utemeljio razumevanje ove formule.');
 	
 INSERT INTO public."LearningObjects"(
 	"Id", "LearningObjectSummaryId")

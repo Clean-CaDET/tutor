@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using Tutor.Core.ProgressModel;
+using System.Collections.Generic;
+using System.Linq;
 using Tutor.Core.ProgressModel.Progress;
 using Tutor.Web.Controllers.Content.DTOs;
 using Tutor.Web.Controllers.Progress;
@@ -75,10 +74,10 @@ namespace Tutor.Web.Tests.Integration
                         Status = NodeStatus.Unlocked,
                         LearningObjects = new List<LearningObjectDTO>
                         {
-                            new LearningObjectDTO {Id = 1},
-                            new LearningObjectDTO {Id = 2},
-                            new LearningObjectDTO {Id = 3},
-                            new LearningObjectDTO {Id = 4}
+                            new() {Id = 1},
+                            new() {Id = 2},
+                            new() {Id = 3},
+                            new() {Id = 4}
                         }
                     },
                 },
@@ -90,9 +89,9 @@ namespace Tutor.Web.Tests.Integration
                         Status = NodeStatus.Unlocked,
                         LearningObjects = new List<LearningObjectDTO>
                         {
-                            new LearningObjectDTO {Id = 6},
-                            new LearningObjectDTO {Id = 10},
-                            new LearningObjectDTO {Id = 12}
+                            new() {Id = 6},
+                            new() {Id = 10},
+                            new() {Id = 12}
                         }
                     },
                 }

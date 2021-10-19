@@ -1,4 +1,4 @@
-﻿namespace Tutor.Web.Security.IAM
+﻿namespace Tutor.Web.IAM
 {
     public class User
     {

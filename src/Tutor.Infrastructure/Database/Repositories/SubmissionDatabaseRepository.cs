@@ -6,9 +6,9 @@ namespace Tutor.Infrastructure.Database.Repositories
 {
     public class SubmissionDatabaseRepository : ISubmissionRepository
     {
-        private readonly SmartTutorContext _dbContext;
+        private readonly TutorContext _dbContext;
 
-        public SubmissionDatabaseRepository(SmartTutorContext dbContext)
+        public SubmissionDatabaseRepository(TutorContext dbContext)
         {
             _dbContext = dbContext;
         }

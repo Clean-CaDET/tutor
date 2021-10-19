@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Tutor.Web.Security
+namespace Tutor.Infrastructure.Security
 {
     public static class EnvironmentConnection
     {

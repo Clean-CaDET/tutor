@@ -14,7 +14,7 @@ using Tutor.Core.ProgressModel.Submissions;
 
 namespace Tutor.Infrastructure.Database
 {
-    public class SmartTutorContext : DbContext
+    public class TutorContext : DbContext
     {
         #region Courses
         public DbSet<Lecture> Lectures { get; set; }
@@ -51,7 +51,7 @@ namespace Tutor.Infrastructure.Database
         #endregion
         public DbSet<Learner> Learners { get; set; }
 
-        public SmartTutorContext(DbContextOptions<SmartTutorContext> options) : base(options)
+        public TutorContext(DbContextOptions<TutorContext> options) : base(options)
         {
         }
 

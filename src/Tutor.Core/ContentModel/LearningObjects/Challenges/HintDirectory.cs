@@ -15,7 +15,7 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges
 
         public Dictionary<ChallengeHint, List<string>> GetDirectory()
         {
-            return new Dictionary<ChallengeHint, List<string>>(_directory);
+            return new(_directory);
         }
 
         public List<ChallengeHint> GetHints()

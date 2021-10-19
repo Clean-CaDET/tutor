@@ -1,13 +1,13 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
+using System.Linq;
 using Tutor.Infrastructure.Database;
-using Tutor.Web.Security;
+using Tutor.Infrastructure.Security;
 
 namespace Tutor.Web.Tests.Integration
 {
@@ -17,17 +17,17 @@ namespace Tutor.Web.Tests.Integration
         {
             builder.ConfigureServices(services =>
             {
-                var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<SmartTutorContext>));
+                var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<TutorContext>));
                 services.Remove(descriptor);
                 
-                services.AddDbContext<SmartTutorContext>(opt =>
+                services.AddDbContext<TutorContext>(opt =>
                     opt.UseNpgsql(CreateConnectionStringForTest()));
 
                 var sp = services.BuildServiceProvider();
                 using (var scope = sp.CreateScope())
                 {
                     var scopedServices = scope.ServiceProvider;
-                    var db = scopedServices.GetRequiredService<SmartTutorContext>();
+                    var db = scopedServices.GetRequiredService<TutorContext>();
                     var logger = scopedServices
                         .GetRequiredService<ILogger<TutorApplicationTestFactory<TStartup>>>();
 
@@ -46,7 +46,7 @@ namespace Tutor.Web.Tests.Integration
             });
         }
 
-        private static void InitializeDbForTests(SmartTutorContext db)
+        private static void InitializeDbForTests(TutorContext db)
         {
             var startingDb = File.ReadAllText("../../../Integration/Scripts/data.sql");
             db.Database.ExecuteSqlRaw(startingDb);

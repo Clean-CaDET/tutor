@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.Learners;
 using Tutor.Web.Controllers.Learners.DTOs;
-using Tutor.Web.Security.IAM;
+using Tutor.Web.IAM;
 
 namespace Tutor.Web.Controllers.Learners
 {

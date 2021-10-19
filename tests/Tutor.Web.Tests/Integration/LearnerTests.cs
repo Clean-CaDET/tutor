@@ -5,7 +5,7 @@ using Shouldly;
 using Tutor.Core.LearnerModel;
 using Tutor.Web.Controllers.Learners;
 using Tutor.Web.Controllers.Learners.DTOs;
-using Tutor.Web.Security.IAM;
+using Tutor.Web.IAM;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration

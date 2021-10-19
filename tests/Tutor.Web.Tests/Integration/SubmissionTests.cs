@@ -30,7 +30,7 @@ namespace Tutor.Web.Tests.Integration
         {
             using var scope = _factory.Services.CreateScope();
             var controller = new SubmissionController(_factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>());
-            var dbContext = scope.ServiceProvider.GetRequiredService<SmartTutorContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
 
             controller.SubmitQuestionAnswers(submission);
 
@@ -46,8 +46,8 @@ namespace Tutor.Web.Tests.Integration
                 {
                     QuestionId = 17, Answers = new List<QuestionAnswerDTO>
                     {
-                        new QuestionAnswerDTO {Id = 2},
-                        new QuestionAnswerDTO {Id = 5}
+                        new() {Id = 2},
+                        new() {Id = 5}
                     },
                     LearnerId = 1
                 },
@@ -59,10 +59,10 @@ namespace Tutor.Web.Tests.Integration
                 {
                     QuestionId = 17, Answers = new List<QuestionAnswerDTO>
                     {
-                        new QuestionAnswerDTO {Id = 11},
-                        new QuestionAnswerDTO {Id = 12},
-                        new QuestionAnswerDTO {Id = 14},
-                        new QuestionAnswerDTO {Id = 15}
+                        new() {Id = 11},
+                        new() {Id = 12},
+                        new() {Id = 14},
+                        new() {Id = 15}
                     },
                     LearnerId = 1
                 },
@@ -85,7 +85,7 @@ namespace Tutor.Web.Tests.Integration
         {
             using var scope = _factory.Services.CreateScope();
             var controller = new SubmissionController(_factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>());
-            var dbContext = scope.ServiceProvider.GetRequiredService<SmartTutorContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
 
             controller.SubmitArrangeTask(submission);
 
@@ -101,17 +101,18 @@ namespace Tutor.Web.Tests.Integration
                 {
                     ArrangeTaskId = 32, Containers = new List<ArrangeTaskContainerDTO>
                     {
-                        new ArrangeTaskContainerDTO {Id = 1, Elements = new List<ArrangeTaskElementDTO>()},
-                        new ArrangeTaskContainerDTO {Id = 2, Elements = new List<ArrangeTaskElementDTO>()},
-                        new ArrangeTaskContainerDTO {Id = 3, Elements = new List<ArrangeTaskElementDTO>()},
-                        new ArrangeTaskContainerDTO {Id = 4, Elements = new List<ArrangeTaskElementDTO>()},
-                        new ArrangeTaskContainerDTO {Id = 5, Elements = new List<ArrangeTaskElementDTO>
+                        new() {Id = 1, Elements = new List<ArrangeTaskElementDTO>()},
+                        new() {Id = 2, Elements = new List<ArrangeTaskElementDTO>()},
+                        new() {Id = 3, Elements = new List<ArrangeTaskElementDTO>()},
+                        new() {Id = 4, Elements = new List<ArrangeTaskElementDTO>()},
+                        new()
+                        {Id = 5, Elements = new List<ArrangeTaskElementDTO>
                         {
-                            new ArrangeTaskElementDTO { Id = 1 },
-                            new ArrangeTaskElementDTO { Id = 2 },
-                            new ArrangeTaskElementDTO { Id = 3 },
-                            new ArrangeTaskElementDTO { Id = 4 },
-                            new ArrangeTaskElementDTO { Id = 5 }
+                            new() { Id = 1 },
+                            new() { Id = 2 },
+                            new() { Id = 3 },
+                            new() { Id = 4 },
+                            new() { Id = 5 }
                         }}
                     },
                     LearnerId = 1
@@ -124,11 +125,11 @@ namespace Tutor.Web.Tests.Integration
                 {
                     ArrangeTaskId = 32, Containers = new List<ArrangeTaskContainerDTO>
                     {
-                        new ArrangeTaskContainerDTO {Id = 1, Elements = new List<ArrangeTaskElementDTO> {new ArrangeTaskElementDTO { Id = 1 }}},
-                        new ArrangeTaskContainerDTO {Id = 2, Elements = new List<ArrangeTaskElementDTO> {new ArrangeTaskElementDTO { Id = 2 }}},
-                        new ArrangeTaskContainerDTO {Id = 3, Elements = new List<ArrangeTaskElementDTO> {new ArrangeTaskElementDTO { Id = 3 }}},
-                        new ArrangeTaskContainerDTO {Id = 4, Elements = new List<ArrangeTaskElementDTO> {new ArrangeTaskElementDTO { Id = 4 }}},
-                        new ArrangeTaskContainerDTO {Id = 5, Elements = new List<ArrangeTaskElementDTO> {new ArrangeTaskElementDTO { Id = 5 }}}
+                        new() {Id = 1, Elements = new List<ArrangeTaskElementDTO> {new() { Id = 1 }}},
+                        new() {Id = 2, Elements = new List<ArrangeTaskElementDTO> {new() { Id = 2 }}},
+                        new() {Id = 3, Elements = new List<ArrangeTaskElementDTO> {new() { Id = 3 }}},
+                        new() {Id = 4, Elements = new List<ArrangeTaskElementDTO> {new() { Id = 4 }}},
+                        new() {Id = 5, Elements = new List<ArrangeTaskElementDTO> {new() { Id = 5 }}}
                     },
                     LearnerId = 1
                 },
@@ -146,11 +147,11 @@ namespace Tutor.Web.Tests.Integration
                 ArrangeTaskId = 32, LearnerId = 1,
                 Containers = new List<ArrangeTaskContainerDTO>
                 {
-                    new ArrangeTaskContainerDTO
+                    new()
                     {
                         Id = 1, Elements = new List<ArrangeTaskElementDTO>
                         {
-                            new ArrangeTaskElementDTO {Id = 1}
+                            new() {Id = 1}
                         }
                     }
                 }
@@ -165,7 +166,7 @@ namespace Tutor.Web.Tests.Integration
         {
             using var scope = _factory.Services.CreateScope();
             var controller = new SubmissionController(_factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>());
-            var dbContext = scope.ServiceProvider.GetRequiredService<SmartTutorContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
 
             var actualEvaluation = ((OkObjectResult)controller.SubmitChallenge(submission).Result).Value as ChallengeEvaluationDTO;
             
@@ -187,7 +188,7 @@ namespace Tutor.Web.Tests.Integration
                 new ChallengeEvaluationDTO
                 {
                     ChallengeCompleted = false, ChallengeId = 41, SolutionLO = new VideoDTO {Id = 42},
-                    ApplicableHints = new List<ChallengeHintDTO> { new ChallengeHintDTO
+                    ApplicableHints = new List<ChallengeHintDTO> { new()
                     {
                         Id = 1, LearningObject = new TextDTO {Id = 43},
                         ApplicableToCodeSnippets = new List<string> { "ExamplesApp.Method.PaymentService.CreatePayment(int, int)" }
@@ -200,7 +201,7 @@ namespace Tutor.Web.Tests.Integration
                 new ChallengeEvaluationDTO
                 {
                     ChallengeCompleted = true, ChallengeId = 41, SolutionLO = new VideoDTO {Id = 42},
-                    ApplicableHints = new List<ChallengeHintDTO> { new ChallengeHintDTO
+                    ApplicableHints = new List<ChallengeHintDTO> { new()
                     {
                         Id = 1, LearningObject = new TextDTO {Id = 43},
                         ApplicableToCodeSnippets = new List<string> { "ExamplesApp.Method.PaymentService.CreatePayment(int, int)" }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace Tutor.Web.Security.IAM.Keycloak
+namespace Tutor.Web.IAM.Keycloak
 {
     public class KeycloakRole : IAuthorizationRequirement
     {

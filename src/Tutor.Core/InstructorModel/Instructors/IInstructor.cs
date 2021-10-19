@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using FluentResults;
+﻿using FluentResults;
+using System.Collections.Generic;
 using Tutor.Core.ContentModel.LearningObjects;
 using Tutor.Core.ContentModel.Lectures;
 

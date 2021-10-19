@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
 
-namespace Tutor.Web.Security.IAM.Keycloak
+namespace Tutor.Web.IAM.Keycloak
 {
     public class KeycloakRoleHandler : AuthorizationHandler<KeycloakRole>
     {

@@ -6,9 +6,9 @@ namespace Tutor.Infrastructure.Database.Repositories
 {
     public class LearnerDatabaseRepository : ILearnerRepository
     {
-        private readonly SmartTutorContext _dbContext;
+        private readonly TutorContext _dbContext;
 
-        public LearnerDatabaseRepository(SmartTutorContext dbContext)
+        public LearnerDatabaseRepository(TutorContext dbContext)
         {
             _dbContext = dbContext;
         }

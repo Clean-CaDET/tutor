@@ -1,8 +1,8 @@
-﻿using System;
+﻿using CodeModel.CaDETModel.CodeItems;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using CodeModel.CaDETModel.CodeItems;
 
 namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.NameChecker
 {
@@ -142,7 +142,7 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy
 
         public override List<ChallengeHint> GetAllHints()
         {
-            return new List<ChallengeHint> { Hint };
+            return new() { Hint };
         }
     }
 }

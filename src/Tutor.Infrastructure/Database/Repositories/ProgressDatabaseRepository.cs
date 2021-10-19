@@ -6,9 +6,9 @@ namespace Tutor.Infrastructure.Database.Repositories
 {
     public class ProgressDatabaseRepository : IProgressRepository
     {
-        private readonly SmartTutorContext _dbContext;
+        private readonly TutorContext _dbContext;
 
-        public ProgressDatabaseRepository(SmartTutorContext dbContext)
+        public ProgressDatabaseRepository(TutorContext dbContext)
         {
             _dbContext = dbContext;
         }

@@ -5,7 +5,6 @@ DELETE FROM public."QuestionSubmissions";
 DELETE FROM public."NodeProgresses";
 DELETE FROM public."LearningObjectFeedback";
 
-DELETE FROM public."CourseEnrollment";
 DELETE FROM public."Learners";
 
 DELETE FROM public."Texts";
@@ -29,28 +28,18 @@ DELETE FROM public."Lectures";
 DELETE FROM public."Courses";
 
 INSERT INTO public."Learners"(
-	"Id", "StudentIndex", "VisualScore", "AuralScore", "ReadWriteScore", "KinaestheticScore")
-	VALUES (1, 'SU-1-2021', 1, 2, 3, 4);
+	"Id", "StudentIndex", "WorkspacePath")
+	VALUES (1, 'SU-1-2021', 'C:/Smart-Tutor/1/Workspace');
 INSERT INTO public."Learners"(
-	"Id", "StudentIndex", "VisualScore", "AuralScore", "ReadWriteScore", "KinaestheticScore")
-	VALUES (2, 'SU-2-2021', 4, 3, 2, 1);
+	"Id", "StudentIndex", "WorkspacePath")
+	VALUES (2, 'SU-2-2021', 'C:/Smart-Tutor/2/Workspace');
 INSERT INTO public."Learners"(
-	"Id", "StudentIndex", "VisualScore", "AuralScore", "ReadWriteScore", "KinaestheticScore")
-	VALUES (3, 'SU-3-2021', 1, 4, 3, 2);
+	"Id", "StudentIndex", "WorkspacePath")
+	VALUES (3, 'SU-3-2021', 'C:/Smart-Tutor/3/Workspace');
 
 INSERT INTO public."Courses"(
 	"Id")
 	VALUES (1);
-
-INSERT INTO public."CourseEnrollment"(
-	"Id", "CourseId", "LearnerId")
-	VALUES (1, 1, 1);
-INSERT INTO public."CourseEnrollment"(
-	"Id", "CourseId", "LearnerId")
-	VALUES (2, 1, 2);
-INSERT INTO public."CourseEnrollment"(
-	"Id", "CourseId", "LearnerId")
-	VALUES (3, 1, 3);
 
 INSERT INTO public."Lectures"(
 	"Id", "Name", "Description", "CourseId")

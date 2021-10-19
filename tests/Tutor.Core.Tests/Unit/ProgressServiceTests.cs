@@ -1,7 +1,7 @@
+using FluentResults;
 using Moq;
 using Shouldly;
 using System.Collections.Generic;
-using FluentResults;
 using Tutor.Core.ContentModel;
 using Tutor.Core.ContentModel.Lectures;
 using Tutor.Core.InstructorModel.Instructors;

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Tutor.Core.LearnerModel.Learners;
 
-namespace Tutor.Web.Security.IAM
+namespace Tutor.Web.IAM
 {
     public interface IAuthProvider
     {
