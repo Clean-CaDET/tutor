@@ -1,10 +1,10 @@
 using Moq;
 using Shouldly;
 using System.Collections.Generic;
+using FluentResults;
 using Tutor.Core.ContentModel;
 using Tutor.Core.ContentModel.Lectures;
 using Tutor.Core.InstructorModel.Instructors;
-using Tutor.Core.ProgressModel;
 using Tutor.Core.ProgressModel.Progress;
 using Xunit;
 
@@ -31,8 +31,11 @@ namespace Tutor.Core.Tests.Unit
             Mock<ILectureRepository> lectureRepo = new Mock<ILectureRepository>();
             lectureRepo.Setup(repo => repo.GetKnowledgeNodeWithSummaries(1)).Returns(kn1);
             lectureRepo.Setup(repo => repo.GetKnowledgeNodeWithSummaries(2)).Returns(kn2);
-            
-            return new ProgressService(new Mock<IInstructor>().Object, lectureRepo.Object, progressRepo.Object);
+
+            Mock<IInstructor> instructor = new Mock<IInstructor>();
+            instructor.Setup(i => i.GatherLearningObjectsForLearner(1, null)).Returns(Result.Ok());
+
+            return new ProgressService(instructor.Object, lectureRepo.Object, progressRepo.Object);
         }
 
         [Theory]
@@ -40,7 +43,7 @@ namespace Tutor.Core.Tests.Unit
         public void Creates_node_content(int nodeId, int learnerId, int nodeProgressId)
         {
             var result = _progressService.GetNodeContent(nodeId, learnerId);
-            result.Id.ShouldBe(nodeProgressId);
+            result.Value.Id.ShouldBe(nodeProgressId);
         }
 
         public static IEnumerable<object[]> LearnerTestData =>

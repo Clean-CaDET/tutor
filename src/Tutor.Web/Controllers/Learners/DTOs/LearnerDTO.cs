@@ -8,10 +8,5 @@ namespace Tutor.Web.Controllers.Learners.DTOs
 
         [RegularExpression("[A-Za-z]{2,3}-[0-9]{1,3}-[0-9]{4}")]
         public string StudentIndex { get; set; }
-
-        public int VisualScore { get; set; }
-        public int AuralScore { get; set; }
-        public int ReadWriteScore { get; set; }
-        public int KinaestheticScore { get; set; }
     }
 }

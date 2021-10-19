@@ -1,11 +1,11 @@
+using FluentResults;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.ContentModel;
 using Tutor.Core.ContentModel.Lectures;
 using Tutor.Core.InstructorModel.Instructors;
-using Tutor.Core.ProgressModel.Progress;
 
-namespace Tutor.Core.ProgressModel
+namespace Tutor.Core.ProgressModel.Progress
 {
     public class ProgressService : IProgressService
     {
@@ -21,13 +21,14 @@ namespace Tutor.Core.ProgressModel
             _lectureRepository = lectureRepository;
         }
 
-        public List<NodeProgress> GetKnowledgeNodes(int lectureId, int? learnerId)
+        public Result<List<NodeProgress>> GetKnowledgeNodes(int lectureId, int? learnerId)
         {
             var nodes = _lectureRepository.GetKnowledgeNodes(lectureId);
-            if (nodes == null) return null;
-            if (learnerId == null) return ShowSampleNodes(nodes);
+            if (nodes == null) return Result.Fail("No existing nodes for lecture.");
+            if (learnerId == null) return Result.Ok(ShowSampleNodes(nodes));
+
             //TODO: Check if prerequisites fulfilled.
-            return null;
+            return Result.Fail("UNSUPPORTED CASE.");
         }
 
         private static List<NodeProgress> ShowSampleNodes(List<KnowledgeNode> nodes)
@@ -35,25 +36,29 @@ namespace Tutor.Core.ProgressModel
             return nodes.Select(n => new NodeProgress(0, 0, n, NodeStatus.Unlocked, null)).ToList();
         }
 
-        public NodeProgress GetNodeContent(int knowledgeNodeId, int? learnerId)
+        public Result<NodeProgress> GetNodeContent(int knowledgeNodeId, int? learnerId)
         {
             var knowledgeNode = _lectureRepository.GetKnowledgeNodeWithSummaries(knowledgeNodeId);
-            if (knowledgeNode == null) return null;
+            if (knowledgeNode == null) return Result.Fail("The knowledge node with the id " + knowledgeNodeId + " does not exist.");
 
             if (learnerId == null)
             {
-                return new NodeProgress(
-                    0, 0, knowledgeNode, NodeStatus.Unlocked, _instructor.GatherDefaultLearningObjects(knowledgeNode.LearningObjectSummaries));
+                var defaultLOs = _instructor.GatherDefaultLearningObjects(knowledgeNode.LearningObjectSummaries);
+                return Result.Ok(new NodeProgress(0, 0, knowledgeNode, NodeStatus.Unlocked, defaultLOs.Value));
             }
 
-            return BuildNodeForLearner(knowledgeNode, (int) learnerId);
+            return Result.Ok(BuildNodeForLearner(knowledgeNode, (int) learnerId));
         }
 
         private NodeProgress BuildNodeForLearner(KnowledgeNode node, int learnerId)
         {
-            var nodeProgress = _progressRepository.GetNodeProgressForLearner(learnerId, node.Id) ?? new NodeProgress(
-                0, learnerId, node, NodeStatus.Unlocked, _instructor.GatherLearningObjectsForLearner(learnerId, node.LearningObjectSummaries)
-            );
+            var nodeProgress = _progressRepository.GetNodeProgressForLearner(learnerId, node.Id);
+
+            if (nodeProgress == null)
+            {
+                var startingLOs = _instructor.GatherLearningObjectsForLearner(learnerId, node.LearningObjectSummaries);
+                nodeProgress = new NodeProgress(0, learnerId, node, NodeStatus.Unlocked, startingLOs.Value);
+            }
 
             //TODO: Create learning session and save.
             _progressRepository.SaveNodeProgress(nodeProgress);

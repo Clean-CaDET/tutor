@@ -6,6 +6,6 @@ namespace Tutor.Core.LearnerModel
     {
         Learner GetById(int learnerId);
         Learner GetByIndex(string index);
-        Learner SaveOrUpdate(Learner learner);
+        Learner Save(Learner learner);
     }
 }

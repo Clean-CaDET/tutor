@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using Tutor.Core.ContentModel.LearningObjects.Challenges;
-using Tutor.Core.ProgressModel;
-using Tutor.Core.ProgressModel.Exceptions;
 using Tutor.Core.ProgressModel.Submissions;
 using Tutor.Web.Controllers.Progress.DTOs.SubmissionEvaluation;
 
@@ -33,10 +31,6 @@ namespace Tutor.Web.Controllers.Progress
                 challengeEvaluation =
                     _submissionService.EvaluateChallenge(_mapper.Map<ChallengeSubmission>(challengeSubmission));
             }
-            catch (LearnerNotEnrolledInCourse e)
-            {
-                return Forbid(e.Message);
-            }
             catch (InvalidOperationException e)
             {
                 return BadRequest(e.Message);
@@ -50,16 +44,9 @@ namespace Tutor.Web.Controllers.Progress
         public ActionResult<List<AnswerEvaluationDTO>> SubmitQuestionAnswers(
             [FromBody] QuestionSubmissionDTO submission)
         {
-            try
-            {
-                var evaluation = _submissionService.EvaluateAnswers(_mapper.Map<QuestionSubmission>(submission));
-                if (evaluation == null) return NotFound();
-                return Ok(_mapper.Map<List<AnswerEvaluationDTO>>(evaluation));
-            }
-            catch (LearnerNotEnrolledInCourse e)
-            {
-                return Forbid(e.Message);
-            }
+            var evaluation = _submissionService.EvaluateAnswers(_mapper.Map<QuestionSubmission>(submission));
+            if (evaluation == null) return NotFound();
+            return Ok(_mapper.Map<List<AnswerEvaluationDTO>>(evaluation));
         }
 
         [HttpPost("arrange-task")]

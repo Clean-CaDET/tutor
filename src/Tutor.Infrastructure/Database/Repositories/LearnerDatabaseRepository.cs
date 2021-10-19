@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.Learners;
 
@@ -16,14 +15,14 @@ namespace Tutor.Infrastructure.Database.Repositories
 
         public Learner GetById(int learnerId)
         {
-            return _dbContext.Learners.Where(l => l.Id == learnerId).Include(l => l.CourseEnrollments).FirstOrDefault();
+            return _dbContext.Learners.FirstOrDefault(l => l.Id == learnerId);
         }
         public Learner GetByIndex(string index)
         {
-            return _dbContext.Learners.Where(learner => learner.StudentIndex.Equals(index)).Include(l => l.CourseEnrollments).FirstOrDefault();
+            return _dbContext.Learners.FirstOrDefault(learner => learner.StudentIndex.Equals(index));
         }
 
-        public Learner SaveOrUpdate(Learner learner)
+        public Learner Save(Learner learner)
         {
             _dbContext.Learners.Attach(learner);
             _dbContext.SaveChanges();

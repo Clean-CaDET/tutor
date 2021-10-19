@@ -1,4 +1,4 @@
-using Tutor.Core.LearnerModel.Exceptions;
+using FluentResults;
 using Tutor.Core.LearnerModel.Learners;
 using Tutor.Core.LearnerModel.Workspaces;
 
@@ -15,34 +15,22 @@ namespace Tutor.Core.LearnerModel
             _workspaceCreator = workspaceCreator;
         }
 
-        public Learner Register(Learner newLearner)
+        public Result<Learner> Register(Learner newLearner)
         {
-            var learner = SaveOrUpdate(newLearner);
+            if (_learnerRepository.GetByIndex(newLearner.StudentIndex) != null)
+                return Result.Fail("Learner with index " + newLearner.StudentIndex + " is already registered.");
+            
+            var learner = _learnerRepository.Save(newLearner);
             CreateWorkspace(learner);
 
-            return learner;
+            return Result.Ok(learner);
         }
 
-        private Learner SaveOrUpdate(Learner newLearner)
-        {
-            var learner = _learnerRepository.GetByIndex(newLearner.StudentIndex);
-            if (learner == null)
-            {
-                learner = newLearner;
-            }
-            else
-            {
-                learner.UpdateVARK(newLearner.VARKScore());
-            }
-
-            return _learnerRepository.SaveOrUpdate(learner);
-        }
-
-        public Learner Login(string studentIndex)
+        public Result<Learner> Login(string studentIndex)
         {
             var learner = _learnerRepository.GetByIndex(studentIndex);
-            if (learner == null) throw new LearnerWithStudentIndexNotFound(studentIndex);
-            return learner;
+            if (learner == null) return Result.Fail("No learner with index: " + studentIndex);
+            return Result.Ok(learner);
         }
 
         private void CreateWorkspace(Learner learner)
@@ -51,7 +39,7 @@ namespace Tutor.Core.LearnerModel
             if (workspace == null) return;
 
             learner.Workspace = workspace;
-            _learnerRepository.SaveOrUpdate(learner);
+            _learnerRepository.Save(learner);
         }
     }
 }

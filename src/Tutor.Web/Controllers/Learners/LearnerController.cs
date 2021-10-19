@@ -1,9 +1,8 @@
-using System;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 using Tutor.Core.LearnerModel;
-using Tutor.Core.LearnerModel.Exceptions;
 using Tutor.Core.LearnerModel.Learners;
 using Tutor.Web.Controllers.Learners.DTOs;
 using Tutor.Web.Security.IAM;
@@ -35,22 +34,17 @@ namespace Tutor.Web.Controllers.Learners
                 learner = await _authProvider.Register(learner);
             }
 
-            var registeredLearner = _learnerService.Register(learner);
-            return Ok(_mapper.Map<LearnerDTO>(registeredLearner));
+            var result = _learnerService.Register(learner);
+            if(result.IsSuccess) return Ok(_mapper.Map<LearnerDTO>(result.Value));
+            return BadRequest(result.Errors);
         }
 
         [HttpPost("login")]
         public ActionResult<LearnerDTO> Login([FromBody] LoginDTO login)
         {
-            try
-            {
-                var learner = _learnerService.Login(login.StudentIndex);
-                return Ok(_mapper.Map<LearnerDTO>(learner));
-            }
-            catch (LearnerWithStudentIndexNotFound e)
-            {
-                return NotFound(e.Message);
-            }
+            var result = _learnerService.Login(login.StudentIndex);
+            if(result.IsSuccess) return Ok(_mapper.Map<LearnerDTO>(result.Value));
+            return NotFound(result.Errors);
         }
     }
 }

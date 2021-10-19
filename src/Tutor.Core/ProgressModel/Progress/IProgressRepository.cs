@@ -1,6 +1,4 @@
-﻿using Tutor.Core.ProgressModel.Progress;
-
-namespace Tutor.Core.ProgressModel
+﻿namespace Tutor.Core.ProgressModel.Progress
 {
     public interface IProgressRepository
     {

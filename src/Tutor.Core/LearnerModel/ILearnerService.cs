@@ -1,10 +1,11 @@
+using FluentResults;
 using Tutor.Core.LearnerModel.Learners;
 
 namespace Tutor.Core.LearnerModel
 {
     public interface ILearnerService
     {
-        Learner Register(Learner learner);
-        Learner Login(string studentIndex);
+        Result<Learner> Register(Learner learner);
+        Result<Learner> Login(string studentIndex);
     }
 }

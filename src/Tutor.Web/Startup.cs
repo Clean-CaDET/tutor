@@ -14,7 +14,9 @@ using Tutor.Core.ContentModel;
 using Tutor.Core.InstructorModel.Instructors;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.Workspaces;
-using Tutor.Core.ProgressModel;
+using Tutor.Core.ProgressModel.Feedback;
+using Tutor.Core.ProgressModel.Progress;
+using Tutor.Core.ProgressModel.Submissions;
 using Tutor.Infrastructure.Database;
 using Tutor.Infrastructure.Database.Repositories;
 using Tutor.Web.Controllers.Content.Mappers;
@@ -76,7 +78,7 @@ namespace Tutor.Web
             services.AddScoped<IWorkspaceCreator, NoWorkspaceCreator>();
             services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
 
-            services.AddScoped<IInstructor, VARKRecommender>();
+            services.AddScoped<IInstructor, DefaultInstructor>();
 
             services.AddScoped<IAuthProvider, KeycloakAuthProvider>();
 

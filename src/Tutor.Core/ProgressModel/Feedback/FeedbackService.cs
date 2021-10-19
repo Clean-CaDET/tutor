@@ -1,6 +1,6 @@
-using Tutor.Core.ProgressModel.Feedback;
+using FluentResults;
 
-namespace Tutor.Core.ProgressModel
+namespace Tutor.Core.ProgressModel.Feedback
 {
     public class FeedbackService : IFeedbackService
     {
@@ -11,7 +11,7 @@ namespace Tutor.Core.ProgressModel
             _feedbackRepository = feedbackRepository;
         }
 
-        public void SubmitFeedback(LearningObjectFeedback feedback)
+        public Result SubmitFeedback(LearningObjectFeedback feedback)
         {
             var loadedFeedback = _feedbackRepository.Get(feedback.LearningObjectId, feedback.LearnerId);
             if (loadedFeedback == null)
@@ -24,6 +24,7 @@ namespace Tutor.Core.ProgressModel
             }
 
             _feedbackRepository.SaveOrUpdate(loadedFeedback);
+            return Result.Ok();
         }
     }
 }

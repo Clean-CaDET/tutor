@@ -1,6 +1,4 @@
-using Tutor.Core.ProgressModel.Feedback;
-
-namespace Tutor.Core.ProgressModel
+namespace Tutor.Core.ProgressModel.Feedback
 {
     public interface IFeedbackRepository
     {

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Tutor.Core.ProgressModel;
+using System.Collections.Generic;
+using Tutor.Core.ProgressModel.Progress;
 using Tutor.Web.Controllers.Progress.DTOs.Progress;
 
 namespace Tutor.Web.Controllers.Progress
@@ -23,18 +23,18 @@ namespace Tutor.Web.Controllers.Progress
         public ActionResult<List<KnowledgeNodeProgressDTO>> GetLectureNodes(int lectureId)
         {
             //TODO: Extract learner ID so that we can see the Status of each KN.
-            var nodes = _progressService.GetKnowledgeNodes(lectureId, null);
-            if (nodes == null) return NotFound("Lecture does not contain any nodes.");
-            return Ok(_mapper.Map<List<KnowledgeNodeProgressDTO>>(nodes));
+            var result = _progressService.GetKnowledgeNodes(lectureId, null);
+            if(result.IsSuccess) return Ok(_mapper.Map<List<KnowledgeNodeProgressDTO>>(result.Value));
+            return NotFound(result.Errors);
         }
         //TODO: The URLs don't follow best practices because the tension between KN and KNProgress. Will need to study this more.
         [HttpGet("content/{nodeId}")]
         public ActionResult<KnowledgeNodeProgressDTO> GetNodeContent(int nodeId)
         {
             //TODO: Extract learner ID so that we can form personalized content.
-            var nodes = _progressService.GetNodeContent(nodeId, null);
-            if (nodes == null) return NotFound();
-            return Ok(_mapper.Map<KnowledgeNodeProgressDTO>(nodes));
+            var result = _progressService.GetNodeContent(nodeId, null);
+            if (result.IsSuccess) return Ok(_mapper.Map<KnowledgeNodeProgressDTO>(result.Value));
+            return NotFound(result.Errors);
         }
     }
 }

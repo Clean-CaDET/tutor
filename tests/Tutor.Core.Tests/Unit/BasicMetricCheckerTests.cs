@@ -18,13 +18,13 @@ namespace Tutor.Core.Tests.Unit
             _basicMetricChecker = new BasicMetricChecker(
                 new List<MetricRangeRule>
                 {
-                    new MetricRangeRule(33701,"CLOC",3,30,new ChallengeHint(337001)),
-                    new MetricRangeRule (33702, "NMD", 0, 2, new ChallengeHint(5))
+                    new(33701,"CLOC",3,30,new ChallengeHint(337001)),
+                    new(33702, "NMD", 0, 2, new ChallengeHint(5))
                 },
                 new List<MetricRangeRule>
                 {
-                    new MetricRangeRule(33703, "MELOC", 2, 5, new ChallengeHint(337002)),
-                    new MetricRangeRule(33704, "NOP", 2, 4, new ChallengeHint(6))
+                    new(33703, "MELOC", 2, 5, new ChallengeHint(337002)),
+                    new(33704, "NOP", 2, 4, new ChallengeHint(6))
                 }
             );
         }
@@ -55,9 +55,9 @@ namespace Tutor.Core.Tests.Unit
                     ChallengeTestData.GetTwoViolatingClasses(),
                     new List<ChallengeHint>
                     {
-                        new ChallengeHint(6),
-                        new ChallengeHint(337002),
-                        new ChallengeHint(337001)
+                        new(6),
+                        new(337002),
+                        new(337001)
                     }
                 }
             };

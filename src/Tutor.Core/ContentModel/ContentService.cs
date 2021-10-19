@@ -1,3 +1,4 @@
+using FluentResults;
 using System.Collections.Generic;
 using Tutor.Core.ContentModel.Lectures;
 
@@ -12,9 +13,9 @@ namespace Tutor.Core.ContentModel
             _lectureRepository = lectureRepository;
         }
 
-        public List<Lecture> GetLectures()
+        public Result<List<Lecture>> GetLectures()
         {
-            return _lectureRepository.GetLectures();
+            return Result.Ok(_lectureRepository.GetLectures());
         }
     }
 }

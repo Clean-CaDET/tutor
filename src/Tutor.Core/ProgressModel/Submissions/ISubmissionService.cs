@@ -2,9 +2,8 @@
 using Tutor.Core.ContentModel.LearningObjects.ArrangeTasks;
 using Tutor.Core.ContentModel.LearningObjects.Challenges;
 using Tutor.Core.ContentModel.LearningObjects.Questions;
-using Tutor.Core.ProgressModel.Submissions;
 
-namespace Tutor.Core.ProgressModel
+namespace Tutor.Core.ProgressModel.Submissions
 {
     public interface ISubmissionService
     {

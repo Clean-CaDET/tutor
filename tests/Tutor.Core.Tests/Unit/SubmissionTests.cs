@@ -5,10 +5,6 @@ using System.Linq;
 using Tutor.Core.ContentModel;
 using Tutor.Core.ContentModel.LearningObjects.ArrangeTasks;
 using Tutor.Core.ContentModel.LearningObjects.Questions;
-using Tutor.Core.LearnerModel;
-using Tutor.Core.LearnerModel.Learners;
-using Tutor.Core.ProgressModel;
-using Tutor.Core.ProgressModel.Progress;
 using Tutor.Core.ProgressModel.Submissions;
 using Xunit;
 
@@ -21,8 +17,7 @@ namespace Tutor.Core.Tests.Unit
         public SubmissionTests()
         {
             _service = new SubmissionService(CreateLearningObjectMockRepository(),
-                new Mock<ISubmissionRepository>().Object, CreateLearnerMockRepository(),
-                CreateLectureMockRepository());
+                new Mock<ISubmissionRepository>().Object);
         }
 
         private static ILearningObjectRepository CreateLearningObjectMockRepository()
@@ -31,61 +26,38 @@ namespace Tutor.Core.Tests.Unit
             learningObjectRepo.Setup(repo => repo.GetQuestion(19))
                 .Returns(new Question(19, 0, "", new List<QuestionAnswer>
                 {
-                    new QuestionAnswer(10, 19, "", false, ""),
-                    new QuestionAnswer(11, 19, "", true, ""),
-                    new QuestionAnswer(12, 19, "", true, ""),
-                    new QuestionAnswer(13, 19, "", false, "")
+                    new(10, 19, "", false, ""),
+                    new(11, 19, "", true, ""),
+                    new(12, 19, "", true, ""),
+                    new(13, 19, "", false, "")
                 }));
             learningObjectRepo.Setup(repo => repo.GetArrangeTask(32))
                 .Returns(new ArrangeTask(1, 0, "", new List<ArrangeTaskContainer>
                 {
-                    new ArrangeTaskContainer(1, 1, "", new List<ArrangeTaskElement>
+                    new(1, 1, "", new List<ArrangeTaskElement>
                     {
-                        new ArrangeTaskElement(1, 1, "")
+                        new(1, 1, "")
                     }),
-                    new ArrangeTaskContainer(2, 1, "", new List<ArrangeTaskElement>
+                    new(2, 1, "", new List<ArrangeTaskElement>
                     {
-                        new ArrangeTaskElement(2, 2, "")
+                        new(2, 2, "")
                     }),
-                    new ArrangeTaskContainer(3, 1, "", new List<ArrangeTaskElement>
+                    new(3, 1, "", new List<ArrangeTaskElement>
                     {
-                        new ArrangeTaskElement(3, 3, "")
+                        new(3, 3, "")
                     }),
-                    new ArrangeTaskContainer(4, 1, "", new List<ArrangeTaskElement>
+                    new(4, 1, "", new List<ArrangeTaskElement>
                     {
-                        new ArrangeTaskElement(4, 4, "")
+                        new(4, 4, "")
                     }),
-                    new ArrangeTaskContainer(5, 1, "", new List<ArrangeTaskElement>
+                    new(5, 1, "", new List<ArrangeTaskElement>
                     {
-                        new ArrangeTaskElement(5, 5, "")
+                        new(5, 5, "")
                     }),
                 }));
             return learningObjectRepo.Object;
         }
-
-        private static ILearnerRepository CreateLearnerMockRepository()
-        {
-            var courseEnrollments = new List<CourseEnrollment>()
-            {
-                new CourseEnrollment(1, 1),
-                new CourseEnrollment(2, 2),
-                new CourseEnrollment(3, 3)
-            };
-            var learner = new Learner(1, 1, 1, 1, 1, courseEnrollments);
-            Mock<ILearnerRepository> learnerRepo = new Mock<ILearnerRepository>();
-            learnerRepo.Setup(repo => repo.GetById(It.IsAny<int>()))
-                .Returns(learner);
-            return learnerRepo.Object;
-        }
-
-        private static ILectureRepository CreateLectureMockRepository()
-        {
-            var lectureRepo = new Mock<ILectureRepository>();
-            lectureRepo.Setup(repo => repo.GetCourseIdByLOId(It.IsAny<int>()))
-                .Returns(1);
-            return lectureRepo.Object;
-        }
-
+        
         [Theory]
         [MemberData(nameof(AnswersTestData))]
         public void Evaluates_answer_submission(QuestionSubmission submission, List<bool> expectedCorrectness)
@@ -133,11 +105,11 @@ namespace Tutor.Core.Tests.Unit
                 {
                     new ArrangeTaskSubmission(32, new List<ArrangeTaskContainerSubmission>
                     {
-                        new ArrangeTaskContainerSubmission(1, 1, new List<int> {1, 5}),
-                        new ArrangeTaskContainerSubmission(2, 2, new List<int> {2}),
-                        new ArrangeTaskContainerSubmission(3, 3, new List<int> {3}),
-                        new ArrangeTaskContainerSubmission(4, 4, new List<int> { }),
-                        new ArrangeTaskContainerSubmission(5, 5, new List<int> {4}),
+                        new(1, 1, new List<int> {1, 5}),
+                        new(2, 2, new List<int> {2}),
+                        new(3, 3, new List<int> {3}),
+                        new(4, 4, new List<int> { }),
+                        new(5, 5, new List<int> {4}),
                     }),
                     new List<bool> {false, true, true, false, false}
                 },
@@ -145,11 +117,11 @@ namespace Tutor.Core.Tests.Unit
                 {
                     new ArrangeTaskSubmission(32, new List<ArrangeTaskContainerSubmission>
                     {
-                        new ArrangeTaskContainerSubmission(1, 1, new List<int> {1, 2, 3, 4, 5}),
-                        new ArrangeTaskContainerSubmission(2, 2, new List<int> { }),
-                        new ArrangeTaskContainerSubmission(3, 3, new List<int> { }),
-                        new ArrangeTaskContainerSubmission(4, 4, new List<int> { }),
-                        new ArrangeTaskContainerSubmission(5, 5, new List<int> { }),
+                        new(1, 1, new List<int> {1, 2, 3, 4, 5}),
+                        new(2, 2, new List<int> { }),
+                        new(3, 3, new List<int> { }),
+                        new(4, 4, new List<int> { }),
+                        new(5, 5, new List<int> { }),
                     }),
                     new List<bool> {false, false, false, false, false}
                 },
@@ -157,11 +129,11 @@ namespace Tutor.Core.Tests.Unit
                 {
                     new ArrangeTaskSubmission(32, new List<ArrangeTaskContainerSubmission>
                     {
-                        new ArrangeTaskContainerSubmission(1, 1, new List<int> {1}),
-                        new ArrangeTaskContainerSubmission(2, 2, new List<int> {2}),
-                        new ArrangeTaskContainerSubmission(3, 3, new List<int> {3}),
-                        new ArrangeTaskContainerSubmission(4, 4, new List<int> {4}),
-                        new ArrangeTaskContainerSubmission(5, 5, new List<int> {5}),
+                        new(1, 1, new List<int> {1}),
+                        new(2, 2, new List<int> {2}),
+                        new(3, 3, new List<int> {3}),
+                        new(4, 4, new List<int> {4}),
+                        new(5, 5, new List<int> {5}),
                     }),
                     new List<bool> {true, true, true, true, true}
                 }

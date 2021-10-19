@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 using Tutor.Core.ContentModel;
 using Tutor.Web.Controllers.Content.DTOs;
 
@@ -23,8 +23,8 @@ namespace Tutor.Web.Controllers.Content
         [HttpGet]
         public ActionResult<List<LectureDTO>> GetLectures()
         {
-            var lectures = _contentService.GetLectures();
-            return Ok(lectures.Select(l => _mapper.Map<LectureDTO>(l)).ToList());
+            var result = _contentService.GetLectures();
+            return Ok(result.Value.Select(l => _mapper.Map<LectureDTO>(l)).ToList());
         }
     }
 }

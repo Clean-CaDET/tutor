@@ -40,8 +40,8 @@ namespace Tutor.Core.Tests.Unit
                     ChallengeTestData.GetTwoPassingClasses(),
                     new List<ChallengeHint>
                     {
-                        new ChallengeHint(11),
-                        new ChallengeHint(21)
+                        new(11),
+                        new(21)
                     },
                     true
                 },
@@ -50,8 +50,8 @@ namespace Tutor.Core.Tests.Unit
                     ChallengeTestData.GetTwoViolatingClasses(),
                     new List<ChallengeHint>
                     {
-                        new ChallengeHint(11),
-                        new ChallengeHint(21)
+                        new(11),
+                        new(21)
                     },
                     false
                 }

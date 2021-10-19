@@ -5,7 +5,7 @@ using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.ProgressModel;
+using Tutor.Core.ProgressModel.Submissions;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Content.DTOs;
 using Tutor.Web.Controllers.Progress;
@@ -79,24 +79,6 @@ namespace Tutor.Web.Tests.Integration
             }
         };
         
-        [Fact]
-        public void Question_and_learner_are_in_different_courses_returns_forbidden_status()
-        {
-            using var scope = _factory.Services.CreateScope();
-            var controller = new SubmissionController(_factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>());
-            var submission = new QuestionSubmissionDTO
-            {
-                QuestionId = 17, Answers = new List<QuestionAnswerDTO>
-                {
-                    new QuestionAnswerDTO {Id = 2},
-                    new QuestionAnswerDTO {Id = 5}
-                },
-                LearnerId = 4
-            };
-            
-            controller.SubmitQuestionAnswers(submission).Result.ShouldBeOfType(typeof(ForbidResult));
-        }
-
         [Theory]
         [MemberData(nameof(ArrangeTaskSubmissions))]
         public void Accepts_arrange_task_submission_and_produces_correct_evaluation(ArrangeTaskSubmissionDTO submission, bool expectedCorrectness)

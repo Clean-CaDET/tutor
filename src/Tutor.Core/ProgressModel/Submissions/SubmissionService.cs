@@ -2,40 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.ContentModel;
-using Tutor.Core.ContentModel.LearningObjects;
 using Tutor.Core.ContentModel.LearningObjects.ArrangeTasks;
 using Tutor.Core.ContentModel.LearningObjects.Challenges;
 using Tutor.Core.ContentModel.LearningObjects.Questions;
-using Tutor.Core.LearnerModel;
-using Tutor.Core.ProgressModel.Exceptions;
-using Tutor.Core.ProgressModel.Submissions;
 
-namespace Tutor.Core.ProgressModel
+namespace Tutor.Core.ProgressModel.Submissions
 {
     public class SubmissionService : ISubmissionService
     {
         private readonly ILearningObjectRepository _learningObjectRepository;
         private readonly ISubmissionRepository _submissionRepository;
-        private readonly ILearnerRepository _learnerRepository;
-        private readonly ILectureRepository _lectureRepository;
 
         public SubmissionService(ILearningObjectRepository learningObjectRepository,
-            ISubmissionRepository submissionRepository, ILearnerRepository learnerRepository,
-            ILectureRepository lectureRepository)
+            ISubmissionRepository submissionRepository)
         {
             _learningObjectRepository = learningObjectRepository;
             _submissionRepository = submissionRepository;
-            _learnerRepository = learnerRepository;
-            _lectureRepository = lectureRepository;
         }
 
         public ChallengeEvaluation EvaluateChallenge(ChallengeSubmission submission)
         {
-            Challenge challenge = _learningObjectRepository.GetChallenge(submission.ChallengeId);
-            if (!IsLearningObjectInLearnersCourses(challenge, submission.LearnerId))
-            {
-                throw new LearnerNotEnrolledInCourse(submission.LearnerId);
-            }
+            var challenge = _learningObjectRepository.GetChallenge(submission.ChallengeId);
 
             if (challenge == null) return null;
 
@@ -57,10 +44,6 @@ namespace Tutor.Core.ProgressModel
         public List<AnswerEvaluation> EvaluateAnswers(QuestionSubmission submission)
         {
             var question = _learningObjectRepository.GetQuestion(submission.QuestionId);
-            if (!IsLearningObjectInLearnersCourses(question, submission.LearnerId))
-            {
-                throw new LearnerNotEnrolledInCourse(submission.LearnerId);
-            }
 
             var evaluations = question.EvaluateAnswers(submission.SubmittedAnswerIds);
 
@@ -80,14 +63,6 @@ namespace Tutor.Core.ProgressModel
             _submissionRepository.SaveArrangeTaskSubmission(submission);
 
             return evaluations;
-        }
-
-        private bool IsLearningObjectInLearnersCourses(LearningObject learningObject, int learnerId)
-        {
-            var courseId = _lectureRepository.GetCourseIdByLOId(learningObject.LearningObjectSummaryId);
-            var learner = _learnerRepository.GetById(learnerId);
-            return learner.CourseEnrollments.Any(learnerCourseEnrollment =>
-                learnerCourseEnrollment.CourseId == courseId);
         }
     }
 }

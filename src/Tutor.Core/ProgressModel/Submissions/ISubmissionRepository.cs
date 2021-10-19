@@ -1,6 +1,4 @@
-﻿using Tutor.Core.ProgressModel.Submissions;
-
-namespace Tutor.Core.ProgressModel
+﻿namespace Tutor.Core.ProgressModel.Submissions
 {
     public interface ISubmissionRepository
     {
