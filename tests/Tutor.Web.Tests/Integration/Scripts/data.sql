@@ -1187,3 +1187,19 @@ INSERT INTO public."LearningObjects"(
 INSERT INTO public."Texts"(
 	"Id", "Content")
 	VALUES (133, 'TODO');
+
+INSERT INTO public."KnowledgeComponents"(
+    "Id", "Name", "KnowledgeComponentId")
+VALUES (1, 'Čiste funkcije', null);
+
+INSERT INTO public."KnowledgeComponents"(
+    "Id", "Name", "KnowledgeComponentId")
+VALUES (2, 'Čista imena', 1);
+
+INSERT INTO public."KnowledgeComponents"(
+    "Id", "Name", "KnowledgeComponentId")
+VALUES (3, 'Redukcija broja parametara', 1);
+
+INSERT INTO public."KnowledgeComponents"(
+    "Id", "Name", "KnowledgeComponentId")
+VALUES (4, 'Kratke funkcije', 1);
