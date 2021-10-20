@@ -1,4 +1,4 @@
-﻿namespace Tutor.Web.Controllers.KnowledgeComponent.DTOs
+﻿namespace Tutor.Web.Controllers.KCs.DTOs
 {
     public class KnowledgeComponentDTO
     {

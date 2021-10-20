@@ -3,9 +3,9 @@ using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.Core.KnowledgeComponentModel;
-using Tutor.Web.Controllers.KnowledgeComponent.DTOs;
+using Tutor.Web.Controllers.KCs.DTOs;
 
-namespace Tutor.Web.Controllers.KnowledgeComponent
+namespace Tutor.Web.Controllers.KCs
 {
     [Route("api/knowledge-components")]
     [ApiController]
