@@ -152,7 +152,7 @@ namespace Tutor.Web
 
         private static string[] ParseCorsOrigins()
         {
-            var corsOrigins = Array.Empty<string>();
+            var corsOrigins = new [] { "http://localhost:4200" };
             var corsOriginsPath = EnvironmentConnection.GetSecret("SMART_TUTOR_CORS_ORIGINS");
             if (File.Exists(corsOriginsPath))
             {
