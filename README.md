@@ -7,13 +7,13 @@
 <h1 align="center">Clean CaDET</h1>
 <div align="center">
 
-  [![CodeFactor](https://www.codefactor.io/repository/github/clean-cadet/platform/badge)](https://www.codefactor.io/repository/github/clean-cadet/platform)
+  [![CodeFactor](https://www.codefactor.io/repository/github/clean-cadet/tutor/badge)](https://www.codefactor.io/repository/github/clean-cadet/tutor)
   [![Gitter](https://badges.gitter.im/Clean-CaDET/community.svg)](https://gitter.im/Clean-CaDET/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 </div>
 
 <p align="justify">
-  The Clean Code and Design Educational Tool (Clean CaDET) is a platform dedicated to the study of clean code. It presents a conglomerate of AI-powered tools for educators, learners, practitioners, and researchers studying clean code.
+  The Clean Code and Design Educational Tool (Clean CaDET) is a platform dedicated to the study of clean code. It presents a conglomerate of AI-powered tools for educators, learners, practitioners, and researchers studying clean code. The <a href="https://github.com/Clean-CaDET/platform">original repository</a> currently hosts important class libraries, such as the Code Model and Smell Detectors. From this repository Tutor emerged as a standalone application, which has since migrated to this repository.
   </p>
 <p align="justify">
   Clean CaDET started as a project funded by the <a href="http://fondzanauku.gov.rs/?lang=en">Science Fund of the Republic of Serbia</a>. It hopes to grow into an active open-source community dedicated to software engineers' growth and their pursuit to build sustainable, high-quality software.
@@ -21,7 +21,7 @@
 
 - [Introduction](#introduction)
   - [What is the problem?](#what-is-the-problem)
-  - [Who is it for?](#who-is-it-for)
+  - [Who is it for?](#a-tool-for-learners-and-educators)
 - [Get started](https://github.com/Clean-CaDET/platform/blob/master/SETUP.md)
 - [Team](#team)
 
@@ -36,29 +36,11 @@ The vision and high-level idea behind Clean CaDET is described in the [overview 
   While many code solutions can fulfill a requirement, not all of them are acceptable. Some solutions cause subtle bugs, performance loss, or expose security vulnerabilities. Furthermore, many of the possible solutions present another severe but less obvious problem in the form of code smells. Code suffering from sever code smells is hard to understand and modify. Such code harms the software’s maintainability, evolvability, reliability, and testability, introducing technical debt. Unfortunately, removing code smells is not easy, as many code smell definitions are vague and lack a concrete heuristic that can unambiguously determine the smell’s presence.
 </p>
 
-## Who is it for?
-
-### Practitioners
+## A tool for Learners and Educators
 <p align="justify">
-Through its primary feature set, Clean CaDET detects code smells through AI models. It then offers personalized suggestions to the user in the form of educational content to help them resolve the identified issues. It acts as a digital assistant for software engineering practitioners, which integrates into their development environment to analyze their code.
+A significant module of Clean CaDET is its <b>Tutor</b>. It hosts the learner's model, a collection of learning objects, and instructional rules that select the most appropriate educational content for the particular learner. This functionality is integrated into the code quality analysis workflow, and it can be accessed as a standalone educational tool. By directly interacting with the <b>Tutor</b>, learners can explore various clean code topics and engage with the challenge subsystem to learn how to refactor and analyze code quality in a gamified environment.
 <ul>
-  <li>For more details regarding the <b>code quality analysis</b> workflow, useful for <i>practitioners</i>, check out the <a href="https://github.com/Clean-CaDET/platform/wiki" target="_blank">wiki pages</a>.</li>
-</ul>
-</p>
-
-### Learners and educators
-<p align="justify">
-A significant module of Clean CaDET is the *Smart Tutor*. It hosts the learner's model, a collection of learning objects, and instructional rules that select the most appropriate educational content for the particular learner. This functionality is integrated into the code quality analysis workflow, and it can be accessed as a standalone educational tool. By directly interacting with the *Smart Tutor*, learners can explore various clean code topics and engage with the challenge subsystem to learn how to refactor and analyze code quality in a gamified environment.
-<ul>
-  <li>For more details regarding the <b>Smart Tutor</b> module, useful for <i>learners and educators</i>, check out the <a href="https://github.com/Clean-CaDET/platform/wiki/Module-Smart-Tutor" target="_blank">module's page</a>.</li>
-</ul>
-</p>
-
-### Researchers
-<p align="justify">
-While developing AI algorithms for code smell detection, we processed existing datasets and built <a href="https://www.techrxiv.org/articles/preprint/Towards_a_systematic_approach_to_manual_annotation_of_code_smells/14159183" target="_blank">our own</a>. To automate the process of dataset construction and analysis, we developed the *Dataset Explorer* tool.
-<ul>
-  <li>For more details regarding the <b>Dataset Explorer</b> module, useful for <i>researchers</i>, check out the <a href="https://github.com/Clean-CaDET/platform/wiki/Module-Dataset-Explorer" target="_blank">module's page</a></li>
+  <li>For more details regarding the <b>Tutor</b> module, useful for <i>learners and educators</i>, check out the <a href="https://github.com/Clean-CaDET/tutor#readme" target="_blank">module's page</a>.</li>
 </ul>
 </p>
 
