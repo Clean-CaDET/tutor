@@ -249,6 +249,5 @@ namespace Tutor.Web.Tests.Integration
             var errors = actualEvaluation.ApplicableHints[0].Content;
             errors.Split("\n").Length.ShouldBe(1);
         }
-
     }
 }

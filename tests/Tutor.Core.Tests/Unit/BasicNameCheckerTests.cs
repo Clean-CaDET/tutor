@@ -11,7 +11,6 @@ namespace Tutor.Core.Tests.Unit
 {
     public class BasicNameCheckerTests
     {
-
         [Theory]
         [MemberData(nameof(ChallengeTest))]
         public void Evaluates_solution_submission(string[] submissionAttempt, List<ChallengeHint> expectedHints, bool expectedCompletion)

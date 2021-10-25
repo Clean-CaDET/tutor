@@ -61,7 +61,6 @@ namespace Tutor.Web
                     });
             });
 
-
             services.AddScoped<IContentService, ContentService>();
             services.AddScoped<ILectureRepository, LectureDatabaseRepository>();
             services.AddScoped<ILearningObjectRepository, LearningObjectDatabaseRepository>();
@@ -150,9 +149,7 @@ namespace Tutor.Web
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
-
         
-
         private static string[] ParseCorsOrigins()
         {
             var corsOrigins = new [] { "http://localhost:4200" };
