@@ -258,8 +258,8 @@ INSERT INTO public."Challenges"(
 	"Id", "Url", "Description", "TestSuiteLocation", "SolutionIdForeignKey")
 	VALUES (41, 'https://github.com/Clean-CaDET/challenge-repository', 'To reiterate, our ultimate goal is not to make short functions. Rather, our functions become short as a consequence of adhering to various clean code principles. However, a function that surpases a few dozen code lines often is a good candidate for refactoring. Consider the "Methods/01. Small Methods" directory and extract logically-related code into separate methods, striving to define a meaninful name for each new method.', 'Methods.Small', 42);
 INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId")
-	VALUES (3, 41);
+	"Id", "ChallengeId", "CodeSnippedId")
+	VALUES (3, 41, 'Methods.SmallMethods.Achievements');
 INSERT INTO public."BasicMetricCheckers"(
 	"Id")
 	VALUES (3);
@@ -286,8 +286,8 @@ INSERT INTO public."Challenges"(
 	"Id", "Url", "Description", "TestSuiteLocation", "SolutionIdForeignKey")
 	VALUES (44, 'https://github.com/Clean-CaDET/challenge-repository', 'Complex functions require high mental effort to reason about and understand the control flow. Many aspects contribute to a function''s complexity - mysterious names, wide expressions, deep nesting. Consider the "Methods/02. Simple Methods" directory and refactor th functions to make them simpler and remove code duplication.', 'Methods.Simple', 46);
 INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId")
-	VALUES (4, 44);
+	"Id", "ChallengeId", "CodeSnippedId")
+	VALUES (4, 44, 'Methods.SimpleMethods.Schedule');
 INSERT INTO public."BasicMetricCheckers"(
 	"Id")
 	VALUES (4);
@@ -332,8 +332,8 @@ INSERT INTO public."Challenges"(
 	"Id", "Url", "Description", "TestSuiteLocation", "SolutionIdForeignKey")
 	VALUES (49, 'https://github.com/Clean-CaDET/challenge-repository', 'Redukcija broja parametra pozitivno utiče na razumevanje samog zaglavlja funkcije i informacije šta ona radi. Pored toga, redukcijom liste parametra često smanjujemo broj zadataka koje funkcija radi. U sklopu direktorijuma "Methods/03. Parameter Lists" primeni strategije za redukciju parametra i refaktoriši funkcije.', 'Methods.Params', 50);
 INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId")
-	VALUES (5, 49);
+	"Id", "ChallengeId", "CodeSnippedId")
+	VALUES (5, 49, 'Methods.ParametersList.CourseService');
 INSERT INTO public."BasicMetricCheckers"(
 	"Id")
 	VALUES (5);
