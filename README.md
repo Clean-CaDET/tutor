@@ -4,7 +4,7 @@
   
 </p>
 
-<h1 align="center">Clean CaDET</h1>
+<h1 align="center">Clean CaDET Tutor</h1>
 <div align="center">
 
   [![CodeFactor](https://www.codefactor.io/repository/github/clean-cadet/tutor/badge)](https://www.codefactor.io/repository/github/clean-cadet/tutor)
