@@ -13,13 +13,16 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy
         public List<string> BannedWords { get; private set; }
         public List<string> RequiredWords { get; private set; }
         public ChallengeHint Hint { get; private set; }
+        public List<string> PossibleRenames { get; private set; }
 
         private BasicNameChecker() {}
-        public BasicNameChecker(List<string> bannedWords, List<string> requiredWords, ChallengeHint hint): this()
+        public BasicNameChecker(List<string> bannedWords, List<string> requiredWords, ChallengeHint hint, string codeSnippetId, List<string> possibleRenames): this()
         {
             BannedWords = bannedWords;
             RequiredWords = requiredWords;
             Hint = hint;
+            CodeSnippedId = codeSnippetId;
+            PossibleRenames = possibleRenames;
         }
 
         public override HintDirectory EvaluateSubmission(List<CaDETClass> solutionAttempt)
@@ -28,30 +31,38 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy
             return EvaluateNames(usedNames);
         }
 
-        private Dictionary<string, List<string>> GetUsedNames(List<CaDETClass> solutionAttempt)
+        private List<string> GetUsedNames(List<CaDETClass> solutionAttempt)
         {
-            var namesUsedInCodeSnippet = new Dictionary<string, List<string>>();
+            var caDETClass = solutionAttempt.Find(c => c.FullName == CodeSnippedId);
+            if (caDETClass != null)
+                return GetClassNames(caDETClass);
+            
+            var caDETMember = solutionAttempt.SelectMany(c => c.Members).FirstOrDefault(m => m.Signature() == CodeSnippedId);
+            if (caDETMember != null)
+                return GetMemberNames(caDETMember);
+            
+            if (PossibleRenames == null)
+                throw new Exception($"Solution attempt is missing class/method {CodeSnippedId}");
 
-            solutionAttempt.ForEach(c => namesUsedInCodeSnippet.Add(c.FullName, GetClassNames(c)));
-
-            foreach (var member in GetMembersFromClasses(solutionAttempt))
+            foreach (var name in PossibleRenames)
             {
-                namesUsedInCodeSnippet.Add(member.Signature(), GetMemberNames(member));
+                caDETClass = solutionAttempt.Find(c => c.FullName == name);
+                if (caDETClass != null)
+                    return GetClassNames(caDETClass);
+                caDETMember = solutionAttempt.SelectMany(c => c.Members).FirstOrDefault(m => m.Signature() == name);
+                if (caDETMember != null)
+                    return GetMemberNames(caDETMember);
             }
 
-            return namesUsedInCodeSnippet;
+            throw new Exception($"Solution attempt is missing class/method {CodeSnippedId}");
         }
 
         private List<string> GetClassNames(CaDETClass caDETClass)
         {
             var names = new List<string> { caDETClass.Name };
             names.AddRange(caDETClass.Fields.Select(f => f.Name));
+            names.AddRange(caDETClass.Members.Select(m => m.Name));
             return names;
-        }
-
-        private List<CaDETMember> GetMembersFromClasses(List<CaDETClass> classes)
-        {
-            return classes.SelectMany(c => c.Members).ToList();
         }
 
         private List<string> GetMemberNames(CaDETMember member)
@@ -62,7 +73,7 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy
             return memberNames;
         }
 
-        private HintDirectory EvaluateNames(Dictionary<string, List<string>> namesUsedInCodeSnippet)
+        private HintDirectory EvaluateNames(List<string> namesUsedInCodeSnippet)
         {
             var hints = new HintDirectory();
             hints.MergeHints(EvaluateBannedWords(namesUsedInCodeSnippet));
@@ -70,16 +81,13 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy
             return hints;
         }
 
-        private HintDirectory EvaluateBannedWords(Dictionary<string, List<string>> namesUsedInCodeSnippet)
+        private HintDirectory EvaluateBannedWords(List<string> usedNames)
         {
             if (BannedWords == null || BannedWords.Count == 0) return null;
 
             var hints = new HintDirectory();
-            foreach (var codeSnippetId in namesUsedInCodeSnippet.Keys)
-            {
-                if (ContainsBannedName(namesUsedInCodeSnippet[codeSnippetId]))
-                    hints.AddHint(codeSnippetId, Hint);
-            }
+            if (ContainsBannedName(usedNames))
+                hints.AddHint(CodeSnippedId, Hint);
 
             return hints;
         }
@@ -94,12 +102,11 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy
             return false;
         }
 
-        private HintDirectory EvaluateRequiredWords(Dictionary<string, List<string>> namesUsedInCodeSnippet)
+        private HintDirectory EvaluateRequiredWords(List<string> usedNames)
         {
             if (RequiredWords == null || RequiredWords.Count == 0) return null;
             
-            var allNames = namesUsedInCodeSnippet.Values.SelectMany(n => n);
-            var allWords = allNames.SelectMany(GetWordsFromName).ToList();
+            var allWords = usedNames.SelectMany(GetWordsFromName).ToList();
             if (RequiredWords.All(req => allWords.Contains(req, StringComparer.OrdinalIgnoreCase))) return null;
 
             var hints = new HintDirectory();
