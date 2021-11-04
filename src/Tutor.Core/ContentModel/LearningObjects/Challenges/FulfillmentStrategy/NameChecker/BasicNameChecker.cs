@@ -40,9 +40,6 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy
             var caDETMember = solutionAttempt.SelectMany(c => c.Members).FirstOrDefault(m => m.Signature() == CodeSnippedId);
             if (caDETMember != null)
                 return GetMemberNames(caDETMember);
-            
-            if (PossibleRenames == null)
-                throw new Exception($"Solution attempt is missing class/method {CodeSnippedId}");
 
             foreach (var name in PossibleRenames)
             {
