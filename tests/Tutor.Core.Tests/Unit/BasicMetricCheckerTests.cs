@@ -11,22 +11,27 @@ namespace Tutor.Core.Tests.Unit
 {
     public class BasicMetricsCheckerTests
     {
-        private readonly BasicMetricChecker _basicMetricChecker;
+        private readonly List<BasicMetricChecker> _basicMetricCheckers;
 
         public BasicMetricsCheckerTests()
         {
-            _basicMetricChecker = new BasicMetricChecker(
-                new List<MetricRangeRule>
-                {
-                    new(33701,"CLOC",3,30,new ChallengeHint(337001)),
-                    new(33702, "NMD", 0, 2, new ChallengeHint(5))
-                },
-                new List<MetricRangeRule>
-                {
-                    new(33703, "MELOC", 2, 5, new ChallengeHint(337002)),
-                    new(33704, "NOP", 2, 4, new ChallengeHint(6))
-                }
-            );
+            _basicMetricCheckers = new List<BasicMetricChecker>
+            {
+                new(
+                    new List<MetricRangeRule>
+                    {
+                        new(33701, "CLOC", 3, 30, new ChallengeHint(337001)),
+                        new(33702, "NMD", 0, 2, new ChallengeHint(5))
+                    },
+                    null, "Methods.Small.PaymentService"),
+                new(null,
+                    new List<MetricRangeRule>
+                    {
+                        new(33703, "MELOC", 2, 5, new ChallengeHint(337002)),
+                        new(33704, "NOP", 2, 4, new ChallengeHint(6))
+                    }, "Methods.Small.PaymentService.CreatePayment(int, int)"
+                )
+            };
         }
 
         [Theory]
@@ -34,8 +39,14 @@ namespace Tutor.Core.Tests.Unit
         public void Evaluates_solution_submission(string[] submissionAttempt, List<ChallengeHint> expectedHints)
         {
             var project = new CodeModelFactory().CreateProject(submissionAttempt);
-            var challengeEvaluation = _basicMetricChecker.EvaluateSubmission(project.Classes);
-            var actualHints = challengeEvaluation.GetHints();
+            HintDirectory hints = new HintDirectory();
+            foreach (var checker in _basicMetricCheckers)
+            {
+                var challengeEvaluation = checker.EvaluateSubmission(project.Classes);
+                hints.MergeHints(challengeEvaluation);
+            }
+
+            var actualHints = hints.GetHints();
 
             actualHints.Count.ShouldBe(expectedHints.Count);
             actualHints.All(expectedHints.Contains).ShouldBeTrue();

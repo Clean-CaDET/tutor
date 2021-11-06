@@ -13,7 +13,7 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy
         public List<string> BannedWords { get; private set; }
         public List<string> RequiredWords { get; private set; }
         public ChallengeHint Hint { get; private set; }
-        public List<string> PossibleRenames { get; private set; }
+        private List<string> PossibleRenames { get; }
 
         private BasicNameChecker() {}
         public BasicNameChecker(List<string> bannedWords, List<string> requiredWords, ChallengeHint hint, string codeSnippetId, List<string> possibleRenames): this()

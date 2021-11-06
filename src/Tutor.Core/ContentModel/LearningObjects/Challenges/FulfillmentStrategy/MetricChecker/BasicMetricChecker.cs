@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CodeModel.CaDETModel.CodeItems;
 
@@ -10,16 +11,16 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy
         public List<MetricRangeRule> MethodMetricRules { get; private set; }
 
         private BasicMetricChecker() {}
-        public BasicMetricChecker(List<MetricRangeRule> classMetricRules, List<MetricRangeRule> methodMetricRules) : this()
+        public BasicMetricChecker(List<MetricRangeRule> classMetricRules, List<MetricRangeRule> methodMetricRules, string codeSnippetId) : this()
         {
             ClassMetricRules = classMetricRules;
             MethodMetricRules = methodMetricRules;
+            CodeSnippedId = codeSnippetId;
         }
 
         public override HintDirectory EvaluateSubmission(List<CaDETClass> solutionAttempt)
         {
-            var challengeHints = GetApplicableHintsForIncompleteClasses(solutionAttempt);
-            challengeHints.MergeHints(GetApplicableHintsForIncompleteMethods(solutionAttempt));
+            var challengeHints = GetApplicableHints(solutionAttempt);
             return challengeHints;
         }
 
@@ -31,32 +32,49 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy
             return challengeHints;
         }
 
-        private HintDirectory GetApplicableHintsForIncompleteClasses(List<CaDETClass> solutionAttempt)
+        private HintDirectory GetApplicableHints(List<CaDETClass> solutionAttempt)
+        {
+            var caDETClass = solutionAttempt.Find(c => c.FullName == CodeSnippedId);
+            if (caDETClass != null)
+                return GetApplicableHintsForIncompleteClass(caDETClass);
+            
+            var caDETMember = GetMethodsFromClasses(solutionAttempt).FirstOrDefault(m => m.Signature() == CodeSnippedId);
+            if (caDETMember != null)
+                return GetApplicableHintsForIncompleteMethod(caDETMember);
+
+            // foreach (var name in PossibleRenames)
+            // {
+            //     caDETClass = solutionAttempt.Find(c => c.FullName == name);
+            //     if (caDETClass != null)
+            //         return GetApplicableHintsForIncompleteClasses(caDETClass);
+            //     caDETMember = solutionAttempt.SelectMany(c => c.Members).FirstOrDefault(m => m.Signature() == name);
+            //     if (caDETMember != null)
+            //         return GetApplicableHintsForIncompleteMethods(caDETMember);
+            // }
+
+            throw new Exception($"Solution attempt is missing class/method {CodeSnippedId}");
+        }
+
+        private HintDirectory GetApplicableHintsForIncompleteClass(CaDETClass caDETClass)
         {
             var challengeHints = new HintDirectory();
-            foreach (var caDETClass in solutionAttempt)
+            foreach (var metricRule in ClassMetricRules)
             {
-                foreach (var metricRule in ClassMetricRules)
-                {
-                    var result = metricRule.Evaluate(caDETClass.Metrics);
-                    if (result == null) continue;
-                    challengeHints.AddHint(caDETClass.FullName, result);
-                }
+                var result = metricRule.Evaluate(caDETClass.Metrics);
+                if (result == null) continue;
+                challengeHints.AddHint(caDETClass.FullName, result);
             }
             return challengeHints;
         }
 
-        private HintDirectory GetApplicableHintsForIncompleteMethods(List<CaDETClass> solutionAttempt)
+        private HintDirectory GetApplicableHintsForIncompleteMethod(CaDETMember caDETMethod)
         {
             var challengeHints = new HintDirectory();
-            foreach (var caDETMethod in GetMethodsFromClasses(solutionAttempt))
+            foreach (var metricRule in MethodMetricRules)
             {
-                foreach (var metricRule in MethodMetricRules)
-                {
-                    var result = metricRule.Evaluate(caDETMethod.Metrics);
-                    if (result == null) continue;
-                    challengeHints.AddHint(caDETMethod.Signature(), result);
-                }
+                var result = metricRule.Evaluate(caDETMethod.Metrics);
+                if (result == null) continue;
+                challengeHints.AddHint(caDETMethod.Signature(), result);
             }
             return challengeHints;
         }
