@@ -9,13 +9,15 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy
     {
         public List<MetricRangeRule> ClassMetricRules { get; private set; }
         public List<MetricRangeRule> MethodMetricRules { get; private set; }
+        private List<string> PossibleRenames { get; }
 
         private BasicMetricChecker() {}
-        public BasicMetricChecker(List<MetricRangeRule> classMetricRules, List<MetricRangeRule> methodMetricRules, string codeSnippetId) : this()
+        public BasicMetricChecker(List<MetricRangeRule> classMetricRules, List<MetricRangeRule> methodMetricRules, string codeSnippetId, List<string> possibleRenames) : this()
         {
             ClassMetricRules = classMetricRules;
             MethodMetricRules = methodMetricRules;
             CodeSnippedId = codeSnippetId;
+            PossibleRenames = possibleRenames;
         }
 
         public override HintDirectory EvaluateSubmission(List<CaDETClass> solutionAttempt)
@@ -37,20 +39,23 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy
             var caDETClass = solutionAttempt.Find(c => c.FullName == CodeSnippedId);
             if (caDETClass != null)
                 return GetApplicableHintsForIncompleteClass(caDETClass);
-            
+
             var caDETMember = GetMethodsFromClasses(solutionAttempt).FirstOrDefault(m => m.Signature() == CodeSnippedId);
             if (caDETMember != null)
                 return GetApplicableHintsForIncompleteMethod(caDETMember);
 
-            // foreach (var name in PossibleRenames)
-            // {
-            //     caDETClass = solutionAttempt.Find(c => c.FullName == name);
-            //     if (caDETClass != null)
-            //         return GetApplicableHintsForIncompleteClasses(caDETClass);
-            //     caDETMember = solutionAttempt.SelectMany(c => c.Members).FirstOrDefault(m => m.Signature() == name);
-            //     if (caDETMember != null)
-            //         return GetApplicableHintsForIncompleteMethods(caDETMember);
-            // }
+            if (PossibleRenames == null)
+                throw new Exception($"Solution attempt is missing class/method {CodeSnippedId}");
+
+            foreach (var name in PossibleRenames)
+            {
+                caDETClass = solutionAttempt.Find(c => c.FullName == name);
+                if (caDETClass != null)
+                    return GetApplicableHintsForIncompleteClass(caDETClass);
+                caDETMember = solutionAttempt.SelectMany(c => c.Members).FirstOrDefault(m => m.Signature() == name);
+                if (caDETMember != null)
+                    return GetApplicableHintsForIncompleteMethod(caDETMember);
+            }
 
             throw new Exception($"Solution attempt is missing class/method {CodeSnippedId}");
         }
