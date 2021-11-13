@@ -2,7 +2,7 @@
 using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Tutor.Core.KnowledgeComponentModel;
+using Tutor.Core.DomainModel;
 using Tutor.Web.Controllers.KCs.DTOs;
 
 namespace Tutor.Web.Controllers.KCs

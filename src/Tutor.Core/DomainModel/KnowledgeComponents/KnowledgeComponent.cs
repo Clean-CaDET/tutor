@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Tutor.Core.KnowledgeComponentModel.KnowledgeComponents
+namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
     public class KnowledgeComponent
     {

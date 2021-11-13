@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Tutor.Core.KnowledgeComponentModel.KnowledgeComponents;
+using Tutor.Core.DomainModel.KnowledgeComponents;
 
-namespace Tutor.Core.KnowledgeComponentModel
+namespace Tutor.Core.DomainModel
 {
     public interface IKCService
     {

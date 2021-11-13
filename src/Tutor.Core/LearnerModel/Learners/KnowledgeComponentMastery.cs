@@ -1,4 +1,4 @@
-﻿namespace Tutor.Core.KnowledgeComponentModel.KnowledgeComponents
+﻿namespace Tutor.Core.LearnerModel.Learners
 {
     public class KnowledgeComponentProgress
     {

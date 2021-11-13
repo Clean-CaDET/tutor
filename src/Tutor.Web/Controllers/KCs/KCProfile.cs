@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Tutor.Core.KnowledgeComponentModel.KnowledgeComponents;
+using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Web.Controllers.KCs.DTOs;
 
 namespace Tutor.Web.Controllers.KCs

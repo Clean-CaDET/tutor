@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.KnowledgeComponentModel;
-using Tutor.Core.KnowledgeComponentModel.KnowledgeComponents;
+using Tutor.Core.DomainModel;
+using Tutor.Core.DomainModel.KnowledgeComponents;
 
 namespace Tutor.Infrastructure.Database.Repositories
 {

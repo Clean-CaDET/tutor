@@ -7,7 +7,7 @@ using Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.Met
 using Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.NameChecker;
 using Tutor.Core.ContentModel.LearningObjects.Questions;
 using Tutor.Core.ContentModel.Lectures;
-using Tutor.Core.KnowledgeComponentModel.KnowledgeComponents;
+using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel.Learners;
 using Tutor.Core.ProgressModel.Feedback;
 using Tutor.Core.ProgressModel.Progress;
