@@ -1,4 +1,4 @@
-﻿namespace Tutor.Core.ContentModel.LearningObjects.Questions
+﻿namespace Tutor.Core.DomainModel.AssessmentEvents.Questions
 {
     public class QuestionAnswer
     {

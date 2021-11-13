@@ -1,9 +1,9 @@
 ﻿using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.ContentModel.LearningObjects.Challenges;
-using Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy;
-using Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.NameChecker;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker;
 using Tutor.Core.Tests.TestData;
 using Xunit;
 

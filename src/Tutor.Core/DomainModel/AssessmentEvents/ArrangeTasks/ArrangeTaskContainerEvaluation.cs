@@ -1,4 +1,4 @@
-﻿namespace Tutor.Core.ContentModel.LearningObjects.ArrangeTasks
+﻿namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
 {
     public class ArrangeTaskContainerEvaluation
     {

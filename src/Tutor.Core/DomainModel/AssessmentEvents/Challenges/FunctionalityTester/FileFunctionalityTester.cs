@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FunctionalityTester
+namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FunctionalityTester
 {
     public class WorkspaceFunctionalityTester: IFunctionalityTester
     {

@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using AutoMapper;
-using Tutor.Core.ContentModel.LearningObjects.ArrangeTasks;
-using Tutor.Core.ContentModel.LearningObjects.Challenges;
-using Tutor.Core.ContentModel.LearningObjects.Questions;
+using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
+using Tutor.Core.DomainModel.AssessmentEvents.Questions;
 using Tutor.Core.ProgressModel.Submissions;
 using Tutor.Web.Controllers.Content.DTOs;
 using Tutor.Web.Controllers.Progress.DTOs.SubmissionEvaluation;

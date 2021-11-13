@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using CodeModel.CaDETModel.CodeItems;
 
-namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.MetricChecker
+namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker
 {
     public class MetricRangeRule
     {

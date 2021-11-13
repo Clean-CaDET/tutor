@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Tutor.Core.ContentModel.LearningObjects;
 
-namespace Tutor.Core.ContentModel.LearningObjects.Challenges
+namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
 {
     public class ChallengeEvaluation
     {

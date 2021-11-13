@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CodeModel.CaDETModel.CodeItems;
 
-namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy
+namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
 {
     public abstract class ChallengeFulfillmentStrategy
     {

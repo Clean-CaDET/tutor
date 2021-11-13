@@ -2,7 +2,7 @@
 using System.Linq;
 using CodeModel.CaDETModel.CodeItems;
 
-namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.MetricChecker
+namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker
 {
     public class BasicMetricChecker : ChallengeFulfillmentStrategy
     {

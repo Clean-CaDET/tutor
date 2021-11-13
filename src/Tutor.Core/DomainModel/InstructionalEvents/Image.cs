@@ -1,4 +1,6 @@
-﻿namespace Tutor.Core.ContentModel.LearningObjects
+﻿using Tutor.Core.ContentModel.LearningObjects;
+
+namespace Tutor.Core.DomainModel.InstructionalEvents
 {
     public class Image : LearningObject
     {

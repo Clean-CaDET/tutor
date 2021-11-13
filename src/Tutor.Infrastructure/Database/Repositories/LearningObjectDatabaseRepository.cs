@@ -3,12 +3,13 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Tutor.Core.ContentModel;
 using Tutor.Core.ContentModel.LearningObjects;
-using Tutor.Core.ContentModel.LearningObjects.ArrangeTasks;
-using Tutor.Core.ContentModel.LearningObjects.Challenges;
-using Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.MetricChecker;
-using Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.NameChecker;
-using Tutor.Core.ContentModel.LearningObjects.Questions;
 using Tutor.Core.ContentModel.Lectures;
+using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker;
+using Tutor.Core.DomainModel.AssessmentEvents.Questions;
+using Tutor.Core.DomainModel.InstructionalEvents;
 
 namespace Tutor.Infrastructure.Database.Repositories
 {

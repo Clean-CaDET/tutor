@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Tutor.Core.ContentModel.LearningObjects.ArrangeTasks
+namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
 {
     public class ArrangeTaskContainer
     {

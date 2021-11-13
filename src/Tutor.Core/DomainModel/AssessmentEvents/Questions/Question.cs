@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Tutor.Core.ContentModel.LearningObjects;
 
-namespace Tutor.Core.ContentModel.LearningObjects.Questions
+namespace Tutor.Core.DomainModel.AssessmentEvents.Questions
 {
     public class Question : LearningObject
     {

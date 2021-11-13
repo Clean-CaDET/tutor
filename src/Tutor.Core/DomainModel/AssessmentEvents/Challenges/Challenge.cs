@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using CodeModel;
 using CodeModel.CaDETModel;
-using Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy;
-using Tutor.Core.ContentModel.LearningObjects.Challenges.FunctionalityTester;
+using Tutor.Core.ContentModel.LearningObjects;
 using Tutor.Core.ContentModel.Lectures;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FunctionalityTester;
 
-namespace Tutor.Core.ContentModel.LearningObjects.Challenges
+namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
 {
     public class Challenge : LearningObject
     {

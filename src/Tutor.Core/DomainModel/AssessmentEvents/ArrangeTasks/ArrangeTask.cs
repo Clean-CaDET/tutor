@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using Tutor.Core.ContentModel.LearningObjects;
 using Tutor.Core.ProgressModel.Submissions;
 
-namespace Tutor.Core.ContentModel.LearningObjects.ArrangeTasks
+namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
 {
     public class ArrangeTask : LearningObject
     {

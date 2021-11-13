@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Tutor.Core.ContentModel.LearningObjects.Challenges
+namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
 {
     public class HintDirectory
     {

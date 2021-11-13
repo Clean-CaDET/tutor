@@ -3,8 +3,8 @@ using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.ContentModel;
-using Tutor.Core.ContentModel.LearningObjects.ArrangeTasks;
-using Tutor.Core.ContentModel.LearningObjects.Questions;
+using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
+using Tutor.Core.DomainModel.AssessmentEvents.Questions;
 using Tutor.Core.ProgressModel.Submissions;
 using Xunit;
 
