@@ -21,6 +21,9 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy
             var metrics = solutionAttempt.GetMetricsForCodeSnippet(CodeSnippetId);
             if (metrics != null) return CheckMetricRangeRules(metrics);
 
+            if (PossibleRenames == null)
+                throw new Exception($"Solution attempt is missing class/method {CodeSnippetId}");
+
             foreach (var rename in PossibleRenames)
             {
                 metrics = solutionAttempt.GetMetricsForCodeSnippet(rename);
