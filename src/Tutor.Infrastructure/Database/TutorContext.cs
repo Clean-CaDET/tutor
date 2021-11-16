@@ -102,19 +102,13 @@ namespace Tutor.Infrastructure.Database
 
             // Add the shadow property to the model
             modelBuilder.Entity<MetricRangeRule>()
-                .Property<int?>("ClassMetricCheckerForeignKey").IsRequired(false);
-            modelBuilder.Entity<MetricRangeRule>()
-                .Property<int?>("MethodMetricCheckerForeignKey").IsRequired(false);
+                .Property<int?>("MetricCheckerForeignKey").IsRequired(false);
 
             // Use the shadow property as a foreign key
             modelBuilder.Entity<BasicMetricChecker>()
                 .HasMany(b => b.MetricRanges)
                 .WithOne()
-                .HasForeignKey("ClassMetricCheckerForeignKey");
-            modelBuilder.Entity<BasicMetricChecker>()
-                .HasMany(b => b.MethodMetricRules)
-                .WithOne()
-                .HasForeignKey("MethodMetricCheckerForeignKey");
+                .HasForeignKey("MetricCheckerForeignKey");
         }
     }
 }

@@ -46,9 +46,6 @@ namespace Tutor.Infrastructure.Database.Repositories
                     .ThenInclude(s => (s as BasicMetricChecker).MetricRanges)
                     .ThenInclude(r => r.Hint)
                 .Include(c => c.FulfillmentStrategies)
-                    .ThenInclude(s => (s as BasicMetricChecker).MethodMetricRules)
-                    .ThenInclude(r => r.Hint)
-                .Include(c => c.FulfillmentStrategies)
                     .ThenInclude(s => (s as BasicNameChecker).Hint)
                 .FirstOrDefault();
         }
