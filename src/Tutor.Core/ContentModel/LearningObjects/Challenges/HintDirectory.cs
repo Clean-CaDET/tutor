@@ -66,10 +66,9 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges
 
         public void AddAllHints(List<ChallengeHint> allHints)
         {
-            foreach (var hint in allHints)
+            foreach (var hint in allHints.Where(hint => !_directory.ContainsKey(hint)))
             {
-                if (!_directory.ContainsKey(hint))
-                    _directory.Add(hint, new List<string> {"ALL"});
+                _directory.Add(hint, new List<string> {"ALL"});
             }
         }
     }

@@ -108,7 +108,7 @@ namespace Tutor.Infrastructure.Database
 
             // Use the shadow property as a foreign key
             modelBuilder.Entity<BasicMetricChecker>()
-                .HasMany(b => b.ClassMetricRules)
+                .HasMany(b => b.MetricRanges)
                 .WithOne()
                 .HasForeignKey("ClassMetricCheckerForeignKey");
             modelBuilder.Entity<BasicMetricChecker>()

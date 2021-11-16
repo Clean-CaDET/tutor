@@ -43,7 +43,7 @@ namespace Tutor.Infrastructure.Database.Repositories
                 .Where(c => c.Id == challengeId)
                 .Include(c => c.Solution)
                 .Include(c => c.FulfillmentStrategies)
-                    .ThenInclude(s => (s as BasicMetricChecker).ClassMetricRules)
+                    .ThenInclude(s => (s as BasicMetricChecker).MetricRanges)
                     .ThenInclude(r => r.Hint)
                 .Include(c => c.FulfillmentStrategies)
                     .ThenInclude(s => (s as BasicMetricChecker).MethodMetricRules)

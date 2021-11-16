@@ -1,4 +1,5 @@
-﻿using CodeModel.CaDETModel.CodeItems;
+﻿using CodeModel.CaDETModel;
+using CodeModel.CaDETModel.CodeItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,45 +14,42 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy
         public List<string> BannedWords { get; private set; }
         public List<string> RequiredWords { get; private set; }
         public ChallengeHint Hint { get; private set; }
-        private List<string> PossibleRenames { get; }
 
         private BasicNameChecker() {}
-        public BasicNameChecker(List<string> bannedWords, List<string> requiredWords, ChallengeHint hint, string codeSnippetId, List<string> possibleRenames): this()
+        public BasicNameChecker(List<string> bannedWords, List<string> requiredWords, ChallengeHint hint, string codeSnippetId, List<string> possibleRenames): base(0, codeSnippetId, possibleRenames)
         {
             BannedWords = bannedWords;
             RequiredWords = requiredWords;
             Hint = hint;
-            CodeSnippedId = codeSnippetId;
-            PossibleRenames = possibleRenames;
         }
 
-        public override HintDirectory EvaluateSubmission(List<CaDETClass> solutionAttempt)
+        public override HintDirectory EvaluateSubmission(CaDETProject solutionAttempt)
         {
-            var usedNames = GetUsedNames(solutionAttempt);
+            var usedNames = GetUsedNames(solutionAttempt.Classes);
             return EvaluateNames(usedNames);
         }
 
         private List<string> GetUsedNames(List<CaDETClass> solutionAttempt)
         {
-            var caDETClass = solutionAttempt.Find(c => c.FullName == CodeSnippedId);
-            if (caDETClass != null)
-                return GetClassNames(caDETClass);
-            
-            var caDETMember = solutionAttempt.SelectMany(c => c.Members).FirstOrDefault(m => m.Signature() == CodeSnippedId);
-            if (caDETMember != null)
-                return GetMemberNames(caDETMember);
+            var names = GetNames(solutionAttempt, CodeSnippetId);
+            if (names != null) return names;
 
             foreach (var name in PossibleRenames)
             {
-                caDETClass = solutionAttempt.Find(c => c.FullName == name);
-                if (caDETClass != null)
-                    return GetClassNames(caDETClass);
-                caDETMember = solutionAttempt.SelectMany(c => c.Members).FirstOrDefault(m => m.Signature() == name);
-                if (caDETMember != null)
-                    return GetMemberNames(caDETMember);
+                names = GetNames(solutionAttempt, name);
+                if (names != null) return names;
             }
 
-            throw new Exception($"Solution attempt is missing class/method {CodeSnippedId}");
+            throw new Exception($"Solution attempt is missing class/method {CodeSnippetId}");
+        }
+
+        private List<string> GetNames(List<CaDETClass> solutionAttempt, string snippetId)
+        {
+            var caDETClass = solutionAttempt.Find(c => c.FullName == snippetId);
+            if (caDETClass != null) return GetClassNames(caDETClass);
+
+            var caDETMember = solutionAttempt.SelectMany(c => c.Members).FirstOrDefault(m => m.Signature() == snippetId);
+            return caDETMember != null ? GetMemberNames(caDETMember) : null;
         }
 
         private List<string> GetClassNames(CaDETClass caDETClass)
@@ -84,7 +82,7 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy
 
             var hints = new HintDirectory();
             if (ContainsBannedName(usedNames))
-                hints.AddHint(CodeSnippedId, Hint);
+                hints.AddHint(CodeSnippetId, Hint);
 
             return hints;
         }

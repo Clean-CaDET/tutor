@@ -23,23 +23,21 @@ namespace Tutor.Core.Tests.Unit
                         new(33701, "CLOC", 3, 30, new ChallengeHint(337001)),
                         new(33702, "NMD", 0, 2, new ChallengeHint(5))
                     },
-                    null, "Methods.Small.PaymentService", null),
+                    "Methods.Small.PaymentService", null),
                 new(
                     new List<MetricRangeRule>
                     {
                         new(33701, "CLOC", 3, 30, new ChallengeHint(337001)),
                         new(33702, "NMD", 0, 2, new ChallengeHint(5))
                     },
-                    null, "Methods.Small.Payment", new List<string> { "Methods.Small.PaymentClass" }),
-                new(null,
-                    new List<MetricRangeRule>
+                    "Methods.Small.Payment", new List<string> { "Methods.Small.PaymentClass" }),
+                new(new List<MetricRangeRule>
                     {
                         new(33703, "MELOC", 2, 5, new ChallengeHint(337002)),
                         new(33704, "NOP", 2, 4, new ChallengeHint(6))
                     }, "Methods.Small.PaymentService.CreatePayment(int, int)", null
                 ),
-                new(null,
-                    new List<MetricRangeRule>
+                new(new List<MetricRangeRule>
                     {
                         new(33703, "MELOC", 2, 5, new ChallengeHint(337002)),
                         new(33704, "NOP", 2, 4, new ChallengeHint(6))
@@ -57,7 +55,7 @@ namespace Tutor.Core.Tests.Unit
             HintDirectory hints = new HintDirectory();
             foreach (var checker in _basicMetricCheckers)
             {
-                var challengeEvaluation = checker.EvaluateSubmission(project.Classes);
+                var challengeEvaluation = checker.EvaluateSubmission(project);
                 hints.MergeHints(challengeEvaluation);
             }
 

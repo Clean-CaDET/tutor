@@ -50,20 +50,18 @@ namespace Tutor.Core.ContentModel.LearningObjects.Challenges
             var evaluation = new ChallengeEvaluation(Id);
             foreach (var strategy in FulfillmentStrategies)
             {
-                var result = strategy.EvaluateSubmission(solution.Classes);
+                var result = strategy.EvaluateSubmission(solution);
                 evaluation.ApplicableHints.MergeHints(result);
             }
 
-            if (evaluation.ApplicableHints.IsEmpty())
-            {
-                evaluation.ChallengeCompleted = true;
-                evaluation.ApplicableHints.AddAllHints(GetAllChallengeHints());
-            }
+            if (!evaluation.ApplicableHints.IsEmpty()) return evaluation;
+            evaluation.ChallengeCompleted = true;
+            evaluation.ApplicableHints.AddAllHints(GetAllChallengeHints());
 
             return evaluation;
         }
 
-        private CaDETProject BuildCaDETModel(string[] sourceCode)
+        private static CaDETProject BuildCaDETModel(string[] sourceCode)
         {
             var solutionAttempt = new CodeModelFactory().CreateProject(sourceCode);
             if (solutionAttempt.Classes == null || solutionAttempt.Classes.Count == 0) throw new InvalidOperationException("Invalid submission.");
