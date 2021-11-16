@@ -27,6 +27,9 @@ DELETE FROM public."KnowledgeNodes";
 DELETE FROM public."Lectures";
 DELETE FROM public."Courses";
 
+DELETE FROM public."Units";
+DELETE FROM public."UnitKnowledgeComponents";
+
 INSERT INTO public."Learners"(
 	"Id", "StudentIndex", "WorkspacePath")
 	VALUES (1, 'SU-1-2021', 'C:/Smart-Tutor/1/Workspace');
@@ -498,3 +501,6 @@ VALUES (3, 'Parameter list reduction', 1);
 INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "KnowledgeComponentId")
 VALUES (4, 'Short functions', 1);
+
+INSERT INTO public."Units"("Id", "Name", "Description") VALUES (1, 'CleanCode', 'This is unit about CleanCode');
+INSERT INTO public."UnitKnowledgeComponents"("Id", "Name", "Description", "UnitId") VALUES (1, 'Follow Conventions', 'Description', 1)

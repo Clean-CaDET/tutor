@@ -257,7 +257,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.ToTable("Lectures");
                 });
 
-            modelBuilder.Entity("Tutor.Core.KnowledgeComponentModel.KnowledgeComponents.KnowledgeComponent", b =>
+            modelBuilder.Entity("Tutor.Core.KnowledgeComponentModel.KnowledgeComponents.UnitKnowledgeComponent", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -648,9 +648,9 @@ namespace Tutor.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tutor.Core.KnowledgeComponentModel.KnowledgeComponents.KnowledgeComponent", b =>
+            modelBuilder.Entity("Tutor.Core.KnowledgeComponentModel.KnowledgeComponents.UnitKnowledgeComponent", b =>
                 {
-                    b.HasOne("Tutor.Core.KnowledgeComponentModel.KnowledgeComponents.KnowledgeComponent", null)
+                    b.HasOne("Tutor.Core.KnowledgeComponentModel.KnowledgeComponents.UnitKnowledgeComponent", null)
                         .WithMany("Subcomponents")
                         .HasForeignKey("KnowledgeComponentId");
                 });
@@ -801,7 +801,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.Navigation("KnowledgeNodes");
                 });
 
-            modelBuilder.Entity("Tutor.Core.KnowledgeComponentModel.KnowledgeComponents.KnowledgeComponent", b =>
+            modelBuilder.Entity("Tutor.Core.KnowledgeComponentModel.KnowledgeComponents.UnitKnowledgeComponent", b =>
                 {
                     b.Navigation("Subcomponents");
                 });

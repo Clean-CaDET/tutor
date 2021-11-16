@@ -20,117 +20,6 @@ namespace Tutor.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.ArrangeTasks.ArrangeTaskContainer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("ArrangeTaskId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ArrangeTaskId");
-
-                    b.ToTable("ArrangeTaskContainers");
-                });
-
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.ArrangeTasks.ArrangeTaskElement", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("ArrangeTaskContainerId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ArrangeTaskContainerId");
-
-                    b.ToTable("ArrangeTaskElements");
-                });
-
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Challenges.ChallengeHint", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Content")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("LearningObjectSummaryId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ChallengeHints");
-                });
-
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.ChallengeFulfillmentStrategy", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int?>("ChallengeId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChallengeId");
-
-                    b.ToTable("ChallengeFulfillmentStrategies");
-                });
-
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.MetricChecker.MetricRangeRule", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int?>("ClassMetricCheckerForeignKey")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("FromValue")
-                        .HasColumnType("double precision");
-
-                    b.Property<int?>("HintId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("MethodMetricCheckerForeignKey")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("MetricName")
-                        .HasColumnType("text");
-
-                    b.Property<double>("ToValue")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClassMetricCheckerForeignKey");
-
-                    b.HasIndex("HintId");
-
-                    b.HasIndex("MethodMetricCheckerForeignKey");
-
-                    b.ToTable("MetricRangeRules");
-                });
-
             modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.LearningObject", b =>
                 {
                     b.Property<int>("Id")
@@ -149,32 +38,6 @@ namespace Tutor.Infrastructure.Migrations
                     b.HasIndex("NodeProgressId");
 
                     b.ToTable("LearningObjects");
-                });
-
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Questions.QuestionAnswer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Feedback")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsCorrect")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
-
-                    b.ToTable("QuestionAnswers");
                 });
 
             modelBuilder.Entity("Tutor.Core.ContentModel.Lectures.Course", b =>
@@ -255,7 +118,178 @@ namespace Tutor.Infrastructure.Migrations
                     b.ToTable("Lectures");
                 });
 
-            modelBuilder.Entity("Tutor.Core.KnowledgeComponentModel.KnowledgeComponents.KnowledgeComponent", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTaskContainer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("ArrangeTaskId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArrangeTaskId");
+
+                    b.ToTable("ArrangeTaskContainers");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTaskElement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("ArrangeTaskContainerId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArrangeTaskContainerId");
+
+                    b.ToTable("ArrangeTaskElements");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.AssessmentEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int?>("KnowledgeNodeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KnowledgeNodeId");
+
+                    b.ToTable("AssessmentEvent");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.ChallengeHint", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Content")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("LearningObjectSummaryId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChallengeHints");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.ChallengeFulfillmentStrategy", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int?>("ChallengeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChallengeId");
+
+                    b.ToTable("ChallengeFulfillmentStrategies");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker.MetricRangeRule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int?>("ClassMetricCheckerForeignKey")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("FromValue")
+                        .HasColumnType("double precision");
+
+                    b.Property<int?>("HintId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("MethodMetricCheckerForeignKey")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("MetricName")
+                        .HasColumnType("text");
+
+                    b.Property<double>("ToValue")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassMetricCheckerForeignKey");
+
+                    b.HasIndex("HintId");
+
+                    b.HasIndex("MethodMetricCheckerForeignKey");
+
+                    b.ToTable("MetricRangeRules");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Questions.QuestionAnswer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Feedback")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsCorrect")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("QuestionAnswers");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.InstructionalEvents.InstructionalEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int?>("KnowledgeNodeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KnowledgeNodeId");
+
+                    b.ToTable("InstructionalEvent");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.KnowledgeComponents.KnowledgeComponent", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -275,7 +309,65 @@ namespace Tutor.Infrastructure.Migrations
                     b.ToTable("KnowledgeComponents");
                 });
 
-            modelBuilder.Entity("Tutor.Core.KnowledgeComponentModel.KnowledgeComponents.KnowledgeComponentProgress", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.Units.KnowledgeNode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int?>("UnitKnowledgeComponentId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UnitKnowledgeComponentId");
+
+                    b.ToTable("KnowledgeNode");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.Units.Unit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Units");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.Units.UnitKnowledgeComponent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("UnitId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("UnitKnowledgeComponents");
+                });
+
+            modelBuilder.Entity("Tutor.Core.LearnerModel.Learners.KnowledgeComponentProgress", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -462,32 +554,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.ToTable("QuestionSubmissions");
                 });
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.MetricChecker.BasicMetricChecker", b =>
-                {
-                    b.HasBaseType("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.ChallengeFulfillmentStrategy");
-
-                    b.ToTable("BasicMetricCheckers");
-                });
-
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.NameChecker.BasicNameChecker", b =>
-                {
-                    b.HasBaseType("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.ChallengeFulfillmentStrategy");
-
-                    b.Property<List<string>>("BannedWords")
-                        .HasColumnType("text[]");
-
-                    b.Property<int?>("HintId")
-                        .HasColumnType("integer");
-
-                    b.Property<List<string>>("RequiredWords")
-                        .HasColumnType("text[]");
-
-                    b.HasIndex("HintId");
-
-                    b.ToTable("BasicNameCheckers");
-                });
-
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.ArrangeTasks.ArrangeTask", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTask", b =>
                 {
                     b.HasBaseType("Tutor.Core.ContentModel.LearningObjects.LearningObject");
 
@@ -497,7 +564,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.ToTable("ArrangeTasks");
                 });
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Challenges.Challenge", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.Challenge", b =>
                 {
                     b.HasBaseType("Tutor.Core.ContentModel.LearningObjects.LearningObject");
 
@@ -518,7 +585,17 @@ namespace Tutor.Infrastructure.Migrations
                     b.ToTable("Challenges");
                 });
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Image", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Questions.Question", b =>
+                {
+                    b.HasBaseType("Tutor.Core.ContentModel.LearningObjects.LearningObject");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text");
+
+                    b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.InstructionalEvents.Image", b =>
                 {
                     b.HasBaseType("Tutor.Core.ContentModel.LearningObjects.LearningObject");
 
@@ -531,17 +608,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Questions.Question", b =>
-                {
-                    b.HasBaseType("Tutor.Core.ContentModel.LearningObjects.LearningObject");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("text");
-
-                    b.ToTable("Questions");
-                });
-
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Text", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.InstructionalEvents.Text", b =>
                 {
                     b.HasBaseType("Tutor.Core.ContentModel.LearningObjects.LearningObject");
 
@@ -551,7 +618,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.ToTable("Texts");
                 });
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Video", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.InstructionalEvents.Video", b =>
                 {
                     b.HasBaseType("Tutor.Core.ContentModel.LearningObjects.LearningObject");
 
@@ -561,46 +628,29 @@ namespace Tutor.Infrastructure.Migrations
                     b.ToTable("Videos");
                 });
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.ArrangeTasks.ArrangeTaskContainer", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker.BasicMetricChecker", b =>
                 {
-                    b.HasOne("Tutor.Core.ContentModel.LearningObjects.ArrangeTasks.ArrangeTask", null)
-                        .WithMany("Containers")
-                        .HasForeignKey("ArrangeTaskId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasBaseType("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.ChallengeFulfillmentStrategy");
+
+                    b.ToTable("BasicMetricCheckers");
                 });
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.ArrangeTasks.ArrangeTaskElement", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker.BasicNameChecker", b =>
                 {
-                    b.HasOne("Tutor.Core.ContentModel.LearningObjects.ArrangeTasks.ArrangeTaskContainer", null)
-                        .WithMany("Elements")
-                        .HasForeignKey("ArrangeTaskContainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                    b.HasBaseType("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.ChallengeFulfillmentStrategy");
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.ChallengeFulfillmentStrategy", b =>
-                {
-                    b.HasOne("Tutor.Core.ContentModel.LearningObjects.Challenges.Challenge", null)
-                        .WithMany("FulfillmentStrategies")
-                        .HasForeignKey("ChallengeId");
-                });
+                    b.Property<List<string>>("BannedWords")
+                        .HasColumnType("text[]");
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.MetricChecker.MetricRangeRule", b =>
-                {
-                    b.HasOne("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.MetricChecker.BasicMetricChecker", null)
-                        .WithMany("ClassMetricRules")
-                        .HasForeignKey("ClassMetricCheckerForeignKey");
+                    b.Property<int?>("HintId")
+                        .HasColumnType("integer");
 
-                    b.HasOne("Tutor.Core.ContentModel.LearningObjects.Challenges.ChallengeHint", "Hint")
-                        .WithMany()
-                        .HasForeignKey("HintId");
+                    b.Property<List<string>>("RequiredWords")
+                        .HasColumnType("text[]");
 
-                    b.HasOne("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.MetricChecker.BasicMetricChecker", null)
-                        .WithMany("MethodMetricRules")
-                        .HasForeignKey("MethodMetricCheckerForeignKey");
+                    b.HasIndex("HintId");
 
-                    b.Navigation("Hint");
+                    b.ToTable("BasicNameCheckers");
                 });
 
             modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.LearningObject", b =>
@@ -608,15 +658,6 @@ namespace Tutor.Infrastructure.Migrations
                     b.HasOne("Tutor.Core.ProgressModel.Progress.NodeProgress", null)
                         .WithMany("LearningObjects")
                         .HasForeignKey("NodeProgressId");
-                });
-
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Questions.QuestionAnswer", b =>
-                {
-                    b.HasOne("Tutor.Core.ContentModel.LearningObjects.Questions.Question", null)
-                        .WithMany("PossibleAnswers")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Tutor.Core.ContentModel.Lectures.KnowledgeNode", b =>
@@ -646,11 +687,90 @@ namespace Tutor.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tutor.Core.KnowledgeComponentModel.KnowledgeComponents.KnowledgeComponent", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTaskContainer", b =>
                 {
-                    b.HasOne("Tutor.Core.KnowledgeComponentModel.KnowledgeComponents.KnowledgeComponent", null)
+                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTask", null)
+                        .WithMany("Containers")
+                        .HasForeignKey("ArrangeTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTaskElement", b =>
+                {
+                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTaskContainer", null)
+                        .WithMany("Elements")
+                        .HasForeignKey("ArrangeTaskContainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.AssessmentEvent", b =>
+                {
+                    b.HasOne("Tutor.Core.DomainModel.Units.KnowledgeNode", null)
+                        .WithMany("AssessmentEvents")
+                        .HasForeignKey("KnowledgeNodeId");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.ChallengeFulfillmentStrategy", b =>
+                {
+                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.Challenges.Challenge", null)
+                        .WithMany("FulfillmentStrategies")
+                        .HasForeignKey("ChallengeId");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker.MetricRangeRule", b =>
+                {
+                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker.BasicMetricChecker", null)
+                        .WithMany("ClassMetricRules")
+                        .HasForeignKey("ClassMetricCheckerForeignKey");
+
+                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.Challenges.ChallengeHint", "Hint")
+                        .WithMany()
+                        .HasForeignKey("HintId");
+
+                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker.BasicMetricChecker", null)
+                        .WithMany("MethodMetricRules")
+                        .HasForeignKey("MethodMetricCheckerForeignKey");
+
+                    b.Navigation("Hint");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Questions.QuestionAnswer", b =>
+                {
+                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.Questions.Question", null)
+                        .WithMany("PossibleAnswers")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.InstructionalEvents.InstructionalEvent", b =>
+                {
+                    b.HasOne("Tutor.Core.DomainModel.Units.KnowledgeNode", null)
+                        .WithMany("InstructionalEvents")
+                        .HasForeignKey("KnowledgeNodeId");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.KnowledgeComponents.KnowledgeComponent", b =>
+                {
+                    b.HasOne("Tutor.Core.DomainModel.KnowledgeComponents.KnowledgeComponent", null)
                         .WithMany("Subcomponents")
                         .HasForeignKey("KnowledgeComponentId");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.Units.KnowledgeNode", b =>
+                {
+                    b.HasOne("Tutor.Core.DomainModel.Units.UnitKnowledgeComponent", null)
+                        .WithMany("KnowledgeNodes")
+                        .HasForeignKey("UnitKnowledgeComponentId");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.Units.UnitKnowledgeComponent", b =>
+                {
+                    b.HasOne("Tutor.Core.DomainModel.Units.Unit", null)
+                        .WithMany("KnowledgeComponents")
+                        .HasForeignKey("UnitId");
                 });
 
             modelBuilder.Entity("Tutor.Core.LearnerModel.Learners.Learner", b =>
@@ -693,44 +813,20 @@ namespace Tutor.Infrastructure.Migrations
                         .HasForeignKey("ArrangeTaskSubmissionId");
                 });
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.MetricChecker.BasicMetricChecker", b =>
-                {
-                    b.HasOne("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.ChallengeFulfillmentStrategy", null)
-                        .WithOne()
-                        .HasForeignKey("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.MetricChecker.BasicMetricChecker", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.NameChecker.BasicNameChecker", b =>
-                {
-                    b.HasOne("Tutor.Core.ContentModel.LearningObjects.Challenges.ChallengeHint", "Hint")
-                        .WithMany()
-                        .HasForeignKey("HintId");
-
-                    b.HasOne("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.ChallengeFulfillmentStrategy", null)
-                        .WithOne()
-                        .HasForeignKey("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.NameChecker.BasicNameChecker", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Hint");
-                });
-
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.ArrangeTasks.ArrangeTask", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTask", b =>
                 {
                     b.HasOne("Tutor.Core.ContentModel.LearningObjects.LearningObject", null)
                         .WithOne()
-                        .HasForeignKey("Tutor.Core.ContentModel.LearningObjects.ArrangeTasks.ArrangeTask", "Id")
+                        .HasForeignKey("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTask", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Challenges.Challenge", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.Challenge", b =>
                 {
                     b.HasOne("Tutor.Core.ContentModel.LearningObjects.LearningObject", null)
                         .WithOne()
-                        .HasForeignKey("Tutor.Core.ContentModel.LearningObjects.Challenges.Challenge", "Id")
+                        .HasForeignKey("Tutor.Core.DomainModel.AssessmentEvents.Challenges.Challenge", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -743,45 +839,64 @@ namespace Tutor.Infrastructure.Migrations
                     b.Navigation("Solution");
                 });
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Image", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Questions.Question", b =>
                 {
                     b.HasOne("Tutor.Core.ContentModel.LearningObjects.LearningObject", null)
                         .WithOne()
-                        .HasForeignKey("Tutor.Core.ContentModel.LearningObjects.Image", "Id")
+                        .HasForeignKey("Tutor.Core.DomainModel.AssessmentEvents.Questions.Question", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Questions.Question", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.InstructionalEvents.Image", b =>
                 {
                     b.HasOne("Tutor.Core.ContentModel.LearningObjects.LearningObject", null)
                         .WithOne()
-                        .HasForeignKey("Tutor.Core.ContentModel.LearningObjects.Questions.Question", "Id")
+                        .HasForeignKey("Tutor.Core.DomainModel.InstructionalEvents.Image", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Text", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.InstructionalEvents.Text", b =>
                 {
                     b.HasOne("Tutor.Core.ContentModel.LearningObjects.LearningObject", null)
                         .WithOne()
-                        .HasForeignKey("Tutor.Core.ContentModel.LearningObjects.Text", "Id")
+                        .HasForeignKey("Tutor.Core.DomainModel.InstructionalEvents.Text", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Video", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.InstructionalEvents.Video", b =>
                 {
                     b.HasOne("Tutor.Core.ContentModel.LearningObjects.LearningObject", null)
                         .WithOne()
-                        .HasForeignKey("Tutor.Core.ContentModel.LearningObjects.Video", "Id")
+                        .HasForeignKey("Tutor.Core.DomainModel.InstructionalEvents.Video", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.ArrangeTasks.ArrangeTaskContainer", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker.BasicMetricChecker", b =>
                 {
-                    b.Navigation("Elements");
+                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.ChallengeFulfillmentStrategy", null)
+                        .WithOne()
+                        .HasForeignKey("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker.BasicMetricChecker", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker.BasicNameChecker", b =>
+                {
+                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.Challenges.ChallengeHint", "Hint")
+                        .WithMany()
+                        .HasForeignKey("HintId");
+
+                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.ChallengeFulfillmentStrategy", null)
+                        .WithOne()
+                        .HasForeignKey("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker.BasicNameChecker", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hint");
                 });
 
             modelBuilder.Entity("Tutor.Core.ContentModel.Lectures.Course", b =>
@@ -799,9 +914,31 @@ namespace Tutor.Infrastructure.Migrations
                     b.Navigation("KnowledgeNodes");
                 });
 
-            modelBuilder.Entity("Tutor.Core.KnowledgeComponentModel.KnowledgeComponents.KnowledgeComponent", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTaskContainer", b =>
+                {
+                    b.Navigation("Elements");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.KnowledgeComponents.KnowledgeComponent", b =>
                 {
                     b.Navigation("Subcomponents");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.Units.KnowledgeNode", b =>
+                {
+                    b.Navigation("AssessmentEvents");
+
+                    b.Navigation("InstructionalEvents");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.Units.Unit", b =>
+                {
+                    b.Navigation("KnowledgeComponents");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.Units.UnitKnowledgeComponent", b =>
+                {
+                    b.Navigation("KnowledgeNodes");
                 });
 
             modelBuilder.Entity("Tutor.Core.ProgressModel.Progress.NodeProgress", b =>
@@ -814,26 +951,26 @@ namespace Tutor.Infrastructure.Migrations
                     b.Navigation("Containers");
                 });
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.MetricChecker.BasicMetricChecker", b =>
-                {
-                    b.Navigation("ClassMetricRules");
-
-                    b.Navigation("MethodMetricRules");
-                });
-
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.ArrangeTasks.ArrangeTask", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTask", b =>
                 {
                     b.Navigation("Containers");
                 });
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Challenges.Challenge", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.Challenge", b =>
                 {
                     b.Navigation("FulfillmentStrategies");
                 });
 
-            modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Questions.Question", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Questions.Question", b =>
                 {
                     b.Navigation("PossibleAnswers");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker.BasicMetricChecker", b =>
+                {
+                    b.Navigation("ClassMetricRules");
+
+                    b.Navigation("MethodMetricRules");
                 });
 #pragma warning restore 612, 618
         }

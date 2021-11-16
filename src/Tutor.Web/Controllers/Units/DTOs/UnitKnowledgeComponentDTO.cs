@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace Tutor.Core.DomainModel.Units
+namespace Tutor.Web.Controllers.Units.DTOs
 {
-    public class Unit
+    public class UnitKnowledgeComponentDTO
     {
         public int Id { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
-        public List<UnitKnowledgeComponent> KnowledgeComponents { get; private set; }
+        public List<int> KnowledgeNodeIds { get; private set; }
     }
 }

@@ -84,6 +84,9 @@ namespace Tutor.Web
 
             services.AddScoped<IAuthProvider, KeycloakAuthProvider>();
 
+            services.AddScoped<IUnitService, UnitService>();
+            services.AddScoped<IUnitRepository, UnitDatabaseRepository>();
+
             if (!bool.Parse(Environment.GetEnvironmentVariable("KEYCLOAK_ON") ?? "false")) return;
             AuthenticationConfig(services);
             AuthorizationConfig(services);

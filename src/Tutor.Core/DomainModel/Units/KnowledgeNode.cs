@@ -6,6 +6,7 @@ namespace Tutor.Core.DomainModel.Units
 {
     public class KnowledgeNode
     {
+        public int Id { get; private set; }
         public List<AssessmentEvent> AssessmentEvents { get; private set; }
         public List<InstructionalEvent> InstructionalEvents { get; private set; }
     }
