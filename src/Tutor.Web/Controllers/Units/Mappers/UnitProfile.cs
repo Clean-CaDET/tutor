@@ -11,6 +11,5 @@ namespace Tutor.Web.Controllers.Units.Mappers
             CreateMap<Unit, UnitDTO>();
             CreateMap<UnitKnowledgeComponent, UnitKnowledgeComponentDTO>();
         }
-       
     }
 }

@@ -6,7 +6,6 @@ namespace Tutor.Core.DomainModel
 {
     public class UnitService : IUnitService
     {
-
         private readonly IUnitRepository _unitRepository;
 
         public UnitService(IUnitRepository unitRepository)
