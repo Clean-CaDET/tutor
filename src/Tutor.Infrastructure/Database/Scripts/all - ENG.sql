@@ -26,6 +26,7 @@ DELETE FROM public."LearningObjectSummaries";
 DELETE FROM public."KnowledgeNodes";
 DELETE FROM public."Lectures";
 DELETE FROM public."Courses";
+DELETE FROM public."KnowledgeComponents";
 
 INSERT INTO public."Learners"(
 	"Id", "StudentIndex", "WorkspacePath")
@@ -258,8 +259,8 @@ INSERT INTO public."Challenges"(
 	"Id", "Url", "Description", "TestSuiteLocation", "SolutionIdForeignKey")
 	VALUES (41, 'https://github.com/Clean-CaDET/challenge-repository', 'To reiterate, our ultimate goal is not to make short functions. Rather, our functions become short as a consequence of adhering to various clean code principles. However, a function that surpases a few dozen code lines often is a good candidate for refactoring. Consider the "Methods/01. Small Methods" directory and extract logically-related code into separate methods, striving to define a meaninful name for each new method.', 'Methods.Small', 42);
 INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId")
-	VALUES (3, 41);
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (3, 41, 'Methods.SmallMethods.Achievements');
 INSERT INTO public."BasicMetricCheckers"(
 	"Id")
 	VALUES (3);
@@ -286,8 +287,8 @@ INSERT INTO public."Challenges"(
 	"Id", "Url", "Description", "TestSuiteLocation", "SolutionIdForeignKey")
 	VALUES (44, 'https://github.com/Clean-CaDET/challenge-repository', 'Complex functions require high mental effort to reason about and understand the control flow. Many aspects contribute to a function''s complexity - mysterious names, wide expressions, deep nesting. Consider the "Methods/02. Simple Methods" directory and refactor th functions to make them simpler and remove code duplication.', 'Methods.Simple', 46);
 INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId")
-	VALUES (4, 44);
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (4, 44, 'Methods.SimpleMethods.Schedule');
 INSERT INTO public."BasicMetricCheckers"(
 	"Id")
 	VALUES (4);
@@ -332,8 +333,8 @@ INSERT INTO public."Challenges"(
 	"Id", "Url", "Description", "TestSuiteLocation", "SolutionIdForeignKey")
 	VALUES (49, 'https://github.com/Clean-CaDET/challenge-repository', 'Redukcija broja parametra pozitivno utiče na razumevanje samog zaglavlja funkcije i informacije šta ona radi. Pored toga, redukcijom liste parametra često smanjujemo broj zadataka koje funkcija radi. U sklopu direktorijuma "Methods/03. Parameter Lists" primeni strategije za redukciju parametra i refaktoriši funkcije.', 'Methods.Params', 50);
 INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId")
-	VALUES (5, 49);
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (5, 49, 'Methods.ParametersList.CourseService');
 INSERT INTO public."BasicMetricCheckers"(
 	"Id")
 	VALUES (5);
@@ -364,20 +365,20 @@ INSERT INTO public."ChallengeHints"(
 	
 -- Challenge rules
 INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "ClassMetricCheckerForeignKey", "MethodMetricCheckerForeignKey")
-	VALUES (1, 'MELOC', 1, 18, 1, NULL, 3);
+	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
+	VALUES (1, 'MELOC', 1, 18, 1, 3);
 INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "ClassMetricCheckerForeignKey", "MethodMetricCheckerForeignKey")
-	VALUES (2, 'MELOC', 1, 12, 3, NULL, 4);
+	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
+	VALUES (2, 'MELOC', 1, 12, 3, 4);
 INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "ClassMetricCheckerForeignKey", "MethodMetricCheckerForeignKey")
-	VALUES (3, 'CYCLO', 1, 5, 2, NULL, 4);
+	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
+	VALUES (3, 'CYCLO', 1, 5, 2, 4);
 INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "ClassMetricCheckerForeignKey", "MethodMetricCheckerForeignKey")
-	VALUES (4, 'NOP', 0, 1, 4, NULL, 5);
+	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
+	VALUES (4, 'NOP', 0, 1, 4, 5);
 INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "ClassMetricCheckerForeignKey", "MethodMetricCheckerForeignKey")
-	VALUES (5, 'NMD', 0, 2, 5, 5, NULL);
+	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
+	VALUES (5, 'NMD', 0, 2, 5, 5);
 	
 	
 --== Methods ==- CK Node

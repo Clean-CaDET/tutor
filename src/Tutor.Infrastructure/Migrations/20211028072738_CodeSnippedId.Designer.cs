@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Tutor.Infrastructure.Database;
@@ -10,9 +11,10 @@ using Tutor.Infrastructure.Database;
 namespace Tutor.Infrastructure.Migrations
 {
     [DbContext(typeof(TutorContext))]
-    partial class TutorContextModelSnapshot : ModelSnapshot
+    [Migration("20211028072738_CodeSnippedId")]
+    partial class CodeSnippedId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,7 +90,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.Property<int?>("ChallengeId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("CodeSnippetId")
+                    b.Property<string>("CodeSnippedId")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -105,13 +107,16 @@ namespace Tutor.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int?>("ClassMetricCheckerForeignKey")
+                        .HasColumnType("integer");
+
                     b.Property<double>("FromValue")
                         .HasColumnType("double precision");
 
                     b.Property<int?>("HintId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("MetricCheckerForeignKey")
+                    b.Property<int?>("MethodMetricCheckerForeignKey")
                         .HasColumnType("integer");
 
                     b.Property<string>("MetricName")
@@ -122,9 +127,11 @@ namespace Tutor.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClassMetricCheckerForeignKey");
+
                     b.HasIndex("HintId");
 
-                    b.HasIndex("MetricCheckerForeignKey");
+                    b.HasIndex("MethodMetricCheckerForeignKey");
 
                     b.ToTable("MetricRangeRules");
                 });
@@ -586,13 +593,17 @@ namespace Tutor.Infrastructure.Migrations
 
             modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.MetricChecker.MetricRangeRule", b =>
                 {
+                    b.HasOne("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.MetricChecker.BasicMetricChecker", null)
+                        .WithMany("ClassMetricRules")
+                        .HasForeignKey("ClassMetricCheckerForeignKey");
+
                     b.HasOne("Tutor.Core.ContentModel.LearningObjects.Challenges.ChallengeHint", "Hint")
                         .WithMany()
                         .HasForeignKey("HintId");
 
                     b.HasOne("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.MetricChecker.BasicMetricChecker", null)
-                        .WithMany("MetricRanges")
-                        .HasForeignKey("MetricCheckerForeignKey");
+                        .WithMany("MethodMetricRules")
+                        .HasForeignKey("MethodMetricCheckerForeignKey");
 
                     b.Navigation("Hint");
                 });
@@ -810,7 +821,9 @@ namespace Tutor.Infrastructure.Migrations
 
             modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.Challenges.FulfillmentStrategy.MetricChecker.BasicMetricChecker", b =>
                 {
-                    b.Navigation("MetricRanges");
+                    b.Navigation("ClassMetricRules");
+
+                    b.Navigation("MethodMetricRules");
                 });
 
             modelBuilder.Entity("Tutor.Core.ContentModel.LearningObjects.ArrangeTasks.ArrangeTask", b =>

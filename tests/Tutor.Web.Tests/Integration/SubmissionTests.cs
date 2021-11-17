@@ -184,27 +184,27 @@ namespace Tutor.Web.Tests.Integration
         {
             new object[]
             {
-                new ChallengeSubmissionDTO { LearnerId = 1, ChallengeId = 41, SourceCode = ChallengeTestData.GetTwoViolatingClasses()},
+                new ChallengeSubmissionDTO { LearnerId = 1, ChallengeId = 41, SourceCode = ChallengeTestData.GetFailingAchievement()},
                 new ChallengeEvaluationDTO
                 {
                     ChallengeCompleted = false, ChallengeId = 41, SolutionLO = new VideoDTO {Id = 42},
                     ApplicableHints = new List<ChallengeHintDTO> { new()
                     {
                         Id = 1, LearningObject = new TextDTO {Id = 43},
-                        ApplicableToCodeSnippets = new List<string> { "ExamplesApp.Method.PaymentService.CreatePayment(int, int)" }
+                        ApplicableToCodeSnippets = new List<string> { "Methods.Small.AchievementService.AwardAchievement(int, int)" }
                     } }
                 }
             },
             new object[]
             {
-                new ChallengeSubmissionDTO { LearnerId = 1, ChallengeId = 41, SourceCode = ChallengeTestData.GetTwoPassingClasses()},
+                new ChallengeSubmissionDTO { LearnerId = 1, ChallengeId = 41, SourceCode = ChallengeTestData.GetPassingAchievement()},
                 new ChallengeEvaluationDTO
                 {
                     ChallengeCompleted = true, ChallengeId = 41, SolutionLO = new VideoDTO {Id = 42},
                     ApplicableHints = new List<ChallengeHintDTO> { new()
                     {
                         Id = 1, LearningObject = new TextDTO {Id = 43},
-                        ApplicableToCodeSnippets = new List<string> { "ExamplesApp.Method.PaymentService.CreatePayment(int, int)" }
+                        ApplicableToCodeSnippets = new List<string> { "Methods.Small.AchievementService.AwardAchievement(int, int)" }
                     } }
                 }
             }

@@ -1,4 +1,6 @@
-﻿namespace Tutor.Web.Tests.TestData
+﻿using System.IO;
+
+namespace Tutor.Web.Tests.TestData
 {
     internal class ChallengeTestData
     {
@@ -89,6 +91,25 @@ namespace Methods.Small
     }
 }"
             };
+        }
+
+        public static string[] GetFailingAchievement()
+        {
+	        return GetCode("FailingAchievement.txt");
+        }
+
+        public static string[] GetPassingAchievement()
+        {
+	        return GetCode("PassingAchievement.txt");
+        }
+
+        private static string[] GetCode(string path)
+        {
+	        string classCode = File.ReadAllText("../../../TestData/" + path);
+	        return new[]
+	        {
+		        classCode
+	        };
         }
     }
 }
