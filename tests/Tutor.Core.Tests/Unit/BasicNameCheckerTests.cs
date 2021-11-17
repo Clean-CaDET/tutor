@@ -18,8 +18,24 @@ namespace Tutor.Core.Tests.Unit
             //TODO: Readonly lists
             var challenge = new Challenge(1, 1, new List<ChallengeFulfillmentStrategy>
             {
-                new BasicNameChecker(null, new List<string> { "Payment", "PaymentService", "compensation" }, new ChallengeHint(11)),
-                new BasicNameChecker(new List<string> { "Class", "List", "Method" }, null, new ChallengeHint(21))
+                new BasicNameChecker(null, new List<string> { "PaymentService" },
+                    new ChallengeHint(11),
+                    "Methods.Small.PaymentService", null),
+                new BasicNameChecker(null, new List<string> { "Payment", "compensation" },
+                    new ChallengeHint(11),
+                    "Methods.Small.PaymentService.CreatePayment(int, int)", null),
+                new BasicNameChecker(new List<string>
+                {
+                    "Class", "Method"
+                }, null, new ChallengeHint(21), "Methods.Small.PaymentClass", new List<string> { "Methods.Small.Payment" }),
+                new BasicNameChecker(new List<string>
+                {
+                    "Class", "Method"
+                }, null, new ChallengeHint(21), "Methods.Small.PaymentService", null),
+                new BasicNameChecker(new List<string>
+                {
+                    "Class", "List", "Method"
+                }, null, new ChallengeHint(21), "Methods.Small.PaymentService.CreatePayment(int, int)", null)
             });
 
             var challengeEvaluation = challenge.CheckChallengeFulfillment(submissionAttempt, null);
