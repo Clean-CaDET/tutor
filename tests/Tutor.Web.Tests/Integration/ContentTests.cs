@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using Tutor.Core.ContentModel;
+using System.Collections.Generic;
+using System.Linq;
 using Tutor.Web.Controllers.Content;
-using Tutor.Web.Controllers.Content.DTOs;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration

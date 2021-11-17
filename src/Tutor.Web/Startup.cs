@@ -9,18 +9,20 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.IO;
-using Tutor.Core.ContentModel;
-using Tutor.Core.DomainModel;
+using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.Course;
+using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.InstructorModel.Instructors;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.Workspaces;
 using Tutor.Core.ProgressModel.Feedback;
-using Tutor.Core.ProgressModel.Progress;
 using Tutor.Core.ProgressModel.Submissions;
 using Tutor.Infrastructure;
-using Tutor.Infrastructure.Database.Repositories;
+using Tutor.Infrastructure.Database.Repositories.Domain;
+using Tutor.Infrastructure.Database.Repositories.Learner;
+using Tutor.Infrastructure.Database.Repositories.Progress;
 using Tutor.Infrastructure.Security;
-using Tutor.Web.Controllers.Content.Mappers;
+using Tutor.Web.Controllers.Domain.Mappers;
 using Tutor.Web.IAM;
 using Tutor.Web.IAM.Keycloak;
 
@@ -61,31 +63,25 @@ namespace Tutor.Web
                     });
             });
 
-            services.AddScoped<IContentService, ContentService>();
-            services.AddScoped<ILectureRepository, LectureDatabaseRepository>();
-            services.AddScoped<ILearningObjectRepository, LearningObjectDatabaseRepository>();
-
             services.AddScoped<IKCRepository, KCDatabaseRepository>();
             services.AddScoped<IKCService, KCService>();
+            services.AddScoped<IUnitService, UnitService>();
+            services.AddScoped<IUnitRepository, UnitDatabaseRepository>();
+            services.AddScoped<IAssessmentEventRepository, AssessmentEventDatabaseRepository>();
 
-            services.AddScoped<IProgressService, ProgressService>();
-            services.AddScoped<IProgressRepository, ProgressDatabaseRepository>();
-            services.AddScoped<ISubmissionService, SubmissionService>();
-            services.AddScoped<ISubmissionRepository, SubmissionDatabaseRepository>();
-            services.AddScoped<IFeedbackService, FeedbackService>();
-            services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
+            services.AddScoped<IInstructor, DefaultInstructor>();
 
             services.AddScoped<ILearnerService, LearnerService>();
             services.Configure<WorkspaceOptions>(Configuration.GetSection(WorkspaceOptions.ConfigKey));
             services.AddScoped<IWorkspaceCreator, NoWorkspaceCreator>();
             services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
 
-            services.AddScoped<IInstructor, DefaultInstructor>();
+            services.AddScoped<ISubmissionService, SubmissionService>();
+            services.AddScoped<ISubmissionRepository, SubmissionDatabaseRepository>();
+            services.AddScoped<IFeedbackService, FeedbackService>();
+            services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
 
             services.AddScoped<IAuthProvider, KeycloakAuthProvider>();
-
-            services.AddScoped<IUnitService, UnitService>();
-            services.AddScoped<IUnitRepository, UnitDatabaseRepository>();
 
             if (!bool.Parse(Environment.GetEnvironmentVariable("KEYCLOAK_ON") ?? "false")) return;
             AuthenticationConfig(services);

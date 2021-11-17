@@ -53,12 +53,6 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
             }
         }
 
-        public List<int> GetDistinctLearningObjectSummaries()
-        {
-            return _directory.Keys.Where(hint => hint.LearningObjectSummaryId != null)
-                .Select(hint => (int)hint.LearningObjectSummaryId).Distinct().ToList();
-        }
-
         public bool IsEmpty()
         {
             return _directory.Count == 0;

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Tutor.Core.ContentModel.LearningObjects;
+﻿using Tutor.Core.DomainModel.InstructionalEvents;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
 {
@@ -8,14 +7,12 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
         public int ChallengeId { get; private set; }
         public bool ChallengeCompleted { get; internal set; }
         public HintDirectory ApplicableHints { get; }
-        public List<LearningObject> ApplicableLOs { get; internal set; }
-        public LearningObject SolutionLO { get; internal set; }
+        public InstructionalEvent Solution { get; internal set; }
 
         public ChallengeEvaluation(int challengeId)
         {
             ChallengeId = challengeId;
             ApplicableHints = new HintDirectory();
-            ApplicableLOs = new List<LearningObject>();
         }
     }
 }

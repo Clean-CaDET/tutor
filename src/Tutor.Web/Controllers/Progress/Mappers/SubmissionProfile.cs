@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
+using System.Linq;
 using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
 using Tutor.Core.DomainModel.AssessmentEvents.Questions;
 using Tutor.Core.ProgressModel.Submissions;
-using Tutor.Web.Controllers.Content.DTOs;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
 using Tutor.Web.Controllers.Progress.DTOs.SubmissionEvaluation;
 
 namespace Tutor.Web.Controllers.Progress.Mappers
@@ -23,12 +23,8 @@ namespace Tutor.Web.Controllers.Progress.Mappers
                     {
                         var relatedHint = directoryKeys.First(h => h.Id == hintDto.Id);
                         hintDto.ApplicableToCodeSnippets = hintDirectory[relatedHint];
-                        if (relatedHint.LearningObjectSummaryId == null) continue;
-                        var relatedLO = src.ApplicableLOs
-                            .First(lo => lo.LearningObjectSummaryId == relatedHint.LearningObjectSummaryId);
-                        hintDto.LearningObject = context.Mapper.Map<LearningObjectDTO>(relatedLO);
                     }
-                });
+                }); //TODO: Check if it can be simplified now that it has no LOs
             CreateMap<ChallengeHint, ChallengeHintDTO>();
             CreateMap<ChallengeSubmissionDTO, ChallengeSubmission>();
 

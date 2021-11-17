@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
-using Tutor.Core.ContentModel.LearningObjects;
 using Tutor.Core.ProgressModel.Submissions;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
 {
-    public class ArrangeTask : LearningObject
+    public class ArrangeTask : AssessmentEvent
     {
         public string Text { get; private set; }
         public List<ArrangeTaskContainer> Containers { get; private set; }
 
         private ArrangeTask() {}
-        public ArrangeTask(int id, int learningObjectSummaryId, string text, List<ArrangeTaskContainer> containers) : base(id, learningObjectSummaryId)
+        public ArrangeTask(int id, int knowledgeComponentId, string text, List<ArrangeTaskContainer> containers) : base(id, knowledgeComponentId)
         {
             Text = text;
             Containers = containers;

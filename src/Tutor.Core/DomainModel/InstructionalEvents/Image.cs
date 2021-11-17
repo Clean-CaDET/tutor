@@ -1,13 +1,11 @@
-﻿using Tutor.Core.ContentModel.LearningObjects;
-
-namespace Tutor.Core.DomainModel.InstructionalEvents
+﻿namespace Tutor.Core.DomainModel.InstructionalEvents
 {
-    public class Image : LearningObject
+    public class Image : InstructionalEvent
     {
         public string Url { get; private set; }
         public string Caption { get; private set; }
 
-        public Image(int id, int learningObjectSummaryId, string url, string caption) : base(id, learningObjectSummaryId)
+        public Image(int id, int knowledgeComponentId, string url, string caption) : base(id, knowledgeComponentId)
         {
             Url = url;
             Caption = caption;

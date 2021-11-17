@@ -1,6 +1,5 @@
 using FluentResults;
-using System.Collections.Generic;
-using Tutor.Core.DomainModel.Units;
+using Tutor.Core.DomainModel.AssessmentEvents;
 
 namespace Tutor.Core.InstructorModel.Instructors
 {
@@ -11,10 +10,10 @@ namespace Tutor.Core.InstructorModel.Instructors
             //TODO: Repos
         }
 
-        public Result<List<KnowledgeNode>> SelectSuitableKnowledgeNode(int knowledgeComponentId, int learnerId)
+        public Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId)
         {
-            //TODO: Examine which KNs the learner has (not) completed for the given KC
-            //TODO: Select the most suitable non-completed KN (advanced instructors can consider difficulty and other factors).
+            //TODO: Examine which AEs the learner has (not) completed for the given KC
+            //TODO: Select the most suitable non-completed AE (advanced instructors can consider difficulty and other factors).
             throw new System.NotImplementedException();
         }
     }

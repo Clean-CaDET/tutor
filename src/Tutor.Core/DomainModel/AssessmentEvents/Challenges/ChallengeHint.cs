@@ -4,7 +4,6 @@
     {
         public int Id { get; private set; }
         public string Content { get; private set; }
-        public int? LearningObjectSummaryId { get; private set; }
 
         private ChallengeHint() {}
         public ChallengeHint(int id): this()

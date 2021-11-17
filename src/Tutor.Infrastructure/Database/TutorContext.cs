@@ -1,37 +1,27 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Tutor.Core.ContentModel.LearningObjects;
-using Tutor.Core.ContentModel.Lectures;
+using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker;
 using Tutor.Core.DomainModel.AssessmentEvents.Questions;
+using Tutor.Core.DomainModel.Course;
 using Tutor.Core.DomainModel.InstructionalEvents;
-using Tutor.Core.DomainModel.Units;
 using Tutor.Core.LearnerModel.Learners;
 using Tutor.Core.ProgressModel.Feedback;
-using Tutor.Core.ProgressModel.Progress;
 using Tutor.Core.ProgressModel.Submissions;
 using KnowledgeComponent = Tutor.Core.DomainModel.KnowledgeComponents.KnowledgeComponent;
-using KnowledgeNode = Tutor.Core.ContentModel.Lectures.KnowledgeNode;
 
 namespace Tutor.Infrastructure.Database
 {
     public class TutorContext : DbContext
     {
-        #region Courses
-
-        public DbSet<Lecture> Lectures { get; set; }
-        public DbSet<KnowledgeNode> KnowledgeNodes { get; set; }
-        public DbSet<LearningObjectSummary> LearningObjectSummaries { get; set; }
-        public DbSet<Course> Courses { get; set; }
-
-        #endregion
 
         #region Learning Objects
 
-        public DbSet<LearningObject> LearningObjects { get; set; }
+        public DbSet<AssessmentEvent> AssessmentEvents { get; set; }
+        public DbSet<InstructionalEvent> InstructionalEvents { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Text> Texts { get; set; }
         public DbSet<Video> Videos { get; set; }
@@ -51,7 +41,6 @@ namespace Tutor.Infrastructure.Database
 
         #region Progress Model
 
-        public DbSet<NodeProgress> NodeProgresses { get; set; }
         public DbSet<ArrangeTaskSubmission> ArrangeTaskSubmissions { get; set; }
         public DbSet<ArrangeTaskContainerSubmission> ArrangeTaskContainerSubmissions { get; set; }
         public DbSet<ChallengeSubmission> ChallengeSubmissions { get; set; }
@@ -60,17 +49,10 @@ namespace Tutor.Infrastructure.Database
 
         #endregion
 
-        #region Knowledge components
-
-        public DbSet<KnowledgeComponent> KnowledgeComponents { get; set; }
-        public DbSet<KnowledgeComponentProgress> KnowledgeComponentsProgresses { get; set; }
-
-        #endregion
-
         #region Units
 
         public DbSet<Unit> Units { get; set; }
-        public DbSet<UnitKnowledgeComponent> UnitKnowledgeComponents { get; set; }
+        public DbSet<KnowledgeComponent> KnowledgeComponents { get; set; }
 
         #endregion
 

@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
-using Tutor.Core.ContentModel.LearningObjects;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents.Questions
 {
-    public class Question : LearningObject
+    public class Question : AssessmentEvent
     {
         public string Text { get; private set; }
         public List<QuestionAnswer> PossibleAnswers { get; private set; }
 
         private Question() {}
-        public Question(int id, int summaryId, string text, List<QuestionAnswer> possibleAnswers): base(id, summaryId)
+        public Question(int id, int knowledgeComponentId, string text, List<QuestionAnswer> possibleAnswers): base(id, knowledgeComponentId)
         {
             Text = text;
             PossibleAnswers = possibleAnswers;
