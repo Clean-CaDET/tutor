@@ -1,12 +1,10 @@
-﻿using Tutor.Core.ContentModel.LearningObjects;
-
-namespace Tutor.Core.DomainModel.InstructionalEvents
+﻿namespace Tutor.Core.DomainModel.InstructionalEvents
 {
-    public class Video : LearningObject
+    public class Video : InstructionalEvent
     {
         public string Url { get; private set; }
 
-        public Video(int id, int learningObjectSummaryId, string url) : base(id, learningObjectSummaryId)
+        public Video(int id, int knowledgeComponentId, string url) : base(id, knowledgeComponentId)
         {
             Url = url;
         }

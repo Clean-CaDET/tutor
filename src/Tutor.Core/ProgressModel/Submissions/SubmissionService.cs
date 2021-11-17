@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.ContentModel;
+using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
 using Tutor.Core.DomainModel.AssessmentEvents.Questions;
@@ -10,19 +10,19 @@ namespace Tutor.Core.ProgressModel.Submissions
 {
     public class SubmissionService : ISubmissionService
     {
-        private readonly ILearningObjectRepository _learningObjectRepository;
+        private readonly IAssessmentEventRepository _assessmentEventRepository;
         private readonly ISubmissionRepository _submissionRepository;
 
-        public SubmissionService(ILearningObjectRepository learningObjectRepository,
+        public SubmissionService(IAssessmentEventRepository assessmentEventRepository,
             ISubmissionRepository submissionRepository)
         {
-            _learningObjectRepository = learningObjectRepository;
+            _assessmentEventRepository = assessmentEventRepository;
             _submissionRepository = submissionRepository;
         }
 
         public ChallengeEvaluation EvaluateChallenge(ChallengeSubmission submission)
         {
-            var challenge = _learningObjectRepository.GetChallenge(submission.ChallengeId);
+            var challenge = _assessmentEventRepository.GetChallenge(submission.ChallengeId);
 
             if (challenge == null) return null;
 
@@ -32,18 +32,14 @@ namespace Tutor.Core.ProgressModel.Submissions
             if (evaluation.ChallengeCompleted) submission.MarkCorrect();
             _submissionRepository.SaveChallengeSubmission(submission);
 
-            //TODO: Tie in with Instructor and handle learnerId to get suitable LO for LO summaries.
-            evaluation.ApplicableLOs =
-                _learningObjectRepository.GetFirstLearningObjectsForSummaries(
-                    evaluation.ApplicableHints.GetDistinctLearningObjectSummaries());
-            evaluation.SolutionLO = _learningObjectRepository.GetLearningObjectForSummary(challenge.Solution.Id);
+            //TODO: Tie in with Instructor and handle learnerId to get suitable IE for Solution.
 
             return evaluation;
         }
 
         public List<AnswerEvaluation> EvaluateAnswers(QuestionSubmission submission)
         {
-            var question = _learningObjectRepository.GetQuestion(submission.QuestionId);
+            var question = _assessmentEventRepository.GetQuestion(submission.QuestionId);
 
             var evaluations = question.EvaluateAnswers(submission.SubmittedAnswerIds);
 
@@ -55,7 +51,7 @@ namespace Tutor.Core.ProgressModel.Submissions
 
         public List<ArrangeTaskContainerEvaluation> EvaluateArrangeTask(ArrangeTaskSubmission submission)
         {
-            var arrangeTask = _learningObjectRepository.GetArrangeTask(submission.ArrangeTaskId);
+            var arrangeTask = _assessmentEventRepository.GetArrangeTask(submission.ArrangeTaskId);
             var evaluations = arrangeTask.EvaluateSubmission(submission.Containers);
             if (evaluations == null) throw new InvalidOperationException("Invalid submission of arrange task.");
 

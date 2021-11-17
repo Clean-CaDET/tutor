@@ -1,21 +1,20 @@
-﻿using System;
+﻿using CodeModel;
+using CodeModel.CaDETModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using CodeModel;
-using CodeModel.CaDETModel;
-using Tutor.Core.ContentModel.LearningObjects;
-using Tutor.Core.ContentModel.Lectures;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FunctionalityTester;
+using Tutor.Core.DomainModel.InstructionalEvents;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
 {
-    public class Challenge : LearningObject
+    public class Challenge : AssessmentEvent
     {
         public string Url { get; private set; }
         public string Description { get; private set; }
         public string TestSuiteLocation { get; private set; }
-        public LearningObjectSummary Solution { get; private set; }
+        public InstructionalEvent Solution { get; private set; }
         public List<ChallengeFulfillmentStrategy> FulfillmentStrategies { get; private set; }
 
         private Challenge() {}
