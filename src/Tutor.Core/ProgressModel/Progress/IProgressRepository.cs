@@ -1,4 +1,6 @@
-﻿namespace Tutor.Core.ProgressModel.Progress
+﻿using Tutor.Core.LearnerModel.Learners;
+
+namespace Tutor.Core.ProgressModel.Progress
 {
     public interface IProgressRepository
     {

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Tutor.Core.ContentModel;
 using Tutor.Core.ContentModel.Lectures;
 using Tutor.Core.InstructorModel.Instructors;
+using Tutor.Core.LearnerModel.Learners;
 using Tutor.Core.ProgressModel.Progress;
 using Xunit;
 

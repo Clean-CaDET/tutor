@@ -1,4 +1,5 @@
 using System.Linq;
+using Tutor.Core.LearnerModel.Learners;
 using Tutor.Core.ProgressModel;
 using Tutor.Core.ProgressModel.Progress;
 
