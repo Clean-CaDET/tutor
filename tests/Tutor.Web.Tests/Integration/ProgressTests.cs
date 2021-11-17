@@ -4,10 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
+using Tutor.Core.LearnerModel.Learners;
 using Tutor.Core.ProgressModel.Progress;
 using Tutor.Web.Controllers.Content.DTOs;
+using Tutor.Web.Controllers.Learners.DTOs;
 using Tutor.Web.Controllers.Progress;
-using Tutor.Web.Controllers.Progress.DTOs.Progress;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration
@@ -28,7 +29,7 @@ namespace Tutor.Web.Tests.Integration
             var controller = new ProgressController(_factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IProgressService>());
 
-            var node = ((OkObjectResult) controller.GetLectureNodes(1).Result).Value as List<KnowledgeNodeProgressDTO>;
+            var node = ((OkObjectResult) controller.GetLectureNodes(1).Result).Value as List<NodeProgressDTO>;
 
             node.Count.ShouldBe(4);
         }
@@ -47,13 +48,13 @@ namespace Tutor.Web.Tests.Integration
 
         [Theory]
         [MemberData(nameof(TestData))]
-        public void Delivers_content(int nodeId, KnowledgeNodeProgressDTO expectedNode)
+        public void Delivers_content(int nodeId, NodeProgressDTO expectedNode)
         {
             using var scope = _factory.Services.CreateScope();
             var controller = new ProgressController(_factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IProgressService>());
 
-            var actualNode = ((OkObjectResult)controller.GetNodeContent(nodeId).Result).Value as KnowledgeNodeProgressDTO;
+            var actualNode = ((OkObjectResult)controller.GetNodeContent(nodeId).Result).Value as NodeProgressDTO;
 
             actualNode.Status.ShouldBe(expectedNode.Status);
             var actualLOIds = actualNode.LearningObjects.Select(lo => lo.Id);
@@ -69,7 +70,7 @@ namespace Tutor.Web.Tests.Integration
                 new object[]
                 {
                     1,
-                    new KnowledgeNodeProgressDTO
+                    new NodeProgressDTO
                     {
                         Status = NodeStatus.Unlocked,
                         LearningObjects = new List<LearningObjectDTO>
@@ -84,7 +85,7 @@ namespace Tutor.Web.Tests.Integration
                 new object[]
                 {
                     2,
-                    new KnowledgeNodeProgressDTO
+                    new NodeProgressDTO
                     {
                         Status = NodeStatus.Unlocked,
                         LearningObjects = new List<LearningObjectDTO>

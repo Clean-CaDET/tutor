@@ -4,6 +4,7 @@ using System.Linq;
 using Tutor.Core.ContentModel;
 using Tutor.Core.ContentModel.Lectures;
 using Tutor.Core.InstructorModel.Instructors;
+using Tutor.Core.LearnerModel.Learners;
 
 namespace Tutor.Core.ProgressModel.Progress
 {
@@ -43,7 +44,7 @@ namespace Tutor.Core.ProgressModel.Progress
 
             if (learnerId == null)
             {
-                var defaultLOs = _instructor.GatherDefaultLearningObjects(knowledgeNode.LearningObjectSummaries);
+                var defaultLOs = _instructor.SelectSuitableKnowledgeNode(knowledgeNode.LearningObjectSummaries);
                 return Result.Ok(new NodeProgress(0, 0, knowledgeNode, NodeStatus.Unlocked, defaultLOs.Value));
             }
 

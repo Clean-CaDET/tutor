@@ -1,5 +1,6 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
+using Tutor.Core.LearnerModel.Learners;
 
 namespace Tutor.Core.ProgressModel.Progress
 {
