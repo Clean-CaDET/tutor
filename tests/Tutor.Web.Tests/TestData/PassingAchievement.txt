@@ -1,0 +1,126 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+
+namespace Methods.Small
+{
+    /// <summary>
+    /// CHALLENGE ID: 41
+    /// 1. Extract multiple methods from the AwardAchievement method.
+    /// 2. For each method, define the most appropriate name.
+    /// </summary>
+    class AchievementService
+    {
+        private readonly string _achievementStorageLocation = "../Storage/Achievements/";
+
+        public void AwardAchievement(int userId, int newAchievementId)
+        {
+            Achievement newAchievement = LoadNewAchievement(newAchievementId);
+
+            if (newAchievement == null) throw new Exception("New achievement does not exist in the registry.");
+
+            var unlockedAchievements = LoadUsersUnlockedAchievements(userId, newAchievement);
+
+            CheckUsersPrerequisiteAchievements(newAchievement, unlockedAchievements);
+
+            Save(userId, newAchievement);
+        }
+
+
+        private Achievement LoadNewAchievement(int newAchievementId)
+        {
+            Achievement newAchievement = null;
+            string[] allAchievements = File.ReadAllLines(_achievementStorageLocation + "allAchievements.csv");
+            foreach (var achievement in allAchievements)
+            {
+                string[] achievementElements = achievement.Split(":");
+                if (!EqualNames(achievementElements[0], newAchievementId.ToString())) continue;
+                newAchievement = new Achievement(achievementElements[0], achievementElements[1]);
+                AddPrerequisiteAchievements(achievementElements, newAchievement);
+            }
+
+            return newAchievement;
+        }
+
+        private bool EqualNames(string existingAchievementName, string newAchievementName)
+        {
+            return existingAchievementName == newAchievementName;
+        }
+
+        private static void AddPrerequisiteAchievements(string[] achievementElements, Achievement newAchievement)
+        {
+            for (int i = 2; i < achievementElements.Length; i++)
+                newAchievement.PrerequisiteAchievementNames.Add(achievementElements[i]);
+        }
+        private List<Achievement> LoadUsersUnlockedAchievements(int userId, Achievement newAchievement)
+        {
+            string[] achievements = File.ReadAllLines(_achievementStorageLocation + userId + ".csv");
+            List<Achievement> unlockedAchievements = new List<Achievement>();
+            foreach (var storedAchievement in achievements)
+            {
+                string[] achievementElements = storedAchievement.Split(":");
+                Achievement a = new Achievement(achievementElements[0], achievementElements[1]);
+                if (IsAchievementAlreadyUnlocked(newAchievement, a))
+                    throw new InvalidOperationException("Achievement " + newAchievement.Name + " is already unlocked!");
+
+                unlockedAchievements.Add(a);
+            }
+
+            return unlockedAchievements;
+        }
+
+        private static bool IsAchievementAlreadyUnlocked(Achievement newAchievement, Achievement a)
+        {
+            return a.Name.Equals(newAchievement.Name) && a.ImagePath.Equals(newAchievement.ImagePath);
+        }
+
+        private static void CheckUsersPrerequisiteAchievements(Achievement newAchievement,
+            List<Achievement> unlockedAchievements)
+        {
+            foreach (var prerequisiteAchievement in newAchievement.PrerequisiteAchievementNames)
+            {
+                var foundAchievement = FindPrerequisiteAchievement(unlockedAchievements, prerequisiteAchievement);
+
+                if (!foundAchievement)
+                    throw new InvalidOperationException("Prerequisite achievement " + prerequisiteAchievement +
+                                                        " not completed.");
+            }
+        }
+
+        private static bool FindPrerequisiteAchievement(List<Achievement> unlockedAchievements, object prerequisiteAchievement)
+        {
+            bool foundAchievement = false;
+            foreach (var a in unlockedAchievements)
+            {
+                if (a.Name.Equals(prerequisiteAchievement))
+                {
+                    foundAchievement = true;
+                    break;
+                }
+            }
+
+            return foundAchievement;
+        }
+
+
+        private void Save(int userId, Achievement newAchievement)
+        {
+            string newAchievementStorageFormat = newAchievement.Name + ":" + newAchievement.ImagePath + "\n";
+            File.AppendAllText(_achievementStorageLocation + userId + ".csv", newAchievementStorageFormat);
+        }
+    }
+
+    class Achievement
+    {
+        public string Name { get; set; }
+        public string ImagePath { get; set; }
+        public List<string> PrerequisiteAchievementNames { get; set; }
+
+        public Achievement(string name, string imagePath)
+        {
+            Name = name;
+            ImagePath = imagePath;
+            PrerequisiteAchievementNames = new List<string>();
+        }
+    }
+}

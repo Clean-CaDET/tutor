@@ -24,7 +24,10 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
 
         internal ChallengeHint Evaluate(Dictionary<CaDETMetric, double> metrics)
         {
-            var metricValue = metrics[(CaDETMetric)Enum.Parse(typeof(CaDETMetric), MetricName, true)];
+            var metric = (CaDETMetric) Enum.Parse(typeof(CaDETMetric), MetricName, true);
+            if (!metrics.ContainsKey(metric)) return null;
+
+            var metricValue = metrics[metric];
             var isFulfilled = FromValue <= metricValue && metricValue <= ToValue;
             return isFulfilled ? null : Hint;
         }

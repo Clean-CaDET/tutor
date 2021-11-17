@@ -1,8 +1,9 @@
-﻿using System;
+using CodeModel.CaDETModel;
+using CodeModel.CaDETModel.CodeItems;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using CodeModel.CaDETModel.CodeItems;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker
 {
@@ -15,43 +16,48 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
         public ChallengeHint Hint { get; private set; }
 
         private BasicNameChecker() {}
-        public BasicNameChecker(List<string> bannedWords, List<string> requiredWords, ChallengeHint hint): this()
+        public BasicNameChecker(List<string> bannedWords, List<string> requiredWords, ChallengeHint hint, string codeSnippetId, List<string> possibleRenames): base(0, codeSnippetId, possibleRenames)
         {
             BannedWords = bannedWords;
             RequiredWords = requiredWords;
             Hint = hint;
         }
 
-        public override HintDirectory EvaluateSubmission(List<CaDETClass> solutionAttempt)
+        public override HintDirectory EvaluateSubmission(CaDETProject solutionAttempt)
         {
-            var usedNames = GetUsedNames(solutionAttempt);
+            var usedNames = GetUsedNames(solutionAttempt.Classes);
             return EvaluateNames(usedNames);
         }
 
-        private Dictionary<string, List<string>> GetUsedNames(List<CaDETClass> solutionAttempt)
+        private List<string> GetUsedNames(List<CaDETClass> solutionAttempt)
         {
-            var namesUsedInCodeSnippet = new Dictionary<string, List<string>>();
+            var names = GetNames(solutionAttempt, CodeSnippetId);
+            if (names != null) return names;
 
-            solutionAttempt.ForEach(c => namesUsedInCodeSnippet.Add(c.FullName, GetClassNames(c)));
-
-            foreach (var member in GetMembersFromClasses(solutionAttempt))
+            foreach (var name in PossibleRenames)
             {
-                namesUsedInCodeSnippet.Add(member.Signature(), GetMemberNames(member));
+                names = GetNames(solutionAttempt, name);
+                if (names != null) return names;
             }
 
-            return namesUsedInCodeSnippet;
+            throw new Exception($"Solution attempt is missing class/method {CodeSnippetId}");
+        }
+
+        private List<string> GetNames(List<CaDETClass> solutionAttempt, string snippetId)
+        {
+            var caDETClass = solutionAttempt.Find(c => c.FullName == snippetId);
+            if (caDETClass != null) return GetClassNames(caDETClass);
+
+            var caDETMember = solutionAttempt.SelectMany(c => c.Members).FirstOrDefault(m => m.Signature() == snippetId);
+            return caDETMember != null ? GetMemberNames(caDETMember) : null;
         }
 
         private List<string> GetClassNames(CaDETClass caDETClass)
         {
             var names = new List<string> { caDETClass.Name };
             names.AddRange(caDETClass.Fields.Select(f => f.Name));
+            names.AddRange(caDETClass.Members.Select(m => m.Name));
             return names;
-        }
-
-        private List<CaDETMember> GetMembersFromClasses(List<CaDETClass> classes)
-        {
-            return classes.SelectMany(c => c.Members).ToList();
         }
 
         private List<string> GetMemberNames(CaDETMember member)
@@ -62,7 +68,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             return memberNames;
         }
 
-        private HintDirectory EvaluateNames(Dictionary<string, List<string>> namesUsedInCodeSnippet)
+        private HintDirectory EvaluateNames(List<string> namesUsedInCodeSnippet)
         {
             var hints = new HintDirectory();
             hints.MergeHints(EvaluateBannedWords(namesUsedInCodeSnippet));
@@ -70,16 +76,13 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             return hints;
         }
 
-        private HintDirectory EvaluateBannedWords(Dictionary<string, List<string>> namesUsedInCodeSnippet)
+        private HintDirectory EvaluateBannedWords(List<string> usedNames)
         {
             if (BannedWords == null || BannedWords.Count == 0) return null;
 
             var hints = new HintDirectory();
-            foreach (var codeSnippetId in namesUsedInCodeSnippet.Keys)
-            {
-                if (ContainsBannedName(namesUsedInCodeSnippet[codeSnippetId]))
-                    hints.AddHint(codeSnippetId, Hint);
-            }
+            if (ContainsBannedName(usedNames))
+                hints.AddHint(CodeSnippetId, Hint);
 
             return hints;
         }
@@ -94,12 +97,11 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             return false;
         }
 
-        private HintDirectory EvaluateRequiredWords(Dictionary<string, List<string>> namesUsedInCodeSnippet)
+        private HintDirectory EvaluateRequiredWords(List<string> usedNames)
         {
             if (RequiredWords == null || RequiredWords.Count == 0) return null;
             
-            var allNames = namesUsedInCodeSnippet.Values.SelectMany(n => n);
-            var allWords = allNames.SelectMany(GetWordsFromName).ToList();
+            var allWords = usedNames.SelectMany(GetWordsFromName).ToList();
             if (RequiredWords.All(req => allWords.Contains(req, StringComparer.OrdinalIgnoreCase))) return null;
 
             var hints = new HintDirectory();
