@@ -26,6 +26,7 @@ DELETE FROM public."LearningObjectSummaries";
 DELETE FROM public."KnowledgeNodes";
 DELETE FROM public."Lectures";
 DELETE FROM public."Courses";
+DELETE FROM public."KnowledgeComponents";
 
 INSERT INTO public."Learners"(
 	"Id", "StudentIndex", "WorkspacePath")
@@ -543,7 +544,7 @@ INSERT INTO public."Challenges"(
 	VALUES (41, 'https://github.com/Clean-CaDET/challenge-repository', 'Da imamo kratke metode ne treba da bude naš konačan cilj, već posledica praćenja dobrih praksi. Ipak, funkcija koja prevazilazi nekoliko desetina linija je dobar kandidat za refaktorisanje. U sklopu direktorijuma "Methods/01. Small Methods" ekstrahuj logički povezan kod tako da završiš sa kolekcijom sitnijih metoda čije ime jasno označava njihovu svrhu.', 'Methods.Small', 42);
 INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (3, 41, 'Methods.SmallMethods.Achievements');
+	VALUES (3, 41, 'Methods.Small.AchievementService.AwardAchievement(int, int)');
 INSERT INTO public."BasicMetricCheckers"(
 	"Id")
 	VALUES (3);
