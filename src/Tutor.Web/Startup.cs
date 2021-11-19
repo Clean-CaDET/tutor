@@ -22,9 +22,12 @@ using Tutor.Infrastructure.Database.Repositories.Domain;
 using Tutor.Infrastructure.Database.Repositories.Learner;
 using Tutor.Infrastructure.Database.Repositories.Progress;
 using Tutor.Infrastructure.Security;
-using Tutor.Web.Controllers.Domain.Mappers;
 using Tutor.Web.IAM;
 using Tutor.Web.IAM.Keycloak;
+using Dahomey.Json;
+using Dahomey.Json.Serialization.Conventions;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
+using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
 
 namespace Tutor.Web
 {
@@ -46,10 +49,21 @@ namespace Tutor.Web
             services.AddInfrastructure(Configuration);
 
             services.AddAutoMapper(typeof(Startup));
-            
+
             services.AddControllers().AddJsonOptions(options =>
             {
-             //   options.JsonSerializerOptions.Converters.Add(new LearningObjectJsonConverter());
+                var serializerOptions = options.JsonSerializerOptions;
+                serializerOptions.SetupExtensions();
+                var registry = serializerOptions.GetDiscriminatorConventionRegistry();
+                registry.ClearConventions();
+                registry.RegisterConvention(
+                    new DefaultDiscriminatorConvention<string>(serializerOptions, "typeDiscriminator"));
+                registry.RegisterType<ArrangeTaskDTO>();
+                registry.RegisterType<ChallengeDTO>();
+                registry.RegisterType<ImageDTO>();
+                registry.RegisterType<QuestionDTO>();
+                registry.RegisterType<TextDTO>();
+                registry.RegisterType<VideoDTO>();
             });
 
             services.AddCors(options =>
@@ -108,7 +122,8 @@ namespace Tutor.Web
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.Authority = Environment.GetEnvironmentVariable("AUTHORITY") ?? "http://localhost:8080/auth/realms/master";
+                options.Authority = Environment.GetEnvironmentVariable("AUTHORITY") ??
+                                    "http://localhost:8080/auth/realms/master";
                 options.Audience = Environment.GetEnvironmentVariable("AUDIENCE") ?? "demo-app";
                 options.RequireHttpsMetadata = false;
                 options.SaveToken = true;
@@ -121,9 +136,9 @@ namespace Tutor.Web
                         failedContext.Response.StatusCode = 500;
                         failedContext.Response.ContentType = "text/plain";
 
-                        return failedContext.Response.WriteAsync(Env.IsDevelopment() ? 
-                            failedContext.Exception.ToString() : 
-                            "An error occured processing your authentication.");
+                        return failedContext.Response.WriteAsync(Env.IsDevelopment()
+                            ? failedContext.Exception.ToString()
+                            : "An error occured processing your authentication.");
                     }
                 };
             });
@@ -148,10 +163,10 @@ namespace Tutor.Web
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
-        
+
         private static string[] ParseCorsOrigins()
         {
-            var corsOrigins = new [] { "http://localhost:4200" };
+            var corsOrigins = new[] {"http://localhost:4200"};
             var corsOriginsPath = EnvironmentConnection.GetSecret("SMART_TUTOR_CORS_ORIGINS");
             if (File.Exists(corsOriginsPath))
             {
