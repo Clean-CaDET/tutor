@@ -49,7 +49,7 @@ namespace Tutor.Web
             
             services.AddControllers().AddJsonOptions(options =>
             {
-                options.JsonSerializerOptions.Converters.Add(new LearningObjectJsonConverter());
+             //   options.JsonSerializerOptions.Converters.Add(new LearningObjectJsonConverter());
             });
 
             services.AddCors(options =>

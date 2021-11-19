@@ -16,9 +16,11 @@ namespace Tutor.Web.Controllers.Domain.Mappers
     {
         public DomainProfile()
         {
-            CreateMap<Unit, UnitDTO>();
+            CreateMap<Unit, UnitDTO>()
+                .ForMember(dest => dest.KnowledgeComponentIds,
+                    opt => opt.MapFrom(src => src.KnowledgeComponents.Select(n => n.Id)));
             CreateMap<KnowledgeComponent, KnowledgeComponentDTO>();
-
+            
             CreateMap<Text, TextDTO>();
             CreateMap<Image, ImageDTO>();
             CreateMap<Video, VideoDTO>();

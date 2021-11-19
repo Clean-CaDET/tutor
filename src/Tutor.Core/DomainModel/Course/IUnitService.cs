@@ -1,5 +1,7 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
+using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.InstructionalEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 
 namespace Tutor.Core.DomainModel.Course
@@ -9,5 +11,8 @@ namespace Tutor.Core.DomainModel.Course
         Result<List<Unit>> GetUnits();
 
         Result<KnowledgeComponent> GetKnowledgeComponentById(int id);
+
+        Result<List<AssessmentEvent>> GetAssessmentEventsByKnowledgeComponent(int id);
+        Result<List<InstructionalEvent>> GetInstructionalEventsByKnowledgeComponent(int id);
     }
 }

@@ -1,5 +1,7 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
+using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.InstructionalEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 
 namespace Tutor.Core.DomainModel.Course
@@ -23,6 +25,16 @@ namespace Tutor.Core.DomainModel.Course
             var knowledgeComponent = _unitRepository.GetKnowledgeComponent(id);
             if (knowledgeComponent == null) return Result.Fail("No KC with index: " + id);
             return Result.Ok(knowledgeComponent);
+        }
+
+        public Result<List<AssessmentEvent>> GetAssessmentEventsByKnowledgeComponent(int id)
+        {
+            return Result.Ok(_unitRepository.GetAssessmentEventsByKnowledgeComponent(id));
+        }
+
+        public Result<List<InstructionalEvent>> GetInstructionalEventsByKnowledgeComponent(int id)
+        {
+            return Result.Ok(_unitRepository.GetInstructionalEventsByKnowledgeComponent(id));
         }
     }
 }

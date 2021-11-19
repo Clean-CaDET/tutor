@@ -1,6 +1,7 @@
-﻿namespace Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents
+﻿
+namespace Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents
 {
-    public class TextDTO : LearningObjectDTO
+    public class TextDTO : InstructionalEventDTO
     {
         public string Content { get; set; }
     }
