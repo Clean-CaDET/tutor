@@ -1,5 +1,4 @@
-﻿
-using Dahomey.Json.Attributes;
+﻿using Dahomey.Json.Attributes;
 
 namespace Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents
 {

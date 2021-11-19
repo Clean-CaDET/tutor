@@ -17,7 +17,6 @@ namespace Tutor.Infrastructure.Database
 {
     public class TutorContext : DbContext
     {
-
         #region Learning Objects
 
         public DbSet<AssessmentEvent> AssessmentEvents { get; set; }

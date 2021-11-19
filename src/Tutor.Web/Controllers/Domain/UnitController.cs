@@ -50,6 +50,5 @@ namespace Tutor.Web.Controllers.Domain
             var result = _unitService.GetInstructionalEventsByKnowledgeComponent(knowledgeComponentId);
             return Ok(result.Value.Select(ie => _mapper.Map<InstructionalEventDTO>(ie)).ToList());
         }
-        
     }
 }
