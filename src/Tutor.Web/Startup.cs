@@ -1,3 +1,5 @@
+using Dahomey.Json;
+using Dahomey.Json.Serialization.Conventions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -9,18 +11,20 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.IO;
-using Tutor.Core.ContentModel;
+using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.InstructorModel.Instructors;
-using Tutor.Core.KnowledgeComponentModel;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.Workspaces;
 using Tutor.Core.ProgressModel.Feedback;
-using Tutor.Core.ProgressModel.Progress;
 using Tutor.Core.ProgressModel.Submissions;
 using Tutor.Infrastructure;
-using Tutor.Infrastructure.Database.Repositories;
+using Tutor.Infrastructure.Database.Repositories.Domain;
+using Tutor.Infrastructure.Database.Repositories.Learners;
+using Tutor.Infrastructure.Database.Repositories.Progress;
 using Tutor.Infrastructure.Security;
-using Tutor.Web.Controllers.Content.Mappers;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
+using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
 using Tutor.Web.IAM;
 using Tutor.Web.IAM.Keycloak;
 
@@ -44,10 +48,21 @@ namespace Tutor.Web
             services.AddInfrastructure(Configuration);
 
             services.AddAutoMapper(typeof(Startup));
-            
+
             services.AddControllers().AddJsonOptions(options =>
             {
-                options.JsonSerializerOptions.Converters.Add(new LearningObjectJsonConverter());
+                var serializerOptions = options.JsonSerializerOptions;
+                serializerOptions.SetupExtensions();
+                var registry = serializerOptions.GetDiscriminatorConventionRegistry();
+                registry.ClearConventions();
+                registry.RegisterConvention(
+                    new DefaultDiscriminatorConvention<string>(serializerOptions, "typeDiscriminator"));
+                registry.RegisterType<ArrangeTaskDTO>();
+                registry.RegisterType<ChallengeDTO>();
+                registry.RegisterType<ImageDTO>();
+                registry.RegisterType<MultiResponseQuestionDTO>();
+                registry.RegisterType<TextDTO>();
+                registry.RegisterType<VideoDTO>();
             });
 
             services.AddCors(options =>
@@ -61,26 +76,22 @@ namespace Tutor.Web
                     });
             });
 
-            services.AddScoped<IContentService, ContentService>();
-            services.AddScoped<ILectureRepository, LectureDatabaseRepository>();
-            services.AddScoped<ILearningObjectRepository, LearningObjectDatabaseRepository>();
-
-            services.AddScoped<IKCRepository, KCDatabaseRepository>();
             services.AddScoped<IKCService, KCService>();
+            services.AddScoped<IKCService, KCService>();
+            services.AddScoped<IKCRepository, KCDatabaseRepository>();
+            services.AddScoped<IAssessmentEventRepository, AssessmentEventDatabaseRepository>();
 
-            services.AddScoped<IProgressService, ProgressService>();
-            services.AddScoped<IProgressRepository, ProgressDatabaseRepository>();
-            services.AddScoped<ISubmissionService, SubmissionService>();
-            services.AddScoped<ISubmissionRepository, SubmissionDatabaseRepository>();
-            services.AddScoped<IFeedbackService, FeedbackService>();
-            services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
+            services.AddScoped<IInstructor, DefaultInstructor>();
 
             services.AddScoped<ILearnerService, LearnerService>();
             services.Configure<WorkspaceOptions>(Configuration.GetSection(WorkspaceOptions.ConfigKey));
             services.AddScoped<IWorkspaceCreator, NoWorkspaceCreator>();
             services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
 
-            services.AddScoped<IInstructor, DefaultInstructor>();
+            services.AddScoped<ISubmissionService, SubmissionService>();
+            services.AddScoped<ISubmissionRepository, SubmissionDatabaseRepository>();
+            services.AddScoped<IFeedbackService, FeedbackService>();
+            services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
 
             services.AddScoped<IAuthProvider, KeycloakAuthProvider>();
 
@@ -109,7 +120,8 @@ namespace Tutor.Web
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.Authority = Environment.GetEnvironmentVariable("AUTHORITY") ?? "http://localhost:8080/auth/realms/master";
+                options.Authority = Environment.GetEnvironmentVariable("AUTHORITY") ??
+                                    "http://localhost:8080/auth/realms/master";
                 options.Audience = Environment.GetEnvironmentVariable("AUDIENCE") ?? "demo-app";
                 options.RequireHttpsMetadata = false;
                 options.SaveToken = true;
@@ -122,9 +134,9 @@ namespace Tutor.Web
                         failedContext.Response.StatusCode = 500;
                         failedContext.Response.ContentType = "text/plain";
 
-                        return failedContext.Response.WriteAsync(Env.IsDevelopment() ? 
-                            failedContext.Exception.ToString() : 
-                            "An error occured processing your authentication.");
+                        return failedContext.Response.WriteAsync(Env.IsDevelopment()
+                            ? failedContext.Exception.ToString()
+                            : "An error occured processing your authentication.");
                     }
                 };
             });
@@ -149,10 +161,10 @@ namespace Tutor.Web
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
-        
+
         private static string[] ParseCorsOrigins()
         {
-            var corsOrigins = new [] { "http://localhost:4200" };
+            var corsOrigins = new[] {"http://localhost:4200"};
             var corsOriginsPath = EnvironmentConnection.GetSecret("SMART_TUTOR_CORS_ORIGINS");
             if (File.Exists(corsOriginsPath))
             {

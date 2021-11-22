@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Tutor.Web.Controllers.Content.DTOs;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
 
 namespace Tutor.Web.Controllers.Progress.DTOs.SubmissionEvaluation
 {

@@ -30,7 +30,7 @@ namespace Tutor.Web.Tests.Integration
 
             var learner = ((OkObjectResult) controller.Login(loginSubmission).Result).Value as LearnerDTO;
 
-            learner.Id.ShouldBe(1);
+            learner.Id.ShouldBe(-1);
         }
 
         [Fact]

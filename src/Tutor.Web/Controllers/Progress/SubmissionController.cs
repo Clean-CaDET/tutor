@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using Tutor.Core.ContentModel.LearningObjects.Challenges;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
 using Tutor.Core.ProgressModel.Submissions;
 using Tutor.Web.Controllers.Progress.DTOs.SubmissionEvaluation;
 
