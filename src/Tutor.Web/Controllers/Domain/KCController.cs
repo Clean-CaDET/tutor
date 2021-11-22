@@ -9,7 +9,7 @@ using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
 
 namespace Tutor.Web.Controllers.Domain
 {
-    [Route("api/knowledgeComponents/")]
+    [Route("api/knowledge-components/")]
     [ApiController]
     public class KCController : ControllerBase
     {
@@ -37,14 +37,14 @@ namespace Tutor.Web.Controllers.Domain
             return NotFound(result.Errors);
         }
 
-        [HttpGet("assessmentEvents/{knowledgeComponentId:int}")]
+        [HttpGet("{knowledgeComponentId:int}/assessment-events/")]
         public ActionResult<AssessmentEventDTO> GetAssessmentEvents(int knowledgeComponentId)
         {
             var result = _kcService.GetAssessmentEventsByKnowledgeComponent(knowledgeComponentId);
             return Ok(result.Value.Select(ae => _mapper.Map<AssessmentEventDTO>(ae)).ToList());
         }
         
-        [HttpGet("instructionalEvents/{knowledgeComponentId:int}")]
+        [HttpGet("{knowledgeComponentId:int}/instructional-events/")]
         public ActionResult<InstructionalEventDTO> GetInstructionalEvents(int knowledgeComponentId)
         {
             var result = _kcService.GetInstructionalEventsByKnowledgeComponent(knowledgeComponentId);
