@@ -60,7 +60,7 @@ namespace Tutor.Web
                 registry.RegisterType<ArrangeTaskDTO>();
                 registry.RegisterType<ChallengeDTO>();
                 registry.RegisterType<ImageDTO>();
-                registry.RegisterType<QuestionDTO>();
+                registry.RegisterType<MultiResponseQuestionDTO>();
                 registry.RegisterType<TextDTO>();
                 registry.RegisterType<VideoDTO>();
             });

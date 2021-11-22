@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System.Linq;
+using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
 using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
@@ -19,15 +20,16 @@ namespace Tutor.Web.Controllers.Domain.Mappers
                 .ForMember(dest => dest.KnowledgeComponentIds,
                     opt => opt.MapFrom(src => src.KnowledgeComponents.Select(n => n.Id)));
             CreateMap<KnowledgeComponent, KnowledgeComponentDTO>();
-            
+
+            CreateMap<InstructionalEvent, InstructionalEventDTO>().IncludeAllDerived();
             CreateMap<Text, TextDTO>();
             CreateMap<Image, ImageDTO>();
             CreateMap<Video, VideoDTO>();
+
+            CreateMap<AssessmentEvent, AssessmentEventDTO>().IncludeAllDerived();
             CreateMap<Challenge, ChallengeDTO>();
-
-            CreateMap<MRQContainer, QuestionDTO>();
-            CreateMap<MRQAnswer, QuestionAnswerDTO>();
-
+            CreateMap<MRQContainer, MultiResponseQuestionDTO>();
+            CreateMap<MRQAnswer, MRQAnswerDTO>();
             CreateMap<ArrangeTask, ArrangeTaskDTO>()
                 .ForMember(dest => dest.UnarrangedElements, opt => opt.MapFrom(src => src.Containers.SelectMany(c => c.Elements).ToList()));
             CreateMap<ArrangeTaskContainer, ArrangeTaskContainerDTO>();
