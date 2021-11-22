@@ -2,8 +2,7 @@
 using System.Linq;
 using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
-using Tutor.Core.DomainModel.AssessmentEvents.Questions;
-using Tutor.Core.DomainModel.Course;
+using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 using Tutor.Core.DomainModel.InstructionalEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Web.Controllers.Domain.DTOs;
@@ -26,8 +25,8 @@ namespace Tutor.Web.Controllers.Domain.Mappers
             CreateMap<Video, VideoDTO>();
             CreateMap<Challenge, ChallengeDTO>();
 
-            CreateMap<Question, QuestionDTO>();
-            CreateMap<QuestionAnswer, QuestionAnswerDTO>();
+            CreateMap<MRQContainer, QuestionDTO>();
+            CreateMap<MRQAnswer, QuestionAnswerDTO>();
 
             CreateMap<ArrangeTask, ArrangeTaskDTO>()
                 .ForMember(dest => dest.UnarrangedElements, opt => opt.MapFrom(src => src.Containers.SelectMany(c => c.Elements).ToList()));

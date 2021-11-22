@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using Tutor.Core.LearnerModel;
+using Tutor.Core.LearnerModel.Learners;
 
-namespace Tutor.Infrastructure.Database.Repositories.Learner
+namespace Tutor.Infrastructure.Database.Repositories.Learners
 {
     public class LearnerDatabaseRepository : ILearnerRepository
     {
@@ -12,16 +13,16 @@ namespace Tutor.Infrastructure.Database.Repositories.Learner
             _dbContext = dbContext;
         }
 
-        public Core.LearnerModel.Learners.Learner GetById(int learnerId)
+        public Learner GetById(int learnerId)
         {
             return _dbContext.Learners.FirstOrDefault(l => l.Id == learnerId);
         }
-        public Core.LearnerModel.Learners.Learner GetByIndex(string index)
+        public Learner GetByIndex(string index)
         {
             return _dbContext.Learners.FirstOrDefault(learner => learner.StudentIndex.Equals(index));
         }
 
-        public Core.LearnerModel.Learners.Learner Save(Core.LearnerModel.Learners.Learner learner)
+        public Learner Save(Learner learner)
         {
             _dbContext.Learners.Attach(learner);
             _dbContext.SaveChanges();

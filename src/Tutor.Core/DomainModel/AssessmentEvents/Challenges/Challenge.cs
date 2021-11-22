@@ -14,7 +14,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
         public string Url { get; private set; }
         public string Description { get; private set; }
         public string TestSuiteLocation { get; private set; }
-        public InstructionalEvent Solution { get; private set; }
+        public string SolutionUrl { get; private set; }
         public List<ChallengeFulfillmentStrategy> FulfillmentStrategies { get; private set; }
 
         private Challenge() {}

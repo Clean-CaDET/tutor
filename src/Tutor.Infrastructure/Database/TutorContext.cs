@@ -5,27 +5,30 @@ using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker;
-using Tutor.Core.DomainModel.AssessmentEvents.Questions;
-using Tutor.Core.DomainModel.Course;
+using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 using Tutor.Core.DomainModel.InstructionalEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel.Learners;
 using Tutor.Core.ProgressModel.Feedback;
 using Tutor.Core.ProgressModel.Submissions;
-using KnowledgeComponent = Tutor.Core.DomainModel.KnowledgeComponents.KnowledgeComponent;
 
 namespace Tutor.Infrastructure.Database
 {
     public class TutorContext : DbContext
     {
-        #region Learning Objects
+        #region Domain Model
 
+        public DbSet<Unit> Units { get; set; }
+        public DbSet<KnowledgeComponent> KnowledgeComponents { get; set; }
         public DbSet<AssessmentEvent> AssessmentEvents { get; set; }
         public DbSet<InstructionalEvent> InstructionalEvents { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Text> Texts { get; set; }
         public DbSet<Video> Videos { get; set; }
-        public DbSet<Question> Questions { get; set; }
-        public DbSet<QuestionAnswer> QuestionAnswers { get; set; }
+        //TODO: Examine which DbSets we don't need directly and remove them, while configuring EFCore to generate the tables.
+        //TODO: Enable value object storing to remove the appropriate tables - e.g. MRQAnswer, ATContainer and ATElement
+        public DbSet<MRQContainer> MultiResponseQuestions { get; set; }
+        public DbSet<MRQAnswer> MRQAnswers { get; set; }
         public DbSet<ArrangeTask> ArrangeTasks { get; set; }
         public DbSet<ArrangeTaskContainer> ArrangeTaskContainers { get; set; }
         public DbSet<ArrangeTaskElement> ArrangeTaskElements { get; set; }
@@ -48,14 +51,8 @@ namespace Tutor.Infrastructure.Database
 
         #endregion
 
-        #region Units
-
-        public DbSet<Unit> Units { get; set; }
-        public DbSet<KnowledgeComponent> KnowledgeComponents { get; set; }
-
-        #endregion
-
         public DbSet<Learner> Learners { get; set; }
+        public DbSet<KnowledgeComponentMastery> KCMastery { get; set; }
 
         public TutorContext(DbContextOptions<TutorContext> options) : base(options)
         {
@@ -66,7 +63,7 @@ namespace Tutor.Infrastructure.Database
             modelBuilder.Entity<Text>().ToTable("Texts");
             modelBuilder.Entity<Image>().ToTable("Images");
             modelBuilder.Entity<Video>().ToTable("Videos");
-            modelBuilder.Entity<Question>().ToTable("Questions");
+            modelBuilder.Entity<MRQContainer>().ToTable("MultiResponseQuestions");
             modelBuilder.Entity<ArrangeTask>().ToTable("ArrangeTasks");
 
             ConfigureChallenge(modelBuilder);
@@ -82,13 +79,6 @@ namespace Tutor.Infrastructure.Database
 
             modelBuilder.Entity<BasicNameChecker>().ToTable("BasicNameCheckers");
             modelBuilder.Entity<BasicMetricChecker>().ToTable("BasicMetricCheckers");
-
-            modelBuilder.Entity<Challenge>()
-                .Property<int>("SolutionIdForeignKey");
-            modelBuilder.Entity<Challenge>()
-                .HasOne(b => b.Solution)
-                .WithMany()
-                .HasForeignKey("SolutionIdForeignKey");
 
             ConfigureBasicMetricChecker(modelBuilder);
         }

@@ -1,3 +1,5 @@
+using Dahomey.Json;
+using Dahomey.Json.Serialization.Conventions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -10,7 +12,6 @@ using Microsoft.Net.Http.Headers;
 using System;
 using System.IO;
 using Tutor.Core.DomainModel.AssessmentEvents;
-using Tutor.Core.DomainModel.Course;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.InstructorModel.Instructors;
 using Tutor.Core.LearnerModel;
@@ -19,15 +20,13 @@ using Tutor.Core.ProgressModel.Feedback;
 using Tutor.Core.ProgressModel.Submissions;
 using Tutor.Infrastructure;
 using Tutor.Infrastructure.Database.Repositories.Domain;
-using Tutor.Infrastructure.Database.Repositories.Learner;
+using Tutor.Infrastructure.Database.Repositories.Learners;
 using Tutor.Infrastructure.Database.Repositories.Progress;
 using Tutor.Infrastructure.Security;
-using Tutor.Web.IAM;
-using Tutor.Web.IAM.Keycloak;
-using Dahomey.Json;
-using Dahomey.Json.Serialization.Conventions;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
+using Tutor.Web.IAM;
+using Tutor.Web.IAM.Keycloak;
 
 namespace Tutor.Web
 {
@@ -77,10 +76,9 @@ namespace Tutor.Web
                     });
             });
 
-            services.AddScoped<IKCRepository, KCDatabaseRepository>();
             services.AddScoped<IKCService, KCService>();
-            services.AddScoped<IUnitService, UnitService>();
-            services.AddScoped<IUnitRepository, UnitDatabaseRepository>();
+            services.AddScoped<IKCService, KCService>();
+            services.AddScoped<IKCRepository, KCDatabaseRepository>();
             services.AddScoped<IAssessmentEventRepository, AssessmentEventDatabaseRepository>();
 
             services.AddScoped<IInstructor, DefaultInstructor>();

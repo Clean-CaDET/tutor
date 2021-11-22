@@ -1,6 +1,6 @@
-﻿namespace Tutor.Core.DomainModel.AssessmentEvents.Questions
+﻿namespace Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions
 {
-    public class QuestionAnswer
+    public class MRQAnswer
     {
         public int Id { get; private set; }
         public int QuestionId { get; private set; }
@@ -8,7 +8,7 @@
         public bool IsCorrect { get; private set; }
         public string Feedback { get; private set; }
 
-        public QuestionAnswer(int id, int questionId, string text, bool isCorrect, string feedback)
+        public MRQAnswer(int id, int questionId, string text, bool isCorrect, string feedback)
         {
             Id = id;
             QuestionId = questionId;

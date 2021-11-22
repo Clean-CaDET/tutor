@@ -2,7 +2,7 @@
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
-using Tutor.Core.DomainModel.AssessmentEvents.Questions;
+using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 
 namespace Tutor.Infrastructure.Database.Repositories.Domain
 {
@@ -13,7 +13,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             throw new NotImplementedException();
         }
 
-        public Question GetQuestion(int submissionQuestionId)
+        public MRQContainer GetQuestion(int submissionQuestionId)
         {
             throw new NotImplementedException();
         }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
-using Tutor.Core.DomainModel.AssessmentEvents.Questions;
+using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 
 namespace Tutor.Core.ProgressModel.Submissions
 {

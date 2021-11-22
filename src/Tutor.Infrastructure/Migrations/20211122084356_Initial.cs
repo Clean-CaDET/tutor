@@ -5,7 +5,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Tutor.Infrastructure.Migrations
 {
-    public partial class my_migration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -79,6 +79,21 @@ namespace Tutor.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InstructionalEvents", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "KCMastery",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Mastery = table.Column<double>(type: "double precision", nullable: false),
+                    KnowledgeComponentId = table.Column<int>(type: "integer", nullable: false),
+                    LearnerId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_KCMastery", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -184,25 +199,6 @@ namespace Tutor.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Questions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Text = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Questions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Questions_AssessmentEvents_Id",
-                        column: x => x.Id,
-                        principalTable: "AssessmentEvents",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Challenges",
                 columns: table => new
                 {
@@ -211,7 +207,7 @@ namespace Tutor.Infrastructure.Migrations
                     Url = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
                     TestSuiteLocation = table.Column<string>(type: "text", nullable: true),
-                    SolutionIdForeignKey = table.Column<int>(type: "integer", nullable: false)
+                    SolutionUrl = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -222,10 +218,23 @@ namespace Tutor.Infrastructure.Migrations
                         principalTable: "AssessmentEvents",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MultiResponseQuestions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Text = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MultiResponseQuestions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Challenges_InstructionalEvents_SolutionIdForeignKey",
-                        column: x => x.SolutionIdForeignKey,
-                        principalTable: "InstructionalEvents",
+                        name: "FK_MultiResponseQuestions_AssessmentEvents_Id",
+                        column: x => x.Id,
+                        principalTable: "AssessmentEvents",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -330,28 +339,6 @@ namespace Tutor.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "QuestionAnswers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    QuestionId = table.Column<int>(type: "integer", nullable: false),
-                    Text = table.Column<string>(type: "text", nullable: true),
-                    IsCorrect = table.Column<bool>(type: "boolean", nullable: false),
-                    Feedback = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_QuestionAnswers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_QuestionAnswers_Questions_QuestionId",
-                        column: x => x.QuestionId,
-                        principalTable: "Questions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ChallengeFulfillmentStrategies",
                 columns: table => new
                 {
@@ -367,6 +354,29 @@ namespace Tutor.Infrastructure.Migrations
                         name: "FK_ChallengeFulfillmentStrategies_Challenges_ChallengeId",
                         column: x => x.ChallengeId,
                         principalTable: "Challenges",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MRQAnswers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    QuestionId = table.Column<int>(type: "integer", nullable: false),
+                    Text = table.Column<string>(type: "text", nullable: true),
+                    IsCorrect = table.Column<bool>(type: "boolean", nullable: false),
+                    Feedback = table.Column<string>(type: "text", nullable: true),
+                    MRQContainerId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MRQAnswers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MRQAnswers_MultiResponseQuestions_MRQContainerId",
+                        column: x => x.MRQContainerId,
+                        principalTable: "MultiResponseQuestions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -491,11 +501,6 @@ namespace Tutor.Infrastructure.Migrations
                 column: "ChallengeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Challenges_SolutionIdForeignKey",
-                table: "Challenges",
-                column: "SolutionIdForeignKey");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_KnowledgeComponents_UnitId",
                 table: "KnowledgeComponents",
                 column: "UnitId");
@@ -511,9 +516,9 @@ namespace Tutor.Infrastructure.Migrations
                 column: "MetricCheckerForeignKey");
 
             migrationBuilder.CreateIndex(
-                name: "IX_QuestionAnswers_QuestionId",
-                table: "QuestionAnswers",
-                column: "QuestionId");
+                name: "IX_MRQAnswers_MRQContainerId",
+                table: "MRQAnswers",
+                column: "MRQContainerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -534,6 +539,9 @@ namespace Tutor.Infrastructure.Migrations
                 name: "Images");
 
             migrationBuilder.DropTable(
+                name: "KCMastery");
+
+            migrationBuilder.DropTable(
                 name: "KnowledgeComponents");
 
             migrationBuilder.DropTable(
@@ -546,7 +554,7 @@ namespace Tutor.Infrastructure.Migrations
                 name: "MetricRangeRules");
 
             migrationBuilder.DropTable(
-                name: "QuestionAnswers");
+                name: "MRQAnswers");
 
             migrationBuilder.DropTable(
                 name: "QuestionSubmissions");
@@ -573,7 +581,10 @@ namespace Tutor.Infrastructure.Migrations
                 name: "ChallengeHints");
 
             migrationBuilder.DropTable(
-                name: "Questions");
+                name: "MultiResponseQuestions");
+
+            migrationBuilder.DropTable(
+                name: "InstructionalEvents");
 
             migrationBuilder.DropTable(
                 name: "ArrangeTasks");
@@ -586,9 +597,6 @@ namespace Tutor.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AssessmentEvents");
-
-            migrationBuilder.DropTable(
-                name: "InstructionalEvents");
         }
     }
 }

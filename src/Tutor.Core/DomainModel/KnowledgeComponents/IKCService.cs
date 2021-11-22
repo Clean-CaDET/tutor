@@ -1,9 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using FluentResults;
+using System.Collections.Generic;
+using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.InstructionalEvents;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
     public interface IKCService
     {
-        public List<KnowledgeComponent> GetKnowledgeComponents();
+        Result<List<Unit>> GetUnits();
+
+        Result<KnowledgeComponent> GetKnowledgeComponentById(int id);
+
+        Result<List<AssessmentEvent>> GetAssessmentEventsByKnowledgeComponent(int id);
+        Result<List<InstructionalEvent>> GetInstructionalEventsByKnowledgeComponent(int id);
     }
 }

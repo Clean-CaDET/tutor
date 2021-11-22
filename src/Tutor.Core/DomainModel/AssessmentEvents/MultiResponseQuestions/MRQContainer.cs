@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace Tutor.Core.DomainModel.AssessmentEvents.Questions
+namespace Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions
 {
-    public class Question : AssessmentEvent
+    public class MRQContainer : AssessmentEvent
     {
         public string Text { get; private set; }
-        public List<QuestionAnswer> PossibleAnswers { get; private set; }
+        public List<MRQAnswer> PossibleAnswers { get; private set; }
 
-        private Question() {}
-        public Question(int id, int knowledgeComponentId, string text, List<QuestionAnswer> possibleAnswers): base(id, knowledgeComponentId)
+        private MRQContainer() {}
+        public MRQContainer(int id, int knowledgeComponentId, string text, List<MRQAnswer> possibleAnswers): base(id, knowledgeComponentId)
         {
             Text = text;
             PossibleAnswers = possibleAnswers;

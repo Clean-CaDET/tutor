@@ -1,11 +1,11 @@
-﻿namespace Tutor.Core.DomainModel.AssessmentEvents.Questions
+﻿namespace Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions
 {
     public class AnswerEvaluation
     {
-        public QuestionAnswer FullAnswer { get; }
+        public MRQAnswer FullAnswer { get; }
         public bool SubmissionWasCorrect { get; }
 
-        public AnswerEvaluation(QuestionAnswer answer, bool isCorrect)
+        public AnswerEvaluation(MRQAnswer answer, bool isCorrect)
         {
             FullAnswer = answer;
             SubmissionWasCorrect = isCorrect;

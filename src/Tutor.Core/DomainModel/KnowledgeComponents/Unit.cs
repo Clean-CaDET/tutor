@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Tutor.Core.DomainModel.KnowledgeComponents;
 
-namespace Tutor.Core.DomainModel.Course
+namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
     public class Unit
     {

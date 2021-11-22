@@ -141,7 +141,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.ToTable("MetricRangeRules");
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Questions.QuestionAnswer", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQAnswer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -154,6 +154,9 @@ namespace Tutor.Infrastructure.Migrations
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("boolean");
 
+                    b.Property<int?>("MRQContainerId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("QuestionId")
                         .HasColumnType("integer");
 
@@ -162,27 +165,9 @@ namespace Tutor.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("MRQContainerId");
 
-                    b.ToTable("QuestionAnswers");
-                });
-
-            modelBuilder.Entity("Tutor.Core.DomainModel.Course.Unit", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Units");
+                    b.ToTable("MRQAnswers");
                 });
 
             modelBuilder.Entity("Tutor.Core.DomainModel.InstructionalEvents.InstructionalEvent", b =>
@@ -221,6 +206,45 @@ namespace Tutor.Infrastructure.Migrations
                     b.HasIndex("UnitId");
 
                     b.ToTable("KnowledgeComponents");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.KnowledgeComponents.Unit", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Units");
+                });
+
+            modelBuilder.Entity("Tutor.Core.LearnerModel.Learners.KnowledgeComponentMastery", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("KnowledgeComponentId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("LearnerId")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Mastery")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("KCMastery");
                 });
 
             modelBuilder.Entity("Tutor.Core.LearnerModel.Learners.Learner", b =>
@@ -383,8 +407,8 @@ namespace Tutor.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<int>("SolutionIdForeignKey")
-                        .HasColumnType("integer");
+                    b.Property<string>("SolutionUrl")
+                        .HasColumnType("text");
 
                     b.Property<string>("TestSuiteLocation")
                         .HasColumnType("text");
@@ -392,19 +416,17 @@ namespace Tutor.Infrastructure.Migrations
                     b.Property<string>("Url")
                         .HasColumnType("text");
 
-                    b.HasIndex("SolutionIdForeignKey");
-
                     b.ToTable("Challenges");
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Questions.Question", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQContainer", b =>
                 {
                     b.HasBaseType("Tutor.Core.DomainModel.AssessmentEvents.AssessmentEvent");
 
                     b.Property<string>("Text")
                         .HasColumnType("text");
 
-                    b.ToTable("Questions");
+                    b.ToTable("MultiResponseQuestions");
                 });
 
             modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker.BasicMetricChecker", b =>
@@ -503,18 +525,16 @@ namespace Tutor.Infrastructure.Migrations
                     b.Navigation("Hint");
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Questions.QuestionAnswer", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQAnswer", b =>
                 {
-                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.Questions.Question", null)
+                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQContainer", null)
                         .WithMany("PossibleAnswers")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MRQContainerId");
                 });
 
             modelBuilder.Entity("Tutor.Core.DomainModel.KnowledgeComponents.KnowledgeComponent", b =>
                 {
-                    b.HasOne("Tutor.Core.DomainModel.Course.Unit", null)
+                    b.HasOne("Tutor.Core.DomainModel.KnowledgeComponents.Unit", null)
                         .WithMany("KnowledgeComponents")
                         .HasForeignKey("UnitId");
                 });
@@ -566,21 +586,13 @@ namespace Tutor.Infrastructure.Migrations
                         .HasForeignKey("Tutor.Core.DomainModel.AssessmentEvents.Challenges.Challenge", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Tutor.Core.DomainModel.InstructionalEvents.InstructionalEvent", "Solution")
-                        .WithMany()
-                        .HasForeignKey("SolutionIdForeignKey")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Solution");
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Questions.Question", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQContainer", b =>
                 {
                     b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.AssessmentEvent", null)
                         .WithOne()
-                        .HasForeignKey("Tutor.Core.DomainModel.AssessmentEvents.Questions.Question", "Id")
+                        .HasForeignKey("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQContainer", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -641,7 +653,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.Navigation("Elements");
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.Course.Unit", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.KnowledgeComponents.Unit", b =>
                 {
                     b.Navigation("KnowledgeComponents");
                 });
@@ -661,7 +673,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.Navigation("FulfillmentStrategies");
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Questions.Question", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQContainer", b =>
                 {
                     b.Navigation("PossibleAnswers");
                 });

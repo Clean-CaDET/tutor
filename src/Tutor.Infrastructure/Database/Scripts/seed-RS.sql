@@ -115,7 +115,7 @@ INSERT INTO public."ChallengeHints"(
 	VALUES (-1541, 'Razmisli kako da integrišeš domenski značajne reči poput "Enroll", "newCourse", "Maximum" i "Active" u imena koja koristiš u svom kodu.');
 INSERT INTO public."BasicNameCheckers"(
 	"Id", "RequiredWords", "HintId")
-	VALUES (-1541, '{{"Enroll","newCourse","Maximum","Active"}}', -1541);
+	VALUES (-1541, '{"Enroll","newCourse","Maximum","Active"}', -1541);
 
 
 

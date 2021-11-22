@@ -2,52 +2,52 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.DomainModel.Course;
+using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Web.Controllers.Domain.DTOs;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
 
 namespace Tutor.Web.Controllers.Domain
 {
-    [Route("api/units/")]
+    [Route("api/knowledgeComponents/")]
     [ApiController]
-    public class UnitController : ControllerBase
+    public class KCController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IUnitService _unitService;
+        private readonly IKCService _kcService;
 
-        public UnitController(IMapper mapper, IUnitService unitService)
+        public KCController(IMapper mapper, IKCService kcService)
         {
             _mapper = mapper;
-            _unitService = unitService;
+            _kcService = kcService;
         }
 
         [HttpGet]
         public ActionResult<List<UnitDTO>> GetUnits()
         {
-            var result = _unitService.GetUnits();
+            var result = _kcService.GetUnits();
             return Ok(result.Value.Select(u => _mapper.Map<UnitDTO>(u)).ToList());
         }
 
-        [HttpGet("knowledgeComponents/{knowledgeComponentId:int}")]
+        [HttpGet("{knowledgeComponentId:int}")]
         public ActionResult<KnowledgeComponentDTO> GetKnowledgeComponent(int knowledgeComponentId)
         {
-            var result = _unitService.GetKnowledgeComponentById(knowledgeComponentId);
+            var result = _kcService.GetKnowledgeComponentById(knowledgeComponentId);
             if (result.IsSuccess) return Ok(_mapper.Map<KnowledgeComponentDTO>(result.Value));
             return NotFound(result.Errors);
         }
 
-        [HttpGet("knowledgeComponents/assessmentEvents/{knowledgeComponentId:int}")]
+        [HttpGet("assessmentEvents/{knowledgeComponentId:int}")]
         public ActionResult<AssessmentEventDTO> GetAssessmentEvents(int knowledgeComponentId)
         {
-            var result = _unitService.GetAssessmentEventsByKnowledgeComponent(knowledgeComponentId);
+            var result = _kcService.GetAssessmentEventsByKnowledgeComponent(knowledgeComponentId);
             return Ok(result.Value.Select(ae => _mapper.Map<AssessmentEventDTO>(ae)).ToList());
         }
         
-        [HttpGet("knowledgeComponents/instructionalEvents/{knowledgeComponentId:int}")]
+        [HttpGet("instructionalEvents/{knowledgeComponentId:int}")]
         public ActionResult<InstructionalEventDTO> GetInstructionalEvents(int knowledgeComponentId)
         {
-            var result = _unitService.GetInstructionalEventsByKnowledgeComponent(knowledgeComponentId);
+            var result = _kcService.GetInstructionalEventsByKnowledgeComponent(knowledgeComponentId);
             return Ok(result.Value.Select(ie => _mapper.Map<InstructionalEventDTO>(ie)).ToList());
         }
     }
