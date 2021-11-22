@@ -154,10 +154,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("MRQContainerId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("QuestionId")
+                    b.Property<int>("MRQContainerId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Text")
@@ -529,7 +526,9 @@ namespace Tutor.Infrastructure.Migrations
                 {
                     b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQContainer", null)
                         .WithMany("PossibleAnswers")
-                        .HasForeignKey("MRQContainerId");
+                        .HasForeignKey("MRQContainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Tutor.Core.DomainModel.KnowledgeComponents.KnowledgeComponent", b =>

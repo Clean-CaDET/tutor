@@ -364,11 +364,10 @@ namespace Tutor.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    QuestionId = table.Column<int>(type: "integer", nullable: false),
+                    MRQContainerId = table.Column<int>(type: "integer", nullable: false),
                     Text = table.Column<string>(type: "text", nullable: true),
                     IsCorrect = table.Column<bool>(type: "boolean", nullable: false),
-                    Feedback = table.Column<string>(type: "text", nullable: true),
-                    MRQContainerId = table.Column<int>(type: "integer", nullable: true)
+                    Feedback = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -378,7 +377,7 @@ namespace Tutor.Infrastructure.Migrations
                         column: x => x.MRQContainerId,
                         principalTable: "MultiResponseQuestions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

@@ -85,19 +85,19 @@ INSERT INTO public."MultiResponseQuestions"(
 	"Id", "Text")
 	VALUES (-153, 'Kada dizajniramo softver, bitan cilj je da razdvojimo funkcionalnosti poslovne logike (npr. pravilo kako se stornira kupovina) od logike koja je vezana za tehnološke detalje (npr. kod za formiranje HTTP zahteva). Ovo pravilo važi i za sama imena, gde objekti i funkcije poslovne logike treba da sadrže samo reči koje potiču iz domena problema, odnosno od naših klijenata. Označi imena funkcija koje smatraš da potiču iz domena poslovne logike:');
 INSERT INTO public."MRQAnswers"(
-	"Id", "Text", "IsCorrect", "Feedback", "QuestionId")
+	"Id", "Text", "IsCorrect", "Feedback", "MRQContainerId")
 	VALUES (-1531, 'string.join(":", patientRecord)', false, 'Ovo nije ime iz domena problema već funkcija za spajanje elementa niza u string - tehnološki detalj.', -153);
 INSERT INTO public."MRQAnswers"(
-	"Id", "Text", "IsCorrect", "Feedback", "QuestionId")
+	"Id", "Text", "IsCorrect", "Feedback", "MRQContainerId")
 	VALUES (-1532, 'Close(Account account)', true, 'Ovo ime je iz domena problema bankarskog poslovanja. Zatvaranje naloga je poslovna operacija koja se praktikovala i pre nego što su banke imale softver.', -153);
 INSERT INTO public."MRQAnswers"(
-	"Id", "Text", "IsCorrect", "Feedback", "QuestionId")
+	"Id", "Text", "IsCorrect", "Feedback", "MRQContainerId")
 	VALUES (-1533, 'SaveToFile(MedicalHistory patientCard)', false, 'Ovo ime ističe tehnološki detalj - datoteku kao način perzistencije podataka. Da je ime metode bilo samo "Save" mogli bismo ga svrstati u domen problema kao poslovnu želju da se trajno sačuva ova informacija. Međutim, poslovnu logiku ne zanima da li je to čuvanje u datoteci, bazi podataka ili na cloud-u.', -153);
 INSERT INTO public."MRQAnswers"(
-	"Id", "Text", "IsCorrect", "Feedback", "QuestionId")
+	"Id", "Text", "IsCorrect", "Feedback", "MRQContainerId")
 	VALUES (-1534, 'RefreshEmployeeRegistryView()', false, 'Po imenu možemo zaključiti da ova metoda osvežava neki prikaz (npr. tabele) što je tehnološki detalj.', -153);
 INSERT INTO public."MRQAnswers"(
-	"Id", "Text", "IsCorrect", "Feedback", "QuestionId")
+	"Id", "Text", "IsCorrect", "Feedback", "MRQContainerId")
 	VALUES (-1535, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -153);
 
 INSERT INTO public."AssessmentEvents"(

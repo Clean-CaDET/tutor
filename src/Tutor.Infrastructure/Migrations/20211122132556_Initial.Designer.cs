@@ -11,7 +11,7 @@ using Tutor.Infrastructure.Database;
 namespace Tutor.Infrastructure.Migrations
 {
     [DbContext(typeof(TutorContext))]
-    [Migration("20211122084356_Initial")]
+    [Migration("20211122132556_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,10 +156,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("MRQContainerId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("QuestionId")
+                    b.Property<int>("MRQContainerId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Text")
@@ -531,7 +528,9 @@ namespace Tutor.Infrastructure.Migrations
                 {
                     b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQContainer", null)
                         .WithMany("PossibleAnswers")
-                        .HasForeignKey("MRQContainerId");
+                        .HasForeignKey("MRQContainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Tutor.Core.DomainModel.KnowledgeComponents.KnowledgeComponent", b =>

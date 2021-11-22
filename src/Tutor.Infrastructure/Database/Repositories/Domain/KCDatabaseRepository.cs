@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
+using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 using Tutor.Core.DomainModel.InstructionalEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 
@@ -14,11 +16,6 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
         public KCDatabaseRepository(TutorContext dbContext)
         {
             _dbContext = dbContext;
-        }
-
-        public Unit GetUnit(int id)
-        {
-            throw new System.NotImplementedException();
         }
 
         public List<Unit> GetUnits()
@@ -34,7 +31,10 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
         public List<AssessmentEvent> GetAssessmentEventsByKnowledgeComponent(int id)
         {
             var query = _dbContext.AssessmentEvents
-                .Where(ae => ae.KnowledgeComponentId == id);
+                .Where(ae => ae.KnowledgeComponentId == id)
+                .Include(ae => (ae as MRQContainer).PossibleAnswers)
+                .Include(lo => (lo as ArrangeTask).Containers)
+                .ThenInclude(c => c.Elements);
             return query.ToList();
         }
 
