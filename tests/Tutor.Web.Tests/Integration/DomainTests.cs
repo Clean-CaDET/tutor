@@ -32,7 +32,7 @@ namespace Tutor.Web.Tests.Integration
             var units = ((OkObjectResult) controller.GetUnits().Result).Value as List<UnitDTO>;
 
             units.Count.ShouldBe(2);
-            units.SelectMany(u => u.KnowledgeComponentIds).Count().ShouldBe(15);
+            units.SelectMany(u => u.KnowledgeComponents).Count().ShouldBe(15);
         }
 
         [Theory]

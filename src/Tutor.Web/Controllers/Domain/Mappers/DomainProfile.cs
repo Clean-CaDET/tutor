@@ -16,9 +16,7 @@ namespace Tutor.Web.Controllers.Domain.Mappers
     {
         public DomainProfile()
         {
-            CreateMap<Unit, UnitDTO>()
-                .ForMember(dest => dest.KnowledgeComponentIds,
-                    opt => opt.MapFrom(src => src.KnowledgeComponents.Select(n => n.Id)));
+            CreateMap<Unit, UnitDTO>();
             CreateMap<KnowledgeComponent, KnowledgeComponentDTO>();
 
             CreateMap<InstructionalEvent, InstructionalEventDTO>().IncludeAllDerived();
