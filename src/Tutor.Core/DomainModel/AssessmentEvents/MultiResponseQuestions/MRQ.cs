@@ -17,7 +17,6 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions
             Items = items;
         }
 
-
         public override Evaluation EvaluateSubmission(Submission submission)
         {
             if (submission is MRQSubmission mrqSubmission) return EvaluateMRQ(mrqSubmission);

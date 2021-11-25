@@ -10,20 +10,15 @@ using Xunit;
 
 namespace Tutor.Web.Tests.Integration
 {
-    public class LearnerTests : IClassFixture<TutorApplicationTestFactory<Startup>>
+    public class LearnerTests : BaseIntegrationTest
     {
-        private readonly TutorApplicationTestFactory<Startup> _factory;
-
-        public LearnerTests(TutorApplicationTestFactory<Startup> factory)
-        {
-            _factory = factory;
-        }
+        public LearnerTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
         [Fact]
         public void Successfully_logins()
         {
-            using var scope = _factory.Services.CreateScope();
-            var controller = new LearnerController(_factory.Services.GetRequiredService<IMapper>(),
+            using var scope = Factory.Services.CreateScope();
+            var controller = new LearnerController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<ILearnerService>(),
                 scope.ServiceProvider.GetRequiredService<IAuthProvider>());
             var loginSubmission = new LoginDTO {StudentIndex = "SU-1-2021"};
@@ -36,8 +31,8 @@ namespace Tutor.Web.Tests.Integration
         [Fact]
         public void Nonexisting_user_login()
         {
-            using var scope = _factory.Services.CreateScope();
-            var controller = new LearnerController(_factory.Services.GetRequiredService<IMapper>(),
+            using var scope = Factory.Services.CreateScope();
+            var controller = new LearnerController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<ILearnerService>(),
                 scope.ServiceProvider.GetRequiredService<IAuthProvider>());
             var loginSubmission = new LoginDTO {StudentIndex = "SA-1-2021"};

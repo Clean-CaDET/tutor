@@ -6,6 +6,6 @@ namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuesti
     {
         public List<MRQItemDTO> Answers { get; set; }
         public int LearnerId { get; set; }
-        public int QuestionId { get; set; }
+        public int AssessmentEventId { get; set; }
     }
 }

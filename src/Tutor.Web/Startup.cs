@@ -88,7 +88,6 @@ namespace Tutor.Web
             services.AddScoped<IWorkspaceCreator, NoWorkspaceCreator>();
             services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
 
-
             services.AddScoped<IAuthProvider, KeycloakAuthProvider>();
 
             if (!bool.Parse(Environment.GetEnvironmentVariable("KEYCLOAK_ON") ?? "false")) return;

@@ -1,5 +1,11 @@
 ﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker;
+using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 
 namespace Tutor.Infrastructure.Database.Repositories.Domain
 {
@@ -14,7 +20,17 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
 
         public AssessmentEvent GetAssessmentEvent(int id)
         {
-            return _dbContext.AssessmentEvents.FirstOrDefault(ae => ae.Id == id);
+            return _dbContext.AssessmentEvents
+                .Where(ae => ae.Id == id)
+                .Include(ae => (ae as MRQ).Items)
+                .Include(ae => (ae as ArrangeTask).Containers)
+                .ThenInclude(c => c.Elements)
+                .Include(ae => (ae as Challenge).FulfillmentStrategies)
+                .ThenInclude(s => (s as BasicNameChecker).Hint)
+                .Include(ae => (ae as Challenge).FulfillmentStrategies)
+                .ThenInclude(s => (s as BasicMetricChecker).MetricRanges)
+                .ThenInclude(r => r.Hint)
+                .FirstOrDefault();
         }
 
         public void SaveSubmission(Submission submission)

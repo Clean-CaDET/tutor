@@ -30,7 +30,7 @@ namespace Tutor.Web.Controllers.Domain.Mappers
 
             CreateMap<MRQSubmissionDTO, MRQSubmission>()
                 .ForMember(dest => dest.SubmittedAnswerIds, opt => opt.MapFrom(src => src.Answers.Select(a => a.Id)));
-            CreateMap<MRQEvaluation, MRQItemEvaluation>();
+            CreateMap<MRQEvaluation, MRQEvaluationDTO>();
             CreateMap<MRQItemEvaluation, MRQItemEvaluationDTO>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.FullItem.Id))
                 .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.FullItem.Text))

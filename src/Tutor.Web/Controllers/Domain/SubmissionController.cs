@@ -35,7 +35,7 @@ namespace Tutor.Web.Controllers.Domain
         }
 
         [HttpPost("question")]
-        public ActionResult<List<MRQItemEvaluationDTO>> SubmitQuestionAnswers(
+        public ActionResult<List<MRQItemEvaluationDTO>> SubmitMultipleResponseQuestion(
             [FromBody] MRQSubmissionDTO submission)
         {
             var result = _submissionService.EvaluateAndSaveSubmission(_mapper.Map<MRQSubmission>(submission));
