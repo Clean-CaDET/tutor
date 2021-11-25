@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
-using Tutor.Core.ProgressModel.Submissions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
 {
@@ -15,14 +17,27 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
             Containers = containers;
         }
 
-        internal List<ArrangeTaskContainerEvaluation> EvaluateSubmission(List<ArrangeTaskContainerSubmission> containers)
+        public override Evaluation EvaluateSubmission(Submission submission)
+        {
+            if (submission is ArrangeTaskSubmission atSubmission) return EvaluateAT(atSubmission);
+            throw new ArgumentException("Incorrect submission supplied to Arrange Task with ID " + Id);
+        }
+
+        private Evaluation EvaluateAT(ArrangeTaskSubmission atSubmission)
+        {
+            var evaluations = EvaluateContainers(atSubmission.Containers);
+            var correctness = (double) evaluations.Count(c => c.SubmissionWasCorrect) / evaluations.Count;
+
+            return new ArrangeTaskEvaluation(Id, correctness, evaluations);
+        }
+
+        private List<ArrangeTaskContainerEvaluation> EvaluateContainers(List<ArrangeTaskContainerSubmission> containers)
         {
             var evaluations = new List<ArrangeTaskContainerEvaluation>();
             foreach (var container in Containers)
             {
                 var submittedContainer = containers.Find(c => c.ContainerId == container.Id);
-                //TODO: If null throw exception since it is an invalid submission and see what the controller should return following best practices.
-                if (submittedContainer == null) return null;
+                if (submittedContainer == null) throw new ArgumentException("No ArrangeTaskContainer found with ID " + container.Id);
 
                 evaluations.Add(new ArrangeTaskContainerEvaluation(container,
                     container.IsCorrectSubmission(submittedContainer.ElementIds)));

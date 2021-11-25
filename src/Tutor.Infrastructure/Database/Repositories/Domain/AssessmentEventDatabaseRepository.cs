@@ -1,26 +1,26 @@
-﻿using System;
+﻿using System.Linq;
 using Tutor.Core.DomainModel.AssessmentEvents;
-using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
-using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 
 namespace Tutor.Infrastructure.Database.Repositories.Domain
 {
     public class AssessmentEventDatabaseRepository : IAssessmentEventRepository
     {
-        public Challenge GetChallenge(int submissionChallengeId)
+        private readonly TutorContext _dbContext;
+
+        public AssessmentEventDatabaseRepository(TutorContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
         }
 
-        public MRQContainer GetQuestion(int submissionQuestionId)
+        public AssessmentEvent GetAssessmentEvent(int id)
         {
-            throw new NotImplementedException();
+            return _dbContext.AssessmentEvents.FirstOrDefault(ae => ae.Id == id);
         }
 
-        public ArrangeTask GetArrangeTask(int submissionArrangeTaskId)
+        public void SaveSubmission(Submission submission)
         {
-            throw new NotImplementedException();
+            _dbContext.Submissions.Attach(submission);
+            _dbContext.SaveChanges();
         }
     }
 }

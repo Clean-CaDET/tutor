@@ -38,12 +38,12 @@ namespace Tutor.Core.Tests.Unit
                 }, null, new ChallengeHint(21), "Methods.Small.PaymentService.CreatePayment(int, int)", null)
             });
 
-            var challengeEvaluation = challenge.CheckChallengeFulfillment(submissionAttempt, null);
+            var challengeEvaluation = challenge.EvaluateChallenge(submissionAttempt, null);
             var actualHints = challengeEvaluation.ApplicableHints.GetHints();
 
             actualHints.Count.ShouldBe(expectedHints.Count);
             actualHints.All(expectedHints.Contains).ShouldBeTrue();
-            challengeEvaluation.ChallengeCompleted.ShouldBe(expectedCompletion);
+            challengeEvaluation.Correct.ShouldBe(expectedCompletion);
         }
 
         public static IEnumerable<object[]> ChallengeTest =>
