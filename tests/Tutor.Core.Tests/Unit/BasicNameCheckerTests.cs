@@ -53,11 +53,7 @@ namespace Tutor.Core.Tests.Unit
                 {
                     //TODO: Find better names for these methods and add more test data and more thorough HintDirectory evaluation (probably separate tests for MetricRangeRules and HintDirectory)
                     ChallengeTestData.GetTwoPassingClasses(),
-                    new List<ChallengeHint>
-                    {
-                        new(11),
-                        new(21)
-                    },
+                    new List<ChallengeHint>(),
                     true
                 },
                 new object[]

@@ -13,20 +13,15 @@ using Xunit;
 
 namespace Tutor.Web.Tests.Integration
 {
-    public class DomainTests : IClassFixture<TutorApplicationTestFactory<Startup>>
+    public class KnowledgeComponentTests : BaseIntegrationTest
     {
-        private readonly TutorApplicationTestFactory<Startup> _factory;
-
-        public DomainTests(TutorApplicationTestFactory<Startup> factory)
-        {
-            _factory = factory;
-        }
+        public KnowledgeComponentTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
         [Fact]
         public void Retrieves_units()
         {
-            using var scope = _factory.Services.CreateScope();
-            var controller = new KCController(_factory.Services.GetRequiredService<IMapper>(),
+            using var scope = Factory.Services.CreateScope();
+            var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IKCService>());
 
             var units = ((OkObjectResult) controller.GetUnits().Result).Value as List<UnitDTO>;
@@ -39,8 +34,8 @@ namespace Tutor.Web.Tests.Integration
         [MemberData(nameof(InstructionalEvents))]
         public void Retrieves_kc_instructional_events(int knowledgeComponentId, int expectedIEsCount)
         {
-            using var scope = _factory.Services.CreateScope();
-            var controller = new KCController(_factory.Services.GetRequiredService<IMapper>(),
+            using var scope = Factory.Services.CreateScope();
+            var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IKCService>());
 
             var IEs = ((OkObjectResult)controller.GetInstructionalEvents(knowledgeComponentId).Result).Value as List<InstructionalEventDTO>;
@@ -69,8 +64,8 @@ namespace Tutor.Web.Tests.Integration
         [MemberData(nameof(AssessmentEvents))]
         public void Retrieves_kc_assessment_events(int knowledgeComponentId, int expectedAEsCount)
         {
-            using var scope = _factory.Services.CreateScope();
-            var controller = new KCController(_factory.Services.GetRequiredService<IMapper>(),
+            using var scope = Factory.Services.CreateScope();
+            var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IKCService>());
 
             var IEs = ((OkObjectResult)controller.GetAssessmentEvents(knowledgeComponentId).Result).Value as List<AssessmentEventDTO>;
