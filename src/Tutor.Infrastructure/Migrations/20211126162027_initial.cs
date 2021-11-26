@@ -235,19 +235,19 @@ namespace Tutor.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ContainerId = table.Column<int>(type: "integer", nullable: false),
-                    ElementIds = table.Column<List<int>>(type: "integer[]", nullable: true),
-                    ArrangeTaskSubmissionId = table.Column<int>(type: "integer", nullable: true)
+                    SubmissionId = table.Column<int>(type: "integer", nullable: false),
+                    ArrangeTaskContainerId = table.Column<int>(type: "integer", nullable: false),
+                    ElementIds = table.Column<List<int>>(type: "integer[]", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ArrangeTaskContainerSubmissions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ArrangeTaskContainerSubmissions_Submissions_ArrangeTaskSubm~",
-                        column: x => x.ArrangeTaskSubmissionId,
+                        name: "FK_ArrangeTaskContainerSubmissions_Submissions_SubmissionId",
+                        column: x => x.SubmissionId,
                         principalTable: "Submissions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -433,9 +433,9 @@ namespace Tutor.Infrastructure.Migrations
                 column: "ArrangeTaskId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ArrangeTaskContainerSubmissions_ArrangeTaskSubmissionId",
+                name: "IX_ArrangeTaskContainerSubmissions_SubmissionId",
                 table: "ArrangeTaskContainerSubmissions",
-                column: "ArrangeTaskSubmissionId");
+                column: "SubmissionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ArrangeTaskElements_ArrangeTaskContainerId",

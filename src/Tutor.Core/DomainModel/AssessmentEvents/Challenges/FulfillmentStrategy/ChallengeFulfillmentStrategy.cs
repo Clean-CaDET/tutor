@@ -10,11 +10,10 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
         protected List<string> PossibleRenames { get; private set; }
 
         protected ChallengeFulfillmentStrategy() {}
-        protected ChallengeFulfillmentStrategy(int id, string codeSnippetId, List<string> possibleRenames): this()
+        protected ChallengeFulfillmentStrategy(int id, string codeSnippetId): this()
         {
             Id = id;
             CodeSnippetId = codeSnippetId;
-            PossibleRenames = possibleRenames;
         }
 
         public abstract HintDirectory EvaluateSubmission(CaDETProject solutionAttempt);

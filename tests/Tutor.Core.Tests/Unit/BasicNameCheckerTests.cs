@@ -15,27 +15,26 @@ namespace Tutor.Core.Tests.Unit
         [MemberData(nameof(ChallengeTest))]
         public void Evaluates_solution_submission(string[] submissionAttempt, List<ChallengeHint> expectedHints, bool expectedCompletion)
         {
-            //TODO: Readonly lists
             var challenge = new Challenge(1, 1, new List<ChallengeFulfillmentStrategy>
             {
                 new BasicNameChecker(null, new List<string> { "PaymentService" },
                     new ChallengeHint(11),
-                    "Methods.Small.PaymentService", null),
+                    "Methods.Small.PaymentService"),
                 new BasicNameChecker(null, new List<string> { "Payment", "compensation" },
                     new ChallengeHint(11),
-                    "Methods.Small.PaymentService.CreatePayment(int, int)", null),
+                    "Methods.Small.PaymentService.CreatePayment(int, int)"),
                 new BasicNameChecker(new List<string>
                 {
                     "Class", "Method"
-                }, null, new ChallengeHint(21), "Methods.Small.PaymentClass", new List<string> { "Methods.Small.Payment" }),
+                }, null, new ChallengeHint(21), "Methods.Small.Payment"),
                 new BasicNameChecker(new List<string>
                 {
                     "Class", "Method"
-                }, null, new ChallengeHint(21), "Methods.Small.PaymentService", null),
+                }, null, new ChallengeHint(21), "Methods.Small.PaymentService"),
                 new BasicNameChecker(new List<string>
                 {
                     "Class", "List", "Method"
-                }, null, new ChallengeHint(21), "Methods.Small.PaymentService.CreatePayment(int, int)", null)
+                }, null, new ChallengeHint(21), "Methods.Small.PaymentService.CreatePayment(int, int)")
             });
 
             var challengeEvaluation = challenge.EvaluateChallenge(submissionAttempt, null);

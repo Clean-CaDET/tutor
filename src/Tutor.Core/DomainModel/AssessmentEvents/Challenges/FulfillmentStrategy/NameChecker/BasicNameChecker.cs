@@ -16,7 +16,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
         public ChallengeHint Hint { get; private set; }
 
         private BasicNameChecker() {}
-        public BasicNameChecker(List<string> bannedWords, List<string> requiredWords, ChallengeHint hint, string codeSnippetId, List<string> possibleRenames): base(0, codeSnippetId, possibleRenames)
+        public BasicNameChecker(List<string> bannedWords, List<string> requiredWords, ChallengeHint hint, string codeSnippetId): base(0, codeSnippetId)
         {
             BannedWords = bannedWords;
             RequiredWords = requiredWords;
@@ -34,13 +34,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             var names = GetNames(solutionAttempt, CodeSnippetId);
             if (names != null) return names;
 
-            foreach (var name in PossibleRenames)
-            {
-                names = GetNames(solutionAttempt, name);
-                if (names != null) return names;
-            }
-
-            throw new Exception($"Solution attempt is missing class/method {CodeSnippetId}");
+            throw new InvalidOperationException($"Solution attempt is missing class/method {CodeSnippetId}");
         }
 
         private List<string> GetNames(List<CaDETClass> solutionAttempt, string snippetId)

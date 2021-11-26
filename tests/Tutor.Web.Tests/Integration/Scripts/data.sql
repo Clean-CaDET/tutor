@@ -210,3 +210,22 @@ INSERT INTO public."ArrangeTaskContainers"(
 INSERT INTO public."ArrangeTaskElements"(
 	"Id", "ArrangeTaskContainerId", "Text")
 	VALUES (-5, -5, 'Uzima u obzir da li je lekar na bitnom sastanku u traženo vreme.');
+
+INSERT INTO public."AssessmentEvents"(
+	"Id", "KnowledgeComponentId")
+	VALUES (-211, -21);
+INSERT INTO public."Challenges"(
+	"Id", "Description", "Url", "TestSuiteLocation", "SolutionUrl")
+	VALUES (-211, 'Da imamo kratke metode ne treba da bude naš konačan cilj, već posledica praćenja dobrih praksi. Ipak, funkcija koja prevazilazi nekoliko desetina linija je dobar kandidat za refaktorisanje. U sklopu direktorijuma "Methods/01. Small Methods" ekstrahuj logički povezan kod tako da završiš sa kolekcijom sitnijih metoda čije ime jasno označava njihovu svrhu.', 'https://github.com/Clean-CaDET/challenge-repository', 'Methods.Small', 'https://youtu.be/79a8Zp6FBfU');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (-1, -211, 'Methods.Small.AchievementService');
+INSERT INTO public."BasicMetricCheckers"(
+	"Id")
+	VALUES (-1);
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-1, 'Ispitaj da li možeš datu funkciju da pojednostaviš reorganizacijom logike ili ekstrakcijom smislenog podskupa koda u funkciju kojoj možeš dati jasno ime.');
+INSERT INTO public."MetricRangeRules"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
+	VALUES (-1, 'MELOC', 1, 18, -1, -1);

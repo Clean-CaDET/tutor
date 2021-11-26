@@ -11,39 +11,31 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
         public List<MetricRangeRule> MetricRanges { get; private set; }
 
         private BasicMetricChecker() {}
-        public BasicMetricChecker(List<MetricRangeRule> metricRanges, string codeSnippetId, List<string> possibleRenames) : base(0, codeSnippetId, possibleRenames)
+        public BasicMetricChecker(List<MetricRangeRule> metricRanges, string codeSnippetId) : base(0, codeSnippetId)
         {
             MetricRanges = metricRanges;
         }
 
         public override HintDirectory EvaluateSubmission(CaDETProject solutionAttempt)
         {
-            var metrics = solutionAttempt.GetMetricsForCodeSnippet(CodeSnippetId);
-            if (metrics != null) return CheckMetricRangeRules(metrics);
+            var cadetClass = solutionAttempt.Classes.Find(c => c.FullName == CodeSnippetId);
+            if (cadetClass != null) return CheckClassMetricRanges(cadetClass);
 
-            if (PossibleRenames == null)
-                throw new Exception($"Solution attempt is missing class/method {CodeSnippetId}");
+            var memberMetrics = solutionAttempt.GetMetricsForCodeSnippet(CodeSnippetId);
+            if (memberMetrics != null) return CheckMetricRanges(memberMetrics);
 
-            foreach (var rename in PossibleRenames)
-            {
-                metrics = solutionAttempt.GetMetricsForCodeSnippet(rename);
-                if (metrics != null)
-                {
-                    return CheckMetricRangeRules(metrics);
-                }
-            }
-
-            throw new Exception($"Solution attempt is missing class/method {CodeSnippetId}");
+            throw new InvalidOperationException($"Solution attempt is missing class/method {CodeSnippetId}");
         }
 
-        public override List<ChallengeHint> GetAllHints()
+        private HintDirectory CheckClassMetricRanges(CaDETClass cadetClass)
         {
-            var challengeHints = new List<ChallengeHint>();
-            challengeHints.AddRange(MetricRanges.Select(c => c.Hint));
+            var challengeHints = new HintDirectory();
+            challengeHints.MergeHints(CheckMetricRanges(cadetClass.Metrics));
+            cadetClass.Members.ForEach(m => challengeHints.MergeHints(CheckMetricRanges(m.Metrics)));
             return challengeHints;
         }
 
-        private HintDirectory CheckMetricRangeRules(Dictionary<CaDETMetric, double> metrics)
+        private HintDirectory CheckMetricRanges(Dictionary<CaDETMetric, double> metrics)
         {
             var challengeHints = new HintDirectory();
             foreach (var metricRule in MetricRanges)
@@ -53,6 +45,11 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
                 challengeHints.AddHint(CodeSnippetId, result);
             }
             return challengeHints;
+        }
+
+        public override List<ChallengeHint> GetAllHints()
+        {
+            return MetricRanges.Select(c => c.Hint).ToList();
         }
     }
 }

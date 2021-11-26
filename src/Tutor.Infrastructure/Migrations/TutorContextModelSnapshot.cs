@@ -47,18 +47,18 @@ namespace Tutor.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("ArrangeTaskSubmissionId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ContainerId")
+                    b.Property<int>("ArrangeTaskContainerId")
                         .HasColumnType("integer");
 
                     b.Property<List<int>>("ElementIds")
                         .HasColumnType("integer[]");
 
+                    b.Property<int>("SubmissionId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ArrangeTaskSubmissionId");
+                    b.HasIndex("SubmissionId");
 
                     b.ToTable("ArrangeTaskContainerSubmissions");
                 });
@@ -452,7 +452,9 @@ namespace Tutor.Infrastructure.Migrations
                 {
                     b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTaskSubmission", null)
                         .WithMany("Containers")
-                        .HasForeignKey("ArrangeTaskSubmissionId");
+                        .HasForeignKey("SubmissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTaskElement", b =>

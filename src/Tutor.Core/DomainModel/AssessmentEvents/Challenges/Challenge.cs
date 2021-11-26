@@ -65,7 +65,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
         private static CaDETProject BuildCodeModel(string[] sourceCode)
         {
             var solutionAttempt = new CodeModelFactory().CreateProject(sourceCode);
-            if (solutionAttempt.Classes == null || solutionAttempt.Classes.Count == 0) throw new InvalidOperationException("Invalid submission.");
+            if (solutionAttempt.Classes == null || solutionAttempt.Classes.Count == 0) throw new ArgumentException("Invalid submission, no classes found.");
             return solutionAttempt;
         }
     }
