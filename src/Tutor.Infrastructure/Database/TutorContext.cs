@@ -62,13 +62,23 @@ namespace Tutor.Infrastructure.Database
             modelBuilder.Entity<Image>().ToTable("Images");
             modelBuilder.Entity<Video>().ToTable("Videos");
             modelBuilder.Entity<MRQ>().ToTable("MultiResponseQuestions");
-            modelBuilder.Entity<ArrangeTask>().ToTable("ArrangeTasks");
-
+            
+            ConfigureArrangeTask(modelBuilder);
             ConfigureChallenge(modelBuilder);
 
             modelBuilder.Entity<Learner>()
                 .OwnsOne(l => l.Workspace)
                 .Property(w => w.Path).HasColumnName("WorkspacePath");
+        }
+
+        private static void ConfigureArrangeTask(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ArrangeTask>().ToTable("ArrangeTasks");
+
+            modelBuilder.Entity<ArrangeTaskSubmission>()
+                .HasMany(at => at.Containers)
+                .WithOne()
+                .HasForeignKey("SubmissionId");
         }
 
         private static void ConfigureChallenge(ModelBuilder modelBuilder)

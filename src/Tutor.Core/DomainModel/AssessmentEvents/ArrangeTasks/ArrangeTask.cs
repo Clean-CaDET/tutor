@@ -28,7 +28,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
             var evaluations = new List<ArrangeTaskContainerEvaluation>();
             foreach (var container in Containers)
             {
-                var submittedContainer = containers.Find(c => c.Id == container.Id);
+                var submittedContainer = containers.Find(c => c.ArrangeTaskContainerId == container.Id);
                 if (submittedContainer == null) throw new ArgumentException("No ArrangeTaskContainer found with ID " + container.Id);
 
                 evaluations.Add(new ArrangeTaskContainerEvaluation(container,

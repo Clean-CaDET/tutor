@@ -16,7 +16,7 @@ namespace Tutor.Web.Tests.Integration.Domain
 
         [Theory]
         [MemberData(nameof(ATSubmissions))]
-        public void Submits_multiple_response_questions(ArrangeTaskSubmissionDTO submission, ArrangeTaskEvaluationDTO expectedEvaluation)
+        public void Submits_arrange_task(ArrangeTaskSubmissionDTO submission, ArrangeTaskEvaluationDTO expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(),
@@ -45,11 +45,11 @@ namespace Tutor.Web.Tests.Integration.Domain
                         AssessmentEventId = -2111,
                         Containers= new List<ArrangeTaskContainerSubmissionDTO>
                         {
-                            new() {Id = -1, ElementIds = new List<int> {-1, -2, -3}},
-                            new() {Id = -2},
-                            new() {Id = -3},
-                            new() {Id = -4, ElementIds = new List<int> {-4}},
-                            new() {Id = -5, ElementIds = new List<int> {-5}}
+                            new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1, -2, -3}},
+                            new() {ArrangeTaskContainerId = -2},
+                            new() {ArrangeTaskContainerId = -3},
+                            new() {ArrangeTaskContainerId = -4, ElementIds = new List<int> {-4}},
+                            new() {ArrangeTaskContainerId = -5, ElementIds = new List<int> {-5}}
                         }
                     },
                     new ArrangeTaskEvaluationDTO
@@ -71,11 +71,11 @@ namespace Tutor.Web.Tests.Integration.Domain
                         AssessmentEventId = -2111,
                         Containers= new List<ArrangeTaskContainerSubmissionDTO>
                         {
-                            new() {Id = -1, ElementIds = new List<int> {-1}},
-                            new() {Id = -2, ElementIds = new List<int> {-2}},
-                            new() {Id = -3, ElementIds = new List<int> {-3}},
-                            new() {Id = -4, ElementIds = new List<int> {-4}},
-                            new() {Id = -5, ElementIds = new List<int> {-5}}
+                            new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1}},
+                            new() {ArrangeTaskContainerId = -2, ElementIds = new List<int> {-2}},
+                            new() {ArrangeTaskContainerId = -3, ElementIds = new List<int> {-3}},
+                            new() {ArrangeTaskContainerId = -4, ElementIds = new List<int> {-4}},
+                            new() {ArrangeTaskContainerId = -5, ElementIds = new List<int> {-5}}
                         }
                     },
                     new ArrangeTaskEvaluationDTO
@@ -97,11 +97,11 @@ namespace Tutor.Web.Tests.Integration.Domain
                         AssessmentEventId = -2111,
                         Containers= new List<ArrangeTaskContainerSubmissionDTO>
                         {
-                            new() {Id = -1, ElementIds = new List<int> {-1, -2, -3, -4, -5}},
-                            new() {Id = -2},
-                            new() {Id = -3},
-                            new() {Id = -4},
-                            new() {Id = -5}
+                            new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1, -2, -3, -4, -5}},
+                            new() {ArrangeTaskContainerId = -2},
+                            new() {ArrangeTaskContainerId = -3},
+                            new() {ArrangeTaskContainerId = -4},
+                            new() {ArrangeTaskContainerId = -5}
                         }
                     },
                     new ArrangeTaskEvaluationDTO
@@ -123,11 +123,11 @@ namespace Tutor.Web.Tests.Integration.Domain
                         AssessmentEventId = -2111,
                         Containers= new List<ArrangeTaskContainerSubmissionDTO>
                         {
-                            new() {Id = -1},
-                            new() {Id = -2},
-                            new() {Id = -3},
-                            new() {Id = -4},
-                            new() {Id = -5}
+                            new() {ArrangeTaskContainerId = -1},
+                            new() {ArrangeTaskContainerId = -2},
+                            new() {ArrangeTaskContainerId = -3},
+                            new() {ArrangeTaskContainerId = -4},
+                            new() {ArrangeTaskContainerId = -5}
                         }
                     },
                     new ArrangeTaskEvaluationDTO
