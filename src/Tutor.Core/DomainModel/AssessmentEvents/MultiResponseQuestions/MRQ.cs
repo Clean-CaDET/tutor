@@ -9,14 +9,6 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions
         public string Text { get; private set; }
         public List<MRQItem> Items { get; private set; }
 
-        //TODO: See if we can remove these constructors, as we only have them because of tests.
-        private MRQ() {}
-        public MRQ(int id, int knowledgeComponentId, string text, List<MRQItem> items): base(id, knowledgeComponentId)
-        {
-            Text = text;
-            Items = items;
-        }
-
         public override Evaluation EvaluateSubmission(Submission submission)
         {
             if (submission is MRQSubmission mrqSubmission) return EvaluateMRQ(mrqSubmission);

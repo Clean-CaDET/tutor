@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
 {
@@ -9,13 +8,6 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
     {
         public string Text { get; private set; }
         public List<ArrangeTaskContainer> Containers { get; private set; }
-
-        private ArrangeTask() {}
-        public ArrangeTask(int id, int knowledgeComponentId, string text, List<ArrangeTaskContainer> containers) : base(id, knowledgeComponentId)
-        {
-            Text = text;
-            Containers = containers;
-        }
 
         public override Evaluation EvaluateSubmission(Submission submission)
         {

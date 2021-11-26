@@ -8,14 +8,14 @@ using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration
+namespace Tutor.Web.Tests.Integration.Domain
 {
-    public class SubmissionTests : BaseIntegrationTest
+    public class MRQTests : BaseIntegrationTest
     {
-        public SubmissionTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
+        public MRQTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
         [Theory]
-        [MemberData(nameof(InstructionalEvents))]
+        [MemberData(nameof(MRQSubmissions))]
         public void Submits_multiple_response_questions(MRQSubmissionDTO submission, MRQEvaluationDTO expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
@@ -34,7 +34,7 @@ namespace Tutor.Web.Tests.Integration
             }
         }
 
-        public static IEnumerable<object[]> InstructionalEvents()
+        public static IEnumerable<object[]> MRQSubmissions()
         {
             return new List<object[]>
             {
@@ -43,7 +43,6 @@ namespace Tutor.Web.Tests.Integration
                     new MRQSubmissionDTO
                     {
                         AssessmentEventId = -153,
-                        LearnerId = 0,
                         Answers = new List<MRQItemDTO>
                         {
                             new() {Id = -1531},
@@ -70,7 +69,6 @@ namespace Tutor.Web.Tests.Integration
                     new MRQSubmissionDTO
                     {
                         AssessmentEventId = -153,
-                        LearnerId = 0,
                         Answers = new List<MRQItemDTO>
                         {
                             new() {Id = -1532},
@@ -86,6 +84,24 @@ namespace Tutor.Web.Tests.Integration
                             new() {Id = -1533, SubmissionWasCorrect = true},
                             new() {Id = -1534, SubmissionWasCorrect = true},
                             new() {Id = -1535, SubmissionWasCorrect = true}
+                        }
+                    }
+                },
+                new object[]
+                {
+                    new MRQSubmissionDTO
+                    {
+                        AssessmentEventId = -153
+                    },
+                    new MRQEvaluationDTO
+                    {
+                        ItemEvaluations = new List<MRQItemEvaluationDTO>
+                        {
+                            new() {Id = -1531, SubmissionWasCorrect = true},
+                            new() {Id = -1532, SubmissionWasCorrect = false},
+                            new() {Id = -1533, SubmissionWasCorrect = true},
+                            new() {Id = -1534, SubmissionWasCorrect = true},
+                            new() {Id = -1535, SubmissionWasCorrect = false}
                         }
                     }
                 }

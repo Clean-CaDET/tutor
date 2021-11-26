@@ -11,7 +11,7 @@ using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration
+namespace Tutor.Web.Tests.Integration.Domain
 {
     public class KnowledgeComponentTests : BaseIntegrationTest
     {

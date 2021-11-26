@@ -8,7 +8,7 @@ using Tutor.Web.Controllers.Learners.DTOs;
 using Tutor.Web.IAM;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration
+namespace Tutor.Web.Tests.Integration.Learner
 {
     public class LearnerTests : BaseIntegrationTest
     {
