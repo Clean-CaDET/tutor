@@ -41,10 +41,7 @@ namespace Tutor.Web.Controllers.Domain.Mappers
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.FullAnswer.Id))
                 .ForMember(dest => dest.CorrectElements, opt => opt.MapFrom(src => src.FullAnswer.Elements));
             CreateMap<ArrangeTaskSubmissionDTO, ArrangeTaskSubmission>();
-            CreateMap<ArrangeTaskContainerDTO, ArrangeTaskContainerSubmission>()
-                .ForMember(dest => dest.ElementIds, opt => opt.MapFrom(src => src.Elements.Select(e => e.Id)))
-                .ForMember(dest => dest.ContainerId, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
+            CreateMap<ArrangeTaskContainerSubmissionDTO, ArrangeTaskContainerSubmission>();
         }
     }
 }

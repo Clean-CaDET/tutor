@@ -10,9 +10,9 @@ using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
 {
-    public class MRQTests : BaseIntegrationTest
+    public class SubmissionMRQTests : BaseIntegrationTest
     {
-        public MRQTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
+        public SubmissionMRQTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
         [Theory]
         [MemberData(nameof(MRQSubmissions))]

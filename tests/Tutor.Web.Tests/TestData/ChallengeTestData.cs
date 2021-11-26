@@ -105,11 +105,10 @@ namespace Methods.Small
 
         private static string[] GetCode(string path)
         {
-	        string classCode = File.ReadAllText("../../../TestData/" + path);
 	        return new[]
 	        {
-		        classCode
-	        };
+                File.ReadAllText("../../../TestData/" + path)
+            };
         }
     }
 }
