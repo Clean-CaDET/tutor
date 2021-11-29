@@ -6,13 +6,6 @@
         public int ArrangeTaskContainerId { get; private set; }
         public string Text { get; private set; }
 
-        public ArrangeTaskElement(int id, int arrangeTaskContainerId, string text)
-        {
-            Id = id;
-            ArrangeTaskContainerId = arrangeTaskContainerId;
-            Text = text;
-        }
-
         public override int GetHashCode()
         {
             return Id;

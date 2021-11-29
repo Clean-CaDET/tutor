@@ -40,6 +40,29 @@ namespace Tutor.Infrastructure.Migrations
                     b.ToTable("ArrangeTaskContainers");
                 });
 
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTaskContainerSubmission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("ArrangeTaskContainerId")
+                        .HasColumnType("integer");
+
+                    b.Property<List<int>>("ElementIds")
+                        .HasColumnType("integer[]");
+
+                    b.Property<int>("SubmissionId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubmissionId");
+
+                    b.ToTable("ArrangeTaskContainerSubmissions");
+                });
+
             modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTaskElement", b =>
                 {
                     b.Property<int>("Id")
@@ -141,7 +164,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.ToTable("MetricRangeRules");
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQAnswer", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -154,7 +177,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("MRQContainerId")
+                    b.Property<int>("MRQId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Text")
@@ -162,9 +185,39 @@ namespace Tutor.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MRQContainerId");
+                    b.HasIndex("MRQId");
 
-                    b.ToTable("MRQAnswers");
+                    b.ToTable("MRQItems");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Submission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("AssessmentEventId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsCorrect")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("LearnerId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Submissions");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Submission");
                 });
 
             modelBuilder.Entity("Tutor.Core.DomainModel.InstructionalEvents.InstructionalEvent", b =>
@@ -262,131 +315,6 @@ namespace Tutor.Infrastructure.Migrations
                     b.ToTable("Learners");
                 });
 
-            modelBuilder.Entity("Tutor.Core.ProgressModel.Feedback.LearningObjectFeedback", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("LearnerId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("LearningObjectId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LearningObjectFeedback");
-                });
-
-            modelBuilder.Entity("Tutor.Core.ProgressModel.Submissions.ArrangeTaskContainerSubmission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int?>("ArrangeTaskSubmissionId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ContainerId")
-                        .HasColumnType("integer");
-
-                    b.Property<List<int>>("ElementIds")
-                        .HasColumnType("integer[]");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ArrangeTaskSubmissionId");
-
-                    b.ToTable("ArrangeTaskContainerSubmissions");
-                });
-
-            modelBuilder.Entity("Tutor.Core.ProgressModel.Submissions.ArrangeTaskSubmission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("ArrangeTaskId")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsCorrect")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("LearnerId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ArrangeTaskSubmissions");
-                });
-
-            modelBuilder.Entity("Tutor.Core.ProgressModel.Submissions.ChallengeSubmission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("ChallengeId")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("IsCorrect")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("LearnerId")
-                        .HasColumnType("integer");
-
-                    b.Property<string[]>("SourceCode")
-                        .HasColumnType("text[]");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ChallengeSubmissions");
-                });
-
-            modelBuilder.Entity("Tutor.Core.ProgressModel.Submissions.QuestionSubmission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<bool>("IsCorrect")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("LearnerId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("integer");
-
-                    b.Property<List<int>>("SubmittedAnswerIds")
-                        .HasColumnType("integer[]");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("QuestionSubmissions");
-                });
-
             modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTask", b =>
                 {
                     b.HasBaseType("Tutor.Core.DomainModel.AssessmentEvents.AssessmentEvent");
@@ -416,7 +344,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.ToTable("Challenges");
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQContainer", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQ", b =>
                 {
                     b.HasBaseType("Tutor.Core.DomainModel.AssessmentEvents.AssessmentEvent");
 
@@ -449,6 +377,33 @@ namespace Tutor.Infrastructure.Migrations
                     b.HasIndex("HintId");
 
                     b.ToTable("BasicNameCheckers");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTaskSubmission", b =>
+                {
+                    b.HasBaseType("Tutor.Core.DomainModel.AssessmentEvents.Submission");
+
+                    b.HasDiscriminator().HasValue("ArrangeTaskSubmission");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.ChallengeSubmission", b =>
+                {
+                    b.HasBaseType("Tutor.Core.DomainModel.AssessmentEvents.Submission");
+
+                    b.Property<string[]>("SourceCode")
+                        .HasColumnType("text[]");
+
+                    b.HasDiscriminator().HasValue("ChallengeSubmission");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQSubmission", b =>
+                {
+                    b.HasBaseType("Tutor.Core.DomainModel.AssessmentEvents.Submission");
+
+                    b.Property<List<int>>("SubmittedAnswerIds")
+                        .HasColumnType("integer[]");
+
+                    b.HasDiscriminator().HasValue("MRQSubmission");
                 });
 
             modelBuilder.Entity("Tutor.Core.DomainModel.InstructionalEvents.Image", b =>
@@ -493,6 +448,15 @@ namespace Tutor.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTaskContainerSubmission", b =>
+                {
+                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTaskSubmission", null)
+                        .WithMany("Containers")
+                        .HasForeignKey("SubmissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTaskElement", b =>
                 {
                     b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTaskContainer", null)
@@ -522,11 +486,11 @@ namespace Tutor.Infrastructure.Migrations
                     b.Navigation("Hint");
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQAnswer", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQItem", b =>
                 {
-                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQContainer", null)
-                        .WithMany("PossibleAnswers")
-                        .HasForeignKey("MRQContainerId")
+                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQ", null)
+                        .WithMany("Items")
+                        .HasForeignKey("MRQId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -562,13 +526,6 @@ namespace Tutor.Infrastructure.Migrations
                     b.Navigation("Workspace");
                 });
 
-            modelBuilder.Entity("Tutor.Core.ProgressModel.Submissions.ArrangeTaskContainerSubmission", b =>
-                {
-                    b.HasOne("Tutor.Core.ProgressModel.Submissions.ArrangeTaskSubmission", null)
-                        .WithMany("Containers")
-                        .HasForeignKey("ArrangeTaskSubmissionId");
-                });
-
             modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTask", b =>
                 {
                     b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.AssessmentEvent", null)
@@ -587,11 +544,11 @@ namespace Tutor.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQContainer", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQ", b =>
                 {
                     b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.AssessmentEvent", null)
                         .WithOne()
-                        .HasForeignKey("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQContainer", "Id")
+                        .HasForeignKey("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQ", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -657,11 +614,6 @@ namespace Tutor.Infrastructure.Migrations
                     b.Navigation("KnowledgeComponents");
                 });
 
-            modelBuilder.Entity("Tutor.Core.ProgressModel.Submissions.ArrangeTaskSubmission", b =>
-                {
-                    b.Navigation("Containers");
-                });
-
             modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTask", b =>
                 {
                     b.Navigation("Containers");
@@ -672,14 +624,19 @@ namespace Tutor.Infrastructure.Migrations
                     b.Navigation("FulfillmentStrategies");
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQContainer", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQ", b =>
                 {
-                    b.Navigation("PossibleAnswers");
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker.BasicMetricChecker", b =>
                 {
                     b.Navigation("MetricRanges");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTaskSubmission", b =>
+                {
+                    b.Navigation("Containers");
                 });
 #pragma warning restore 612, 618
         }

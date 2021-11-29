@@ -16,14 +16,13 @@ using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.InstructorModel.Instructors;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.Workspaces;
-using Tutor.Core.ProgressModel.Feedback;
-using Tutor.Core.ProgressModel.Submissions;
 using Tutor.Infrastructure;
 using Tutor.Infrastructure.Database.Repositories.Domain;
 using Tutor.Infrastructure.Database.Repositories.Learners;
-using Tutor.Infrastructure.Database.Repositories.Progress;
 using Tutor.Infrastructure.Security;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTask;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenge;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
 using Tutor.Web.IAM;
 using Tutor.Web.IAM.Keycloak;
@@ -80,6 +79,7 @@ namespace Tutor.Web
             services.AddScoped<IKCService, KCService>();
             services.AddScoped<IKCRepository, KCDatabaseRepository>();
             services.AddScoped<IAssessmentEventRepository, AssessmentEventDatabaseRepository>();
+            services.AddScoped<ISubmissionService, SubmissionService>();
 
             services.AddScoped<IInstructor, DefaultInstructor>();
 
@@ -87,11 +87,6 @@ namespace Tutor.Web
             services.Configure<WorkspaceOptions>(Configuration.GetSection(WorkspaceOptions.ConfigKey));
             services.AddScoped<IWorkspaceCreator, NoWorkspaceCreator>();
             services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
-
-            services.AddScoped<ISubmissionService, SubmissionService>();
-            services.AddScoped<ISubmissionRepository, SubmissionDatabaseRepository>();
-            services.AddScoped<IFeedbackService, FeedbackService>();
-            services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
 
             services.AddScoped<IAuthProvider, KeycloakAuthProvider>();
 

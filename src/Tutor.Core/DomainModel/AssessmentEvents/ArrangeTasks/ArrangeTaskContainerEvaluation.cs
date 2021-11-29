@@ -2,8 +2,8 @@
 {
     public class ArrangeTaskContainerEvaluation
     {
-        public ArrangeTaskContainer FullAnswer { get; private set; }
-        public bool SubmissionWasCorrect { get; private set; }
+        public ArrangeTaskContainer FullAnswer { get; }
+        public bool SubmissionWasCorrect { get; }
 
         public ArrangeTaskContainerEvaluation(ArrangeTaskContainer fullAnswer, bool submissionWasCorrect)
         {

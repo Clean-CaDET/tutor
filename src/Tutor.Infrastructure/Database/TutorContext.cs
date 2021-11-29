@@ -9,8 +9,6 @@ using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 using Tutor.Core.DomainModel.InstructionalEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel.Learners;
-using Tutor.Core.ProgressModel.Feedback;
-using Tutor.Core.ProgressModel.Submissions;
 
 namespace Tutor.Infrastructure.Database
 {
@@ -27,8 +25,8 @@ namespace Tutor.Infrastructure.Database
         public DbSet<Video> Videos { get; set; }
         //TODO: Examine which DbSets we don't need directly and remove them, while configuring EFCore to generate the tables.
         //TODO: Enable value object storing to remove the appropriate tables - e.g. MRQAnswer, ATContainer and ATElement
-        public DbSet<MRQContainer> MultiResponseQuestions { get; set; }
-        public DbSet<MRQAnswer> MRQAnswers { get; set; }
+        public DbSet<MRQ> MultiResponseQuestions { get; set; }
+        public DbSet<MRQItem> MRQItems { get; set; }
         public DbSet<ArrangeTask> ArrangeTasks { get; set; }
         public DbSet<ArrangeTaskContainer> ArrangeTaskContainers { get; set; }
         public DbSet<ArrangeTaskElement> ArrangeTaskElements { get; set; }
@@ -41,13 +39,13 @@ namespace Tutor.Infrastructure.Database
 
         #endregion
 
-        #region Progress Model
+        #region Submissions
 
+        public DbSet<Submission> Submissions { get; set; }
         public DbSet<ArrangeTaskSubmission> ArrangeTaskSubmissions { get; set; }
         public DbSet<ArrangeTaskContainerSubmission> ArrangeTaskContainerSubmissions { get; set; }
         public DbSet<ChallengeSubmission> ChallengeSubmissions { get; set; }
-        public DbSet<QuestionSubmission> QuestionSubmissions { get; set; }
-        public DbSet<LearningObjectFeedback> LearningObjectFeedback { get; set; }
+        public DbSet<MRQSubmission> MRQSubmissions { get; set; }
 
         #endregion
 
@@ -63,14 +61,24 @@ namespace Tutor.Infrastructure.Database
             modelBuilder.Entity<Text>().ToTable("Texts");
             modelBuilder.Entity<Image>().ToTable("Images");
             modelBuilder.Entity<Video>().ToTable("Videos");
-            modelBuilder.Entity<MRQContainer>().ToTable("MultiResponseQuestions");
-            modelBuilder.Entity<ArrangeTask>().ToTable("ArrangeTasks");
-
+            modelBuilder.Entity<MRQ>().ToTable("MultiResponseQuestions");
+            
+            ConfigureArrangeTask(modelBuilder);
             ConfigureChallenge(modelBuilder);
 
             modelBuilder.Entity<Learner>()
                 .OwnsOne(l => l.Workspace)
                 .Property(w => w.Path).HasColumnName("WorkspacePath");
+        }
+
+        private static void ConfigureArrangeTask(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ArrangeTask>().ToTable("ArrangeTasks");
+
+            modelBuilder.Entity<ArrangeTaskSubmission>()
+                .HasMany(at => at.Containers)
+                .WithOne()
+                .HasForeignKey("SubmissionId");
         }
 
         private static void ConfigureChallenge(ModelBuilder modelBuilder)

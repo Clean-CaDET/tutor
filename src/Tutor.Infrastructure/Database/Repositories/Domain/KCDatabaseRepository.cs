@@ -32,7 +32,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
         {
             var query = _dbContext.AssessmentEvents
                 .Where(ae => ae.KnowledgeComponentId == id)
-                .Include(ae => (ae as MRQContainer).PossibleAnswers)
+                .Include(ae => (ae as MRQ).Items)
                 .Include(lo => (lo as ArrangeTask).Containers)
                 .ThenInclude(c => c.Elements);
             return query.ToList();

@@ -2,10 +2,8 @@
 using CodeModel.CaDETModel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FunctionalityTester;
-using Tutor.Core.DomainModel.InstructionalEvents;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
 {
@@ -23,9 +21,15 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
             FulfillmentStrategies = fulfillmentStrategies;
         }
 
-        public ChallengeEvaluation CheckChallengeFulfillment(string[] solutionAttempt, IFunctionalityTester tester)
+        public override Evaluation EvaluateSubmission(Submission submission)
         {
-            CaDETProject solution = BuildCaDETModel(solutionAttempt);
+            if (submission is ChallengeSubmission challengeSubmission) return EvaluateChallenge(challengeSubmission.SourceCode, null);
+            throw new ArgumentException("Incorrect submission supplied to challenge with ID " + Id);
+        }
+
+        public ChallengeEvaluation EvaluateChallenge(string[] solutionAttempt, IFunctionalityTester tester)
+        {
+            CaDETProject solution = BuildCodeModel(solutionAttempt);
             
             var errorEvaluation = CheckSyntaxErrors(solution.SyntaxErrors);
             if (errorEvaluation != null) return errorEvaluation;
@@ -40,37 +44,29 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
         {
             if (syntaxErrors.Count == 0) return null;
 
-            var evaluation = new ChallengeEvaluation(Id);
+            var evaluation = new ChallengeEvaluation(Id, 0, null);
             evaluation.ApplicableHints.AddHint("SYNTAX ERRORS", new ChallengeHint(1, string.Join("\n", syntaxErrors)));
             return evaluation;
         }
 
         private ChallengeEvaluation StrategyEvaluation(CaDETProject solution)
         {
-            var evaluation = new ChallengeEvaluation(Id);
+            var hints = new HintDirectory();
             foreach (var strategy in FulfillmentStrategies)
             {
+                //TODO: Calculate correctness.
                 var result = strategy.EvaluateSubmission(solution);
-                evaluation.ApplicableHints.MergeHints(result);
+                hints.MergeHints(result);
             }
-
-            if (!evaluation.ApplicableHints.IsEmpty()) return evaluation;
-            evaluation.ChallengeCompleted = true;
-            evaluation.ApplicableHints.AddAllHints(GetAllChallengeHints());
-
-            return evaluation;
+            //TODO: Pass calculated correctness.
+            return hints.IsEmpty() ? new ChallengeEvaluation(Id, 1, null) : new ChallengeEvaluation(Id, 0, hints);
         }
 
-        private static CaDETProject BuildCaDETModel(string[] sourceCode)
+        private static CaDETProject BuildCodeModel(string[] sourceCode)
         {
             var solutionAttempt = new CodeModelFactory().CreateProject(sourceCode);
-            if (solutionAttempt.Classes == null || solutionAttempt.Classes.Count == 0) throw new InvalidOperationException("Invalid submission.");
+            if (solutionAttempt.Classes == null || solutionAttempt.Classes.Count == 0) throw new ArgumentException("Invalid submission, no classes found.");
             return solutionAttempt;
-        }
-
-        private List<ChallengeHint> GetAllChallengeHints()
-        {
-            return FulfillmentStrategies.SelectMany(s => s.GetAllHints().Where(h => h != null)).ToList();
         }
     }
 }

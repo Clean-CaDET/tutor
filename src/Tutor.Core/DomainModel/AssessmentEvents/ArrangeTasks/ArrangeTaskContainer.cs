@@ -10,15 +10,6 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
         public string Title { get; private set; }
         public List<ArrangeTaskElement> Elements { get; private set; }
 
-        private ArrangeTaskContainer() {}
-        public ArrangeTaskContainer(int id, int arrangeTaskId, string title, List<ArrangeTaskElement> elements): this()
-        {
-            Id = id;
-            ArrangeTaskId = arrangeTaskId;
-            Title = title;
-            Elements = elements;
-        }
-
         public bool IsCorrectSubmission(List<int> elementIds)
         {
             return elementIds.Count == Elements.Count

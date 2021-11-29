@@ -44,9 +44,9 @@ namespace Methods.Small
 @"using System;
 namespace Methods.Small
 {
-   class PaymentClass
+   class Payment
    {
-       public int Cost { get; set; }
+       public int CostClass { get; set; }
        public bool IsExtra { get; set; }
    }
 }",

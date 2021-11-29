@@ -23,26 +23,25 @@ namespace Tutor.Core.Tests.Unit
                         new(33701, "CLOC", 3, 30, new ChallengeHint(337001)),
                         new(33702, "NMD", 0, 2, new ChallengeHint(5))
                     },
-                    "Methods.Small.PaymentService", null),
+                    "Methods.Small.PaymentService"),
                 new(
                     new List<MetricRangeRule>
                     {
                         new(33701, "CLOC", 3, 30, new ChallengeHint(337001)),
                         new(33702, "NMD", 0, 2, new ChallengeHint(5))
                     },
-                    "Methods.Small.Payment", new List<string> { "Methods.Small.PaymentClass" }),
+                    "Methods.Small.PaymentClass"),
                 new(new List<MetricRangeRule>
                     {
                         new(33703, "MELOC", 2, 5, new ChallengeHint(337002)),
                         new(33704, "NOP", 2, 4, new ChallengeHint(6))
-                    }, "Methods.Small.PaymentService.CreatePayment(int, int)", null
+                    }, "Methods.Small.PaymentService.CreatePayment(int, int)"
                 ),
                 new(new List<MetricRangeRule>
                     {
                         new(33703, "MELOC", 2, 5, new ChallengeHint(337002)),
                         new(33704, "NOP", 2, 4, new ChallengeHint(6))
-                    }, "Methods.Small.PaymentService.PrintPaymentDetails(int, int)",
-                    new List<string> { "Methods.Small.PaymentService.PrintPaymentDetails(int)" }
+                    }, "Methods.Small.PaymentService"
                 )
             };
         }

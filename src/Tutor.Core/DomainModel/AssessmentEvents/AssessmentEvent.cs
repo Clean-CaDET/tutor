@@ -1,6 +1,6 @@
 ﻿namespace Tutor.Core.DomainModel.AssessmentEvents
 {
-    public class AssessmentEvent
+    public abstract class AssessmentEvent
     {
         public int Id { get; private set; }
         public int KnowledgeComponentId { get; private set; }
@@ -12,5 +12,7 @@
             Id = id;
             KnowledgeComponentId = knowledgeComponentId;
         }
+
+        public abstract Evaluation EvaluateSubmission(Submission submission);
     }
 }
