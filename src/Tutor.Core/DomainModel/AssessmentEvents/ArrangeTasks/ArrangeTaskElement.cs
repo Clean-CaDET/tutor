@@ -1,6 +1,6 @@
 ﻿namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
 {
-    public class ArrangeTaskElement
+    public sealed class ArrangeTaskElement
     {
         public int Id { get; private set; }
         public int ArrangeTaskContainerId { get; private set; }
@@ -11,7 +11,7 @@
             return Id;
         }
 
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             return Equals(obj as ArrangeTaskElement);
         }

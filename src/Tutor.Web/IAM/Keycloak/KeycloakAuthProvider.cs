@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -12,22 +13,19 @@ namespace Tutor.Web.IAM.Keycloak
     public class KeycloakAuthProvider : IAuthProvider
     {
         private readonly string _loginPath =
-            System.Environment.GetEnvironmentVariable("KEYCLOAK_LOGIN_PATH") ??
-            "http://localhost:8080/auth/realms/master/protocol/openid-connect/token";
+            Environment.GetEnvironmentVariable("KEYCLOAK_LOGIN_PATH");
 
         private readonly string _registerPath =
-            System.Environment.GetEnvironmentVariable("KEYCLOAK_REGISTER_PATH") ??
-            "http://localhost:8080/auth/admin/realms/master/users";
+            Environment.GetEnvironmentVariable("KEYCLOAK_REGISTER_PATH");
 
         private readonly string _allUsersPath =
-            System.Environment.GetEnvironmentVariable("KEYCLOAK_ALL_USERS_PATH") ??
-            "http://localhost:8080/auth/admin/realms/master/users";
+            Environment.GetEnvironmentVariable("KEYCLOAK_ALL_USERS_PATH");
 
         private readonly string _adminUsername =
-            EnvironmentConnection.GetSecret("KEYCLOAK_ADMIN_USERNAME") ?? "admin";
+            EnvironmentConnection.GetSecret("KEYCLOAK_ADMIN_USERNAME");
 
         private readonly string _adminPassword =
-            EnvironmentConnection.GetSecret("KEYCLOAK_ADMIN_PASSWORD") ?? "admin";
+            EnvironmentConnection.GetSecret("KEYCLOAK_ADMIN_PASSWORD");
 
         public async Task<Learner> Register(Learner learner)
         {

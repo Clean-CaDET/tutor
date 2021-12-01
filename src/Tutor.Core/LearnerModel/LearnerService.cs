@@ -15,15 +15,15 @@ namespace Tutor.Core.LearnerModel
             _workspaceCreator = workspaceCreator;
         }
 
-        public Result<Learner> Register(Learner newLearner)
+        public Result<Learner> Register(Learner learner)
         {
-            if (_learnerRepository.GetByIndex(newLearner.StudentIndex) != null)
-                return Result.Fail("Learner with index " + newLearner.StudentIndex + " is already registered.");
+            if (_learnerRepository.GetByIndex(learner.StudentIndex) != null)
+                return Result.Fail("Learner with index " + learner.StudentIndex + " is already registered.");
             
-            var learner = _learnerRepository.Save(newLearner);
-            CreateWorkspace(learner);
+            var savedLearner = _learnerRepository.Save(learner);
+            CreateWorkspace(savedLearner);
 
-            return Result.Ok(learner);
+            return Result.Ok(savedLearner);
         }
 
         public Result<Learner> Login(string studentIndex)
