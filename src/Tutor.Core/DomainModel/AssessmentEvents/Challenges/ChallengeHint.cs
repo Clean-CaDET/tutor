@@ -1,6 +1,6 @@
 ﻿namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
 {
-    public class ChallengeHint
+    public sealed class ChallengeHint
     {
         public int Id { get; private set; }
         public string Content { get; private set; }
@@ -21,7 +21,7 @@
             return Id;
         }
 
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             return Equals(obj as ChallengeHint);
         }

@@ -18,10 +18,10 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             _dbContext = dbContext;
         }
 
-        public AssessmentEvent GetAssessmentEvent(int id)
+        public AssessmentEvent GetAssessmentEvent(int assessmentEventId)
         {
             return _dbContext.AssessmentEvents
-                .Where(ae => ae.Id == id)
+                .Where(ae => ae.Id == assessmentEventId)
                 .Include(ae => (ae as MRQ).Items)
                 .Include(ae => (ae as ArrangeTask).Containers)
                 .ThenInclude(c => c.Elements)

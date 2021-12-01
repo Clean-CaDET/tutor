@@ -46,7 +46,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             return caDETMember != null ? GetMemberNames(caDETMember) : null;
         }
 
-        private List<string> GetClassNames(CaDETClass caDETClass)
+        private static List<string> GetClassNames(CaDETClass caDETClass)
         {
             var names = new List<string> { caDETClass.Name };
             names.AddRange(caDETClass.Fields.Select(f => f.Name));
@@ -54,7 +54,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             return names;
         }
 
-        private List<string> GetMemberNames(CaDETMember member)
+        private static List<string> GetMemberNames(CaDETMember member)
         {
             var memberNames = new List<string> { member.Name };
             memberNames.AddRange(member.Variables.Select(v => v.Name));
@@ -75,20 +75,15 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             if (BannedWords == null || BannedWords.Count == 0) return null;
 
             var hints = new HintDirectory();
-            if (ContainsBannedName(usedNames))
+            if (ContainsBannedWords(usedNames))
                 hints.AddHint(CodeSnippetId, Hint);
 
             return hints;
         }
 
-        private bool ContainsBannedName(List<string> names)
+        private bool ContainsBannedWords(List<string> names)
         {
-            foreach (var word in names.SelectMany(GetWordsFromName))
-            {
-                if (BannedWords.Contains(word, StringComparer.OrdinalIgnoreCase)) return true;
-            }
-
-            return false;
+            return names.SelectMany(GetWordsFromName).Any(word => BannedWords.Contains(word, StringComparer.OrdinalIgnoreCase));
         }
 
         private HintDirectory EvaluateRequiredWords(List<string> usedNames)
@@ -119,7 +114,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             return allWords.Distinct().ToArray();
         }
 
-        private List<string> GetSyntagmFromName(string name, string[] words)
+        private static List<string> GetSyntagmFromName(string name, string[] words)
         {
             List<string> syntagms = new List<string>();
             int startLength = 0;
