@@ -44,6 +44,5 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
         {
             return names.SelectMany(WordExtractor.GetWordsFromName).Any(word => BannedWords.Contains(word, StringComparer.OrdinalIgnoreCase));
         }
-
     }
 }
