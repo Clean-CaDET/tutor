@@ -361,7 +361,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.ToTable("BasicMetricCheckers");
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker.BasicNameChecker", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker.BannedWordsChecker", b =>
                 {
                     b.HasBaseType("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.ChallengeFulfillmentStrategy");
 
@@ -371,12 +371,24 @@ namespace Tutor.Infrastructure.Migrations
                     b.Property<int?>("HintId")
                         .HasColumnType("integer");
 
+                    b.HasIndex("HintId");
+
+                    b.ToTable("BannedWordsCheckers");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker.RequiredWordsChecker", b =>
+                {
+                    b.HasBaseType("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.ChallengeFulfillmentStrategy");
+
+                    b.Property<int?>("HintId")
+                        .HasColumnType("integer");
+
                     b.Property<List<string>>("RequiredWords")
                         .HasColumnType("text[]");
 
                     b.HasIndex("HintId");
 
-                    b.ToTable("BasicNameCheckers");
+                    b.ToTable("RequiredWordsCheckers");
                 });
 
             modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks.ArrangeTaskSubmission", b =>
@@ -562,7 +574,7 @@ namespace Tutor.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker.BasicNameChecker", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker.BannedWordsChecker", b =>
                 {
                     b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.Challenges.ChallengeHint", "Hint")
                         .WithMany()
@@ -570,7 +582,22 @@ namespace Tutor.Infrastructure.Migrations
 
                     b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.ChallengeFulfillmentStrategy", null)
                         .WithOne()
-                        .HasForeignKey("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker.BasicNameChecker", "Id")
+                        .HasForeignKey("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker.BannedWordsChecker", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hint");
+                });
+
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker.RequiredWordsChecker", b =>
+                {
+                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.Challenges.ChallengeHint", "Hint")
+                        .WithMany()
+                        .HasForeignKey("HintId");
+
+                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.ChallengeFulfillmentStrategy", null)
+                        .WithOne()
+                        .HasForeignKey("Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker.RequiredWordsChecker", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

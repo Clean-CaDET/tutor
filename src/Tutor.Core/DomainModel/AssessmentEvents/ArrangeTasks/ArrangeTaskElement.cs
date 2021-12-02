@@ -1,6 +1,8 @@
-﻿namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
+﻿using System;
+
+namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
 {
-    public sealed class ArrangeTaskElement
+    public sealed class ArrangeTaskElement : IEquatable<ArrangeTaskElement>
     {
         public int Id { get; private set; }
         public int ArrangeTaskContainerId { get; private set; }

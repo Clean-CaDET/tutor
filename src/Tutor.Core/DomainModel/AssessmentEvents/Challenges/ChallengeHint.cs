@@ -1,6 +1,8 @@
-﻿namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
+﻿using System;
+
+namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
 {
-    public sealed class ChallengeHint
+    public sealed class ChallengeHint : IEquatable<ChallengeHint>
     {
         public int Id { get; private set; }
         public string Content { get; private set; }

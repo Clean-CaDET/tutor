@@ -354,6 +354,32 @@ namespace Tutor.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BannedWordsCheckers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    BannedWords = table.Column<List<string>>(type: "text[]", nullable: true),
+                    HintId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BannedWordsCheckers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BannedWordsCheckers_ChallengeFulfillmentStrategies_Id",
+                        column: x => x.Id,
+                        principalTable: "ChallengeFulfillmentStrategies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BannedWordsCheckers_ChallengeHints_HintId",
+                        column: x => x.HintId,
+                        principalTable: "ChallengeHints",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BasicMetricCheckers",
                 columns: table => new
                 {
@@ -372,26 +398,25 @@ namespace Tutor.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BasicNameCheckers",
+                name: "RequiredWordsCheckers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    BannedWords = table.Column<List<string>>(type: "text[]", nullable: true),
                     RequiredWords = table.Column<List<string>>(type: "text[]", nullable: true),
                     HintId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BasicNameCheckers", x => x.Id);
+                    table.PrimaryKey("PK_RequiredWordsCheckers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BasicNameCheckers_ChallengeFulfillmentStrategies_Id",
+                        name: "FK_RequiredWordsCheckers_ChallengeFulfillmentStrategies_Id",
                         column: x => x.Id,
                         principalTable: "ChallengeFulfillmentStrategies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BasicNameCheckers_ChallengeHints_HintId",
+                        name: "FK_RequiredWordsCheckers_ChallengeHints_HintId",
                         column: x => x.HintId,
                         principalTable: "ChallengeHints",
                         principalColumn: "Id",
@@ -443,8 +468,8 @@ namespace Tutor.Infrastructure.Migrations
                 column: "ArrangeTaskContainerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BasicNameCheckers_HintId",
-                table: "BasicNameCheckers",
+                name: "IX_BannedWordsCheckers_HintId",
+                table: "BannedWordsCheckers",
                 column: "HintId");
 
             migrationBuilder.CreateIndex(
@@ -471,6 +496,11 @@ namespace Tutor.Infrastructure.Migrations
                 name: "IX_MrqItems_MrqId",
                 table: "MrqItems",
                 column: "MrqId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RequiredWordsCheckers_HintId",
+                table: "RequiredWordsCheckers",
+                column: "HintId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -482,7 +512,7 @@ namespace Tutor.Infrastructure.Migrations
                 name: "ArrangeTaskElements");
 
             migrationBuilder.DropTable(
-                name: "BasicNameCheckers");
+                name: "BannedWordsCheckers");
 
             migrationBuilder.DropTable(
                 name: "Images");
@@ -503,6 +533,9 @@ namespace Tutor.Infrastructure.Migrations
                 name: "MrqItems");
 
             migrationBuilder.DropTable(
+                name: "RequiredWordsCheckers");
+
+            migrationBuilder.DropTable(
                 name: "Texts");
 
             migrationBuilder.DropTable(
@@ -521,10 +554,10 @@ namespace Tutor.Infrastructure.Migrations
                 name: "BasicMetricCheckers");
 
             migrationBuilder.DropTable(
-                name: "ChallengeHints");
+                name: "MultiResponseQuestions");
 
             migrationBuilder.DropTable(
-                name: "MultiResponseQuestions");
+                name: "ChallengeHints");
 
             migrationBuilder.DropTable(
                 name: "InstructionalEvents");

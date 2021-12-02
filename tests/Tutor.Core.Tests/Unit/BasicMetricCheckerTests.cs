@@ -30,7 +30,7 @@ namespace Tutor.Core.Tests.Unit
                         new(33701, "CLOC", 3, 30, new ChallengeHint(337001)),
                         new(33702, "NMD", 0, 2, new ChallengeHint(5))
                     },
-                    "Methods.Small.PaymentClass"),
+                    "Methods.Small.Payment"),
                 new(new List<MetricRangeRule>
                     {
                         new(33703, "MELOC", 2, 5, new ChallengeHint(337002)),
@@ -69,7 +69,6 @@ namespace Tutor.Core.Tests.Unit
             {
                 new object[]
                 {
-                    //TODO: Find better names for these methods and add more test data and more thorough HintDirectory evaluation (probably separate tests for MetricRangeRules and HintDirectory)
                     ChallengeTestData.GetTwoPassingClasses(),
                     new List<ChallengeHint>()
                 },

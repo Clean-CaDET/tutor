@@ -1,8 +1,5 @@
-﻿using System;
+﻿using CodeModel.CaDETModel.CodeItems;
 using System.Collections.Generic;
-using System.Linq;
-using CodeModel.CaDETModel;
-using CodeModel.CaDETModel.CodeItems;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker
 {
@@ -16,40 +13,29 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             MetricRanges = metricRanges;
         }
 
-        public override HintDirectory EvaluateSubmission(CaDETProject solutionAttempt)
+        protected override HintDirectory EvaluateClass(CaDETClass solutionAttempt)
         {
-            var cadetClass = solutionAttempt.Classes.Find(c => c.FullName == CodeSnippetId);
-            if (cadetClass != null) return CheckClassMetricRanges(cadetClass);
-
-            var memberMetrics = solutionAttempt.GetMetricsForCodeSnippet(CodeSnippetId);
-            if (memberMetrics != null) return CheckMetricRanges(memberMetrics);
-
-            throw new InvalidOperationException($"Solution attempt is missing class/method {CodeSnippetId}");
+            var hints = new HintDirectory();
+            hints.MergeHints(CheckMetricRanges(solutionAttempt.Metrics, solutionAttempt.FullName));
+            solutionAttempt.Members.ForEach(m => hints.MergeHints(EvaluateMember(m)));
+            return hints;
         }
 
-        private HintDirectory CheckClassMetricRanges(CaDETClass cadetClass)
+        protected override HintDirectory EvaluateMember(CaDETMember solutionAttempt)
         {
-            var challengeHints = new HintDirectory();
-            challengeHints.MergeHints(CheckMetricRanges(cadetClass.Metrics));
-            cadetClass.Members.ForEach(m => challengeHints.MergeHints(CheckMetricRanges(m.Metrics)));
-            return challengeHints;
+            return CheckMetricRanges(solutionAttempt.Metrics, solutionAttempt.Signature());
         }
 
-        private HintDirectory CheckMetricRanges(Dictionary<CaDETMetric, double> metrics)
+        private HintDirectory CheckMetricRanges(Dictionary<CaDETMetric, double> metrics, string codeSnippetId)
         {
             var challengeHints = new HintDirectory();
             foreach (var metricRule in MetricRanges)
             {
                 var result = metricRule.Evaluate(metrics);
                 if (result == null) continue;
-                challengeHints.AddHint(CodeSnippetId, result);
+                challengeHints.AddHint(codeSnippetId, result);
             }
             return challengeHints;
-        }
-
-        public override List<ChallengeHint> GetAllHints()
-        {
-            return MetricRanges.Select(c => c.Hint).ToList();
         }
     }
 }

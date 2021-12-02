@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Tutor.Core.Tests.Unit
 {
-    public class BasicNameCheckerTests
+    public class BannedWordsCheckerTests
     {
         [Theory]
         [MemberData(nameof(ChallengeTest))]
@@ -17,24 +17,10 @@ namespace Tutor.Core.Tests.Unit
         {
             var challenge = new Challenge(1, 1, new List<ChallengeFulfillmentStrategy>
             {
-                new BasicNameChecker(null, new List<string> { "PaymentService" },
-                    new ChallengeHint(11),
-                    "Methods.Small.PaymentService"),
-                new BasicNameChecker(null, new List<string> { "Payment", "compensation" },
-                    new ChallengeHint(11),
-                    "Methods.Small.PaymentService.CreatePayment(int, int)"),
-                new BasicNameChecker(new List<string>
+                new BannedWordsChecker(new List<string>
                 {
-                    "Class", "Method"
-                }, null, new ChallengeHint(21), "Methods.Small.Payment"),
-                new BasicNameChecker(new List<string>
-                {
-                    "Class", "Method"
-                }, null, new ChallengeHint(21), "Methods.Small.PaymentService"),
-                new BasicNameChecker(new List<string>
-                {
-                    "Class", "List", "Method"
-                }, null, new ChallengeHint(21), "Methods.Small.PaymentService.CreatePayment(int, int)")
+                    "Class", "Method", "List"
+                }, new ChallengeHint(21), null)
             });
 
             var challengeEvaluation = challenge.EvaluateChallenge(submissionAttempt, null);
@@ -50,7 +36,6 @@ namespace Tutor.Core.Tests.Unit
             {
                 new object[]
                 {
-                    //TODO: Find better names for these methods and add more test data and more thorough HintDirectory evaluation (probably separate tests for MetricRangeRules and HintDirectory)
                     ChallengeTestData.GetTwoPassingClasses(),
                     new List<ChallengeHint>(),
                     true
@@ -60,7 +45,6 @@ namespace Tutor.Core.Tests.Unit
                     ChallengeTestData.GetTwoViolatingClasses(),
                     new List<ChallengeHint>
                     {
-                        new(11),
                         new(21)
                     },
                     false

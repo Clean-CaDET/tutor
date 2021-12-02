@@ -54,11 +54,9 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
             var hints = new HintDirectory();
             foreach (var strategy in FulfillmentStrategies)
             {
-                //TODO: Calculate correctness.
                 var result = strategy.EvaluateSubmission(solution);
                 hints.MergeHints(result);
             }
-            //TODO: Pass calculated correctness.
             return hints.IsEmpty() ? new ChallengeEvaluation(Id, 1, null) : new ChallengeEvaluation(Id, 0, hints);
         }
 
