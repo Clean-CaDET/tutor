@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
@@ -26,7 +26,9 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
                 .Include(ae => (ae as ArrangeTask).Containers)
                 .ThenInclude(c => c.Elements)
                 .Include(ae => (ae as Challenge).FulfillmentStrategies)
-                .ThenInclude(s => (s as BasicNameChecker).Hint)
+                .ThenInclude(s => (s as BannedWordsChecker).Hint)
+                .Include(ae => (ae as Challenge).FulfillmentStrategies)
+                .ThenInclude(s => (s as RequiredWordsChecker).Hint)
                 .Include(ae => (ae as Challenge).FulfillmentStrategies)
                 .ThenInclude(s => (s as BasicMetricChecker).MetricRanges)
                 .ThenInclude(r => r.Hint)

@@ -5,7 +5,8 @@ DELETE FROM public."Images";
 DELETE FROM public."Videos";
 DELETE FROM public."MetricRangeRules";
 DELETE FROM public."BasicMetricCheckers";
-DELETE FROM public."BasicNameCheckers";
+DELETE FROM public."BannedWordsCheckers";
+DELETE FROM public."RequiredWordsCheckers";
 DELETE FROM public."ChallengeHints";
 DELETE FROM public."ChallengeFulfillmentStrategies";
 DELETE FROM public."Challenges";
@@ -113,7 +114,7 @@ INSERT INTO public."ChallengeFulfillmentStrategies"(
 INSERT INTO public."ChallengeHints"(
 	"Id", "Content")
 	VALUES (-1541, 'Razmisli kako da integrišeš domenski značajne reči poput "Enroll", "newCourse", "Maximum" i "Active" u imena koja koristiš u svom kodu.');
-INSERT INTO public."BasicNameCheckers"(
+INSERT INTO public."RequiredWordsCheckers"(
 	"Id", "RequiredWords", "HintId")
 	VALUES (-1541, '{{"Enroll","newCourse","Maximum","Active"}}', -1541);
 

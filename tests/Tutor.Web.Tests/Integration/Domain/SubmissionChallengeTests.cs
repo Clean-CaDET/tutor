@@ -15,8 +15,6 @@ namespace Tutor.Web.Tests.Integration.Domain
 {
     public class SubmissionChallengeTests : BaseIntegrationTest
     {
-        //TODO: Introduce tests for bad submissions for MRQ, AT, and Ch.
-        //TODO: Expand MRQ, AT with DB check
         public SubmissionChallengeTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
         [Theory]

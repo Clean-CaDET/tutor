@@ -23,8 +23,6 @@ namespace Tutor.Infrastructure.Database
         public DbSet<Image> Images { get; set; }
         public DbSet<Text> Texts { get; set; }
         public DbSet<Video> Videos { get; set; }
-        //TODO: Examine which DbSets we don't need directly and remove them, while configuring EFCore to generate the tables.
-        //TODO: Enable value object storing to remove the appropriate tables - e.g. MRQAnswer, ATContainer and ATElement
         public DbSet<Mrq> MultiResponseQuestions { get; set; }
         public DbSet<MrqItem> MrqItems { get; set; }
         public DbSet<ArrangeTask> ArrangeTasks { get; set; }
@@ -33,7 +31,8 @@ namespace Tutor.Infrastructure.Database
         public DbSet<Challenge> Challenges { get; set; }
         public DbSet<ChallengeFulfillmentStrategy> ChallengeFulfillmentStrategies { get; set; }
         public DbSet<BasicMetricChecker> BasicMetricCheckers { get; set; }
-        public DbSet<BasicNameChecker> BasicNameCheckers { get; set; }
+        public DbSet<BannedWordsChecker> BannedWordsCheckers { get; set; }
+        public DbSet<RequiredWordsChecker> RequiredWordsCheckers { get; set; }
         public DbSet<MetricRangeRule> MetricRangeRules { get; set; }
         public DbSet<ChallengeHint> ChallengeHints { get; set; }
 
@@ -85,7 +84,8 @@ namespace Tutor.Infrastructure.Database
         {
             modelBuilder.Entity<Challenge>().ToTable("Challenges");
 
-            modelBuilder.Entity<BasicNameChecker>().ToTable("BasicNameCheckers");
+            modelBuilder.Entity<BannedWordsChecker>().ToTable("BannedWordsCheckers");
+            modelBuilder.Entity<RequiredWordsChecker>().ToTable("RequiredWordsCheckers");
             modelBuilder.Entity<BasicMetricChecker>().ToTable("BasicMetricCheckers");
 
             ConfigureBasicMetricChecker(modelBuilder);
@@ -93,8 +93,6 @@ namespace Tutor.Infrastructure.Database
 
         private static void ConfigureBasicMetricChecker(ModelBuilder modelBuilder)
         {
-            //TODO: Look for patterns for better DBContext code organization when using Fluent API extensively.
-
             // Add the shadow property to the model
             modelBuilder.Entity<MetricRangeRule>()
                 .Property<int?>("MetricCheckerForeignKey").IsRequired(false);

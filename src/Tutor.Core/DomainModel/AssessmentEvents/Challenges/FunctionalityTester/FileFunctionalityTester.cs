@@ -69,7 +69,6 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FunctionalityTester
             var message = result.Split("\n");
             var lastHeaderLine = 8;
 
-            //TODO: Remove to support localization.
             var sb = new StringBuilder("Some functional tests failed. Try to determine which functionality was broken from the test name or use git checkout to restart your challenge. The following tests failed:\n");
             for (var i = lastHeaderLine; i < message.Length; i++)
             {

@@ -23,7 +23,7 @@ namespace Tutor.Web.Controllers.Domain
             _mapper = mapper;
             _submissionService = service;
         }
-        //TODO: Should segregate this so that each AE type has a single controller and package. Introducing a new widget would then entail adding a new package instead of changing existing code.
+        
         [HttpPost("challenge")]
         public ActionResult<ChallengeEvaluationDto> SubmitChallenge(
             [FromBody] ChallengeSubmissionDto submission)
