@@ -7,7 +7,6 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
     {
         public int Id { get; private set; }
         public string CodeSnippetId { get; private set; }
-        protected List<string> PossibleRenames { get; private set; }
 
         protected ChallengeFulfillmentStrategy() {}
         protected ChallengeFulfillmentStrategy(int id, string codeSnippetId): this()

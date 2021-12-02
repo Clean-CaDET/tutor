@@ -16,13 +16,13 @@ namespace Tutor.Web.Tests.Integration.Domain
 
         [Theory]
         [MemberData(nameof(MRQSubmissions))]
-        public void Submits_multiple_response_questions(MRQSubmissionDTO submission, MRQEvaluationDTO expectedEvaluation)
+        public void Submits_multiple_response_questions(MrqSubmissionDto submission, MrqEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<ISubmissionService>());
 
-            var actualEvaluation = ((OkObjectResult)controller.SubmitMultipleResponseQuestion(submission).Result).Value as MRQEvaluationDTO;
+            var actualEvaluation = ((OkObjectResult)controller.SubmitMultipleResponseQuestion(submission).Result).Value as MrqEvaluationDto;
 
             actualEvaluation.ShouldNotBeNull();
             actualEvaluation.ItemEvaluations.Count.ShouldBe(expectedEvaluation.ItemEvaluations.Count);
@@ -40,10 +40,10 @@ namespace Tutor.Web.Tests.Integration.Domain
             {
                 new object[]
                 {
-                    new MRQSubmissionDTO
+                    new MrqSubmissionDto
                     {
                         AssessmentEventId = -153,
-                        Answers = new List<MRQItemDTO>
+                        Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1531},
                             new() {Id = -1532},
@@ -52,9 +52,9 @@ namespace Tutor.Web.Tests.Integration.Domain
                             new() {Id = -1535}
                         }
                     },
-                    new MRQEvaluationDTO
+                    new MrqEvaluationDto
                     {
-                        ItemEvaluations = new List<MRQItemEvaluationDTO>
+                        ItemEvaluations = new List<MrqItemEvaluationDto>
                         {
                             new() {Id = -1531, SubmissionWasCorrect = false},
                             new() {Id = -1532, SubmissionWasCorrect = true},
@@ -66,18 +66,18 @@ namespace Tutor.Web.Tests.Integration.Domain
                 },
                 new object[]
                 {
-                    new MRQSubmissionDTO
+                    new MrqSubmissionDto
                     {
                         AssessmentEventId = -153,
-                        Answers = new List<MRQItemDTO>
+                        Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1532},
                             new() {Id = -1535}
                         }
                     },
-                    new MRQEvaluationDTO
+                    new MrqEvaluationDto
                     {
-                        ItemEvaluations = new List<MRQItemEvaluationDTO>
+                        ItemEvaluations = new List<MrqItemEvaluationDto>
                         {
                             new() {Id = -1531, SubmissionWasCorrect = true},
                             new() {Id = -1532, SubmissionWasCorrect = true},
@@ -89,13 +89,13 @@ namespace Tutor.Web.Tests.Integration.Domain
                 },
                 new object[]
                 {
-                    new MRQSubmissionDTO
+                    new MrqSubmissionDto
                     {
                         AssessmentEventId = -153
                     },
-                    new MRQEvaluationDTO
+                    new MrqEvaluationDto
                     {
-                        ItemEvaluations = new List<MRQItemEvaluationDTO>
+                        ItemEvaluations = new List<MrqItemEvaluationDto>
                         {
                             new() {Id = -1531, SubmissionWasCorrect = true},
                             new() {Id = -1532, SubmissionWasCorrect = false},

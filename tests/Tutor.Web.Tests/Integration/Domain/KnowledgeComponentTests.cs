@@ -24,7 +24,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IKCService>());
 
-            var units = ((OkObjectResult) controller.GetUnits().Result).Value as List<UnitDTO>;
+            var units = ((OkObjectResult) controller.GetUnits().Result).Value as List<UnitDto>;
 
             units.Count.ShouldBe(2);
             units.SelectMany(u => u.KnowledgeComponents).Count().ShouldBe(16);
@@ -38,7 +38,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IKCService>());
 
-            var IEs = ((OkObjectResult)controller.GetInstructionalEvents(knowledgeComponentId).Result).Value as List<InstructionalEventDTO>;
+            var IEs = ((OkObjectResult)controller.GetInstructionalEvents(knowledgeComponentId).Result).Value as List<InstructionalEventDto>;
 
             IEs.Count.ShouldBe(expectedIEsCount);
         }
@@ -68,7 +68,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IKCService>());
 
-            var IEs = ((OkObjectResult)controller.GetAssessmentEvents(knowledgeComponentId).Result).Value as List<AssessmentEventDTO>;
+            var IEs = ((OkObjectResult)controller.GetAssessmentEvents(knowledgeComponentId).Result).Value as List<AssessmentEventDto>;
 
             IEs.Count.ShouldBe(expectedAEsCount);
         }

@@ -21,9 +21,9 @@ namespace Tutor.Web.Tests.Integration.Learner
             var controller = new LearnerController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<ILearnerService>(),
                 scope.ServiceProvider.GetRequiredService<IAuthProvider>());
-            var loginSubmission = new LoginDTO {StudentIndex = "SU-1-2021"};
+            var loginSubmission = new LoginDto {StudentIndex = "SU-1-2021"};
 
-            var learner = ((OkObjectResult) controller.Login(loginSubmission).Result).Value as LearnerDTO;
+            var learner = ((OkObjectResult) controller.Login(loginSubmission).Result).Value as LearnerDto;
 
             learner.Id.ShouldBe(-1);
         }
@@ -35,7 +35,7 @@ namespace Tutor.Web.Tests.Integration.Learner
             var controller = new LearnerController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<ILearnerService>(),
                 scope.ServiceProvider.GetRequiredService<IAuthProvider>());
-            var loginSubmission = new LoginDTO {StudentIndex = "SA-1-2021"};
+            var loginSubmission = new LoginDto {StudentIndex = "SA-1-2021"};
 
             var code = ((NotFoundObjectResult) controller.Login(loginSubmission).Result).StatusCode;
 

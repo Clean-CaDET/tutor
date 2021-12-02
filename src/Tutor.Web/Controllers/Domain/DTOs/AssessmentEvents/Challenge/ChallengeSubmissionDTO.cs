@@ -1,6 +1,6 @@
 ﻿namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenge
 {
-    public class ChallengeSubmissionDTO
+    public class ChallengeSubmissionDto
     {
         public string[] SourceCode { get; set; }
         public int AssessmentEventId { get; set; }

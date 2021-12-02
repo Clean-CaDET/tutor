@@ -8,8 +8,8 @@ namespace Tutor.Web.Controllers.Learners
     {
         public LearnerProfile()
         {
-            CreateMap<LearnerDTO, Learner>();
-            CreateMap<Learner, LearnerDTO>();
+            CreateMap<LearnerDto, Learner>();
+            CreateMap<Learner, LearnerDto>();
         }
     }
 }

@@ -56,12 +56,12 @@ namespace Tutor.Web
                 registry.ClearConventions();
                 registry.RegisterConvention(
                     new DefaultDiscriminatorConvention<string>(serializerOptions, "typeDiscriminator"));
-                registry.RegisterType<ArrangeTaskDTO>();
-                registry.RegisterType<ChallengeDTO>();
-                registry.RegisterType<ImageDTO>();
-                registry.RegisterType<MultiResponseQuestionDTO>();
-                registry.RegisterType<TextDTO>();
-                registry.RegisterType<VideoDTO>();
+                registry.RegisterType<ArrangeTaskDto>();
+                registry.RegisterType<ChallengeDto>();
+                registry.RegisterType<ImageDto>();
+                registry.RegisterType<MultiResponseQuestionDto>();
+                registry.RegisterType<TextDto>();
+                registry.RegisterType<VideoDto>();
             });
 
             services.AddCors(options =>

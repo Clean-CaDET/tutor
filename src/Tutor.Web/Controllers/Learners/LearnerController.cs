@@ -25,7 +25,7 @@ namespace Tutor.Web.Controllers.Learners
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<LearnerDTO>> Register([FromBody] LearnerDTO learnerDto)
+        public async Task<ActionResult<LearnerDto>> Register([FromBody] LearnerDto learnerDto)
         {
             var learner = _mapper.Map<Learner>(learnerDto);
 
@@ -35,15 +35,15 @@ namespace Tutor.Web.Controllers.Learners
             }
 
             var result = _learnerService.Register(learner);
-            if(result.IsSuccess) return Ok(_mapper.Map<LearnerDTO>(result.Value));
+            if(result.IsSuccess) return Ok(_mapper.Map<LearnerDto>(result.Value));
             return BadRequest(result.Errors);
         }
 
         [HttpPost("login")]
-        public ActionResult<LearnerDTO> Login([FromBody] LoginDTO login)
+        public ActionResult<LearnerDto> Login([FromBody] LoginDto login)
         {
             var result = _learnerService.Login(login.StudentIndex);
-            if(result.IsSuccess) return Ok(_mapper.Map<LearnerDTO>(result.Value));
+            if(result.IsSuccess) return Ok(_mapper.Map<LearnerDto>(result.Value));
             return NotFound(result.Errors);
         }
     }

@@ -49,7 +49,7 @@ namespace Tutor.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "KCMastery",
+                name: "KcMastery",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -60,7 +60,7 @@ namespace Tutor.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_KCMastery", x => x.Id);
+                    table.PrimaryKey("PK_KcMastery", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -312,22 +312,22 @@ namespace Tutor.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MRQItems",
+                name: "MrqItems",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    MRQId = table.Column<int>(type: "integer", nullable: false),
+                    MrqId = table.Column<int>(type: "integer", nullable: false),
                     Text = table.Column<string>(type: "text", nullable: true),
                     IsCorrect = table.Column<bool>(type: "boolean", nullable: false),
                     Feedback = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MRQItems", x => x.Id);
+                    table.PrimaryKey("PK_MrqItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MRQItems_MultiResponseQuestions_MRQId",
-                        column: x => x.MRQId,
+                        name: "FK_MrqItems_MultiResponseQuestions_MrqId",
+                        column: x => x.MrqId,
                         principalTable: "MultiResponseQuestions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -468,9 +468,9 @@ namespace Tutor.Infrastructure.Migrations
                 column: "MetricCheckerForeignKey");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MRQItems_MRQId",
-                table: "MRQItems",
-                column: "MRQId");
+                name: "IX_MrqItems_MrqId",
+                table: "MrqItems",
+                column: "MrqId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -488,7 +488,7 @@ namespace Tutor.Infrastructure.Migrations
                 name: "Images");
 
             migrationBuilder.DropTable(
-                name: "KCMastery");
+                name: "KcMastery");
 
             migrationBuilder.DropTable(
                 name: "KnowledgeComponents");
@@ -500,7 +500,7 @@ namespace Tutor.Infrastructure.Migrations
                 name: "MetricRangeRules");
 
             migrationBuilder.DropTable(
-                name: "MRQItems");
+                name: "MrqItems");
 
             migrationBuilder.DropTable(
                 name: "Texts");

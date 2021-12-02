@@ -4,10 +4,10 @@ using System.Collections.Generic;
 namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTask
 {
     [JsonDiscriminator("arrangeTask")]
-    public class ArrangeTaskDTO : AssessmentEventDTO
+    public class ArrangeTaskDto : AssessmentEventDto
     {
         public string Text { get; set; }
-        public List<ArrangeTaskContainerDTO> Containers { get; set; }
-        public List<ArrangeTaskElementDTO> UnarrangedElements { get; set; }
+        public List<ArrangeTaskContainerDto> Containers { get; set; }
+        public List<ArrangeTaskElementDto> UnarrangedElements { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 namespace Tutor.Web.Controllers.Learners.DTOs
 {
-    public class LoginDTO
+    public class LoginDto
     {
         public string StudentIndex { get; set; }
     }

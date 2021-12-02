@@ -2,7 +2,7 @@
 
 namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenge
 {
-    public class ChallengeHintDTO
+    public class ChallengeHintDto
     {
         public int Id { get; set; }
         public string Content { get; set; }

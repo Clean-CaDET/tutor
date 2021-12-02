@@ -2,8 +2,8 @@
 
 namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTask
 {
-    public class ArrangeTaskEvaluationDTO
+    public class ArrangeTaskEvaluationDto
     {
-        public List<ArrangeTaskContainerEvaluationDTO> ContainerEvaluations { get; set; }
+        public List<ArrangeTaskContainerEvaluationDto> ContainerEvaluations { get; set; }
     }
 }

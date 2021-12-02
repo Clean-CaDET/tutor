@@ -19,22 +19,22 @@ namespace Tutor.Web.Controllers.Domain.Mappers
     {
         public DomainProfile()
         {
-            CreateMap<Unit, UnitDTO>();
-            CreateMap<KnowledgeComponent, KnowledgeComponentDTO>();
+            CreateMap<Unit, UnitDto>();
+            CreateMap<KnowledgeComponent, KnowledgeComponentDto>();
 
-            CreateMap<InstructionalEvent, InstructionalEventDTO>().IncludeAllDerived();
-            CreateMap<Text, TextDTO>();
-            CreateMap<Image, ImageDTO>();
-            CreateMap<Video, VideoDTO>();
+            CreateMap<InstructionalEvent, InstructionalEventDto>().IncludeAllDerived();
+            CreateMap<Text, TextDto>();
+            CreateMap<Image, ImageDto>();
+            CreateMap<Video, VideoDto>();
 
-            CreateMap<AssessmentEvent, AssessmentEventDTO>().IncludeAllDerived();
-            CreateMap<Challenge, ChallengeDTO>();
-            CreateMap<MRQ, MultiResponseQuestionDTO>();
-            CreateMap<MRQItem, MRQItemDTO>();
-            CreateMap<ArrangeTask, ArrangeTaskDTO>()
+            CreateMap<AssessmentEvent, AssessmentEventDto>().IncludeAllDerived();
+            CreateMap<Challenge, ChallengeDto>();
+            CreateMap<Mrq, MultiResponseQuestionDto>();
+            CreateMap<MrqItem, MrqItemDto>();
+            CreateMap<ArrangeTask, ArrangeTaskDto>()
                 .ForMember(dest => dest.UnarrangedElements, opt => opt.MapFrom(src => src.Containers.SelectMany(c => c.Elements).ToList()));
-            CreateMap<ArrangeTaskContainer, ArrangeTaskContainerDTO>();
-            CreateMap<ArrangeTaskElement, ArrangeTaskElementDTO>();
+            CreateMap<ArrangeTaskContainer, ArrangeTaskContainerDto>();
+            CreateMap<ArrangeTaskElement, ArrangeTaskElementDto>();
         }
     }
 }

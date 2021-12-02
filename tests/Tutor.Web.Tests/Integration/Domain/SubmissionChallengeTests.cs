@@ -21,13 +21,13 @@ namespace Tutor.Web.Tests.Integration.Domain
 
         [Theory]
         [MemberData(nameof(ChallengeSubmissions))]
-        public void Accepts_challenge_submission_and_produces_correct_evaluation(ChallengeSubmissionDTO submission, ChallengeEvaluationDTO expectedEvaluation)
+        public void Accepts_challenge_submission_and_produces_correct_evaluation(ChallengeSubmissionDto submission, ChallengeEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>());
             var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
 
-            var actualEvaluation = ((OkObjectResult)controller.SubmitChallenge(submission).Result).Value as ChallengeEvaluationDTO;
+            var actualEvaluation = ((OkObjectResult)controller.SubmitChallenge(submission).Result).Value as ChallengeEvaluationDto;
 
             actualEvaluation.ShouldNotBeNull();
             actualEvaluation.AssessmentEventId.ShouldBe(expectedEvaluation.AssessmentEventId);
@@ -44,11 +44,11 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             new object[]
             {
-                new ChallengeSubmissionDTO { AssessmentEventId = -211, SourceCode = ChallengeTestData.GetFailingAchievement()},
-                new ChallengeEvaluationDTO
+                new ChallengeSubmissionDto { AssessmentEventId = -211, SourceCode = ChallengeTestData.GetFailingAchievement()},
+                new ChallengeEvaluationDto
                 {
                     Correct = false, AssessmentEventId = -211,
-                    ApplicableHints = new List<ChallengeHintDTO> { new()
+                    ApplicableHints = new List<ChallengeHintDto> { new()
                     {
                         Id = -1,
                         ApplicableToCodeSnippets = new List<string> { "ExamplesApp.Method.PaymentService.CreatePayment(int, int)" }
@@ -57,11 +57,11 @@ namespace Tutor.Web.Tests.Integration.Domain
             },
             new object[]
             {
-                new ChallengeSubmissionDTO { AssessmentEventId = -211, SourceCode = ChallengeTestData.GetPassingAchievement()},
-                new ChallengeEvaluationDTO
+                new ChallengeSubmissionDto { AssessmentEventId = -211, SourceCode = ChallengeTestData.GetPassingAchievement()},
+                new ChallengeEvaluationDto
                 {
                     Correct = true, AssessmentEventId = -211,
-                    ApplicableHints = new List<ChallengeHintDTO>()
+                    ApplicableHints = new List<ChallengeHintDto>()
                 }
             }
         };
@@ -71,7 +71,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>());
-            var submission = new ChallengeSubmissionDTO
+            var submission = new ChallengeSubmissionDto
             {
                 AssessmentEventId = -211
             };
@@ -86,7 +86,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>());
-            var submission = new ChallengeSubmissionDTO
+            var submission = new ChallengeSubmissionDto
             {
                 AssessmentEventId = -211,
                 SourceCode = new[]
@@ -99,7 +99,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 }
             };
 
-            var actualEvaluation = ((OkObjectResult)controller.SubmitChallenge(submission).Result).Value as ChallengeEvaluationDTO;
+            var actualEvaluation = ((OkObjectResult)controller.SubmitChallenge(submission).Result).Value as ChallengeEvaluationDto;
 
             actualEvaluation.ShouldNotBeNull();
             actualEvaluation.ApplicableHints.Count.ShouldBe(1);

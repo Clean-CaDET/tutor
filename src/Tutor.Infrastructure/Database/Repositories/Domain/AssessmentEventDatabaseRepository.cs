@@ -22,7 +22,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
         {
             return _dbContext.AssessmentEvents
                 .Where(ae => ae.Id == assessmentEventId)
-                .Include(ae => (ae as MRQ).Items)
+                .Include(ae => (ae as Mrq).Items)
                 .Include(ae => (ae as ArrangeTask).Containers)
                 .ThenInclude(c => c.Elements)
                 .Include(ae => (ae as Challenge).FulfillmentStrategies)

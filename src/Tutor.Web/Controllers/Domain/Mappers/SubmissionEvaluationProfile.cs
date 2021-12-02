@@ -13,7 +13,7 @@ namespace Tutor.Web.Controllers.Domain.Mappers
     {
         public SubmissionEvaluationProfile()
         {
-            CreateMap<ChallengeEvaluation, ChallengeEvaluationDTO>()
+            CreateMap<ChallengeEvaluation, ChallengeEvaluationDto>()
                 .ForMember(dest => dest.ApplicableHints, opt => opt.MapFrom(src => src.ApplicableHints.GetHints()))
                 .AfterMap((src, dest, context) =>
                 {
@@ -25,23 +25,23 @@ namespace Tutor.Web.Controllers.Domain.Mappers
                         hintDto.ApplicableToCodeSnippets = hintDirectory[relatedHint];
                     }
                 });
-            CreateMap<ChallengeHint, ChallengeHintDTO>();
-            CreateMap<ChallengeSubmissionDTO, ChallengeSubmission>();
+            CreateMap<ChallengeHint, ChallengeHintDto>();
+            CreateMap<ChallengeSubmissionDto, ChallengeSubmission>();
 
-            CreateMap<MRQSubmissionDTO, MRQSubmission>()
+            CreateMap<MrqSubmissionDto, MrqSubmission>()
                 .ForMember(dest => dest.SubmittedAnswerIds, opt => opt.MapFrom(src => src.Answers.Select(a => a.Id)));
-            CreateMap<MRQEvaluation, MRQEvaluationDTO>();
-            CreateMap<MRQItemEvaluation, MRQItemEvaluationDTO>()
+            CreateMap<MrqEvaluation, MrqEvaluationDto>();
+            CreateMap<MrqItemEvaluation, MrqItemEvaluationDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.FullItem.Id))
                 .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.FullItem.Text))
                 .ForMember(dest => dest.Feedback, opt => opt.MapFrom(src => src.FullItem.Feedback));
 
-            CreateMap<ArrangeTaskEvaluation, ArrangeTaskEvaluationDTO>();
-            CreateMap<ArrangeTaskContainerEvaluation, ArrangeTaskContainerEvaluationDTO>()
+            CreateMap<ArrangeTaskEvaluation, ArrangeTaskEvaluationDto>();
+            CreateMap<ArrangeTaskContainerEvaluation, ArrangeTaskContainerEvaluationDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.FullAnswer.Id))
                 .ForMember(dest => dest.CorrectElements, opt => opt.MapFrom(src => src.FullAnswer.Elements));
-            CreateMap<ArrangeTaskSubmissionDTO, ArrangeTaskSubmission>();
-            CreateMap<ArrangeTaskContainerSubmissionDTO, ArrangeTaskContainerSubmission>();
+            CreateMap<ArrangeTaskSubmissionDto, ArrangeTaskSubmission>();
+            CreateMap<ArrangeTaskContainerSubmissionDto, ArrangeTaskContainerSubmission>();
         }
     }
 }

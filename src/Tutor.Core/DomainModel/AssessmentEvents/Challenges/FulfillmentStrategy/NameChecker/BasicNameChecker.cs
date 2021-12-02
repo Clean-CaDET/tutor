@@ -37,7 +37,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             throw new InvalidOperationException($"Solution attempt is missing class/method {CodeSnippetId}");
         }
 
-        private List<string> GetNames(List<CaDETClass> solutionAttempt, string snippetId)
+        private static List<string> GetNames(List<CaDETClass> solutionAttempt, string snippetId)
         {
             var caDETClass = solutionAttempt.Find(c => c.FullName == snippetId);
             if (caDETClass != null) return GetClassNames(caDETClass);
@@ -98,12 +98,12 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             return hints;
         }
 
-        private string[] GetWordsFromName(string name)
+        private static string[] GetWordsFromName(string name)
         {
             var words = Regex.Split(name, "[A-Z]");
 
             var matches = Regex.Matches(name, "[A-Z]");
-            for (int i = 0; i < words.Length - 1; i++)
+            for (var i = 0; i < words.Length - 1; i++)
             {
                 words[i + 1] = matches[i] + words[i + 1];
             }
@@ -116,11 +116,11 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
 
         private static List<string> GetSyntagmFromName(string name, string[] words)
         {
-            List<string> syntagms = new List<string>();
-            int startLength = 0;
+            var syntagms = new List<string>();
+            var startLength = 0;
             for (var i = 0; i <= words.Length - 2; i++)
             {
-                int endLength = words[i].Length;
+                var endLength = words[i].Length;
                 for (var j = i + 1; j <= words.Length - 1; j++)
                 {
                     endLength += words[j].Length;
@@ -133,7 +133,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
 
         public override List<ChallengeHint> GetAllHints()
         {
-            return new() { Hint };
+            return new List<ChallengeHint> { Hint };
         }
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion
 {
-    public class MRQEvaluationDTO
+    public class MrqEvaluationDto
     {
-        public List<MRQItemEvaluationDTO> ItemEvaluations { get; set; }
+        public List<MrqItemEvaluationDto> ItemEvaluations { get; set; }
     }
 }

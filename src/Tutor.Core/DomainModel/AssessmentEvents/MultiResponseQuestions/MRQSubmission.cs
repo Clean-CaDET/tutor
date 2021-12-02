@@ -2,7 +2,7 @@
 
 namespace Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions
 {
-    public class MRQSubmission : Submission
+    public class MrqSubmission : Submission
     {
         public List<int> SubmittedAnswerIds { get; private set; }
     }

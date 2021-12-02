@@ -2,7 +2,7 @@
 
 namespace Tutor.Web.Controllers.Domain.DTOs
 {
-    public class KnowledgeComponentDTO
+    public class KnowledgeComponentDto
     {
         public int Id { get; set; }
         public string Name { get; set; }

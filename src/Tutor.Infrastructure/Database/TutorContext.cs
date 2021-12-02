@@ -25,8 +25,8 @@ namespace Tutor.Infrastructure.Database
         public DbSet<Video> Videos { get; set; }
         //TODO: Examine which DbSets we don't need directly and remove them, while configuring EFCore to generate the tables.
         //TODO: Enable value object storing to remove the appropriate tables - e.g. MRQAnswer, ATContainer and ATElement
-        public DbSet<MRQ> MultiResponseQuestions { get; set; }
-        public DbSet<MRQItem> MRQItems { get; set; }
+        public DbSet<Mrq> MultiResponseQuestions { get; set; }
+        public DbSet<MrqItem> MrqItems { get; set; }
         public DbSet<ArrangeTask> ArrangeTasks { get; set; }
         public DbSet<ArrangeTaskContainer> ArrangeTaskContainers { get; set; }
         public DbSet<ArrangeTaskElement> ArrangeTaskElements { get; set; }
@@ -45,12 +45,12 @@ namespace Tutor.Infrastructure.Database
         public DbSet<ArrangeTaskSubmission> ArrangeTaskSubmissions { get; set; }
         public DbSet<ArrangeTaskContainerSubmission> ArrangeTaskContainerSubmissions { get; set; }
         public DbSet<ChallengeSubmission> ChallengeSubmissions { get; set; }
-        public DbSet<MRQSubmission> MRQSubmissions { get; set; }
+        public DbSet<MrqSubmission> MrqSubmissions { get; set; }
 
         #endregion
 
         public DbSet<Learner> Learners { get; set; }
-        public DbSet<KnowledgeComponentMastery> KCMastery { get; set; }
+        public DbSet<KnowledgeComponentMastery> KcMastery { get; set; }
 
         public TutorContext(DbContextOptions<TutorContext> options) : base(options)
         {
@@ -61,7 +61,7 @@ namespace Tutor.Infrastructure.Database
             modelBuilder.Entity<Text>().ToTable("Texts");
             modelBuilder.Entity<Image>().ToTable("Images");
             modelBuilder.Entity<Video>().ToTable("Videos");
-            modelBuilder.Entity<MRQ>().ToTable("MultiResponseQuestions");
+            modelBuilder.Entity<Mrq>().ToTable("MultiResponseQuestions");
             
             ConfigureArrangeTask(modelBuilder);
             ConfigureChallenge(modelBuilder);

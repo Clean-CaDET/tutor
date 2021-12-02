@@ -3,7 +3,7 @@
 namespace Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents
 {
     [JsonDiscriminator("text")]
-    public class TextDTO : InstructionalEventDTO
+    public class TextDto : InstructionalEventDto
     {
         public string Content { get; set; }
     }

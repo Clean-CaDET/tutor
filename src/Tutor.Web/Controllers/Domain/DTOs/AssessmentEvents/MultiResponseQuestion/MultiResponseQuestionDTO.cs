@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion
 {
     [JsonDiscriminator("multiResponseQuestion")]
-    public class MultiResponseQuestionDTO : AssessmentEventDTO
+    public class MultiResponseQuestionDto : AssessmentEventDto
     {
         public string Text { get; set; }
-        public List<MRQItemDTO> Items { get; set; }
+        public List<MrqItemDto> Items { get; set; }
     }
 }

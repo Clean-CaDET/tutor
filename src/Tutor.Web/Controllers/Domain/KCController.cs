@@ -23,32 +23,32 @@ namespace Tutor.Web.Controllers.Domain
         }
 
         [HttpGet]
-        public ActionResult<List<UnitDTO>> GetUnits()
+        public ActionResult<List<UnitDto>> GetUnits()
         {
             var result = _kcService.GetUnits();
-            return Ok(result.Value.Select(u => _mapper.Map<UnitDTO>(u)).ToList());
+            return Ok(result.Value.Select(u => _mapper.Map<UnitDto>(u)).ToList());
         }
 
         [HttpGet("{knowledgeComponentId:int}")]
-        public ActionResult<KnowledgeComponentDTO> GetKnowledgeComponent(int knowledgeComponentId)
+        public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
         {
             var result = _kcService.GetKnowledgeComponentById(knowledgeComponentId);
-            if (result.IsSuccess) return Ok(_mapper.Map<KnowledgeComponentDTO>(result.Value));
+            if (result.IsSuccess) return Ok(_mapper.Map<KnowledgeComponentDto>(result.Value));
             return NotFound(result.Errors);
         }
 
         [HttpGet("{knowledgeComponentId:int}/assessment-events/")]
-        public ActionResult<AssessmentEventDTO> GetAssessmentEvents(int knowledgeComponentId)
+        public ActionResult<AssessmentEventDto> GetAssessmentEvents(int knowledgeComponentId)
         {
             var result = _kcService.GetAssessmentEventsByKnowledgeComponent(knowledgeComponentId);
-            return Ok(result.Value.Select(ae => _mapper.Map<AssessmentEventDTO>(ae)).ToList());
+            return Ok(result.Value.Select(ae => _mapper.Map<AssessmentEventDto>(ae)).ToList());
         }
         
         [HttpGet("{knowledgeComponentId:int}/instructional-events/")]
-        public ActionResult<InstructionalEventDTO> GetInstructionalEvents(int knowledgeComponentId)
+        public ActionResult<InstructionalEventDto> GetInstructionalEvents(int knowledgeComponentId)
         {
             var result = _kcService.GetInstructionalEventsByKnowledgeComponent(knowledgeComponentId);
-            return Ok(result.Value.Select(ie => _mapper.Map<InstructionalEventDTO>(ie)).ToList());
+            return Ok(result.Value.Select(ie => _mapper.Map<InstructionalEventDto>(ie)).ToList());
         }
     }
 }

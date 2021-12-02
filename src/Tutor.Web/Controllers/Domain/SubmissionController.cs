@@ -25,33 +25,33 @@ namespace Tutor.Web.Controllers.Domain
         }
         //TODO: Should segregate this so that each AE type has a single controller and package. Introducing a new widget would then entail adding a new package instead of changing existing code.
         [HttpPost("challenge")]
-        public ActionResult<ChallengeEvaluationDTO> SubmitChallenge(
-            [FromBody] ChallengeSubmissionDTO submission)
+        public ActionResult<ChallengeEvaluationDto> SubmitChallenge(
+            [FromBody] ChallengeSubmissionDto submission)
         {
             var result = _submissionService.EvaluateAndSaveSubmission(_mapper.Map<ChallengeSubmission>(submission));
 
             if (result.IsFailed) return BadRequest(result.Errors);
-            return Ok(_mapper.Map<ChallengeEvaluationDTO>(result.Value));
+            return Ok(_mapper.Map<ChallengeEvaluationDto>(result.Value));
         }
 
         [HttpPost("question")]
-        public ActionResult<List<MRQItemEvaluationDTO>> SubmitMultipleResponseQuestion(
-            [FromBody] MRQSubmissionDTO submission)
+        public ActionResult<List<MrqItemEvaluationDto>> SubmitMultipleResponseQuestion(
+            [FromBody] MrqSubmissionDto submission)
         {
-            var result = _submissionService.EvaluateAndSaveSubmission(_mapper.Map<MRQSubmission>(submission));
+            var result = _submissionService.EvaluateAndSaveSubmission(_mapper.Map<MrqSubmission>(submission));
 
             if (result.IsFailed) return BadRequest(result.Errors);
-            return Ok(_mapper.Map<MRQEvaluationDTO>(result.Value));
+            return Ok(_mapper.Map<MrqEvaluationDto>(result.Value));
         }
 
         [HttpPost("arrange-task")]
-        public ActionResult<List<ArrangeTaskContainerEvaluationDTO>> SubmitArrangeTask(
-            [FromBody] ArrangeTaskSubmissionDTO submission)
+        public ActionResult<List<ArrangeTaskContainerEvaluationDto>> SubmitArrangeTask(
+            [FromBody] ArrangeTaskSubmissionDto submission)
         {
             var result = _submissionService.EvaluateAndSaveSubmission(_mapper.Map<ArrangeTaskSubmission>(submission));
 
             if (result.IsFailed) return BadRequest(result.Errors);
-            return Ok(_mapper.Map<ArrangeTaskEvaluationDTO>(result.Value));
+            return Ok(_mapper.Map<ArrangeTaskEvaluationDto>(result.Value));
         }
     }
 }

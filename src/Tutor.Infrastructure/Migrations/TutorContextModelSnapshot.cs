@@ -164,7 +164,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.ToTable("MetricRangeRules");
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQItem", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MrqItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -177,7 +177,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("MRQId")
+                    b.Property<int>("MrqId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Text")
@@ -185,9 +185,9 @@ namespace Tutor.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MRQId");
+                    b.HasIndex("MrqId");
 
-                    b.ToTable("MRQItems");
+                    b.ToTable("MrqItems");
                 });
 
             modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.Submission", b =>
@@ -294,7 +294,7 @@ namespace Tutor.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("KCMastery");
+                    b.ToTable("KcMastery");
                 });
 
             modelBuilder.Entity("Tutor.Core.LearnerModel.Learners.Learner", b =>
@@ -344,7 +344,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.ToTable("Challenges");
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQ", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.Mrq", b =>
                 {
                     b.HasBaseType("Tutor.Core.DomainModel.AssessmentEvents.AssessmentEvent");
 
@@ -396,14 +396,14 @@ namespace Tutor.Infrastructure.Migrations
                     b.HasDiscriminator().HasValue("ChallengeSubmission");
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQSubmission", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MrqSubmission", b =>
                 {
                     b.HasBaseType("Tutor.Core.DomainModel.AssessmentEvents.Submission");
 
                     b.Property<List<int>>("SubmittedAnswerIds")
                         .HasColumnType("integer[]");
 
-                    b.HasDiscriminator().HasValue("MRQSubmission");
+                    b.HasDiscriminator().HasValue("MrqSubmission");
                 });
 
             modelBuilder.Entity("Tutor.Core.DomainModel.InstructionalEvents.Image", b =>
@@ -486,11 +486,11 @@ namespace Tutor.Infrastructure.Migrations
                     b.Navigation("Hint");
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQItem", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MrqItem", b =>
                 {
-                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQ", null)
+                    b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.Mrq", null)
                         .WithMany("Items")
-                        .HasForeignKey("MRQId")
+                        .HasForeignKey("MrqId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -544,11 +544,11 @@ namespace Tutor.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQ", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.Mrq", b =>
                 {
                     b.HasOne("Tutor.Core.DomainModel.AssessmentEvents.AssessmentEvent", null)
                         .WithOne()
-                        .HasForeignKey("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQ", "Id")
+                        .HasForeignKey("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.Mrq", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -624,7 +624,7 @@ namespace Tutor.Infrastructure.Migrations
                     b.Navigation("FulfillmentStrategies");
                 });
 
-            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.MRQ", b =>
+            modelBuilder.Entity("Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions.Mrq", b =>
                 {
                     b.Navigation("Items");
                 });
