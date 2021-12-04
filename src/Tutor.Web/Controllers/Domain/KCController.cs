@@ -9,7 +9,7 @@ using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
 
 namespace Tutor.Web.Controllers.Domain
 {
-    [Route("api/knowledge-components/")]
+    [Route("api/units/")]
     [ApiController]
     public class KCController : ControllerBase
     {
@@ -29,7 +29,7 @@ namespace Tutor.Web.Controllers.Domain
             return Ok(result.Value.Select(u => _mapper.Map<UnitDto>(u)).ToList());
         }
 
-        [HttpGet("{knowledgeComponentId:int}")]
+        [HttpGet("knowledge-components/{knowledgeComponentId:int}")]
         public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
         {
             var result = _kcService.GetKnowledgeComponentById(knowledgeComponentId);
@@ -37,14 +37,14 @@ namespace Tutor.Web.Controllers.Domain
             return NotFound(result.Errors);
         }
 
-        [HttpGet("{knowledgeComponentId:int}/assessment-events/")]
+        [HttpGet("knowledge-components/{knowledgeComponentId:int}/assessment-events/")]
         public ActionResult<AssessmentEventDto> GetAssessmentEvents(int knowledgeComponentId)
         {
             var result = _kcService.GetAssessmentEventsByKnowledgeComponent(knowledgeComponentId);
             return Ok(result.Value.Select(ae => _mapper.Map<AssessmentEventDto>(ae)).ToList());
         }
         
-        [HttpGet("{knowledgeComponentId:int}/instructional-events/")]
+        [HttpGet("knowledge-components/{knowledgeComponentId:int}/instructional-events/")]
         public ActionResult<InstructionalEventDto> GetInstructionalEvents(int knowledgeComponentId)
         {
             var result = _kcService.GetInstructionalEventsByKnowledgeComponent(knowledgeComponentId);
