@@ -33,6 +33,7 @@ jobs:
       - name: Install SonarCloud scanner
         shell: powershell
         run: |
+          Remove-Item -Path .\.sonar\scanner -ItemType Directory
           New-Item -Path .\.sonar\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       - name: Build and analyze
