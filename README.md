@@ -7,6 +7,8 @@
 <h1 align="center">Clean CaDET Tutor</h1>
 <div align="center">
 
+  [![Build](https://github.com/Clean-CaDET/tutor/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/Clean-CaDET/tutor/actions/workflows/build.yml)
+  [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Clean-CaDET_tutor&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Clean-CaDET_tutor)
   [![CodeFactor](https://www.codefactor.io/repository/github/clean-cadet/tutor/badge)](https://www.codefactor.io/repository/github/clean-cadet/tutor)
   [![Gitter](https://badges.gitter.im/Clean-CaDET/community.svg)](https://gitter.im/Clean-CaDET/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
