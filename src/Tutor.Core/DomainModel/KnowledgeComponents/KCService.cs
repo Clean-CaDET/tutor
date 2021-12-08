@@ -18,6 +18,11 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         {
             return Result.Ok(_ikcRepository.GetUnits());
         }
+        
+        public Result<Unit> GetUnit(int id)
+        {
+            return Result.Ok(_ikcRepository.GetUnit(id));
+        }
 
         public Result<KnowledgeComponent> GetKnowledgeComponentById(int id)
         {

@@ -28,6 +28,14 @@ namespace Tutor.Web.Controllers.Domain
             var result = _kcService.GetUnits();
             return Ok(result.Value.Select(u => _mapper.Map<UnitDto>(u)).ToList());
         }
+        
+        [HttpGet("{unitId:int}")]
+        public ActionResult<List<UnitDto>> GetUnit(int unitId)
+        {
+            var result = _kcService.GetUnit(unitId);
+            if (result.IsSuccess) return Ok(_mapper.Map<UnitDto>(result.Value));
+            return NotFound(result.Errors);
+        }
 
         [HttpGet("knowledge-components/{knowledgeComponentId:int}")]
         public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)

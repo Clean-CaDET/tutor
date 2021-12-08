@@ -22,6 +22,14 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
         {
             return _dbContext.Units.Include(u => u.KnowledgeComponents).ToList();
         }
+        
+        public Unit GetUnit(int id)
+        {
+            var query = _dbContext.Units
+                .Where(unit => unit.Id == id)
+                .Include(u => u.KnowledgeComponents);
+            return query.FirstOrDefault();
+        }
 
         public KnowledgeComponent GetKnowledgeComponent(int id)
         {
