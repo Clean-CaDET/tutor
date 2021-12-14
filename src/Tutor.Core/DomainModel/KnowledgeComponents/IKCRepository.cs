@@ -7,6 +7,8 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
     public interface IKCRepository
     {
         List<Unit> GetUnits();
+        
+        Unit GetUnit(int id);
 
         KnowledgeComponent GetKnowledgeComponent(int id);
 
