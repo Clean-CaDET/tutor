@@ -6,5 +6,17 @@
         public double Mastery { get; private set; }
         public int KnowledgeComponentId { get; private set; }
         public int LearnerId { get; private set; }
+
+        public KnowledgeComponentMastery(int knowledgeComponentId, int learnerId)
+        {
+            Mastery = 0.0;
+            KnowledgeComponentId = knowledgeComponentId;
+            LearnerId = learnerId;
+        }
+
+        public void SetMastery(double mastery)
+        {
+            Mastery = mastery;
+        }
     }
 }

@@ -4,5 +4,7 @@
     {
         AssessmentEvent GetAssessmentEvent(int assessmentEventId);
         void SaveSubmission(Submission submission);
+
+        Submission FindSubmissionWithMaxCorrectness(int assessmentEventId);
     }
 }

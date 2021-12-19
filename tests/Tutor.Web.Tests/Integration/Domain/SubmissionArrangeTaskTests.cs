@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTask;
 using Xunit;
@@ -19,8 +20,8 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Submits_arrange_task(ArrangeTaskSubmissionDto submission, ArrangeTaskEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<ISubmissionService>());
+            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>(),
+                scope.ServiceProvider.GetRequiredService<IKCService>());
 
             var actualEvaluation = ((OkObjectResult)controller.SubmitArrangeTask(submission).Result).Value as ArrangeTaskEvaluationDto;
 

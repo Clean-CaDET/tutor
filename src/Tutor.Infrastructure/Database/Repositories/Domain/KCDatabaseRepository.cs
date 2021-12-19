@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.DomainModel.AssessmentEvents;
@@ -6,6 +7,7 @@ using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 using Tutor.Core.DomainModel.InstructionalEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents;
+using Tutor.Core.LearnerModel.Learners;
 
 namespace Tutor.Infrastructure.Database.Repositories.Domain
 {
@@ -51,6 +53,19 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             var query = _dbContext.InstructionalEvents
                 .Where(ae => ae.KnowledgeComponentId == id);
             return query.ToList();
+        }
+
+        public KnowledgeComponentMastery GetKnowledgeComponentMastery(int learnerId, int knowledgeComponentId)
+        {
+            return _dbContext.KcMastery.FirstOrDefault
+                (kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponentId == knowledgeComponentId);
+        }
+
+        public void UpdateKCMastery(int kcId, double mastery)
+        {
+            var knowledgeComponentMastery = _dbContext.KcMastery.FirstOrDefault(kcm => kcm.Id == kcId);
+            knowledgeComponentMastery?.SetMastery(mastery);
+            _dbContext.SaveChanges();
         }
     }
 }

@@ -5,6 +5,7 @@ using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
 using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
+using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTask;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenge;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
@@ -17,11 +18,13 @@ namespace Tutor.Web.Controllers.Domain
     {
         private readonly IMapper _mapper;
         private readonly ISubmissionService _submissionService;
+        private readonly IKCService _kcService;
 
-        public SubmissionController(IMapper mapper, ISubmissionService service)
+        public SubmissionController(IMapper mapper, ISubmissionService service, IKCService kcService)
         {
             _mapper = mapper;
             _submissionService = service;
+            _kcService = kcService;
         }
         
         [HttpPost("challenge")]
@@ -39,8 +42,9 @@ namespace Tutor.Web.Controllers.Domain
             [FromBody] MrqSubmissionDto submission)
         {
             var result = _submissionService.EvaluateAndSaveSubmission(_mapper.Map<MrqSubmission>(submission));
-
             if (result.IsFailed) return BadRequest(result.Errors);
+            _kcService.UpdateKCMastery(_mapper.Map<MrqSubmission>(submission), result.Value);
+            
             return Ok(_mapper.Map<MrqEvaluationDto>(result.Value));
         }
 
@@ -49,7 +53,6 @@ namespace Tutor.Web.Controllers.Domain
             [FromBody] ArrangeTaskSubmissionDto submission)
         {
             var result = _submissionService.EvaluateAndSaveSubmission(_mapper.Map<ArrangeTaskSubmission>(submission));
-
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<ArrangeTaskEvaluationDto>(result.Value));
         }

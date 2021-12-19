@@ -40,5 +40,11 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             _dbContext.Submissions.Attach(submission);
             _dbContext.SaveChanges();
         }
+
+        public Submission FindSubmissionWithMaxCorrectness(int assessmentEventId)
+        {
+            return _dbContext.Submissions.Where(sub => sub.AssessmentEventId == assessmentEventId).ToList()
+                .OrderBy(sub => sub.CorrectnessLevel).Last();
+        }
     }
 }

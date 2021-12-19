@@ -19,6 +19,7 @@ DELETE FROM public."AssessmentEvents";
 DELETE FROM public."InstructionalEvents";
 DELETE FROM public."KnowledgeComponents";
 DELETE FROM public."Units";
+DELETE FROM public."KcMastery";
 
 DELETE FROM public."Learners";
 
@@ -230,3 +231,7 @@ INSERT INTO public."ChallengeHints"(
 INSERT INTO public."MetricRangeRules"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
 	VALUES (-1, 'MELOC', 1, 18, -1, -1);
+
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (1, 0.0, -15, -1);

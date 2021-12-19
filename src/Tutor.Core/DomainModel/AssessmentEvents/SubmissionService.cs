@@ -15,7 +15,8 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
         public Result<Evaluation> EvaluateAndSaveSubmission(Submission submission)
         {
             var assessmentEvent = _assessmentEventRepository.GetAssessmentEvent(submission.AssessmentEventId);
-            if (assessmentEvent == null) return Result.Fail("No assessment event with ID: " + submission.AssessmentEventId);
+            if (assessmentEvent == null)
+                return Result.Fail("No assessment event with ID: " + submission.AssessmentEventId);
 
             Evaluation evaluation;
             try

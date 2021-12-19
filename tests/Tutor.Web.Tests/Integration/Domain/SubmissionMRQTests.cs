@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
 using Xunit;
@@ -19,8 +20,8 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Submits_multiple_response_questions(MrqSubmissionDto submission, MrqEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<ISubmissionService>());
+            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>(),
+                scope.ServiceProvider.GetRequiredService<IKCService>());
 
             var actualEvaluation = ((OkObjectResult)controller.SubmitMultipleResponseQuestion(submission).Result).Value as MrqEvaluationDto;
 
