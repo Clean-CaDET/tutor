@@ -52,6 +52,8 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             if (!(evaluation.CorrectnessLevel > currentCorrectnessLevel)) return;
             
             submission.SetCorrectnessLevel(evaluation.CorrectnessLevel);
+            _assessmentEventRepository.SaveSubmission(submission);
+            
             var assessmentEvent = _assessmentEventRepository
                 .GetAssessmentEvent(submission.AssessmentEventId);
             var kcCount = _ikcRepository

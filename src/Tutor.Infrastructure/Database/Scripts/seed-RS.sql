@@ -235,3 +235,7 @@ INSERT INTO public."MetricRangeRules"(
 INSERT INTO public."KcMastery"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
 VALUES (1, 0.0, -15, -1);
+
+INSERT INTO public."Submissions"(
+    "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
+VALUES (2, -154, -1, true, '2021-12-19 21:28:50.379749+01', 'ChallengeSubmission', 1.0);

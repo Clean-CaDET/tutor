@@ -47,6 +47,15 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
                 .ThenInclude(c => c.Elements);
             return query.ToList();
         }
+        
+        public List<AssessmentEvent> GetAssessmentEventsByKnowledgeComponentAndLearner(int knowledgeComponentId,
+            int learnerId)
+        {
+            var query = _dbContext.AssessmentEvents
+                .Where(ae => ae.KnowledgeComponentId == knowledgeComponentId)
+                .Include(ae => ae.Submissions.Where(sub => sub.LearnerId == learnerId));
+            return query.ToList();
+        }
 
         public List<InstructionalEvent> GetInstructionalEventsByKnowledgeComponent(int id)
         {
