@@ -7,5 +7,6 @@ namespace Tutor.Web.Controllers.Domain.DTOs
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public List<KnowledgeComponentDto> KnowledgeComponents { get; set; }
     }
 }

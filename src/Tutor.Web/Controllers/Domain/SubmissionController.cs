@@ -43,8 +43,7 @@ namespace Tutor.Web.Controllers.Domain
         {
             var result = _submissionService.EvaluateAndSaveSubmission(_mapper.Map<MrqSubmission>(submission));
             if (result.IsFailed) return BadRequest(result.Errors);
-            _kcService.UpdateKCMastery(_mapper.Map<MrqSubmission>(submission), result.Value);
-            
+
             return Ok(_mapper.Map<MrqEvaluationDto>(result.Value));
         }
 

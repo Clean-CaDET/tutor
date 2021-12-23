@@ -1,15 +1,19 @@
 ﻿using FluentResults;
 using System;
+using Tutor.Core.InstructorModel.Instructors;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents
 {
     public class SubmissionService : ISubmissionService
     {
         private readonly IAssessmentEventRepository _assessmentEventRepository;
+        private readonly IInstructor _instructor;
 
-        public SubmissionService(IAssessmentEventRepository assessmentEventRepository)
+        public SubmissionService(IAssessmentEventRepository assessmentEventRepository,
+            IInstructor instructor)
         {
             _assessmentEventRepository = assessmentEventRepository;
+            _instructor = instructor;
         }
 
         public Result<Evaluation> EvaluateAndSaveSubmission(Submission submission)
@@ -29,6 +33,9 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
             }
 
             if (evaluation.Correct) submission.MarkCorrect();
+            submission.SetCorrectnessLevel(evaluation.CorrectnessLevel);
+            
+            _instructor.UpdateKcMastery(submission, assessmentEvent.KnowledgeComponentId);
             _assessmentEventRepository.SaveSubmission(submission);
 
             return Result.Ok(evaluation);

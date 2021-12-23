@@ -10,10 +10,12 @@ namespace Tutor.Core.InstructorModel.Instructors
     public class DefaultInstructor : IInstructor
     {
         private readonly IKCRepository _ikcRepository;
+        private readonly IAssessmentEventRepository _assessmentEventRepository;
 
-        public DefaultInstructor(IKCRepository ikcRepository)
+        public DefaultInstructor(IKCRepository ikcRepository, IAssessmentEventRepository assessmentEventRepository)
         {
             _ikcRepository = ikcRepository;
+            _assessmentEventRepository = assessmentEventRepository;
         }
 
         public Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId)
@@ -30,7 +32,24 @@ namespace Tutor.Core.InstructorModel.Instructors
             
             return Result.Ok(suitableAssessmentEvent);
         }
-        
+
+        public void UpdateKcMastery(Submission submission, int knowledgeComponentId)
+        {
+            var currentCorrectnessLevel = _assessmentEventRepository
+                .FindSubmissionWithMaxCorrectness(submission.AssessmentEventId).CorrectnessLevel;
+
+            if (!(submission.CorrectnessLevel > currentCorrectnessLevel)) return;
+            var kcCount = _ikcRepository
+                .GetAssessmentEventsByKnowledgeComponent(knowledgeComponentId).Count;
+
+            var kcMastery = _ikcRepository.GetKnowledgeComponentMastery
+                (submission.LearnerId, knowledgeComponentId);
+
+            var mastery = kcMastery.Mastery +
+                          ((100.0 / kcCount) * (submission.CorrectnessLevel - currentCorrectnessLevel)) / 100.0;
+            _ikcRepository.UpdateKCMastery(kcMastery.Id, mastery);
+        }
+
         private static List<Submission> FindLastSubmissions(List<AssessmentEvent> assessmentEvents)
         {
             var lastSubmissions = new List<Submission>();

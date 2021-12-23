@@ -43,25 +43,5 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         {
             return Result.Ok(_ikcRepository.GetInstructionalEventsByKnowledgeComponent(id));
         }
-
-        public void UpdateKCMastery(Submission submission, Evaluation evaluation)
-        {
-            var currentCorrectnessLevel = _assessmentEventRepository
-                .FindSubmissionWithMaxCorrectness(submission.AssessmentEventId).CorrectnessLevel;
-
-            if (!(evaluation.CorrectnessLevel > currentCorrectnessLevel)) return;
-            
-            submission.SetCorrectnessLevel(evaluation.CorrectnessLevel);
-            _assessmentEventRepository.SaveSubmission(submission);
-            
-            var assessmentEvent = _assessmentEventRepository
-                .GetAssessmentEvent(submission.AssessmentEventId);
-            var kcCount = _ikcRepository
-                .GetAssessmentEventsByKnowledgeComponent(assessmentEvent.KnowledgeComponentId).Count;
-
-            var mastery = ((100.0 / kcCount) * (evaluation.CorrectnessLevel - currentCorrectnessLevel)) / 100.0;
-            var kcMastery = _ikcRepository.GetKnowledgeComponentMastery(submission.LearnerId, assessmentEvent.KnowledgeComponentId);
-            _ikcRepository.UpdateKCMastery(kcMastery.Id, mastery);
-        }
     }
 }

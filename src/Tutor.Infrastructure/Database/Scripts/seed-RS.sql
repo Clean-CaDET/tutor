@@ -42,17 +42,17 @@ INSERT INTO public."KnowledgeComponents"(
 	"Id", "Name", "Description", "UnitId")
 	VALUES (-11, 'Dodeli značajna imena identifikatorima', '', -1);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
-	VALUES (-12, 'Koristi ispravne tipove reči', '', -1);
+	"Id", "Name", "Description", "UnitId", "ParentId")
+	VALUES (-12, 'Koristi ispravne tipove reči', '', -1, -11);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
-	VALUES (-13, 'Prati timske konvencije', '', -1);
+	"Id", "Name", "Description", "UnitId", "ParentId")
+	VALUES (-13, 'Prati timske konvencije', '', -1, -11);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
-	VALUES (-14, 'Izbegavaj beznačajne reči', '', -1);
+	"Id", "Name", "Description", "UnitId", "ParentId")
+	VALUES (-14, 'Izbegavaj beznačajne reči', '', -1, -13);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
-	VALUES (-15, 'Koristi terminologiju domena problema', '', -1);
+	"Id", "Name", "Description", "UnitId", "ParentId")
+	VALUES (-15, 'Koristi terminologiju domena problema', '', -1, -14);
 
 INSERT INTO public."InstructionalEvents"(
 	"Id", "KnowledgeComponentId")
