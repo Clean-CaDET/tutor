@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTask
 {
-    [JsonDiscriminator("arrangeTask")]
+    [JsonDiscriminator("arrangeTask", Policy = DiscriminatorPolicy.Always)]
     public class ArrangeTaskDto : AssessmentEventDto
     {
         public string Text { get; set; }

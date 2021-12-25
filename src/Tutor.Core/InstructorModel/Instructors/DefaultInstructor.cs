@@ -20,34 +20,39 @@ namespace Tutor.Core.InstructorModel.Instructors
 
         public Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId)
         {
-            var assessmentEvents =
-                _ikcRepository.GetAssessmentEventsByKnowledgeComponentAndLearner(knowledgeComponentId, learnerId);
-            
-            var suitableAssessmentEvent = assessmentEvents.FirstOrDefault(ae => ae.Submissions.Count == 0);
-            if (suitableAssessmentEvent != null) return Result.Ok(suitableAssessmentEvent);
-            
-            var lastSubmissions = FindLastSubmissions(assessmentEvents);
-            var submissionWithMinCorrectness= FindSubmissionWithMinCorrectness(lastSubmissions);
-            suitableAssessmentEvent = assessmentEvents.FirstOrDefault(ae => ae.Id == submissionWithMinCorrectness.AssessmentEventId);
-            
-            return Result.Ok(suitableAssessmentEvent);
+            var suitableAssessmentEvent = GetAssessmentEventWithoutSubmission(knowledgeComponentId, learnerId);
+            return Result.Ok(suitableAssessmentEvent != null ?
+                _assessmentEventRepository.GetAssessmentEvent(suitableAssessmentEvent.Id) :
+                _assessmentEventRepository.GetAssessmentEvent(FindLastSubmissionWithMinCorrectness(knowledgeComponentId, learnerId).AssessmentEventId));
         }
 
         public void UpdateKcMastery(Submission submission, int knowledgeComponentId)
         {
             var currentCorrectnessLevel = _assessmentEventRepository
-                .FindSubmissionWithMaxCorrectness(submission.AssessmentEventId).CorrectnessLevel;
-
+                .FindSubmissionWithMaxCorrectness(submission.AssessmentEventId)?.CorrectnessLevel ?? 0.0;
             if (!(submission.CorrectnessLevel > currentCorrectnessLevel)) return;
-            var kcCount = _ikcRepository
-                .GetAssessmentEventsByKnowledgeComponent(knowledgeComponentId).Count;
 
             var kcMastery = _ikcRepository.GetKnowledgeComponentMastery
                 (submission.LearnerId, knowledgeComponentId);
+            
+            _ikcRepository.UpdateKCMastery(kcMastery.Id, kcMastery.Mastery + 100.0
+                / _ikcRepository.GetAssessmentEventsByKnowledgeComponent(knowledgeComponentId).Count
+                * (submission.CorrectnessLevel - currentCorrectnessLevel) / 100.0);
+        }
 
-            var mastery = kcMastery.Mastery +
-                          ((100.0 / kcCount) * (submission.CorrectnessLevel - currentCorrectnessLevel)) / 100.0;
-            _ikcRepository.UpdateKCMastery(kcMastery.Id, mastery);
+        private AssessmentEvent GetAssessmentEventWithoutSubmission(int knowledgeComponentId, int learnerId)
+        {
+            var assessmentEvents =
+                _ikcRepository.GetAssessmentEventsByKnowledgeComponentAndLearner(knowledgeComponentId, learnerId);
+            return assessmentEvents.FirstOrDefault(ae => ae.Submissions.Count == 0);
+        }
+
+        private Submission FindLastSubmissionWithMinCorrectness(int knowledgeComponentId, int learnerId)
+        {
+            var lastSubmissions = FindLastSubmissions(_ikcRepository.GetAssessmentEventsByKnowledgeComponentAndLearner(knowledgeComponentId, learnerId));
+            lastSubmissions.Remove(lastSubmissions.OrderBy(sub => sub.TimeStamp).Last()); //TODO List can be empty after remove.
+            var lastSubmissionWithMinCorrectness = lastSubmissions.OrderBy(sub => sub.CorrectnessLevel).First();
+            return lastSubmissionWithMinCorrectness;
         }
 
         private static List<Submission> FindLastSubmissions(List<AssessmentEvent> assessmentEvents)
@@ -55,27 +60,19 @@ namespace Tutor.Core.InstructorModel.Instructors
             var lastSubmissions = new List<Submission>();
             assessmentEvents.ForEach(ae =>
             {
-                var lastSubmissionTemp = ae.Submissions.First();
+                var currentLastSubmission = ae.Submissions.First();
                 ae.Submissions.ForEach(sub =>
                 {
-                    var compareResult = DateTime.Compare(lastSubmissionTemp.TimeStamp, sub.TimeStamp);
+                    var compareResult = DateTime.Compare(currentLastSubmission.TimeStamp, sub.TimeStamp);
                     if (compareResult < 0)
                     {
-                        lastSubmissionTemp = sub;
+                        currentLastSubmission = sub;
                     }
                 });
-                lastSubmissions.Add(lastSubmissionTemp);
+                lastSubmissions.Add(currentLastSubmission);
             });
-            
-            return lastSubmissions;
-        }
 
-        private static Submission FindSubmissionWithMinCorrectness(ICollection<Submission> submissions)
-        {
-            var lastSubmission = submissions.OrderBy(sub => sub.TimeStamp).Last();
-            submissions.Remove(lastSubmission);
-            var lastSubmissionWithMinCorrectness = submissions.OrderBy(sub => sub.CorrectnessLevel).First();
-            return lastSubmissionWithMinCorrectness;
+            return lastSubmissions;
         }
     }
 }

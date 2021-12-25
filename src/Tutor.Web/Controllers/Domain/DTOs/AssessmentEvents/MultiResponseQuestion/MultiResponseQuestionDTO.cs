@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion
 {
-    [JsonDiscriminator("multiResponseQuestion")]
+    [JsonDiscriminator("multiResponseQuestion", Policy = DiscriminatorPolicy.Always)]
     public class MultiResponseQuestionDto : AssessmentEventDto
     {
         public string Text { get; set; }

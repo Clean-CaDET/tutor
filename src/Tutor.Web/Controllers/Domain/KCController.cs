@@ -49,21 +49,21 @@ namespace Tutor.Web.Controllers.Domain
         }
 
         [HttpGet("knowledge-components/{knowledgeComponentId:int}/assessment-events/")]
-        public ActionResult<AssessmentEventDto> GetAssessmentEvents(int knowledgeComponentId)
+        public ActionResult<List<AssessmentEventDto>> GetAssessmentEvents(int knowledgeComponentId)
         {
             var result = _kcService.GetAssessmentEventsByKnowledgeComponent(knowledgeComponentId);
             return Ok(result.Value.Select(ae => _mapper.Map<AssessmentEventDto>(ae)).ToList());
         }
 
         [HttpGet("knowledge-components/{knowledgeComponentId:int}/instructional-events/")]
-        public ActionResult<InstructionalEventDto> GetInstructionalEvents(int knowledgeComponentId)
+        public ActionResult<List<InstructionalEventDto>> GetInstructionalEvents(int knowledgeComponentId)
         {
             var result = _kcService.GetInstructionalEventsByKnowledgeComponent(knowledgeComponentId);
             return Ok(result.Value.Select(ie => _mapper.Map<InstructionalEventDto>(ie)).ToList());
         }
 
         [HttpGet("knowledge-components/{knowledgeComponentId:int}/assessment-events/{learnerId:int}")]
-        public ActionResult<AssessmentEventDto> GetAssessmentEvent(int knowledgeComponentId, int learnerId)
+        public ActionResult<AssessmentEventDto> GetSuitableAssessmentEvent(int knowledgeComponentId, int learnerId)
         {
             var result = _instructor.SelectSuitableAssessmentEvent(knowledgeComponentId, learnerId);
             return Ok(_mapper.Map<AssessmentEventDto>(result.Value));

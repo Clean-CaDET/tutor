@@ -43,6 +43,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
 
         public Submission FindSubmissionWithMaxCorrectness(int assessmentEventId)
         {
+            if (!_dbContext.Submissions.Any(sub => sub.AssessmentEventId == assessmentEventId)) return null;
             return _dbContext.Submissions.Where(sub => sub.AssessmentEventId == assessmentEventId).ToList()
                 .OrderBy(sub => sub.CorrectnessLevel).Last();
         }
