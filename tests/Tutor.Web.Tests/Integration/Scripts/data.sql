@@ -151,6 +151,50 @@ INSERT INTO public."MrqItems"(
 	VALUES (-1535, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -153);
 
 INSERT INTO public."AssessmentEvents"(
+    "Id", "KnowledgeComponentId")
+VALUES (-155, -15);
+INSERT INTO public."MultiResponseQuestions"(
+    "Id", "Text")
+VALUES (-155, 'Kada dizajniramo softver, bitan cilj je da razdvojimo funkcionalnosti poslovne logike (npr. pravilo kako se stornira kupovina) od logike koja je vezana za tehnološke detalje (npr. kod za formiranje HTTP zahteva). Ovo pravilo važi i za sama imena, gde objekti i funkcije poslovne logike treba da sadrže samo reči koje potiču iz domena problema, odnosno od naših klijenata. Označi imena funkcija koje smatraš da potiču iz domena poslovne logike:');
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1551, 'string.join(":", patientRecord)', false, 'Ovo nije ime iz domena problema već funkcija za spajanje elementa niza u string - tehnološki detalj.', -155);
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1552, 'Close(Account account)', true, 'Ovo ime je iz domena problema bankarskog poslovanja. Zatvaranje naloga je poslovna operacija koja se praktikovala i pre nego što su banke imale softver.', -155);
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1553, 'SaveToFile(MedicalHistory patientCard)', false, 'Ovo ime ističe tehnološki detalj - datoteku kao način perzistencije podataka. Da je ime metode bilo samo "Save" mogli bismo ga svrstati u domen problema kao poslovnu želju da se trajno sačuva ova informacija. Međutim, poslovnu logiku ne zanima da li je to čuvanje u datoteci, bazi podataka ili na cloud-u.', -155);
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1554, 'RefreshEmployeeRegistryView()', false, 'Po imenu možemo zaključiti da ova metoda osvežava neki prikaz (npr. tabele) što je tehnološki detalj.', -155);
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1555, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -155);
+
+INSERT INTO public."AssessmentEvents"(
+    "Id", "KnowledgeComponentId")
+VALUES (-156, -15);
+INSERT INTO public."MultiResponseQuestions"(
+    "Id", "Text")
+VALUES (-156, 'Kada dizajniramo softver, bitan cilj je da razdvojimo funkcionalnosti poslovne logike (npr. pravilo kako se stornira kupovina) od logike koja je vezana za tehnološke detalje (npr. kod za formiranje HTTP zahteva). Ovo pravilo važi i za sama imena, gde objekti i funkcije poslovne logike treba da sadrže samo reči koje potiču iz domena problema, odnosno od naših klijenata. Označi imena funkcija koje smatraš da potiču iz domena poslovne logike:');
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1561, 'string.join(":", patientRecord)', false, 'Ovo nije ime iz domena problema već funkcija za spajanje elementa niza u string - tehnološki detalj.', -156);
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1562, 'Close(Account account)', true, 'Ovo ime je iz domena problema bankarskog poslovanja. Zatvaranje naloga je poslovna operacija koja se praktikovala i pre nego što su banke imale softver.', -156);
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1563, 'SaveToFile(MedicalHistory patientCard)', false, 'Ovo ime ističe tehnološki detalj - datoteku kao način perzistencije podataka. Da je ime metode bilo samo "Save" mogli bismo ga svrstati u domen problema kao poslovnu želju da se trajno sačuva ova informacija. Međutim, poslovnu logiku ne zanima da li je to čuvanje u datoteci, bazi podataka ili na cloud-u.', -156);
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1564, 'RefreshEmployeeRegistryView()', false, 'Po imenu možemo zaključiti da ova metoda osvežava neki prikaz (npr. tabele) što je tehnološki detalj.', -156);
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1565, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -156);
+
+INSERT INTO public."AssessmentEvents"(
 	"Id", "KnowledgeComponentId")
 	VALUES (-154, -15);
 INSERT INTO public."Challenges"(
@@ -159,15 +203,102 @@ INSERT INTO public."Challenges"(
 INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId", "CodeSnippetId")
 	VALUES (-1541, -154, 'Naming.MeaningfulWords.Course');
-	
+
 INSERT INTO public."ChallengeHints"(
-	"Id", "Content")
-	VALUES (-1541, 'Razmisli kako da integrišeš domenski značajne reči poput "Enroll", "newCourse", "Maximum" i "Active" u imena koja koristiš u svom kodu.');
+    "Id", "Content")
+VALUES (-1541, 'Razmisli kako da integrišeš domenski značajne reči poput "Enroll", "newCourse", "Maximum" i "Active" u imena koja koristiš u svom kodu.');
 INSERT INTO public."RequiredWordsCheckers"(
-	"Id", "RequiredWords", "HintId")
-	VALUES (-1541, '{{"Enroll","newCourse","Maximum","Active"}}', -1541);
+    "Id", "RequiredWords", "HintId")
+VALUES (-1541, '{{"Enroll","newCourse","Maximum","Active"}}', -1541);
 
+INSERT INTO public."AssessmentEvents"(
+    "Id", "KnowledgeComponentId")
+VALUES (-134, -13);
+INSERT INTO public."Challenges"(
+    "Id", "Description", "Url", "TestSuiteLocation", "SolutionUrl")
+VALUES (-134, 'U svojoj brzopletosti, često nabacamo kratka imena kako bismo što pre ispisali kod koji radi. U sklopu direktorijuma "Naming/02. Meaningful Words" proširi kod korisnim imenima koji uklanjaju potrebe za komentarima i isprati zadatke u zaglavlju klase.', 'https://github.com/Clean-CaDET/challenge-repository', 'Naming.Meaning', 'https://youtu.be/8OYsu0dza0k');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+    "Id", "ChallengeId", "CodeSnippetId")
+VALUES (-1341, -134, 'Naming.MeaningfulWords.Course');
 
+INSERT INTO public."ChallengeHints"(
+    "Id", "Content")
+VALUES (-1341, 'Razmisli kako da integrišeš domenski značajne reči poput "Enroll", "newCourse", "Maximum" i "Active" u imena koja koristiš u svom kodu.');
+INSERT INTO public."RequiredWordsCheckers"(
+    "Id", "RequiredWords", "HintId")
+VALUES (-1341, '{{"Enroll","newCourse","Maximum","Active"}}', -1341);
+
+INSERT INTO public."AssessmentEvents"(
+    "Id", "KnowledgeComponentId")
+VALUES (-143, -14);
+INSERT INTO public."MultiResponseQuestions"(
+    "Id", "Text")
+VALUES (-143, 'Kada dizajniramo softver, bitan cilj je da razdvojimo funkcionalnosti poslovne logike (npr. pravilo kako se stornira kupovina) od logike koja je vezana za tehnološke detalje (npr. kod za formiranje HTTP zahteva). Ovo pravilo važi i za sama imena, gde objekti i funkcije poslovne logike treba da sadrže samo reči koje potiču iz domena problema, odnosno od naših klijenata. Označi imena funkcija koje smatraš da potiču iz domena poslovne logike:');
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1431, 'string.join(":", patientRecord)', false, 'Ovo nije ime iz domena problema već funkcija za spajanje elementa niza u string - tehnološki detalj.', -143);
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1432, 'Close(Account account)', true, 'Ovo ime je iz domena problema bankarskog poslovanja. Zatvaranje naloga je poslovna operacija koja se praktikovala i pre nego što su banke imale softver.', -143);
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1433, 'SaveToFile(MedicalHistory patientCard)', false, 'Ovo ime ističe tehnološki detalj - datoteku kao način perzistencije podataka. Da je ime metode bilo samo "Save" mogli bismo ga svrstati u domen problema kao poslovnu želju da se trajno sačuva ova informacija. Međutim, poslovnu logiku ne zanima da li je to čuvanje u datoteci, bazi podataka ili na cloud-u.', -143);
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1434, 'RefreshEmployeeRegistryView()', false, 'Po imenu možemo zaključiti da ova metoda osvežava neki prikaz (npr. tabele) što je tehnološki detalj.', -143);
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1435, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -143);
+
+INSERT INTO public."AssessmentEvents"(
+    "Id", "KnowledgeComponentId")
+VALUES (-144, -14);
+INSERT INTO public."MultiResponseQuestions"(
+    "Id", "Text")
+VALUES (-144, 'Kada dizajniramo softver, bitan cilj je da razdvojimo funkcionalnosti poslovne logike (npr. pravilo kako se stornira kupovina) od logike koja je vezana za tehnološke detalje (npr. kod za formiranje HTTP zahteva). Ovo pravilo važi i za sama imena, gde objekti i funkcije poslovne logike treba da sadrže samo reči koje potiču iz domena problema, odnosno od naših klijenata. Označi imena funkcija koje smatraš da potiču iz domena poslovne logike:');
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1441, 'string.join(":", patientRecord)', false, 'Ovo nije ime iz domena problema već funkcija za spajanje elementa niza u string - tehnološki detalj.', -144);
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1442, 'Close(Account account)', true, 'Ovo ime je iz domena problema bankarskog poslovanja. Zatvaranje naloga je poslovna operacija koja se praktikovala i pre nego što su banke imale softver.', -144);
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1443, 'SaveToFile(MedicalHistory patientCard)', false, 'Ovo ime ističe tehnološki detalj - datoteku kao način perzistencije podataka. Da je ime metode bilo samo "Save" mogli bismo ga svrstati u domen problema kao poslovnu želju da se trajno sačuva ova informacija. Međutim, poslovnu logiku ne zanima da li je to čuvanje u datoteci, bazi podataka ili na cloud-u.', -144);
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1444, 'RefreshEmployeeRegistryView()', false, 'Po imenu možemo zaključiti da ova metoda osvežava neki prikaz (npr. tabele) što je tehnološki detalj.', -144);
+INSERT INTO public."MrqItems"(
+    "Id", "Text", "IsCorrect", "Feedback", "MrqId")
+VALUES (-1445, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -144);
+
+INSERT INTO public."Submissions"(
+    "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
+VALUES (-1, -134, -1, true, '2021-12-19 21:25:50.379749+01', 'MrqSubmission', 0.75);
+
+INSERT INTO public."Submissions"(
+    "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
+VALUES (-2, -155, -1, true, '2021-12-19 21:26:50.379749+01', 'MrqSubmission', 0.75);
+
+INSERT INTO public."Submissions"(
+    "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
+VALUES (-3, -155, -1, true, '2021-12-19 21:27:50.379749+01', 'MrqSubmission', 0.3);
+
+INSERT INTO public."Submissions"(
+    "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
+VALUES (-4, -153, -1, true, '2021-12-19 21:28:50.379749+01', 'MrqSubmission', 0.6);
+
+INSERT INTO public."Submissions"(
+    "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
+VALUES (-5, -154, -1, true, '2021-12-19 21:29:50.379749+01', 'MrqSubmission', 0.7);
+
+INSERT INTO public."Submissions"(
+    "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
+VALUES (-6, -156, -1, true, '2021-12-19 21:30:50.379749+01', 'MrqSubmission', 0.4);
+
+INSERT INTO public."Submissions"(
+    "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
+VALUES (-7, -143, -1, true, '2021-12-19 21:25:50.379749+01', 'MrqSubmission', 1.0);
 
 -- == Unit 2: Readable methods
 INSERT INTO public."Units"(

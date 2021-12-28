@@ -86,7 +86,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 new object[]
                 {
                     -15,
-                    2
+                    4
                 }
             };
         }

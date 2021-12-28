@@ -23,7 +23,7 @@ namespace Tutor.Core.InstructorModel.Instructors
             var suitableAssessmentEvent = GetAssessmentEventWithoutSubmission(knowledgeComponentId, learnerId);
             return Result.Ok(suitableAssessmentEvent != null ?
                 _assessmentEventRepository.GetAssessmentEvent(suitableAssessmentEvent.Id) :
-                _assessmentEventRepository.GetAssessmentEvent(FindLastSubmissionWithMinCorrectness(knowledgeComponentId, learnerId).AssessmentEventId));
+                _assessmentEventRepository.GetAssessmentEvent(FindSubmissionWithMinCorrectness(knowledgeComponentId, learnerId).AssessmentEventId));
         }
 
         public void UpdateKcMastery(Submission submission, int knowledgeComponentId)
@@ -47,12 +47,19 @@ namespace Tutor.Core.InstructorModel.Instructors
             return assessmentEvents.FirstOrDefault(ae => ae.Submissions.Count == 0);
         }
 
-        private Submission FindLastSubmissionWithMinCorrectness(int knowledgeComponentId, int learnerId)
+        private Submission FindSubmissionWithMinCorrectness(int knowledgeComponentId, int learnerId)
         {
             var lastSubmissions = FindLastSubmissions(_ikcRepository.GetAssessmentEventsByKnowledgeComponentAndLearner(knowledgeComponentId, learnerId));
-            lastSubmissions.Remove(lastSubmissions.OrderBy(sub => sub.TimeStamp).Last()); //TODO List can be empty after remove.
-            var lastSubmissionWithMinCorrectness = lastSubmissions.OrderBy(sub => sub.CorrectnessLevel).First();
-            return lastSubmissionWithMinCorrectness;
+            if (lastSubmissions.Count != 1) lastSubmissions.Remove(lastSubmissions.OrderBy(sub => sub.TimeStamp).Last());
+            
+            var submissionsWithMaxCorrectness = new List<Submission>();
+            lastSubmissions.ForEach(sub =>
+            {
+                submissionsWithMaxCorrectness.Add(_assessmentEventRepository.FindSubmissionWithMaxCorrectness(sub.AssessmentEventId));
+            });
+
+            var submissionWithMinCorrectness = submissionsWithMaxCorrectness.OrderBy(sub => sub.CorrectnessLevel).First();
+            return submissionWithMinCorrectness;
         }
 
         private static List<Submission> FindLastSubmissions(List<AssessmentEvent> assessmentEvents)
