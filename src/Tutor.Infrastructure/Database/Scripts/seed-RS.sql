@@ -131,29 +131,29 @@ INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "UnitId")
 VALUES (-22, 'Redukuj kompleksnost funkcije', '', -2);
 INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "UnitId")
-VALUES (-23, 'Reorganizuj logiku', '', -2);
+    "Id", "Name", "Description", "ParentId")
+VALUES (-23, 'Reorganizuj logiku', '', -22);
 INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "UnitId")
-VALUES (-24, 'Ekstrahuj složenu logiku', '', -2);
+    "Id", "Name", "Description", "ParentId")
+VALUES (-24, 'Ekstrahuj složenu logiku', '', -22);
 INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "UnitId")
-VALUES (-25, 'Imenuj složenu logiku', '', -2);
+    "Id", "Name", "Description", "ParentId")
+VALUES (-25, 'Imenuj složenu logiku', '', -22);
 INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "UnitId")
 VALUES (-26, 'Redukuj broj parametra funkcije', '', -2);
 INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "UnitId")
-VALUES (-27, 'Premesti metodu u prikladniji modul', '', -2);
+    "Id", "Name", "Description", "ParentId")
+VALUES (-27, 'Premesti metodu u prikladniji modul', '', -26);
 INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "UnitId")
-VALUES (-28, 'Promoviši parametar u atribut', '', -2);
+    "Id", "Name", "Description", "ParentId")
+VALUES (-28, 'Promoviši parametar u atribut', '', -26);
 INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "UnitId")
-VALUES (-29, 'Enkapsuliraj skup usko povezanih parametara', '', -2);
+    "Id", "Name", "Description", "ParentId")
+VALUES (-29, 'Enkapsuliraj skup usko povezanih parametara', '', -26);
 INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "UnitId")
-VALUES (-210, 'Ekstrahuj pojedinačne zadatke iz metode', '', -2);
+    "Id", "Name", "Description", "ParentId")
+VALUES (-210, 'Ekstrahuj pojedinačne zadatke iz metode', '', -26);
 INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "UnitId")
 VALUES (-211, 'Odredi semantičku svrhu metode', '', -2);
