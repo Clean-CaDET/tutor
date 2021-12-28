@@ -22,19 +22,29 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
 
         public List<Unit> GetUnits()
         {
-            return _dbContext.Units
-                .Include(u => u.KnowledgeComponents)
-                .ThenInclude(kc => kc.KnowledgeComponents)
-                .ToList();
+            var units = _dbContext.Units.Include(u => u.KnowledgeComponents).ToList();
+            foreach (var unit in units)
+            {
+                LoadKCs(unit.KnowledgeComponents);
+            }
+            
+            return units;
         }
-        
+
+        private void LoadKCs(List<KnowledgeComponent> parentKCs)
+        {
+            foreach (var knowledgeComponent in parentKCs)
+            {
+                _dbContext.Entry(knowledgeComponent).Collection(kc => kc.KnowledgeComponents).Load();
+                LoadKCs(knowledgeComponent.KnowledgeComponents);
+            }
+        }
+
         public Unit GetUnit(int id)
         {
-            var query = _dbContext.Units
-                .Where(unit => unit.Id == id)
-                .Include(u => u.KnowledgeComponents)
-                .ThenInclude(kc => kc.KnowledgeComponents);
-            return query.FirstOrDefault();
+            var unit = _dbContext.Units.Where(unit => unit.Id == id).Include(u => u.KnowledgeComponents).FirstOrDefault();
+            LoadKCs(unit?.KnowledgeComponents);
+            return unit;
         }
 
         public KnowledgeComponent GetKnowledgeComponent(int id)

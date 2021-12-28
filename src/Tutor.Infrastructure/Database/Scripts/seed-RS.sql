@@ -41,17 +41,17 @@ INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "UnitId")
 VALUES (-11, 'Dodeli značajna imena identifikatorima', '', -1);
 INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "UnitId")
-VALUES (-12, 'Koristi ispravne tipove reči', '', -1);
+    "Id", "Name", "Description", "ParentId")
+VALUES (-12, 'Koristi ispravne tipove reči', '', -11);
 INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "UnitId")
-VALUES (-13, 'Prati timske konvencije', '', -1);
+    "Id", "Name", "Description", "ParentId")
+VALUES (-13, 'Prati timske konvencije', '', -11);
 INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "UnitId")
-VALUES (-14, 'Izbegavaj beznačajne reči', '', -1);
+    "Id", "Name", "Description", "ParentId")
+VALUES (-14, 'Izbegavaj beznačajne reči', '', -11);
 INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "UnitId")
-VALUES (-15, 'Koristi terminologiju domena problema', '', -1);
+    "Id", "Name", "Description", "ParentId")
+VALUES (-15, 'Koristi terminologiju domena problema', '', -11);
 
 INSERT INTO public."InstructionalEvents"(
     "Id", "KnowledgeComponentId")
@@ -126,10 +126,13 @@ INSERT INTO public."Units"(
 VALUES (-2, 'Čitljive funkcije', 'Čest savet je da naše funkcije treba da imaju mali broj linija koda. Ovako povećavamo fokusiranost i jasnoću funkcije, kao i mogućnost ponovne upotrebe ovog parčeta koda. Međutim, greška je reći da nam je cilj da imamo kratke funkcije. Nama je cilj da ispoštujemo više dobrih praksi za formiranje čistih funkcija, a kao posledicu primene tih praksi ćemo dobiti kratke funkcije. Kroz ovu lekciju analiziramo dobre i loše prakse za formiranje čistih funkcija.');
 INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "UnitId")
-VALUES (-21, 'Segmentiraj dugačke metode', '', -2);
+VALUES (-20, 'Piši čitljive funkcije', '', -2);
 INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "UnitId")
-VALUES (-22, 'Redukuj kompleksnost funkcije', '', -2);
+    "Id", "Name", "Description", "ParentId")
+VALUES (-21, 'Segmentiraj dugačke metode', '', -20);
+INSERT INTO public."KnowledgeComponents"(
+    "Id", "Name", "Description", "ParentId")
+VALUES (-22, 'Redukuj kompleksnost funkcije', '', -20);
 INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "ParentId")
 VALUES (-23, 'Reorganizuj logiku', '', -22);
@@ -140,8 +143,8 @@ INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "ParentId")
 VALUES (-25, 'Imenuj složenu logiku', '', -22);
 INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "UnitId")
-VALUES (-26, 'Redukuj broj parametra funkcije', '', -2);
+    "Id", "Name", "Description", "ParentId")
+VALUES (-26, 'Redukuj broj parametra funkcije', '', -20);
 INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "ParentId")
 VALUES (-27, 'Premesti metodu u prikladniji modul', '', -26);
@@ -155,8 +158,8 @@ INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "ParentId")
 VALUES (-210, 'Ekstrahuj pojedinačne zadatke iz metode', '', -26);
 INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "UnitId")
-VALUES (-211, 'Odredi semantičku svrhu metode', '', -2);
+    "Id", "Name", "Description", "ParentId")
+VALUES (-211, 'Odredi semantičku svrhu metode', '', -20);
 
 
 INSERT INTO public."AssessmentEvents"(
