@@ -44,6 +44,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new MrqSubmissionDto
                     {
                         AssessmentEventId = -153,
+                        LearnerId = -1,
                         Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1531},
@@ -70,6 +71,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new MrqSubmissionDto
                     {
                         AssessmentEventId = -153,
+                        LearnerId = -1,
                         Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1532},
@@ -92,7 +94,8 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -153
+                        AssessmentEventId = -153,
+                        LearnerId = -1
                     },
                     new MrqEvaluationDto
                     {

@@ -31,10 +31,10 @@ namespace Tutor.Core.InstructorModel.Instructors
             var currentCorrectnessLevel = _assessmentEventRepository
                 .FindSubmissionWithMaxCorrectness(submission.AssessmentEventId)?.CorrectnessLevel ?? 0.0;
             if (!(submission.CorrectnessLevel > currentCorrectnessLevel)) return;
-
+            
             var kcMastery = _ikcRepository.GetKnowledgeComponentMastery
                 (submission.LearnerId, knowledgeComponentId);
-            
+
             _ikcRepository.UpdateKCMastery(kcMastery.Id, kcMastery.Mastery + 100.0
                 / _ikcRepository.GetAssessmentEventsByKnowledgeComponent(knowledgeComponentId).Count
                 * (submission.CorrectnessLevel - currentCorrectnessLevel) / 100.0);

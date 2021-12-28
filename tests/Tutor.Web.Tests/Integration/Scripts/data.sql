@@ -19,6 +19,7 @@ DELETE FROM public."AssessmentEvents";
 DELETE FROM public."InstructionalEvents";
 DELETE FROM public."KnowledgeComponents";
 DELETE FROM public."Units";
+DELETE FROM public."KcMastery";
 
 DELETE FROM public."Learners";
 
@@ -52,6 +53,54 @@ INSERT INTO public."KnowledgeComponents"(
 INSERT INTO public."KnowledgeComponents"(
 	"Id", "Name", "Description", "UnitId")
 	VALUES (-15, 'Koristi terminologiju domena problema', '', -1);
+
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-1, 0.0, -11, -1);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-2, 0.0, -12, -1);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-3, 0.0, -13, -1);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-4, 0.0, -14, -1);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-5, 0.0, -15, -1);
+
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-6, 0.0, -11, -2);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-7, 0.0, -12, -2);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-8, 0.0, -13, -2);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-9, 0.0, -14, -2);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-10, 0.0, -15, -2);
+
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-11, 0.0, -11, -3);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-12, 0.0, -12, -3);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-13, 0.0, -13, -3);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-14, 0.0, -14, -3);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-15, 0.0, -15, -3);
 
 INSERT INTO public."InstructionalEvents"(
 	"Id", "KnowledgeComponentId")
@@ -158,6 +207,107 @@ INSERT INTO public."KnowledgeComponents"(
 	"Id", "Name", "Description", "UnitId")
 	VALUES (-211, 'Odredi semantičku svrhu metode', '', -2);
 
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-16, 0.0, -21, -1);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-17, 0.0, -22, -1);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-18, 0.0, -23, -1);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-19, 0.0, -24, -1);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-20, 0.0, -25, -1);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-21, 0.0, -26, -1);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-22, 0.0, -27, -1);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-23, 0.0, -28, -1);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-24, 0.0, -29, -1);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-25, 0.0, -210, -1);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-26, 0.0, -211, -1);
+
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-27, 0.0, -21, -2);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-28, 0.0, -22, -2);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-29, 0.0, -23, -2);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-30, 0.0, -24, -2);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-31, 0.0, -25, -2);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-32, 0.0, -26, -2);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-33, 0.0, -27, -2);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-34, 0.0, -28, -2);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-35, 0.0, -29, -2);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-36, 0.0, -210, -2);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-37, 0.0, -211, -2);
+
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-38, 0.0, -21, -3);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-39, 0.0, -22, -3);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-40, 0.0, -23, -3);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-41, 0.0, -24, -3);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-42, 0.0, -25, -3);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-43, 0.0, -26, -3);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-44, 0.0, -27, -3);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-45, 0.0, -28, -3);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-46, 0.0, -29, -3);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-47, 0.0, -210, -3);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-48, 0.0, -211, -3);
 
 INSERT INTO public."AssessmentEvents"(
 	"Id", "KnowledgeComponentId")

@@ -44,7 +44,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             new object[]
             {
-                new ChallengeSubmissionDto { AssessmentEventId = -211, SourceCode = ChallengeTestData.GetFailingAchievement()},
+                new ChallengeSubmissionDto { AssessmentEventId = -211, LearnerId = -1, SourceCode = ChallengeTestData.GetFailingAchievement()},
                 new ChallengeEvaluationDto
                 {
                     Correct = false, AssessmentEventId = -211,
@@ -57,7 +57,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             },
             new object[]
             {
-                new ChallengeSubmissionDto { AssessmentEventId = -211, SourceCode = ChallengeTestData.GetPassingAchievement()},
+                new ChallengeSubmissionDto { AssessmentEventId = -211, LearnerId = -1, SourceCode = ChallengeTestData.GetPassingAchievement()},
                 new ChallengeEvaluationDto
                 {
                     Correct = true, AssessmentEventId = -211,
