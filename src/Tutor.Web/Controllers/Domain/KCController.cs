@@ -62,10 +62,10 @@ namespace Tutor.Web.Controllers.Domain
             return Ok(result.Value.Select(ie => _mapper.Map<InstructionalEventDto>(ie)).ToList());
         }
 
-        [HttpGet("knowledge-components/{knowledgeComponentId:int}/assessment-events/{learnerId:int}")]
-        public ActionResult<AssessmentEventDto> GetSuitableAssessmentEvent(int knowledgeComponentId, int learnerId)
+        [HttpPost("knowledge-component")]
+        public ActionResult<AssessmentEventDto> GetSuitableAssessmentEvent([FromBody] AssessmentEventRequestDTO assessmentEventRequest)
         {
-            var result = _instructor.SelectSuitableAssessmentEvent(knowledgeComponentId, learnerId);
+            var result = _instructor.SelectSuitableAssessmentEvent(assessmentEventRequest.KnowledgeComponentId, assessmentEventRequest.LearnerId);
             return Ok(_mapper.Map<AssessmentEventDto>(result.Value));
         }
     }
