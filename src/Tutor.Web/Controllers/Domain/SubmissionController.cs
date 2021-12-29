@@ -18,13 +18,11 @@ namespace Tutor.Web.Controllers.Domain
     {
         private readonly IMapper _mapper;
         private readonly ISubmissionService _submissionService;
-        private readonly IKCService _kcService;
 
-        public SubmissionController(IMapper mapper, ISubmissionService service, IKCService kcService)
+        public SubmissionController(IMapper mapper, ISubmissionService service)
         {
             _mapper = mapper;
             _submissionService = service;
-            _kcService = kcService;
         }
         
         [HttpPost("challenge")]

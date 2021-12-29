@@ -23,8 +23,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Accepts_challenge_submission_and_produces_correct_evaluation(ChallengeSubmissionDto submission, ChallengeEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>(),
-                scope.ServiceProvider.GetRequiredService<IKCService>());
+            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>());
             var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
 
             var actualEvaluation = ((OkObjectResult)controller.SubmitChallenge(submission).Result).Value as ChallengeEvaluationDto;
@@ -70,8 +69,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Rejects_bad_challenge_submission()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>(),
-                scope.ServiceProvider.GetRequiredService<IKCService>());
+            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>());
             var submission = new ChallengeSubmissionDto
             {
                 AssessmentEventId = -211
@@ -86,8 +84,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Gets_syntax_error_hint()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>(),
-                scope.ServiceProvider.GetRequiredService<IKCService>());
+            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>());
             var submission = new ChallengeSubmissionDto
             {
                 AssessmentEventId = -211,

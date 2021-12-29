@@ -12,14 +12,11 @@ using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Tutor.Web.Tests.Integration.Domain
 {
     public class InstructorTests : BaseIntegrationTest
     {
-        private readonly ITestOutputHelper _testOutputHelper;
-
         public InstructorTests(TutorApplicationTestFactory<Startup> factory) : base(factory)
         {
         }
@@ -46,8 +43,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), 
-                scope.ServiceProvider.GetRequiredService<ISubmissionService>(),
-                scope.ServiceProvider.GetRequiredService<IKCService>());
+                scope.ServiceProvider.GetRequiredService<ISubmissionService>());
             var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
             var assessmentEvent = dbContext.AssessmentEvents.FirstOrDefault(ae => ae.Id == submission.AssessmentEventId);
             var knowledgeComponent =

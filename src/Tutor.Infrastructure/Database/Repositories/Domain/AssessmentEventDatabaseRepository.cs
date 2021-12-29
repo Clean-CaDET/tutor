@@ -49,7 +49,6 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
 
             return _dbContext.Submissions.Where(sub =>
                     sub.AssessmentEventId == submission.AssessmentEventId && sub.LearnerId == submission.LearnerId)
-                .ToList()
                 .OrderBy(sub => sub.CorrectnessLevel).Last();
         }
     }
