@@ -5,6 +5,6 @@
         AssessmentEvent GetAssessmentEvent(int assessmentEventId);
         void SaveSubmission(Submission submission);
 
-        Submission FindSubmissionWithMaxCorrectness(int assessmentEventId);
+        Submission FindSubmissionWithMaxCorrectness(Submission submission);
     }
 }

@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,27 +21,30 @@ namespace Tutor.Core.InstructorModel.Instructors
 
         public Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId)
         {
+            if (_ikcRepository.GetAssessmentEventsByKnowledgeComponent(knowledgeComponentId).Count == 0) return Result.Fail("There are no assessment events yet.");
             var suitableAssessmentEvent = GetAssessmentEventWithoutSubmission(knowledgeComponentId, learnerId);
-            return Result.Ok(suitableAssessmentEvent != null ?
-                _assessmentEventRepository.GetAssessmentEvent(suitableAssessmentEvent.Id) :
-                _assessmentEventRepository.GetAssessmentEvent(FindSubmissionWithMinCorrectness(knowledgeComponentId, learnerId).AssessmentEventId));
+            return Result.Ok(suitableAssessmentEvent != null
+                ? _assessmentEventRepository.GetAssessmentEvent(suitableAssessmentEvent.Id)
+                : _assessmentEventRepository.GetAssessmentEvent(
+                    FindSubmissionWithMinCorrectness(knowledgeComponentId, learnerId).AssessmentEventId));
         }
 
         public void UpdateKcMastery(Submission submission, int knowledgeComponentId)
         {
             var currentCorrectnessLevel = _assessmentEventRepository
-                .FindSubmissionWithMaxCorrectness(submission.AssessmentEventId)?.CorrectnessLevel ?? 0.0;
-            if (!(submission.CorrectnessLevel > currentCorrectnessLevel)) return;
-            
-            var kcMastery = _ikcRepository.GetKnowledgeComponentMastery
-                (submission.LearnerId, knowledgeComponentId);
+                .FindSubmissionWithMaxCorrectness(submission)?.CorrectnessLevel ?? 0.0;
+            if (currentCorrectnessLevel > submission.CorrectnessLevel) return;
 
-            _ikcRepository.UpdateKCMastery(kcMastery.Id, kcMastery.Mastery + 100.0
-                / _ikcRepository.GetAssessmentEventsByKnowledgeComponent(knowledgeComponentId).Count
-                * (submission.CorrectnessLevel - currentCorrectnessLevel) / 100.0);
+            var kcMastery = _ikcRepository.GetKnowledgeComponentMastery(submission.LearnerId, knowledgeComponentId);
+
+            var kcMasteryIncrement = 100.0 / _ikcRepository.GetAssessmentEventsByKnowledgeComponent(knowledgeComponentId).Count
+                * (submission.CorrectnessLevel - currentCorrectnessLevel) / 100.0;
+            kcMastery.SetMastery(kcMasteryIncrement);
+
+            _ikcRepository.UpdateKCMastery(kcMastery);
         }
 
-        private AssessmentEvent GetAssessmentEventWithoutSubmission(int knowledgeComponentId, int learnerId)
+        private AssessmentEvent? GetAssessmentEventWithoutSubmission(int knowledgeComponentId, int learnerId)
         {
             var assessmentEvents =
                 _ikcRepository.GetAssessmentEventsByKnowledgeComponentAndLearner(knowledgeComponentId, learnerId);
@@ -49,16 +53,20 @@ namespace Tutor.Core.InstructorModel.Instructors
 
         private Submission FindSubmissionWithMinCorrectness(int knowledgeComponentId, int learnerId)
         {
-            var lastSubmissions = FindLastSubmissions(_ikcRepository.GetAssessmentEventsByKnowledgeComponentAndLearner(knowledgeComponentId, learnerId));
-            if (lastSubmissions.Count != 1) lastSubmissions.Remove(lastSubmissions.OrderBy(sub => sub.TimeStamp).Last());
-            
+            var lastSubmissions =
+                FindLastSubmissions(
+                    _ikcRepository.GetAssessmentEventsByKnowledgeComponentAndLearner(knowledgeComponentId, learnerId));
+            if (lastSubmissions.Count != 1)
+                lastSubmissions.Remove(lastSubmissions.OrderBy(sub => sub.TimeStamp).Last());
+
             var submissionsWithMaxCorrectness = new List<Submission>();
             lastSubmissions.ForEach(sub =>
             {
-                submissionsWithMaxCorrectness.Add(_assessmentEventRepository.FindSubmissionWithMaxCorrectness(sub.AssessmentEventId));
+                submissionsWithMaxCorrectness.Add(_assessmentEventRepository.FindSubmissionWithMaxCorrectness(sub));
             });
 
-            var submissionWithMinCorrectness = submissionsWithMaxCorrectness.OrderBy(sub => sub.CorrectnessLevel).First();
+            var submissionWithMinCorrectness =
+                submissionsWithMaxCorrectness.OrderBy(sub => sub.CorrectnessLevel).First();
             return submissionWithMinCorrectness;
         }
 

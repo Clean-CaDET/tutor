@@ -21,6 +21,6 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         
         KnowledgeComponentMastery GetKnowledgeComponentMastery(int learnerId, int knowledgeComponentId);
         
-        void UpdateKCMastery(int kcId, double mastery);
+        void UpdateKCMastery(KnowledgeComponentMastery kcMastery);
     }
 }

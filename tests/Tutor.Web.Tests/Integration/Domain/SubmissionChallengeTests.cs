@@ -91,6 +91,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             var submission = new ChallengeSubmissionDto
             {
                 AssessmentEventId = -211,
+                LearnerId = -1,
                 SourceCode = new[]
                 {
                     @"public class Test

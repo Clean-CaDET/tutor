@@ -66,7 +66,8 @@ namespace Tutor.Web.Controllers.Domain
         public ActionResult<AssessmentEventDto> GetSuitableAssessmentEvent([FromBody] AssessmentEventRequestDTO assessmentEventRequest)
         {
             var result = _instructor.SelectSuitableAssessmentEvent(assessmentEventRequest.KnowledgeComponentId, assessmentEventRequest.LearnerId);
-            return Ok(_mapper.Map<AssessmentEventDto>(result.Value));
+            if (result.IsSuccess) return Ok(_mapper.Map<AssessmentEventDto>(result.Value));
+            return NotFound(result.Errors);
         }
     }
 }

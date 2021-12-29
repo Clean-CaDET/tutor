@@ -84,10 +84,9 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
                 (kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponentId == knowledgeComponentId);
         }
 
-        public void UpdateKCMastery(int kcId, double mastery)
+        public void UpdateKCMastery(KnowledgeComponentMastery kcMastery)
         {
-            var knowledgeComponentMastery = _dbContext.KcMastery.FirstOrDefault(kcm => kcm.Id == kcId);
-            knowledgeComponentMastery?.SetMastery(mastery);
+            _dbContext.KcMastery.Attach(kcMastery);
             _dbContext.SaveChanges();
         }
     }

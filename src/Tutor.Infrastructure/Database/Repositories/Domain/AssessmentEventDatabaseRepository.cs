@@ -41,10 +41,15 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             _dbContext.SaveChanges();
         }
 
-        public Submission FindSubmissionWithMaxCorrectness(int assessmentEventId)
+        public Submission FindSubmissionWithMaxCorrectness(Submission submission)
         {
-            if (!_dbContext.Submissions.Any(sub => sub.AssessmentEventId == assessmentEventId)) return null;
-            return _dbContext.Submissions.Where(sub => sub.AssessmentEventId == assessmentEventId).ToList()
+            if (!_dbContext.Submissions.Any(sub =>
+                sub.AssessmentEventId == submission.AssessmentEventId && sub.LearnerId == submission.LearnerId))
+                return null;
+
+            return _dbContext.Submissions.Where(sub =>
+                    sub.AssessmentEventId == submission.AssessmentEventId && sub.LearnerId == submission.LearnerId)
+                .ToList()
                 .OrderBy(sub => sub.CorrectnessLevel).Last();
         }
     }
