@@ -52,25 +52,6 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             return _dbContext.KnowledgeComponents.FirstOrDefault(l => l.Id == id);
         }
 
-        public List<AssessmentEvent> GetAssessmentEventsByKnowledgeComponent(int id)
-        {
-            var query = _dbContext.AssessmentEvents
-                .Where(ae => ae.KnowledgeComponentId == id)
-                .Include(ae => (ae as Mrq).Items)
-                .Include(lo => (lo as ArrangeTask).Containers)
-                .ThenInclude(c => c.Elements);
-            return query.ToList();
-        }
-        
-        public List<AssessmentEvent> GetAssessmentEventsByKnowledgeComponentAndLearner(int knowledgeComponentId,
-            int learnerId)
-        {
-            var query = _dbContext.AssessmentEvents
-                .Where(ae => ae.KnowledgeComponentId == knowledgeComponentId)
-                .Include(ae => ae.Submissions.Where(sub => sub.LearnerId == learnerId));
-            return query.ToList();
-        }
-
         public List<InstructionalEvent> GetInstructionalEventsByKnowledgeComponent(int id)
         {
             var query = _dbContext.InstructionalEvents

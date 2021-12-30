@@ -23,7 +23,7 @@ namespace Tutor.Web.Tests.Integration.Domain
 
         [Theory]
         [MemberData(nameof(AssessmentEventRequest))]
-        public void Get_Suitable_Assessment_Event(AssessmentEventRequestDTO request, int expectedSuitableAssessmentEventId)
+        public void Get_Suitable_Assessment_Event(AssessmentEventRequestDto request, int expectedSuitableAssessmentEventId)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
@@ -156,7 +156,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             {
                 new object[]
                 {
-                    new AssessmentEventRequestDTO
+                    new AssessmentEventRequestDto
                     {
                         LearnerId = -2,
                         KnowledgeComponentId = -14
@@ -165,7 +165,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 },
                 new object[]
                 {
-                    new AssessmentEventRequestDTO
+                    new AssessmentEventRequestDto
                     {
                         LearnerId = -2,
                         KnowledgeComponentId = -15
@@ -174,7 +174,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 },
                 new object[]
                 {
-                    new AssessmentEventRequestDTO
+                    new AssessmentEventRequestDto
                     {
                         LearnerId = -2,
                         KnowledgeComponentId = -13

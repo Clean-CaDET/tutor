@@ -18,7 +18,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
 
         public Result<Evaluation> EvaluateAndSaveSubmission(Submission submission)
         {
-            var assessmentEvent = _assessmentEventRepository.GetAssessmentEvent(submission.AssessmentEventId);
+            var assessmentEvent = _assessmentEventRepository.GetDerivedAssessmentEvent(submission.AssessmentEventId);
             if (assessmentEvent == null)
                 return Result.Fail("No assessment event with ID: " + submission.AssessmentEventId);
 
@@ -33,7 +33,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
             }
 
             if (evaluation.Correct) submission.MarkCorrect();
-            submission.SetCorrectnessLevel(evaluation.CorrectnessLevel);
+            submission.CorrectnessLevel = evaluation.CorrectnessLevel;
             
             _instructor.UpdateKcMastery(submission, assessmentEvent.KnowledgeComponentId);
             _assessmentEventRepository.SaveSubmission(submission);

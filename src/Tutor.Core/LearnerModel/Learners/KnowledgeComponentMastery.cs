@@ -14,7 +14,7 @@
             LearnerId = learnerId;
         }
 
-        public void SetMastery(double increment)
+        public void IncreaseMastery(double increment)
         {
             Mastery += increment;
         }

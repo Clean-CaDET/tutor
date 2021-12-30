@@ -9,10 +9,12 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
     public class KCService : IKCService
     {
         private readonly IKCRepository _ikcRepository;
+        private readonly IAssessmentEventRepository _assessmentEventRepository;
 
-        public KCService(IKCRepository ikcRepository)
+        public KCService(IKCRepository ikcRepository, IAssessmentEventRepository assessmentEventRepository)
         {
             _ikcRepository = ikcRepository;
+            _assessmentEventRepository = assessmentEventRepository;
         }
 
         public Result<List<Unit>> GetUnits()
@@ -34,7 +36,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         public Result<List<AssessmentEvent>> GetAssessmentEventsByKnowledgeComponent(int id)
         {
-            return Result.Ok(_ikcRepository.GetAssessmentEventsByKnowledgeComponent(id));
+            return Result.Ok(_assessmentEventRepository.GetAssessmentEventsByKnowledgeComponent(id));
         }
 
         public Result<List<InstructionalEvent>> GetInstructionalEventsByKnowledgeComponent(int id)

@@ -13,12 +13,8 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         KnowledgeComponent GetKnowledgeComponent(int id);
 
-        List<AssessmentEvent> GetAssessmentEventsByKnowledgeComponent(int id);
-
         List<InstructionalEvent> GetInstructionalEventsByKnowledgeComponent(int id);
-        
-        List<AssessmentEvent> GetAssessmentEventsByKnowledgeComponentAndLearner(int knowledgeComponentId, int learnerId);
-        
+
         KnowledgeComponentMastery GetKnowledgeComponentMastery(int learnerId, int knowledgeComponentId);
         
         void UpdateKCMastery(KnowledgeComponentMastery kcMastery);
