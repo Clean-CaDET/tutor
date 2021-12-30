@@ -11,6 +11,7 @@ using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
 {
+    [Collection("Sequential")]
     public class SubmissionMRQTests : BaseIntegrationTest
     {
         public SubmissionMRQTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}

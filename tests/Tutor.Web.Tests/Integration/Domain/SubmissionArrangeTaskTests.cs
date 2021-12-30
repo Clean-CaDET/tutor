@@ -4,13 +4,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using Tutor.Core.DomainModel.AssessmentEvents;
-using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTask;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
 {
+    [Collection("Sequential")]
     public class SubmissionArrangeTaskTests : BaseIntegrationTest
     {
         public SubmissionArrangeTaskTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
