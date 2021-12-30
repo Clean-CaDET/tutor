@@ -20,9 +20,9 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             return Result.Ok(_ikcRepository.GetUnits());
         }
 
-        public Result<Unit> GetUnit(int id)
+        public Result<Unit> GetUnit(int id, int learnerId)
         {
-            return Result.Ok(_ikcRepository.GetUnit(id));
+            return Result.Ok(_ikcRepository.GetUnit(id, learnerId));
         }
 
         public Result<KnowledgeComponent> GetKnowledgeComponentById(int id)

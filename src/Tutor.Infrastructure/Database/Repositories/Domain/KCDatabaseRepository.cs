@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.DomainModel.AssessmentEvents;
@@ -22,28 +21,24 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
 
         public List<Unit> GetUnits()
         {
-            var units = _dbContext.Units.Include(u => u.KnowledgeComponents).ToList();
-            foreach (var unit in units)
-            {
-                LoadKCs(unit.KnowledgeComponents);
-            }
-            
-            return units;
+            return _dbContext.Units.ToList();
         }
 
-        private void LoadKCs(List<KnowledgeComponent> parentKCs)
+        private void LoadKCs(List<KnowledgeComponent> parentKCs, int learnerId)
         {
             foreach (var knowledgeComponent in parentKCs)
             {
                 _dbContext.Entry(knowledgeComponent).Collection(kc => kc.KnowledgeComponents).Load();
-                LoadKCs(knowledgeComponent.KnowledgeComponents);
+                _dbContext.Entry(knowledgeComponent)
+                    .Collection(kc => kc.Masteries).Query().Where(m => m.LearnerId == learnerId).Load();
+                LoadKCs(knowledgeComponent.KnowledgeComponents, learnerId);
             }
         }
 
-        public Unit GetUnit(int id)
+        public Unit GetUnit(int id, int learnerId)
         {
             var unit = _dbContext.Units.Where(unit => unit.Id == id).Include(u => u.KnowledgeComponents).FirstOrDefault();
-            LoadKCs(unit?.KnowledgeComponents);
+            LoadKCs(unit?.KnowledgeComponents, learnerId);
             return unit;
         }
 

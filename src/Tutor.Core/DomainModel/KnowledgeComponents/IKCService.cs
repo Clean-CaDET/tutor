@@ -9,7 +9,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
     {
         Result<List<Unit>> GetUnits();
 
-        Result<Unit> GetUnit(int id);
+        Result<Unit> GetUnit(int id, int learnerId);
 
         Result<KnowledgeComponent> GetKnowledgeComponentById(int id);
 
