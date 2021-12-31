@@ -33,9 +33,9 @@ namespace Tutor.Web.Controllers.Domain
         }
 
         [HttpGet("{unitId:int}")]
-        public ActionResult<List<UnitDto>> GetUnit(int unitId)
+        public ActionResult<List<UnitDto>> GetUnit(int unitId, [FromQuery] int learnerId)
         {
-            var result = _kcService.GetUnit(unitId);
+            var result = _kcService.GetUnit(unitId, learnerId);
             if (result.IsSuccess) return Ok(_mapper.Map<UnitDto>(result.Value));
             return NotFound(result.Errors);
         }

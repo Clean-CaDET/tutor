@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Tutor.Core.LearnerModel.Learners;
 
 namespace Tutor.Web.Controllers.Domain.DTOs
 {
@@ -8,5 +9,6 @@ namespace Tutor.Web.Controllers.Domain.DTOs
         public string Name { get; set; }
         public string Description { get; set; }
         public List<KnowledgeComponentDto> KnowledgeComponents { get; set; }
+        public KnowledgeComponentMasteryDto Mastery { get; set; }
     }
 }

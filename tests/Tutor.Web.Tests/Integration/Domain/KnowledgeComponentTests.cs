@@ -29,7 +29,6 @@ namespace Tutor.Web.Tests.Integration.Domain
             var units = ((OkObjectResult) controller.GetUnits().Result).Value as List<UnitDto>;
 
             units.Count.ShouldBe(2);
-            units.SelectMany(u => u.KnowledgeComponents).Count().ShouldBe(17);
         }
 
         [Theory]
