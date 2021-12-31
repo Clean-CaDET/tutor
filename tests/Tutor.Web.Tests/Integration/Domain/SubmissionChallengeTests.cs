@@ -5,6 +5,7 @@ using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenge;
@@ -13,6 +14,7 @@ using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
 {
+    [Collection("Sequential")]
     public class SubmissionChallengeTests : BaseIntegrationTest
     {
         public SubmissionChallengeTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
@@ -42,7 +44,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             new object[]
             {
-                new ChallengeSubmissionDto { AssessmentEventId = -211, SourceCode = ChallengeTestData.GetFailingAchievement()},
+                new ChallengeSubmissionDto { AssessmentEventId = -211, LearnerId = -1, SourceCode = ChallengeTestData.GetFailingAchievement()},
                 new ChallengeEvaluationDto
                 {
                     Correct = false, AssessmentEventId = -211,
@@ -55,7 +57,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             },
             new object[]
             {
-                new ChallengeSubmissionDto { AssessmentEventId = -211, SourceCode = ChallengeTestData.GetPassingAchievement()},
+                new ChallengeSubmissionDto { AssessmentEventId = -211, LearnerId = -1, SourceCode = ChallengeTestData.GetPassingAchievement()},
                 new ChallengeEvaluationDto
                 {
                     Correct = true, AssessmentEventId = -211,
@@ -87,6 +89,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             var submission = new ChallengeSubmissionDto
             {
                 AssessmentEventId = -211,
+                LearnerId = -1,
                 SourceCode = new[]
                 {
                     @"public class Test

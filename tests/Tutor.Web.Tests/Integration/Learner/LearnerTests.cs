@@ -10,6 +10,7 @@ using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Learner
 {
+    [Collection("Sequential")]
     public class LearnerTests : BaseIntegrationTest
     {
         public LearnerTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}

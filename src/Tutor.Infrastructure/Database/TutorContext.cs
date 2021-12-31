@@ -64,6 +64,7 @@ namespace Tutor.Infrastructure.Database
             
             ConfigureArrangeTask(modelBuilder);
             ConfigureChallenge(modelBuilder);
+            ConfigureKnowledgeComponent(modelBuilder);
 
             modelBuilder.Entity<Learner>()
                 .OwnsOne(l => l.Workspace)
@@ -102,6 +103,15 @@ namespace Tutor.Infrastructure.Database
                 .HasMany(b => b.MetricRanges)
                 .WithOne()
                 .HasForeignKey("MetricCheckerForeignKey");
+        }
+
+        private static void ConfigureKnowledgeComponent(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<KnowledgeComponent>()
+                .HasMany(kc => kc.KnowledgeComponents)
+                .WithOne()
+                .HasForeignKey("ParentId")
+                .IsRequired(false);
         }
     }
 }

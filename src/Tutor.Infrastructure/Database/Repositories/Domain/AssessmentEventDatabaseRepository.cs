@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
@@ -18,7 +19,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             _dbContext = dbContext;
         }
 
-        public AssessmentEvent GetAssessmentEvent(int assessmentEventId)
+        public AssessmentEvent GetDerivedAssessmentEvent(int assessmentEventId)
         {
             return _dbContext.AssessmentEvents
                 .Where(ae => ae.Id == assessmentEventId)
@@ -34,11 +35,45 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
                 .ThenInclude(r => r.Hint)
                 .FirstOrDefault();
         }
+        
+        public List<AssessmentEvent> GetAssessmentEventsByKnowledgeComponent(int id)
+        {
+            var query = _dbContext.AssessmentEvents
+                .Where(ae => ae.KnowledgeComponentId == id)
+                .Include(ae => (ae as Mrq).Items)
+                .Include(lo => (lo as ArrangeTask).Containers)
+                .ThenInclude(c => c.Elements);
+            return query.ToList();
+        }
+        
+        public List<AssessmentEvent> GetAssessmentEventsWithLearnerSubmissions(int knowledgeComponentId,
+            int learnerId)
+        {
+            var query = _dbContext.AssessmentEvents
+                .Where(ae => ae.KnowledgeComponentId == knowledgeComponentId)
+                .Include(ae => ae.Submissions.Where(sub => sub.LearnerId == learnerId));
+            return query.ToList();
+        }
 
         public void SaveSubmission(Submission submission)
         {
             _dbContext.Submissions.Attach(submission);
             _dbContext.SaveChanges();
+        }
+
+        public Submission FindSubmissionWithMaxCorrectness(int assessmentEventId, int learnerId)
+        {
+            if (!_dbContext.Submissions.Any(sub =>
+                sub.AssessmentEventId == assessmentEventId && sub.LearnerId == learnerId))
+                return null;
+
+            return _dbContext.Submissions.Where(sub => sub.AssessmentEventId == assessmentEventId && sub.LearnerId == learnerId)
+                .OrderBy(sub => sub.CorrectnessLevel).Last();
+        }
+
+        public int CountAssessmentEvents(int knowledgeComponentId)
+        {
+            return _dbContext.AssessmentEvents.Count(ae => ae.KnowledgeComponentId == knowledgeComponentId);
         }
     }
 }
