@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
-using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents
 {
