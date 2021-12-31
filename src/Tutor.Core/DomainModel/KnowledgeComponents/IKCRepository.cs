@@ -18,5 +18,6 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         KnowledgeComponentMastery GetKnowledgeComponentMastery(int learnerId, int knowledgeComponentId);
         
         void UpdateKCMastery(KnowledgeComponentMastery kcMastery);
+        List<KnowledgeComponent> GetAllKnowledgeComponents();
     }
 }

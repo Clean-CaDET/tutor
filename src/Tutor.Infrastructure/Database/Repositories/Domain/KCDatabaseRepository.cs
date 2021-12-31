@@ -1,12 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.DomainModel.AssessmentEvents;
-using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
-using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 using Tutor.Core.DomainModel.InstructionalEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Core.LearnerModel.Learners;
 
 namespace Tutor.Infrastructure.Database.Repositories.Domain
 {
@@ -64,6 +60,11 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
         {
             _dbContext.KcMastery.Attach(kcMastery);
             _dbContext.SaveChanges();
+        }
+
+        public List<KnowledgeComponent> GetAllKnowledgeComponents()
+        {
+            return _dbContext.KnowledgeComponents.ToList();
         }
     }
 }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel.Workspaces;
 
 namespace Tutor.Core.LearnerModel.Learners
@@ -8,5 +10,6 @@ namespace Tutor.Core.LearnerModel.Learners
         public string StudentIndex { get; private set; }
         public Workspace Workspace { get; set; }
         public string IamId { get; set; }
+        public List<KnowledgeComponentMastery> KnowledgeComponentMasteries { get; private set; } = new();
     }
 }

@@ -24,7 +24,6 @@ namespace Tutor.Web.Controllers.Domain.Mappers
             CreateMap<KnowledgeComponent, KnowledgeComponentDto>()
                 .ForMember(dest => dest.Mastery, opt => opt.MapFrom(src => src.Masteries.FirstOrDefault()));
             CreateMap<KnowledgeComponentMastery, KnowledgeComponentMasteryDto>();
-            // TODO: Move Mastery to Domain
 
             CreateMap<InstructionalEvent, InstructionalEventDto>().IncludeAllDerived();
             CreateMap<Text, TextDto>();

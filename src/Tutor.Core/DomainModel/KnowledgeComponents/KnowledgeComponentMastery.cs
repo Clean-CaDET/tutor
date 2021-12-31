@@ -1,4 +1,4 @@
-﻿namespace Tutor.Core.LearnerModel.Learners
+﻿namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
     public class KnowledgeComponentMastery
     {
@@ -7,11 +7,10 @@
         public int KnowledgeComponentId { get; private set; }
         public int LearnerId { get; private set; }
 
-        public KnowledgeComponentMastery(int knowledgeComponentId, int learnerId)
+        public KnowledgeComponentMastery(int knowledgeComponentId)
         {
             Mastery = 0.0;
             KnowledgeComponentId = knowledgeComponentId;
-            LearnerId = learnerId;
         }
 
         public void IncreaseMastery(double increment)

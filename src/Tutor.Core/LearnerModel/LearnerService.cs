@@ -1,4 +1,6 @@
+using System.Linq;
 using FluentResults;
+using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel.Learners;
 using Tutor.Core.LearnerModel.Workspaces;
 
@@ -7,11 +9,13 @@ namespace Tutor.Core.LearnerModel
     public class LearnerService : ILearnerService
     {
         private readonly ILearnerRepository _learnerRepository;
+        private readonly IKCRepository _kcRepository;
         private readonly IWorkspaceCreator _workspaceCreator;
 
-        public LearnerService(ILearnerRepository learnerRepository, IWorkspaceCreator workspaceCreator)
+        public LearnerService(ILearnerRepository learnerRepository, IKCRepository kcRepository, IWorkspaceCreator workspaceCreator)
         {
             _learnerRepository = learnerRepository;
+            _kcRepository = kcRepository;
             _workspaceCreator = workspaceCreator;
         }
 
@@ -19,7 +23,11 @@ namespace Tutor.Core.LearnerModel
         {
             if (_learnerRepository.GetByIndex(learner.StudentIndex) != null)
                 return Result.Fail("Learner with index " + learner.StudentIndex + " is already registered.");
-            
+
+            var kcs = _kcRepository.GetAllKnowledgeComponents();
+            learner.KnowledgeComponentMasteries.AddRange(
+                kcs.Select(kc => new KnowledgeComponentMastery(kc.Id)).ToList());
+
             var savedLearner = _learnerRepository.Save(learner);
             CreateWorkspace(savedLearner);
 
