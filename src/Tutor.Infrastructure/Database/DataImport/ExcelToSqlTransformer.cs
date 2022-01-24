@@ -1,4 +1,5 @@
 ﻿using OfficeOpenXml;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,7 +8,7 @@ using Tutor.Infrastructure.Database.DataImport.ColumnModel;
 
 namespace Tutor.Infrastructure.Database.DataImport
 {
-    public class ExcelToSqlTransformer
+    public static class ExcelToSqlTransformer
     {
         public static void Transform(string sourceFolder, string destinationFile)
         {
@@ -171,7 +172,7 @@ namespace Tutor.Infrastructure.Database.DataImport
         private static string BuildSql(List<UnitColumns> units, List<KCColumns> kcs, List<IEColumns> ies, List<AEColumns> aes)
         {
             var sqlBuilder = new StringBuilder();
-            sqlBuilder.Append(GetDeleteCommands());
+            sqlBuilder.Append(DeleteCommands);
             sqlBuilder.Append(BuildUnitsSql(units));
             sqlBuilder.Append(BuildKCsSql(kcs));
             sqlBuilder.Append(BuildIEsSql(ies));
@@ -180,9 +181,7 @@ namespace Tutor.Infrastructure.Database.DataImport
             return sqlBuilder.ToString();
         }
 
-        private static string GetDeleteCommands()
-        {
-            return @"DELETE FROM public.""Submissions"";
+        private const string DeleteCommands = @"DELETE FROM public.""Submissions"";
 DELETE FROM public.""ArrangeTaskContainerSubmissions"";
 DELETE FROM public.""Texts"";
 DELETE FROM public.""Images"";
@@ -206,7 +205,6 @@ DELETE FROM public.""Units"";
 DELETE FROM public.""Learners"";
 
 ";
-        }
 
         private static string BuildUnitsSql(List<UnitColumns> units)
         {
@@ -387,6 +385,7 @@ DELETE FROM public.""Learners"";
 
         private static string BuildWlSql(AEColumns ae)
         {
+            Console.Write(ae.Id);
             return "\n";
         }
 

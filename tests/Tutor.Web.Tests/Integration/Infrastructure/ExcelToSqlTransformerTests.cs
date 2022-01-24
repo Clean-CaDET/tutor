@@ -1,4 +1,6 @@
-﻿using Tutor.Infrastructure.Database.DataImport;
+﻿using Shouldly;
+using System.IO;
+using Tutor.Infrastructure.Database.DataImport;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Infrastructure
@@ -10,7 +12,10 @@ namespace Tutor.Web.Tests.Integration.Infrastructure
         {
             var sourceFolder = "C:/temp/tutor-excel-data";
             var destinationFile = "C:/temp/tutor-excel-data/output.sql";
+
             ExcelToSqlTransformer.Transform(sourceFolder, destinationFile);
+
+            File.Exists(destinationFile).ShouldBeTrue();
         }
     }
 }
