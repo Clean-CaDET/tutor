@@ -312,8 +312,12 @@ DELETE FROM public.""Learners"";
                     case "at":
                         sqlBuilder.Append(BuildAtSql(ae));
                         break;
-                    case "wl":
-                        sqlBuilder.Append(BuildWlSql(ae));
+                    case "saq":
+                        sqlBuilder.Append(BuildSaqSql(ae));
+                        break;
+                    case "ch":
+                        sqlBuilder.Append("-- TODO: ADD CHALLENGE DATA");
+                        sqlBuilder.AppendLine();
                         break;
                 }
             }
@@ -383,10 +387,21 @@ DELETE FROM public.""Learners"";
             return sqlBuilder.ToString();
         }
 
-        private static string BuildWlSql(AEColumns ae)
+        private static string BuildSaqSql(AEColumns ae)
         {
-            Console.Write(ae.Id);
-            return "\n";
+            var sqlBuilder = new StringBuilder();
+            sqlBuilder.Append("INSERT INTO public.\"ShortAnswerQuestions\"(\"Id\", \"Text\", \"AcceptableAnswers\") VALUES");
+            sqlBuilder.AppendLine();
+            //'{"Enroll","newCourse","Maximum","Active"}'
+            sqlBuilder.Append("\t(" + ae.Id + ", '" + ae.Text + "', '{" + BuildSaqItems(ae.Items) + "}');");
+            sqlBuilder.AppendLine().AppendLine();
+            return sqlBuilder.ToString();
+        }
+
+        private static string BuildSaqItems(List<string> items)
+        {
+            items = items.Select(i => "\"" + i + "\"").ToList();
+            return string.Join(", ", items);
         }
 
         private static void Save(string sqlScript, string destination)

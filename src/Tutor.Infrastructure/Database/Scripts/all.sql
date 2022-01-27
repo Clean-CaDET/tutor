@@ -65,36 +65,7 @@ INSERT INTO public."Images"(
 	
 	
 	
---== Methods ==- FK Node	
-INSERT INTO public."KnowledgeNodes"(
-	"Id", "LearningObjective", "Type", "LectureId")
-	VALUES (10, 'Analiziraj ideju da je funkcija fokusirana na jedan zadatak.', 0, 2);
 
-INSERT INTO public."LearningObjectSummaries"(
-	"Id", "Description", "KnowledgeNodeId") -- Not sure what to do with this Description field.
-	VALUES (30, 'Clean Function Definition', 10);
-	
-INSERT INTO public."LearningObjectSummaries"(
-	"Id", "Description", "KnowledgeNodeId")
-	VALUES (31, 'Long Function Example', 10);
-	
-INSERT INTO public."LearningObjectSummaries"(
-	"Id", "Description", "KnowledgeNodeId")
-	VALUES (32, 'Short Function Example', 10);
-	
-INSERT INTO public."LearningObjectSummaries"(
-	"Id", "Description", "KnowledgeNodeId")
-	VALUES (33, 'One Thing', 10);
--- Methods - FK Node
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (30, 30);
-INSERT INTO public."Texts"(
-	"Id", "Content")
-	VALUES (30, 'Funkcija predstavlja *imenovani* blok koda koji enkapsulira smislen zadatak. Ona predstavlja najjednostavniju grupaciju koda koja može samostalno da postoji. U objektno-orijentisanom programiranju funkcije su često metode koje definišu ponašanje objekta nad kojim se pozivaju. Principi koje poštujemo za formiranje čistih funkcija su jednako primenjivi na metode.
-
-Čista funkcija je *fokusirana na jedan zadatak*. Ovaj zadatak je jasno opisan kroz imena zaglavlja funkcije, što uključuje samo ime funkcije i imena njenih parametra. Čista funkcija ima jednostavno telo i sastoji se od koda koji zahteva malo mentalnog napora da se razume. Kao posledica, ovakve funkcije često sadrže mali broj linija koda.');
-		
 INSERT INTO public."LearningObjects"(
 	"Id", "LearningObjectSummaryId")
 	VALUES (31, 31);
@@ -102,67 +73,15 @@ INSERT INTO public."Images"( --TODO: CodeSnippet gist
 	"Id", "Url", "Caption")
 	VALUES (31, 'https://i.ibb.co/dbthB3H/RS-Methods-Long.png', 'Izdvoj vreme da opišeš sve high-level i low-level zadatke (segmente koda) koje "getFree" izvršava u pratećem kodu. Koje od navedenih zadataka vidiš da bi koristio u drugim kontekstima (i time duplirao kod)?');
 	
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (32, 32);
-INSERT INTO public."ArrangeTasks"(
-	"Id", "Text")
-	VALUES (32, 'Prateći kod predstavlja primer čiste funkcije.
 
-    public List<Doctor> GetSuitableDoctors(Operation operation){
-    	List<Doctor> doctors = doctorRepository.FindAll();
-    
-    	List<Doctor> suitableDoctors = new ArrayList<>();
-    	foreach(Doctor doctor in doctors){
-    		if(IsCapable(doctor, operation.GetRequiredCapabilities())
-    		    && IsAvailable(doctor, operation.GetTimeSlot())){
-    			suitableDoctors.Add(doctor);
-    		}
-    	}
-    
-    	return suitableDoctors;
-    }
 
-Rasporedi zahteve za izmenu softvera tako da su vezani za funkcije koje bismo verovatno menjali da bismo ih ispoštovali.');
-INSERT INTO public."ArrangeTaskContainers"(
-	"Id", "ArrangeTaskId", "Title")
-	VALUES (1, 32, 'Nijedna od navedenih');
-INSERT INTO public."ArrangeTaskElements"(
-	"Id", "ArrangeTaskContainerId", "Text")
-	VALUES (1, 1, 'Dopuni format data transfer objekta da prikaže podatke novoj klijentskoj aplikaciji.');
-INSERT INTO public."ArrangeTaskContainers"(
-	"Id", "ArrangeTaskId", "Title")
-	VALUES (2, 32, 'FindAll');
-INSERT INTO public."ArrangeTaskElements"(
-	"Id", "ArrangeTaskContainerId", "Text")
-	VALUES (2, 2, 'Potrebno je sačuvati podatke o lekarima u NoSQL bazi umesto u SQL bazi.');
-INSERT INTO public."ArrangeTaskContainers"(
-	"Id", "ArrangeTaskId", "Title")
-	VALUES (3, 32, 'GetSuitableDoctors');
-INSERT INTO public."ArrangeTaskElements"(
-	"Id", "ArrangeTaskContainerId", "Text")
-	VALUES (3, 3, 'Od mogućih, uvek odabrati lekara koji ima najveći stepen uspeha za dati tip operacije, a prvog kada je nerešeno.');
-INSERT INTO public."ArrangeTaskContainers"(
-	"Id", "ArrangeTaskId", "Title")
-	VALUES (4, 32, 'IsCapable');
-INSERT INTO public."ArrangeTaskElements"(
-	"Id", "ArrangeTaskContainerId", "Text")
-	VALUES (4, 4, 'Za izazovnu operaciju je potreban hirurg koji je bar jednom izveo dati tip operacije.');
-INSERT INTO public."ArrangeTaskContainers"(
-	"Id", "ArrangeTaskId", "Title")
-	VALUES (5, 32, 'IsAvailable');
-INSERT INTO public."ArrangeTaskElements"(
-	"Id", "ArrangeTaskContainerId", "Text")
-	VALUES (5, 5, 'Uzima u obzir da li je lekar na bitnom sastanku u traženo vreme.');
 
 INSERT INTO public."LearningObjects"(
 	"Id", "LearningObjectSummaryId")
 	VALUES (33, 33);
 INSERT INTO public."Texts"(
 	"Id", "Content")
-	VALUES (33, 'Šta tačno znači biti fokusiran na jedan zadatak? Idealno, funkcija koja radi jedan zadatak zna koji su koraci potrebni da se uradi taj zadatak, bez da poznaje detalje svakog od navedenih koraka (npr. bez da zna koji su koraci potrebni da bi se rešio njen prvi korak).
-
-Ovako će `getSuitableDoctors` da zna da je za operaciju potrebno pronaći lekare koji su sposobni da urade operaciju i dostupni u predloženom terminu. Ova funkcija neće znati šta znači da je "lekar sposoban", niti kako da interaguje sa skladištem podataka kako bi dobavila lekare. Dalje, `IsAvailable` će znati šta sve treba proveriti da se odredi da li je lekar dostupan, što podrazumeva pregled njegovog radnog vremena i razmatranje da li već ima bitne obaveze u datom vremenskom opsegu. Ova funkcija neće poznavati detalje ovih koraka, poput logike koja je potrebna da se uporede datum i vreme, a možda ni logike koja proverava tačno radno vreme lekara i uključuje ispitivanje da li je na godišnjem odmoru.');
+	VALUES (33, '');
 
 INSERT INTO public."LearningObjects"(
 	"Id", "LearningObjectSummaryId")
@@ -172,70 +91,7 @@ INSERT INTO public."Images"(
 	VALUES (34, 'https://i.ibb.co/hd5ktG6/RS-Methods-One-Thing.png', '"Zadatak" može da opiše logiku na raznim nivoima apstrakcije - od "GetSuitableDoctors(operation)" do "Sum(a,b)".');
 
 
---== Methods ==- PK Node 1
-INSERT INTO public."KnowledgeNodes"(
-	"Id", "LearningObjective", "Type", "LectureId")
-	VALUES (11, 'Primeni extract method refaktorisanje za formiranje kraćih funkcija.', 1, 2);
-
-INSERT INTO public."LearningObjectSummaries"(
-	"Id", "Description", "KnowledgeNodeId") -- Not sure what to do with this Description field.
-	VALUES (40, 'Function Length Heuristic', 11);
-	
-INSERT INTO public."LearningObjectSummaries"(
-	"Id", "Description", "KnowledgeNodeId")
-	VALUES (41, 'Function Length Challenge', 11);
-	
-INSERT INTO public."LearningObjectSummaries"(
-	"Id", "Description")
-	VALUES (42, 'Function Length Solution'); -- Hidden
-
---== Methods ==- PK Node 2	
-INSERT INTO public."KnowledgeNodes"(
-	"Id", "LearningObjective", "Type", "LectureId")
-	VALUES (12, 'Primeni extract method refaktorisanje za formiranje jednostavnijih funkcija.', 1, 2);
-	
-INSERT INTO public."LearningObjectSummaries"(
-	"Id", "Description", "KnowledgeNodeId")
-	VALUES (43, 'Function Comments Heuristic', 12);
-INSERT INTO public."LearningObjectSummaries"(
-	"Id", "Description", "KnowledgeNodeId")
-	VALUES (44, 'Function Complexity Challenge', 12);
-INSERT INTO public."LearningObjectSummaries"(
-	"Id", "Description")
-	VALUES (45, 'Function Complexity Heuristic'); -- Hidden hint
-INSERT INTO public."LearningObjectSummaries"(
-	"Id", "Description")
-	VALUES (46, 'Function Complexity Challenge Solution');
-	
---== Methods ==- PK Node 3	
-INSERT INTO public."KnowledgeNodes"(
-	"Id", "LearningObjective", "Type", "LectureId")
-	VALUES (13, 'Primeni strategije za redukciju broja parametra za formiranje čistijih funkcija.', 1, 2);
-	
-INSERT INTO public."LearningObjectSummaries"(
-	"Id", "Description", "KnowledgeNodeId")
-	VALUES (47, 'Parameter List Heuristic', 13);
-INSERT INTO public."LearningObjectSummaries"(
-	"Id", "Description", "KnowledgeNodeId")
-	VALUES (48, 'Parameter List Reduction Strategy', 13);
-INSERT INTO public."LearningObjectSummaries"(
-	"Id", "Description", "KnowledgeNodeId")
-	VALUES (49, 'Parameter List Challenge', 13);
-INSERT INTO public."LearningObjectSummaries"(
-	"Id", "Description")
-	VALUES (50, 'Parameter List Challenge Solution');
-
-
-
 -- Methods LO - PK Node 1
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (40, 40);
-INSERT INTO public."Texts"(
-	"Id", "Content")
-	VALUES (40, 'Najjednostavnija heuristika za ispitivanje da li funkcija radi više zadataka podrazumeva posmatranje dužine funkcije. Svakako je moguće da funkcija sa 10 linija koda rešava više problema, ali je sasvim sigurno da funkcija sa 50 linija koda radi previše.
-	
-Kod dugačkih funkcija potrebno je identifikovati regione logički povezanog koda koji se može ekstrahovati u zasebnu funkciju za koju možemo da odredimo smisleno ime. Savremena integrisana razvojna okruženja nude Extract Method komandu sa kojom možemo označeni kod jednostavno izdvojiti u posebnu funkciju.');
 
 INSERT INTO public."LearningObjects"(
 	"Id", "LearningObjectSummaryId")
@@ -258,12 +114,6 @@ INSERT INTO public."Videos"(
 	VALUES (42, 'https://youtu.be/79a8Zp6FBfU');
 	
 -- Methods LO - PK Node 2
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (43, 43);
-INSERT INTO public."Texts"(
-	"Id", "Content")
-	VALUES (43, 'Komentari i prazan prostor (npr. dva prazna reda) u telu funkcije su *često* (ali ne uvek) signal da funkcija izvršava više zadataka. Takvi regioni se mogu ekstrahovati, gde će postojeći komentar pomoći pri formiranju imena za novu funkciju.');
 	
 INSERT INTO public."LearningObjects"(
 	"Id", "LearningObjectSummaryId")
@@ -278,15 +128,7 @@ INSERT INTO public."BasicMetricCheckers"(
 	"Id")
 	VALUES (4);
 
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (45, 45);
-INSERT INTO public."Texts"(
-	"Id", "Content")
-	VALUES (45, 'Kada pravimo male, fokusirane funkcije možemo lako da apstrahujemo složenu logiku iza značajnog imena. Tako možemo da zamenimo složen uslovni izraz (npr. uslov u IF-u koji broji ima više relacionih i logičkih operatora) sa pozivom funkcije čije ime opisuje nameru iza tog izraza. Sa sličnim pristupom možemo zameniti petlje i kalkulacije.
-	
-Kada naletimo na kod sa dubokim ugnježdavanjem (npr. FOR u IF u FOR u TRY) treba da se zapitamo da li bi se jasnoća koda povećala sa ekstrakcijom nekog segmenta u zasebnu metodu.');
-	
+
 INSERT INTO public."LearningObjects"(
 	"Id", "LearningObjectSummaryId")
 	VALUES (46, 46);
@@ -295,22 +137,7 @@ INSERT INTO public."Videos"(
 	VALUES (46, 'https://youtu.be/-TF5b_R9JG4');
 	
 -- Methods LO - PK Node 3
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (47, 47);
-INSERT INTO public."Texts"(
-	"Id", "Content")
-	VALUES (47, 'Razumljive funkcije treba da teže ka što manjem broju parametara. Ovaj broj je idealno nula, no svakako su funkcije sa jednim ili dva parametra prihvatljive i česte. Tako imamo funkcije koje prihvataju parametar da bi ga transformisali u novi objekat (npr. deserijalizacija stringa u objekat), funkcije koje ispituju neko svojstvo parametra, kao i funkcije koje izvršavaju komandu spram ulaznog podatka ili obrađuju prosleđeni događaj.
 
-Sve preko dva parametra je ozbiljan kandidat za refaktorisanje. Takve funkcije obično rešavaju više zadataka i konfigurišu svoje ponašanje spram ulaznih podataka (tipičan primer su tzv. flag parametri bool tipa) što ih čini manje razumljivim. Izuzetak na ovo pravilo su konstruktori koji često prihvataju više podataka kako bi formirali složeni objekat.');
-	
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (48, 48);
-INSERT INTO public."Images"(
-	"Id", "Url", "Caption")
-	VALUES (48, 'https://i.ibb.co/kDfx5DJ/a-RS-Methods-Params-Startegy.png', 'Kroz navedene strategije vidimo kako je broj parametra metode u interakciji sa klasama i može biti signal da li neku klasu treba uvesti ili izmeniti.');
-	
 INSERT INTO public."LearningObjects"(
 	"Id", "LearningObjectSummaryId")
 	VALUES (49, 49);
@@ -409,13 +236,6 @@ INSERT INTO public."LearningObjects"(
 INSERT INTO public."Images"(
 	"Id", "Url", "Caption")
 	VALUES (61, 'https://i.ibb.co/ydsGxjM/a-RS-Methods-LINQ.png', 'Razmisli na koji način nam IsActive funkcija apstrahuje logiku, a na koji način je enkapsulira.');
-
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (62, 62);
-INSERT INTO public."Images"(
-	"Id", "Url", "Caption")
-	VALUES (62, 'https://i.ibb.co/rFJK6Z8/RS-Methods-Hierarchy.png', 'Kažemo da dobre metode treba da rade na jednom zadatku. Pitanje je kako definišemo zadatak. Uzmi po jednu metodu svake boje - opiši u rečenici šta rade, a šta ne rade. Da li uočavaš razliku u apstraktnosti tvog opisa?');
 
 INSERT INTO public."LearningObjects"(
 	"Id", "LearningObjectSummaryId")
