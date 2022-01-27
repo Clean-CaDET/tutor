@@ -34,24 +34,39 @@ VALUES (-3, 'SU-3-2021', 'C:/Smart-Tutor/3/Workspace');
 
 --== Unit 1: Meaningful names
 INSERT INTO public."Units"(
-    "Id", "Name", "Description")
-VALUES (-1, 'Značajna imena', 'Imena pronalazimo u svim segmentima razvoja softvera - kao identifikator promenljive, funkcije, klase, ali i biblioteke i aplikacije. Jasno ime funkcije nas oslobađa od čitanja njenog tela, dok će misteriozno ime zahtevati dodatan mentalni napor da razumemo svrhu koncepta koji opisuje. U najgorem slučaju, loše ime će nas navesti na pogrešan put i drastično nam produžiti vreme razvoja. Kroz ovu lekciju ispitujemo dobre i loše prakse za imenovanje elemenata našeg koda.');
+	"Id", "Name", "Description")
+VALUES (-1, 'Značajni nazivi', 'Nazive pronalazimo u svim segmentima razvoja softvera - kod identifikatora promenljive, funkcije, klase, ali i biblioteke i aplikacije. Jasan naziv funkcije nas oslobađa od čitanja njenog tela, dok će misteriozni naziv zahtevati dodatan mentalni napor da razumemo svrhu koncepta koji opisuje. U najgorem slučaju, loš naziv će nas naterati da formiramo pogrešnu pretpostavku, što će nam drastično produžiti vreme razvoja. Kroz ovaj modul ispitujemo dobre i loše prakse za formiranja naziva identifikatora u kodu.');
 
 INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "UnitId")
-VALUES (-11, 'Dodeli značajna imena identifikatorima', '', -1);
+VALUES (-11, 'Konstruiši značajne nazive za identifikatore u kodu', '', -1);
+-- TODO: IE (slika) prednost dobrih naziva; IE (tekst) algoritam za formiranje dobrih imena; IE (video) primena algoritma na nekoliko primera
+-- TODO: AE (MRQ) štikliraj sve što nije dobro sa imenom - 3 imena, 3 dimenzije (svako ime MRQ za sebe?); AE (Challenge - refactor multiple - reuse); AE (Challenge - refactor multiple - new SIMS example)
 INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "ParentId")
-VALUES (-12, 'Koristi ispravne tipove reči', '', -11);
+VALUES (-12, 'Primeni prikladne tipove reči', '', -11);
+-- TODO: IE (tekst + code)
+-- TODO: AE (MRQ) štikliraj ispravne primere (2-3 ovakva; Prepoznaj iz koda ili za novi zahtev šta bi postavio); AE (Challenge - basic refactor)
 INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "ParentId")
-VALUES (-13, 'Prati timske konvencije', '', -11);
+VALUES (-13, 'Prati timske konvencije prilikom formiranja naziva', '', -11);
+-- TODO: IE (tekst + code) -- primer za extension sufiks
+-- TODO: AE (MRQ) štikliraj ispravne primere (2-3 ovakva; Prepoznaj iz koda ili za novi zahtev šta bi postavio); AE (Challenge - basic refactor)
 INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "ParentId")
 VALUES (-14, 'Izbegavaj beznačajne reči', '', -11);
+-- TODO: IE (tekst + code); IE Video
+-- TODO: AE (MRQ) štikliraj ispravne primere (2-3 ovakva; Prepoznaj iz koda ili za novi zahtev šta bi postavio); AE (Challenge - basic refactor)
 INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "ParentId")
 VALUES (-15, 'Koristi terminologiju domena problema', '', -11);
+-- TODO: IE (tekst + code); IE Video; IE Slika
+-- TODO: AE (MRQ) štikliraj ispravne primere (2-3 ovakva; Prepoznaj iz koda ili za novi zahtev šta bi postavio); AE (Challenge - basic refactor)
+INSERT INTO public."KnowledgeComponents"(
+    "Id", "Name", "Description", "ParentId")
+VALUES (-16, 'Analiziraj širi kontekst prilikom formiranja naziva', '', -11);
+-- TODO: IE (tekst + code; Redundantni tipovi, imena); IE Video;
+-- TODO: AE (MRQ) štikliraj ispravne primere (2-3 ovakva; Prepoznaj iz koda ili za novi zahtev šta bi postavio); AE (Challenge - basic refactor)
 
 INSERT INTO public."InstructionalEvents"(
     "Id", "KnowledgeComponentId")
@@ -118,18 +133,18 @@ INSERT INTO public."RequiredWordsCheckers"(
     "Id", "RequiredWords", "HintId")
 VALUES (-1541, '{"Enroll","newCourse","Maximum","Active"}', -1541);
 
-
-
 -- == Unit 2: Readable methods
 INSERT INTO public."Units"(
     "Id", "Name", "Description")
-VALUES (-2, 'Čitljive funkcije', 'Čest savet je da naše funkcije treba da imaju mali broj linija koda. Ovako povećavamo fokusiranost i jasnoću funkcije, kao i mogućnost ponovne upotrebe ovog parčeta koda. Međutim, greška je reći da nam je cilj da imamo kratke funkcije. Nama je cilj da ispoštujemo više dobrih praksi za formiranje čistih funkcija, a kao posledicu primene tih praksi ćemo dobiti kratke funkcije. Kroz ovu lekciju analiziramo dobre i loše prakse za formiranje čistih funkcija.');
+VALUES (-2, 'Čiste funkcije', 'Čest savet je da naše funkcije treba da imaju mali broj linija koda. Ovako povećavamo fokusiranost i jasnoću funkcije, kao i mogućnost ponovne upotrebe datog parčeta koda. Međutim, greška je reći da nam je cilj da imamo kratke funkcije. Nama je cilj da ispoštujemo više dobrih praksi za formiranje čistih funkcija, a kao posledicu primene tih praksi ćemo dobiti kratke funkcije. Kroz ovu lekciju analiziramo dobre i loše prakse za formiranje čiste funkcija.');
 INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "UnitId")
-VALUES (-20, 'Piši čitljive funkcije', '', -2);
+VALUES (-20, 'Kreiraj čiste funkcije', '', -2);
+-- TODO: Poslednji KN i 2-3 challenge-a.
 INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "ParentId")
-VALUES (-21, 'Segmentiraj dugačke metode', '', -20);
+VALUES (-21, 'Segmentiraj dugačke funkcije', '', -20);
+-- TODO: Heuristika komentara, whitespace-a
 INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "ParentId")
 VALUES (-22, 'Redukuj kompleksnost funkcije', '', -20);
@@ -155,12 +170,8 @@ INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "ParentId")
 VALUES (-29, 'Enkapsuliraj skup usko povezanih parametara', '', -26);
 INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "ParentId")
-VALUES (-210, 'Ekstrahuj pojedinačne zadatke iz metode', '', -26);
-INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "ParentId")
-VALUES (-211, 'Odredi semantičku svrhu metode', '', -20);
-
+	"Id", "Name", "Description", "ParentId")
+VALUES (-210, 'Odredi semantičku svrhu metode', '', -20);
 
 INSERT INTO public."AssessmentEvents"(
     "Id", "KnowledgeComponentId")
