@@ -198,6 +198,7 @@ DELETE FROM public.""MultiResponseQuestions"";
 DELETE FROM public.""ArrangeTaskElements"";
 DELETE FROM public.""ArrangeTaskContainers"";
 DELETE FROM public.""ArrangeTasks"";
+DELETE FROM public.""ShortAnswerQuestions"";
 DELETE FROM public.""AssessmentEvents"";
 DELETE FROM public.""InstructionalEvents"";
 DELETE FROM public.""KnowledgeComponents"";

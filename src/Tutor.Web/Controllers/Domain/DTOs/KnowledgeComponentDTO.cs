@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Tutor.Core.LearnerModel.Learners;
 
 namespace Tutor.Web.Controllers.Domain.DTOs
 {

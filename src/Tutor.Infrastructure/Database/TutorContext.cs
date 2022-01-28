@@ -6,6 +6,7 @@ using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker;
 using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
+using Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions;
 using Tutor.Core.DomainModel.InstructionalEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel.Learners;
@@ -25,6 +26,7 @@ namespace Tutor.Infrastructure.Database
         public DbSet<Video> Videos { get; set; }
         public DbSet<Mrq> MultiResponseQuestions { get; set; }
         public DbSet<MrqItem> MrqItems { get; set; }
+        public DbSet<Saq> ShortAnswerQuestions { get; set; }
         public DbSet<ArrangeTask> ArrangeTasks { get; set; }
         public DbSet<ArrangeTaskContainer> ArrangeTaskContainers { get; set; }
         public DbSet<ArrangeTaskElement> ArrangeTaskElements { get; set; }
@@ -41,6 +43,7 @@ namespace Tutor.Infrastructure.Database
         #region Submissions
 
         public DbSet<Submission> Submissions { get; set; }
+        public DbSet<SaqSubmission> SaqSubmissions { get; set; }
         public DbSet<ArrangeTaskSubmission> ArrangeTaskSubmissions { get; set; }
         public DbSet<ArrangeTaskContainerSubmission> ArrangeTaskContainerSubmissions { get; set; }
         public DbSet<ChallengeSubmission> ChallengeSubmissions { get; set; }
@@ -61,6 +64,7 @@ namespace Tutor.Infrastructure.Database
             modelBuilder.Entity<Image>().ToTable("Images");
             modelBuilder.Entity<Video>().ToTable("Videos");
             modelBuilder.Entity<Mrq>().ToTable("MultiResponseQuestions");
+            modelBuilder.Entity<Saq>().ToTable("ShortAnswerQuestions");
             
             ConfigureArrangeTask(modelBuilder);
             ConfigureChallenge(modelBuilder);
