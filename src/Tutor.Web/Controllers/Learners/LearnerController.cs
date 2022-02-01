@@ -4,6 +4,8 @@ using System;
 using System.Threading.Tasks;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.Learners;
+using Tutor.Web.Controllers.JWT;
+using Tutor.Web.Controllers.JWT.DTOs;
 using Tutor.Web.Controllers.Learners.DTOs;
 using Tutor.Web.IAM;
 
@@ -16,12 +18,15 @@ namespace Tutor.Web.Controllers.Learners
         private readonly IMapper _mapper;
         private readonly ILearnerService _learnerService;
         private readonly IAuthProvider _authProvider;
+        private readonly IJwtService _jwtService;
 
-        public LearnerController(IMapper mapper, ILearnerService learnerService, IAuthProvider authProvider)
+        public LearnerController(IMapper mapper, ILearnerService learnerService, IAuthProvider authProvider,
+            IJwtService jwtService)
         {
             _mapper = mapper;
             _learnerService = learnerService;
             _authProvider = authProvider;
+            _jwtService = jwtService;
         }
 
         [HttpPost("register")]
@@ -40,10 +45,10 @@ namespace Tutor.Web.Controllers.Learners
         }
 
         [HttpPost("login")]
-        public ActionResult<LearnerDto> Login([FromBody] LoginDto login)
+        public ActionResult<LoginResponseDto> Login([FromBody] LoginDto login)
         {
-            var result = _learnerService.Login(login.StudentIndex);
-            if(result.IsSuccess) return Ok(_mapper.Map<LearnerDto>(result.Value));
+            var result = _jwtService.GenerateToken(login);
+            if (result.IsSuccess) return Ok(result.Value);
             return NotFound(result.Errors);
         }
     }

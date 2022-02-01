@@ -38,6 +38,7 @@ namespace Tutor.Core.LearnerModel
         {
             var learner = _learnerRepository.GetByIndex(studentIndex);
             if (learner == null) return Result.Fail("No learner with index: " + studentIndex);
+            
             return Result.Ok(learner);
         }
 

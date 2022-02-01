@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.Core.LearnerModel;
+using Tutor.Web.Controllers.JWT;
 using Tutor.Web.Controllers.Learners;
 using Tutor.Web.Controllers.Learners.DTOs;
 using Tutor.Web.IAM;
@@ -21,7 +22,8 @@ namespace Tutor.Web.Tests.Integration.Learner
             using var scope = Factory.Services.CreateScope();
             var controller = new LearnerController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<ILearnerService>(),
-                scope.ServiceProvider.GetRequiredService<IAuthProvider>());
+                scope.ServiceProvider.GetRequiredService<IAuthProvider>(),
+                scope.ServiceProvider.GetRequiredService<IJwtService>());
             var loginSubmission = new LoginDto {StudentIndex = "SU-1-2021"};
 
             var learner = ((OkObjectResult) controller.Login(loginSubmission).Result).Value as LearnerDto;
@@ -35,7 +37,8 @@ namespace Tutor.Web.Tests.Integration.Learner
             using var scope = Factory.Services.CreateScope();
             var controller = new LearnerController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<ILearnerService>(),
-                scope.ServiceProvider.GetRequiredService<IAuthProvider>());
+                scope.ServiceProvider.GetRequiredService<IAuthProvider>(),
+                scope.ServiceProvider.GetRequiredService<IJwtService>());
             var loginSubmission = new LoginDto {StudentIndex = "SA-1-2021"};
 
             var code = ((NotFoundObjectResult) controller.Login(loginSubmission).Result).StatusCode;

@@ -24,6 +24,7 @@ using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTask;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenge;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
+using Tutor.Web.Controllers.JWT;
 using Tutor.Web.IAM;
 using Tutor.Web.IAM.Keycloak;
 
@@ -87,6 +88,7 @@ namespace Tutor.Web
             services.Configure<WorkspaceOptions>(Configuration.GetSection(WorkspaceOptions.ConfigKey));
             services.AddScoped<IWorkspaceCreator, NoWorkspaceCreator>();
             services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
+            services.AddScoped<IJwtService, JwtService>();
 
             services.AddScoped<IAuthProvider, KeycloakAuthProvider>();
 
