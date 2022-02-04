@@ -73,23 +73,7 @@ INSERT INTO public."Images"( --TODO: CodeSnippet gist
 	"Id", "Url", "Caption")
 	VALUES (31, 'https://i.ibb.co/dbthB3H/RS-Methods-Long.png', 'Izdvoj vreme da opišeš sve high-level i low-level zadatke (segmente koda) koje "getFree" izvršava u pratećem kodu. Koje od navedenih zadataka vidiš da bi koristio u drugim kontekstima (i time duplirao kod)?');
 	
-
-
-
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (33, 33);
-INSERT INTO public."Texts"(
-	"Id", "Content")
-	VALUES (33, '');
-
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (34, 33);
-INSERT INTO public."Images"(
-	"Id", "Url", "Caption")
-	VALUES (34, 'https://i.ibb.co/hd5ktG6/RS-Methods-One-Thing.png', '"Zadatak" može da opiše logiku na raznim nivoima apstrakcije - od "GetSuitableDoctors(operation)" do "Sum(a,b)".');
-
+	
 
 -- Methods LO - PK Node 1
 
@@ -237,45 +221,7 @@ INSERT INTO public."Images"(
 	"Id", "Url", "Caption")
 	VALUES (61, 'https://i.ibb.co/ydsGxjM/a-RS-Methods-LINQ.png', 'Razmisli na koji način nam IsActive funkcija apstrahuje logiku, a na koji način je enkapsulira.');
 
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (63, 62);
-INSERT INTO public."ArrangeTasks"(
-	"Id", "Text")
-	VALUES (63, 'Zamisli sledeću strukturu funkcija:
-	
-- `GetSuitableDoctors` poziva `FindAllDoctors` i za svakog lekara `IsCapable` i `IsAvailable` metode.
-- `FindAllDoctors` poziva `ConnectToStorage` i `ParseDoctor` metode.
-- `IsAvailable` poziva `DoesTimeOverlap` metodu.
 
-Uzmimo da svaka od navedeninih 7 funkcija ima 10 linija koda. Dolazi programer koji nije familijaran sa kodom sa ciljem da implementira izmenu kako bi se ispoštovao novi zahtev. Programer kreće od `GetSuitableDoctors` funkcije i spušta se kroz funkcije koje ona poziva. Organizuj zahteve u kolone koje ističu koliko će linija starog koda (iz navedenih funkcija) programer morati da pročita pre nego što će naći linije koje treba da izmeni..');
-INSERT INTO public."ArrangeTaskContainers"(
-	"Id", "ArrangeTaskId", "Title")
-	VALUES (6, 63, '1-10');
-INSERT INTO public."ArrangeTaskElements"(
-	"Id", "ArrangeTaskContainerId", "Text")
-	VALUES (6, 6, 'Od mogućih, uvek odabrati lekara koji ima najveći stepen uspeha za dati tip operacije, a prvog kada je nerešeno.');
-INSERT INTO public."ArrangeTaskContainers"(
-	"Id", "ArrangeTaskId", "Title")
-	VALUES (7, 63, '11-20');
-INSERT INTO public."ArrangeTaskElements"(
-	"Id", "ArrangeTaskContainerId", "Text")
-	VALUES (7, 7, 'Uzima u obzir da li je lekar na bitnom sastanku u traženo vreme.');
-INSERT INTO public."ArrangeTaskElements"(
-	"Id", "ArrangeTaskContainerId", "Text")
-	VALUES (8, 7, 'Za izazovnu operaciju je potreban hirurg koji je bar jednom izveo dati tip operacije.');
-INSERT INTO public."ArrangeTaskContainers"(
-	"Id", "ArrangeTaskId", "Title")
-	VALUES (8, 63, '21-30');
-INSERT INTO public."ArrangeTaskElements"(
-	"Id", "ArrangeTaskContainerId", "Text")
-	VALUES (9, 8, 'Potrebno je sačuvati podatke o lekarima u NoSQL bazi umesto u SQL bazi.');
-INSERT INTO public."ArrangeTaskContainers"(
-	"Id", "ArrangeTaskId", "Title")
-	VALUES (9, 63, '31-40');
-INSERT INTO public."ArrangeTaskContainers"(
-	"Id", "ArrangeTaskId", "Title")
-	VALUES (10, 63, '41-50');
 	
 INSERT INTO public."LearningObjects"(
 	"Id", "LearningObjectSummaryId")
@@ -302,33 +248,7 @@ Sada zamisli sličnu aplikaciju koja je sastavljena od golemih funkcija koje bro
 
 Pisanje čistih funkcija je teže nego kucanje koda dok ne proradi. Za čiste funkcije svakako treba napraviti nešto što radi, a onda još treba organizovati tu logiku u smislene celine ispred kojih stavljamo jasno ime. Sa druge strane, čitanje aljkavo napisanih funkcija je teže od čistanja čistih funkcija. Postavlja se pitanje - u koji aspekt vredi uložiti više truda i energije? Za softver koji je dovoljno dugo u razvoju (npr. više od mesec dana, razvijan od strane pet ili više ljudi) većina programerovog vremena odlazi na čitanje koda.');
 
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (66, 65);
-INSERT INTO public."Questions"(
-	"Id", "Text")
-	VALUES (66, 'Iz sledećeg spiska odaberi istinite tvrdnje:');
-INSERT INTO public."QuestionAnswers"(
-	"Id", "Text", "IsCorrect", "Feedback", "QuestionId")
-	VALUES (20, 'Treba težiti ka funkcijama sa što manje linija koda.', false, 'Izjava nije tačna. Prvo, ne treba postaviti mali broj linija koda kao cilj - ovo je posledica praćenja drugih heuristika. Drugo, preterivanje u ovom pravilu će rezultovati klasama koje broje desetine ili stotine funkcija čiji kod se u potpunosti mapira na ime funkcije, čime ništa nije postignuto. Funkcija treba da bude fokusirana na jedan zadatak, što podrazumeva da ima i neku pamet.', 66);
-INSERT INTO public."QuestionAnswers"(
-	"Id", "Text", "IsCorrect", "Feedback", "QuestionId")
-	VALUES (21, 'Funkcija treba da radi jednu stvar.', true, 'Izjava je tačna. Kada funkcija radi jednu stvar hoćemo da kažemo da funkcija izvršava jedan zadatak.', 66);
-INSERT INTO public."QuestionAnswers"(
-	"Id", "Text", "IsCorrect", "Feedback", "QuestionId")
-	VALUES (22, 'Uslovni izraz sa više logičkih operatora je dobar kandidat za ekstrakciju funkcije.', true, 'Izjava je tačna. Kada ekstrahujemo uslovni izraz koji definiše kontrolu toka programa, dajemo semantički značaj (kroz ime nove funkcije) datoj logici što olakšava razumevanje originalne funkcije.', 66);
-INSERT INTO public."QuestionAnswers"(
-	"Id", "Text", "IsCorrect", "Feedback", "QuestionId")
-	VALUES (23, 'Težimo ka metodama sa 3 ili manje parametra.', false, 'Izjava nije dovoljno rigorozna. Idealno će metoda imati 0 parametra, dok su 1 i 2 prihatljiva. Sve preko toga je kandidat za refaktorisanje, što naravno ne znači da nećemo nikad imati funkciju sa više od 2 parametra.', 66);
-INSERT INTO public."QuestionAnswers"(
-	"Id", "Text", "IsCorrect", "Feedback", "QuestionId")
-	VALUES (24, 'Sitne funkcije sa jasnim imenima pospešuju princip OOP koji zovemo apstrakcija.', true, 'Izjava je tačna. Jasno ime funkcije dobro apstrahuje njene detalje, zbog čega možemo brže da zaključimo koji deo koda nas interesuje, a koji ne.', 66);
-INSERT INTO public."QuestionAnswers"(
-	"Id", "Text", "IsCorrect", "Feedback", "QuestionId")
-	VALUES (25, 'Formiranje čistih funkcija je izazovno, dok je prolazak kroz kod pun fokusiranih funkcija jednostavan.', true, 'Izjava je tačna. Potreban je trud da se identifikuje smislen deo logike i da se formira ime koje dobro opisuje datu logiku.', 66);
-INSERT INTO public."QuestionAnswers"(
-	"Id", "Text", "IsCorrect", "Feedback", "QuestionId")
-	VALUES (26, 'Kada pišemo čiste funkcije, naši klijenti mogu da čitaju i razumeju naš kod.', false, 'Izjava nije tačna. Čiste funkcije koje opisuju poslovnu logiku treba da budu razumljive našim klijentima. Međutim, ne treba zaboraviti značajan deo logike koja će omogućiti obradu HTTP zahteva, interakciju sa bazom, kriptografiju i ostale tehničke detalje koji su poznati inženjnerima softvera, ali ne i ljudima za koje se pravi softver.', 66);
+
 
 
 --== Cohesion ==- FK Node	
