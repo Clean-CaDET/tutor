@@ -16,6 +16,7 @@ DELETE FROM public."ArrangeTaskElements";
 DELETE FROM public."ArrangeTaskContainers";
 DELETE FROM public."ArrangeTasks";
 DELETE FROM public."AssessmentEvents";
+DELETE FROM public."ShortAnswerQuestions";
 DELETE FROM public."InstructionalEvents";
 DELETE FROM public."KnowledgeComponents";
 DELETE FROM public."Units";
@@ -564,3 +565,25 @@ INSERT INTO public."ChallengeHints"(
 INSERT INTO public."MetricRangeRules"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
 	VALUES (-1, 'MELOC', 1, 18, -1, -1);
+
+INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId") VALUES
+	(-212, -21);
+INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
+	(-212, 'Iz sledećeg koda navedi sve nazive identifikatora (razdvojene zarezom) koji krše česte konvencije u pisanju programa.
+
+    public List<string> GetCamelCaseWords(List<string> Words)
+    {{
+        List<string> camelCaseWords = new List<string>();
+        foreach (string word in Words)
+        {{
+            var word_parts = Regex.Split(word, "[A-Z]");
+            var matches = Regex.Matches(word, "[A-Z]");
+            for (int idx = 0; idx < word_parts.Length - 1; idx++)
+            {{
+                word_parts[idx + 1] = matches[idx] + word_parts[idx + 1];
+            }}
+            camelCaseWords.AddRange(word_parts);
+        }}
+
+        return camelCaseWords;
+    }}', '{{"Words, word_parts, idx, abc"}}');

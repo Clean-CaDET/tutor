@@ -3,9 +3,11 @@ using System.Linq;
 using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
 using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
+using Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTask;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenge;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestion;
 
 namespace Tutor.Web.Controllers.Domain.Mappers
 {
@@ -42,6 +44,9 @@ namespace Tutor.Web.Controllers.Domain.Mappers
                 .ForMember(dest => dest.CorrectElements, opt => opt.MapFrom(src => src.FullAnswer.Elements));
             CreateMap<ArrangeTaskSubmissionDto, ArrangeTaskSubmission>();
             CreateMap<ArrangeTaskContainerSubmissionDto, ArrangeTaskContainerSubmission>();
+            
+            CreateMap<SaqEvaluation, SaqEvaluationDto>();
+            CreateMap<SaqSubmissionDto, SaqSubmission>();
         }
     }
 }

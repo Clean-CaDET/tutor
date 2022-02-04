@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.Learners;
 
