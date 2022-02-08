@@ -24,7 +24,7 @@ namespace Tutor.Web.Tests.Integration.Learner
                 scope.ServiceProvider.GetRequiredService<IAuthService>());
             var loginSubmission = new LoginDto {StudentIndex = "SU-1-2021", Password = "123"};
 
-            var authenticationResponse = ((OkObjectResult) controller.Login(loginSubmission).Result).Value as AuthenticationResponse ;
+            var authenticationResponse = ((OkObjectResult) controller.Login(loginSubmission).Result).Value as AuthenticationResponse;
 
             authenticationResponse.Id.ShouldBe(-1);
         }

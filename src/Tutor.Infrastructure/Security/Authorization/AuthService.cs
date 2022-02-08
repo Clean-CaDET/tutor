@@ -9,7 +9,6 @@ namespace Tutor.Infrastructure.Security.Authorization
 {
     public class AuthService : IAuthService
     {
-
         private readonly ILearnerService _learnerService;
         private readonly IJwtService _jwtService;
         private readonly ILearnerRepository _learnerRepository;
