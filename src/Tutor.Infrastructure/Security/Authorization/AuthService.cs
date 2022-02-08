@@ -24,6 +24,7 @@ namespace Tutor.Infrastructure.Security.Authorization
         public Result<AuthenticationResponse> Login(string studentIndex, string password)
         {
             var learner = _learnerRepository.GetByIndex(studentIndex);
+            if (learner == null) return Result.Fail("User does not exist!");
             return learner.Password.Equals(HashPassword(password, Convert.FromBase64String(learner.Salt)))
                 ? _jwtService.GenerateAccessToken(learner.Id, "learner") // TODO: Make this more generic.
                 : Result.Fail("The username or password is incorrect!");
