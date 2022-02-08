@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.InstructorModel.Instructors;
 using Tutor.Web.Controllers.Domain.DTOs;
@@ -40,6 +41,7 @@ namespace Tutor.Web.Controllers.Domain
             return NotFound(result.Errors);
         }
 
+        [Authorize(Policy = "learnerPolicy")]
         [HttpGet("knowledge-components/{knowledgeComponentId:int}")]
         public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
         {

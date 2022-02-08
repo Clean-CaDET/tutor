@@ -13,7 +13,7 @@ using Tutor.Infrastructure.Database;
 namespace Tutor.Infrastructure.Migrations
 {
     [DbContext(typeof(TutorContext))]
-    [Migration("20220131193935_migration0")]
+    [Migration("20220208205052_migration0")]
     partial class migration0
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -347,6 +347,12 @@ namespace Tutor.Infrastructure.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("IamId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Salt")
                         .HasColumnType("text");
 
                     b.Property<string>("StudentIndex")

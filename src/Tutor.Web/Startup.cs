@@ -11,6 +11,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.IO;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.InstructorModel.Instructors;
@@ -20,11 +23,12 @@ using Tutor.Infrastructure;
 using Tutor.Infrastructure.Database.Repositories.Domain;
 using Tutor.Infrastructure.Database.Repositories.Learners;
 using Tutor.Infrastructure.Security;
+using Tutor.Infrastructure.Security.Authorization;
+using Tutor.Infrastructure.Security.Authorization.JWT;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTask;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenge;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
-using Tutor.Web.Controllers.JWT;
 using Tutor.Web.IAM;
 using Tutor.Web.IAM.Keycloak;
 
@@ -48,6 +52,8 @@ namespace Tutor.Web
             services.AddInfrastructure(Configuration);
 
             services.AddAutoMapper(typeof(Startup));
+
+            SetupJwtService(services);
 
             services.AddControllers().AddJsonOptions(options =>
             {
@@ -89,12 +95,55 @@ namespace Tutor.Web
             services.AddScoped<IWorkspaceCreator, NoWorkspaceCreator>();
             services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
             services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<IRefreshTokenValidator, RefreshTokenValidator>();
 
             services.AddScoped<IAuthProvider, KeycloakAuthProvider>();
+            services.AddScoped<IAuthService, AuthService>();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("learnerPolicy", policy =>
+                    policy.RequireRole("learner"));
+            });
 
             if (!bool.Parse(Environment.GetEnvironmentVariable("KEYCLOAK_ON") ?? "false")) return;
             AuthenticationConfig(services);
             AuthorizationConfig(services);
+        }
+
+        private static void SetupJwtService(IServiceCollection services)
+        {
+            var key = EnvironmentConnection.GetSecret("JWT_KEY") ?? "tutor_secret_key";
+            var issuer = EnvironmentConnection.GetSecret("JWT_ISSUER") ?? "tutor_secret_key";
+            var audience = EnvironmentConnection.GetSecret("JWT_AUDIENCE") ?? "tutor-front.com";
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidateLifetime = true,
+                        ValidIssuer = issuer,
+                        ValidAudience = audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+                    };
+
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnAuthenticationFailed = context =>
+                        {
+                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                            {
+                                context.Response.Headers.Add("UserCredentials-Expired", "true");
+                            }
+
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
         }
 
         private static void AuthorizationConfig(IServiceCollection services)

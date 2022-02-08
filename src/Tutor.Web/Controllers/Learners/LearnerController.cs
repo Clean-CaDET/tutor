@@ -2,10 +2,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.Learners;
-using Tutor.Web.Controllers.JWT;
-using Tutor.Web.Controllers.JWT.DTOs;
+using Tutor.Infrastructure.Security.Authorization;
+using Tutor.Infrastructure.Security.Authorization.JWT;
 using Tutor.Web.Controllers.Learners.DTOs;
 using Tutor.Web.IAM;
 
@@ -16,38 +15,43 @@ namespace Tutor.Web.Controllers.Learners
     public class LearnerController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly ILearnerService _learnerService;
         private readonly IAuthProvider _authProvider;
-        private readonly IJwtService _jwtService;
+        private readonly IAuthService _authService;
 
-        public LearnerController(IMapper mapper, ILearnerService learnerService, IAuthProvider authProvider,
-            IJwtService jwtService)
+        public LearnerController(IMapper mapper, IAuthProvider authProvider, IAuthService authService)
         {
             _mapper = mapper;
-            _learnerService = learnerService;
             _authProvider = authProvider;
-            _jwtService = jwtService;
+            _authService = authService;
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<LearnerDto>> Register([FromBody] LearnerDto learnerDto)
+        public async Task<ActionResult<AuthenticationResponse>> Register([FromBody] LearnerDto learnerDto)
         {
-            var learner = _mapper.Map<Learner>(learnerDto);
+            var learner = _mapper.Map<Learner>(learnerDto); //TODO: Make this more generic.
 
             if (bool.Parse(Environment.GetEnvironmentVariable("KEYCLOAK_ON") ?? "false"))
             {
                 learner = await _authProvider.Register(learner);
             }
 
-            var result = _learnerService.Register(learner);
-            if(result.IsSuccess) return Ok(_mapper.Map<LearnerDto>(result.Value));
+            var result = _authService.Register(learner);
+            if(result.IsSuccess) return Ok(result);
             return BadRequest(result.Errors);
         }
 
         [HttpPost("login")]
-        public ActionResult<LoginResponseDto> Login([FromBody] LoginDto login)
+        public ActionResult<AuthenticationResponse> Login([FromBody] LoginDto login)
         {
-            var result = _jwtService.GenerateToken(login);
+            var result = _authService.Login(login.StudentIndex, login.Password); //TODO: Make this more generic.
+            if (result.IsSuccess) return Ok(result.Value);
+            return NotFound(result.Errors);
+        }
+
+        [HttpPost("refresh")]
+        public ActionResult<AuthenticationResponse> RefreshToken([FromBody] UserCredentials userCredentials)
+        {
+            var result = _authService.RefreshToken(userCredentials);
             if (result.IsSuccess) return Ok(result.Value);
             return NotFound(result.Errors);
         }

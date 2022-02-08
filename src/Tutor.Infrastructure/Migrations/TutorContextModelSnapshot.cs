@@ -347,6 +347,12 @@ namespace Tutor.Infrastructure.Migrations
                     b.Property<string>("IamId")
                         .HasColumnType("text");
 
+                    b.Property<string>("Password")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Salt")
+                        .HasColumnType("text");
+
                     b.Property<string>("StudentIndex")
                         .HasColumnType("text");
 

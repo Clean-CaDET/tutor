@@ -57,6 +57,8 @@ namespace Tutor.Infrastructure.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     StudentIndex = table.Column<string>(type: "text", nullable: true),
+                    Password = table.Column<string>(type: "text", nullable: true),
+                    Salt = table.Column<string>(type: "text", nullable: true),
                     WorkspacePath = table.Column<string>(type: "text", nullable: true),
                     IamId = table.Column<string>(type: "text", nullable: true)
                 },
