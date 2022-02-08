@@ -22,15 +22,6 @@ DELETE FROM public."KnowledgeComponents";
 DELETE FROM public."Units";
 DELETE FROM public."Learners";
 
-INSERT INTO public."Learners"(
-    "Id", "StudentIndex", "WorkspacePath", "Password", "Salt") -- Password: 123
-VALUES (-1, 'SU-1-2021', 'C:/Smart-Tutor/1/Workspace', '5kOIeXHcGKSjzvjntN7lbJDlMkXaf+onA0sCyvhKN4s=', 'AAAAAAAAAAAAAAAAAAAAAA==');
-INSERT INTO public."Learners"(
-    "Id", "StudentIndex", "WorkspacePath", "Password", "Salt") -- Password: 123
-VALUES (-2, 'SU-2-2021', 'C:/Smart-Tutor/2/Workspace', '5kOIeXHcGKSjzvjntN7lbJDlMkXaf+onA0sCyvhKN4s=', 'AAAAAAAAAAAAAAAAAAAAAA==');
-INSERT INTO public."Learners"(
-    "Id", "StudentIndex", "WorkspacePath", "Password", "Salt") -- Password: 123
-VALUES (-3, 'SU-3-2021', 'C:/Smart-Tutor/3/Workspace', '5kOIeXHcGKSjzvjntN7lbJDlMkXaf+onA0sCyvhKN4s=', 'AAAAAAAAAAAAAAAAAAAAAA==');
 INSERT INTO public."Units"("Id", "Code", "Name", "Description") VALUES
 	(-1, 'CC01', 'Značajni nazivi', 'Nazive pronalazimo u svim segmentima razvoja softvera - kod identifikatora promenljive, funkcije, klase, ali i biblioteke i aplikacije. Jasan naziv funkcije nas oslobađa od čitanja njenog tela, dok će misteriozni naziv zahtevati dodatan mentalni napor da razumemo svrhu koncepta koji opisuje. U najgorem slučaju, loš naziv će nas naterati da formiramo pogrešnu pretpostavku, što će nam drastično produžiti vreme razvoja. Kroz ovaj modul ispitujemo dobre i loše prakse za formiranja naziva identifikatora u kodu.');
 
