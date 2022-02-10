@@ -23,7 +23,7 @@ namespace Tutor.Infrastructure.Security.Authorization.JWT
 
         public Result<AuthenticationResponse> GenerateAccessToken(int userId, string role)
         {
-            var loginResponseDto = new AuthenticationResponse();
+            var authenticationResponse = new AuthenticationResponse();
 
             var claims = new List<Claim>
             {
@@ -32,12 +32,12 @@ namespace Tutor.Infrastructure.Security.Authorization.JWT
                 new(ClaimTypes.Role, role)
             };
             
-            var jwt = CreateToken(claims, 1);
-            loginResponseDto.Id = userId;
-            loginResponseDto.AccessToken = jwt;
-            loginResponseDto.RefreshToken = GenerateRefreshToken();
+            var jwt = CreateToken(claims, 60);
+            authenticationResponse.Id = userId;
+            authenticationResponse.AccessToken = jwt;
+            authenticationResponse.RefreshToken = GenerateRefreshToken();
             
-            return Result.Ok(loginResponseDto);
+            return Result.Ok(authenticationResponse);
         }
         
         private string GenerateRefreshToken()
@@ -45,12 +45,12 @@ namespace Tutor.Infrastructure.Security.Authorization.JWT
             return CreateToken(new List<Claim>(), 1440);
         }
 
-        public Result<AuthenticationResponse> RefreshToken(UserCredentials userCredentials)
+        public Result<AuthenticationResponse> RefreshToken(AuthenticationTokens authenticationTokens)
         {
-            var token = new JwtSecurityTokenHandler().ReadJwtToken(userCredentials.AccessToken);
+            var token = new JwtSecurityTokenHandler().ReadJwtToken(authenticationTokens.AccessToken);
             var userId = int.Parse(token.Claims.First(c => c.Type == "id").Value);
             var role = token.Claims.First(c => c.Type.Equals(ClaimTypes.Role)).Value;
-            return _refreshTokenValidator.Validate(userCredentials.RefreshToken) ? GenerateAccessToken(userId, role) : Result.Fail("Refresh token is not valid!");
+            return _refreshTokenValidator.Validate(authenticationTokens.RefreshToken) ? GenerateAccessToken(userId, role) : Result.Fail("Refresh token is not valid!");
         }
 
         private string CreateToken(IEnumerable<Claim> claims, double expirationTime)

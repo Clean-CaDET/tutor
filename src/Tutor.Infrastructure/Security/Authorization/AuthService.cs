@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using FluentResults;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Tutor.Core.LearnerModel;
@@ -24,24 +25,24 @@ namespace Tutor.Infrastructure.Security.Authorization
         {
             var learner = _learnerRepository.GetByIndex(studentIndex);
             if (learner == null) return Result.Fail("User does not exist!");
-            return learner.Password.Equals(HashPassword(password, Convert.FromBase64String(learner.Salt)))
-                ? _jwtService.GenerateAccessToken(learner.Id, "learner") // TODO: Make this more generic.
+            return learner.Password.Equals(HashPassword(password, learner.Salt))
+                ? _jwtService.GenerateAccessToken(learner.Id, "learner")
                 : Result.Fail("The username or password is incorrect!");
         }
 
         public Result<AuthenticationResponse> Register(Learner learner)
         {
-            var salt = new byte[128 / 8];
+            var salt = GenerateSalt();
             var hashedPassword = HashPassword(learner.Password, salt);
-            learner.Salt = Convert.ToBase64String(salt);
+            learner.Salt = salt;
             learner.Password = hashedPassword;
             var result = _learnerService.Register(learner);
-            return _jwtService.GenerateAccessToken(result.Value.Id, "learner"); // TODO: Make this more generic.
+            return _jwtService.GenerateAccessToken(result.Value.Id, "learner");
         }
 
-        public Result<AuthenticationResponse> RefreshToken(UserCredentials userCredentials)
+        public Result<AuthenticationResponse> RefreshToken(AuthenticationTokens authenticationTokens)
         {
-            return _jwtService.RefreshToken(userCredentials);
+            return _jwtService.RefreshToken(authenticationTokens);
         }
 
         private static string HashPassword(string password, byte[] salt)
@@ -52,6 +53,14 @@ namespace Tutor.Infrastructure.Security.Authorization
                 KeyDerivationPrf.HMACSHA256,
                 100000,
                 256 / 8));
+        }
+
+        private static byte[] GenerateSalt()
+        {
+            var salt = new byte[128 / 8];
+            var randomNumberGenerator = RandomNumberGenerator.Create();
+            randomNumberGenerator.GetBytes(salt);
+            return salt;
         }
     }
 }

@@ -6,6 +6,6 @@ namespace Tutor.Infrastructure.Security.Authorization.JWT
     {
         Result<AuthenticationResponse> GenerateAccessToken(int userId, string role);
 
-        Result<AuthenticationResponse> RefreshToken(UserCredentials userCredentials);
+        Result<AuthenticationResponse> RefreshToken(AuthenticationTokens authenticationTokens);
     }
 }

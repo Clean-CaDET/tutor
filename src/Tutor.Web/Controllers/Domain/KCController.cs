@@ -11,6 +11,7 @@ using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
 
 namespace Tutor.Web.Controllers.Domain
 {
+    [Authorize(Policy = "learnerPolicy")]
     [Route("api/units/")]
     [ApiController]
     public class KCController : ControllerBase
@@ -40,8 +41,7 @@ namespace Tutor.Web.Controllers.Domain
             if (result.IsSuccess) return Ok(_mapper.Map<UnitDto>(result.Value));
             return NotFound(result.Errors);
         }
-
-        [Authorize(Policy = "learnerPolicy")]
+        
         [HttpGet("knowledge-components/{knowledgeComponentId:int}")]
         public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
         {

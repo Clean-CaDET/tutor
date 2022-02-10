@@ -10,6 +10,6 @@ namespace Tutor.Infrastructure.Security.Authorization
 
         Result<AuthenticationResponse> Register(Learner learner);
 
-        Result<AuthenticationResponse> RefreshToken(UserCredentials userCredentials);
+        Result<AuthenticationResponse> RefreshToken(AuthenticationTokens authenticationTokens);
     }
 }

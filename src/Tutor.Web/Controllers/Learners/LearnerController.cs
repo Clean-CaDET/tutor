@@ -28,7 +28,7 @@ namespace Tutor.Web.Controllers.Learners
         [HttpPost("register")]
         public async Task<ActionResult<AuthenticationResponse>> Register([FromBody] LearnerDto learnerDto)
         {
-            var learner = _mapper.Map<Learner>(learnerDto); //TODO: Make this more generic.
+            var learner = _mapper.Map<Learner>(learnerDto);
 
             if (bool.Parse(Environment.GetEnvironmentVariable("KEYCLOAK_ON") ?? "false"))
             {
@@ -43,17 +43,17 @@ namespace Tutor.Web.Controllers.Learners
         [HttpPost("login")]
         public ActionResult<AuthenticationResponse> Login([FromBody] LoginDto login)
         {
-            var result = _authService.Login(login.StudentIndex, login.Password); //TODO: Make this more generic.
+            var result = _authService.Login(login.StudentIndex, login.Password);
             if (result.IsSuccess) return Ok(result.Value);
             return NotFound(result.Errors);
         }
 
         [HttpPost("refresh")]
-        public ActionResult<AuthenticationResponse> RefreshToken([FromBody] UserCredentials userCredentials)
+        public ActionResult<AuthenticationResponse> RefreshToken([FromBody] AuthenticationTokens authenticationTokens)
         {
-            var result = _authService.RefreshToken(userCredentials);
+            var result = _authService.RefreshToken(authenticationTokens);
             if (result.IsSuccess) return Ok(result.Value);
-            return NotFound(result.Errors);
+            return BadRequest(result.Errors);
         }
     }
 }

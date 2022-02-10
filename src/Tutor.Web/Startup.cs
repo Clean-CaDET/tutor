@@ -53,8 +53,6 @@ namespace Tutor.Web
 
             services.AddAutoMapper(typeof(Startup));
 
-            SetupJwtService(services);
-
             services.AddControllers().AddJsonOptions(options =>
             {
                 var serializerOptions = options.JsonSerializerOptions;
@@ -100,19 +98,25 @@ namespace Tutor.Web
             services.AddScoped<IAuthProvider, KeycloakAuthProvider>();
             services.AddScoped<IAuthService, AuthService>();
 
+            if (!bool.Parse(Environment.GetEnvironmentVariable("KEYCLOAK_ON") ?? "false"))
+            {
+                SetupJwtService(services);
+            }
+            else
+            {
+                KeycloakAuthenticationConfig(services);
+                KeycloakAuthorizationConfig(services);
+            }
+        }
+
+        private static void SetupJwtService(IServiceCollection services)
+        {
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("learnerPolicy", policy =>
                     policy.RequireRole("learner"));
             });
 
-            if (!bool.Parse(Environment.GetEnvironmentVariable("KEYCLOAK_ON") ?? "false")) return;
-            AuthenticationConfig(services);
-            AuthorizationConfig(services);
-        }
-
-        private static void SetupJwtService(IServiceCollection services)
-        {
             var key = EnvironmentConnection.GetSecret("JWT_KEY") ?? "tutor_secret_key";
             var issuer = EnvironmentConnection.GetSecret("JWT_ISSUER") ?? "tutor_secret_key";
             var audience = EnvironmentConnection.GetSecret("JWT_AUDIENCE") ?? "tutor-front.com";
@@ -137,7 +141,7 @@ namespace Tutor.Web
                         {
                             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
                             {
-                                context.Response.Headers.Add("UserCredentials-Expired", "true");
+                                context.Response.Headers.Add("AuthenticationTokens-Expired", "true");
                             }
 
                             return Task.CompletedTask;
@@ -146,7 +150,7 @@ namespace Tutor.Web
                 });
         }
 
-        private static void AuthorizationConfig(IServiceCollection services)
+        private static void KeycloakAuthorizationConfig(IServiceCollection services)
         {
             services.AddAuthorization(options =>
             {
@@ -158,7 +162,7 @@ namespace Tutor.Web
             services.AddSingleton<IAuthorizationHandler, KeycloakRoleHandler>();
         }
 
-        private void AuthenticationConfig(IServiceCollection services)
+        private void KeycloakAuthenticationConfig(IServiceCollection services)
         {
             services.AddAuthentication(options =>
             {
