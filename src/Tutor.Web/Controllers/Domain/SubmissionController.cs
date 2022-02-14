@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
@@ -13,6 +14,7 @@ using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestion;
 
 namespace Tutor.Web.Controllers.Domain
 {
+    [Authorize(Policy = "learnerPolicy")]
     [Route("api/submissions/")]
     [ApiController]
     public class SubmissionController : ControllerBase

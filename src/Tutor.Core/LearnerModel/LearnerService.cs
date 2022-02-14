@@ -37,8 +37,7 @@ namespace Tutor.Core.LearnerModel
         public Result<Learner> Login(string studentIndex)
         {
             var learner = _learnerRepository.GetByIndex(studentIndex);
-            if (learner == null) return Result.Fail("No learner with index: " + studentIndex);
-            return Result.Ok(learner);
+            return learner == null ? Result.Fail("The username or password is incorrect!") : Result.Ok(learner);
         }
 
         private void CreateWorkspace(Learner learner)

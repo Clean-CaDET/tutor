@@ -33,10 +33,10 @@ namespace Tutor.Web.IAM.Keycloak
             var request = new HttpRequestMessage(new HttpMethod("POST"),
                 _registerPath);
 
-            //REWORK: Take password from Learner this is just POC.
+            //REWORK: Take Password from Learner this is just POC.
             request.Headers.TryAddWithoutValidation("Authorization", "bearer " + await AuthenticateAdmin());
             request.Content = new StringContent(
-                $"{{\"enabled\":\"true\", \"username\":\"{learner.StudentIndex}\",\"credentials\":[{{\"type\":\"password\",\"value\":\"123\",\"temporary\":false}}]}}}}");
+                $"{{\"enabled\":\"true\", \"username\":\"{learner.StudentIndex}\",\"credentials\":[{{\"type\":\"Password\",\"value\":\"123\",\"temporary\":false}}]}}}}");
             request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
             await httpClient.SendAsync(request);
 
@@ -51,8 +51,8 @@ namespace Tutor.Web.IAM.Keycloak
             var contentList = new List<string>();
             contentList.Add("client_id=admin-cli");
             contentList.Add("username=" + _adminUsername);
-            contentList.Add("password=" + _adminPassword);
-            contentList.Add("grant_type=password");
+            contentList.Add("Password=" + _adminPassword);
+            contentList.Add("grant_type=Password");
 
             request.Content = new StringContent(string.Join("&", contentList));
             request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/x-www-form-urlencoded");

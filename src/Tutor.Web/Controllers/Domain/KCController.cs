@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.InstructorModel.Instructors;
 using Tutor.Web.Controllers.Domain.DTOs;
@@ -10,6 +11,7 @@ using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
 
 namespace Tutor.Web.Controllers.Domain
 {
+    [Authorize(Policy = "learnerPolicy")]
     [Route("api/units/")]
     [ApiController]
     public class KCController : ControllerBase
@@ -39,7 +41,7 @@ namespace Tutor.Web.Controllers.Domain
             if (result.IsSuccess) return Ok(_mapper.Map<UnitDto>(result.Value));
             return NotFound(result.Errors);
         }
-
+        
         [HttpGet("knowledge-components/{knowledgeComponentId:int}")]
         public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
         {
