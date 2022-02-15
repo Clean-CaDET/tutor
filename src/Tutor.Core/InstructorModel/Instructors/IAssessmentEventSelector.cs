@@ -3,7 +3,7 @@ using Tutor.Core.DomainModel.AssessmentEvents;
 
 namespace Tutor.Core.InstructorModel.Instructors
 {
-    public interface IInstructor
+    public interface IAssessmentEventSelector
     {
         Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId);
 

@@ -43,5 +43,10 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         {
             return Result.Ok(_ikcRepository.GetInstructionalEventsByKnowledgeComponent(id));
         }
+
+        public Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

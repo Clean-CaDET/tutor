@@ -6,12 +6,12 @@ using Tutor.Core.DomainModel.KnowledgeComponents;
 
 namespace Tutor.Core.InstructorModel.Instructors
 {
-    public class DefaultInstructor : IInstructor
+    public class AssessmentEventSelector : IAssessmentEventSelector
     {
         private readonly IKCRepository _ikcRepository;
         private readonly IAssessmentEventRepository _assessmentEventRepository;
 
-        public DefaultInstructor(IKCRepository ikcRepository, IAssessmentEventRepository assessmentEventRepository)
+        public AssessmentEventSelector(IKCRepository ikcRepository, IAssessmentEventRepository assessmentEventRepository)
         {
             _ikcRepository = ikcRepository;
             _assessmentEventRepository = assessmentEventRepository;

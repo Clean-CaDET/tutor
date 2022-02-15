@@ -29,7 +29,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             using var scope = Factory.Services.CreateScope();
             var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IKCService>(),
-                scope.ServiceProvider.GetRequiredService<IInstructor>());
+                scope.ServiceProvider.GetRequiredService<IAssessmentEventSelector>());
 
             var actualSuitableAssessmentEvent =
                 ((OkObjectResult) controller.GetSuitableAssessmentEvent(request).Result)?.Value as AssessmentEventDto;

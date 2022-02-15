@@ -18,13 +18,13 @@ namespace Tutor.Web.Controllers.Domain
     {
         private readonly IMapper _mapper;
         private readonly IKCService _kcService;
-        private readonly IInstructor _instructor;
+        private readonly IAssessmentEventSelector _assessmentEventSelector;
 
-        public KCController(IMapper mapper, IKCService kcService, IInstructor instructor)
+        public KCController(IMapper mapper, IKCService kcService, IAssessmentEventSelector assessmentEventSelector)
         {
             _mapper = mapper;
             _kcService = kcService;
-            _instructor = instructor;
+            _assessmentEventSelector = assessmentEventSelector;
         }
 
         [HttpGet]
@@ -67,7 +67,7 @@ namespace Tutor.Web.Controllers.Domain
         [HttpPost("knowledge-component")]
         public ActionResult<AssessmentEventDto> GetSuitableAssessmentEvent([FromBody] AssessmentEventRequestDto assessmentEventRequest)
         {
-            var result = _instructor.SelectSuitableAssessmentEvent(assessmentEventRequest.KnowledgeComponentId, assessmentEventRequest.LearnerId);
+            var result = _assessmentEventSelector.SelectSuitableAssessmentEvent(assessmentEventRequest.KnowledgeComponentId, assessmentEventRequest.LearnerId);
             if (result.IsSuccess) return Ok(_mapper.Map<AssessmentEventDto>(result.Value));
             return NotFound(result.Errors);
         }
