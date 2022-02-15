@@ -3,6 +3,7 @@ using FluentResults;
 using System.Collections.Generic;
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.InstructionalEvents;
+using Tutor.Core.InstructorModel.Instructors;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
@@ -10,11 +11,18 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
     {
         private readonly IKCRepository _ikcRepository;
         private readonly IAssessmentEventRepository _assessmentEventRepository;
+        private readonly KnowledgeComponentMastery _knowledgeComponentMastery;
+        private readonly IAssessmentEventSelector _assessmentEventSelector;
 
-        public KCService(IKCRepository ikcRepository, IAssessmentEventRepository assessmentEventRepository)
+        public KCService(IKCRepository ikcRepository,
+            IAssessmentEventRepository assessmentEventRepository,
+            KnowledgeComponentMastery knowledgeComponentMastery,
+            IAssessmentEventSelector assessmentEventSelector)
         {
             _ikcRepository = ikcRepository;
             _assessmentEventRepository = assessmentEventRepository;
+            _knowledgeComponentMastery = knowledgeComponentMastery;
+            _assessmentEventSelector = assessmentEventSelector;
         }
 
         public Result<List<Unit>> GetUnits()
@@ -46,7 +54,8 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         public Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId)
         {
-            throw new NotImplementedException();
+            return _knowledgeComponentMastery.SelectSuitableAssessmentEvent(knowledgeComponentId, learnerId,
+                _assessmentEventSelector);
         }
     }
 }

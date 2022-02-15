@@ -67,7 +67,7 @@ namespace Tutor.Web.Controllers.Domain
         [HttpPost("knowledge-component")]
         public ActionResult<AssessmentEventDto> GetSuitableAssessmentEvent([FromBody] AssessmentEventRequestDto assessmentEventRequest)
         {
-            var result = _assessmentEventSelector.SelectSuitableAssessmentEvent(assessmentEventRequest.KnowledgeComponentId, assessmentEventRequest.LearnerId);
+            var result = _kcService.SelectSuitableAssessmentEvent(assessmentEventRequest.KnowledgeComponentId, assessmentEventRequest.LearnerId);
             if (result.IsSuccess) return Ok(_mapper.Map<AssessmentEventDto>(result.Value));
             return NotFound(result.Errors);
         }

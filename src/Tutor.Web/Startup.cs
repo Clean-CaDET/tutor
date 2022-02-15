@@ -85,8 +85,8 @@ namespace Tutor.Web
             services.AddScoped<IKCRepository, KCDatabaseRepository>();
             services.AddScoped<IAssessmentEventRepository, AssessmentEventDatabaseRepository>();
             services.AddScoped<ISubmissionService, SubmissionService>();
-
             services.AddScoped<IAssessmentEventSelector, AssessmentEventSelector>();
+            services.AddScoped<KnowledgeComponentMastery>();
 
             services.AddScoped<ILearnerService, LearnerService>();
             services.Configure<WorkspaceOptions>(Configuration.GetSection(WorkspaceOptions.ConfigKey));

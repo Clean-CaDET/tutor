@@ -8,16 +8,15 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
     public class SubmissionService : ISubmissionService
     {
         private readonly IAssessmentEventRepository _assessmentEventRepository;
-        private readonly IAssessmentEventSelector _assessmentEventSelector;
-        private readonly IKCRepository _kcRepository;
-        private readonly KnowledgeComponent _knowledgeComponent;
 
-        public SubmissionService(IAssessmentEventRepository assessmentEventRepository,
-            IAssessmentEventSelector assessmentEventSelector, KnowledgeComponent knowledgeComponent, IKCRepository kcRepository)
+        private readonly KnowledgeComponentMastery _knowledgeComponentMastery;
+        private readonly IKCRepository _kcRepository;
+
+        public SubmissionService(IAssessmentEventRepository assessmentEventRepository, 
+            KnowledgeComponentMastery knowledgeComponentMastery, IKCRepository kcRepository)
         {
             _assessmentEventRepository = assessmentEventRepository;
-            _assessmentEventSelector = assessmentEventSelector;
-            _knowledgeComponent = knowledgeComponent;
+            _knowledgeComponentMastery = knowledgeComponentMastery;
             _kcRepository = kcRepository;
         }
 
@@ -40,8 +39,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
             if (evaluation.Correct) submission.MarkCorrect();
             submission.CorrectnessLevel = evaluation.CorrectnessLevel;
             
-            // _knowledgeComponent.UpdateKcMastery(submission, assessmentEvent.KnowledgeComponentId, _assessmentEventRepository, _kcRepository);
-            _assessmentEventSelector.UpdateKcMastery(submission, assessmentEvent.KnowledgeComponentId);
+            _knowledgeComponentMastery.UpdateKcMastery(submission, assessmentEvent.KnowledgeComponentId, _assessmentEventRepository, _kcRepository);
             _assessmentEventRepository.SaveSubmission(submission);
 
             return Result.Ok(evaluation);

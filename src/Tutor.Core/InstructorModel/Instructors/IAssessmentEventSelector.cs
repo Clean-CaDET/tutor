@@ -7,6 +7,6 @@ namespace Tutor.Core.InstructorModel.Instructors
     {
         Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId);
 
-        void UpdateKcMastery(Submission submission, int knowledgeComponentId);
+        // void UpdateKcMastery(Submission submission, int knowledgeComponentId);
     }
 }
