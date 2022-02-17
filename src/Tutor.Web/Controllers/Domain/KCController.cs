@@ -17,13 +17,11 @@ namespace Tutor.Web.Controllers.Domain
     {
         private readonly IMapper _mapper;
         private readonly IKCService _kcService;
-        private readonly IAssessmentEventSelector _assessmentEventSelector;
 
-        public KCController(IMapper mapper, IKCService kcService, IAssessmentEventSelector assessmentEventSelector)
+        public KCController(IMapper mapper, IKCService kcService)
         {
             _mapper = mapper;
             _kcService = kcService;
-            _assessmentEventSelector = assessmentEventSelector;
         }
 
         [HttpGet]

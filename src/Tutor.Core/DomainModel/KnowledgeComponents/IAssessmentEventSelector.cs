@@ -5,6 +5,6 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
     public interface IAssessmentEventSelector
     {
-        Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponent, int learnerId);
+        Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId);
     }
 }
