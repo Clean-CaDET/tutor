@@ -1,10 +1,9 @@
-using FluentResults;
 using System.Collections.Generic;
 using System.Linq;
+using FluentResults;
 using Tutor.Core.DomainModel.AssessmentEvents;
-using Tutor.Core.DomainModel.KnowledgeComponents;
 
-namespace Tutor.Core.InstructorModel.Instructors
+namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
     public class AssessmentEventSelector : IAssessmentEventSelector
     {

@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Core.InstructorModel.Instructors;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.Workspaces;
 using Tutor.Infrastructure;

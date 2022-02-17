@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Core.InstructorModel.Instructors;
 using Tutor.Web.Controllers.Domain.DTOs;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;

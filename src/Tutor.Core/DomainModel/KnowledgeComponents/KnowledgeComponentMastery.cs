@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using FluentResults;
 using Tutor.Core.DomainModel.AssessmentEvents;
-using Tutor.Core.InstructorModel.Instructors;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
