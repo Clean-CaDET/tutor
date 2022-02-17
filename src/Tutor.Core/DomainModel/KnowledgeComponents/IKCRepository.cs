@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.InstructionalEvents;
-using Tutor.Core.LearnerModel.Learners;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {

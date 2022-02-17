@@ -35,7 +35,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
             submission.CorrectnessLevel = evaluation.CorrectnessLevel;
             
             _kcRepository.GetKnowledgeComponentMastery(submission.LearnerId, assessmentEvent.KnowledgeComponentId)
-                .UpdateKcMastery(submission, assessmentEvent.KnowledgeComponentId, _assessmentEventRepository, _kcRepository);
+                .UpdateKcMastery(submission, _kcRepository);
             _assessmentEventRepository.SaveSubmission(submission);
 
             return Result.Ok(evaluation);

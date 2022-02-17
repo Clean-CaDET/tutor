@@ -53,7 +53,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             controller.SubmitMultipleResponseQuestion(submission);
             
             var actualKcMastery = dbContext.KcMastery.FirstOrDefault(kcm => kcm.LearnerId == submission.LearnerId
-            && kcm.KnowledgeComponentId == knowledgeComponent.Id);
+            && kcm.KnowledgeComponent.Id == knowledgeComponent.Id);
             
             actualKcMastery.Mastery.ShouldBe(expectedKcMastery);
         }

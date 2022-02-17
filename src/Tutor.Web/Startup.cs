@@ -80,8 +80,7 @@ namespace Tutor.Web
                     });
             });
 
-            services.AddScoped<IKCService, KCService>();
-            services.AddScoped<IKCService, KCService>();
+            services.AddScoped<IKCService, KcService>();
             services.AddScoped<IKCRepository, KCDatabaseRepository>();
             services.AddScoped<IAssessmentEventRepository, AssessmentEventDatabaseRepository>();
             services.AddScoped<ISubmissionService, SubmissionService>();

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+using System.Collections.Generic;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents
 {
@@ -7,7 +8,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
         public int Id { get; private set; }
         public int KnowledgeComponentId { get; private set; }
 
-        public List<Submission> Submissions { get; private set; }
+        public List<Submission>? Submissions { get; private set; }
         
         protected AssessmentEvent() {}
 
