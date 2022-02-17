@@ -8,12 +8,10 @@ namespace Tutor.Core.InstructorModel.Instructors
 {
     public class AssessmentEventSelector : IAssessmentEventSelector
     {
-        private readonly IKCRepository _ikcRepository;
         private readonly IAssessmentEventRepository _assessmentEventRepository;
 
-        public AssessmentEventSelector(IKCRepository ikcRepository, IAssessmentEventRepository assessmentEventRepository)
+        public AssessmentEventSelector(IAssessmentEventRepository assessmentEventRepository)
         {
-            _ikcRepository = ikcRepository;
             _assessmentEventRepository = assessmentEventRepository;
         }
 
@@ -72,20 +70,5 @@ namespace Tutor.Core.InstructorModel.Instructors
 
             return maxCorrectnessSubmissions;
         }
-
-        // public void UpdateKcMastery(Submission submission, int knowledgeComponentId)
-        // {
-        //     var currentCorrectnessLevel = _assessmentEventRepository
-        //         .FindSubmissionWithMaxCorrectness(submission.AssessmentEventId, submission.LearnerId)?.CorrectnessLevel ?? 0.0;
-        //     if (currentCorrectnessLevel > submission.CorrectnessLevel) return;
-        //
-        //     var kcMastery = _ikcRepository.GetKnowledgeComponentMastery(submission.LearnerId, knowledgeComponentId);
-        //
-        //     var kcMasteryIncrement = 100.0 / _assessmentEventRepository.CountAssessmentEvents(knowledgeComponentId)
-        //         * (submission.CorrectnessLevel - currentCorrectnessLevel) / 100.0;
-        //     kcMastery.IncreaseMastery(kcMasteryIncrement);
-        //
-        //     _ikcRepository.UpdateKCMastery(kcMastery);
-        // }
     }
 }
