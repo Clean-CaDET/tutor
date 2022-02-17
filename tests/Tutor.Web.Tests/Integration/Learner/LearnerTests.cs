@@ -17,31 +17,31 @@ namespace Tutor.Web.Tests.Integration.Learner
         public LearnerTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
         [Fact]
-        public void Successfully_1_register()
+        public void Successfully_register()
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new LearnerController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IAuthProvider>(),
                 scope.ServiceProvider.GetRequiredService<IAuthService>());
-            var loginSubmission = new LearnerDto {StudentIndex = "TT-3-2021", Password = "123"};
+            var registerSubmission = new LearnerDto {StudentIndex = "TT-3-2021", Password = "123"};
 
-            var authenticationResponse =  controller.Register(loginSubmission).Result.Value;
+            var authenticationResponse =  controller.Register(registerSubmission).Result;
 
-            authenticationResponse?.Id.ShouldBe(1);
+            authenticationResponse.Result.ToResult().IsSuccess.ShouldBe(true);
         }
 
         [Fact]
-        public void Successfully_2_login()
+        public void Successfully_login()
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new LearnerController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IAuthProvider>(),
                 scope.ServiceProvider.GetRequiredService<IAuthService>());
-            var loginSubmission = new LoginDto {StudentIndex = "TT-3-2021", Password = "123"};
+            var loginSubmission = new LoginDto {StudentIndex = "SU-1-2021", Password = "123"};
 
             var authenticationResponse = ((OkObjectResult) controller.Login(loginSubmission).Result)?.Value as AuthenticationResponse;
 
-            authenticationResponse?.Id.ShouldBe(1);
+            authenticationResponse.Id.ShouldBe(-1);
         }
 
         [Fact]

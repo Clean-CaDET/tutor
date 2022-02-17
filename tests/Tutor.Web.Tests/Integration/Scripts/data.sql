@@ -26,13 +26,13 @@ DELETE FROM public."Learners";
 
 INSERT INTO public."Learners"(
     "Id", "StudentIndex", "WorkspacePath", "Password", "Salt") -- Password: 123
-VALUES (-1, 'SU-1-2021', 'C:/Smart-Tutor/1/Workspace', '5kOIeXHcGKSjzvjntN7lbJDlMkXaf+onA0sCyvhKN4s=', 'AAAAAAAAAAAAAAAAAAAAAA==');
+VALUES (-1, 'SU-1-2021', 'C:/Smart-Tutor/1/Workspace', 'SXQ0w0gW19OPoX3+jZ+tmcU6xl9uQFa5wRFcYbN8UKo=', '+ZcRExvqgCaST38r2oPT5A==');
 INSERT INTO public."Learners"(
     "Id", "StudentIndex", "WorkspacePath", "Password", "Salt") -- Password: 123
-VALUES (-2, 'SU-2-2021', 'C:/Smart-Tutor/2/Workspace', '5kOIeXHcGKSjzvjntN7lbJDlMkXaf+onA0sCyvhKN4s=', 'AAAAAAAAAAAAAAAAAAAAAA==');
+VALUES (-2, 'SU-2-2021', 'C:/Smart-Tutor/2/Workspace', 'SXQ0w0gW19OPoX3+jZ+tmcU6xl9uQFa5wRFcYbN8UKo=', '+ZcRExvqgCaST38r2oPT5A==');
 INSERT INTO public."Learners"(
     "Id", "StudentIndex", "WorkspacePath", "Password", "Salt") -- Password: 123
-VALUES (-3, 'SU-3-2021', 'C:/Smart-Tutor/3/Workspace', '5kOIeXHcGKSjzvjntN7lbJDlMkXaf+onA0sCyvhKN4s=', 'AAAAAAAAAAAAAAAAAAAAAA==');
+VALUES (-3, 'SU-3-2021', 'C:/Smart-Tutor/3/Workspace', 'SXQ0w0gW19OPoX3+jZ+tmcU6xl9uQFa5wRFcYbN8UKo=', '+ZcRExvqgCaST38r2oPT5A==');
 
 --== Unit 1: Meaningful names
 INSERT INTO public."Units"(
