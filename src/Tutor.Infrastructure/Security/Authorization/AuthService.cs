@@ -34,7 +34,7 @@ namespace Tutor.Infrastructure.Security.Authorization
         {
             var salt = GenerateSalt();
             var hashedPassword = HashPassword(learner.Password, salt);
-            learner.Salt = Convert.ToBase64String(salt);;
+            learner.Salt = Convert.ToBase64String(salt);
             learner.Password = hashedPassword;
             var result = _learnerService.Register(learner);
             return _jwtService.GenerateAccessToken(result.Value.Id, "learner");
