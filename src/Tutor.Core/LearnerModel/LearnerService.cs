@@ -26,7 +26,7 @@ namespace Tutor.Core.LearnerModel
 
             var kcs = _kcRepository.GetAllKnowledgeComponents();
             learner.KnowledgeComponentMasteries.AddRange(
-                kcs.Select(kc => new KnowledgeComponentMastery(kc.Id)).ToList());
+                kcs.Select(kc => new KnowledgeComponentMastery(kc)).ToList());
 
             var savedLearner = _learnerRepository.Save(learner);
             CreateWorkspace(savedLearner);

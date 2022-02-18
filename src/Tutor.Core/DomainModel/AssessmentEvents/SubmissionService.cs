@@ -1,19 +1,18 @@
 ﻿using FluentResults;
 using System;
-using Tutor.Core.InstructorModel.Instructors;
+using Tutor.Core.DomainModel.KnowledgeComponents;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents
 {
     public class SubmissionService : ISubmissionService
     {
         private readonly IAssessmentEventRepository _assessmentEventRepository;
-        private readonly IInstructor _instructor;
+        private readonly IKCRepository _kcRepository;
 
-        public SubmissionService(IAssessmentEventRepository assessmentEventRepository,
-            IInstructor instructor)
+        public SubmissionService(IAssessmentEventRepository assessmentEventRepository, IKCRepository kcRepository)
         {
             _assessmentEventRepository = assessmentEventRepository;
-            _instructor = instructor;
+            _kcRepository = kcRepository;
         }
 
         public Result<Evaluation> EvaluateAndSaveSubmission(Submission submission)
@@ -34,8 +33,10 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
 
             if (evaluation.Correct) submission.MarkCorrect();
             submission.CorrectnessLevel = evaluation.CorrectnessLevel;
-            
-            _instructor.UpdateKcMastery(submission, assessmentEvent.KnowledgeComponentId);
+
+            var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(submission.LearnerId, assessmentEvent.KnowledgeComponentId);
+            knowledgeComponentMastery.UpdateKcMastery(submission);
+            _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
             _assessmentEventRepository.SaveSubmission(submission);
 
             return Result.Ok(evaluation);

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents
 {
@@ -18,5 +19,10 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
         }
 
         public abstract Evaluation EvaluateSubmission(Submission submission);
+
+        public double GetMaximumSubmissionCorrectness()
+        {
+            return Submissions.Any() ? Submissions.OrderBy(sub => sub.CorrectnessLevel).Last().CorrectnessLevel : 0.0;
+        }
     }
 }

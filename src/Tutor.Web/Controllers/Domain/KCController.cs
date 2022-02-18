@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Core.InstructorModel.Instructors;
 using Tutor.Web.Controllers.Domain.DTOs;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
@@ -18,13 +17,11 @@ namespace Tutor.Web.Controllers.Domain
     {
         private readonly IMapper _mapper;
         private readonly IKCService _kcService;
-        private readonly IInstructor _instructor;
 
-        public KCController(IMapper mapper, IKCService kcService, IInstructor instructor)
+        public KCController(IMapper mapper, IKCService kcService)
         {
             _mapper = mapper;
             _kcService = kcService;
-            _instructor = instructor;
         }
 
         [HttpGet]
@@ -67,7 +64,7 @@ namespace Tutor.Web.Controllers.Domain
         [HttpPost("knowledge-component")]
         public ActionResult<AssessmentEventDto> GetSuitableAssessmentEvent([FromBody] AssessmentEventRequestDto assessmentEventRequest)
         {
-            var result = _instructor.SelectSuitableAssessmentEvent(assessmentEventRequest.KnowledgeComponentId, assessmentEventRequest.LearnerId);
+            var result = _kcService.SelectSuitableAssessmentEvent(assessmentEventRequest.KnowledgeComponentId, assessmentEventRequest.LearnerId);
             if (result.IsSuccess) return Ok(_mapper.Map<AssessmentEventDto>(result.Value));
             return NotFound(result.Errors);
         }

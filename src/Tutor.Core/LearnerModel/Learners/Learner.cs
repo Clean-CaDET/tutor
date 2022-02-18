@@ -11,7 +11,7 @@ namespace Tutor.Core.LearnerModel.Learners
         
         public string Password { get; set; }
         
-        public byte[] Salt { get; set; }
+        public string Salt { get; set; }
         
         public Workspace Workspace { get; set; }
         public string IamId { get; set; }

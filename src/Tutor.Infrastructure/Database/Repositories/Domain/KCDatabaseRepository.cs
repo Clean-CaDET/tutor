@@ -26,7 +26,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             {
                 _dbContext.Entry(knowledgeComponent).Collection(kc => kc.KnowledgeComponents).Load();
                 _dbContext.Entry(knowledgeComponent)
-                    .Collection(kc => kc.Masteries).Query().Where(m => m.LearnerId == learnerId).Load();
+                    .Collection(kc => kc.KnowledgeComponentMasteries).Query().Where(m => m.LearnerId == learnerId).Load();
                 LoadKCs(knowledgeComponent.KnowledgeComponents, learnerId);
             }
         }
@@ -52,8 +52,11 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
 
         public KnowledgeComponentMastery GetKnowledgeComponentMastery(int learnerId, int knowledgeComponentId)
         {
-            return _dbContext.KcMastery.FirstOrDefault
-                (kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponentId == knowledgeComponentId);
+            return _dbContext.KcMastery
+                .Include(kcm => kcm.KnowledgeComponent)
+                .ThenInclude(kc => kc.AssessmentEvents)
+                .ThenInclude(ae => ae.Submissions.Where(sub => sub.LearnerId == learnerId))
+                .FirstOrDefault(kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponent.Id == knowledgeComponentId);
         }
 
         public void UpdateKCMastery(KnowledgeComponentMastery kcMastery)

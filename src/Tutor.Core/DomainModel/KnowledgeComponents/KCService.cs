@@ -1,20 +1,23 @@
-﻿using System;
-using FluentResults;
+﻿using FluentResults;
 using System.Collections.Generic;
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.InstructionalEvents;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
-    public class KCService : IKCService
+    public class KcService : IKCService
     {
         private readonly IKCRepository _ikcRepository;
         private readonly IAssessmentEventRepository _assessmentEventRepository;
+        private readonly IAssessmentEventSelector _assessmentEventSelector;
 
-        public KCService(IKCRepository ikcRepository, IAssessmentEventRepository assessmentEventRepository)
+        public KcService(IKCRepository ikcRepository,
+            IAssessmentEventRepository assessmentEventRepository,
+            IAssessmentEventSelector assessmentEventSelector)
         {
             _ikcRepository = ikcRepository;
             _assessmentEventRepository = assessmentEventRepository;
+            _assessmentEventSelector = assessmentEventSelector;
         }
 
         public Result<List<Unit>> GetUnits()
@@ -42,6 +45,12 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         public Result<List<InstructionalEvent>> GetInstructionalEventsByKnowledgeComponent(int id)
         {
             return Result.Ok(_ikcRepository.GetInstructionalEventsByKnowledgeComponent(id));
+        }
+
+        public Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId)
+        {
+            var knowledgeComponentMastery = _ikcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
+            return knowledgeComponentMastery.SelectSuitableAssessmentEvent(_assessmentEventSelector);
         }
     }
 }

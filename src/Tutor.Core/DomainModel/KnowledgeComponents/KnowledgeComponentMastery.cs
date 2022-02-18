@@ -1,21 +1,41 @@
-﻿namespace Tutor.Core.DomainModel.KnowledgeComponents
+﻿using System.Linq;
+using FluentResults;
+using Tutor.Core.DomainModel.AssessmentEvents;
+
+namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
     public class KnowledgeComponentMastery
     {
         public int Id { get; private set; }
         public double Mastery { get; private set; }
-        public int KnowledgeComponentId { get; private set; }
+        public KnowledgeComponent KnowledgeComponent { get; private set; }
         public int LearnerId { get; private set; }
 
-        public KnowledgeComponentMastery(int knowledgeComponentId)
+        private KnowledgeComponentMastery() {}
+
+        public KnowledgeComponentMastery(KnowledgeComponent knowledgeComponent)
         {
             Mastery = 0.0;
-            KnowledgeComponentId = knowledgeComponentId;
+            KnowledgeComponent = knowledgeComponent;
         }
 
-        public void IncreaseMastery(double increment)
+        public void UpdateKcMastery(Submission submission)
         {
-            Mastery += increment;
+            var assessmentEvent = KnowledgeComponent.AssessmentEvents.FirstOrDefault(ae => ae.Id == submission.AssessmentEventId);
+            if (assessmentEvent == null) return;
+            
+            var currentCorrectnessLevel = assessmentEvent.GetMaximumSubmissionCorrectness();
+            if (currentCorrectnessLevel > submission.CorrectnessLevel) return;
+            
+            var kcMasteryIncrement = 100.0 / KnowledgeComponent.AssessmentEvents.Count
+                * (submission.CorrectnessLevel - currentCorrectnessLevel) / 100.0;
+
+            Mastery += kcMasteryIncrement;
+        }
+
+        public Result<AssessmentEvent> SelectSuitableAssessmentEvent(IAssessmentEventSelector assessmentEventSelector)
+        {
+            return assessmentEventSelector.SelectSuitableAssessmentEvent(KnowledgeComponent.Id, LearnerId);
         }
     }
 }

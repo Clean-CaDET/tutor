@@ -23,7 +23,7 @@ namespace Tutor.Web.Controllers.Domain.Mappers
         {
             CreateMap<Unit, UnitDto>();
             CreateMap<KnowledgeComponent, KnowledgeComponentDto>()
-                .ForMember(dest => dest.Mastery, opt => opt.MapFrom(src => src.Masteries.FirstOrDefault()));
+                .ForMember(dest => dest.Mastery, opt => opt.MapFrom(src => src.KnowledgeComponentMasteries.FirstOrDefault()));
             CreateMap<KnowledgeComponentMastery, KnowledgeComponentMasteryDto>();
 
             CreateMap<InstructionalEvent, InstructionalEventDto>().IncludeAllDerived();

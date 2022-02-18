@@ -25,7 +25,7 @@ namespace Tutor.Infrastructure.Security.Authorization
         {
             var learner = _learnerRepository.GetByIndex(studentIndex);
             if (learner == null) return Result.Fail("User does not exist!");
-            return learner.Password.Equals(HashPassword(password, learner.Salt))
+            return learner.Password.Equals(HashPassword(password, Convert.FromBase64String(learner.Salt)))
                 ? _jwtService.GenerateAccessToken(learner.Id, "learner")
                 : Result.Fail("The username or password is incorrect!");
         }
@@ -34,7 +34,7 @@ namespace Tutor.Infrastructure.Security.Authorization
         {
             var salt = GenerateSalt();
             var hashedPassword = HashPassword(learner.Password, salt);
-            learner.Salt = salt;
+            learner.Salt = Convert.ToBase64String(salt);
             learner.Password = hashedPassword;
             var result = _learnerService.Register(learner);
             return _jwtService.GenerateAccessToken(result.Value.Id, "learner");

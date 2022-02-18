@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Core.InstructorModel.Instructors;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.Workspaces;
 using Tutor.Infrastructure;
@@ -80,13 +79,11 @@ namespace Tutor.Web
                     });
             });
 
-            services.AddScoped<IKCService, KCService>();
-            services.AddScoped<IKCService, KCService>();
+            services.AddScoped<IKCService, KcService>();
             services.AddScoped<IKCRepository, KCDatabaseRepository>();
             services.AddScoped<IAssessmentEventRepository, AssessmentEventDatabaseRepository>();
             services.AddScoped<ISubmissionService, SubmissionService>();
-
-            services.AddScoped<IInstructor, DefaultInstructor>();
+            services.AddScoped<IAssessmentEventSelector, LeastCorrectAssessmentEventSelector>();
 
             services.AddScoped<ILearnerService, LearnerService>();
             services.Configure<WorkspaceOptions>(Configuration.GetSection(WorkspaceOptions.ConfigKey));
