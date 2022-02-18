@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
-using System.Linq;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Domain.DTOs;
@@ -23,7 +22,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKCService>(), scope.ServiceProvider.GetRequiredService<IAssessmentEventSelector>());
+                scope.ServiceProvider.GetRequiredService<IKCService>());
 
             var units = ((OkObjectResult) controller.GetUnits().Result).Value as List<UnitDto>;
 
@@ -36,7 +35,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKCService>(), scope.ServiceProvider.GetRequiredService<IAssessmentEventSelector>());
+                scope.ServiceProvider.GetRequiredService<IKCService>());
 
             var IEs = ((OkObjectResult)controller.GetInstructionalEvents(knowledgeComponentId).Result).Value as List<InstructionalEventDto>;
 
@@ -66,7 +65,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKCService>(), scope.ServiceProvider.GetRequiredService<IAssessmentEventSelector>());
+                scope.ServiceProvider.GetRequiredService<IKCService>());
 
             var IEs = ((OkObjectResult)controller.GetAssessmentEvents(knowledgeComponentId).Result).Value as List<AssessmentEventDto>;
 

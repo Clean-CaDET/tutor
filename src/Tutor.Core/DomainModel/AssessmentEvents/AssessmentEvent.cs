@@ -1,5 +1,5 @@
-﻿#nullable enable
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents
 {
@@ -8,7 +8,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
         public int Id { get; private set; }
         public int KnowledgeComponentId { get; private set; }
 
-        public List<Submission>? Submissions { get; private set; }
+        public List<Submission> Submissions { get; private set; }
         
         protected AssessmentEvent() {}
 
@@ -19,5 +19,10 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
         }
 
         public abstract Evaluation EvaluateSubmission(Submission submission);
+
+        public double GetMaximumSubmissionCorrectness()
+        {
+            return Submissions.Any() ? Submissions.OrderBy(sub => sub.CorrectnessLevel).Last().CorrectnessLevel : 0.0;
+        }
     }
 }

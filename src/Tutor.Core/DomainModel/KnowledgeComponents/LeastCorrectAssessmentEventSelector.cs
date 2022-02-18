@@ -5,11 +5,11 @@ using Tutor.Core.DomainModel.AssessmentEvents;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
-    public class AssessmentEventSelector : IAssessmentEventSelector
+    public class LeastCorrectAssessmentEventSelector : IAssessmentEventSelector
     {
         private readonly IAssessmentEventRepository _assessmentEventRepository;
 
-        public AssessmentEventSelector(IAssessmentEventRepository assessmentEventRepository)
+        public LeastCorrectAssessmentEventSelector(IAssessmentEventRepository assessmentEventRepository)
         {
             _assessmentEventRepository = assessmentEventRepository;
         }

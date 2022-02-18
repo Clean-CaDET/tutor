@@ -111,6 +111,9 @@ VALUES (-14, 0.0, -14, -3);
 INSERT INTO public."KcMastery"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
 VALUES (-15, 0.0, -15, -3);
+INSERT INTO public."KcMastery"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId")
+VALUES (-51, 0.0, -10, -3);
 
 INSERT INTO public."InstructionalEvents"(
 	"Id", "KnowledgeComponentId")

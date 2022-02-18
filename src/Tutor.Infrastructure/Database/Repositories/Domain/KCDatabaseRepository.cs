@@ -52,8 +52,10 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
 
         public KnowledgeComponentMastery GetKnowledgeComponentMastery(int learnerId, int knowledgeComponentId)
         {
-            return _dbContext.KcMastery.Include(kcm => kcm.KnowledgeComponent)
-                .ThenInclude(kc => kc.AssessmentEvents).ThenInclude(ae => ae.Submissions.Where(sub => sub.LearnerId == learnerId))
+            return _dbContext.KcMastery
+                .Include(kcm => kcm.KnowledgeComponent)
+                .ThenInclude(kc => kc.AssessmentEvents)
+                .ThenInclude(ae => ae.Submissions.Where(sub => sub.LearnerId == learnerId))
                 .FirstOrDefault(kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponent.Id == knowledgeComponentId);
         }
 

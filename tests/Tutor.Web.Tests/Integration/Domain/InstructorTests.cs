@@ -27,8 +27,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKCService>(),
-                scope.ServiceProvider.GetRequiredService<IAssessmentEventSelector>());
+                scope.ServiceProvider.GetRequiredService<IKCService>());
 
             var actualSuitableAssessmentEvent =
                 ((OkObjectResult) controller.GetSuitableAssessmentEvent(request).Result)?.Value as AssessmentEventDto;
@@ -61,6 +60,92 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             return new List<object[]>
             {
+                new object[]
+                {
+                    new MrqSubmissionDto
+                    {
+                        AssessmentEventId = -106,
+                        LearnerId = -3,
+                        Answers = new List<MrqItemDto>
+                        {
+                            new() {Id = -1062},
+                            new() {Id = -1065}
+                        }
+                    },
+                    0.5
+                },
+                new object[]
+                {
+                    new MrqSubmissionDto
+                    {
+                        AssessmentEventId = -106,
+                        LearnerId = -3,
+                        Answers = new List<MrqItemDto>
+                        {
+                            new() {Id = -1061},
+                            new() {Id = -1065}
+                        }
+                    },
+                    0.5
+                },
+                new object[]
+                {
+                    new MrqSubmissionDto
+                    {
+                        AssessmentEventId = -107,
+                        LearnerId = -3,
+                        Answers = new List<MrqItemDto>
+                        {
+                            new() {Id = -1071},
+                            new() {Id = -1074},
+                            new() {Id = -1073}
+                        }
+                    },
+                    0.5
+                },
+                new object[]
+                {
+                    new MrqSubmissionDto
+                    {
+                        AssessmentEventId = -107,
+                        LearnerId = -3,
+                        Answers = new List<MrqItemDto>
+                        {
+                            new() {Id = -1071},
+                            new() {Id = -1074},
+                            new() {Id = -1073}
+                        }
+                    },
+                    0.5
+                },
+                new object[]
+                {
+                    new MrqSubmissionDto
+                    {
+                        AssessmentEventId = -107,
+                        LearnerId = -3,
+                        Answers = new List<MrqItemDto>
+                        {
+                            new() {Id = -1072},
+                            new() {Id = -1074},
+                        }
+                    },
+                    0.8
+                },
+                new object[]
+                {
+                    new MrqSubmissionDto
+                    {
+                        AssessmentEventId = -107,
+                        LearnerId = -3,
+                        Answers = new List<MrqItemDto>
+                        {
+                            new() {Id = -1072},
+                            new() {Id = -1075},
+                        }
+                    },
+                    1.0
+                },
                 new object[]
                 {
                     new MrqSubmissionDto

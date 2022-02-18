@@ -11,9 +11,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         public KnowledgeComponent KnowledgeComponent { get; private set; }
         public int LearnerId { get; private set; }
 
-        public KnowledgeComponentMastery()
-        {
-        }
+        private KnowledgeComponentMastery() {}
 
         public KnowledgeComponentMastery(KnowledgeComponent knowledgeComponent)
         {
@@ -21,23 +19,18 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             KnowledgeComponent = knowledgeComponent;
         }
 
-        public void UpdateKcMastery(Submission submission, IKCRepository kcRepository)
+        public void UpdateKcMastery(Submission submission)
         {
-            var submissions = KnowledgeComponent.AssessmentEvents
-                .FirstOrDefault(ae => ae.Id == submission.AssessmentEventId)?.Submissions;
-            var currentCorrectnessLevel = 0.0;
-
-            if (submissions?.Any() == true)
-            {
-                currentCorrectnessLevel = submissions.OrderBy(sub => sub.CorrectnessLevel).Last().CorrectnessLevel;
-            }
-
+            var assessmentEvent = KnowledgeComponent.AssessmentEvents.FirstOrDefault(ae => ae.Id == submission.AssessmentEventId);
+            if (assessmentEvent == null) return;
+            
+            var currentCorrectnessLevel = assessmentEvent.GetMaximumSubmissionCorrectness();
             if (currentCorrectnessLevel > submission.CorrectnessLevel) return;
+            
             var kcMasteryIncrement = 100.0 / KnowledgeComponent.AssessmentEvents.Count
                 * (submission.CorrectnessLevel - currentCorrectnessLevel) / 100.0;
 
             Mastery += kcMasteryIncrement;
-            kcRepository.UpdateKCMastery(this);
         }
 
         public Result<AssessmentEvent> SelectSuitableAssessmentEvent(IAssessmentEventSelector assessmentEventSelector)
