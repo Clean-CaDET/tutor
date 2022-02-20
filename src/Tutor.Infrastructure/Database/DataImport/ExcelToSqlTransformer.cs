@@ -301,6 +301,7 @@ DELETE FROM public.""Learners"";
 
             foreach (var ae in aes)
             {
+                if(ae.Type == "ch") continue;
                 sqlBuilder.Append("INSERT INTO public.\"AssessmentEvents\"(\"Id\", \"KnowledgeComponentId\") VALUES");
                 sqlBuilder.AppendLine();
                 sqlBuilder.Append("\t(" + ae.Id + ", " + ae.KnowledgeComponentId + ");");
