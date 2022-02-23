@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:15.14.0-alpine AS frontBuild
+FROM node:16.14.0-alpine3.14 AS frontBuild
 WORKDIR /src
 COPY ./files/scripts/install-dependencies.sh .
 ARG FRONTEND_APP_SRC_URL=https://github.com/Clean-CaDET/platform-tutor-ui-web/archive/refs/heads/master.tar.gz
@@ -21,16 +21,16 @@ RUN chmod +x ./build-app.sh && \
         ${KEYCLOAK_REALM} \
         ${KEYCLOAK_AUDIENCE}
 
-FROM nginx:1.19.8-alpine AS gatewayWithFront
+FROM nginx:1.21.6-alpine AS gatewayWithFront
 COPY --from=frontBuild /app /usr/share/nginx/html/app
 COPY ./files/config/nginx.conf /etc/nginx/nginx.conf
 COPY ./files/config/api_gateway.conf /etc/nginx/api_gateway.conf
 
-FROM nginx:1.19.8-alpine AS gatewayWithKeycloak
+FROM nginx:1.21.6-alpine AS gatewayWithKeycloak
 COPY --from=frontBuild /app /usr/share/nginx/html/app
 COPY ./files/config/nginx.conf /etc/nginx/nginx.conf
 COPY ./files/config/api_gateway_keycloak.conf /etc/nginx/api_gateway.conf
 
-FROM nginx:1.19.8-alpine AS gateway
+FROM nginx:1.21.6-alpine AS gateway
 COPY ./files/config/nginx.conf /etc/nginx/nginx.conf
 COPY ./files/config/api_gateway.conf /etc/nginx/api_gateway.conf
