@@ -30,6 +30,7 @@ using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
 using Tutor.Web.IAM;
 using Tutor.Web.IAM.Keycloak;
+using Tutor.Core.BuildingBlocks.EventSourcing;
 
 namespace Tutor.Web
 {
@@ -94,6 +95,8 @@ namespace Tutor.Web
 
             services.AddScoped<IAuthProvider, KeycloakAuthProvider>();
             services.AddScoped<IAuthService, AuthService>();
+
+            services.AddScoped<IClock, SystemClock>();
 
             if (!bool.Parse(Environment.GetEnvironmentVariable("KEYCLOAK_ON") ?? "false"))
             {
