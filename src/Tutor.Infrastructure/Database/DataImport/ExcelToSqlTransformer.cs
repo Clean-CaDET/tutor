@@ -201,6 +201,7 @@ DELETE FROM public.""ArrangeTasks"";
 DELETE FROM public.""ShortAnswerQuestions"";
 DELETE FROM public.""AssessmentEvents"";
 DELETE FROM public.""InstructionalEvents"";
+DELETE FROM public.""KcMastery"";
 DELETE FROM public.""KnowledgeComponents"";
 DELETE FROM public.""Units"";
 DELETE FROM public.""Learners"";
@@ -301,7 +302,6 @@ DELETE FROM public.""Learners"";
 
             foreach (var ae in aes)
             {
-                if(ae.Type == "ch") continue;
                 sqlBuilder.Append("INSERT INTO public.\"AssessmentEvents\"(\"Id\", \"KnowledgeComponentId\") VALUES");
                 sqlBuilder.AppendLine();
                 sqlBuilder.Append("\t(" + ae.Id + ", " + ae.KnowledgeComponentId + ");");
@@ -318,7 +318,7 @@ DELETE FROM public.""Learners"";
                         sqlBuilder.Append(BuildSaqSql(ae));
                         break;
                     case "ch":
-                        sqlBuilder.Append("-- TODO: ADD CHALLENGE DATA");
+                        sqlBuilder.Append(BuildChSql(ae));
                         sqlBuilder.AppendLine();
                         break;
                 }
@@ -404,6 +404,16 @@ DELETE FROM public.""Learners"";
         {
             items = items.Select(i => "\"" + i + "\"").ToList();
             return string.Join(", ", items);
+        }
+
+        private static string BuildChSql(AEColumns ae)
+        {
+            var sqlBuilder = new StringBuilder();
+            sqlBuilder.Append("INSERT INTO public.\"Challenges\"(\"Id\", \"Description\", \"Url\", \"TestSuiteLocation\", \"SolutionUrl\") VALUES");
+            sqlBuilder.AppendLine();
+            sqlBuilder.Append("\t(" + ae.Id + ", '" + ae.Text + "', '" + ae.Items[0] + "', '" + ae.Items[1] + "', '" + ae.Items[2] + "');");
+            sqlBuilder.AppendLine().Append("--TODO: STRATEGIES AND HINTS").AppendLine();
+            return sqlBuilder.ToString();
         }
 
         private static void Save(string sqlScript, string destination)

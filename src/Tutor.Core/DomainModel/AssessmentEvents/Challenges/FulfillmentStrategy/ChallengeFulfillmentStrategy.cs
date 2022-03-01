@@ -24,7 +24,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             {
                 solutionAttempt.Classes.ForEach(c => hints.MergeHints(EvaluateClass(c)));
             }
-            else if (!CodeSnippetId.Contains("("))
+            else if (!CodeSnippetId.Contains('('))
             {
                 var targetClass = solutionAttempt.Classes.Find(c => c.FullName.Equals(CodeSnippetId));
                 if (targetClass == null) throw new InvalidOperationException($"Solution attempt is missing class {CodeSnippetId}");

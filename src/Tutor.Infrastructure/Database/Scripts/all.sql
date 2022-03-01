@@ -1,180 +1,83 @@
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (12, 10);
-INSERT INTO public."Challenges"(
-	"Id", "Description", "Url", "TestSuiteLocation", "SolutionIdForeignKey")
-	VALUES (12, 'Često definišemo naša imena uz pomoć generičnih i beznačajnih reči koji ponavljaju jasnu informaciju ili ništa posebno ne kažu. U sklopu direktorijuma "Naming/01. Noise Words" isprati zadatke u zaglavlju klase i ukloni suvišne reči iz imena u kodu.', 'https://github.com/Clean-CaDET/challenge-repository', 'Naming.Noise', 11);
-INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (2, 12, 'Naming.NoiseWords.Doctor');
-	
+-- F02 challenge strategies & hints
 INSERT INTO public."ChallengeHints"(
-	"Id", "Content", "LearningObjectSummaryId")
-	VALUES (6, 'Izbegavaj generične reči koje se mogu koristiti da opišu bilo kakav kod (npr. Manager, Data), kao i one koje ponavljaju informacije koje već stoje u imenu tipa (npr. List, Num).', 9);
-INSERT INTO public."BasicNameCheckers"(
-	"Id", "BannedWords", "HintId")
-	VALUES (2, '{"Data","Info","Str","Set","The"}', 6);
-	
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (13, 11);
-INSERT INTO public."Videos"(
-	"Id", "Url")
-	VALUES (13, 'https://youtu.be/sR8hjHldAfI');
-	
-
-
-
-INSERT INTO public."Challenges"(
-	"Id", "Description", "Url", "TestSuiteLocation", "SolutionIdForeignKey")
-	VALUES (7, 'U svojoj brzopletosti, često nabacamo kratka imena kako bismo što pre ispisali kod koji radi. U sklopu direktorijuma "Naming/02. Meaningful Words" proširi kod korisnim imenima koji uklanjaju potrebe za komentarima i isprati zadatke u zaglavlju klase.', 'https://github.com/Clean-CaDET/challenge-repository', 'Naming.Meaning', 8);
-INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (1, 7, 'Naming.MeaningfulWords.Course');
-	
-INSERT INTO public."ChallengeHints"(
-	"Id", "Content", "LearningObjectSummaryId")
-	VALUES (7, 'Razmisli kako da integrišeš domenski značajne reči poput "Enroll", "newCourse", "Maximum" i "Active" u imena koja koristiš u svom kodu.', 6);
-INSERT INTO public."BasicNameCheckers"(
-	"Id", "RequiredWords", "HintId")
-	VALUES (1, '{"Enroll","newCourse","Maximum","Active"}', 7);
-
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (8, 6);
-INSERT INTO public."Texts"(
 	"Id", "Content")
-	VALUES (8, 'Dodeljivanje značajnih imena elementima koda pomaže sa aspekta pretrage koda. Kada u velikom projektu želimo pretragom da lociramo promenljivu ili funkciju, ako je ime tog elementa kratko (broji par karaktera), mala je šansa da ćemo brzo doći do datog elementa. Naspram toga, ako ime broji nekoliko reči, pretraga nam može u istom momentu locirati dati element.
-
-Slična je priča sa takozvanim *magic numbers*, što predstavljaju vrednosti zakucane u kodu (literal), poput broja 10 ili teksta "TEST". Pored što je teško pretragom pronaći ovakve vrednosti, brzo se zaboravi namera iza datog podatka. Kada naiđemo na kod koji proverava da li je vrednost jednaka "EXIT -1" ili je dužina veća od 12, dobra je šansa da ćemo morati pitati kolegu šta podatak znači ili na drugi način trošiti vreme u potrazi za odgovorom. Kad bismo zamenili zakucanu vrednost sa konstantom  (npr. umesto 12 definišemo *MinimumPasswordLength*) unapredićemo razumljivost koda, centralizovaćemo vrednost u konstanti (umesto da ga kopiramo na više mesta) i omogućićemo pronalazak podatka uz pomoć pretrage.');
-
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (9, 8);
-INSERT INTO public."Videos"(
-	"Id", "Url")
-	VALUES (9, 'https://youtu.be/8OYsu0dza0k');
-	
-
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (15, 13);
-INSERT INTO public."Images"(
-	"Id", "Url", "Caption")
-	VALUES (15, 'https://i.ibb.co/pbwFLL1/RS-motivation.png', 'Kako bi ti radije provodio svoje radno vreme?');
-	
-	
-	
-
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (31, 31);
-INSERT INTO public."Images"( --TODO: CodeSnippet gist
-	"Id", "Url", "Caption")
-	VALUES (31, 'https://i.ibb.co/dbthB3H/RS-Methods-Long.png', 'Izdvoj vreme da opišeš sve high-level i low-level zadatke (segmente koda) koje "getFree" izvršava u pratećem kodu. Koje od navedenih zadataka vidiš da bi koristio u drugim kontekstima (i time duplirao kod)?');
-	
-	
-
--- Methods LO - PK Node 1
-
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (41, 41);
-INSERT INTO public."Challenges"(
-	"Id", "Url", "Description", "TestSuiteLocation", "SolutionIdForeignKey")
-	VALUES (41, 'https://github.com/Clean-CaDET/challenge-repository', 'Da imamo kratke metode ne treba da bude naš konačan cilj, već posledica praćenja dobrih praksi. Ipak, funkcija koja prevazilazi nekoliko desetina linija je dobar kandidat za refaktorisanje. U sklopu direktorijuma "Methods/01. Small Methods" ekstrahuj logički povezan kod tako da završiš sa kolekcijom sitnijih metoda čije ime jasno označava njihovu svrhu.', 'Methods.Small', 42);
+	VALUES (-31, 'Identifikuj regione povezanog koda (obrati pažnju na komentare) i izdvoj ih u funkciju kojoj možeš dati jasan naziv.');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (3, 41, 'Methods.SmallMethods.Achievement');
+	VALUES (-31, /*TODO*/, 'Methods.SmallMethods.Achievement');
 INSERT INTO public."BasicMetricCheckers"(
 	"Id")
-	VALUES (3);
+	VALUES (-31);
+INSERT INTO public."MetricRangeRules"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
+	VALUES (1, 'MELOC', 1, 18, -31, -31);
 
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (42, 42);
-INSERT INTO public."Videos"(
-	"Id", "Url")
-	VALUES (42, 'https://youtu.be/79a8Zp6FBfU');
 	
--- Methods LO - PK Node 2
-	
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (44, 44);
-INSERT INTO public."Challenges"(
-	"Id", "Url", "Description", "TestSuiteLocation", "SolutionIdForeignKey")
-	VALUES (44, 'https://github.com/Clean-CaDET/challenge-repository', 'Složene funkcije su one koje zahtevaju visok mentalni napor da se razume sva logika i tokovi kontrole. Mnogi aspekti koda doprinose otežanom razumevanju - čudna imena, dugački izrazi, duboko ugnježdavanje. U sklopu direktorijuma "Methods/02. Simple Methods" refaktoriši funkcije tako da ih pojednostaviš i smanjiš dupliranje koda.', 'Methods.Simple', 46);
+-- F03 challenge strategies & hints
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-41, 'Razmisli kako bi pojednostavio datu metodu tako da smanjiš ugnježdavanje koda.');
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-42, 'Ne zaboravi da vodiš računa o linijama koda.');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (4, 44, 'Methods.SimpleMethods.Schedule');
+	VALUES (-41, /*TODO*/, 'Methods.SimpleMethods.Schedule');
 INSERT INTO public."BasicMetricCheckers"(
 	"Id")
-	VALUES (4);
+	VALUES (-41);
+INSERT INTO public."MetricRangeRules"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
+	VALUES (-41, 'CYCLO', 1, 5, -41, -41);
+INSERT INTO public."MetricRangeRules"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
+	VALUES (-42, 'MELOC', 1, 12, -42, -41);
 
-
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (46, 46);
-INSERT INTO public."Videos"(
-	"Id", "Url")
-	VALUES (46, 'https://youtu.be/-TF5b_R9JG4');
 	
--- Methods LO - PK Node 3
-
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (49, 49);
-INSERT INTO public."Challenges"(
-	"Id", "Url", "Description", "TestSuiteLocation", "SolutionIdForeignKey")
-	VALUES (49, 'https://github.com/Clean-CaDET/challenge-repository', 'Redukcija broja parametra pozitivno utiče na razumevanje samog zaglavlja funkcije i informacije šta ona radi. Pored toga, redukcijom liste parametra često smanjujemo broj zadataka koje funkcija radi. U sklopu direktorijuma "Methods/03. Parameter Lists" primeni strategije za redukciju parametra i refaktoriši funkcije.', 'Methods.Params', 50);
+-- F07 challenge strategies & hints
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-51, 'Funkcija ima previše parametra. Razmisli koja strategija za redukciju parametra najviše odgovara skupu parametra u datoj funkciji, pa je primeni.');
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-52, 'Vredna strategija za redukciju parametra podrazumeva premeštanje metoda i polja klase tako da se ukloni potreba za parametrom. Razmisli da li ima smisla premestiti neku metodu iz ove klase u drugu.');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (5, 49, 'Methods.ParameterLists.CourseService');
+	VALUES (-51, /*TODO*/, 'Methods.ParameterLists.CourseService');
 INSERT INTO public."BasicMetricCheckers"(
 	"Id")
-	VALUES (5);
+	VALUES (-51);
+INSERT INTO public."MetricRangeRules"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
+	VALUES (-51, 'NOP', 0, 1, -51, -51);
+INSERT INTO public."MetricRangeRules"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
+	VALUES (-52, 'NMD', 0, 2, -52, -51);
 
-INSERT INTO public."LearningObjects"(
-	"Id", "LearningObjectSummaryId")
-	VALUES (50, 50);
-INSERT INTO public."Videos"(
-	"Id", "Url")
-	VALUES (50, 'https://youtu.be/yKnxsH0CJzY');
 
--- HINTS
+-- N03 challenge strategies & hints
 INSERT INTO public."ChallengeHints"(
-	"Id", "Content", "LearningObjectSummaryId")
-	VALUES (1, 'Ispitaj da li možeš datu funkciju da pojednostaviš reorganizacijom logike ili ekstrakcijom smislenog podskupa koda u funkciju kojoj možeš dati jasno ime.', 43);
-INSERT INTO public."ChallengeHints"(
-	"Id", "Content", "LearningObjectSummaryId")
-	VALUES (2, 'Razmisli kako bi pojednostavio datu metodu tako da smanjiš ugnježdavanje koda.', 45);
-INSERT INTO public."ChallengeHints"(
-	"Id", "Content", "LearningObjectSummaryId")
-	VALUES (3, 'Ne zaboravi da vodiš računa o linijama koda.', 40);
-INSERT INTO public."ChallengeHints"(
-	"Id", "Content", "LearningObjectSummaryId")
-	VALUES (4, 'Funkcija ti i dalje ima previše parametra. Ispitaj svaku od četiri strategije za redukciju parametra i razmisli koja bi bila najpogodnija, pa je onda primeni.', 48);
-INSERT INTO public."ChallengeHints"(
-	"Id", "Content", "LearningObjectSummaryId")
-	VALUES (5, 'Vredna strategija za redukciju parametra podrazumeva premeštanje metoda i polja klase tako da se ukloni potreba za parametrom. Razmisli da li ima smisla premestiti neku metodu iz ove klase u drugu.', NULL);
+	"Id", "Content")
+	VALUES (-11, 'Izbegavaj generične reči koje se mogu koristiti da opišu bilo kakav kod (npr. Manager, Data), kao i one koje ponavljaju informacije koje već stoje u imenu tipa (npr. List, Num).');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (-11, /*TODO*/, 'Naming.NoiseWords.Doctor');
+INSERT INTO public."BannedWordsCheckers"(
+	"Id", "BannedWords", "HintId")
+	VALUES (-11, '{"Data","Info","Str","Set","The"}', -11);
 	
--- Challenge rules
-INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (1, 'MELOC', 1, 18, 1, 3);
-INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (2, 'MELOC', 1, 12, 3, 4);
-INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (3, 'CYCLO', 1, 5, 2, 4);
-INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (4, 'NOP', 0, 1, 4, 5);
-INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (5, 'NMD', 0, 2, 5, 5);
+
+-- N05 challenge strategies & hints
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-21, 'Razmisli kako da integrišeš domenski značajne reči poput "Enroll", "newCourse", "Maximum" i "Active" u imena koja koristiš u svom kodu.');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (-21, /*TODO*/, 'Naming.MeaningfulWords.Course');
+INSERT INTO public."RequiredWordsCheckers"(
+	"Id", "RequiredWords", "HintId")
+	VALUES (-21, '{"Enroll","newCourse","Maximum","Active"}', -21);
+
 	
 	
 --== Methods ==- CK Node
