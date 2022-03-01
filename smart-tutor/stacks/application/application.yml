@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  smart-tutor:
+    image: cleancadet/smart-tutor:${SMART_TUTOR_VERSION-latest}
+    networks:
+      - application
+      - persistence
+    environment:
+      STAGE: ${SMART_TUTOR_STAGE}
+      DATABASE_HOST: ${SMART_TUTOR_DATABASE_HOST}
+      DATABASE_PORT: ${SMART_TUTOR_DATABASE_PORT}
+      DATABASE_SCHEMA_FILE: /run/secrets/database-schema
+      DATABASE_USERNAME_FILE: /run/secrets/database-username
+      DATABASE_PASSWORD_FILE: /run/secrets/database-password
+    secrets:
+      - source: database-schema
+        target: database-schema
+      - source: database-username
+        target: database-username
+      - source: database-password
+        target: database-password
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 2
+        delay: 5s
+      restart_policy:
+        condition: on-failure
+
+secrets:
+  database-password:
+    name: clean_cadet_database_password_${STAGE-dev}
+    external: true
+  database-username:
+    name: clean_cadet_database_username_${STAGE-dev}
+    external: true
+  database-schema:
+    name: clean_cadet_database_schema_${STAGE-dev}
+    external: true
+
+networks:
+  application:
+    name: clean_cadet_application_${STAGE-dev}
+    driver: overlay
+    attachable: true
+  persistence:
+    name: clean_cadet_persistence_${STAGE-dev}
+    driver: overlay
+    external: true
