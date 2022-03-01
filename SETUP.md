@@ -45,6 +45,8 @@ Previous command creates `cleancadet/smart-tutor:migration-latest` image.
 
 ### 1.2. Running Services
 
+If default port is changed in config/env.conf file make sure that is also changed inside config/cors/cors.txt file.
+
 When images are built, next step is to run services.
 
 ```shell
@@ -57,10 +59,7 @@ database logs.
 #### Database Logs
 Run the following command:
 ```shell
-docker-compose --env-file config/keycloak-env.conf \
-  --file docker-compose.yml \
-  --file docker-compose.keycloak.yml \
-  logs database
+docker-compose --env-file config/env.conf logs database
 ```
 
 Last lines of the output should be like this:

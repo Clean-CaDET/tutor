@@ -61,7 +61,7 @@ services:
         source: database-data
         target: /var/lib/postgresql/data
       - type: bind
-        source: ${SMART_TUTOR_DATA_INGEST_SCRIPT:-../SmartTutor/Database/Scripts/all.sql}
+        source: ${SMART_TUTOR_DATA_INGEST_SCRIPT:-../src/Tutor.Infrastructure/Database/Scripts/seed-RS.sql}
         target: /tmp/smart-tutor-init.sql
     ports:
       - ${POSTGRES_PUBLISHED_PORT-5432}:5432
