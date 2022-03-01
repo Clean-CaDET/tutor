@@ -14,7 +14,7 @@ services:
       - source: api_gateway.conf
         target: /etc/nginx/api_gateway.conf
     deploy:
-      replicas: 1
+      replicas: 3
       update_config:
         parallelism: 1
         delay: 5s

@@ -22,7 +22,3 @@ STAGE=${STAGE:-dev}
 STACK_NAME="clean_cadet_application_${STAGE}"
 
 docker stack rm "${STACK_NAME}"
-docker secret rm "clean_cadet_keycloak_database_password_${STAGE}"
-docker secret rm "clean_cadet_keycloak_database_user_${STAGE}"
-docker secret rm "clean_cadet_keycloak_user_${STAGE}"
-docker secret rm "clean_cadet_keycloak_password_${STAGE}"

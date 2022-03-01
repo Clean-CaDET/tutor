@@ -20,10 +20,8 @@ set +o history # (disable bash history in order to protect sensitive data)
 export DATABASE_PASSWORD=<value>
 export DATABASE_SCHEMA=<value>
 export DATABASE_USERNAME=<value>
-export KEYCLOAK_DATABASE_PASSWORD=<value> # (same value as DATABASE_PASSWORD)
-export KEYCLOAK_DATABASE_USER=<value> # (same value as DATABASE_USERNAME)
-export KEYCLOAK_PASSWORD=<value>
-export KEYCLOAK_USER=<value> # (admin is preferable)
+export PGADMIN_ROOT_EMAIL=<value> # (e.g. root@cleancadet.com)
+export PGADMIN_ROOT_PASSWORD=<value>
 set -o history # (enable bash history when work with sensitive data is done)
 ```
     
@@ -47,12 +45,25 @@ If no arguments are provided, by default **cleancadet/smart-tutor** image is cre
 
 In order to build **API Gateway** service, the following commands needs to be executed:
 ```shell
-pushd smart-tutor/stacks/public/gateway/build.sh
+pushd smart-tutor/stacks/public/gateway/
 ./build.sh # (provide --help option for documentation)
 popd
 ```
 
 If no arguments are provided, by default **cleancadet/gateway** image is created.
+
+#### Utils
+
+There are some tools that help with deployment and their images required to be built.
+In order to build **Docker config hash** tool, the following commands needs to be executed:
+```shell
+pushd util/docker-config-hash
+./build.sh # (provide --help option for documentation)
+popd
+```
+
+If no arguments are provided, by default **cleancadet/docker-config-hash** image is created.
+
 
 ### Infrastructure Setup
 
@@ -70,8 +81,10 @@ The infrastructure contains of following services:
 - Keycloak
 - Smart Tutor
 - API Gateway
+- pgAdmin
 
-By default, Smart Tutor application is exposed on `127.0.0.1:8080` endpoint.
+By default, Smart Tutor application is exposed on `127.0.0.1:8080` endpoint
+and pgAdmin is exposed on `127.0.0.1:8081`.
 Currently, Keycloak configuration needs to be done manually. Also, data that 
 is used by services needs to be ingested manually (take a 
 look ath Database Setup section).
@@ -92,24 +105,28 @@ separately.
 Keycloak by default requires `keycloak` schema in the database that needs 
 to be created manually.  
 
-Smart Tutor requires migration to be executed. In order to run migraion on
+Smart Tutor requires migration to be executed. In order to run migration on
 the database execute following commands:
 ```shell
 pushd smart-tutor/stacks/application/smart-tutor
-./migration.sh \ 
+./migration.sh \
   -m migration \
   -d database \
-  -u <value from DATABASE_USERNAME variable> \
-  -p <value from DATABASE_PASSWORD variable> \
-  -S smart-tutor \
+  -u "${DATABASE_USERNAME}" \
+  -p "${DATABASE_PASSWORD}" \
+  -S "${DATABASE_SCHEMA}" \
   -n clean_cadet_persistence_dev
 # migration.sh script accept many environment variables 
 # that can be used to store sensitive data
 # run migration.sh --help for documentation
 popd
 ```
-   
 
+### Updating the service
 
+In order to update specific service execute the following command:
+```shell
+docker service update --force <service>
+```
 
     

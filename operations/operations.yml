@@ -1,29 +1,18 @@
 version: '3.8'
 
 services:
-  gateway:
-    image: gateway:${GATEWAY_VERSION-latest}
-    networks:
-      - operations
-    ports:
-      - "${GATEWAY_PUBLISHED_PORT-80}:8080"
-    deploy:
-      replicas: 1
-      update_config:
-        parallelism: 1
-        delay: 5s
-      restart_policy:
-        condition: on-failure
   pgadmin:
     image: dpage/pgadmin4:5.3
     networks:
       - operations
       - persistence
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@domain.com
-      PGADMIN_DEFAULT_PASSWORD: SuperSecret
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_ROOT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_ROOT_PASSWORD}
     volumes:
       - pgadmin:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_PUBLISHED_PORT-8081}:80"
     deploy:
       replicas: 1
       update_config:
