@@ -1,5 +1,7 @@
 ﻿using FluentResults;
 using System;
+using Tutor.Core.BuildingBlocks;
+using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents
@@ -8,11 +10,13 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
     {
         private readonly IAssessmentEventRepository _assessmentEventRepository;
         private readonly IKCRepository _kcRepository;
+        private readonly IClock _clock;
 
-        public SubmissionService(IAssessmentEventRepository assessmentEventRepository, IKCRepository kcRepository)
+        public SubmissionService(IAssessmentEventRepository assessmentEventRepository, IKCRepository kcRepository, IClock clock)
         {
             _assessmentEventRepository = assessmentEventRepository;
             _kcRepository = kcRepository;
+            _clock = clock;
         }
 
         public Result<Evaluation> EvaluateAndSaveSubmission(Submission submission)
@@ -21,21 +25,25 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
             if (assessmentEvent == null)
                 return Result.Fail("No assessment event with ID: " + submission.AssessmentEventId);
 
-            Evaluation evaluation;
+            var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(submission.LearnerId, assessmentEvent.KnowledgeComponentId);
+            if (knowledgeComponentMastery == null)
+                return Result.Fail("The Learner isn't enrolled to knowledge component with ID: " + assessmentEvent.KnowledgeComponentId);
+
+            Evaluation evaluation = null;
+
             try
             {
-                evaluation = assessmentEvent.EvaluateSubmission(submission);
+                evaluation = knowledgeComponentMastery.SubmitAEAnswer(submission, _clock);
             }
             catch (ArgumentException e)
             {
                 return Result.Fail(e.Message);
             }
+            catch (DomainException e)
+            {
+                return Result.Fail(e.Message);
+            }
 
-            if (evaluation.Correct) submission.MarkCorrect();
-            submission.CorrectnessLevel = evaluation.CorrectnessLevel;
-
-            var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(submission.LearnerId, assessmentEvent.KnowledgeComponentId);
-            knowledgeComponentMastery.UpdateKcMastery(submission);
             _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
             _assessmentEventRepository.SaveSubmission(submission);
 
