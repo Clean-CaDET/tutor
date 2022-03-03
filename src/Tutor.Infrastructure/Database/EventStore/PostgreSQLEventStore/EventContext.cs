@@ -2,7 +2,7 @@
 using System.Text.Json;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 
-namespace Tutor.Infrastructure.Database.EventStore.PostgreSQLEventStore
+namespace Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore
 {
     public class EventContext : DbContext
     {

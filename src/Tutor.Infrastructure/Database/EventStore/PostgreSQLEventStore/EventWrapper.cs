@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 
-namespace Tutor.Infrastructure.Database.EventStore.PostgreSQLEventStore
+namespace Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore
 {
     internal class EventWrapper
     {

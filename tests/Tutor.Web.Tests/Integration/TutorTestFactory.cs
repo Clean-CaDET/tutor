@@ -7,7 +7,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Tutor.Infrastructure.Database;
-using Tutor.Infrastructure.Database.EventStore.PostgreSQLEventStore;
+using Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore;
 using Tutor.Infrastructure.Security;
 
 namespace Tutor.Web.Tests.Integration

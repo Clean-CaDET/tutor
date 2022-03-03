@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Tutor.Infrastructure.Database;
 using Tutor.Infrastructure.Database.EventStore;
-using Tutor.Infrastructure.Database.EventStore.PostgreSQLEventStore;
+using Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore;
 using Tutor.Infrastructure.Security;
 
 namespace Tutor.Infrastructure
@@ -17,7 +17,7 @@ namespace Tutor.Infrastructure
                 opt.UseNpgsql(CreateConnectionStringFromEnvironment()));
             services.AddDbContext<EventContext>(opt =>
                 opt.UseNpgsql(CreateConnectionStringFromEnvironment()));
-            services.AddScoped<IEventStore, PostgreSQLEventStore>();
+            services.AddScoped<IEventStore, PostgreSqlEventStore>();
 
             return services;
         }

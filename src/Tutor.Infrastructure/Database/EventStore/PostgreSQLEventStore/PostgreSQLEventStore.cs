@@ -6,13 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 
-namespace Tutor.Infrastructure.Database.EventStore.PostgreSQLEventStore
+namespace Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore
 {
-    public class PostgreSQLEventStore : IEventStore
+    public class PostgreSqlEventStore : IEventStore
     {
         private readonly EventContext _eventContext;
 
-        public PostgreSQLEventStore(EventContext eventContext)
+        public PostgreSqlEventStore(EventContext eventContext)
         {
             _eventContext = eventContext;
         }
