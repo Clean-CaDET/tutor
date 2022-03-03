@@ -31,7 +31,10 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             {
                 AggregateId = this.Id,
                 Timestamp = clock.Now(),
-                Submission = submission
+                AssessmentEventId = submission.AssessmentEventId,
+                LearnerId = submission.LearnerId,
+                IsCorrect = submission.IsCorrect,
+                CorrectnessLevel = submission.CorrectnessLevel
             });
 
             return evaluation;
@@ -53,13 +56,13 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
              * child object (which would be created here if it doesn't exist yet). The Apply method
              * should never fail, silently or otherwise, and fetching the AE can fail.
              */
-            var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(@event.Submission.AssessmentEventId);
+            var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(@event.AssessmentEventId);
 
             var currentCorrectnessLevel = assessmentEvent.GetMaximumSubmissionCorrectness();
-            if (currentCorrectnessLevel > @event.Submission.CorrectnessLevel) return;
+            if (currentCorrectnessLevel > @event.CorrectnessLevel) return;
 
             var kcMasteryIncrement = 100.0 / KnowledgeComponent.AssessmentEvents.Count
-                * (@event.Submission.CorrectnessLevel - currentCorrectnessLevel) / 100.0;
+                * (@event.CorrectnessLevel - currentCorrectnessLevel) / 100.0;
 
             Mastery += kcMasteryIncrement;
         }
