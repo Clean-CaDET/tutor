@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using System.Linq;
 using Tutor.Infrastructure.Database;
+using Tutor.Infrastructure.Database.EventStore.PostgreSQLEventStore;
 using Tutor.Infrastructure.Security;
 
 namespace Tutor.Web.Tests.Integration
@@ -19,18 +20,25 @@ namespace Tutor.Web.Tests.Integration
             {
                 var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<TutorContext>));
                 services.Remove(descriptor);
-                
+                var eventDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<EventContext>));
+                services.Remove(eventDescriptor);
+
+                var connectionString = CreateConnectionStringForTest();
                 services.AddDbContext<TutorContext>(opt =>
-                    opt.UseNpgsql(CreateConnectionStringForTest()));
+                    opt.UseNpgsql(connectionString));
+                services.AddDbContext<EventContext>(opt =>
+                    opt.UseNpgsql(connectionString));
 
                 var sp = services.BuildServiceProvider();
                 using var scope = sp.CreateScope();
                 var scopedServices = scope.ServiceProvider;
                 var db = scopedServices.GetRequiredService<TutorContext>();
+                var eventDb = scopedServices.GetRequiredService<EventContext>();
                 var logger = scopedServices
                     .GetRequiredService<ILogger<TutorApplicationTestFactory<TStartup>>>();
 
                 db.Database.EnsureCreated();
+                InitializeEventDbForTests(eventDb);
 
                 try
                 {
@@ -48,6 +56,16 @@ namespace Tutor.Web.Tests.Integration
         {
             var startingDb = File.ReadAllText("../../../Integration/Scripts/data.sql");
             db.Database.ExecuteSqlRaw(startingDb);
+        }
+
+        private static void InitializeEventDbForTests(EventContext db)
+        {
+            var createScript = db.Database.GenerateCreateScript();
+            try
+            {
+                db.Database.ExecuteSqlRaw(createScript);
+            }
+            catch (Exception) { }
         }
 
         private static string CreateConnectionStringForTest()
