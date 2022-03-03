@@ -38,6 +38,7 @@ namespace Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore
                 aggregate.GetUncommittedEvents().Select(e => new EventWrapper(e));
             _eventContext.Events.AddRange(eventsToSave);
             _eventContext.SaveChanges();
+            aggregate.MarkEventsAsCommitted();
         }
     }
 }
