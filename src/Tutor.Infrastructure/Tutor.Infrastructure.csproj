@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dahomey.Json" Version="1.12.1" />
     <PackageReference Include="EPPlus" Version="5.8.5" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0">

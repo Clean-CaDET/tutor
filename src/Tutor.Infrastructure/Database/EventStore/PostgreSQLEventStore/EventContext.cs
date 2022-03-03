@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
+using Tutor.Core.BuildingBlocks.EventSourcing;
 
 namespace Tutor.Infrastructure.Database.EventStore.PostgreSQLEventStore
 {
@@ -18,6 +15,9 @@ namespace Tutor.Infrastructure.Database.EventStore.PostgreSQLEventStore
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EventWrapper>().Property(e => e.DomainEvent).HasColumnType("jsonb");
+            modelBuilder.Entity<EventWrapper>().Property(e => e.DomainEvent).HasConversion(
+            v => EventSerializer.Serialize(v),
+            v => EventSerializer.Deserialize(v));
             modelBuilder.Entity<EventWrapper>().HasIndex(e => e.Timestamp);
         }
     }
