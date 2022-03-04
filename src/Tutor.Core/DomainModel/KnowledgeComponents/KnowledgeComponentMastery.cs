@@ -19,7 +19,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             KnowledgeComponent = knowledgeComponent;
         }
 
-        public Evaluation SubmitAEAnswer(Submission submission, IClock clock)
+        public Evaluation SubmitAEAnswer(Submission submission)
         {
             var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(submission.AssessmentEventId);
 
@@ -30,7 +30,6 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             Causes(new AssessmentEventAnswered()
             {
                 AggregateId = this.Id,
-                Timestamp = clock.Now(),
                 AssessmentEventId = submission.AssessmentEventId,
                 LearnerId = submission.LearnerId,
                 IsCorrect = submission.IsCorrect,

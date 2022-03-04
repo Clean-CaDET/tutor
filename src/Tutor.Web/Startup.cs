@@ -96,8 +96,6 @@ namespace Tutor.Web
             services.AddScoped<IAuthProvider, KeycloakAuthProvider>();
             services.AddScoped<IAuthService, AuthService>();
 
-            services.AddScoped<IClock, SystemClock>();
-
             if (!bool.Parse(Environment.GetEnvironmentVariable("KEYCLOAK_ON") ?? "false"))
             {
                 SetupJwtService(services);

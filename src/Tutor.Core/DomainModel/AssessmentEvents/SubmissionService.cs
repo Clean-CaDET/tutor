@@ -10,13 +10,11 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
     {
         private readonly IAssessmentEventRepository _assessmentEventRepository;
         private readonly IKCRepository _kcRepository;
-        private readonly IClock _clock;
 
-        public SubmissionService(IAssessmentEventRepository assessmentEventRepository, IKCRepository kcRepository, IClock clock)
+        public SubmissionService(IAssessmentEventRepository assessmentEventRepository, IKCRepository kcRepository)
         {
             _assessmentEventRepository = assessmentEventRepository;
             _kcRepository = kcRepository;
-            _clock = clock;
         }
 
         public Result<Evaluation> EvaluateAndSaveSubmission(Submission submission)
@@ -33,7 +31,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
 
             try
             {
-                evaluation = knowledgeComponentMastery.SubmitAEAnswer(submission, _clock);
+                evaluation = knowledgeComponentMastery.SubmitAEAnswer(submission);
             }
             catch (ArgumentException e)
             {
