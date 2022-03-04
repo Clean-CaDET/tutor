@@ -27,25 +27,24 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
             if (knowledgeComponentMastery == null)
                 return Result.Fail("The Learner isn't enrolled to knowledge component with ID: " + assessmentEvent.KnowledgeComponentId);
 
-            Evaluation evaluation = null;
+            Result<Evaluation> result = null;
 
             try
             {
-                evaluation = knowledgeComponentMastery.SubmitAEAnswer(submission);
+                result = knowledgeComponentMastery.SubmitAEAnswer(submission);
             }
             catch (ArgumentException e)
             {
                 return Result.Fail(e.Message);
             }
-            catch (DomainException e)
+
+            if (result.IsSuccess)
             {
-                return Result.Fail(e.Message);
+                _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
+                _assessmentEventRepository.SaveSubmission(submission);
             }
 
-            _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
-            _assessmentEventRepository.SaveSubmission(submission);
-
-            return Result.Ok(evaluation);
+            return result;
         }
     }
 }

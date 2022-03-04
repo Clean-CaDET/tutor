@@ -19,9 +19,11 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             KnowledgeComponent = knowledgeComponent;
         }
 
-        public Evaluation SubmitAEAnswer(Submission submission)
+        public Result<Evaluation> SubmitAEAnswer(Submission submission)
         {
             var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(submission.AssessmentEventId);
+            if (assessmentEvent == null)
+                return Result.Fail("No assessment event with ID: " + submission.AssessmentEventId);
 
             var evaluation = assessmentEvent.EvaluateSubmission(submission);
             if (evaluation.Correct) submission.MarkCorrect();
@@ -36,7 +38,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
                 CorrectnessLevel = submission.CorrectnessLevel
             });
 
-            return evaluation;
+            return Result.Ok(evaluation);
         }
 
         public Result<AssessmentEvent> SelectSuitableAssessmentEvent(IAssessmentEventSelector assessmentEventSelector)
@@ -56,6 +58,8 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
              * should never fail, silently or otherwise, and fetching the AE can fail.
              */
             var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(@event.AssessmentEventId);
+            if (assessmentEvent == null)
+                return;
 
             var currentCorrectnessLevel = assessmentEvent.GetMaximumSubmissionCorrectness();
             if (currentCorrectnessLevel > @event.CorrectnessLevel) return;

@@ -17,11 +17,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         public AssessmentEvent GetAssessmentEvent(int assessmentEventId)
         {
-            AssessmentEvent match = AssessmentEvents.FirstOrDefault(ae => ae.Id == assessmentEventId);
-            if (match == null)
-                throw new UnknownAssessmentEventException(
-                    "The knowledge component does not contain an assessment event with the ID: " + assessmentEventId);
-            return match;
+            return AssessmentEvents.FirstOrDefault(ae => ae.Id == assessmentEventId);
         }
     }
 }
