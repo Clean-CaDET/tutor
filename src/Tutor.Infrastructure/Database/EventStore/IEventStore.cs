@@ -10,7 +10,7 @@ namespace Tutor.Infrastructure.Database.EventStore
     public interface IEventStore
     {
         void Save(EventSourcedAggregateRoot aggregate);
-        IEnumerable<DomainEvent> GetEvents(TimeInterval interval);
-        IEnumerable<DomainEvent> GetEventsByAggregate(int aggregateId, TimeInterval interval);
+        IEnumerable<DomainEvent> GetEvents(DateTime? start, DateTime? end);
+        IEnumerable<DomainEvent> GetEventsByAggregate(int aggregateId, DateTime? start, DateTime? end);
     }
 }

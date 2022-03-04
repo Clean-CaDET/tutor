@@ -19,7 +19,7 @@ namespace Tutor.Web.Controllers.Events
         [HttpGet("test")]
         public ActionResult<List<EventDto>> GetUnits()
         {
-            var result = _eventStore.GetEvents(new TimeInterval()).Select(e => new EventDto(e)).ToList();
+            var result = _eventStore.GetEvents(null, null).Select(e => new EventDto(e)).ToList();
             return Ok(result);
         }
     }

@@ -17,17 +17,17 @@ namespace Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore
             _eventContext = eventContext;
         }
 
-        public IEnumerable<DomainEvent> GetEvents(TimeInterval interval)
+        public IEnumerable<DomainEvent> GetEvents(DateTime? start, DateTime? end)
         {
-            DateTime min = interval.Start ?? DateTime.MinValue;
-            DateTime max = interval.End ?? DateTime.MaxValue;
+            DateTime min = start ?? DateTime.MinValue;
+            DateTime max = end ?? DateTime.MaxValue;
             return _eventContext.Events.Where(e => e.Timestamp > min && e.Timestamp < max).Select(e => e.DomainEvent).ToList();
         }
 
-        public IEnumerable<DomainEvent> GetEventsByAggregate(int aggregateId, TimeInterval interval)
+        public IEnumerable<DomainEvent> GetEventsByAggregate(int aggregateId, DateTime? start, DateTime? end)
         {
-            DateTime min = interval.Start ?? DateTime.MinValue;
-            DateTime max = interval.End ?? DateTime.MaxValue;
+            DateTime min = start ?? DateTime.MinValue;
+            DateTime max = end ?? DateTime.MaxValue;
             return _eventContext.Events.Where(
                 e => e.AggregateId == aggregateId && e.Timestamp > min && e.Timestamp < max).Select(e => e.DomainEvent).ToList();
         }
