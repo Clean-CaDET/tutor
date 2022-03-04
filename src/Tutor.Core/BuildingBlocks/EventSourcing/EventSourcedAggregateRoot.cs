@@ -4,16 +4,16 @@ namespace Tutor.Core.BuildingBlocks.EventSourcing
 {
     public abstract class EventSourcedAggregateRoot
     {
-        private readonly List<DomainEvent> _events = new List<DomainEvent>();
+        private readonly List<DomainEvent> _changes = new List<DomainEvent>();
 
-        public IEnumerable<DomainEvent> GetUncommittedEvents()
+        public IEnumerable<DomainEvent> GetChanges()
         {
-            return _events;
+            return _changes;
         }
 
-        public void MarkEventsAsCommitted()
+        public void ClearChanges()
         {
-            _events.Clear();
+            _changes.Clear();
         }
 
         public void LoadFromHistory(IEnumerable<DomainEvent> history)
@@ -23,7 +23,7 @@ namespace Tutor.Core.BuildingBlocks.EventSourcing
 
         protected void Causes(DomainEvent @event)
         {
-            _events.Add(@event);
+            _changes.Add(@event);
             Apply(@event);
         }
 

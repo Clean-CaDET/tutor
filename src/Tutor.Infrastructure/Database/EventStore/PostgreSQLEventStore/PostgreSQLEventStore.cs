@@ -35,10 +35,10 @@ namespace Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore
         public void Save(EventSourcedAggregateRoot aggregate)
         {
             IEnumerable<EventWrapper> eventsToSave =
-                aggregate.GetUncommittedEvents().Select(e => new EventWrapper(e));
+                aggregate.GetChanges().Select(e => new EventWrapper(e));
             _eventContext.Events.AddRange(eventsToSave);
             _eventContext.SaveChanges();
-            aggregate.MarkEventsAsCommitted();
+            aggregate.ClearChanges();
         }
     }
 }
