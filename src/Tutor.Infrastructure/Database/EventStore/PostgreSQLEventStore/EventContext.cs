@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
-using Tutor.Core.BuildingBlocks.EventSourcing;
+using Tutor.Infrastructure.Serialization;
 
 namespace Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore
 {

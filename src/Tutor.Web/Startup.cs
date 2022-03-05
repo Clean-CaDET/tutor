@@ -30,7 +30,7 @@ using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
 using Tutor.Web.IAM;
 using Tutor.Web.IAM.Keycloak;
-using Tutor.Core.BuildingBlocks.EventSourcing;
+using Tutor.Infrastructure.Serialization;
 
 namespace Tutor.Web
 {
@@ -67,6 +67,8 @@ namespace Tutor.Web
                 registry.RegisterType<MultiResponseQuestionDto>();
                 registry.RegisterType<TextDto>();
                 registry.RegisterType<VideoDto>();
+
+                serializerOptions.SetupEvents();
             });
 
             services.AddCors(options =>
@@ -212,7 +214,7 @@ namespace Tutor.Web
 
         private static string[] ParseCorsOrigins()
         {
-            var corsOrigins = new[] {"http://localhost:4200"};
+            var corsOrigins = new[] { "http://localhost:4200" };
             var corsOriginsPath = EnvironmentConnection.GetSecret("SMART_TUTOR_CORS_ORIGINS");
             if (File.Exists(corsOriginsPath))
             {

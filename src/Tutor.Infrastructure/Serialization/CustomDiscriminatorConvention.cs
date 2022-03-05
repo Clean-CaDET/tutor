@@ -1,0 +1,70 @@
+﻿using Dahomey.Json;
+using Dahomey.Json.Serialization.Conventions;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace Tutor.Infrastructure.Serialization
+{
+    internal class CustomDiscriminatorConvention<T> : IDiscriminatorConvention where T : notnull
+    {
+        private readonly JsonSerializerOptions _options;
+        private readonly ReadOnlyMemory<byte> _memberName;
+        private readonly Dictionary<T, Type> _typesByDiscriminator = new();
+        private readonly Dictionary<Type, T> _discriminatorsByType = new();
+        private readonly JsonConverter<T> _jsonConverter;
+
+        public ReadOnlySpan<byte> MemberName => _memberName.Span;
+
+        public CustomDiscriminatorConvention(JsonSerializerOptions options, IDictionary<Type, T> typesToRegister)
+            : this(options, typesToRegister, "$type")
+        {
+        }
+
+        public CustomDiscriminatorConvention(JsonSerializerOptions options, IDictionary<Type, T> typesToRegister, string memberName)
+        {
+            _options = options;
+            _memberName = Encoding.UTF8.GetBytes(memberName);
+            _jsonConverter = options.GetConverter<T>();
+
+            foreach (KeyValuePair<Type, T> entry in typesToRegister)
+            {
+                _discriminatorsByType.Add(entry.Key, entry.Value);
+                _typesByDiscriminator.Add(entry.Value, entry.Key);
+            }
+        }
+
+        public bool TryRegisterType(Type type)
+        {
+            return _discriminatorsByType.ContainsKey(type);
+        }
+
+        public Type ReadDiscriminator(ref Utf8JsonReader reader)
+        {
+            T? discriminator = _jsonConverter.Read(ref reader, typeof(T), _options);
+
+            if (discriminator == null)
+            {
+                throw new JsonException($"Null discriminator");
+            }
+
+            if (!_typesByDiscriminator.TryGetValue(discriminator, out Type? type))
+            {
+                throw new JsonException($"Unknown type discriminator: {discriminator}");
+            }
+            return type;
+        }
+
+        public void WriteDiscriminator(Utf8JsonWriter writer, Type actualType)
+        {
+            if (!_discriminatorsByType.TryGetValue(actualType, out T? discriminator))
+            {
+                throw new JsonException($"Unknown discriminator for type: {actualType}");
+            }
+
+            _jsonConverter.Write(writer, discriminator, _options);
+        }
+    }
+}
