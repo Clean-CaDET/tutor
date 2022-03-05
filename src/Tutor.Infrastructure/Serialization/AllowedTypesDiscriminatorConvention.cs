@@ -8,8 +8,9 @@ using System.Text.Json.Serialization;
 
 namespace Tutor.Infrastructure.Serialization
 {
-    internal class CustomDiscriminatorConvention<T> : IDiscriminatorConvention where T : notnull
+    internal class AllowedTypesDiscriminatorConvention<T> : IDiscriminatorConvention where T : notnull
     {
+        private readonly Dictionary<Type, T> _allowedTypes = new();
         private readonly JsonSerializerOptions _options;
         private readonly ReadOnlyMemory<byte> _memberName;
         private readonly Dictionary<T, Type> _typesByDiscriminator = new();
@@ -18,39 +19,42 @@ namespace Tutor.Infrastructure.Serialization
 
         public ReadOnlySpan<byte> MemberName => _memberName.Span;
 
-        public CustomDiscriminatorConvention(JsonSerializerOptions options, IDictionary<Type, T> typesToRegister)
-            : this(options, typesToRegister, "$type")
+        public AllowedTypesDiscriminatorConvention(JsonSerializerOptions options, IDictionary<Type, T> allowedTypes)
+            : this(options, allowedTypes, "$type")
         {
         }
 
-        public CustomDiscriminatorConvention(JsonSerializerOptions options, IDictionary<Type, T> typesToRegister, string memberName)
+        public AllowedTypesDiscriminatorConvention(JsonSerializerOptions options, IDictionary<Type, T> allowedTypes, string memberName)
         {
             _options = options;
             _memberName = Encoding.UTF8.GetBytes(memberName);
             _jsonConverter = options.GetConverter<T>();
-
-            foreach (KeyValuePair<Type, T> entry in typesToRegister)
-            {
-                _discriminatorsByType.Add(entry.Key, entry.Value);
-                _typesByDiscriminator.Add(entry.Value, entry.Key);
-            }
+            if (allowedTypes != null)
+                _allowedTypes = new Dictionary<Type, T>(allowedTypes);
         }
 
         public bool TryRegisterType(Type type)
         {
-            return _discriminatorsByType.ContainsKey(type);
+            if (_allowedTypes.TryGetValue(type, out T discriminator))
+            {
+                _typesByDiscriminator.Add(discriminator, type);
+                _discriminatorsByType.Add(type, discriminator);
+                return true;
+            }
+            else
+                return false;
         }
 
         public Type ReadDiscriminator(ref Utf8JsonReader reader)
         {
-            T? discriminator = _jsonConverter.Read(ref reader, typeof(T), _options);
+            T discriminator = _jsonConverter.Read(ref reader, typeof(T), _options);
 
             if (discriminator == null)
             {
                 throw new JsonException($"Null discriminator");
             }
 
-            if (!_typesByDiscriminator.TryGetValue(discriminator, out Type? type))
+            if (!_typesByDiscriminator.TryGetValue(discriminator, out Type type))
             {
                 throw new JsonException($"Unknown type discriminator: {discriminator}");
             }
@@ -59,7 +63,7 @@ namespace Tutor.Infrastructure.Serialization
 
         public void WriteDiscriminator(Utf8JsonWriter writer, Type actualType)
         {
-            if (!_discriminatorsByType.TryGetValue(actualType, out T? discriminator))
+            if (!_discriminatorsByType.TryGetValue(actualType, out T discriminator))
             {
                 throw new JsonException($"Unknown discriminator for type: {actualType}");
             }
