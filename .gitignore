@@ -546,3 +546,6 @@ $RECYCLE.BIN/
 #JetBrains
 .DS_Store
 .idea
+
+# Migrations
+src/*/Migrations/*
