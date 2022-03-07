@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using System;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.AssessmentEvents;
 
@@ -24,7 +25,16 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             if (assessmentEvent == null)
                 return Result.Fail("No assessment event with ID: " + submission.AssessmentEventId);
 
-            var evaluation = assessmentEvent.EvaluateSubmission(submission);
+            Evaluation evaluation = null;
+            try
+            {
+                evaluation = assessmentEvent.EvaluateSubmission(submission);
+            }
+            catch (ArgumentException ex)
+            {
+                return Result.Fail(ex.Message);
+            }
+
             if (evaluation.Correct) submission.MarkCorrect();
             submission.CorrectnessLevel = evaluation.CorrectnessLevel;
 

@@ -18,7 +18,7 @@ namespace Tutor.Infrastructure.Serialization
         public static JsonSerializerOptions SetupEvents(this JsonSerializerOptions options)
         {
             DiscriminatorConventionRegistry registry = options.GetDiscriminatorConventionRegistry();
-            registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(options, eventRelatedTypes, "type"));
+            registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(options, eventRelatedTypes, "$discriminator"));
 
             foreach (Type type in eventRelatedTypes.Keys)
             {
