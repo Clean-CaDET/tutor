@@ -2,7 +2,7 @@
 
 namespace Tutor.Core.BuildingBlocks.EventSourcing
 {
-    public abstract class EventSourcedAggregateRoot
+    public abstract class EventSourcedAggregateRoot : AggregateRoot
     {
         private readonly List<DomainEvent> _changes = new List<DomainEvent>();
 

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 
 namespace Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore
@@ -21,21 +18,22 @@ namespace Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore
         {
             DateTime min = start ?? DateTime.MinValue;
             DateTime max = end ?? DateTime.MaxValue;
-            return _eventContext.Events.Where(e => e.Timestamp > min && e.Timestamp < max).Select(e => e.DomainEvent).ToList();
-        }
-
-        public IEnumerable<DomainEvent> GetEventsByAggregate(int aggregateId, DateTime? start, DateTime? end)
-        {
-            DateTime min = start ?? DateTime.MinValue;
-            DateTime max = end ?? DateTime.MaxValue;
             return _eventContext.Events.Where(
-                e => e.AggregateId == aggregateId && e.Timestamp > min && e.Timestamp < max).Select(e => e.DomainEvent).ToList();
+                e => e.DomainEvent.Timestamp > min && e.DomainEvent.Timestamp < max).Select(e => e.DomainEvent).ToList();
         }
 
         public void Save(EventSourcedAggregateRoot aggregate)
         {
-            IEnumerable<EventWrapper> eventsToSave =
-                aggregate.GetChanges().Select(e => new EventWrapper(e));
+            // class name is temporarily used as aggregate type until we choose a better approach
+            string aggregateType = aggregate.GetType().Name;
+
+            IEnumerable<StoredDomainEvent> eventsToSave = aggregate.GetChanges().Select(
+                e => new StoredDomainEvent()
+                {
+                    AggregateType = aggregateType,
+                    AggregateId = aggregate.Id,
+                    DomainEvent = e
+                });
             _eventContext.Events.AddRange(eventsToSave);
             _eventContext.SaveChanges();
             aggregate.ClearChanges();

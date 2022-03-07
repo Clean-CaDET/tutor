@@ -11,6 +11,5 @@ namespace Tutor.Infrastructure.Database.EventStore
     {
         void Save(EventSourcedAggregateRoot aggregate);
         IEnumerable<DomainEvent> GetEvents(DateTime? start, DateTime? end);
-        IEnumerable<DomainEvent> GetEventsByAggregate(int aggregateId, DateTime? start, DateTime? end);
     }
 }

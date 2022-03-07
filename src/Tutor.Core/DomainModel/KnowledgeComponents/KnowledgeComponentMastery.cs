@@ -6,7 +6,6 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
     public class KnowledgeComponentMastery : EventSourcedAggregateRoot
     {
-        public int Id { get; private set; }
         public double Mastery { get; private set; }
         public KnowledgeComponent KnowledgeComponent { get; private set; }
         public int LearnerId { get; private set; }
@@ -31,7 +30,6 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
             Causes(new AssessmentEventAnswered()
             {
-                AggregateId = this.Id,
                 AssessmentEventId = submission.AssessmentEventId,
                 LearnerId = submission.LearnerId,
                 IsCorrect = submission.IsCorrect,
