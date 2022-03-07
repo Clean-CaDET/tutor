@@ -10,5 +10,6 @@ namespace Tutor.Core.DomainModel.Feedback
     {
         public int Id { get; set; }
         public string Comment { get; set; }
+        public DateTime TimeStamp { get; set; } = DateTime.Now.ToUniversalTime();
     }
 }
