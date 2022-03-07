@@ -1,6 +1,6 @@
 ﻿namespace Tutor.Web.Controllers.Domain.DTOs.Feedback
 {
-    public class EmotionsFeedbackDTO
+    public class EmotionsFeedbackDto
     {
         public string Comment { get; set; }
     }

@@ -8,7 +8,7 @@ namespace Tutor.Web.Controllers.Domain.Mappers
     {
         public FeedbackProfile()
         {
-            CreateMap<EmotionsFeedback, EmotionsFeedbackDTO>();
+            CreateMap<EmotionsFeedbackDto, EmotionsFeedback>();
         }
     }
 }

@@ -15,9 +15,8 @@ namespace Tutor.Core.DomainModel.Feedback
         public Result<EmotionsFeedback> SaveEmotionsFeedback(EmotionsFeedback emotionsFeedback)
         {
             if (emotionsFeedback == null)
-            {
                 return Result.Fail("Empty Emotions Feedback");
-            }
+            
 
             _ifeedbackRepository.SaveEmotionsFeedback(emotionsFeedback);
             return Result.Ok(emotionsFeedback);

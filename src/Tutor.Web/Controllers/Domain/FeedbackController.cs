@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using Tutor.Web.Controllers.Domain.DTOs.Feedback;
 
 namespace Tutor.Web.Controllers.Domain
 {
+    [Authorize(Policy = "learnerPolicy")]
     [Route("api/feedback/")]
     [ApiController]
     public class FeedbackController : ControllerBase
@@ -21,12 +23,11 @@ namespace Tutor.Web.Controllers.Domain
         }
 
         [HttpPost("emotions")]
-        public ActionResult<EmotionsFeedbackDTO> PostEmotionsFeedback([FromBody] EmotionsFeedbackDTO emotionsFeedback)
+        public ActionResult<EmotionsFeedbackDto> PostEmotionsFeedback([FromBody] EmotionsFeedbackDto emotionsFeedback)
         {
             var result = _feedbackService.SaveEmotionsFeedback(_mapper.Map<EmotionsFeedback>(emotionsFeedback));
             if (result.IsFailed) return BadRequest(result.Errors);
-            return Ok(_mapper.Map<EmotionsFeedbackDTO>(emotionsFeedback));
+            return Ok(_mapper.Map<EmotionsFeedbackDto>(emotionsFeedback));
         }
-
     }
 }
