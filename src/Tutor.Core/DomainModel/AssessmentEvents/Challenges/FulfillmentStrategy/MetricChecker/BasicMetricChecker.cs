@@ -17,7 +17,6 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
         {
             var hints = new HintDirectory();
             hints.MergeHints(CheckMetricRanges(solutionAttempt.Metrics, solutionAttempt.FullName));
-            solutionAttempt.Members.ForEach(m => hints.MergeHints(EvaluateMember(m)));
             return hints;
         }
 

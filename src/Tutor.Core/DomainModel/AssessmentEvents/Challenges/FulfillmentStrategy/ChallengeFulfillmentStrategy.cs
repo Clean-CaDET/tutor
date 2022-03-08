@@ -1,6 +1,7 @@
 ﻿using CodeModel.CaDETModel;
 using CodeModel.CaDETModel.CodeItems;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
@@ -22,13 +23,13 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             var hints = new HintDirectory();
             if (CodeSnippetId == null)
             {
-                solutionAttempt.Classes.ForEach(c => hints.MergeHints(EvaluateClass(c)));
+                hints.MergeHints(EvaluateClassesAndMembers(solutionAttempt.Classes));
             }
             else if (!CodeSnippetId.Contains('('))
             {
                 var targetClass = solutionAttempt.Classes.Find(c => c.FullName.Equals(CodeSnippetId));
                 if (targetClass == null) throw new InvalidOperationException($"Solution attempt is missing class {CodeSnippetId}");
-                hints.MergeHints(EvaluateClass(targetClass));
+                hints.MergeHints(EvaluateClassesAndMembers(new List<CaDETClass> { targetClass }));
             }
             else
             {
@@ -39,6 +40,19 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             }
             return hints;
         }
+
+        private HintDirectory EvaluateClassesAndMembers(List<CaDETClass> solutionAttempt)
+        {
+            var hints = new HintDirectory();
+            foreach (var c in solutionAttempt)
+            {
+                hints.MergeHints(EvaluateClass(c));
+                c.Members.ForEach(m => hints.MergeHints(EvaluateMember(m)));
+            }
+
+            return hints;
+        }
+
         protected abstract HintDirectory EvaluateClass(CaDETClass solutionAttempt);
         protected abstract HintDirectory EvaluateMember(CaDETMember solutionAttempt);
     }
