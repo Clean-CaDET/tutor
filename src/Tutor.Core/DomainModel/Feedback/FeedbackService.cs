@@ -5,11 +5,11 @@ namespace Tutor.Core.DomainModel.Feedback
 {
     public class FeedbackService : IFeedbackService
     {
-        private readonly IFeedbackRepository _ifeedbackRepository;
+        private readonly IFeedbackRepository _feedbackRepository;
 
-        public FeedbackService(IFeedbackRepository ifeedbackRepository)
+        public FeedbackService(IFeedbackRepository feedbackRepository)
         {
-            _ifeedbackRepository = ifeedbackRepository;
+            _feedbackRepository = feedbackRepository;
         }
 
         public Result<EmotionsFeedback> SaveEmotionsFeedback(EmotionsFeedback emotionsFeedback)
@@ -17,7 +17,7 @@ namespace Tutor.Core.DomainModel.Feedback
             if (emotionsFeedback == null)
                 return Result.Fail("Empty Emotions Feedback");
             
-            _ifeedbackRepository.SaveEmotionsFeedback(emotionsFeedback);
+            _feedbackRepository.SaveEmotionsFeedback(emotionsFeedback);
             return Result.Ok(emotionsFeedback);
         }
     }
