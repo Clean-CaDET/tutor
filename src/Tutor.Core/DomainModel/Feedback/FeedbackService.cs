@@ -17,12 +17,12 @@ namespace Tutor.Core.DomainModel.Feedback
 
         public Result<EmotionsFeedback> SaveEmotionsFeedback(EmotionsFeedback emotionsFeedback)
         {
+            if (emotionsFeedback.Comment == null)
+                return Result.Fail("Empty Emotions Feedback");
+         
             var knowledgeComponent = _kcRepository.GetKnowledgeComponent(emotionsFeedback.KnowledgeComponentId);
             if (knowledgeComponent == null)
                 return Result.Fail("No knowledge component with ID: " + emotionsFeedback.KnowledgeComponentId);
-
-            if (emotionsFeedback == null)
-                return Result.Fail("Empty Emotions Feedback");
             
             _feedbackRepository.SaveEmotionsFeedback(emotionsFeedback);
             return Result.Ok(emotionsFeedback);
