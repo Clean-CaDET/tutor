@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 
 namespace Tutor.Infrastructure.Serialization
 {
-    internal class AllowedTypesDiscriminatorConvention<T> : IDiscriminatorConvention where T : notnull
+    public class AllowedTypesDiscriminatorConvention<T> : IDiscriminatorConvention where T : notnull
     {
         private readonly Dictionary<Type, T> _allowedTypes = new();
         private readonly JsonSerializerOptions _options;

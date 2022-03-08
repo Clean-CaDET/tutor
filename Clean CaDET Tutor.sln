@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30413.136
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9F4AF7B2-748D-4257-9AD5-6FCFA418DAB0}"
 EndProject
@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.Web", "src\Tutor.Web\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.Web.Tests", "tests\Tutor.Web.Tests\Tutor.Web.Tests.csproj", "{C0B1180C-0C40-42E3-89BF-8ACAB6129BE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tutor.Core.Tests", "tests\Tutor.Core.Tests\Tutor.Core.Tests.csproj", "{1FA5E855-7A5F-4AEF-A67F-FBF0E43C842A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.Core.Tests", "tests\Tutor.Core.Tests\Tutor.Core.Tests.csproj", "{1FA5E855-7A5F-4AEF-A67F-FBF0E43C842A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tutor.Infrastructure.Tests", "tests\Tutor.Infrastructure.Tests\Tutor.Infrastructure.Tests.csproj", "{696253CE-B3E3-4F67-8D41-ADD9C7760E71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{1FA5E855-7A5F-4AEF-A67F-FBF0E43C842A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FA5E855-7A5F-4AEF-A67F-FBF0E43C842A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FA5E855-7A5F-4AEF-A67F-FBF0E43C842A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{696253CE-B3E3-4F67-8D41-ADD9C7760E71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{696253CE-B3E3-4F67-8D41-ADD9C7760E71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{696253CE-B3E3-4F67-8D41-ADD9C7760E71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{696253CE-B3E3-4F67-8D41-ADD9C7760E71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{2BBD321D-0F57-467A-9D1F-B983BB0A1C48} = {9F4AF7B2-748D-4257-9AD5-6FCFA418DAB0}
 		{C0B1180C-0C40-42E3-89BF-8ACAB6129BE8} = {DEABD4F3-02CA-48F5-AC4D-EAD7D288487C}
 		{1FA5E855-7A5F-4AEF-A67F-FBF0E43C842A} = {DEABD4F3-02CA-48F5-AC4D-EAD7D288487C}
+		{696253CE-B3E3-4F67-8D41-ADD9C7760E71} = {DEABD4F3-02CA-48F5-AC4D-EAD7D288487C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {286C03E9-DD45-4225-B4CF-64C1440F0513}
