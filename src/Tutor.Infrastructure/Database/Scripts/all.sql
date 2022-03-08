@@ -1,16 +1,16 @@
 -- F02 challenge strategies & hints
 INSERT INTO public."ChallengeHints"(
 	"Id", "Content")
-	VALUES (-31, 'Identifikuj regione povezanog koda (obrati pažnju na komentare) i izdvoj ih u funkciju kojoj možeš dati jasan naziv.');
+	VALUES (-71, 'Identifikuj regione povezanog koda (obrati pažnju na komentare) i izdvoj ih u funkciju kojoj možeš dati jasan naziv.');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (-31, /*TODO*/, 'Methods.SmallMethods.Achievement');
+	VALUES (-71, /*TODO*/, 'Methods.SmallMethods.Achievement');
 INSERT INTO public."BasicMetricCheckers"(
 	"Id")
-	VALUES (-31);
+	VALUES (-71);
 INSERT INTO public."MetricRangeRules"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (1, 'MELOC', 1, 18, -31, -31);
+	VALUES (-1, 'MELOC', 1, 18, -71, -71);
 
 	
 -- F03 challenge strategies & hints
@@ -58,25 +58,25 @@ INSERT INTO public."MetricRangeRules"(
 -- F05 challenge strategies & hints
 INSERT INTO public."ChallengeHints"(
 	"Id", "Content")
-	VALUES (-51, 'Da li možeš dodatno da redukuješ ugnježdavanje, tako što ćeš izdvojiti metodu ili invertovati uslov u grananju?');
+	VALUES (-61, 'Da li možeš dodatno da redukuješ ugnježdavanje, tako što ćeš izdvojiti metodu ili invertovati uslov u grananju?');
 INSERT INTO public."ChallengeHints"(
 	"Id", "Content")
-	VALUES (-52, 'Ne zaboravi da vodiš računa o linijama koda.');
+	VALUES (-62, 'Ne zaboravi da vodiš računa o linijama koda.');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (-51, /*TODO*/);
+	"Id", "ChallengeId")
+	VALUES (-61, /*TODO*/);
 INSERT INTO public."BasicMetricCheckers"(
 	"Id")
-	VALUES (-51);
+	VALUES (-61);
 INSERT INTO public."MetricRangeRules"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (-51, 'CYCLO', 1, 4, -51, -51);
+	VALUES (-61, 'CYCLO', 1, 4, -61, -61);
 INSERT INTO public."MetricRangeRules"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (-51, 'MMNB', 1, 2, -51, -51); -- TODO: Check if 3 is suitable; Check these rules in general
+	VALUES (-62, 'MMNB', 1, 2, -61, -61); -- TODO: Check if 3 is suitable; Check these rules in general
 INSERT INTO public."MetricRangeRules"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (-43, 'MELOC', 1, 16, -52, -51);
+	VALUES (-63, 'MELOC', 1, 16, -52, -61);
 
 
 -- N03 challenge strategies & hints

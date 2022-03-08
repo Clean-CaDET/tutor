@@ -52,18 +52,5 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
                 AddHints(hint, other._directory[hint]);
             }
         }
-
-        public bool IsEmpty()
-        {
-            return _directory.Count == 0;
-        }
-
-        public void AddAllHints(List<ChallengeHint> allHints)
-        {
-            foreach (var hint in allHints.Where(hint => !_directory.ContainsKey(hint)))
-            {
-                _directory.Add(hint, new List<string> {"ALL"});
-            }
-        }
     }
 }

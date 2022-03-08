@@ -44,7 +44,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
         {
             if (syntaxErrors.Count == 0) return null;
 
-            var evaluation = new ChallengeEvaluation(Id, 0, null);
+            var evaluation = new ChallengeEvaluation(Id, 0, null, null);
             evaluation.ApplicableHints.AddHint("SYNTAX ERRORS", new ChallengeHint(1, string.Join("\n", syntaxErrors)));
             return evaluation;
         }
@@ -57,7 +57,12 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
                 var result = strategy.EvaluateSubmission(solution);
                 hints.MergeHints(result);
             }
-            return hints.IsEmpty() ? new ChallengeEvaluation(Id, 1, null) : new ChallengeEvaluation(Id, 0, hints);
+            return new ChallengeEvaluation(Id, CalculateCorrectness(hints), hints, SolutionUrl);
+        }
+
+        private static double CalculateCorrectness(HintDirectory hints)
+        {
+            return hints.GetHints().Count == 0 ? 1 : 0;
         }
 
         private static CaDETProject BuildCodeModel(string[] sourceCode)
