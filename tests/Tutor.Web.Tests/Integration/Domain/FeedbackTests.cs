@@ -31,6 +31,8 @@ namespace Tutor.Web.Tests.Integration.Domain
             var actualFeedback = ((OkObjectResult)controller.PostEmotionsFeedback(postedFeedback).Result).Value as EmotionsFeedbackDto;
 
             actualFeedback.ShouldNotBeNull();
+            actualFeedback.LearnerId.ShouldBe(expectedFeedback.LearnerId);
+            actualFeedback.KnowledgeComponentId.ShouldBe(expectedFeedback.LearnerId);
             actualFeedback.Comment.ShouldBe(expectedFeedback.Comment);
 
             var feedback = dbContext.EmotionsFeedbacks.OrderBy(s => s.TimeStamp).Last(c => c.Comment == postedFeedback.Comment);
@@ -41,13 +43,13 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             new object[]
             {
-                new EmotionsFeedbackDto {Comment = "I had a nice time studying using Smart Tutor"},
-                new EmotionsFeedbackDto {Comment = "I had a nice time studying using Smart Tutor"}
+                new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -10, Comment = "I had a nice time studying using Smart Tutor"},
+                new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -10, Comment = "I had a nice time studying using Smart Tutor"}
             },
             new object[]
             {
-                new EmotionsFeedbackDto {Comment = "I was bored"},
-                new EmotionsFeedbackDto {Comment = "I was bored"}
+                new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -13, Comment = "I was bored"},
+                new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -13, Comment = "I was bored"}
             }
         };
     }
