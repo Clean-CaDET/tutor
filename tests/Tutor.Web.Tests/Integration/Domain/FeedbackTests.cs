@@ -32,11 +32,32 @@ namespace Tutor.Web.Tests.Integration.Domain
 
             actualFeedback.ShouldNotBeNull();
             actualFeedback.LearnerId.ShouldBe(expectedFeedback.LearnerId);
-            actualFeedback.KnowledgeComponentId.ShouldBe(expectedFeedback.LearnerId);
+            actualFeedback.KnowledgeComponentId.ShouldBe(expectedFeedback.KnowledgeComponentId);
             actualFeedback.Comment.ShouldBe(expectedFeedback.Comment);
 
             var feedback = dbContext.EmotionsFeedbacks.OrderBy(s => s.TimeStamp).Last(c => c.Comment == postedFeedback.Comment);
             feedback.Comment.ShouldBe(expectedFeedback.Comment);
+        }
+
+        [Theory]
+        [MemberData(nameof(CrowdReFeedbackSubmission))]
+        public void Stores_crowdre_feedback(CrowdReFeedbackDto postedFeedback, CrowdReFeedbackDto expectedFeedback)
+        {
+            using var scope = Factory.Services.CreateScope();
+            var controller = new FeedbackController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<IFeedbackService>());
+            var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+
+            var actualFeedback = ((OkObjectResult)controller.PostCrowdReFeedback(postedFeedback).Result).Value as CrowdReFeedbackDto;
+
+            actualFeedback.ShouldNotBeNull();
+            actualFeedback.LearnerId.ShouldBe(expectedFeedback.LearnerId);
+            actualFeedback.UnitId.ShouldBe(expectedFeedback.UnitId);
+            actualFeedback.SoftwareComment.ShouldBe(expectedFeedback.SoftwareComment);
+            actualFeedback.ContentComment.ShouldBe(expectedFeedback.ContentComment);
+
+            var feedback = dbContext.CrowdReFeedbacks.OrderBy(s => s.TimeStamp).Last(c => c.SoftwareComment == postedFeedback.SoftwareComment && c.ContentComment == postedFeedback.ContentComment);
+            feedback.SoftwareComment.ShouldBe(expectedFeedback.SoftwareComment);
+            feedback.ContentComment.ShouldBe(expectedFeedback.ContentComment);
         }
 
         public static IEnumerable<object[]> EmotionsFeedbackSubmission() => new List<object[]>
@@ -50,6 +71,44 @@ namespace Tutor.Web.Tests.Integration.Domain
             {
                 new EmotionsFeedbackDto {LearnerId = -2, KnowledgeComponentId = -2, Comment = "I was bored"},
                 new EmotionsFeedbackDto {LearnerId = -2, KnowledgeComponentId = -2, Comment = "I was bored"}
+            }
+        };
+
+        public static IEnumerable<object[]> CrowdReFeedbackSubmission() => new List<object[]>
+        {
+            new object[]
+            {
+                new CrowdReFeedbackDto 
+                {
+                    LearnerId = -1, 
+                    UnitId = -1, 
+                    SoftwareComment = "There's a bug in rating mechanism",
+                    ContentComment = "I would like to see more images"
+                },
+                new CrowdReFeedbackDto 
+                {
+                    LearnerId = -1,
+                    UnitId = -1,
+                    SoftwareComment = "There's a bug in rating mechanism",
+                    ContentComment = "I would like to see more images"
+                }
+            },
+            new object[]
+            {
+                new CrowdReFeedbackDto 
+                {
+                    LearnerId = -2, 
+                    UnitId = -2,
+                    SoftwareComment = "I would like to have a highlighting tool", 
+                    ContentComment = "There should be less videos"
+                },
+                new CrowdReFeedbackDto
+                {
+                    LearnerId = -2,
+                    UnitId = -2,
+                    SoftwareComment = "I would like to have a highlighting tool",
+                    ContentComment = "There should be less videos"
+                }
             }
         };
     }

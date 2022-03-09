@@ -9,6 +9,7 @@ namespace Tutor.Web.Controllers.Domain.Mappers
         public FeedbackProfile()
         {
             CreateMap<EmotionsFeedbackDto, EmotionsFeedback>();
+            CreateMap<CrowdReFeedbackDto, CrowdReFeedback>();
         }
     }
 }

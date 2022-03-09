@@ -29,5 +29,13 @@ namespace Tutor.Web.Controllers.Domain
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<EmotionsFeedbackDto>(emotionsFeedback));
         }
+
+        [HttpPost("crowdre")]
+        public ActionResult<CrowdReFeedbackDto> PostCrowdReFeedback([FromBody] CrowdReFeedbackDto crowdReFeedback)
+        {
+            var result = _feedbackService.SaveCrowdReFeedback(_mapper.Map<CrowdReFeedback>(crowdReFeedback));
+            if (result.IsFailed) return BadRequest(result.Errors);
+            return Ok(_mapper.Map<CrowdReFeedbackDto>(crowdReFeedback));
+        }
     }
 }

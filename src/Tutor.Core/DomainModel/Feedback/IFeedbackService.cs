@@ -6,5 +6,7 @@ namespace Tutor.Core.DomainModel.Feedback
     public interface IFeedbackService
     { 
         Result<EmotionsFeedback> SaveEmotionsFeedback(EmotionsFeedback emotionsFeedback);
+
+        Result<CrowdReFeedback> SaveCrowdReFeedback(CrowdReFeedback crowdReFeedback);
     }
 }

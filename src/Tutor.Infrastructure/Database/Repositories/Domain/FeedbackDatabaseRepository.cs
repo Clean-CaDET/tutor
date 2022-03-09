@@ -21,5 +21,11 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             _dbContext.EmotionsFeedbacks.Attach(emotionsFeedback);
             _dbContext.SaveChanges();
         }
+
+        public void SaveCrowdReFeedback(CrowdReFeedback crowdReFeedback)
+        {
+            _dbContext.CrowdReFeedbacks.Attach(crowdReFeedback);
+            _dbContext.SaveChanges();
+        }
     }
 }
