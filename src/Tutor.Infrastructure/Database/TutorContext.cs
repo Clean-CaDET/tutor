@@ -7,6 +7,7 @@ using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.Met
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker;
 using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions;
+using Tutor.Core.DomainModel.Feedback;
 using Tutor.Core.DomainModel.InstructionalEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel.Learners;
@@ -47,6 +48,12 @@ namespace Tutor.Infrastructure.Database
         public DbSet<ArrangeTaskContainerSubmission> ArrangeTaskContainerSubmissions { get; set; }
         public DbSet<ChallengeSubmission> ChallengeSubmissions { get; set; }
         public DbSet<MrqSubmission> MrqSubmissions { get; set; }
+
+        #endregion
+
+        #region Feedbacks
+
+        public DbSet<EmotionsFeedback> EmotionsFeedbacks { get; set; }
 
         #endregion
 
