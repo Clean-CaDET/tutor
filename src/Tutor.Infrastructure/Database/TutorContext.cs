@@ -7,6 +7,7 @@ using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.Met
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker;
 using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions;
+using Tutor.Core.DomainModel.Feedback;
 using Tutor.Core.DomainModel.InstructionalEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel.Learners;
@@ -35,7 +36,6 @@ namespace Tutor.Infrastructure.Database
         public DbSet<BasicMetricChecker> BasicMetricCheckers { get; set; }
         public DbSet<BannedWordsChecker> BannedWordsCheckers { get; set; }
         public DbSet<RequiredWordsChecker> RequiredWordsCheckers { get; set; }
-        public DbSet<MetricRangeRule> MetricRangeRules { get; set; }
         public DbSet<ChallengeHint> ChallengeHints { get; set; }
 
         #endregion
@@ -48,6 +48,12 @@ namespace Tutor.Infrastructure.Database
         public DbSet<ArrangeTaskContainerSubmission> ArrangeTaskContainerSubmissions { get; set; }
         public DbSet<ChallengeSubmission> ChallengeSubmissions { get; set; }
         public DbSet<MrqSubmission> MrqSubmissions { get; set; }
+
+        #endregion
+
+        #region Feedbacks
+
+        public DbSet<EmotionsFeedback> EmotionsFeedbacks { get; set; }
 
         #endregion
 
@@ -92,21 +98,6 @@ namespace Tutor.Infrastructure.Database
             modelBuilder.Entity<BannedWordsChecker>().ToTable("BannedWordsCheckers");
             modelBuilder.Entity<RequiredWordsChecker>().ToTable("RequiredWordsCheckers");
             modelBuilder.Entity<BasicMetricChecker>().ToTable("BasicMetricCheckers");
-
-            ConfigureBasicMetricChecker(modelBuilder);
-        }
-
-        private static void ConfigureBasicMetricChecker(ModelBuilder modelBuilder)
-        {
-            // Add the shadow property to the model
-            modelBuilder.Entity<MetricRangeRule>()
-                .Property<int?>("MetricCheckerForeignKey").IsRequired(false);
-
-            // Use the shadow property as a foreign key
-            modelBuilder.Entity<BasicMetricChecker>()
-                .HasMany(b => b.MetricRanges)
-                .WithOne()
-                .HasForeignKey("MetricCheckerForeignKey");
         }
 
         private static void ConfigureKnowledgeComponent(ModelBuilder modelBuilder)

@@ -34,30 +34,10 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
             var errorEvaluation = CheckSyntaxErrors(solution.SyntaxErrors);
             if (errorEvaluation != null) return errorEvaluation;
 
-            if (tester == null) return StrategyEvaluation(solution);
+            if (tester == null) return ApplyEvaluationStrategies(solution);
             
             var functionalEvaluation = tester.IsFunctionallyCorrect(solutionAttempt, TestSuiteLocation);
-            return functionalEvaluation ?? StrategyEvaluation(solution);
-        }
-
-        private ChallengeEvaluation CheckSyntaxErrors(IReadOnlyCollection<string> syntaxErrors)
-        {
-            if (syntaxErrors.Count == 0) return null;
-
-            var evaluation = new ChallengeEvaluation(Id, 0, null);
-            evaluation.ApplicableHints.AddHint("SYNTAX ERRORS", new ChallengeHint(1, string.Join("\n", syntaxErrors)));
-            return evaluation;
-        }
-
-        private ChallengeEvaluation StrategyEvaluation(CaDETProject solution)
-        {
-            var hints = new HintDirectory();
-            foreach (var strategy in FulfillmentStrategies)
-            {
-                var result = strategy.EvaluateSubmission(solution);
-                hints.MergeHints(result);
-            }
-            return hints.IsEmpty() ? new ChallengeEvaluation(Id, 1, null) : new ChallengeEvaluation(Id, 0, hints);
+            return functionalEvaluation ?? ApplyEvaluationStrategies(solution);
         }
 
         private static CaDETProject BuildCodeModel(string[] sourceCode)
@@ -65,6 +45,31 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
             var solutionAttempt = new CodeModelFactory().CreateProject(sourceCode);
             if (solutionAttempt.Classes == null || solutionAttempt.Classes.Count == 0) throw new ArgumentException("Invalid submission, no classes found.");
             return solutionAttempt;
+        }
+
+        private ChallengeEvaluation CheckSyntaxErrors(IReadOnlyCollection<string> syntaxErrors)
+        {
+            if (syntaxErrors.Count == 0) return null;
+
+            var evaluation = new ChallengeEvaluation(Id, 0, null, null);
+            evaluation.ApplicableHints.AddHint("SYNTAX ERRORS", new ChallengeHint(1, string.Join("\n", syntaxErrors)));
+            return evaluation;
+        }
+
+        private ChallengeEvaluation ApplyEvaluationStrategies(CaDETProject solution)
+        {
+            var hints = new HintDirectory();
+            foreach (var strategy in FulfillmentStrategies)
+            {
+                var result = strategy.EvaluateSubmission(solution);
+                hints.MergeHints(result);
+            }
+            return new ChallengeEvaluation(Id, CalculateCorrectness(hints), hints, SolutionUrl);
+        }
+
+        private double CalculateCorrectness(HintDirectory hints)
+        {
+            return 1 - Math.Round((double)hints.GetHints().Count / FulfillmentStrategies.Count, 2);
         }
     }
 }

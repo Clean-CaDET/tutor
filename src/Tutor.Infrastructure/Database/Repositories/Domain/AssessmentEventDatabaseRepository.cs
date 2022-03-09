@@ -31,8 +31,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
                 .Include(ae => (ae as Challenge).FulfillmentStrategies)
                 .ThenInclude(s => (s as RequiredWordsChecker).Hint)
                 .Include(ae => (ae as Challenge).FulfillmentStrategies)
-                .ThenInclude(s => (s as BasicMetricChecker).MetricRanges)
-                .ThenInclude(r => r.Hint)
+                .ThenInclude(s => (s as BasicMetricChecker).Hint)
                 .FirstOrDefault();
         }
         

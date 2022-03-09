@@ -1,23 +1,29 @@
-﻿using CodeModel.CaDETModel.CodeItems;
+﻿using System;
+using CodeModel.CaDETModel.CodeItems;
 using System.Collections.Generic;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker
 {
     public class BasicMetricChecker : ChallengeFulfillmentStrategy
     {
-        public List<MetricRangeRule> MetricRanges { get; private set; }
+        public string MetricName { get; private set; }
+        public double FromValue { get; private set; }
+        public double ToValue { get; private set; }
+        public ChallengeHint Hint { get; private set; }
 
         private BasicMetricChecker() {}
-        public BasicMetricChecker(List<MetricRangeRule> metricRanges, string codeSnippetId) : base(0, codeSnippetId)
+        public BasicMetricChecker(int id, string metricName, int fromValue, int toValue, ChallengeHint challengeHint, string codeSnippetId) : base(id, codeSnippetId)
         {
-            MetricRanges = metricRanges;
+            MetricName = metricName;
+            FromValue = fromValue;
+            ToValue = toValue;
+            Hint = challengeHint;
         }
 
         protected override HintDirectory EvaluateClass(CaDETClass solutionAttempt)
         {
             var hints = new HintDirectory();
             hints.MergeHints(CheckMetricRanges(solutionAttempt.Metrics, solutionAttempt.FullName));
-            solutionAttempt.Members.ForEach(m => hints.MergeHints(EvaluateMember(m)));
             return hints;
         }
 
@@ -29,13 +35,20 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
         private HintDirectory CheckMetricRanges(Dictionary<CaDETMetric, double> metrics, string codeSnippetId)
         {
             var challengeHints = new HintDirectory();
-            foreach (var metricRule in MetricRanges)
-            {
-                var result = metricRule.Evaluate(metrics);
-                if (result == null) continue;
-                challengeHints.AddHint(codeSnippetId, result);
-            }
+
+            var result = Evaluate(metrics);
+            if (result != null) challengeHints.AddHint(codeSnippetId, result);
             return challengeHints;
+        }
+
+        private ChallengeHint Evaluate(Dictionary<CaDETMetric, double> metrics)
+        {
+            var metric = (CaDETMetric)Enum.Parse(typeof(CaDETMetric), MetricName, true);
+            if (!metrics.ContainsKey(metric)) return null;
+
+            var metricValue = metrics[metric];
+            var isFulfilled = FromValue <= metricValue && metricValue <= ToValue;
+            return isFulfilled ? null : Hint;
         }
     }
 }

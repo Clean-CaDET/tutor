@@ -1,16 +1,16 @@
 -- F02 challenge strategies & hints
 INSERT INTO public."ChallengeHints"(
 	"Id", "Content")
-	VALUES (-31, 'Identifikuj regione povezanog koda (obrati pažnju na komentare) i izdvoj ih u funkciju kojoj možeš dati jasan naziv.');
+	VALUES (-71, 'Identifikuj regione povezanog koda (obrati pažnju na komentare) i izdvoj ih u funkciju kojoj možeš dati jasan naziv.');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (-31, /*TODO*/, 'Methods.SmallMethods.Achievement');
+	VALUES (-71, /*TODO*/, 'Methods.SmallMethods.Achievement');
 INSERT INTO public."BasicMetricCheckers"(
 	"Id")
-	VALUES (-31);
+	VALUES (-71);
 INSERT INTO public."MetricRangeRules"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (1, 'MELOC', 1, 18, -31, -31);
+	VALUES (-1, 'MELOC', 1, 18, -71, -71);
 
 	
 -- F03 challenge strategies & hints
@@ -53,12 +53,36 @@ INSERT INTO public."MetricRangeRules"(
 INSERT INTO public."MetricRangeRules"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
 	VALUES (-52, 'NMD', 0, 2, -52, -51);
+	
+	
+-- F05 challenge strategies & hints
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-61, 'Da li možeš dodatno da redukuješ ugnježdavanje, tako što ćeš izdvojiti metodu ili invertovati uslov u grananju?');
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-62, 'Ne zaboravi da vodiš računa o linijama koda.');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-61, /*TODO*/);
+INSERT INTO public."BasicMetricCheckers"(
+	"Id")
+	VALUES (-61);
+INSERT INTO public."MetricRangeRules"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
+	VALUES (-61, 'CYCLO', 1, 4, -61, -61);
+INSERT INTO public."MetricRangeRules"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
+	VALUES (-62, 'MMNB', 1, 2, -61, -61); -- TODO: Check if 3 is suitable; Check these rules in general
+INSERT INTO public."MetricRangeRules"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
+	VALUES (-63, 'MELOC', 1, 16, -52, -61);
 
 
 -- N03 challenge strategies & hints
 INSERT INTO public."ChallengeHints"(
 	"Id", "Content")
-	VALUES (-11, 'Izbegavaj generične reči koje se mogu koristiti da opišu bilo kakav kod (npr. Manager, Data), kao i one koje ponavljaju informacije koje već stoje u imenu tipa (npr. List, Num).');
+	VALUES (-11, 'Izbegavaj generične reči koje se mogu koristiti da opišu bilo kakav kod (npr. Manager, Data), kao i one koje ponavljaju informacije koje već stoje u nazivu tipa (npr. List, Num).');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId", "CodeSnippetId")
 	VALUES (-11, /*TODO*/, 'Naming.NoiseWords.Doctor');
@@ -70,7 +94,7 @@ INSERT INTO public."BannedWordsCheckers"(
 -- N05 challenge strategies & hints
 INSERT INTO public."ChallengeHints"(
 	"Id", "Content")
-	VALUES (-21, 'Razmisli kako da integrišeš domenski značajne reči poput "Enroll", "newCourse", "Maximum" i "Active" u imena koja koristiš u svom kodu.');
+	VALUES (-21, 'Razmisli kako da integrišeš domenski značajne reči poput "Enroll", "newCourse", "Maximum" i "Active" u nazive koje koristiš u svom kodu.');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId", "CodeSnippetId")
 	VALUES (-21, /*TODO*/, 'Naming.MeaningfulWords.Course');
@@ -78,6 +102,38 @@ INSERT INTO public."RequiredWordsCheckers"(
 	"Id", "RequiredWords", "HintId")
 	VALUES (-21, '{"Enroll","newCourse","Maximum","Active"}', -21);
 
+
+-- N01 challenge strategies & hints
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-31, 'Izbegavaj redundantne reči koje ponavljaju informacije koje već stoje u tipu (npr. List, Num).');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-31, /*TODO*/);
+INSERT INTO public."BannedWordsCheckers"(
+	"Id", "BannedWords", "HintId")
+	VALUES (-31, '{"List","string"}', -31);
+	
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-32, 'Izbegavaj misteriozne nazive koji ne objašnjavaju šta dati identifikator predstavlja (npr. nazive sa jednim slovom, a da nisu iteratori petlje).');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-32, /*TODO*/);
+INSERT INTO public."BannedWordsCheckers"(
+	"Id", "BannedWords", "HintId")
+	VALUES (-32, '{"s","e"}', -32);
+	
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-33, 'Razmisli kako da integrišeš domenski značajne reči poput "Syntagms", "pascalCase", "capital" u nazive koje koristiš u svom kodu.');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-33, /*TODO*/);
+INSERT INTO public."RequiredWordsCheckers"(
+	"Id", "RequiredWords", "HintId")
+	VALUES (-33, '{"syntagms","pascalCase","capital"}', -33);
+	
 	
 	
 --== Methods ==- CK Node
