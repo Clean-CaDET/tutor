@@ -34,10 +34,17 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
             var errorEvaluation = CheckSyntaxErrors(solution.SyntaxErrors);
             if (errorEvaluation != null) return errorEvaluation;
 
-            if (tester == null) return StrategyEvaluation(solution);
+            if (tester == null) return ApplyEvaluationStrategies(solution);
             
             var functionalEvaluation = tester.IsFunctionallyCorrect(solutionAttempt, TestSuiteLocation);
-            return functionalEvaluation ?? StrategyEvaluation(solution);
+            return functionalEvaluation ?? ApplyEvaluationStrategies(solution);
+        }
+
+        private static CaDETProject BuildCodeModel(string[] sourceCode)
+        {
+            var solutionAttempt = new CodeModelFactory().CreateProject(sourceCode);
+            if (solutionAttempt.Classes == null || solutionAttempt.Classes.Count == 0) throw new ArgumentException("Invalid submission, no classes found.");
+            return solutionAttempt;
         }
 
         private ChallengeEvaluation CheckSyntaxErrors(IReadOnlyCollection<string> syntaxErrors)
@@ -49,7 +56,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
             return evaluation;
         }
 
-        private ChallengeEvaluation StrategyEvaluation(CaDETProject solution)
+        private ChallengeEvaluation ApplyEvaluationStrategies(CaDETProject solution)
         {
             var hints = new HintDirectory();
             foreach (var strategy in FulfillmentStrategies)
@@ -60,16 +67,9 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
             return new ChallengeEvaluation(Id, CalculateCorrectness(hints), hints, SolutionUrl);
         }
 
-        private static double CalculateCorrectness(HintDirectory hints)
+        private double CalculateCorrectness(HintDirectory hints)
         {
-            return hints.GetHints().Count == 0 ? 1 : 0;
-        }
-
-        private static CaDETProject BuildCodeModel(string[] sourceCode)
-        {
-            var solutionAttempt = new CodeModelFactory().CreateProject(sourceCode);
-            if (solutionAttempt.Classes == null || solutionAttempt.Classes.Count == 0) throw new ArgumentException("Invalid submission, no classes found.");
-            return solutionAttempt;
+            return 1 - Math.Round((double)hints.GetHints().Count / FulfillmentStrategies.Count, 2);
         }
     }
 }

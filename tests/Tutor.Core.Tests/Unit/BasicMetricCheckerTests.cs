@@ -17,32 +17,14 @@ namespace Tutor.Core.Tests.Unit
         {
             _basicMetricCheckers = new List<BasicMetricChecker>
             {
-                new(
-                    new List<MetricRangeRule>
-                    {
-                        new(33701, "CLOC", 3, 30, new ChallengeHint(337001)),
-                        new(33702, "NMD", 0, 2, new ChallengeHint(5))
-                    },
-                    "Methods.Small.PaymentService"),
-                new(
-                    new List<MetricRangeRule>
-                    {
-                        new(33701, "CLOC", 3, 30, new ChallengeHint(337001)),
-                        new(33702, "NMD", 0, 2, new ChallengeHint(5))
-                    },
-                    "Methods.Small.Payment"),
-                new(new List<MetricRangeRule>
-                    {
-                        new(33703, "MELOC", 2, 5, new ChallengeHint(337002)),
-                        new(33704, "NOP", 2, 4, new ChallengeHint(6))
-                    }, "Methods.Small.PaymentService.CreatePayment(int, int)"
-                ),
-                new(new List<MetricRangeRule>
-                    {
-                        new(33703, "MELOC", 2, 5, new ChallengeHint(337002)),
-                        new(33704, "NOP", 2, 4, new ChallengeHint(6))
-                    }, "Methods.Small.PaymentService"
-                )
+                new(33701, "CLOC", 3, 30, new ChallengeHint(337001),"Methods.Small.PaymentService"),
+                new(33702, "NMD", 0, 2, new ChallengeHint(5),"Methods.Small.PaymentService"),
+                new(33701, "CLOC", 3, 30, new ChallengeHint(337001), "Methods.Small.Payment"),
+                new(33702, "NMD", 0, 2, new ChallengeHint(5), "Methods.Small.Payment"),
+                new(33703, "MELOC", 2, 5, new ChallengeHint(337002), "Methods.Small.PaymentService.CreatePayment(int, int)"),
+                new(33704, "NOP", 2, 4, new ChallengeHint(6), "Methods.Small.PaymentService.CreatePayment(int, int)"),
+                new(33703, "MELOC", 2, 5, new ChallengeHint(337002), "Methods.Small.PaymentService"),
+                new(33704, "NOP", 2, 4, new ChallengeHint(6), "Methods.Small.PaymentService")
             };
         }
 
