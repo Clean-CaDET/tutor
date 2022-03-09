@@ -43,13 +43,13 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             new object[]
             {
-                new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -10, Comment = "I had a nice time studying using Smart Tutor"},
-                new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -10, Comment = "I had a nice time studying using Smart Tutor"}
+                new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -1, Comment = "I had a nice time studying using Smart Tutor"},
+                new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -1, Comment = "I had a nice time studying using Smart Tutor"}
             },
             new object[]
             {
-                new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -13, Comment = "I was bored"},
-                new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -13, Comment = "I was bored"}
+                new EmotionsFeedbackDto {LearnerId = -2, KnowledgeComponentId = -2, Comment = "I was bored"},
+                new EmotionsFeedbackDto {LearnerId = -2, KnowledgeComponentId = -2, Comment = "I was bored"}
             }
         };
     }
