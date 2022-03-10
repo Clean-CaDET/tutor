@@ -10,6 +10,6 @@ namespace Tutor.Core.DomainModel.Feedback
     { 
         void SaveEmotionsFeedback (EmotionsFeedback emotionsFeedback);
 
-        void SaveCrowdReFeedback (CrowdReFeedback crowdReFeedback);
+        void SaveTutorImprovementFeedback (TutorImprovementFeedback tutorImprovementFeedback);
     }
 }

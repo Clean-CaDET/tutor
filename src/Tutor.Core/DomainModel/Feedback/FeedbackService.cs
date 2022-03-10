@@ -21,16 +21,16 @@ namespace Tutor.Core.DomainModel.Feedback
             return Result.Ok(emotionsFeedback);
         }
 
-        public Result<CrowdReFeedback> SaveCrowdReFeedback(CrowdReFeedback crowdReFeedback)
+        public Result<TutorImprovementFeedback> SaveTutorImprovementFeedback(TutorImprovementFeedback tutorImprovementFeedback)
         {
-            if (crowdReFeedback.SoftwareComment == null)
+            if (tutorImprovementFeedback.SoftwareComment == null)
                 return Result.Fail("Empty Software Feedback");
 
-            if (crowdReFeedback.ContentComment == null)
+            if (tutorImprovementFeedback.ContentComment == null)
                 return Result.Fail("Empty Content Feedback");
 
-            _feedbackRepository.SaveCrowdReFeedback(crowdReFeedback);
-            return Result.Ok(crowdReFeedback);
+            _feedbackRepository.SaveTutorImprovementFeedback(tutorImprovementFeedback);
+            return Result.Ok(tutorImprovementFeedback);
         }
     }
 }

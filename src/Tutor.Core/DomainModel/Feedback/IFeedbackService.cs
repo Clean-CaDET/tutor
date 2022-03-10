@@ -7,6 +7,6 @@ namespace Tutor.Core.DomainModel.Feedback
     { 
         Result<EmotionsFeedback> SaveEmotionsFeedback(EmotionsFeedback emotionsFeedback);
 
-        Result<CrowdReFeedback> SaveCrowdReFeedback(CrowdReFeedback crowdReFeedback);
+        Result<TutorImprovementFeedback> SaveTutorImprovementFeedback(TutorImprovementFeedback tutorImprovementFeedback);
     }
 }

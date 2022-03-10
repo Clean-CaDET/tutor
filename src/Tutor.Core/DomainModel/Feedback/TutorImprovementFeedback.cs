@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Tutor.Core.DomainModel.Feedback
 {
-    public class CrowdReFeedback
+    public class TutorImprovementFeedback
     {
         public int Id { get; private set; }
         public int LearnerId { get; private set; }

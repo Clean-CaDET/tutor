@@ -54,7 +54,7 @@ namespace Tutor.Infrastructure.Database
         #region Feedbacks
 
         public DbSet<EmotionsFeedback> EmotionsFeedbacks { get; set; }
-        public DbSet<CrowdReFeedback> CrowdReFeedbacks { get; set; }
+        public DbSet<TutorImprovementFeedback> TutorImprovementFeedbacks { get; set; }
 
         #endregion
 

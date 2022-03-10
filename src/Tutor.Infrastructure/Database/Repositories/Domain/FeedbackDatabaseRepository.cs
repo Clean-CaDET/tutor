@@ -22,9 +22,9 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             _dbContext.SaveChanges();
         }
 
-        public void SaveCrowdReFeedback(CrowdReFeedback crowdReFeedback)
+        public void SaveTutorImprovementFeedback(TutorImprovementFeedback tutorImprovementFeedback)
         {
-            _dbContext.CrowdReFeedbacks.Attach(crowdReFeedback);
+            _dbContext.TutorImprovementFeedbacks.Attach(tutorImprovementFeedback);
             _dbContext.SaveChanges();
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace Tutor.Web.Controllers.Domain.DTOs.Feedback
 {
-    public class CrowdReFeedbackDto
+    public class TutorImprovementFeedbackDto
     {
         public int LearnerId { get; set; }
         public int UnitId { get; set; }

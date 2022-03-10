@@ -40,14 +40,14 @@ namespace Tutor.Web.Tests.Integration.Domain
         }
 
         [Theory]
-        [MemberData(nameof(CrowdReFeedbackSubmission))]
-        public void Stores_crowdre_feedback(CrowdReFeedbackDto postedFeedback, CrowdReFeedbackDto expectedFeedback)
+        [MemberData(nameof(TutorImprovementFeedbackSubmission))]
+        public void Stores_tutor_improvement_feedback(TutorImprovementFeedbackDto postedFeedback, TutorImprovementFeedbackDto expectedFeedback)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new FeedbackController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<IFeedbackService>());
             var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
 
-            var actualFeedback = ((OkObjectResult)controller.PostCrowdReFeedback(postedFeedback).Result).Value as CrowdReFeedbackDto;
+            var actualFeedback = ((OkObjectResult)controller.PostTutorImprovementFeedback(postedFeedback).Result).Value as TutorImprovementFeedbackDto;
 
             actualFeedback.ShouldNotBeNull();
             actualFeedback.LearnerId.ShouldBe(expectedFeedback.LearnerId);
@@ -55,7 +55,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             actualFeedback.SoftwareComment.ShouldBe(expectedFeedback.SoftwareComment);
             actualFeedback.ContentComment.ShouldBe(expectedFeedback.ContentComment);
 
-            var feedback = dbContext.CrowdReFeedbacks.OrderBy(s => s.TimeStamp).Last(c => c.SoftwareComment == postedFeedback.SoftwareComment && c.ContentComment == postedFeedback.ContentComment);
+            var feedback = dbContext.TutorImprovementFeedbacks.OrderBy(s => s.TimeStamp).Last(c => c.SoftwareComment == postedFeedback.SoftwareComment && c.ContentComment == postedFeedback.ContentComment);
             feedback.SoftwareComment.ShouldBe(expectedFeedback.SoftwareComment);
             feedback.ContentComment.ShouldBe(expectedFeedback.ContentComment);
         }
@@ -74,18 +74,18 @@ namespace Tutor.Web.Tests.Integration.Domain
             }
         };
 
-        public static IEnumerable<object[]> CrowdReFeedbackSubmission() => new List<object[]>
+        public static IEnumerable<object[]> TutorImprovementFeedbackSubmission() => new List<object[]>
         {
             new object[]
             {
-                new CrowdReFeedbackDto 
+                new TutorImprovementFeedbackDto 
                 {
                     LearnerId = -1, 
                     UnitId = -1, 
                     SoftwareComment = "There's a bug in rating mechanism",
                     ContentComment = "I would like to see more images"
                 },
-                new CrowdReFeedbackDto 
+                new TutorImprovementFeedbackDto 
                 {
                     LearnerId = -1,
                     UnitId = -1,
@@ -95,14 +95,14 @@ namespace Tutor.Web.Tests.Integration.Domain
             },
             new object[]
             {
-                new CrowdReFeedbackDto 
+                new TutorImprovementFeedbackDto 
                 {
                     LearnerId = -2, 
                     UnitId = -2,
                     SoftwareComment = "I would like to have a highlighting tool", 
                     ContentComment = "There should be less videos"
                 },
-                new CrowdReFeedbackDto
+                new TutorImprovementFeedbackDto
                 {
                     LearnerId = -2,
                     UnitId = -2,
