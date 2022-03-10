@@ -1,27 +1,59 @@
-﻿namespace Tutor.Infrastructure.Tests.TestData
+﻿using System;
+using System.Collections.Generic;
+
+namespace Tutor.Infrastructure.Tests.TestData
 {
-    public abstract class ClassA
+    public static class SerializationTestClasses
     {
-        public int FieldA { get; set; }
-    }
+        public static Type AbstractRoot() => typeof(ClassA);
 
-    public class ClassB : ClassA
-    {
-        public int FieldB { get; set; }
-    }
+        public static IDictionary<Type, string> ConcreteWithDiscriminators() => new Dictionary<Type, string>()
+        {
+            { typeof(ClassB), "classB" },
+            { typeof(ClassC), "classC"},
+            { typeof(ClassD), "classD"},
+            { typeof(ClassE), "classE"}
+        };
 
-    public class ClassC : ClassA
-    {
-        public int FieldC { get; set; }
-    }
+        public static IDictionary<Type, string> ConcreteWithDiscriminatorsWithout(Type exclude)
+        {
+            var classes = ConcreteWithDiscriminators();
+            if (classes.ContainsKey(exclude))
+                classes.Remove(exclude);
+            return classes;
+        }
 
-    public class ClassD : ClassB
-    {
-        public int FieldDE { get; set; }
-    }
+        public static IEnumerable<object> ObjectsOfConcrete() => new List<object>()
+        {
+            new ClassB() { FieldA = 2, FieldB = 3 },
+            new ClassC() { FieldA = 2, FieldC = 3 },
+            new ClassD() { FieldA = 2, FieldDE = 3 },
+            new ClassE() { FieldA = 2, FieldDE = 3 }
+        };
 
-    public class ClassE : ClassB
-    {
-        public int FieldDE { get; set; }
+        public abstract class ClassA
+        {
+            public int FieldA { get; set; }
+        }
+
+        public class ClassB : ClassA
+        {
+            public int FieldB { get; set; }
+        }
+
+        public class ClassC : ClassA
+        {
+            public int FieldC { get; set; }
+        }
+
+        public class ClassD : ClassB
+        {
+            public int FieldDE { get; set; }
+        }
+
+        public class ClassE : ClassB
+        {
+            public int FieldDE { get; set; }
+        }
     }
 }

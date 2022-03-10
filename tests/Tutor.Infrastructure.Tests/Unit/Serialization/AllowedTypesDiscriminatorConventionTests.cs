@@ -2,6 +2,7 @@
 using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using Tutor.Infrastructure.Serialization;
 using Tutor.Infrastructure.Tests.TestData;
@@ -11,35 +12,9 @@ namespace Tutor.Infrastructure.Tests.Unit.Serialization
 {
     public class AllowedTypesDiscriminatorConventionTests
     {
-        private JsonSerializerOptions options;
-        private IDictionary<Type, string> allowedTypes = new Dictionary<Type, string>()
-            {
-                { typeof(ClassC), "classC" },
-                { typeof(ClassD), "classD" },
-                { typeof(ClassE), "classE" }
-            };
-
-        public AllowedTypesDiscriminatorConventionTests()
-        {
-            options = new JsonSerializerOptions();
-            options.SetupExtensions();
-            var registry = options.GetDiscriminatorConventionRegistry();
-            registry.ClearConventions();
-            registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(options, allowedTypes));
-            foreach (Type type in allowedTypes.Keys)
-            {
-                registry.RegisterType(type);
-            }
-        }
-
         [Theory]
-        [InlineData(typeof(ClassA), false)]
-        [InlineData(typeof(ClassB), false)]
-        [InlineData(typeof(ClassC), true)]
-        [InlineData(typeof(ClassD), true)]
-        [InlineData(typeof(ClassE), true)]
-        [InlineData(typeof(ArgumentException), false)]
-        public void Only_registers_allowed_types(Type typeToRegister, bool expected)
+        [MemberData(nameof(TypeRegistrationData))]
+        public void Only_registers_allowed_types(Type typeToRegister, bool expected, IDictionary<Type, string> allowedTypes)
         {
             var convention = new AllowedTypesDiscriminatorConvention<string>(new JsonSerializerOptions(), allowedTypes);
 
@@ -49,11 +24,11 @@ namespace Tutor.Infrastructure.Tests.Unit.Serialization
         }
 
         [Theory]
-        [MemberData(nameof(ExampleObjects))]
-        public void Serializes_and_deserializes_registered_types(ClassA original)
+        [MemberData(nameof(SerializationData))]
+        public void Serializes_and_deserializes_registered_types(object original, JsonSerializerOptions options)
         {
-            var serialized = JsonSerializer.Serialize(original, options);
-            var deserialized = JsonSerializer.Deserialize<ClassA>(serialized, options);
+            var serialized = JsonSerializer.Serialize(original, SerializationTestClasses.AbstractRoot(), options);
+            var deserialized = JsonSerializer.Deserialize(serialized, SerializationTestClasses.AbstractRoot(), options);
 
             deserialized.ShouldNotBeNull();
             deserialized.ShouldBeOfType(original.GetType());
@@ -63,20 +38,39 @@ namespace Tutor.Infrastructure.Tests.Unit.Serialization
             }
         }
 
-        public static IEnumerable<object[]> ExampleObjects() => new List<object[]>
+        public static IEnumerable<object[]> TypeRegistrationData()
         {
-            new object[]
+            var testClasses = SerializationTestClasses.ConcreteWithDiscriminators();
+            var testData = new List<object[]>()
             {
-                new ClassC() { FieldA = 2, FieldC = 3 }
-            },
-            new object[]
+                new object[] { SerializationTestClasses.AbstractRoot(), false, testClasses },
+                new object[] { typeof(string), false, testClasses },
+                new object[] { typeof(Exception), false, testClasses }
+            };
+
+            foreach (Type testClass in testClasses.Keys)
             {
-                new ClassD() { FieldA = 2, FieldDE = 3 }
-            },
-            new object[]
-            {
-                new ClassE() { FieldA = 2, FieldDE = 3 }
+                testData.Add(new object[] { testClass, true, testClasses });
+                testData.Add(new object[] { testClass, false, SerializationTestClasses.ConcreteWithDiscriminatorsWithout(testClass) });
             }
-        };
+
+            return testData;
+        }
+
+        public static IEnumerable<object[]> SerializationData()
+        {
+            var testClasses = SerializationTestClasses.ConcreteWithDiscriminators();
+            var options = new JsonSerializerOptions();
+            options.SetupExtensions();
+            var registry = options.GetDiscriminatorConventionRegistry();
+            registry.ClearConventions();
+            registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(options, testClasses));
+            foreach (Type type in testClasses.Keys)
+            {
+                registry.RegisterType(type);
+            }
+
+            return SerializationTestClasses.ObjectsOfConcrete().Select(o => new object[] { o, options });
+        }
     }
 }
