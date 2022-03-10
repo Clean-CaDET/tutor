@@ -1,18 +1,37 @@
 ﻿using Dahomey.Json;
+using Shouldly;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Tutor.Infrastructure.Serialization;
-using Shouldly;
+using Tutor.Infrastructure.Tests.TestData;
 using Xunit;
 
 namespace Tutor.Infrastructure.Tests.Unit.Serialization
 {
     public class AllowedTypesDiscriminatorConventionTests
     {
+        private JsonSerializerOptions options;
+        private IDictionary<Type, string> allowedTypes = new Dictionary<Type, string>()
+            {
+                { typeof(ClassC), "classC" },
+                { typeof(ClassD), "classD" },
+                { typeof(ClassE), "classE" }
+            };
+
+        public AllowedTypesDiscriminatorConventionTests()
+        {
+            options = new JsonSerializerOptions();
+            options.SetupExtensions();
+            var registry = options.GetDiscriminatorConventionRegistry();
+            registry.ClearConventions();
+            registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(options, allowedTypes));
+            foreach (Type type in allowedTypes.Keys)
+            {
+                registry.RegisterType(type);
+            }
+        }
+
         [Theory]
         [InlineData(typeof(ClassA), false)]
         [InlineData(typeof(ClassB), false)]
@@ -59,51 +78,5 @@ namespace Tutor.Infrastructure.Tests.Unit.Serialization
                 new ClassE() { FieldA = 2, FieldDE = 3 }
             }
         };
-
-        public AllowedTypesDiscriminatorConventionTests()
-        {
-            options = new JsonSerializerOptions();
-            options.SetupExtensions();
-            var registry = options.GetDiscriminatorConventionRegistry();
-            registry.ClearConventions();
-            registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(options, allowedTypes));
-            foreach (Type type in allowedTypes.Keys)
-            {
-                registry.RegisterType(type);
-            }
-        }
-
-        private JsonSerializerOptions options;
-        private IDictionary<Type, string> allowedTypes = new Dictionary<Type, string>()
-            {
-                { typeof(ClassC), "classC" },
-                { typeof(ClassD), "classD" },
-                { typeof(ClassE), "classE" }
-            };
-
-        public abstract class ClassA
-        {
-            public int FieldA { get; set; }
-        }
-
-        public class ClassB : ClassA
-        {
-            public int FieldB { get; set; }
-        }
-
-        public class ClassC : ClassA
-        {
-            public int FieldC { get; set; }
-        }
-
-        public class ClassD : ClassB
-        {
-            public int FieldDE { get; set; }
-        }
-
-        public class ClassE : ClassB
-        {
-            public int FieldDE { get; set; }
-        }
     }
 }
