@@ -18,5 +18,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         Result<List<InstructionalEvent>> GetInstructionalEventsByKnowledgeComponent(int id);
         
         Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId);
+
+        Result<KnowledgeComponentMastery> GetKnowledgeComponentMastery(int learnerId, int knowledgeComponentId);
     }
 }

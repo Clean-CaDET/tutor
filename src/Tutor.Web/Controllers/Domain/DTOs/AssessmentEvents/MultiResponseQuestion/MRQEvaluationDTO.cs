@@ -5,5 +5,7 @@ namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuesti
     public class MrqEvaluationDto
     {
         public List<MrqItemEvaluationDto> ItemEvaluations { get; set; }
+        
+        public double CorrectnessLevel { get; set; }
     }
 }
