@@ -1,17 +1,17 @@
-﻿using System.Linq;
-using FluentResults;
+﻿using FluentResults;
+using System;
+using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.AssessmentEvents;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
-    public class KnowledgeComponentMastery
+    public class KnowledgeComponentMastery : EventSourcedAggregateRoot
     {
-        public int Id { get; private set; }
         public double Mastery { get; private set; }
         public KnowledgeComponent KnowledgeComponent { get; private set; }
         public int LearnerId { get; private set; }
 
-        private KnowledgeComponentMastery() {}
+        private KnowledgeComponentMastery() { }
 
         public KnowledgeComponentMastery(KnowledgeComponent knowledgeComponent)
         {
@@ -19,23 +19,63 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             KnowledgeComponent = knowledgeComponent;
         }
 
-        public void UpdateKcMastery(Submission submission)
+        public Result<Evaluation> SubmitAEAnswer(Submission submission)
         {
-            var assessmentEvent = KnowledgeComponent.AssessmentEvents.FirstOrDefault(ae => ae.Id == submission.AssessmentEventId);
-            if (assessmentEvent == null) return;
-            
-            var currentCorrectnessLevel = assessmentEvent.GetMaximumSubmissionCorrectness();
-            if (currentCorrectnessLevel > submission.CorrectnessLevel) return;
-            
-            var kcMasteryIncrement = 100.0 / KnowledgeComponent.AssessmentEvents.Count
-                * (submission.CorrectnessLevel - currentCorrectnessLevel) / 100.0;
+            var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(submission.AssessmentEventId);
+            if (assessmentEvent == null)
+                return Result.Fail("No assessment event with ID: " + submission.AssessmentEventId);
 
-            Mastery += kcMasteryIncrement;
+            Evaluation evaluation = null;
+            try
+            {
+                evaluation = assessmentEvent.EvaluateSubmission(submission);
+            }
+            catch (ArgumentException ex)
+            {
+                return Result.Fail(ex.Message);
+            }
+
+            if (evaluation.Correct) submission.MarkCorrect();
+            submission.CorrectnessLevel = evaluation.CorrectnessLevel;
+
+            Causes(new AssessmentEventAnswered()
+            {
+                AssessmentEventId = submission.AssessmentEventId,
+                LearnerId = submission.LearnerId,
+                IsCorrect = submission.IsCorrect,
+                CorrectnessLevel = submission.CorrectnessLevel
+            });
+
+            return Result.Ok(evaluation);
         }
 
         public Result<AssessmentEvent> SelectSuitableAssessmentEvent(IAssessmentEventSelector assessmentEventSelector)
         {
             return assessmentEventSelector.SelectSuitableAssessmentEvent(KnowledgeComponent.Id, LearnerId);
+        }
+
+        protected override void Apply(DomainEvent @event)
+        {
+            When((dynamic)@event);
+        }
+
+        private void When(AssessmentEventAnswered @event)
+        {
+            /* TODO: refactor to move the GetMaximumSubmissionCorrectness from AE to KCMastery, or a 
+             * child object (which would be created here if it doesn't exist yet). The Apply method
+             * should never fail, silently or otherwise, and fetching the AE can fail.
+             */
+            var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(@event.AssessmentEventId);
+            if (assessmentEvent == null)
+                return;
+
+            var currentCorrectnessLevel = assessmentEvent.GetMaximumSubmissionCorrectness();
+            if (currentCorrectnessLevel > @event.CorrectnessLevel) return;
+
+            var kcMasteryIncrement = 100.0 / KnowledgeComponent.AssessmentEvents.Count
+                * (@event.CorrectnessLevel - currentCorrectnessLevel) / 100.0;
+
+            Mastery += kcMasteryIncrement;
         }
     }
 }

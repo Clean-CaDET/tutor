@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.DomainModel.InstructionalEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents;
+using Tutor.Infrastructure.Database.EventStore;
 
 namespace Tutor.Infrastructure.Database.Repositories.Domain
 {
     public class KCDatabaseRepository : IKCRepository
     {
         private readonly TutorContext _dbContext;
+        private readonly IEventStore _eventStore;
 
-        public KCDatabaseRepository(TutorContext dbContext)
+        public KCDatabaseRepository(TutorContext dbContext, IEventStore eventStore)
         {
             _dbContext = dbContext;
+            _eventStore = eventStore;
         }
 
         public List<Unit> GetUnits()
@@ -63,6 +66,8 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
         {
             _dbContext.KcMastery.Attach(kcMastery);
             _dbContext.SaveChanges();
+
+            _eventStore.Save(kcMastery);
         }
 
         public List<KnowledgeComponent> GetAllKnowledgeComponents()

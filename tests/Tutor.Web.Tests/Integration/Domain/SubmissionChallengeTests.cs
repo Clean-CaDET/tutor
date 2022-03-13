@@ -73,7 +73,8 @@ namespace Tutor.Web.Tests.Integration.Domain
             var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>());
             var submission = new ChallengeSubmissionDto
             {
-                AssessmentEventId = -211
+                AssessmentEventId = -211,
+                LearnerId = -1
             };
 
             var result = controller.SubmitChallenge(submission).Result;

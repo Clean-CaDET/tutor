@@ -1,5 +1,7 @@
 ﻿using FluentResults;
 using System;
+using Tutor.Core.BuildingBlocks;
+using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents
@@ -21,25 +23,19 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
             if (assessmentEvent == null)
                 return Result.Fail("No assessment event with ID: " + submission.AssessmentEventId);
 
-            Evaluation evaluation;
-            try
-            {
-                evaluation = assessmentEvent.EvaluateSubmission(submission);
-            }
-            catch (ArgumentException e)
-            {
-                return Result.Fail(e.Message);
-            }
-
-            if (evaluation.Correct) submission.MarkCorrect();
-            submission.CorrectnessLevel = evaluation.CorrectnessLevel;
-
             var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(submission.LearnerId, assessmentEvent.KnowledgeComponentId);
-            knowledgeComponentMastery.UpdateKcMastery(submission);
-            _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
-            _assessmentEventRepository.SaveSubmission(submission);
+            if (knowledgeComponentMastery == null)
+                return Result.Fail("The Learner isn't enrolled to knowledge component with ID: " + assessmentEvent.KnowledgeComponentId);
 
-            return Result.Ok(evaluation);
+            var result = knowledgeComponentMastery.SubmitAEAnswer(submission);            
+
+            if (result.IsSuccess)
+            {
+                _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
+                _assessmentEventRepository.SaveSubmission(submission);
+            }
+
+            return result;
         }
     }
 }
