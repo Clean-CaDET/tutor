@@ -71,9 +71,7 @@ Infrastructure setup requires environment setup and services to already being bu
 (take a look at previous sections). In order to set up the complete infrastructure,
 the following commands needs to be executed:
 ```shell
-pushd smart-tutor
 ./deploy-all-stacks.sh
-popd
 ``` 
 
 The infrastructure contains of following services:
@@ -92,9 +90,7 @@ look ath Database Setup section).
 
 In order to remove the infrastructure, run the following command:
 ```shell
-pushd smart-tutor
 ./destroy-all-stacks.sh
-popd
 ```
 
 ### Database Setup
