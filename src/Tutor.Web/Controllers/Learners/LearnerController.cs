@@ -25,20 +25,20 @@ namespace Tutor.Web.Controllers.Learners
             _authService = authService;
         }
 
-        [HttpPost("register")]
-        public async Task<ActionResult<AuthenticationResponse>> Register([FromBody] LearnerDto learnerDto)
-        {
-            var learner = _mapper.Map<Learner>(learnerDto);
-
-            if (bool.Parse(Environment.GetEnvironmentVariable("KEYCLOAK_ON") ?? "false"))
-            {
-                learner = await _authProvider.Register(learner);
-            }
-
-            var result = _authService.Register(learner);
-            if(result.IsSuccess) return Ok(result);
-            return BadRequest(result.Errors);
-        }
+        // [HttpPost("register")]
+        // public async Task<ActionResult<AuthenticationResponse>> Register([FromBody] LearnerDto learnerDto)
+        // {
+        //     var learner = _mapper.Map<Learner>(learnerDto);
+        //
+        //     if (bool.Parse(Environment.GetEnvironmentVariable("KEYCLOAK_ON") ?? "false"))
+        //     {
+        //         learner = await _authProvider.Register(learner);
+        //     }
+        //
+        //     var result = _authService.Register(learner);
+        //     if(result.IsSuccess) return Ok(result);
+        //     return BadRequest(result.Errors);
+        // }
 
         [HttpPost("login")]
         public ActionResult<AuthenticationResponse> Login([FromBody] LoginDto login)
