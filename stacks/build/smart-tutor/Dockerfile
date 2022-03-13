@@ -49,13 +49,25 @@ ENV DATABASE_USERNAME=""
 ENV DATABASE_SCHEMA=""
 
 CMD PATH="$PATH:/root/.dotnet/tools"; \
-    dotnet-ef migrations add ${MIGRATION} \
+    dotnet-ef migrations add "${MIGRATION}-tutor" \
         -s "${STARTUP_PROJECT}/${STARTUP_PROJECT}.csproj"\
         -p "${TARGET_PROJECT}/${TARGET_PROJECT}.csproj" \
+        -c "TutorContext" \
         --configuration Release && \ 
-    dotnet-ef database update ${MIGRATION} \
+    dotnet-ef database update "${MIGRATION}-tutor" \
         -s "${STARTUP_PROJECT}/${STARTUP_PROJECT}.csproj"\
         -p "${TARGET_PROJECT}/${TARGET_PROJECT}.csproj" \
+        -c "TutorContext" \
+        --configuration Release && \
+    dotnet-ef migrations add "${MIGRATION}-event" \
+        -s "${STARTUP_PROJECT}/${STARTUP_PROJECT}.csproj"\
+        -p "${TARGET_PROJECT}/${TARGET_PROJECT}.csproj" \
+        -c "EventContext" \
+        --configuration Release && \
+    dotnet-ef database update "${MIGRATION}-event" \
+        -s "${STARTUP_PROJECT}/${STARTUP_PROJECT}.csproj"\
+        -p "${TARGET_PROJECT}/${TARGET_PROJECT}.csproj" \
+        -c "EventContext" \
         --configuration Release
 
 
