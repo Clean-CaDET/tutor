@@ -50,7 +50,9 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         public Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId)
         {
             var knowledgeComponentMastery = _ikcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
-            return knowledgeComponentMastery.SelectSuitableAssessmentEvent(_assessmentEventSelector);
+            var result = knowledgeComponentMastery.SelectSuitableAssessmentEvent(_assessmentEventSelector);
+            _ikcRepository.UpdateKCMastery(knowledgeComponentMastery);
+            return result;             
         }
 
         public Result<KnowledgeComponentMastery> GetKnowledgeComponentMastery(int learnerId, int knowledgeComponentId)

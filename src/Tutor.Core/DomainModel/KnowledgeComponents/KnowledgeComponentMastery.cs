@@ -51,7 +51,15 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         public Result<AssessmentEvent> SelectSuitableAssessmentEvent(IAssessmentEventSelector assessmentEventSelector)
         {
-            return assessmentEventSelector.SelectSuitableAssessmentEvent(KnowledgeComponent.Id, LearnerId);
+            var result = assessmentEventSelector.SelectSuitableAssessmentEvent(KnowledgeComponent.Id, LearnerId);
+            if (result.IsSuccess)
+                Causes(new AssessmentEventSelected()
+                {
+                    LearnerId = LearnerId,
+                    KnowledgeComponentId = KnowledgeComponent.Id,
+                    AssessmentEventId = result.Value.Id
+                });
+            return result;
         }
 
         protected override void Apply(DomainEvent @event)
@@ -76,6 +84,11 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
                 * (@event.CorrectnessLevel - currentCorrectnessLevel) / 100.0;
 
             Mastery += kcMasteryIncrement;
+        }
+
+        private void When(AssessmentEventSelected @event)
+        {
+
         }
     }
 }
