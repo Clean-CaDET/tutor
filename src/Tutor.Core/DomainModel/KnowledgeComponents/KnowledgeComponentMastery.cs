@@ -87,7 +87,9 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         private void When(AssessmentEventSelected @event)
         {
-
+            /* TODO: save information that the AE has been selected somewhere in the 
+             * model, probably in AeMastery when it's added.
+             */
         }
     }
 }
