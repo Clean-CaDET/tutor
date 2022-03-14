@@ -10,6 +10,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         public double Mastery { get; private set; }
         public KnowledgeComponent KnowledgeComponent { get; private set; }
         public int LearnerId { get; private set; }
+        public bool IsPassed { get; private set; }
 
         private KnowledgeComponentMastery() { }
 
@@ -17,6 +18,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         {
             Mastery = 0.0;
             KnowledgeComponent = knowledgeComponent;
+            IsPassed = false;
         }
 
         public Result<Evaluation> SubmitAEAnswer(Submission submission)
@@ -46,12 +48,25 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
                 CorrectnessLevel = submission.CorrectnessLevel
             });
 
+            if (!IsPassed)
+                TryPass();
+
             return Result.Ok(evaluation);
         }
 
         public Result<AssessmentEvent> SelectSuitableAssessmentEvent(IAssessmentEventSelector assessmentEventSelector)
         {
             return assessmentEventSelector.SelectSuitableAssessmentEvent(KnowledgeComponent.Id, LearnerId);
+        }
+
+        private void TryPass()
+        {
+            if (Mastery >= 0.95)
+                Causes(new KnowledgeComponentPassed()
+                {
+                    KnowledgeComponentId = KnowledgeComponent.Id,
+                    LearnerId = LearnerId
+                });
         }
 
         protected override void Apply(DomainEvent @event)
@@ -76,6 +91,11 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
                 * (@event.CorrectnessLevel - currentCorrectnessLevel) / 100.0;
 
             Mastery += kcMasteryIncrement;
+        }
+
+        private void When(KnowledgeComponentPassed @event)
+        {
+            IsPassed = true;
         }
     }
 }
