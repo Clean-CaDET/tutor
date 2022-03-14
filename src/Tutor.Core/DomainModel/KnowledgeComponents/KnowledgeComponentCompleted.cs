@@ -2,7 +2,7 @@
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
-    public class KnowledgeComponentPassed : DomainEvent
+    public class KnowledgeComponentCompleted : DomainEvent
     {
         public int KnowledgeComponentId { get; set; }
         public int LearnerId { get; set; }

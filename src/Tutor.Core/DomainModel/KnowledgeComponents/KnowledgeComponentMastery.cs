@@ -11,6 +11,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         public KnowledgeComponent KnowledgeComponent { get; private set; }
         public int LearnerId { get; private set; }
         public bool IsPassed { get; private set; }
+        public bool IsCompleted { get; private set; }
 
         private KnowledgeComponentMastery() { }
 
@@ -19,6 +20,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             Mastery = 0.0;
             KnowledgeComponent = knowledgeComponent;
             IsPassed = false;
+            IsCompleted = false;
         }
 
         public Result<Evaluation> SubmitAEAnswer(Submission submission)
@@ -50,6 +52,8 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
             if (!IsPassed)
                 TryPass();
+            if (!IsCompleted)
+                TryComplete(submission.AssessmentEventId);
 
             return Result.Ok(evaluation);
         }
@@ -67,6 +71,21 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
                     KnowledgeComponentId = KnowledgeComponent.Id,
                     LearnerId = LearnerId
                 });
+        }
+
+        private void TryComplete(int aeIdForCurrentSubmission)
+        {
+            foreach (AssessmentEvent assessmentEvent in KnowledgeComponent.AssessmentEvents)
+            {
+                if (assessmentEvent.Id != aeIdForCurrentSubmission && assessmentEvent.Submissions.Count == 0)
+                    return;
+            }
+
+            Causes(new KnowledgeComponentCompleted()
+            {
+                KnowledgeComponentId = KnowledgeComponent.Id,
+                LearnerId = LearnerId
+            });
         }
 
         protected override void Apply(DomainEvent @event)
@@ -96,6 +115,11 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         private void When(KnowledgeComponentPassed @event)
         {
             IsPassed = true;
+        }
+
+        private void When(KnowledgeComponentCompleted @event)
+        {
+            IsCompleted = true;
         }
     }
 }
