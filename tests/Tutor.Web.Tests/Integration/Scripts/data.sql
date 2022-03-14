@@ -58,61 +58,61 @@ INSERT INTO public."KnowledgeComponents"(
 	VALUES (-15, 'Koristi terminologiju domena problema', '', -1);
 
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-49, 0.0, -10, -1, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-49, 0.0, -10, -1, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-50, 0.0, -10, -2, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-50, 0.0, -10, -2, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-1, 0.0, -11, -1, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-1, 0.0, -11, -1, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-2, 0.0, -12, -1, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-2, 0.0, -12, -1, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-3, 0.0, -13, -1, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-3, 0.0, -13, -1, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-4, 0.0, -14, -1, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-4, 0.0, -14, -1, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-5, 0.0, -15, -1, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-5, 0.0, -15, -1, false, false, false);
 
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-6, 0.0, -11, -2, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-6, 0.0, -11, -2, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-7, 0.0, -12, -2, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-7, 0.0, -12, -2, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-8, 0.0, -13, -2, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-8, 0.0, -13, -2, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-9, 0.0, -14, -2, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-9, 0.0, -14, -2, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-10, 0.0, -15, -2, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-10, 0.0, -15, -2, false, false, false);
 
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-11, 0.0, -11, -3, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-11, 0.0, -11, -3, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-12, 0.0, -12, -3, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-12, 0.0, -12, -3, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-13, 0.0, -13, -3, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-13, 0.0, -13, -3, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-14, 0.0, -14, -3, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-14, 0.0, -14, -3, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-15, 0.0, -15, -3, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-15, 0.0, -15, -3, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-51, 0.0, -10, -3, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-51, 0.0, -10, -3, false, false, false);
 
 INSERT INTO public."InstructionalEvents"(
 	"Id", "KnowledgeComponentId")
@@ -395,106 +395,106 @@ INSERT INTO public."KnowledgeComponents"(
 	VALUES (-211, 'Odredi semantičku svrhu metode', '', -2);
 
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-16, 0.0, -21, -1, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-16, 0.0, -21, -1, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-17, 0.0, -22, -1, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-17, 0.0, -22, -1, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-18, 0.0, -23, -1, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-18, 0.0, -23, -1, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-19, 0.0, -24, -1, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-19, 0.0, -24, -1, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-20, 0.0, -25, -1, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-20, 0.0, -25, -1, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-21, 0.0, -26, -1, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-21, 0.0, -26, -1, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-22, 0.0, -27, -1, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-22, 0.0, -27, -1, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-23, 0.0, -28, -1, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-23, 0.0, -28, -1, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-24, 0.0, -29, -1, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-24, 0.0, -29, -1, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-25, 0.0, -210, -1, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-25, 0.0, -210, -1, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-26, 0.0, -211, -1, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-26, 0.0, -211, -1, false, false, false);
 
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-27, 0.0, -21, -2, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-27, 0.0, -21, -2, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-28, 0.0, -22, -2, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-28, 0.0, -22, -2, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-29, 0.0, -23, -2, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-29, 0.0, -23, -2, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-30, 0.0, -24, -2, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-30, 0.0, -24, -2, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-31, 0.0, -25, -2, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-31, 0.0, -25, -2, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-32, 0.0, -26, -2, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-32, 0.0, -26, -2, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-33, 0.0, -27, -2, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-33, 0.0, -27, -2, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-34, 0.0, -28, -2, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-34, 0.0, -28, -2, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-35, 0.0, -29, -2, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-35, 0.0, -29, -2, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-36, 0.0, -210, -2, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-36, 0.0, -210, -2, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-37, 0.0, -211, -2);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-37, 0.0, -211, -2, false, false, false);
 
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-38, 0.0, -21, -3, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-38, 0.0, -21, -3, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-39, 0.0, -22, -3, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-39, 0.0, -22, -3, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-40, 0.0, -23, -3, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-40, 0.0, -23, -3, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-41, 0.0, -24, -3, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-41, 0.0, -24, -3, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-42, 0.0, -25, -3, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-42, 0.0, -25, -3, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-43, 0.0, -26, -3, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-43, 0.0, -26, -3, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-44, 0.0, -27, -3, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-44, 0.0, -27, -3, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-45, 0.0, -28, -3, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-45, 0.0, -28, -3, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-46, 0.0, -29, -3, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-46, 0.0, -29, -3, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-47, 0.0, -210, -3, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-47, 0.0, -210, -3, false, false, false);
 INSERT INTO public."KcMastery"(
-    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted")
-VALUES (-48, 0.0, -211, -3, false, false);
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsCompleted", "IsSatisfied")
+VALUES (-48, 0.0, -211, -3, false, false, false);
 
 INSERT INTO public."AssessmentEvents"(
 	"Id", "KnowledgeComponentId")

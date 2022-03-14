@@ -12,6 +12,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         public int LearnerId { get; private set; }
         public bool IsPassed { get; private set; }
         public bool IsCompleted { get; private set; }
+        public bool IsSatisfied { get; private set; }
 
         private KnowledgeComponentMastery() { }
 
@@ -21,6 +22,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             KnowledgeComponent = knowledgeComponent;
             IsPassed = false;
             IsCompleted = false;
+            IsSatisfied = false;
         }
 
         public Result<Evaluation> SubmitAEAnswer(Submission submission)
@@ -50,10 +52,8 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
                 CorrectnessLevel = submission.CorrectnessLevel
             });
 
-            if (!IsPassed)
-                TryPass();
-            if (!IsCompleted)
-                TryComplete(submission.AssessmentEventId);
+            TryPass();
+            TryComplete(submission.AssessmentEventId);
 
             return Result.Ok(evaluation);
         }
@@ -65,16 +65,25 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         private void TryPass()
         {
+            if (IsPassed)
+                return; 
+
             if (Mastery >= 0.95)
+            {
                 Causes(new KnowledgeComponentPassed()
                 {
                     KnowledgeComponentId = KnowledgeComponent.Id,
                     LearnerId = LearnerId
                 });
+                TrySatisfy();
+            }
         }
 
         private void TryComplete(int aeIdForCurrentSubmission)
         {
+            if (IsCompleted)
+                return; 
+
             foreach (AssessmentEvent assessmentEvent in KnowledgeComponent.AssessmentEvents)
             {
                 if (assessmentEvent.Id != aeIdForCurrentSubmission && assessmentEvent.Submissions.Count == 0)
@@ -86,6 +95,20 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
                 KnowledgeComponentId = KnowledgeComponent.Id,
                 LearnerId = LearnerId
             });
+            TrySatisfy();
+        }
+
+        private void TrySatisfy()
+        {
+            if (IsSatisfied)
+                return; 
+
+            if (IsPassed)
+                Causes(new KnowledgeComponentSatisfied()
+                {
+                    KnowledgeComponentId = KnowledgeComponent.Id,
+                    LearnerId = LearnerId
+                });
         }
 
         protected override void Apply(DomainEvent @event)
@@ -120,6 +143,11 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         private void When(KnowledgeComponentCompleted @event)
         {
             IsCompleted = true;
+        }
+
+        private void When(KnowledgeComponentSatisfied @event)
+        {
+            IsSatisfied = true;
         }
     }
 }

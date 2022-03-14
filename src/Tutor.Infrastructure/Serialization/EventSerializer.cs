@@ -14,7 +14,8 @@ namespace Tutor.Infrastructure.Serialization
         {
             { typeof(AssessmentEventAnswered), "AssessmentEventAnswered" },
             { typeof(KnowledgeComponentPassed), "KnowledgeComponentPassed" },
-            { typeof(KnowledgeComponentCompleted), "KnowledgeComponentCompleted" }
+            { typeof(KnowledgeComponentCompleted), "KnowledgeComponentCompleted" },
+            { typeof(KnowledgeComponentSatisfied), "KnowledgeComponentSatisfied" }
         };
 
         public static JsonSerializerOptions SetupEvents(this JsonSerializerOptions options)
