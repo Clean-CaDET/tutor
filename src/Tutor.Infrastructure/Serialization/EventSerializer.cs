@@ -4,6 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Tutor.Core.BuildingBlocks.EventSourcing;
+using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
+using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
+using Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 
 namespace Tutor.Infrastructure.Serialization
@@ -13,7 +17,13 @@ namespace Tutor.Infrastructure.Serialization
         private static readonly IDictionary<Type, string> eventRelatedTypes = new Dictionary<Type, string>()
         {
             { typeof(AssessmentEventAnswered), "AssessmentEventAnswered" },
-            { typeof(AssessmentEventSelected), "AssessmentEventSelected" }
+            { typeof(AssessmentEventSelected), "AssessmentEventSelected" },
+#region Submissions
+            { typeof(ArrangeTaskSubmission), "ArrangeTaskSubmission" },
+            { typeof(ChallengeSubmission), "ChallengeSubmission" },
+            { typeof(MrqSubmission), "MrqSubmission" },
+            { typeof(SaqSubmission), "SaqSubmission" },
+#endregion
         };
 
         public static JsonSerializerOptions SetupEvents(this JsonSerializerOptions options)
