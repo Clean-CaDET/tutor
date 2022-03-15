@@ -18,14 +18,14 @@ namespace Tutor.Web.Controllers.Plugin
         private readonly ILearnerRepository _learnerRepository;
         private readonly IMapper _mapper;
         private readonly ISubmissionService _submissionService;
-        private readonly IAssessmentEventHelpService _interactionService;
+        private readonly IAssessmentEventHelpService _aeHelpService;
 
-        public PluginController(ILearnerRepository learnerRepository, IMapper mapper, ISubmissionService submissionService, IAssessmentEventHelpService interactionService)
+        public PluginController(ILearnerRepository learnerRepository, IMapper mapper, ISubmissionService submissionService, IAssessmentEventHelpService aeHelpService)
         {
             _learnerRepository = learnerRepository;
             _mapper = mapper;
             _submissionService = submissionService;
-            _interactionService = interactionService;
+            _aeHelpService = aeHelpService;
         }
 
         [HttpPost("login")]
@@ -48,13 +48,13 @@ namespace Tutor.Web.Controllers.Plugin
         [HttpPost("challenge/hints")]
         public void SeekHints([FromBody] ChallengeSubmissionDto submission)
         {
-            _interactionService.SeekHelp(submission.LearnerId, submission.AssessmentEventId, "ChallengeHints");
+            _aeHelpService.SeekChallengeHints(submission.LearnerId, submission.AssessmentEventId);
         }
 
         [HttpPost("challenge/solution")]
         public void SeekSolution([FromBody] ChallengeSubmissionDto submission)
         {
-            _interactionService.SeekHelp(submission.LearnerId, submission.AssessmentEventId, "ChallengeSolution");
+            _aeHelpService.SeekChallengeSolution(submission.LearnerId, submission.AssessmentEventId);
         }
     }
 }

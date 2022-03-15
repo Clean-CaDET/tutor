@@ -14,7 +14,8 @@ namespace Tutor.Infrastructure.Serialization
         private static readonly IDictionary<Type, string> eventRelatedTypes = new Dictionary<Type, string>()
         {
             { typeof(AssessmentEventAnswered), "AssessmentEventAnswered" },
-            { typeof(SoughtHelp), "SoughtHelp" }
+            { typeof(SoughtHints), "SoughtChallengeHints" },
+            { typeof(SoughtSolution), "SoughtChallengeSolution" }
         };
 
         public static JsonSerializerOptions SetupEvents(this JsonSerializerOptions options)

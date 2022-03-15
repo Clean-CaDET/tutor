@@ -55,18 +55,13 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             return assessmentEventSelector.SelectSuitableAssessmentEvent(KnowledgeComponent.Id, LearnerId);
         }
 
-        public Result SeekHelpForAssessmentEvent(int assessmentEventId, string helpType)
+        public Result SeekHelpForAssessmentEvent(SoughtHelp helpEvent)
         {
-            var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(assessmentEventId);
+            var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(helpEvent.AssessmentEventId);
             if (assessmentEvent == null)
-                return Result.Fail("No assessment event with ID: " + assessmentEventId);
+                return Result.Fail("No assessment event with ID: " + helpEvent.AssessmentEventId);
 
-            Causes(new SoughtHelp()
-            {
-                LearnerId = LearnerId,
-                AssessmentEventId = assessmentEventId,
-                HelpType = helpType
-            });
+            Causes(helpEvent);
             return Result.Ok();
         }
 
