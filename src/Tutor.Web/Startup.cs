@@ -32,6 +32,7 @@ using Tutor.Web.IAM;
 using Tutor.Web.IAM.Keycloak;
 using Tutor.Infrastructure.Serialization;
 using Tutor.Core.DomainModel.Feedback;
+using Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp;
 
 namespace Tutor.Web
 {
@@ -101,6 +102,8 @@ namespace Tutor.Web
 
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
+
+            services.AddScoped<IAssessmentEventHelpService, AssessmentEventHelpService>();
 
             if (!bool.Parse(Environment.GetEnvironmentVariable("KEYCLOAK_ON") ?? "false"))
             {

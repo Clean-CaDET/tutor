@@ -2,6 +2,7 @@
 using System;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
@@ -54,6 +55,21 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             return assessmentEventSelector.SelectSuitableAssessmentEvent(KnowledgeComponent.Id, LearnerId);
         }
 
+        public Result SeekHelpForAssessmentEvent(int assessmentEventId, string helpType)
+        {
+            var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(assessmentEventId);
+            if (assessmentEvent == null)
+                return Result.Fail("No assessment event with ID: " + assessmentEventId);
+
+            Causes(new SoughtHelp()
+            {
+                LearnerId = LearnerId,
+                AssessmentEventId = assessmentEventId,
+                HelpType = helpType
+            });
+            return Result.Ok();
+        }
+
         protected override void Apply(DomainEvent @event)
         {
             When((dynamic)@event);
@@ -76,6 +92,13 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
                 * (@event.CorrectnessLevel - currentCorrectnessLevel) / 100.0;
 
             Mastery += kcMasteryIncrement;
+        }
+
+        private void When(SoughtHelp @event)
+        {
+            /*
+             * Possibly record how many times help was sought in AeMastery?
+             */
         }
     }
 }

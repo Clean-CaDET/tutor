@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.KnowledgeComponents;
+using Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp;
 
 namespace Tutor.Infrastructure.Serialization
 {
@@ -12,7 +13,8 @@ namespace Tutor.Infrastructure.Serialization
     {
         private static readonly IDictionary<Type, string> eventRelatedTypes = new Dictionary<Type, string>()
         {
-            { typeof(AssessmentEventAnswered), "AssessmentEventAnswered"}
+            { typeof(AssessmentEventAnswered), "AssessmentEventAnswered" },
+            { typeof(SoughtHelp), "SoughtHelp" }
         };
 
         public static JsonSerializerOptions SetupEvents(this JsonSerializerOptions options)
