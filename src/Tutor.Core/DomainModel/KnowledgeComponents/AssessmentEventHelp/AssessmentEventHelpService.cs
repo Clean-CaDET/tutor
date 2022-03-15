@@ -1,16 +1,13 @@
 ﻿using FluentResults;
-using Tutor.Core.DomainModel.AssessmentEvents;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp
 {
     public class AssessmentEventHelpService : IAssessmentEventHelpService
     {
-        private readonly IAssessmentEventRepository _assessmentEventRepository;
         private readonly IKCRepository _kcRepository;
 
-        public AssessmentEventHelpService(IAssessmentEventRepository assessmentEventRepository, IKCRepository kcRepository)
+        public AssessmentEventHelpService(IKCRepository kcRepository)
         {
-            _assessmentEventRepository = assessmentEventRepository;
             _kcRepository = kcRepository;
         }
 
