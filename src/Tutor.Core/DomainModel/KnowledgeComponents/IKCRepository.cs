@@ -6,7 +6,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
     public interface IKCRepository
     {
         List<Unit> GetUnits();
-        
+
         Unit GetUnit(int id, int learnerId);
 
         KnowledgeComponent GetKnowledgeComponent(int id);
@@ -14,8 +14,11 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         List<InstructionalEvent> GetInstructionalEventsByKnowledgeComponent(int id);
 
         KnowledgeComponentMastery GetKnowledgeComponentMastery(int learnerId, int knowledgeComponentId);
-        
+
+        KnowledgeComponentMastery GetKnowledgeComponentMasteryByAssessmentEvent(int learnerId, int assessmentEventId);
+
         void UpdateKCMastery(KnowledgeComponentMastery kcMastery);
+
         List<KnowledgeComponent> GetAllKnowledgeComponents();
     }
 }

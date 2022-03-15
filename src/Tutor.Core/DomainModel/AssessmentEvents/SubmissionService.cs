@@ -19,15 +19,12 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
 
         public Result<Evaluation> EvaluateAndSaveSubmission(Submission submission)
         {
-            var assessmentEvent = _assessmentEventRepository.GetDerivedAssessmentEvent(submission.AssessmentEventId);
-            if (assessmentEvent == null)
-                return Result.Fail("No assessment event with ID: " + submission.AssessmentEventId);
-
-            var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(submission.LearnerId, assessmentEvent.KnowledgeComponentId);
+            var knowledgeComponentMastery = _kcRepository
+                 .GetKnowledgeComponentMasteryByAssessmentEvent(submission.LearnerId, submission.AssessmentEventId);
             if (knowledgeComponentMastery == null)
-                return Result.Fail("The Learner isn't enrolled to knowledge component with ID: " + assessmentEvent.KnowledgeComponentId);
+                return Result.Fail("Cannot submit answer for AE with ID: " + submission.AssessmentEventId);
 
-            var result = knowledgeComponentMastery.SubmitAEAnswer(submission);            
+            var result = knowledgeComponentMastery.SubmitAEAnswer(submission);
 
             if (result.IsSuccess)
             {
