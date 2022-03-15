@@ -20,6 +20,8 @@ set +o history # (disable bash history in order to protect sensitive data)
 export DATABASE_PASSWORD=<value>
 export DATABASE_SCHEMA=<value>
 export DATABASE_USERNAME=<value>
+export SMART_TUTOR_JWT_KEY=<value>
+export SMART_TUTOR_CORS=<value>
 export PGADMIN_ROOT_EMAIL=<value> # (e.g. root@cleancadet.com)
 export PGADMIN_ROOT_PASSWORD=<value>
 set -o history # (enable bash history when work with sensitive data is done)

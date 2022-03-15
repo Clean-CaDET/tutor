@@ -57,4 +57,5 @@ docker build -t "${NAME}" \
     --target "${TARGET}" \
     --build-arg "ASPNET_VERSION=${ASPNET_VERSION}" \
     --build-arg "SDK_VERSION=${SDK_VERSION}" \
-    --build-arg "SRC_URL=${SRC_URL}" .
+    --build-arg "SRC_URL=${SRC_URL}" \
+    --no-cache .

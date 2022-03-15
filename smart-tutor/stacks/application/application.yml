@@ -13,6 +13,8 @@ services:
       DATABASE_SCHEMA_FILE: /run/secrets/database-schema
       DATABASE_USERNAME_FILE: /run/secrets/database-username
       DATABASE_PASSWORD_FILE: /run/secrets/database-password
+      JWT_KEY: /run/secrets/jwt-key
+      SMART_TUTOR_CORS_ORIGINS: /run/secrets/cors
     secrets:
       - source: database-schema
         target: database-schema
@@ -20,6 +22,10 @@ services:
         target: database-username
       - source: database-password
         target: database-password
+      - source: jwt-key
+        target: jwt-key
+      - source: cors
+        target: cors
     deploy:
       replicas: 3
       update_config:
@@ -37,6 +43,12 @@ secrets:
     external: true
   database-schema:
     name: clean_cadet_database_schema_${STAGE-dev}
+    external: true
+  jwt-key:
+    name: clean_cadet_smart_tutor_jwt_key_${STAGE}
+    external: true
+  cors:
+    name: clean_cadet_smart_tutor_cors_${STAGE}
     external: true
 
 networks:

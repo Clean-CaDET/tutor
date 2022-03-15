@@ -22,3 +22,5 @@ STAGE=${STAGE:-dev}
 STACK_NAME="clean_cadet_application_${STAGE}"
 
 docker stack rm "${STACK_NAME}"
+docker secret rm "clean_cadet_smart_tutor_jwt_key_${STAGE}"
+docker secret rm "clean_cadet_smart_tutor_cors_${STAGE}"
