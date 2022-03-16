@@ -122,7 +122,7 @@ namespace Tutor.Web
             });
 
             var key = EnvironmentConnection.GetSecret("JWT_KEY") ?? "tutor_secret_key";
-            var issuer = EnvironmentConnection.GetSecret("JWT_ISSUER") ?? "tutor_secret_key";
+            var issuer = EnvironmentConnection.GetSecret("JWT_ISSUER") ?? "tutor";
             var audience = EnvironmentConnection.GetSecret("JWT_AUDIENCE") ?? "tutor-front.com";
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
