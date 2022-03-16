@@ -32,6 +32,7 @@ using Tutor.Web.IAM;
 using Tutor.Web.IAM.Keycloak;
 using Tutor.Infrastructure.Serialization;
 using Tutor.Core.DomainModel.Feedback;
+using Tutor.Core.DomainModel.KnowledgeComponents.MoveOn;
 
 namespace Tutor.Web
 {
@@ -111,6 +112,15 @@ namespace Tutor.Web
                 KeycloakAuthenticationConfig(services);
                 KeycloakAuthorizationConfig(services);
             }
+
+            SetupMoveOn(services);
+        }
+
+        private void SetupMoveOn(IServiceCollection services)
+        {
+            var moveOnCriteria = Configuration.GetValue<string>("MoveOn");
+            Type moveOnType = MoveOnResolver.ResolveOrDefault(moveOnCriteria);
+            services.AddScoped(typeof(IMoveOnCriteria), moveOnType);
         }
 
         private static void SetupJwtService(IServiceCollection services)

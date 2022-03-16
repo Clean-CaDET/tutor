@@ -2,6 +2,7 @@
 using System;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents.MoveOn;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
@@ -24,6 +25,8 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
                 return true;
             }
         }
+
+        public IMoveOnCriteria MoveOnCriteria { get; set; }
 
         private KnowledgeComponentMastery() { }
 
@@ -125,7 +128,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             if (IsSatisfied)
                 return;
 
-            if (IsPassed)
+            if (MoveOnCriteria.IsSatisfied(IsCompleted, IsPassed))
                 Causes(new KnowledgeComponentSatisfied()
                 {
                     KnowledgeComponentId = KnowledgeComponent.Id,
