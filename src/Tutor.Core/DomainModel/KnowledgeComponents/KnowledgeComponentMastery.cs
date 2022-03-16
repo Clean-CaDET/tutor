@@ -25,7 +25,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             IsSatisfied = false;
         }
 
-        public Result<Evaluation> SubmitAEAnswer(Submission submission)
+        public Result<Evaluation> SubmitAssessmentEventAnswer(Submission submission)
         {
             var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(submission.AssessmentEventId);
             if (assessmentEvent == null)
@@ -46,10 +46,8 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
             Causes(new AssessmentEventAnswered()
             {
-                AssessmentEventId = submission.AssessmentEventId,
-                LearnerId = submission.LearnerId,
-                IsCorrect = submission.IsCorrect,
-                CorrectnessLevel = submission.CorrectnessLevel
+                Submission = submission,
+                Timestamp = submission.TimeStamp
             });
 
             TryPass();
@@ -60,7 +58,15 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         public Result<AssessmentEvent> SelectSuitableAssessmentEvent(IAssessmentEventSelector assessmentEventSelector)
         {
-            return assessmentEventSelector.SelectSuitableAssessmentEvent(KnowledgeComponent.Id, LearnerId);
+            var result = assessmentEventSelector.SelectSuitableAssessmentEvent(KnowledgeComponent.Id, LearnerId);
+            if (result.IsSuccess)
+                Causes(new AssessmentEventSelected()
+                {
+                    LearnerId = LearnerId,
+                    KnowledgeComponentId = KnowledgeComponent.Id,
+                    AssessmentEventId = result.Value.Id
+                });
+            return result;
         }
 
         private void TryPass()
@@ -122,16 +128,17 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
              * child object (which would be created here if it doesn't exist yet). The Apply method
              * should never fail, silently or otherwise, and fetching the AE can fail.
              */
-            var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(@event.AssessmentEventId);
+            var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(@event.Submission.AssessmentEventId);
             if (assessmentEvent == null)
                 return;
 
             var currentCorrectnessLevel = assessmentEvent.GetMaximumSubmissionCorrectness();
-            if (currentCorrectnessLevel > @event.CorrectnessLevel) return;
 
+            assessmentEvent.Submissions.Add(@event.Submission);
+
+            if (currentCorrectnessLevel > @event.Submission.CorrectnessLevel) return;
             var kcMasteryIncrement = 100.0 / KnowledgeComponent.AssessmentEvents.Count
-                * (@event.CorrectnessLevel - currentCorrectnessLevel) / 100.0;
-
+                * (@event.Submission.CorrectnessLevel - currentCorrectnessLevel) / 100.0;
             Mastery += kcMasteryIncrement;
         }
 
@@ -148,6 +155,13 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         private void When(KnowledgeComponentSatisfied @event)
         {
             IsSatisfied = true;
+        }
+
+        private void When(AssessmentEventSelected @event)
+        {
+            /* TODO: save information that the AE has been selected somewhere in the 
+             * model, probably in AeMastery when it's added.
+             */
         }
     }
 }
