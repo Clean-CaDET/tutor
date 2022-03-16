@@ -29,11 +29,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
 
             var result = knowledgeComponentMastery.SubmitAEAnswer(submission);            
 
-            if (result.IsSuccess)
-            {
-                _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
-                _assessmentEventRepository.SaveSubmission(submission);
-            }
+            _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
 
             return result;
         }

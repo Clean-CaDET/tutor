@@ -7,7 +7,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
     public class KcService : IKCService
     {
-        private readonly IKCRepository _ikcRepository;
+        private readonly IKCRepository _kcRepository;
         private readonly IAssessmentEventRepository _assessmentEventRepository;
         private readonly IAssessmentEventSelector _assessmentEventSelector;
 
@@ -15,24 +15,24 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             IAssessmentEventRepository assessmentEventRepository,
             IAssessmentEventSelector assessmentEventSelector)
         {
-            _ikcRepository = ikcRepository;
+            _kcRepository = ikcRepository;
             _assessmentEventRepository = assessmentEventRepository;
             _assessmentEventSelector = assessmentEventSelector;
         }
 
         public Result<List<Unit>> GetUnits()
         {
-            return Result.Ok(_ikcRepository.GetUnits());
+            return Result.Ok(_kcRepository.GetUnits());
         }
 
         public Result<Unit> GetUnit(int id, int learnerId)
         {
-            return Result.Ok(_ikcRepository.GetUnit(id, learnerId));
+            return Result.Ok(_kcRepository.GetUnit(id, learnerId));
         }
 
         public Result<KnowledgeComponent> GetKnowledgeComponentById(int id)
         {
-            var knowledgeComponent = _ikcRepository.GetKnowledgeComponent(id);
+            var knowledgeComponent = _kcRepository.GetKnowledgeComponent(id);
             if (knowledgeComponent == null) return Result.Fail("No KC with index: " + id);
             return Result.Ok(knowledgeComponent);
         }
@@ -44,18 +44,20 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         public Result<List<InstructionalEvent>> GetInstructionalEventsByKnowledgeComponent(int id)
         {
-            return Result.Ok(_ikcRepository.GetInstructionalEventsByKnowledgeComponent(id));
+            return Result.Ok(_kcRepository.GetInstructionalEventsByKnowledgeComponent(id));
         }
 
         public Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId)
         {
-            var knowledgeComponentMastery = _ikcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
-            return knowledgeComponentMastery.SelectSuitableAssessmentEvent(_assessmentEventSelector);
+            var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
+            var result = knowledgeComponentMastery.SelectSuitableAssessmentEvent(_assessmentEventSelector);
+            _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
+            return result;             
         }
 
         public Result<KnowledgeComponentMastery> GetKnowledgeComponentMastery(int learnerId, int knowledgeComponentId)
         {
-            return Result.Ok(_ikcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId));
+            return Result.Ok(_kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId));
         }
     }
 }

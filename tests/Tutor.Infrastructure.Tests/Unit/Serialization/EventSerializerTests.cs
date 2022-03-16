@@ -1,6 +1,7 @@
 ﻿using Shouldly;
 using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks.EventSourcing;
+using Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Infrastructure.Serialization;
 using Xunit;
@@ -28,11 +29,10 @@ namespace Tutor.Infrastructure.Tests.Unit.Serialization
         {
             new object[]
             {
-                new AssessmentEventAnswered()
+                new AssessmentEventSelected()
                 {
-                    AssessmentEventId = 1,
-                    CorrectnessLevel = 0.5,
-                    IsCorrect = false,
+                    KnowledgeComponentId = 1,
+                    AssessmentEventId = 2,
                     LearnerId = 3
                 }
             },
