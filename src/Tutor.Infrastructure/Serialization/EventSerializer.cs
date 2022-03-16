@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Tutor.Core.BuildingBlocks.EventSourcing;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges.ChallengeInteractions;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 
 namespace Tutor.Infrastructure.Serialization
@@ -12,13 +13,16 @@ namespace Tutor.Infrastructure.Serialization
     {
         private static readonly IDictionary<Type, string> eventRelatedTypes = new Dictionary<Type, string>()
         {
-            { typeof(AssessmentEventAnswered), "AssessmentEventAnswered"}
+            { typeof(AssessmentEventAnswered), "AssessmentEventAnswered" },
+            { typeof(InteractedWithAssessmentEvent), "InteractedWithAssessmentEvent" },
+            { typeof(HintsSought), "HintsSought" },
+            { typeof(SolutionSought), "SolutionSought" }
         };
 
         public static JsonSerializerOptions SetupEvents(this JsonSerializerOptions options)
         {
             DiscriminatorConventionRegistry registry = options.GetDiscriminatorConventionRegistry();
-            registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(options, eventRelatedTypes, "$discriminator"));
+            registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(options, eventRelatedTypes, "type"));
 
             foreach (Type type in eventRelatedTypes.Keys)
             {

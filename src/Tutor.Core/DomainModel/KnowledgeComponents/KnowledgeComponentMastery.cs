@@ -54,6 +54,31 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             return assessmentEventSelector.SelectSuitableAssessmentEvent(KnowledgeComponent.Id, LearnerId);
         }
 
+        public Result InteractWithAssessmentEvent(int assessmentEventId, AssessmentEventInteraction interaction)
+        {
+            var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(assessmentEventId);
+            if (assessmentEvent == null)
+                return Result.Fail("No assessment event with ID: " + assessmentEventId);
+
+            try
+            {
+                assessmentEvent.ValidateInteraction(interaction);
+            }
+            catch (ArgumentException ex)
+            {
+                return Result.Fail(ex.Message);
+            }
+
+            Causes(new InteractedWithAssessmentEvent()
+            {
+                LearnerId = LearnerId,
+                AssessmentEventId = assessmentEventId,
+                Interaction = interaction
+            });
+
+            return Result.Ok();
+        }
+
         protected override void Apply(DomainEvent @event)
         {
             When((dynamic)@event);
@@ -76,6 +101,11 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
                 * (@event.CorrectnessLevel - currentCorrectnessLevel) / 100.0;
 
             Mastery += kcMasteryIncrement;
+        }
+
+        private void When(InteractedWithAssessmentEvent @event)
+        {
+            // This method will probably do nothing
         }
     }
 }
