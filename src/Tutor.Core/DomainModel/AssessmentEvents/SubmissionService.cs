@@ -27,7 +27,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
             if (knowledgeComponentMastery == null)
                 return Result.Fail("The Learner isn't enrolled to knowledge component with ID: " + assessmentEvent.KnowledgeComponentId);
 
-            var result = knowledgeComponentMastery.SubmitAEAnswer(submission);            
+            var result = knowledgeComponentMastery.SubmitAssessmentEventAnswer(submission);            
 
             _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
 
