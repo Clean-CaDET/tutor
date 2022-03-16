@@ -9,6 +9,12 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions
         public string Text { get; private set; }
         public List<string> AcceptableAnswers { get; private set; }
 
+        public override void ValidateInteraction(AssessmentEventInteraction interaction)
+        {
+            if (interaction is not SaqInteraction)
+                throw new ArgumentException("Incorrect interaction supplied to SAQ with ID " + Id);
+        }
+
         public override Evaluation EvaluateSubmission(Submission submission)
         {
             if (submission is SaqSubmission saqSubmission) return EvaluateSaq(saqSubmission);

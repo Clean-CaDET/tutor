@@ -9,6 +9,12 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions
         public string Text { get; private set; }
         public List<MrqItem> Items { get; private set; }
 
+        public override void ValidateInteraction(AssessmentEventInteraction interaction)
+        {
+            if (interaction is not MrqInteraction)
+                throw new ArgumentException("Incorrect interaction supplied to MRQ with ID " + Id);
+        }
+
         public override Evaluation EvaluateSubmission(Submission submission)
         {
             if (submission is MrqSubmission mrqSubmission) return EvaluateMrq(mrqSubmission);
@@ -19,7 +25,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions
         {
             var answerEvaluations = CheckAnswers(mrqSubmission.SubmittedAnswerIds);
             var correctness = (double)answerEvaluations.Count(a => a.SubmissionWasCorrect) / answerEvaluations.Count;
-            
+
             return new MrqEvaluation(Id, correctness, answerEvaluations);
         }
 

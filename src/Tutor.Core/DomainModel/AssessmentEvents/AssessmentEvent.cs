@@ -20,6 +20,8 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
 
         public abstract Evaluation EvaluateSubmission(Submission submission);
 
+        public abstract void ValidateInteraction(AssessmentEventInteraction interaction);
+
         public double GetMaximumSubmissionCorrectness()
         {
             return Submissions.Any() ? Submissions.OrderBy(sub => sub.CorrectnessLevel).Last().CorrectnessLevel : 0.0;

@@ -2,6 +2,7 @@
 using CodeModel.CaDETModel;
 using System;
 using System.Collections.Generic;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges.ChallengeInteractions;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FunctionalityTester;
 
@@ -19,6 +20,12 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
         public Challenge(int id, int learningObjectSummaryId, List<ChallengeFulfillmentStrategy> fulfillmentStrategies) : base(id, learningObjectSummaryId)
         {
             FulfillmentStrategies = fulfillmentStrategies;
+        }
+
+        public override void ValidateInteraction(AssessmentEventInteraction interaction)
+        {
+            if (interaction is not ChallengeInteraction)
+                throw new ArgumentException("Incorrect interaction supplied to challenge with ID " + Id);
         }
 
         public override Evaluation EvaluateSubmission(Submission submission)

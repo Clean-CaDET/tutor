@@ -9,6 +9,12 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
         public string Text { get; private set; }
         public List<ArrangeTaskContainer> Containers { get; private set; }
 
+        public override void ValidateInteraction(AssessmentEventInteraction interaction)
+        {
+            if (interaction is not ArrangeTaskInteraction)
+                throw new ArgumentException("Incorrect interaction supplied to Arrange Task with ID " + Id);
+        }
+
         public override Evaluation EvaluateSubmission(Submission submission)
         {
             if (submission is ArrangeTaskSubmission atSubmission) return EvaluateAT(atSubmission);
@@ -18,7 +24,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
         private Evaluation EvaluateAT(ArrangeTaskSubmission atSubmission)
         {
             var evaluations = EvaluateContainers(atSubmission.Containers);
-            var correctness = (double) evaluations.Count(c => c.SubmissionWasCorrect) / evaluations.Count;
+            var correctness = (double)evaluations.Count(c => c.SubmissionWasCorrect) / evaluations.Count;
 
             return new ArrangeTaskEvaluation(Id, correctness, evaluations);
         }
