@@ -4,6 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Tutor.Core.BuildingBlocks.EventSourcing;
+using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
+using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
+using Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp;
 
@@ -15,7 +19,17 @@ namespace Tutor.Infrastructure.Serialization
         {
             { typeof(AssessmentEventAnswered), "AssessmentEventAnswered" },
             { typeof(SoughtHints), "SoughtChallengeHints" },
-            { typeof(SoughtSolution), "SoughtChallengeSolution" }
+            { typeof(SoughtSolution), "SoughtChallengeSolution" },
+            { typeof(KnowledgeComponentPassed), "KnowledgeComponentPassed" },
+            { typeof(KnowledgeComponentCompleted), "KnowledgeComponentCompleted" },
+            { typeof(KnowledgeComponentSatisfied), "KnowledgeComponentSatisfied" },
+            { typeof(AssessmentEventSelected), "AssessmentEventSelected" },
+#region Submissions
+            { typeof(ArrangeTaskSubmission), "ArrangeTaskSubmission" },
+            { typeof(ChallengeSubmission), "ChallengeSubmission" },
+            { typeof(MrqSubmission), "MrqSubmission" },
+            { typeof(SaqSubmission), "SaqSubmission" },
+#endregion
         };
 
         public static JsonSerializerOptions SetupEvents(this JsonSerializerOptions options)

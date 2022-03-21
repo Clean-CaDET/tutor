@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.DomainModel.InstructionalEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents;
+using Tutor.Core.DomainModel.KnowledgeComponents.MoveOn;
 using Tutor.Infrastructure.Database.EventStore;
 
 namespace Tutor.Infrastructure.Database.Repositories.Domain
@@ -11,11 +12,13 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
     {
         private readonly TutorContext _dbContext;
         private readonly IEventStore _eventStore;
+        private readonly IMoveOnCriteria _moveOnCriteria;
 
-        public KCDatabaseRepository(TutorContext dbContext, IEventStore eventStore)
+        public KCDatabaseRepository(TutorContext dbContext, IEventStore eventStore, IMoveOnCriteria moveOnCriteria)
         {
             _dbContext = dbContext;
             _eventStore = eventStore;
+            _moveOnCriteria = moveOnCriteria;
         }
 
         public List<Unit> GetUnits()
@@ -55,11 +58,13 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
 
         public KnowledgeComponentMastery GetKnowledgeComponentMastery(int learnerId, int knowledgeComponentId)
         {
-            return _dbContext.KcMastery
+            var kcm = _dbContext.KcMastery
                 .Include(kcm => kcm.KnowledgeComponent)
                 .ThenInclude(kc => kc.AssessmentEvents)
                 .ThenInclude(ae => ae.Submissions.Where(sub => sub.LearnerId == learnerId))
                 .FirstOrDefault(kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponent.Id == knowledgeComponentId);
+            kcm.MoveOnCriteria = _moveOnCriteria;
+            return kcm;
         }
 
         public void UpdateKCMastery(KnowledgeComponentMastery kcMastery)
