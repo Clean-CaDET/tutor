@@ -8,6 +8,8 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
     public class KnowledgeComponentMastery : EventSourcedAggregateRoot
     {
+        public const double PassThreshold = 0.9;
+
         public double Mastery { get; private set; }
         public KnowledgeComponent KnowledgeComponent { get; private set; }
         public int LearnerId { get; private set; }
@@ -97,7 +99,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             if (IsPassed)
                 return;
 
-            if (Mastery >= 0.95)
+            if (Mastery >= PassThreshold)
             {
                 Causes(new KnowledgeComponentPassed()
                 {
@@ -113,14 +115,15 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             if (isCompletedBeforeSubmission)
                 return;
 
-            if (!IsCompleted)
-                return;
-            Causes(new KnowledgeComponentCompleted()
+            if (IsCompleted)
             {
-                KnowledgeComponentId = KnowledgeComponent.Id,
-                LearnerId = LearnerId
-            });
-            TrySatisfy();
+                Causes(new KnowledgeComponentCompleted()
+                {
+                    KnowledgeComponentId = KnowledgeComponent.Id,
+                    LearnerId = LearnerId
+                });
+                TrySatisfy();
+            }
         }
 
         private void TrySatisfy()
