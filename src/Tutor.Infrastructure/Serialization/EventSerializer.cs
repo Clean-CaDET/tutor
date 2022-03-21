@@ -17,6 +17,9 @@ namespace Tutor.Infrastructure.Serialization
         private static readonly IDictionary<Type, string> eventRelatedTypes = new Dictionary<Type, string>()
         {
             { typeof(AssessmentEventAnswered), "AssessmentEventAnswered" },
+            { typeof(KnowledgeComponentPassed), "KnowledgeComponentPassed" },
+            { typeof(KnowledgeComponentCompleted), "KnowledgeComponentCompleted" },
+            { typeof(KnowledgeComponentSatisfied), "KnowledgeComponentSatisfied" },
             { typeof(AssessmentEventSelected), "AssessmentEventSelected" },
 #region Submissions
             { typeof(ArrangeTaskSubmission), "ArrangeTaskSubmission" },

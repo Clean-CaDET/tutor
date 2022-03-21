@@ -76,6 +76,7 @@ namespace Tutor.Infrastructure.Database
             ConfigureArrangeTask(modelBuilder);
             ConfigureChallenge(modelBuilder);
             ConfigureKnowledgeComponent(modelBuilder);
+            ConfigureKcMastery(modelBuilder);
 
             modelBuilder.Entity<Learner>()
                 .OwnsOne(l => l.Workspace)
@@ -108,6 +109,14 @@ namespace Tutor.Infrastructure.Database
                 .WithOne()
                 .HasForeignKey("ParentId")
                 .IsRequired(false);
+        }
+
+        private static void ConfigureKcMastery(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<KnowledgeComponentMastery>().Ignore(kcm => kcm.MoveOnCriteria);
+            modelBuilder.Entity<KnowledgeComponentMastery>().Ignore(kcm => kcm.IsCompleted);
+            modelBuilder.Entity<KnowledgeComponentMastery>().Property(kcm => kcm.IsPassed).HasDefaultValue(false);
+            modelBuilder.Entity<KnowledgeComponentMastery>().Property(kcm => kcm.IsSatisfied).HasDefaultValue(false);
         }
     }
 }

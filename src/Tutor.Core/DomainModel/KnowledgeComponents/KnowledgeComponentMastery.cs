@@ -2,14 +2,33 @@
 using System;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents.MoveOn;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
     public class KnowledgeComponentMastery : EventSourcedAggregateRoot
     {
+        public const double PassThreshold = 0.9;
+
         public double Mastery { get; private set; }
         public KnowledgeComponent KnowledgeComponent { get; private set; }
         public int LearnerId { get; private set; }
+        public bool IsPassed { get; private set; }
+        public bool IsSatisfied { get; private set; }
+        public bool IsCompleted
+        {
+            get
+            {
+                foreach (AssessmentEvent assessmentEvent in KnowledgeComponent.AssessmentEvents)
+                {
+                    if (assessmentEvent.Submissions.Count == 0)
+                        return false;
+                }
+                return true;
+            }
+        }
+
+        public IMoveOnCriteria MoveOnCriteria { get; set; }
 
         private KnowledgeComponentMastery() { }
 
@@ -17,9 +36,24 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         {
             Mastery = 0.0;
             KnowledgeComponent = knowledgeComponent;
+            IsPassed = false;
+            IsSatisfied = false;
         }
 
-        public Result<Evaluation> SubmitAEAnswer(Submission submission)
+        public Result<Evaluation> SubmitAssessmentEventAnswer(Submission submission)
+        {
+            bool IsCompletedBeforeSubmission = IsCompleted;
+            Result<Evaluation> result = EvaluateAndSaveSubmission(submission);
+            if (result.IsSuccess)
+            {
+                TryPass();
+                TryComplete(IsCompletedBeforeSubmission);
+            }
+
+            return result;
+        }
+
+        private Result<Evaluation> EvaluateAndSaveSubmission(Submission submission)
         {
             var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(submission.AssessmentEventId);
             if (assessmentEvent == null)
@@ -34,7 +68,6 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             {
                 return Result.Fail(ex.Message);
             }
-
             if (evaluation.Correct) submission.MarkCorrect();
             submission.CorrectnessLevel = evaluation.CorrectnessLevel;
 
@@ -57,7 +90,53 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
                     KnowledgeComponentId = KnowledgeComponent.Id,
                     AssessmentEventId = result.Value.Id
                 });
+
             return result;
+        }
+
+        private void TryPass()
+        {
+            if (IsPassed)
+                return;
+
+            if (Mastery >= PassThreshold)
+            {
+                Causes(new KnowledgeComponentPassed()
+                {
+                    KnowledgeComponentId = KnowledgeComponent.Id,
+                    LearnerId = LearnerId
+                });
+                TrySatisfy();
+            }
+        }
+
+        private void TryComplete(bool isCompletedBeforeSubmission)
+        {
+            if (isCompletedBeforeSubmission)
+                return;
+
+            if (IsCompleted)
+            {
+                Causes(new KnowledgeComponentCompleted()
+                {
+                    KnowledgeComponentId = KnowledgeComponent.Id,
+                    LearnerId = LearnerId
+                });
+                TrySatisfy();
+            }
+        }
+
+        private void TrySatisfy()
+        {
+            if (IsSatisfied)
+                return;
+
+            if (MoveOnCriteria.IsSatisfied(IsCompleted, IsPassed))
+                Causes(new KnowledgeComponentSatisfied()
+                {
+                    KnowledgeComponentId = KnowledgeComponent.Id,
+                    LearnerId = LearnerId
+                });
         }
 
         protected override void Apply(DomainEvent @event)
@@ -83,6 +162,21 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             var kcMasteryIncrement = 100.0 / KnowledgeComponent.AssessmentEvents.Count
                 * (@event.Submission.CorrectnessLevel - currentCorrectnessLevel) / 100.0;
             Mastery += kcMasteryIncrement;
+        }
+
+        private void When(KnowledgeComponentPassed @event)
+        {
+            IsPassed = true;
+        }
+
+        private void When(KnowledgeComponentCompleted @event)
+        {
+            // No action necessary since IsCompleted is calculated.
+        }
+
+        private void When(KnowledgeComponentSatisfied @event)
+        {
+            IsSatisfied = true;
         }
 
         private void When(AssessmentEventSelected @event)
