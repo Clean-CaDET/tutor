@@ -2,6 +2,7 @@
 using System;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp;
 using Tutor.Core.DomainModel.KnowledgeComponents.MoveOn;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
@@ -139,6 +140,16 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
                 });
         }
 
+        public Result SeekHelpForAssessmentEvent(SoughtHelp helpEvent)
+        {
+            var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(helpEvent.AssessmentEventId);
+            if (assessmentEvent == null)
+                return Result.Fail("No assessment event with ID: " + helpEvent.AssessmentEventId);
+
+            Causes(helpEvent);
+            return Result.Ok();
+        }
+
         protected override void Apply(DomainEvent @event)
         {
             When((dynamic)@event);
@@ -181,8 +192,16 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         private void When(AssessmentEventSelected @event)
         {
-            /* TODO: save information that the AE has been selected somewhere in the 
+            /* 
+             * TODO: save information that the AE has been selected somewhere in the 
              * model, probably in AeMastery when it's added.
+             */
+        }
+
+        private void When(SoughtHelp @event)
+        {
+            /*
+             * Possibly record how many times help was sought in AeMastery?             
              */
         }
     }

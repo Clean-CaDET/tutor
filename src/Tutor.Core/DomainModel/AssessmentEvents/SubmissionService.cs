@@ -1,7 +1,4 @@
 ﻿using FluentResults;
-using System;
-using Tutor.Core.BuildingBlocks;
-using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents
@@ -23,11 +20,12 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
             if (assessmentEvent == null)
                 return Result.Fail("No assessment event with ID: " + submission.AssessmentEventId);
 
-            var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(submission.LearnerId, assessmentEvent.KnowledgeComponentId);
+            var knowledgeComponentMastery = _kcRepository
+                .GetKnowledgeComponentMastery(submission.LearnerId, assessmentEvent.KnowledgeComponentId);
             if (knowledgeComponentMastery == null)
                 return Result.Fail("The Learner isn't enrolled to knowledge component with ID: " + assessmentEvent.KnowledgeComponentId);
 
-            var result = knowledgeComponentMastery.SubmitAssessmentEventAnswer(submission);            
+            var result = knowledgeComponentMastery.SubmitAssessmentEventAnswer(submission);   
 
             _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
 

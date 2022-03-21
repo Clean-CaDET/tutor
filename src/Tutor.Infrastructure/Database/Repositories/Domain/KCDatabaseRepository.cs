@@ -79,5 +79,13 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
         {
             return _dbContext.KnowledgeComponents.ToList();
         }
+
+        public KnowledgeComponentMastery GetKnowledgeComponentMasteryByAssessmentEvent(int learnerId, int assessmentEventId)
+        {
+            var assessmentEvent = _dbContext.AssessmentEvents.FirstOrDefault(ae => ae.Id == assessmentEventId);
+            if (assessmentEvent == null)
+                return null;
+            return GetKnowledgeComponentMastery(learnerId, assessmentEvent.KnowledgeComponentId);
+        }
     }
 }
