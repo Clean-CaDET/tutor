@@ -4,6 +4,7 @@ using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp;
 using Tutor.Core.DomainModel.KnowledgeComponents.MoveOn;
+using Tutor.Core.DomainModel.KnowledgeComponents.Sessions;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
@@ -14,6 +15,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         public double Mastery { get; private set; }
         public KnowledgeComponent KnowledgeComponent { get; private set; }
         public int LearnerId { get; private set; }
+        public bool HasActiveSession { get; private set; }
         public bool IsPassed { get; private set; }
         public bool IsSatisfied { get; private set; }
         public bool IsCompleted
@@ -39,10 +41,43 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             KnowledgeComponent = knowledgeComponent;
             IsPassed = false;
             IsSatisfied = false;
+            HasActiveSession = false;
+        }
+
+        public void LaunchSession()
+        {
+            if (HasActiveSession)
+                Causes(new SessionAbandoned()
+                {
+                    KnowledgeComponentId = KnowledgeComponent.Id,
+                    LearnerId = LearnerId
+                });
+
+            Causes(new SessionLaunched()
+            {
+                KnowledgeComponentId = KnowledgeComponent.Id,
+                LearnerId = LearnerId
+            });
+        }
+
+        public Result TerminateSession()
+        {
+            if (!HasActiveSession)
+                return Result.Fail("No active session to terminate.");
+
+            Causes(new SessionTerminated()
+            {
+                KnowledgeComponentId = KnowledgeComponent.Id,
+                LearnerId = LearnerId
+            });
+            return Result.Ok();
         }
 
         public Result<Evaluation> SubmitAssessmentEventAnswer(Submission submission)
         {
+            if (!HasActiveSession)
+                LaunchSession();
+
             bool IsCompletedBeforeSubmission = IsCompleted;
             Result<Evaluation> result = EvaluateAndSaveSubmission(submission);
             if (result.IsSuccess)
@@ -83,6 +118,9 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         public Result<AssessmentEvent> SelectSuitableAssessmentEvent(IAssessmentEventSelector assessmentEventSelector)
         {
+            if (!HasActiveSession)
+                LaunchSession();
+
             var result = assessmentEventSelector.SelectSuitableAssessmentEvent(KnowledgeComponent.Id, LearnerId);
             if (result.IsSuccess)
                 Causes(new AssessmentEventSelected()
@@ -142,6 +180,9 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         public Result SeekHelpForAssessmentEvent(SoughtHelp helpEvent)
         {
+            if (!HasActiveSession)
+                LaunchSession();
+
             var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(helpEvent.AssessmentEventId);
             if (assessmentEvent == null)
                 return Result.Fail("No assessment event with ID: " + helpEvent.AssessmentEventId);
@@ -153,6 +194,21 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         protected override void Apply(DomainEvent @event)
         {
             When((dynamic)@event);
+        }
+
+        private void When(SessionLaunched @event)
+        {
+            HasActiveSession = true;
+        }
+
+        private void When(SessionTerminated @event)
+        {
+            HasActiveSession = false;
+        }
+
+        private void When(SessionAbandoned @event)
+        {
+            HasActiveSession = false;
         }
 
         private void When(AssessmentEventAnswered @event)

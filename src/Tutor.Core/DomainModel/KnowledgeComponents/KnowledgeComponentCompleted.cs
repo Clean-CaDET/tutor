@@ -1,10 +1,6 @@
-﻿using Tutor.Core.BuildingBlocks.EventSourcing;
-
-namespace Tutor.Core.DomainModel.KnowledgeComponents
+﻿namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
-    public class KnowledgeComponentCompleted : DomainEvent
+    public class KnowledgeComponentCompleted : KnowledgeComponentEvent
     {
-        public int KnowledgeComponentId { get; set; }
-        public int LearnerId { get; set; }
     }
 }
