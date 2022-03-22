@@ -12,7 +12,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
         {
             if (correctnessLevel < 0 || correctnessLevel > 1) throw new ArgumentException("Invalid value for correctness level: " + correctnessLevel);
             AssessmentEventId = assessmentEventId;
-            CorrectnessLevel = correctnessLevel;
+            CorrectnessLevel = Math.Round(correctnessLevel, 2);
         }
     }
 }
