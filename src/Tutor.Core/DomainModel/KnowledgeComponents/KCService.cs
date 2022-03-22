@@ -59,5 +59,20 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         {
             return Result.Ok(_kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId));
         }
+
+        public void LaunchSession(int learnerId, int knowledgeComponentId)
+        {
+            var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
+            knowledgeComponentMastery.LaunchSession();
+            _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
+        }
+
+        public Result TerminateSession(int learnerId, int knowledgeComponentId)
+        {
+            var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
+            var result = knowledgeComponentMastery.TerminateSession();
+            _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
+            return result;
+        }
     }
 }

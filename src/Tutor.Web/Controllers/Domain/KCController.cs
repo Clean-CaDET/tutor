@@ -38,7 +38,7 @@ namespace Tutor.Web.Controllers.Domain
             if (result.IsSuccess) return Ok(_mapper.Map<UnitDto>(result.Value));
             return NotFound(result.Errors);
         }
-        
+
         [HttpGet("knowledge-components/{knowledgeComponentId:int}")]
         public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
         {
@@ -68,13 +68,28 @@ namespace Tutor.Web.Controllers.Domain
             if (result.IsSuccess) return Ok(_mapper.Map<AssessmentEventDto>(result.Value));
             return NotFound(result.Errors);
         }
-        
+
         [HttpGet("knowledge-components/mastery/{knowledgeComponentId:int}")]
         public ActionResult<KnowledgeComponentMasteryDto> GetKnowledgeComponentMastery(int knowledgeComponentId)
         {
             var result = _kcService.GetKnowledgeComponentMastery(int.Parse(User.Claims.First(i => i.Type == "id").Value), knowledgeComponentId);
             if (result.IsSuccess) return Ok(_mapper.Map<KnowledgeComponentMasteryDto>(result.Value));
             return NotFound(result.Errors);
+        }
+
+        [HttpPost("knowledge-components/{knowledgeComponentId:int}/session/launch")]
+        public ActionResult LaunchSession(int knowledgeComponentId)
+        {
+            _kcService.LaunchSession(int.Parse(User.Claims.First(i => i.Type == "id").Value), knowledgeComponentId);
+            return Ok();
+        }
+
+        [HttpPost("knowledge-components/{knowledgeComponentId:int}/session/terminate")]
+        public ActionResult TerminateSession(int knowledgeComponentId)
+        {
+            var result = _kcService.TerminateSession(int.Parse(User.Claims.First(i => i.Type == "id").Value), knowledgeComponentId);
+            if (result.IsSuccess) return Ok();
+            return BadRequest(result.Errors);
         }
     }
 }
