@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Tutor.Infrastructure.Security.Authorization;
 
-public class PasswordUtilities
+public static class PasswordUtilities
 {
     public static string HashPassword(string password, byte[] salt)
     {

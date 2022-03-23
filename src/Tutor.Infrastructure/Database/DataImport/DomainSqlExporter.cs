@@ -65,11 +65,11 @@ public static class DomainSqlExporter
             sqlBuilder.AppendLine();
             switch (ie.Type)
             {
-                case "text": sqlBuilder.Append((string?)BuildTextSql(ie));
+                case "text": sqlBuilder.Append(BuildTextSql(ie));
                     break;
-                case "image": sqlBuilder.Append((string?)BuildImageSql(ie));
+                case "image": sqlBuilder.Append(BuildImageSql(ie));
                     break;
-                case "video": sqlBuilder.Append((string?)BuildVideoSql(ie));
+                case "video": sqlBuilder.Append(BuildVideoSql(ie));
                     break;
             }
         }
@@ -120,16 +120,16 @@ public static class DomainSqlExporter
             switch (ae.Type)
             {
                 case "mrq":
-                    sqlBuilder.Append((string?)BuildMrqSql(ae));
+                    sqlBuilder.Append(BuildMrqSql(ae));
                     break;
                 case "at":
-                    sqlBuilder.Append((string?)BuildAtSql(ae));
+                    sqlBuilder.Append(BuildAtSql(ae));
                     break;
                 case "saq":
-                    sqlBuilder.Append((string?)BuildSaqSql(ae));
+                    sqlBuilder.Append(BuildSaqSql(ae));
                     break;
                 case "ch":
-                    sqlBuilder.Append((string?)BuildChSql(ae));
+                    sqlBuilder.Append(BuildChSql(ae));
                     sqlBuilder.AppendLine();
                     break;
             }
@@ -177,7 +177,7 @@ public static class DomainSqlExporter
             sqlBuilder.AppendLine();
             sqlBuilder.Append("\t(" + startingContainerId-- + ", " + ae.Id + ", '" + itemParts[0] + "');");
             sqlBuilder.AppendLine();
-            sqlBuilder.Append((string?)BuildAtElementSql(itemParts, startingContainerId+1));
+            sqlBuilder.Append(BuildAtElementSql(itemParts, startingContainerId+1));
         }
 
         sqlBuilder.AppendLine().AppendLine();

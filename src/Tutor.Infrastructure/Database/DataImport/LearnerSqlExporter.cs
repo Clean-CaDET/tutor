@@ -5,7 +5,7 @@ using Tutor.Infrastructure.Database.DataImport.DomainExcelModel;
 
 namespace Tutor.Infrastructure.Database.DataImport
 {
-    internal class LearnerSqlExporter
+    internal static class LearnerSqlExporter
     {
         internal static string BuildSql(List<LearnerColumns> learners, List<KCColumns> kcs)
         {

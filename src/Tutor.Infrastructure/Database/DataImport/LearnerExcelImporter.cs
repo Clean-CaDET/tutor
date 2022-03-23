@@ -7,7 +7,7 @@ using Tutor.Infrastructure.Security.Authorization;
 
 namespace Tutor.Infrastructure.Database.DataImport
 {
-    internal class LearnerExcelImporter
+    internal static class LearnerExcelImporter
     {
         internal static List<LearnerColumns> Import(string sourceFolder, string passwordSeed)
         {
