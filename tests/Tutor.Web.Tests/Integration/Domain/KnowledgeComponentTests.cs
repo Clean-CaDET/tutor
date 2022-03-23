@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Domain.DTOs;
@@ -85,6 +87,39 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     -15,
                     4
+                }
+            };
+        }
+
+        [Fact]
+        public void Retrieves_kc_statistics()
+        {
+            using var scope = Factory.Services.CreateScope();
+            var controller = SetupController(scope);
+
+            var kcMasteryStatistics = ((OkObjectResult)controller.GetKnowledgeComponentStatistics(-15).Result).Value as KnowledgeComponentStatisticsDto;
+
+            kcMasteryStatistics.IsSatisfied.ShouldBe(false);
+            kcMasteryStatistics.Mastery.ShouldBe(0);
+            kcMasteryStatistics.NumberOfAssessmentEvents.ShouldBe(4);
+            kcMasteryStatistics.NumberOfTriedAssessmentEvents.ShouldBe(4);
+            kcMasteryStatistics.NumberOfCompletedAssessmentEvents.ShouldBe(0);
+        }
+
+        private KCController SetupController(IServiceScope scope)
+        {
+            return new KCController(Factory.Services.GetRequiredService<IMapper>(),
+                scope.ServiceProvider.GetRequiredService<IKCService>())
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                    {
+                        User = new ClaimsPrincipal(new ClaimsIdentity(new[]
+                        {
+                            new Claim("id", "-2")
+                        }))
+                    }
                 }
             };
         }
