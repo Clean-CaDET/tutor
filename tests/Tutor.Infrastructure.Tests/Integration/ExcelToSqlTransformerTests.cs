@@ -3,7 +3,7 @@ using System.IO;
 using Tutor.Infrastructure.Database.DataImport;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Infrastructure
+namespace Tutor.Infrastructure.Tests.Integration
 {
     public class ExcelToSqlTransformerTests
     {
