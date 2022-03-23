@@ -21,7 +21,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         Result<KnowledgeComponentMastery> GetKnowledgeComponentMastery(int learnerId, int knowledgeComponentId);
 
-        void LaunchSession(int learnerId, int knowledgeComponentId);
+        Result LaunchSession(int learnerId, int knowledgeComponentId);
 
         Result TerminateSession(int learnerId, int knowledgeComponentId);
     }

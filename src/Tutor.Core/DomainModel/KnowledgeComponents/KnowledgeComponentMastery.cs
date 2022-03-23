@@ -44,7 +44,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             HasActiveSession = false;
         }
 
-        public void LaunchSession()
+        public Result LaunchSession()
         {
             if (HasActiveSession)
                 Causes(new SessionAbandoned()
@@ -58,6 +58,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
                 KnowledgeComponentId = KnowledgeComponent.Id,
                 LearnerId = LearnerId
             });
+            return Result.Ok();
         }
 
         public Result TerminateSession()

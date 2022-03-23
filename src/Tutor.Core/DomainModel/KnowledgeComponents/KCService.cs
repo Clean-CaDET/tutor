@@ -60,11 +60,12 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             return Result.Ok(_kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId));
         }
 
-        public void LaunchSession(int learnerId, int knowledgeComponentId)
+        public Result LaunchSession(int learnerId, int knowledgeComponentId)
         {
             var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
-            knowledgeComponentMastery.LaunchSession();
+            var result = knowledgeComponentMastery.LaunchSession();
             _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
+            return result;
         }
 
         public Result TerminateSession(int learnerId, int knowledgeComponentId)

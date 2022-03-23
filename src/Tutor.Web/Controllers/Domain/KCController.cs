@@ -80,8 +80,9 @@ namespace Tutor.Web.Controllers.Domain
         [HttpPost("knowledge-components/{knowledgeComponentId:int}/session/launch")]
         public ActionResult LaunchSession(int knowledgeComponentId)
         {
-            _kcService.LaunchSession(int.Parse(User.Claims.First(i => i.Type == "id").Value), knowledgeComponentId);
-            return Ok();
+            var result = _kcService.LaunchSession(int.Parse(User.Claims.First(i => i.Type == "id").Value), knowledgeComponentId);
+            if (result.IsSuccess) return Ok();
+            return BadRequest(result.Errors);
         }
 
         [HttpPost("knowledge-components/{knowledgeComponentId:int}/session/terminate")]
