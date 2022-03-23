@@ -69,11 +69,11 @@ namespace Tutor.Web.Controllers.Domain
             return NotFound(result.Errors);
         }
         
-        [HttpGet("knowledge-components/mastery/{knowledgeComponentId:int}")]
-        public ActionResult<KnowledgeComponentMasteryDto> GetKnowledgeComponentMastery(int knowledgeComponentId)
+        [HttpGet("knowledge-components/statistics/{knowledgeComponentId:int}")]
+        public ActionResult<KnowledgeComponentMasteryDto> GetKnowledgeComponentStatistics(int knowledgeComponentId)
         {
-            var result = _kcService.GetKnowledgeComponentMastery(int.Parse(User.Claims.First(i => i.Type == "id").Value), knowledgeComponentId);
-            if (result.IsSuccess) return Ok(_mapper.Map<KnowledgeComponentMasteryDto>(result.Value));
+            var result = _kcService.GetKnowledgeComponentStatistics(int.Parse(User.Claims.First(i => i.Type == "id").Value), knowledgeComponentId);
+            if (result.IsSuccess) return Ok(_mapper.Map<KnowledgeComponentStatisticsDto>(result.Value));
             return NotFound(result.Errors);
         }
     }

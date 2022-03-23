@@ -9,7 +9,9 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
         public int KnowledgeComponentId { get; private set; }
 
         public List<Submission> Submissions { get; private set; }
-        
+        public bool IsCompleted => Submissions.Any(s => s.IsCorrect);
+        public bool IsAttempted => Submissions.Count > 0;
+
         protected AssessmentEvent() {}
 
         protected AssessmentEvent(int id, int knowledgeComponentId)

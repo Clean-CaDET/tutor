@@ -1,5 +1,6 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
+using System.Linq;
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.InstructionalEvents;
 
@@ -52,12 +53,19 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
             var result = knowledgeComponentMastery.SelectSuitableAssessmentEvent(_assessmentEventSelector);
             _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
-            return result;             
+            return result;
         }
 
-        public Result<KnowledgeComponentMastery> GetKnowledgeComponentMastery(int learnerId, int knowledgeComponentId)
+        public Result<KnowledgeComponentStatistics> GetKnowledgeComponentStatistics(int learnerId, int knowledgeComponentId)
         {
-            return Result.Ok(_kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId));
+            var mastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
+            var assessmentEvents = mastery.KnowledgeComponent.AssessmentEvents;
+
+            var countCompleted = assessmentEvents.Count(ae => ae.IsCompleted);
+            var countAttempted = assessmentEvents.Count(ae => ae.IsAttempted);
+            
+            return Result.Ok(new KnowledgeComponentStatistics(
+                mastery.Mastery, assessmentEvents.Count, countCompleted, countAttempted, mastery.IsSatisfied));
         }
     }
 }
