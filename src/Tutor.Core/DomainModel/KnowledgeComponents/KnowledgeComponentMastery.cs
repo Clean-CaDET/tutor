@@ -214,7 +214,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         private void When(AssessmentEventAnswered @event)
         {
-            /* TODO: refactor to move the GetMaximumSubmissionCorrectness from AE to KCMastery, or a 
+            /* Probably refactor to move the GetMaximumSubmissionCorrectness from AE to KCMastery, or a 
              * child object (which would be created here if it doesn't exist yet). The Apply method
              * should never fail, silently or otherwise, and fetching the AE can fail.
              */
@@ -250,15 +250,15 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         private void When(AssessmentEventSelected @event)
         {
             /* 
-             * TODO: save information that the AE has been selected somewhere in the 
-             * model, probably in AeMastery when it's added.
+             * Possibly save information that the AE has been selected somewhere in the 
+             * model.
              */
         }
 
         private void When(SoughtHelp @event)
         {
             /*
-             * Possibly record how many times help was sought in AeMastery?             
+             * Possibly record how many times help was sought somewhere?             
              */
         }
     }
