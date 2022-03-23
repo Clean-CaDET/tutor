@@ -63,6 +63,27 @@ namespace Tutor.Web.Tests.Integration.Domain
                     Correct = true, AssessmentEventId = -211,
                     ApplicableHints = new List<ChallengeHintDto>()
                 }
+            },
+            new object[]
+            {
+                new ChallengeSubmissionDto { AssessmentEventId = -154, LearnerId = -1, SourceCode = ChallengeTestData.GetFailingCourse()},
+                new ChallengeEvaluationDto
+                {
+                    Correct = false, AssessmentEventId = -154,
+                    ApplicableHints = new List<ChallengeHintDto> { new()
+                    {
+                        Id = -1541
+                    } }
+                }
+            },
+            new object[]
+            {
+                new ChallengeSubmissionDto { AssessmentEventId = -154, LearnerId = -1, SourceCode = ChallengeTestData.GetPassingCourse()},
+                new ChallengeEvaluationDto
+                {
+                    Correct = true, AssessmentEventId = -154,
+                    ApplicableHints = new List<ChallengeHintDto>()
+                }
             }
         };
 

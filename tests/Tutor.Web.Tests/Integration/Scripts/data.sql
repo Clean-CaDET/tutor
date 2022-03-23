@@ -213,8 +213,8 @@ INSERT INTO public."Challenges"(
 	"Id", "Description", "Url", "TestSuiteLocation", "SolutionUrl")
 	VALUES (-154, 'U svojoj brzopletosti, često nabacamo kratka imena kako bismo što pre ispisali kod koji radi. U sklopu direktorijuma "Naming/02. Meaningful Words" proširi kod korisnim imenima koji uklanjaju potrebe za komentarima i isprati zadatke u zaglavlju klase.', 'https://github.com/Clean-CaDET/challenge-repository', 'Naming.Meaning', 'https://youtu.be/8OYsu0dza0k');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (-1541, -154, 'Naming.MeaningfulWords.Course');
+	"Id", "ChallengeId")
+	VALUES (-1541, -154);
 
 INSERT INTO public."ChallengeHints"(
     "Id", "Content")

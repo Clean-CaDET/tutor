@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace Tutor.Web.Tests.TestData
 {
@@ -20,6 +21,16 @@ namespace Tutor.Web.Tests.TestData
 	        {
                 File.ReadAllText("../../../TestData/" + path)
             };
+        }
+
+        internal static string[] GetFailingCourse()
+        {
+            return GetCode("FailingCourse.txt");
+        }
+
+        internal static string[] GetPassingCourse()
+        {
+            return GetCode("PassingCourse.txt");
         }
     }
 }
