@@ -213,8 +213,8 @@ INSERT INTO public."Challenges"(
 	"Id", "Description", "Url", "TestSuiteLocation", "SolutionUrl")
 	VALUES (-154, 'U svojoj brzopletosti, često nabacamo kratka imena kako bismo što pre ispisali kod koji radi. U sklopu direktorijuma "Naming/02. Meaningful Words" proširi kod korisnim imenima koji uklanjaju potrebe za komentarima i isprati zadatke u zaglavlju klase.', 'https://github.com/Clean-CaDET/challenge-repository', 'Naming.Meaning', 'https://youtu.be/8OYsu0dza0k');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (-1541, -154, 'Naming.MeaningfulWords.Course');
+	"Id", "ChallengeId")
+	VALUES (-1541, -154);
 
 INSERT INTO public."ChallengeHints"(
     "Id", "Content")
@@ -330,31 +330,31 @@ VALUES (-1075, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo
 
 INSERT INTO public."Submissions"(
     "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
-VALUES (-1, -134, -2, true, '2021-12-19 21:25:50.379749+01', 'MrqSubmission', 0.75);
+VALUES (-1, -134, -2, false, '2021-12-19 21:25:50.379749+01', 'MrqSubmission', 0.75);
 
 INSERT INTO public."Submissions"(
     "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
-VALUES (-2, -155, -2, true, '2021-12-19 21:26:50.379749+01', 'MrqSubmission', 0.75);
+VALUES (-2, -155, -2, false, '2021-12-19 21:26:50.379749+01', 'MrqSubmission', 0.75);
 
 INSERT INTO public."Submissions"(
     "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
-VALUES (-3, -155, -2, true, '2021-12-19 21:27:50.379749+01', 'MrqSubmission', 0.3);
+VALUES (-3, -155, -2, false, '2021-12-19 21:27:50.379749+01', 'MrqSubmission', 0.3);
 
 INSERT INTO public."Submissions"(
     "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
-VALUES (-4, -153, -2, true, '2021-12-19 21:28:50.379749+01', 'MrqSubmission', 0.6);
+VALUES (-4, -153, -2, false, '2021-12-19 21:28:50.379749+01', 'MrqSubmission', 0.6);
 
 INSERT INTO public."Submissions"(
     "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
-VALUES (-5, -154, -2, true, '2021-12-19 21:29:50.379749+01', 'MrqSubmission', 0.7);
+VALUES (-5, -154, -2, false, '2021-12-19 21:29:50.379749+01', 'MrqSubmission', 0.7);
 
 INSERT INTO public."Submissions"(
     "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
-VALUES (-6, -156, -2, true, '2021-12-19 21:30:50.379749+01', 'MrqSubmission', 0.4);
+VALUES (-6, -156, -2, false, '2021-12-19 21:30:50.379749+01', 'MrqSubmission', 0.4);
 
 INSERT INTO public."Submissions"(
     "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
-VALUES (-7, -143, -2, true, '2021-12-19 21:25:50.379749+01', 'MrqSubmission', 1.0);
+VALUES (-7, -143, -2, false, '2021-12-19 21:25:50.379749+01', 'MrqSubmission', 1.0);
 
 -- == Unit 2: Readable methods
 INSERT INTO public."Units"(
@@ -586,3 +586,37 @@ INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VAL
 
         return camelCaseWords;
     }}', '{{"Words, word_parts, idx, abc"}}');
+
+
+INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId") VALUES
+	(-995, -21);
+INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
+	(-995, 'Posmatrajući sledeću strukturu paketa, navedi nazive klasa (razdvojene zarezom i bez .cs) koji krše konvenciju.
+
+- Hospital
+  - Core
+    - Patients
+      - Model
+        - Patient.cs
+        - PatientRecord.cs
+      - Repository
+        - PatientRepository.cs
+      - MedicalRecordService.cs
+    - Physicians
+      - Model
+        - Physician.cs
+        - Specialization.cs
+      - Repository
+        - PhysicianStorage.cs
+      - PhysicianService.cs
+    - Schedule
+       - Model
+         - PhysicianSchedule.cs
+         - Appointment.cs
+      - Repository
+        - PhysicianScheduleRepository.cs
+       - ScheduleService.cs
+  - Controllers
+    - PatientRecordController.cs
+    - EmployeeController.cs
+    - ScheduleController.cs', '{{"MedicalRecordService, PhysicianStorage"}}');

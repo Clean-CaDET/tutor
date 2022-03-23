@@ -17,9 +17,17 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             Hint = hint;
         }
 
-        protected override HintDirectory EvaluateClass(CaDETClass solutionAttempt)
+        protected override HintDirectory EvaluateClassesAndMembers(List<CaDETClass> solutionAttempt)
         {
-            return EvaluateRequiredWords(WordExtractor.GetClassNames(solutionAttempt), solutionAttempt.FullName);
+            var allNames = solutionAttempt.SelectMany(GetAllNames);
+            return EvaluateRequiredWords(allNames, "ALL");
+        }
+
+        private static List<string> GetAllNames(CaDETClass solutionAttempt)
+        {
+            var allNames = WordExtractor.GetClassNames(solutionAttempt);
+            allNames.AddRange(solutionAttempt.Members.SelectMany(WordExtractor.GetMemberNames));
+            return allNames;
         }
 
         protected override HintDirectory EvaluateMember(CaDETMember solutionAttempt)
@@ -27,7 +35,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             return EvaluateRequiredWords(WordExtractor.GetMemberNames(solutionAttempt), solutionAttempt.Signature());
         }
 
-        private HintDirectory EvaluateRequiredWords(List<string> usedNames, string codeSnippetId)
+        private HintDirectory EvaluateRequiredWords(IEnumerable<string> usedNames, string codeSnippetId)
         {
             if (RequiredWords == null || RequiredWords.Count == 0) return null;
             

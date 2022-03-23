@@ -41,19 +41,8 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             return hints;
         }
 
-        private HintDirectory EvaluateClassesAndMembers(List<CaDETClass> solutionAttempt)
-        {
-            var hints = new HintDirectory();
-            foreach (var c in solutionAttempt)
-            {
-                hints.MergeHints(EvaluateClass(c));
-                c.Members.ForEach(m => hints.MergeHints(EvaluateMember(m)));
-            }
+        protected abstract HintDirectory EvaluateClassesAndMembers(List<CaDETClass> solutionAttempt);
 
-            return hints;
-        }
-
-        protected abstract HintDirectory EvaluateClass(CaDETClass solutionAttempt);
         protected abstract HintDirectory EvaluateMember(CaDETMember solutionAttempt);
     }
 }

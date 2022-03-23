@@ -110,7 +110,20 @@ namespace Tutor.Web.Tests.Integration.Domain
                     {
                         CorrectnessLevel = 0.25
                     }
-                }
+                },
+                new object[]
+                {
+                    new SaqSubmissionDto
+                    {
+                        AssessmentEventId = -995,
+                        LearnerId = -1,
+                        Answer = "MedicalRecordService"
+                    },
+                    new SaqEvaluationDto
+                    {
+                        CorrectnessLevel = 0.5
+                    }
+                },
             };
         }
     }

@@ -227,8 +227,8 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             assessmentEvent.Submissions.Add(@event.Submission);
 
             if (currentCorrectnessLevel > @event.Submission.CorrectnessLevel) return;
-            var kcMasteryIncrement = 100.0 / KnowledgeComponent.AssessmentEvents.Count
-                * (@event.Submission.CorrectnessLevel - currentCorrectnessLevel) / 100.0;
+            var kcMasteryIncrement = Math.Round(100.0 / KnowledgeComponent.AssessmentEvents.Count
+                * (@event.Submission.CorrectnessLevel - currentCorrectnessLevel) / 100.0, 2);
             Mastery += kcMasteryIncrement;
         }
 

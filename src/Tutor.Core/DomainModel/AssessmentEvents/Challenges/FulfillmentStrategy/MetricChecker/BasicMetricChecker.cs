@@ -20,7 +20,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             Hint = challengeHint;
         }
 
-        protected override HintDirectory EvaluateClass(CaDETClass solutionAttempt)
+        private HintDirectory EvaluateClass(CaDETClass solutionAttempt)
         {
             var hints = new HintDirectory();
             hints.MergeHints(CheckMetricRanges(solutionAttempt.Metrics, solutionAttempt.FullName));
@@ -49,6 +49,18 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             var metricValue = metrics[metric];
             var isFulfilled = FromValue <= metricValue && metricValue <= ToValue;
             return isFulfilled ? null : Hint;
+        }
+
+        protected override HintDirectory EvaluateClassesAndMembers(List<CaDETClass> solutionAttempt)
+        {
+            var hints = new HintDirectory();
+            foreach (var c in solutionAttempt)
+            {
+                hints.MergeHints(EvaluateClass(c));
+                c.Members.ForEach(m => hints.MergeHints(EvaluateMember(m)));
+            }
+
+            return hints;
         }
     }
 }

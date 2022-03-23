@@ -17,7 +17,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
             Hint = hint;
         }
 
-        protected override HintDirectory EvaluateClass(CaDETClass solutionAttempt)
+        private HintDirectory EvaluateClass(CaDETClass solutionAttempt)
         {
             var usedNames = WordExtractor.GetClassNames(solutionAttempt);
             var hints = EvaluateBannedWords(usedNames, solutionAttempt.FullName);
@@ -43,6 +43,18 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy
         private bool ContainsBannedWords(List<string> names)
         {
             return names.SelectMany(WordExtractor.GetWordsFromName).Any(word => BannedWords.Contains(word, StringComparer.OrdinalIgnoreCase));
+        }
+
+        protected override HintDirectory EvaluateClassesAndMembers(List<CaDETClass> solutionAttempt)
+        {
+            var hints = new HintDirectory();
+            foreach (var c in solutionAttempt)
+            {
+                hints.MergeHints(EvaluateClass(c));
+                c.Members.ForEach(m => hints.MergeHints(EvaluateMember(m)));
+            }
+
+            return hints;
         }
     }
 }

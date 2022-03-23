@@ -14,6 +14,7 @@ using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenge;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestion;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
+using KnowledgeComponentStatistics = Tutor.Core.DomainModel.KnowledgeComponents.KnowledgeComponentStatistics;
 
 namespace Tutor.Web.Controllers.Domain.Mappers
 {
@@ -25,6 +26,7 @@ namespace Tutor.Web.Controllers.Domain.Mappers
             CreateMap<KnowledgeComponent, KnowledgeComponentDto>()
                 .ForMember(dest => dest.Mastery, opt => opt.MapFrom(src => src.KnowledgeComponentMasteries.FirstOrDefault()));
             CreateMap<KnowledgeComponentMastery, KnowledgeComponentMasteryDto>();
+            CreateMap<KnowledgeComponentStatistics, KnowledgeComponentStatisticsDto>();
 
             CreateMap<InstructionalEvent, InstructionalEventDto>().IncludeAllDerived();
             CreateMap<Text, TextDto>();
