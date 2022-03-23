@@ -586,3 +586,37 @@ INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VAL
 
         return camelCaseWords;
     }}', '{{"Words, word_parts, idx, abc"}}');
+
+
+INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId") VALUES
+	(-995, -21);
+INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
+	(-995, 'Posmatrajući sledeću strukturu paketa, navedi nazive klasa (razdvojene zarezom i bez .cs) koji krše konvenciju.
+
+- Hospital
+  - Core
+    - Patients
+      - Model
+        - Patient.cs
+        - PatientRecord.cs
+      - Repository
+        - PatientRepository.cs
+      - MedicalRecordService.cs
+    - Physicians
+      - Model
+        - Physician.cs
+        - Specialization.cs
+      - Repository
+        - PhysicianStorage.cs
+      - PhysicianService.cs
+    - Schedule
+       - Model
+         - PhysicianSchedule.cs
+         - Appointment.cs
+      - Repository
+        - PhysicianScheduleRepository.cs
+       - ScheduleService.cs
+  - Controllers
+    - PatientRecordController.cs
+    - EmployeeController.cs
+    - ScheduleController.cs', '{{"MedicalRecordService, PhysicianStorage"}}');

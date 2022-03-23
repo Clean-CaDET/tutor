@@ -17,12 +17,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions
 
         private SaqEvaluation EvaluateSaq(SaqSubmission saqSubmission)
         {
-            if (saqSubmission.Answer.Contains(','))
-            {
-                return new SaqEvaluation(Id, CalculateWordListCorrectness(saqSubmission.Answer), AcceptableAnswers);
-            }
-            var correctness = AcceptableAnswers.Contains(saqSubmission.Answer) ? 1 : 0;
-            return new SaqEvaluation(Id, correctness, AcceptableAnswers);
+            return new SaqEvaluation(Id, CalculateWordListCorrectness(saqSubmission.Answer), AcceptableAnswers);
         }
 
         private double CalculateWordListCorrectness(string saqSubmissionAnswer)
