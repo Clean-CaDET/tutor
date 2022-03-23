@@ -3,18 +3,17 @@
     public class KnowledgeComponentStatistics
     {
         public double Mastery { get; }
-        public int NumberOfAssessmentEvents { get; }
-        public int NumberOfCompletedAssessmentEvents { get; }
-        public int NumberOfTriedAssessmentEvents { get; }
+        public int TotalCount { get; }
+        public int CompletedCount { get; }
+        public int AttemptedCount { get; }
         public bool IsSatisfied { get; }
 
-        public KnowledgeComponentStatistics(double mastery, int numberOfAssessmentEvents,
-            int numberOfCompletedAssessmentEvents, int numberOfTriedAssessmentEvents, bool isSatisfied)
+        public KnowledgeComponentStatistics(double mastery, int totalCount, int completedCount, int attemptedCount, bool isSatisfied)
         {
             Mastery = mastery;
-            NumberOfAssessmentEvents = numberOfAssessmentEvents;
-            NumberOfCompletedAssessmentEvents = numberOfCompletedAssessmentEvents;
-            NumberOfTriedAssessmentEvents = numberOfTriedAssessmentEvents;
+            TotalCount = totalCount;
+            CompletedCount = completedCount;
+            AttemptedCount = attemptedCount;
             IsSatisfied = isSatisfied;
         }
     }

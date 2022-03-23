@@ -101,9 +101,9 @@ namespace Tutor.Web.Tests.Integration.Domain
 
             kcMasteryStatistics.IsSatisfied.ShouldBe(false);
             kcMasteryStatistics.Mastery.ShouldBe(0);
-            kcMasteryStatistics.NumberOfAssessmentEvents.ShouldBe(4);
-            kcMasteryStatistics.NumberOfTriedAssessmentEvents.ShouldBe(4);
-            kcMasteryStatistics.NumberOfCompletedAssessmentEvents.ShouldBe(0);
+            kcMasteryStatistics.TotalCount.ShouldBe(4);
+            kcMasteryStatistics.AttemptedCount.ShouldBe(4);
+            kcMasteryStatistics.CompletedCount.ShouldBe(0);
         }
 
         private KCController SetupController(IServiceScope scope)

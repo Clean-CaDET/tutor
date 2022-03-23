@@ -53,22 +53,19 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
             var result = knowledgeComponentMastery.SelectSuitableAssessmentEvent(_assessmentEventSelector);
             _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
-            return result;             
+            return result;
         }
 
         public Result<KnowledgeComponentStatistics> GetKnowledgeComponentStatistics(int learnerId, int knowledgeComponentId)
         {
             var mastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
-            var assessmentEvents = _assessmentEventRepository.GetAssessmentEventsWithLearnerSubmissions(knowledgeComponentId, learnerId);
+            var assessmentEvents = mastery.KnowledgeComponent.AssessmentEvents;
+
+            var countCompleted = assessmentEvents.Count(ae => ae.IsCompleted);
+            var countAttempted = assessmentEvents.Count(ae => ae.IsAttempted);
             
-            var numberOfAssessmentEvents = assessmentEvents.Count;
-            var numberOfCompletedAssessmentEvents = 0;
-            numberOfCompletedAssessmentEvents += assessmentEvents.Where(ae => ae.Submissions.Count != 0)
-                .Count(ae => ae.Submissions.OrderBy(sub => sub.CorrectnessLevel).Last().CorrectnessLevel >= 0.9);
-            var numberOfTriedAssessmentEvents = numberOfAssessmentEvents - assessmentEvents.FindAll(ae => ae.Submissions.Count == 0).Count;
-            
-            return Result.Ok(new KnowledgeComponentStatistics(mastery.Mastery, numberOfAssessmentEvents,
-                numberOfCompletedAssessmentEvents, numberOfTriedAssessmentEvents, mastery.IsSatisfied));
+            return Result.Ok(new KnowledgeComponentStatistics(
+                mastery.Mastery, assessmentEvents.Count, countCompleted, countAttempted, mastery.IsSatisfied));
         }
     }
 }
