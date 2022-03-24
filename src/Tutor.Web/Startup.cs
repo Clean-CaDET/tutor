@@ -32,7 +32,6 @@ using Tutor.Web.IAM;
 using Tutor.Web.IAM.Keycloak;
 using Tutor.Infrastructure.Serialization;
 using Tutor.Core.DomainModel.Feedback;
-using Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp;
 using Tutor.Core.DomainModel.KnowledgeComponents.MoveOn;
 
 namespace Tutor.Web

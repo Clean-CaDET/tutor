@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 
-namespace Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp
+namespace Tutor.Core.DomainModel.AssessmentEvents
 {
     public interface IAssessmentEventHelpService
     {

@@ -1,6 +1,6 @@
 ﻿using Tutor.Core.BuildingBlocks.EventSourcing;
 
-namespace Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp
+namespace Tutor.Core.DomainModel.KnowledgeComponents.Events.AssessmentEventEvents.HelpEvents
 {
     public abstract class SoughtHelp : DomainEvent
     {

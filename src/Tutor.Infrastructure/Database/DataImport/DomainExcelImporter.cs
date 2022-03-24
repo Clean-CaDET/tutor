@@ -39,7 +39,6 @@ namespace Tutor.Infrastructure.Database.DataImport
             var ies = CreateIEs(sheets.Where(s => s.Name == "IEs"), kcs);
             var aes = CreateAEs(sheets.Where(s => s.Name == "AEs"), kcs);
 
-
             return new DomainExcelContent(units, kcs, ies, aes);
         }
         

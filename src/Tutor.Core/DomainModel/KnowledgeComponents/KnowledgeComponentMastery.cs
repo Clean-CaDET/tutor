@@ -2,9 +2,11 @@
 using System;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.AssessmentEvents;
-using Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp;
+using Tutor.Core.DomainModel.KnowledgeComponents.Events.AssessmentEventEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents.Events.AssessmentEventEvents.HelpEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents.Events.KnowledgeComponentEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents.Events.KnowledgeComponentEvents.SessionLifecycleEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents.MoveOn;
-using Tutor.Core.DomainModel.KnowledgeComponents.Sessions;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
@@ -39,9 +41,6 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         {
             Mastery = 0.0;
             KnowledgeComponent = knowledgeComponent;
-            IsPassed = false;
-            IsSatisfied = false;
-            HasActiveSession = false;
         }
 
         public Result LaunchSession()

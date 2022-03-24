@@ -8,9 +8,10 @@ using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
 using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions;
-using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp;
-using Tutor.Core.DomainModel.KnowledgeComponents.Sessions;
+using Tutor.Core.DomainModel.KnowledgeComponents.Events.AssessmentEventEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents.Events.AssessmentEventEvents.HelpEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents.Events.KnowledgeComponentEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents.Events.KnowledgeComponentEvents.SessionLifecycleEvents;
 
 namespace Tutor.Infrastructure.Serialization
 {

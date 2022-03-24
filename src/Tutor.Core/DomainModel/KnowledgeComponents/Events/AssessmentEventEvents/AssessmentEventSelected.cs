@@ -1,6 +1,6 @@
 ﻿using Tutor.Core.BuildingBlocks.EventSourcing;
 
-namespace Tutor.Core.DomainModel.KnowledgeComponents
+namespace Tutor.Core.DomainModel.KnowledgeComponents.Events.AssessmentEventEvents
 {
     public class AssessmentEventSelected : DomainEvent
     {
