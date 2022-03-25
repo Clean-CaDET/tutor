@@ -31,5 +31,11 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
 
             return result;
         }
+
+        public Result<double> GetMaxCorrectness(int aeId, int learnerId)
+        {
+            var submission = _assessmentEventRepository.FindSubmissionWithMaxCorrectness(aeId, learnerId);
+            return Result.Ok(submission?.CorrectnessLevel ?? 0.0);
+        }
     }
 }

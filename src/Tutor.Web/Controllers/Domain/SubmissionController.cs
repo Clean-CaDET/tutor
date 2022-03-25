@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
@@ -56,12 +56,22 @@ namespace Tutor.Web.Controllers.Domain
         }
 
         [HttpPost("short-answer")]
-        public ActionResult<List<ArrangeTaskContainerEvaluationDto>> SubmitShortAnswerQuestion(
+        public ActionResult<List<SaqEvaluationDto>> SubmitShortAnswerQuestion(
             [FromBody] SaqSubmissionDto submission)
         {
             var result = _submissionService.EvaluateAndSaveSubmission(_mapper.Map<SaqSubmission>(submission));
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<SaqEvaluationDto>(result.Value));
+        }
+
+        // Rework when we separate the controllers and AEMastery.
+        [HttpPost("max-correctness")]
+        public ActionResult<List<ArrangeTaskContainerEvaluationDto>> SubmitShortAnswerQuestion(
+            [FromBody] ChallengeSubmissionDto submission)
+        {
+            var result = _submissionService.GetMaxCorrectness(submission.AssessmentEventId, submission.LearnerId);
+            if (result.IsFailed) return BadRequest(result.Errors);
+            return Ok(result.Value);
         }
     }
 }

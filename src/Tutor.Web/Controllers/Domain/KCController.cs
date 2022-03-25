@@ -70,7 +70,7 @@ namespace Tutor.Web.Controllers.Domain
         }
         
         [HttpGet("knowledge-components/statistics/{knowledgeComponentId:int}")]
-        public ActionResult<KnowledgeComponentMasteryDto> GetKnowledgeComponentStatistics(int knowledgeComponentId)
+        public ActionResult<KnowledgeComponentStatisticsDto> GetKnowledgeComponentStatistics(int knowledgeComponentId)
         {
             var result = _kcService.GetKnowledgeComponentStatistics(int.Parse(User.Claims.First(i => i.Type == "id").Value), knowledgeComponentId);
             if (result.IsSuccess) return Ok(_mapper.Map<KnowledgeComponentStatisticsDto>(result.Value));
