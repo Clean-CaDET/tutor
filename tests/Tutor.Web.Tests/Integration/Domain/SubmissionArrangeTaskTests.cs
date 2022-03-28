@@ -16,7 +16,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public SubmissionArrangeTaskTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
         [Theory]
-        [MemberData(nameof(ATSubmissions))]
+        [MemberData(nameof(AtSubmissions))]
         public void Submits_arrange_task(ArrangeTaskSubmissionDto submission, ArrangeTaskEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
@@ -25,16 +25,23 @@ namespace Tutor.Web.Tests.Integration.Domain
             var actualEvaluation = ((OkObjectResult)controller.SubmitArrangeTask(submission).Result).Value as ArrangeTaskEvaluationDto;
 
             actualEvaluation.ShouldNotBeNull();
+            actualEvaluation.CorrectnessLevel.ShouldBe(expectedEvaluation.CorrectnessLevel);
             actualEvaluation.ContainerEvaluations.Count.ShouldBe(expectedEvaluation.ContainerEvaluations.Count);
-            foreach (var actualContainer in actualEvaluation.ContainerEvaluations)
-            {
-                var relatedContainer = expectedEvaluation.ContainerEvaluations.Find(i => i.Id == actualContainer.Id);
-                relatedContainer.ShouldNotBeNull();
-                relatedContainer.SubmissionWasCorrect.ShouldBe(actualContainer.SubmissionWasCorrect);
-            }
         }
 
-        public static IEnumerable<object[]> ATSubmissions()
+        [Theory]
+        [MemberData(nameof(InvalidAtSubmissions))]
+        public void Submits_invalid_arrange_task(ArrangeTaskSubmissionDto submission)
+        {
+            using var scope = Factory.Services.CreateScope();
+            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>());
+
+            var actualEvaluation = ((BadRequestObjectResult)controller.SubmitArrangeTask(submission).Result).Value;
+
+            actualEvaluation.ShouldNotBeNull();
+        }
+
+        public static IEnumerable<object[]> AtSubmissions()
         {
             return new List<object[]>
             {
@@ -55,13 +62,14 @@ namespace Tutor.Web.Tests.Integration.Domain
                     },
                     new ArrangeTaskEvaluationDto
                     {
+                        CorrectnessLevel = 0.6,
                         ContainerEvaluations = new List<ArrangeTaskContainerEvaluationDto>
                         {
-                            new() {Id = -1, SubmissionWasCorrect = false},
-                            new() {Id = -2, SubmissionWasCorrect = false},
-                            new() {Id = -3, SubmissionWasCorrect = false},
-                            new() {Id = -4, SubmissionWasCorrect = true},
-                            new() {Id = -5, SubmissionWasCorrect = true}
+                            new() {Id = -1},
+                            new() {Id = -2},
+                            new() {Id = -3},
+                            new() {Id = -4},
+                            new() {Id = -5}
                         }
                     }
                 },
@@ -82,13 +90,14 @@ namespace Tutor.Web.Tests.Integration.Domain
                     },
                     new ArrangeTaskEvaluationDto
                     {
+                        CorrectnessLevel = 1,
                         ContainerEvaluations = new List<ArrangeTaskContainerEvaluationDto>
                         {
-                            new() {Id = -1, SubmissionWasCorrect = true},
-                            new() {Id = -2, SubmissionWasCorrect = true},
-                            new() {Id = -3, SubmissionWasCorrect = true},
-                            new() {Id = -4, SubmissionWasCorrect = true},
-                            new() {Id = -5, SubmissionWasCorrect = true}
+                            new() {Id = -1},
+                            new() {Id = -2},
+                            new() {Id = -3},
+                            new() {Id = -4},
+                            new() {Id = -5}
                         }
                     }
                 },
@@ -109,16 +118,24 @@ namespace Tutor.Web.Tests.Integration.Domain
                     },
                     new ArrangeTaskEvaluationDto
                     {
+                        CorrectnessLevel = 0.2,
                         ContainerEvaluations = new List<ArrangeTaskContainerEvaluationDto>
                         {
-                            new() {Id = -1, SubmissionWasCorrect = false},
-                            new() {Id = -2, SubmissionWasCorrect = false},
-                            new() {Id = -3, SubmissionWasCorrect = false},
-                            new() {Id = -4, SubmissionWasCorrect = false},
-                            new() {Id = -5, SubmissionWasCorrect = false}
+                            new() {Id = -1},
+                            new() {Id = -2},
+                            new() {Id = -3},
+                            new() {Id = -4},
+                            new() {Id = -5}
                         }
                     }
-                },
+                }
+            };
+        }
+
+        public static IEnumerable<object[]> InvalidAtSubmissions()
+        {
+            return new List<object[]>
+            {
                 new object[]
                 {
                     new ArrangeTaskSubmissionDto
@@ -133,16 +150,34 @@ namespace Tutor.Web.Tests.Integration.Domain
                             new() {ArrangeTaskContainerId = -4},
                             new() {ArrangeTaskContainerId = -5}
                         }
-                    },
-                    new ArrangeTaskEvaluationDto
+                    }
+                },
+                new object[]
+                {
+                    new ArrangeTaskSubmissionDto
                     {
-                        ContainerEvaluations = new List<ArrangeTaskContainerEvaluationDto>
+                        AssessmentEventId = -2111,
+                        LearnerId = -1,
+                        Containers= new List<ArrangeTaskContainerSubmissionDto>
                         {
-                            new() {Id = -1, SubmissionWasCorrect = false},
-                            new() {Id = -2, SubmissionWasCorrect = false},
-                            new() {Id = -3, SubmissionWasCorrect = false},
-                            new() {Id = -4, SubmissionWasCorrect = false},
-                            new() {Id = -5, SubmissionWasCorrect = false}
+                            new() {ArrangeTaskContainerId = -1},
+                            new() {ArrangeTaskContainerId = -2}
+                        }
+                    }
+                },
+                new object[]
+                {
+                    new ArrangeTaskSubmissionDto
+                    {
+                        AssessmentEventId = -2112,
+                        LearnerId = -1,
+                        Containers= new List<ArrangeTaskContainerSubmissionDto>
+                        {
+                            new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1, -2, -3, -4, -5}},
+                            new() {ArrangeTaskContainerId = -2},
+                            new() {ArrangeTaskContainerId = -3},
+                            new() {ArrangeTaskContainerId = -4},
+                            new() {ArrangeTaskContainerId = -5}
                         }
                     }
                 }

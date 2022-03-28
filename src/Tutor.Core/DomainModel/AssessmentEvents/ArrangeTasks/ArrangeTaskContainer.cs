@@ -10,10 +10,9 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
         public string Title { get; private set; }
         public List<ArrangeTaskElement> Elements { get; private set; }
 
-        public bool IsCorrectSubmission(List<int> elementIds)
+        public int CountIncorrectElements(List<int> elementIds)
         {
-            return elementIds.Count == Elements.Count
-                   && Elements.Select(e => e.Id).All(elementIds.Contains);
+            return elementIds.Count(id => Elements.All(e => e.Id != id));
         }
     }
 }
