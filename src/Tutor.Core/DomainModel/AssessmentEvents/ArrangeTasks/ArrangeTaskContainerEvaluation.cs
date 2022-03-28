@@ -3,12 +3,12 @@
     public class ArrangeTaskContainerEvaluation
     {
         public ArrangeTaskContainer FullAnswer { get; }
-        public bool SubmissionWasCorrect { get; }
+        public int IncorrectElementsCount { get; }
 
-        public ArrangeTaskContainerEvaluation(ArrangeTaskContainer fullAnswer, bool submissionWasCorrect)
+        public ArrangeTaskContainerEvaluation(ArrangeTaskContainer fullAnswer, int incorrectElementsCount)
         {
             FullAnswer = fullAnswer;
-            SubmissionWasCorrect = submissionWasCorrect;
+            IncorrectElementsCount = incorrectElementsCount;
         }
     }
 }

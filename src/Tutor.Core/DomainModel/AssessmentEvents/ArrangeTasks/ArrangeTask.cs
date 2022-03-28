@@ -11,14 +11,30 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
 
         public override Evaluation EvaluateSubmission(Submission submission)
         {
-            if (submission is ArrangeTaskSubmission atSubmission) return EvaluateAT(atSubmission);
-            throw new ArgumentException("Incorrect submission supplied to Arrange Task with ID " + Id);
+            ValidateSubmission(submission);
+            return EvaluateAt(submission as ArrangeTaskSubmission);
         }
 
-        private Evaluation EvaluateAT(ArrangeTaskSubmission atSubmission)
+        private void ValidateSubmission(Submission submission)
+        {
+            if (submission is not ArrangeTaskSubmission atSubmission)
+                throw new ArgumentException("Incorrect submission type supplied to Arrange Task with ID " + Id);
+
+            var submittedContainerIds = atSubmission.Containers.Select(c => c.ArrangeTaskContainerId).ToList();
+            var actualContainerIds = Containers.Select(c => c.Id).ToList();
+            if (!(submittedContainerIds.Count == actualContainerIds.Count && submittedContainerIds.Any(actualContainerIds.Contains)))
+                throw new ArgumentException("Incorrect ArrangeTaskContainers supplied to Arrange Task with ID " + Id);
+
+            var submittedElementIds = atSubmission.Containers.SelectMany(c => c.ElementIds).ToList();
+            var actualElementIds = Containers.SelectMany(c => c.Elements).Select(e => e.Id).ToList();
+            if (!(submittedElementIds.Count == actualElementIds.Count && submittedElementIds.Any(actualElementIds.Contains)))
+                throw new ArgumentException("Incorrect Elements supplied to Arrange Task with ID " + Id);
+        }
+
+        private Evaluation EvaluateAt(ArrangeTaskSubmission atSubmission)
         {
             var evaluations = EvaluateContainers(atSubmission.Containers);
-            var correctness = (double) evaluations.Count(c => c.SubmissionWasCorrect) / evaluations.Count;
+            var correctness = 1 - (double) evaluations.Sum(c => c.IncorrectElementsCount) / Containers.Sum(c => c.Elements.Count);
 
             return new ArrangeTaskEvaluation(Id, correctness, evaluations);
         }
@@ -29,10 +45,9 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
             foreach (var container in Containers)
             {
                 var submittedContainer = containers.Find(c => c.ArrangeTaskContainerId == container.Id);
-                if (submittedContainer == null) throw new ArgumentException("No ArrangeTaskContainer found with ID " + container.Id);
 
                 evaluations.Add(new ArrangeTaskContainerEvaluation(container,
-                    container.IsCorrectSubmission(submittedContainer.ElementIds)));
+                    container.CountIncorrectElements(submittedContainer?.ElementIds)));
             }
 
             return evaluations;
