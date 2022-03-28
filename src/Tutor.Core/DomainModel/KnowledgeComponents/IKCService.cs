@@ -24,5 +24,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         Result LaunchSession(int learnerId, int knowledgeComponentId);
 
         Result TerminateSession(int learnerId, int knowledgeComponentId);
+
+        Result AbandonSession(int learnerId, int knowledgeComponentId);
     }
 }

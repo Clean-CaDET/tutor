@@ -73,6 +73,19 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             return Result.Ok();
         }
 
+        public Result AbandonSession()
+        {
+            if (!HasActiveSession)
+                return Result.Fail("No active session to abandon.");
+
+            Causes(new SessionAbandoned()
+            {
+                KnowledgeComponentId = KnowledgeComponent.Id,
+                LearnerId = LearnerId
+            });
+            return Result.Ok();
+        }
+
         public Result<Evaluation> SubmitAssessmentEventAnswer(Submission submission)
         {
             if (!HasActiveSession)
