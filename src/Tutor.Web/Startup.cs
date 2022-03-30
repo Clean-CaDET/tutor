@@ -33,6 +33,7 @@ using Tutor.Web.IAM.Keycloak;
 using Tutor.Infrastructure.Serialization;
 using Tutor.Core.DomainModel.Feedback;
 using Tutor.Core.DomainModel.KnowledgeComponents.MoveOn;
+using Tutor.Web.Hubs;
 
 namespace Tutor.Web
 {
@@ -79,10 +80,13 @@ namespace Tutor.Web
                     builder =>
                     {
                         builder.WithOrigins(ParseCorsOrigins())
+                            .AllowCredentials()
                             .WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization, "access_token")
                             .WithMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
                     });
             });
+
+            services.AddSignalR();
 
             services.AddScoped<IKCService, KcService>();
             services.AddScoped<IKCRepository, KCDatabaseRepository>();
@@ -225,7 +229,11 @@ namespace Tutor.Web
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<SessionHub>("/api/session");
+            });
         }
 
         private static string[] ParseCorsOrigins()
