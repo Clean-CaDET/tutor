@@ -33,6 +33,7 @@ using Tutor.Web.IAM.Keycloak;
 using Tutor.Infrastructure.Serialization;
 using Tutor.Core.DomainModel.Feedback;
 using Tutor.Core.DomainModel.KnowledgeComponents.MoveOn;
+using Tutor.Web.Hubs;
 
 namespace Tutor.Web
 {
@@ -79,10 +80,13 @@ namespace Tutor.Web
                     builder =>
                     {
                         builder.WithOrigins(ParseCorsOrigins())
+                            .AllowCredentials()
                             .WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization, "access_token")
                             .WithMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
                     });
             });
+
+            services.AddSignalR();
 
             services.AddScoped<IKCService, KcService>();
             services.AddScoped<IKCRepository, KCDatabaseRepository>();
@@ -153,6 +157,19 @@ namespace Tutor.Web
 
                     options.Events = new JwtBearerEvents
                     {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["access_token"];
+                            var path = context.HttpContext.Request.Path;
+
+                            if (!string.IsNullOrEmpty(accessToken) &&
+                                path.StartsWithSegments("/api/session"))
+                            {
+                                // Read the token out of the query string
+                                context.Token = accessToken;
+                            }
+                            return Task.CompletedTask;
+                        },
                         OnAuthenticationFailed = context =>
                         {
                             if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
@@ -203,7 +220,7 @@ namespace Tutor.Web
                         return failedContext.Response.WriteAsync(Env.IsDevelopment()
                             ? failedContext.Exception.ToString()
                             : "An error occured processing your authentication.");
-                    }
+                    }                    
                 };
             });
         }
@@ -225,7 +242,11 @@ namespace Tutor.Web
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<SessionHub>("/api/session");
+            });
         }
 
         private static string[] ParseCorsOrigins()

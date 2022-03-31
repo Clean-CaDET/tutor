@@ -83,5 +83,13 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
             return result;
         }
+
+        public Result AbandonSession(int learnerId, int knowledgeComponentId)
+        {
+            var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
+            var result = knowledgeComponentMastery.AbandonSession();
+            _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
+            return result;
+        }
     }
 }
