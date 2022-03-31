@@ -1,9 +1,8 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace Tutor.Web.Tests.TestData
 {
-    internal class ChallengeTestData
+    internal class IntegrationTestCode
     {
         public static string[] GetFailingAchievement()
         {

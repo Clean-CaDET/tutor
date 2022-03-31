@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Tutor.Infrastructure.Security.Authorization.JWT
 {
-    public class JwtService : IJwtService
+    public class JwtService : ITokenService
     {
         private readonly IRefreshTokenValidator _refreshTokenValidator;
         private readonly string _key = EnvironmentConnection.GetSecret("JWT_KEY") ?? "tutor_secret_key";   
