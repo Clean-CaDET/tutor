@@ -44,7 +44,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             new object[]
             {
-                new ChallengeSubmissionDto { AssessmentEventId = -211, LearnerId = -1, SourceCode = ChallengeTestData.GetFailingAchievement()},
+                new ChallengeSubmissionDto { AssessmentEventId = -211, LearnerId = -1, SourceCode = IntegrationTestCode.GetFailingAchievement()},
                 new ChallengeEvaluationDto
                 {
                     Correct = false, AssessmentEventId = -211,
@@ -57,7 +57,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             },
             new object[]
             {
-                new ChallengeSubmissionDto { AssessmentEventId = -211, LearnerId = -1, SourceCode = ChallengeTestData.GetPassingAchievement()},
+                new ChallengeSubmissionDto { AssessmentEventId = -211, LearnerId = -1, SourceCode = IntegrationTestCode.GetPassingAchievement()},
                 new ChallengeEvaluationDto
                 {
                     Correct = true, AssessmentEventId = -211,
@@ -66,7 +66,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             },
             new object[]
             {
-                new ChallengeSubmissionDto { AssessmentEventId = -154, LearnerId = -1, SourceCode = ChallengeTestData.GetFailingCourse()},
+                new ChallengeSubmissionDto { AssessmentEventId = -154, LearnerId = -1, SourceCode = IntegrationTestCode.GetFailingCourse()},
                 new ChallengeEvaluationDto
                 {
                     Correct = false, AssessmentEventId = -154,
@@ -78,7 +78,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             },
             new object[]
             {
-                new ChallengeSubmissionDto { AssessmentEventId = -154, LearnerId = -1, SourceCode = ChallengeTestData.GetPassingCourse()},
+                new ChallengeSubmissionDto { AssessmentEventId = -154, LearnerId = -1, SourceCode = IntegrationTestCode.GetPassingCourse()},
                 new ChallengeEvaluationDto
                 {
                     Correct = true, AssessmentEventId = -154,

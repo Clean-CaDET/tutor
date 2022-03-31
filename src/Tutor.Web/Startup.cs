@@ -98,7 +98,7 @@ namespace Tutor.Web
             services.Configure<WorkspaceOptions>(Configuration.GetSection(WorkspaceOptions.ConfigKey));
             services.AddScoped<IWorkspaceCreator, NoWorkspaceCreator>();
             services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
-            services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<ITokenService, JwtService>();
             services.AddScoped<IRefreshTokenValidator, RefreshTokenValidator>();
 
             services.AddScoped<IAuthProvider, KeycloakAuthProvider>();

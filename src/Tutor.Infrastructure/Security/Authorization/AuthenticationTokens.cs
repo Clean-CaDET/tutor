@@ -1,4 +1,4 @@
-﻿namespace Tutor.Infrastructure.Security.Authorization.JWT
+﻿namespace Tutor.Infrastructure.Security.Authorization
 {
     public class AuthenticationTokens
     {
