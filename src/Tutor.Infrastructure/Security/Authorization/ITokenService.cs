@@ -1,8 +1,8 @@
 ﻿using FluentResults;
 
-namespace Tutor.Infrastructure.Security.Authorization.JWT
+namespace Tutor.Infrastructure.Security.Authorization
 {
-    public interface IJwtService
+    public interface ITokenService
     {
         Result<AuthenticationResponse> GenerateAccessToken(int userId, string role);
 
