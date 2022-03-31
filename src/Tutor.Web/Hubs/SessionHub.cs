@@ -15,34 +15,22 @@ namespace Tutor.Web.Hubs
             _kcService = kcService;
         }
 
-        //public void LaunchSession(int knowledgeComponentId)
-        //{
-        //    var result = _kcService.LaunchSession(Context.User.Id(), knowledgeComponentId);
-        //    if (result.IsSuccess)
-        //        Context.Items.Add("knowledgeComponentId", knowledgeComponentId);
-        //}
-
-        public void LaunchSession(int knowledgeComponentId, int learnerId)
+        public void LaunchSession(int knowledgeComponentId)
         {
-            var result = _kcService.LaunchSession(learnerId, knowledgeComponentId);
+            var result = _kcService.LaunchSession(Context.User.Id(), knowledgeComponentId);
             if (result.IsSuccess)
-            {
                 Context.Items.Add("knowledgeComponentId", knowledgeComponentId);
-                Context.Items.Add("learnerId", learnerId);
-            }
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             object knowledgeComponentId;
-            object  learnerId;
-            if (Context.Items.TryGetValue("knowledgeComponentId", out knowledgeComponentId)
-                && Context.Items.TryGetValue("learnerId", out learnerId))
+            if (Context.Items.TryGetValue("knowledgeComponentId", out knowledgeComponentId))
             {
                 if (exception == null)
-                    _kcService.TerminateSession((learnerId as int?).Value, (knowledgeComponentId as int?).Value);
+                    _kcService.TerminateSession(Context.User.Id(), (knowledgeComponentId as int?).Value);
                 else
-                    _kcService.AbandonSession((learnerId as int?).Value, (knowledgeComponentId as int?).Value);
+                    _kcService.AbandonSession(Context.User.Id(), (knowledgeComponentId as int?).Value);
             }
             await base.OnDisconnectedAsync(exception);
         }
