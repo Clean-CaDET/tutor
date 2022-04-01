@@ -8,11 +8,11 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
     public class KcService : IKCService
     {
-        private readonly IKCRepository _kcRepository;
+        private readonly IKcRepository _kcRepository;
         private readonly IAssessmentEventRepository _assessmentEventRepository;
         private readonly IAssessmentEventSelector _assessmentEventSelector;
 
-        public KcService(IKCRepository ikcRepository,
+        public KcService(IKcRepository ikcRepository,
             IAssessmentEventRepository assessmentEventRepository,
             IAssessmentEventSelector assessmentEventSelector)
         {
@@ -46,10 +46,10 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         public Result<List<InstructionalEvent>> GetInstructionalEventsByKnowledgeComponent(int knowledgeComponentId, int learnerId)
         {
             var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
-            var instructionalEvents = _kcRepository.GetInstructionalEventsByKnowledgeComponent(knowledgeComponentId);
+            var instructionalEvents = _kcRepository.GetInstructionalEvents(knowledgeComponentId);
 
             var result = knowledgeComponentMastery.RecordInstructionalEventSelection();
-            _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
+            _kcRepository.UpdateKcMastery(knowledgeComponentMastery);
 
             if (result.IsFailed)
                 return result.ToResult<List<InstructionalEvent>>();
@@ -61,7 +61,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         {
             var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
             var result = knowledgeComponentMastery.SelectSuitableAssessmentEvent(_assessmentEventSelector);
-            _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
+            _kcRepository.UpdateKcMastery(knowledgeComponentMastery);
             return result;
         }
 

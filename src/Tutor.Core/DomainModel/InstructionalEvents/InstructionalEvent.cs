@@ -4,7 +4,7 @@
     {
         public int Id { get; private set; }
         public int KnowledgeComponentId { get; private set; }
-
+        public int Order { get; private set; }
         protected InstructionalEvent() {}
 
         protected InstructionalEvent(int id, int knowledgeComponentId)
