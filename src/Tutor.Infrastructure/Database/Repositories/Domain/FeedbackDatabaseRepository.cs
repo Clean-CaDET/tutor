@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tutor.Core.DomainModel.Feedback;
+﻿using Tutor.Core.DomainModel.Feedback;
 
 namespace Tutor.Infrastructure.Database.Repositories.Domain
 {

@@ -11,10 +11,6 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
         public List<AssessmentEvent> GetAssessmentEventsWithLearnerSubmissions(int knowledgeComponentId,
             int learnerId);
 
-        void SaveSubmission(Submission submission);
-
         Submission FindSubmissionWithMaxCorrectness(int assessmentEventId, int learnerId);
-
-        int CountAssessmentEvents(int knowledgeComponentId);
     }
 }

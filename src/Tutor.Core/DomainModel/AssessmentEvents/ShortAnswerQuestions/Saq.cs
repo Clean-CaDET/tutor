@@ -22,6 +22,8 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions
 
         private double CalculateWordListCorrectness(string saqSubmissionAnswer)
         {
+            if (string.IsNullOrEmpty(saqSubmissionAnswer)) return 0;
+
             var submissionWords = saqSubmissionAnswer.Split(',', StringSplitOptions.TrimEntries).Distinct().ToArray();
             double maxCorrectness = 0;
             foreach (var acceptableAnswer in AcceptableAnswers)

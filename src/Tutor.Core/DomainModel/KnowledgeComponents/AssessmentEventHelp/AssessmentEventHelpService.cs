@@ -4,9 +4,9 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp
 {
     public class AssessmentEventHelpService : IAssessmentEventHelpService
     {
-        private readonly IKCRepository _kcRepository;
+        private readonly IKcRepository _kcRepository;
 
-        public AssessmentEventHelpService(IKCRepository kcRepository)
+        public AssessmentEventHelpService(IKcRepository kcRepository)
         {
             _kcRepository = kcRepository;
         }
@@ -38,7 +38,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp
 
             var result = knowledgeComponentMastery.SeekHelpForAssessmentEvent(helpEvent);
 
-            _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
+            _kcRepository.UpdateKcMastery(knowledgeComponentMastery);
 
             return result;
         }
