@@ -95,6 +95,16 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             return result;
         }
 
+        public Result RecordInstructionalEventSelection()
+        {
+            Causes(new InstructionalEventsSelected()
+            {
+                LearnerId = LearnerId,
+                KnowledgeComponentId = KnowledgeComponent.Id
+            });
+            return Result.Ok();
+        }
+
         private void TryPass()
         {
             if (IsPassed)
@@ -196,6 +206,11 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
              * TODO: save information that the AE has been selected somewhere in the 
              * model, probably in AeMastery when it's added.
              */
+        }
+
+        private void When(InstructionalEventsSelected @event)
+        {
+            // No action necessary for now.
         }
 
         private void When(SoughtHelp @event)

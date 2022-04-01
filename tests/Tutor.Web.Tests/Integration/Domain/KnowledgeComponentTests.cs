@@ -36,8 +36,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Retrieves_kc_instructional_events(int knowledgeComponentId, int expectedIEsCount)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKCService>());
+            var controller = SetupController(scope);
 
             var IEs = ((OkObjectResult)controller.GetInstructionalEvents(knowledgeComponentId).Result).Value as List<InstructionalEventDto>;
 

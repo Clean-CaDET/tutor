@@ -24,6 +24,7 @@ namespace Tutor.Infrastructure.Serialization
             { typeof(KnowledgeComponentCompleted), "KnowledgeComponentCompleted" },
             { typeof(KnowledgeComponentSatisfied), "KnowledgeComponentSatisfied" },
             { typeof(AssessmentEventSelected), "AssessmentEventSelected" },
+            { typeof(InstructionalEventsSelected), "InstructionalEventsSelected" },
 #region Submissions
             { typeof(ArrangeTaskSubmission), "ArrangeTaskSubmission" },
             { typeof(ChallengeSubmission), "ChallengeSubmission" },
