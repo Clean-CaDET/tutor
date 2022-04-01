@@ -39,7 +39,6 @@ namespace Tutor.Infrastructure.Database.DataImport
             var ies = CreateIEs(sheets.Where(s => s.Name == "IEs"), kcs);
             var aes = CreateAEs(sheets.Where(s => s.Name == "AEs"), kcs);
 
-
             return new DomainExcelContent(units, kcs, ies, aes);
         }
         
@@ -119,7 +118,8 @@ namespace Tutor.Infrastructure.Database.DataImport
                         Type = sheet.Cells["C" + row].Text,
                         Text = sheet.Cells["D" + row].Text,
                         Url = sheet.Cells["E" + row].Text,
-                        Caption = sheet.Cells["F" + row].Text
+                        Caption = sheet.Cells["F" + row].Text,
+                        Order = string.IsNullOrEmpty(sheet.Cells["G" + row].Text) ? -1 : int.Parse(sheet.Cells["G" + row].Text)
                     });
                 }
             }
@@ -144,7 +144,8 @@ namespace Tutor.Infrastructure.Database.DataImport
                         KnowledgeComponentId = kcs.First(k => k.Code.Equals(sheet.Cells["B" + row].Text)).Id,
                         Type = sheet.Cells["C" + row].Text,
                         Text = sheet.Cells["D" + row].Text,
-                        Items = GetAeItems(sheet, row)
+                        Items = GetAeItems(sheet, row),
+                        Order = string.IsNullOrEmpty(sheet.Cells["K" + row].Text) ? -1 : int.Parse(sheet.Cells["K" + row].Text)
                     });
                 }
             }

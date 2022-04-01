@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
 using Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp;

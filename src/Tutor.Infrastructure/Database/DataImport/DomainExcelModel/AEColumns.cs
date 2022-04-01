@@ -11,5 +11,6 @@ namespace Tutor.Infrastructure.Database.DataImport.DomainExcelModel
 
         public string Text { get; internal set; }
         public List<string> Items { get; internal set; }
+        public int Order { get; set; }
     }
 }

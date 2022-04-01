@@ -59,9 +59,9 @@ public static class DomainSqlExporter
 
         foreach (var ie in ies)
         {
-            sqlBuilder.Append("INSERT INTO public.\"InstructionalEvents\"(\"Id\", \"KnowledgeComponentId\") VALUES");
+            sqlBuilder.Append("INSERT INTO public.\"InstructionalEvents\"(\"Id\", \"KnowledgeComponentId\", \"Order\") VALUES");
             sqlBuilder.AppendLine();
-            sqlBuilder.Append("\t(" + ie.Id + ", " + ie.KnowledgeComponentId + ");");
+            sqlBuilder.Append("\t(" + ie.Id + ", " + ie.KnowledgeComponentId + ", " + ie.Order + ");");
             sqlBuilder.AppendLine();
             switch (ie.Type)
             {
@@ -113,9 +113,9 @@ public static class DomainSqlExporter
 
         foreach (var ae in aes)
         {
-            sqlBuilder.Append("INSERT INTO public.\"AssessmentEvents\"(\"Id\", \"KnowledgeComponentId\") VALUES");
+            sqlBuilder.Append("INSERT INTO public.\"AssessmentEvents\"(\"Id\", \"KnowledgeComponentId\", \"Order\") VALUES");
             sqlBuilder.AppendLine();
-            sqlBuilder.Append("\t(" + ae.Id + ", " + ae.KnowledgeComponentId + ");");
+            sqlBuilder.Append("\t(" + ae.Id + ", " + ae.KnowledgeComponentId + ", " + ae.Order + ");");
             sqlBuilder.AppendLine();
             switch (ae.Type)
             {
