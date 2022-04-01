@@ -32,6 +32,7 @@ namespace Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore
                 {
                     AggregateType = aggregateType,
                     AggregateId = aggregate.Id,
+                    Timestamp = e.Timestamp,
                     DomainEvent = e
                 });
             _eventContext.Events.AddRange(eventsToSave);

@@ -15,8 +15,9 @@ namespace Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore
         {
             modelBuilder.Entity<StoredDomainEvent>().Property(e => e.DomainEvent).HasColumnType("jsonb");
             modelBuilder.Entity<StoredDomainEvent>().Property(e => e.DomainEvent).HasConversion(
-            v => EventSerializer.Serialize(v),
-            v => EventSerializer.Deserialize(v));
+                v => EventSerializer.Serialize(v),
+                v => EventSerializer.Deserialize(v));
+            modelBuilder.Entity<StoredDomainEvent>().HasIndex(e => e.Timestamp);
         }
     }
 }
