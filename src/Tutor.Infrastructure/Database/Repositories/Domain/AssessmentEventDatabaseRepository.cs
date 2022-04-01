@@ -54,21 +54,10 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             return query.ToList();
         }
 
-        public void SaveSubmission(Submission submission)
-        {
-            _dbContext.Submissions.Attach(submission);
-            _dbContext.SaveChanges();
-        }
-
         public Submission FindSubmissionWithMaxCorrectness(int assessmentEventId, int learnerId)
         {
             return _dbContext.Submissions.Where(sub => sub.AssessmentEventId == assessmentEventId && sub.LearnerId == learnerId)
                 .OrderBy(sub => sub.CorrectnessLevel).LastOrDefault();
-        }
-
-        public int CountAssessmentEvents(int knowledgeComponentId)
-        {
-            return _dbContext.AssessmentEvents.Count(ae => ae.KnowledgeComponentId == knowledgeComponentId);
         }
     }
 }

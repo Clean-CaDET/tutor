@@ -6,9 +6,9 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
     public class SubmissionService : ISubmissionService
     {
         private readonly IAssessmentEventRepository _assessmentEventRepository;
-        private readonly IKCRepository _kcRepository;
+        private readonly IKcRepository _kcRepository;
 
-        public SubmissionService(IAssessmentEventRepository assessmentEventRepository, IKCRepository kcRepository)
+        public SubmissionService(IAssessmentEventRepository assessmentEventRepository, IKcRepository kcRepository)
         {
             _assessmentEventRepository = assessmentEventRepository;
             _kcRepository = kcRepository;
@@ -27,7 +27,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents
 
             var result = knowledgeComponentMastery.SubmitAssessmentEventAnswer(submission);   
 
-            _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
+            _kcRepository.UpdateKcMastery(knowledgeComponentMastery);
 
             return result;
         }

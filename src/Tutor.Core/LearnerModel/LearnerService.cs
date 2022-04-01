@@ -9,10 +9,10 @@ namespace Tutor.Core.LearnerModel
     public class LearnerService : ILearnerService
     {
         private readonly ILearnerRepository _learnerRepository;
-        private readonly IKCRepository _kcRepository;
+        private readonly IKcRepository _kcRepository;
         private readonly IWorkspaceCreator _workspaceCreator;
 
-        public LearnerService(ILearnerRepository learnerRepository, IKCRepository kcRepository, IWorkspaceCreator workspaceCreator)
+        public LearnerService(ILearnerRepository learnerRepository, IKcRepository kcRepository, IWorkspaceCreator workspaceCreator)
         {
             _learnerRepository = learnerRepository;
             _kcRepository = kcRepository;

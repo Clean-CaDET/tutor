@@ -8,11 +8,11 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
     public class KcService : IKCService
     {
-        private readonly IKCRepository _kcRepository;
+        private readonly IKcRepository _kcRepository;
         private readonly IAssessmentEventRepository _assessmentEventRepository;
         private readonly IAssessmentEventSelector _assessmentEventSelector;
 
-        public KcService(IKCRepository ikcRepository,
+        public KcService(IKcRepository ikcRepository,
             IAssessmentEventRepository assessmentEventRepository,
             IAssessmentEventSelector assessmentEventSelector)
         {
@@ -45,14 +45,14 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         public Result<List<InstructionalEvent>> GetInstructionalEventsByKnowledgeComponent(int id)
         {
-            return Result.Ok(_kcRepository.GetInstructionalEventsByKnowledgeComponent(id));
+            return Result.Ok(_kcRepository.GetInstructionalEvents(id));
         }
 
         public Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId)
         {
             var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
             var result = knowledgeComponentMastery.SelectSuitableAssessmentEvent(_assessmentEventSelector);
-            _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
+            _kcRepository.UpdateKcMastery(knowledgeComponentMastery);
             return result;
         }
 
