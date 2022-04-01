@@ -38,7 +38,7 @@ namespace Tutor.Web.Controllers.Domain
             if (result.IsSuccess) return Ok(_mapper.Map<UnitDto>(result.Value));
             return NotFound(result.Errors);
         }
-        
+
         [HttpGet("knowledge-components/{knowledgeComponentId:int}")]
         public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
         {
@@ -57,7 +57,8 @@ namespace Tutor.Web.Controllers.Domain
         [HttpGet("knowledge-components/{knowledgeComponentId:int}/instructional-events/")]
         public ActionResult<List<InstructionalEventDto>> GetInstructionalEvents(int knowledgeComponentId)
         {
-            var result = _kcService.GetInstructionalEventsByKnowledgeComponent(knowledgeComponentId);
+            var result = _kcService.GetInstructionalEventsByKnowledgeComponent(
+                knowledgeComponentId, int.Parse(User.Claims.First(i => i.Type == "id").Value));
             return Ok(result.Value.Select(ie => _mapper.Map<InstructionalEventDto>(ie)).ToList());
         }
 
@@ -68,7 +69,7 @@ namespace Tutor.Web.Controllers.Domain
             if (result.IsSuccess) return Ok(_mapper.Map<AssessmentEventDto>(result.Value));
             return NotFound(result.Errors);
         }
-        
+
         [HttpGet("knowledge-components/statistics/{knowledgeComponentId:int}")]
         public ActionResult<KnowledgeComponentStatisticsDto> GetKnowledgeComponentStatistics(int knowledgeComponentId)
         {

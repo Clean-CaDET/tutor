@@ -43,9 +43,18 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             return Result.Ok(_assessmentEventRepository.GetAssessmentEventsByKnowledgeComponent(id));
         }
 
-        public Result<List<InstructionalEvent>> GetInstructionalEventsByKnowledgeComponent(int id)
+        public Result<List<InstructionalEvent>> GetInstructionalEventsByKnowledgeComponent(int knowledgeComponentId, int learnerId)
         {
-            return Result.Ok(_kcRepository.GetInstructionalEventsByKnowledgeComponent(id));
+            var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
+            var instructionalEvents = _kcRepository.GetInstructionalEventsByKnowledgeComponent(knowledgeComponentId);
+
+            var result = knowledgeComponentMastery.RecordInstructionalEventSelection();
+            _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
+
+            if (result.IsFailed)
+                return result.ToResult<List<InstructionalEvent>>();
+            else
+                return Result.Ok(instructionalEvents);
         }
 
         public Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId)
