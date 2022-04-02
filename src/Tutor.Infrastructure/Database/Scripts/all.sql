@@ -6,11 +6,8 @@ INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId", "CodeSnippetId")
 	VALUES (-71, /*TODO*/, 'Methods.SmallMethods.Achievement');
 INSERT INTO public."BasicMetricCheckers"(
-	"Id")
-	VALUES (-71);
-INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (-1, 'MELOC', 1, 18, -71, -71);
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-71, 'MELOC', 1, 18, -71);
 
 	
 -- F03 challenge strategies & hints
@@ -21,17 +18,17 @@ INSERT INTO public."ChallengeHints"(
 	"Id", "Content")
 	VALUES (-42, 'Ne zaboravi da vodiš računa o linijama koda.');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (-41, /*TODO*/, 'Methods.SimpleMethods.Schedule');
+	"Id", "ChallengeId")
+	VALUES (-41, /*TODO*/);
 INSERT INTO public."BasicMetricCheckers"(
-	"Id")
-	VALUES (-41);
-INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (-41, 'CYCLO', 1, 5, -41, -41);
-INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (-42, 'MELOC', 1, 12, -42, -41);
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-41, 'CYCLO', 1, 5, -41);
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-42, /*TODO*/);
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-42, 'MELOC', 1, 12, -42);
 
 	
 -- F07 challenge strategies & hints
@@ -42,17 +39,17 @@ INSERT INTO public."ChallengeHints"(
 	"Id", "Content")
 	VALUES (-52, 'Vredna strategija za redukciju parametra podrazumeva premeštanje metoda i polja klase tako da se ukloni potreba za parametrom. Razmisli da li ima smisla premestiti neku metodu iz ove klase u drugu.');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (-51, /*TODO*/, 'Methods.ParameterLists.CourseService');
+	"Id", "ChallengeId")
+	VALUES (-51, /*TODO*/);
 INSERT INTO public."BasicMetricCheckers"(
-	"Id")
-	VALUES (-51);
-INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (-51, 'NOP', 0, 1, -51, -51);
-INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (-52, 'NMD', 0, 2, -52, -51);
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-51, 'NOP', 0, 1, -51);
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-52, /*TODO*/);
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-52, 'NMD', 0, 2, -52);
 	
 	
 -- F05 challenge strategies & hints
@@ -66,17 +63,20 @@ INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId")
 	VALUES (-61, /*TODO*/);
 INSERT INTO public."BasicMetricCheckers"(
-	"Id")
-	VALUES (-61);
-INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (-61, 'CYCLO', 1, 4, -61, -61);
-INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (-62, 'MMNB', 1, 2, -61, -61); -- TODO: Check if 3 is suitable; Check these rules in general
-INSERT INTO public."MetricRangeRules"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId", "MetricCheckerForeignKey")
-	VALUES (-63, 'MELOC', 1, 16, -52, -61);
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-61, 'CYCLO', 1, 4, -61);
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-61, /*TODO*/);
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-62, 'MMNB', 1, 2, -61); -- TODO: Check if 3 is suitable; Check these rules in general
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-63, /*TODO*/);
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-63, 'MELOC', 1, 16, -62);
 
 
 -- N03 challenge strategies & hints
