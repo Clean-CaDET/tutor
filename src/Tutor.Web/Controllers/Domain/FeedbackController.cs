@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
 using Tutor.Core.DomainModel.Feedback;
 using Tutor.Web.Controllers.Domain.DTOs.Feedback;
 

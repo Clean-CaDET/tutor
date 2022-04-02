@@ -9,7 +9,7 @@ using Tutor.Infrastructure.Security;
 
 namespace Tutor.Infrastructure
 {
-    public static class DependencyInjection
+    public static class TutorDependencyInjection
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
@@ -17,7 +17,7 @@ namespace Tutor.Infrastructure
                 opt.UseNpgsql(CreateConnectionStringFromEnvironment()));
             services.AddDbContext<EventContext>(opt =>
                 opt.UseNpgsql(CreateConnectionStringFromEnvironment()));
-            services.AddScoped<IEventStore, PostgreSqlEventStore>();
+            services.AddScoped<IEventStore, PostgreSqlStore>();
 
             return services;
         }

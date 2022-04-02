@@ -2,11 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Tutor.Core.DomainModel.Feedback;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Domain;

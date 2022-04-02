@@ -1,4 +1,4 @@
-﻿namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FunctionalityTester
+﻿namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
 {
     public interface IFunctionalityTester
     {

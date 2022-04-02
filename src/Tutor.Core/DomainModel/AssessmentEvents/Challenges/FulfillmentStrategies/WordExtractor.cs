@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using CodeModel.CaDETModel.CodeItems;
 
-namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker
+namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategies
 {
     internal static class WordExtractor
     {

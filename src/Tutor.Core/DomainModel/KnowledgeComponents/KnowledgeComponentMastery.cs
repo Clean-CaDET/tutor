@@ -9,7 +9,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
     public class KnowledgeComponentMastery : EventSourcedAggregateRoot
     {
-        public const double PassThreshold = 0.9;
+        private const double PassThreshold = 0.9;
 
         public double Mastery { get; private set; }
         public KnowledgeComponent KnowledgeComponent { get; private set; }
@@ -75,7 +75,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             Causes(new AssessmentEventAnswered()
             {
                 Submission = submission,
-                Timestamp = submission.TimeStamp
+                TimeStamp = submission.TimeStamp
             });
 
             return Result.Ok(evaluation);

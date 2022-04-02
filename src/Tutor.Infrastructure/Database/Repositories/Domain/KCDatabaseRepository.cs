@@ -59,7 +59,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
 
         public KnowledgeComponentMastery GetKnowledgeComponentMastery(int learnerId, int knowledgeComponentId)
         {
-            var kcm = _dbContext.KcMastery
+            var kcm = _dbContext.KcMasteries
                 .Include(kcm => kcm.KnowledgeComponent)
                 .ThenInclude(kc => kc.AssessmentEvents)
                 .ThenInclude(ae => ae.Submissions.Where(sub => sub.LearnerId == learnerId))
@@ -70,7 +70,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
 
         public void UpdateKcMastery(KnowledgeComponentMastery kcMastery)
         {
-            _dbContext.KcMastery.Attach(kcMastery);
+            _dbContext.KcMasteries.Attach(kcMastery);
             _dbContext.SaveChanges();
 
             _eventStore.Save(kcMastery);

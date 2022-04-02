@@ -5,7 +5,7 @@ namespace Tutor.Infrastructure.Tests.TestData
 {
     public static class SerializationTestClasses
     {
-        public static Type AbstractRoot() => typeof(ClassA);
+        public static Type AbstractRoot() => typeof(ClassBase);
 
         public static IDictionary<Type, string> ConcreteWithDiscriminators() => new Dictionary<Type, string>()
         {
@@ -31,27 +31,27 @@ namespace Tutor.Infrastructure.Tests.TestData
             new ClassE() { FieldA = 2, FieldDE = 3 }
         };
 
-        public abstract class ClassA
+        private abstract class ClassBase
         {
             public int FieldA { get; set; }
         }
 
-        public class ClassB : ClassA
+        private class ClassB : ClassBase
         {
             public int FieldB { get; set; }
         }
 
-        public class ClassC : ClassA
+        private sealed class ClassC : ClassBase
         {
             public int FieldC { get; set; }
         }
 
-        public class ClassD : ClassB
+        private sealed class ClassD : ClassB
         {
             public int FieldDE { get; set; }
         }
 
-        public class ClassE : ClassB
+        private sealed class ClassE : ClassB
         {
             public int FieldDE { get; set; }
         }

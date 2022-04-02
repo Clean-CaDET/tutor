@@ -2,9 +2,7 @@
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategies;
 using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions;
 using Tutor.Core.DomainModel.Feedback;
@@ -59,7 +57,7 @@ namespace Tutor.Infrastructure.Database
         #endregion
 
         public DbSet<Learner> Learners { get; set; }
-        public DbSet<KnowledgeComponentMastery> KcMastery { get; set; }
+        public DbSet<KnowledgeComponentMastery> KcMasteries { get; set; }
 
         public TutorContext(DbContextOptions<TutorContext> options) : base(options)
         {

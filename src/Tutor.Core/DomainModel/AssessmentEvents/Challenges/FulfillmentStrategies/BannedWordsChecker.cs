@@ -1,9 +1,9 @@
-using CodeModel.CaDETModel.CodeItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CodeModel.CaDETModel.CodeItems;
 
-namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker
+namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategies
 {
     public class BannedWordsChecker : ChallengeFulfillmentStrategy
     {

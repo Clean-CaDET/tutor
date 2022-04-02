@@ -1,7 +1,6 @@
 ﻿using Shouldly;
 using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Infrastructure.Serialization;
 using Xunit;

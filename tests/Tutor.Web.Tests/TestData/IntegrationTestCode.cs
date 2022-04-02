@@ -2,7 +2,7 @@
 
 namespace Tutor.Web.Tests.TestData
 {
-    internal class IntegrationTestCode
+    internal static class IntegrationTestCode
     {
         internal static string[] GetFailingAchievement()
         {

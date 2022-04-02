@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategies;
 using Tutor.Core.Tests.TestData;
 using Xunit;
 

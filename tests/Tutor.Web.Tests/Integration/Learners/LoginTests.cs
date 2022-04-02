@@ -6,7 +6,7 @@ using Tutor.Web.Controllers.Learners;
 using Tutor.Web.Controllers.Learners.DTOs;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Learner
+namespace Tutor.Web.Tests.Integration.Learners
 {
     [Collection("Sequential")]
     public class LoginTests : BaseIntegrationTest

@@ -5,11 +5,11 @@ using Tutor.Core.BuildingBlocks.EventSourcing;
 
 namespace Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore
 {
-    public class PostgreSqlEventStore : IEventStore
+    public class PostgreSqlStore : IEventStore
     {
         private readonly EventContext _eventContext;
 
-        public PostgreSqlEventStore(EventContext eventContext)
+        public PostgreSqlStore(EventContext eventContext)
         {
             _eventContext = eventContext;
         }
@@ -19,7 +19,7 @@ namespace Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore
             DateTime min = start ?? DateTime.MinValue;
             DateTime max = end ?? DateTime.MaxValue;
             return _eventContext.Events.Where(
-                e => e.DomainEvent.Timestamp > min && e.DomainEvent.Timestamp < max).Select(e => e.DomainEvent).ToList();
+                e => e.DomainEvent.TimeStamp > min && e.DomainEvent.TimeStamp < max).Select(e => e.DomainEvent).ToList();
         }
 
         public void Save(EventSourcedAggregateRoot aggregate)
@@ -32,7 +32,7 @@ namespace Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore
                 {
                     AggregateType = aggregateType,
                     AggregateId = aggregate.Id,
-                    Timestamp = e.Timestamp,
+                    TimeStamp = e.TimeStamp,
                     DomainEvent = e
                 });
             _eventContext.Events.AddRange(eventsToSave);

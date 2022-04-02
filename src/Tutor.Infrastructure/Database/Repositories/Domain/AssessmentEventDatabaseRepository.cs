@@ -4,8 +4,7 @@ using System.Linq;
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.NameChecker;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategies;
 using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 
 namespace Tutor.Infrastructure.Database.Repositories.Domain

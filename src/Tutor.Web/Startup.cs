@@ -92,7 +92,7 @@ namespace Tutor.Web
             services.AddScoped<IAssessmentEventSelector, LeastCorrectAssessmentEventSelector>();
 
             services.AddScoped<ILearnerService, LearnerService>();
-            services.Configure<WorkspaceOptions>(Configuration.GetSection(WorkspaceOptions.ConfigKey));
+            services.Configure<WorkspaceOptions>(Configuration.GetSection("Workspace"));
             services.AddScoped<IWorkspaceCreator, NoWorkspaceCreator>();
             services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
             services.AddScoped<ITokenService, JwtService>();

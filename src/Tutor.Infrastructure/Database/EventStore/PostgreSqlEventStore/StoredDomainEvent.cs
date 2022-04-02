@@ -8,7 +8,7 @@ namespace Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore
         public int Id { get; set; }
         public string AggregateType { get; set; }
         public int AggregateId { get; set; }
-        public DateTime Timestamp { get; set; }
+        public DateTime TimeStamp { get; set; }
         public DomainEvent DomainEvent { get; set; }
     }
 }

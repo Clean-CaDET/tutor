@@ -1,8 +1,8 @@
 ﻿using System;
-using CodeModel.CaDETModel.CodeItems;
 using System.Collections.Generic;
+using CodeModel.CaDETModel.CodeItems;
 
-namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker
+namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategies
 {
     public class BasicMetricChecker : ChallengeFulfillmentStrategy
     {

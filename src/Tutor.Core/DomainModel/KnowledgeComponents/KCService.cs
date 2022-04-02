@@ -43,7 +43,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             return Result.Ok(_assessmentEventRepository.GetAssessmentEventsByKnowledgeComponent(id));
         }
 
-        public Result<List<InstructionalEvent>> GetInstructionalEventsByKnowledgeComponent(int knowledgeComponentId, int learnerId)
+        public Result<List<InstructionalEvent>> GetInstructionalEvents(int knowledgeComponentId, int learnerId)
         {
             var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
             var instructionalEvents = _kcRepository.GetInstructionalEvents(knowledgeComponentId);

@@ -1,6 +1,6 @@
 ﻿namespace Tutor.Core.Tests.TestData
 {
-    internal class ChallengeTestData
+    internal static class ChallengeTestData
     {
         internal static string[] GetTwoPassingClasses()
         {
