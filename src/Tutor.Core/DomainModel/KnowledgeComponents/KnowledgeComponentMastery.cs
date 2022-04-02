@@ -135,6 +135,9 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         public Result RecordInstructionalEventSelection()
         {
+            if (!HasActiveSession)
+                LaunchSession();
+
             Causes(new InstructionalEventsSelected()
             {
                 LearnerId = LearnerId,
