@@ -58,8 +58,7 @@ namespace Tutor.Web.Controllers.Domain
         [HttpGet("knowledge-components/{knowledgeComponentId:int}/instructional-events/")]
         public ActionResult<List<InstructionalEventDto>> GetInstructionalEvents(int knowledgeComponentId)
         {
-            var result = _kcService.GetInstructionalEvents(
-                knowledgeComponentId, int.Parse(User.Claims.First(i => i.Type == "id").Value));
+            var result = _kcService.GetInstructionalEvents(knowledgeComponentId, User.Id());
             return Ok(result.Value.Select(ie => _mapper.Map<InstructionalEventDto>(ie)).ToList());
         }
 
