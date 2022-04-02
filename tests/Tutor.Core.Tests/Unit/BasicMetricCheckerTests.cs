@@ -3,7 +3,7 @@ using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy.MetricChecker;
+using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategies;
 using Tutor.Core.Tests.TestData;
 using Xunit;
 

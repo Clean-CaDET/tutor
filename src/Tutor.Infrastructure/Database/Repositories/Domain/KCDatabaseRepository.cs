@@ -8,13 +8,13 @@ using Tutor.Infrastructure.Database.EventStore;
 
 namespace Tutor.Infrastructure.Database.Repositories.Domain
 {
-    public class KCDatabaseRepository : IKCRepository
+    public class KcDatabaseRepository : IKcRepository
     {
         private readonly TutorContext _dbContext;
         private readonly IEventStore _eventStore;
         private readonly IMoveOnCriteria _moveOnCriteria;
 
-        public KCDatabaseRepository(TutorContext dbContext, IEventStore eventStore, IMoveOnCriteria moveOnCriteria)
+        public KcDatabaseRepository(TutorContext dbContext, IEventStore eventStore, IMoveOnCriteria moveOnCriteria)
         {
             _dbContext = dbContext;
             _eventStore = eventStore;
@@ -49,16 +49,17 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             return _dbContext.KnowledgeComponents.FirstOrDefault(l => l.Id == id);
         }
 
-        public List<InstructionalEvent> GetInstructionalEventsByKnowledgeComponent(int id)
+        public List<InstructionalEvent> GetInstructionalEvents(int knowledgeComponentId)
         {
             var query = _dbContext.InstructionalEvents
-                .Where(ae => ae.KnowledgeComponentId == id);
+                .Where(ie => ie.KnowledgeComponentId == knowledgeComponentId)
+                .OrderBy(ie => ie.Order);
             return query.ToList();
         }
 
         public KnowledgeComponentMastery GetKnowledgeComponentMastery(int learnerId, int knowledgeComponentId)
         {
-            var kcm = _dbContext.KcMastery
+            var kcm = _dbContext.KcMasteries
                 .Include(kcm => kcm.KnowledgeComponent)
                 .ThenInclude(kc => kc.AssessmentEvents)
                 .ThenInclude(ae => ae.Submissions.Where(sub => sub.LearnerId == learnerId))
@@ -67,9 +68,9 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             return kcm;
         }
 
-        public void UpdateKCMastery(KnowledgeComponentMastery kcMastery)
+        public void UpdateKcMastery(KnowledgeComponentMastery kcMastery)
         {
-            _dbContext.KcMastery.Attach(kcMastery);
+            _dbContext.KcMasteries.Attach(kcMastery);
             _dbContext.SaveChanges();
 
             _eventStore.Save(kcMastery);
@@ -83,9 +84,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
         public KnowledgeComponentMastery GetKnowledgeComponentMasteryByAssessmentEvent(int learnerId, int assessmentEventId)
         {
             var assessmentEvent = _dbContext.AssessmentEvents.FirstOrDefault(ae => ae.Id == assessmentEventId);
-            if (assessmentEvent == null)
-                return null;
-            return GetKnowledgeComponentMastery(learnerId, assessmentEvent.KnowledgeComponentId);
+            return assessmentEvent == null ? null : GetKnowledgeComponentMastery(learnerId, assessmentEvent.KnowledgeComponentId);
         }
     }
 }

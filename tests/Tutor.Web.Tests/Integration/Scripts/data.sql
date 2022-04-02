@@ -17,7 +17,7 @@ DELETE FROM public."ArrangeTasks";
 DELETE FROM public."AssessmentEvents";
 DELETE FROM public."ShortAnswerQuestions";
 DELETE FROM public."InstructionalEvents";
-DELETE FROM public."KcMastery";
+DELETE FROM public."KcMasteries";
 DELETE FROM public."KnowledgeComponents";
 DELETE FROM public."Units";
 
@@ -57,92 +57,92 @@ INSERT INTO public."KnowledgeComponents"(
 	"Id", "Name", "Description", "UnitId")
 	VALUES (-15, 'Koristi terminologiju domena problema', '', -1);
 
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-49, 0.0, -10, -1, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-50, 0.0, -10, -2, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-1, 0.0, -11, -1, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-2, 0.0, -12, -1, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-3, 0.0, -13, -1, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-4, 0.0, -14, -1, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-5, 0.0, -15, -1, false, false, false);
 
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-6, 0.0, -11, -2, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-7, 0.0, -12, -2, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-8, 0.0, -13, -2, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-9, 0.0, -14, -2, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-10, 0.0, -15, -2, false, false, false);
 
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-11, 0.0, -11, -3, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-12, 0.0, -12, -3, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-13, 0.0, -13, -3, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-14, 0.0, -14, -3, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-15, 0.0, -15, -3, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-51, 0.0, -10, -3, false, false, false);
 
 INSERT INTO public."InstructionalEvents"(
-	"Id", "KnowledgeComponentId")
-	VALUES (-111, -11);
+	"Id", "KnowledgeComponentId", "Order")
+	VALUES (-111, -11, 1);
 INSERT INTO public."Texts"(
 	"Id", "Content")
 	VALUES (-111, 'Imenovanje je proces određivanja i dodeljivanja imena identifikatoru. Identifikatore pronalazimo svuda u kodu. Tako imenujemo datoteke, direktorijume, klase, metode i promenljive. U Java programima imenujemo pakete i JAR datoteke, dok kod C# jezika imenujemo namespace i DLL datoteke. Dobro ime treba da **objasni svrhu elementa** koji imenujemo i da pokuša da odgovori na pitanja: Zašto dati element postoji? Šta radi? Kako se koristi?');
 INSERT INTO public."InstructionalEvents"(
-	"Id", "KnowledgeComponentId")
-	VALUES (-112, -11);
+	"Id", "KnowledgeComponentId", "Order")
+	VALUES (-112, -11, 2);
 INSERT INTO public."Images"(
 	"Id", "Url", "Caption")
 	VALUES (-112, 'https://i.ibb.co/vqjMTyJ/simple-names-sr.png', 'U većini slučajeva kada hoćemo da stavimo komentar, pravo rešenje je smišljanje jasnijeg imena.');
 
 INSERT INTO public."InstructionalEvents"(
-	"Id", "KnowledgeComponentId")
-	VALUES (-151, -15);
+	"Id", "KnowledgeComponentId", "Order")
+	VALUES (-151, -15, 3);
 INSERT INTO public."Images"(
 	"Id", "Url", "Caption")
 	VALUES (-151, 'https://i.ibb.co/Tw9qktR/domain-names-sr.png', 'Lakše ćemo razumeti nove zahteve kada koristimo u kodu isti jezik kao naši klijenti.');
 INSERT INTO public."InstructionalEvents"(
-	"Id", "KnowledgeComponentId")
-	VALUES (-152, -15);
+	"Id", "KnowledgeComponentId", "Order")
+	VALUES (-152, -15, 4);
 INSERT INTO public."Images"(
 	"Id", "Url", "Caption")
 	VALUES (-152, 'https://i.ibb.co/f144vCk/names-example.png', 'Ovako objektno orijentisani programer imenuje stvari kada izbegava reči iz poslovnog domena.');
 
 INSERT INTO public."AssessmentEvents"(
-	"Id", "KnowledgeComponentId")
-	VALUES (-153, -15);
+	"Id", "KnowledgeComponentId", "Order")
+	VALUES (-153, -15, 1);
 INSERT INTO public."MultiResponseQuestions"(
 	"Id", "Text")
 	VALUES (-153, 'Kada dizajniramo softver, bitan cilj je da razdvojimo funkcionalnosti poslovne logike (npr. pravilo kako se stornira kupovina) od logike koja je vezana za tehnološke detalje (npr. kod za formiranje HTTP zahteva). Ovo pravilo važi i za sama imena, gde objekti i funkcije poslovne logike treba da sadrže samo reči koje potiču iz domena problema, odnosno od naših klijenata. Označi imena funkcija koje smatraš da potiču iz domena poslovne logike:');
@@ -163,8 +163,8 @@ INSERT INTO public."MrqItems"(
 	VALUES (-1535, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -153);
 
 INSERT INTO public."AssessmentEvents"(
-    "Id", "KnowledgeComponentId")
-VALUES (-155, -15);
+    "Id", "KnowledgeComponentId", "Order")
+VALUES (-155, -15, 2);
 INSERT INTO public."MultiResponseQuestions"(
     "Id", "Text")
 VALUES (-155, 'Kada dizajniramo softver, bitan cilj je da razdvojimo funkcionalnosti poslovne logike (npr. pravilo kako se stornira kupovina) od logike koja je vezana za tehnološke detalje (npr. kod za formiranje HTTP zahteva). Ovo pravilo važi i za sama imena, gde objekti i funkcije poslovne logike treba da sadrže samo reči koje potiču iz domena problema, odnosno od naših klijenata. Označi imena funkcija koje smatraš da potiču iz domena poslovne logike:');
@@ -185,8 +185,8 @@ INSERT INTO public."MrqItems"(
 VALUES (-1555, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -155);
 
 INSERT INTO public."AssessmentEvents"(
-    "Id", "KnowledgeComponentId")
-VALUES (-156, -15);
+    "Id", "KnowledgeComponentId", "Order")
+VALUES (-156, -15, 3);
 INSERT INTO public."MultiResponseQuestions"(
     "Id", "Text")
 VALUES (-156, 'Kada dizajniramo softver, bitan cilj je da razdvojimo funkcionalnosti poslovne logike (npr. pravilo kako se stornira kupovina) od logike koja je vezana za tehnološke detalje (npr. kod za formiranje HTTP zahteva). Ovo pravilo važi i za sama imena, gde objekti i funkcije poslovne logike treba da sadrže samo reči koje potiču iz domena problema, odnosno od naših klijenata. Označi imena funkcija koje smatraš da potiču iz domena poslovne logike:');
@@ -207,8 +207,8 @@ INSERT INTO public."MrqItems"(
 VALUES (-1565, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -156);
 
 INSERT INTO public."AssessmentEvents"(
-	"Id", "KnowledgeComponentId")
-	VALUES (-154, -15);
+	"Id", "KnowledgeComponentId", "Order")
+	VALUES (-154, -15, 4);
 INSERT INTO public."Challenges"(
 	"Id", "Description", "Url", "TestSuiteLocation", "SolutionUrl")
 	VALUES (-154, 'U svojoj brzopletosti, često nabacamo kratka imena kako bismo što pre ispisali kod koji radi. U sklopu direktorijuma "Naming/02. Meaningful Words" proširi kod korisnim imenima koji uklanjaju potrebe za komentarima i isprati zadatke u zaglavlju klase.', 'https://github.com/Clean-CaDET/challenge-repository', 'Naming.Meaning', 'https://youtu.be/8OYsu0dza0k');
@@ -224,8 +224,8 @@ INSERT INTO public."RequiredWordsCheckers"(
 VALUES (-1541, '{{"Enroll","newCourse","Maximum","Active"}}', -1541);
 
 INSERT INTO public."AssessmentEvents"(
-    "Id", "KnowledgeComponentId")
-VALUES (-134, -13);
+    "Id", "KnowledgeComponentId", "Order")
+VALUES (-134, -13, 5);
 INSERT INTO public."Challenges"(
     "Id", "Description", "Url", "TestSuiteLocation", "SolutionUrl")
 VALUES (-134, 'U svojoj brzopletosti, često nabacamo kratka imena kako bismo što pre ispisali kod koji radi. U sklopu direktorijuma "Naming/02. Meaningful Words" proširi kod korisnim imenima koji uklanjaju potrebe za komentarima i isprati zadatke u zaglavlju klase.', 'https://github.com/Clean-CaDET/challenge-repository', 'Naming.Meaning', 'https://youtu.be/8OYsu0dza0k');
@@ -241,8 +241,8 @@ INSERT INTO public."RequiredWordsCheckers"(
 VALUES (-1341, '{{"Enroll","newCourse","Maximum","Active"}}', -1341);
 
 INSERT INTO public."AssessmentEvents"(
-    "Id", "KnowledgeComponentId")
-VALUES (-143, -14);
+    "Id", "KnowledgeComponentId", "Order")
+VALUES (-143, -14, 6);
 INSERT INTO public."MultiResponseQuestions"(
     "Id", "Text")
 VALUES (-143, 'Kada dizajniramo softver, bitan cilj je da razdvojimo funkcionalnosti poslovne logike (npr. pravilo kako se stornira kupovina) od logike koja je vezana za tehnološke detalje (npr. kod za formiranje HTTP zahteva). Ovo pravilo važi i za sama imena, gde objekti i funkcije poslovne logike treba da sadrže samo reči koje potiču iz domena problema, odnosno od naših klijenata. Označi imena funkcija koje smatraš da potiču iz domena poslovne logike:');
@@ -263,8 +263,8 @@ INSERT INTO public."MrqItems"(
 VALUES (-1435, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -143);
 
 INSERT INTO public."AssessmentEvents"(
-    "Id", "KnowledgeComponentId")
-VALUES (-144, -14);
+    "Id", "KnowledgeComponentId", "Order")
+VALUES (-144, -14, 7);
 INSERT INTO public."MultiResponseQuestions"(
     "Id", "Text")
 VALUES (-144, 'Kada dizajniramo softver, bitan cilj je da razdvojimo funkcionalnosti poslovne logike (npr. pravilo kako se stornira kupovina) od logike koja je vezana za tehnološke detalje (npr. kod za formiranje HTTP zahteva). Ovo pravilo važi i za sama imena, gde objekti i funkcije poslovne logike treba da sadrže samo reči koje potiču iz domena problema, odnosno od naših klijenata. Označi imena funkcija koje smatraš da potiču iz domena poslovne logike:');
@@ -285,8 +285,8 @@ INSERT INTO public."MrqItems"(
 VALUES (-1445, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -144);
 
 INSERT INTO public."AssessmentEvents"(
-    "Id", "KnowledgeComponentId")
-VALUES (-106, -10);
+    "Id", "KnowledgeComponentId", "Order")
+VALUES (-106, -10, 8);
 INSERT INTO public."MultiResponseQuestions"(
     "Id", "Text")
 VALUES (-106, 'Kada dizajniramo softver, bitan cilj je da razdvojimo funkcionalnosti poslovne logike (npr. pravilo kako se stornira kupovina) od logike koja je vezana za tehnološke detalje (npr. kod za formiranje HTTP zahteva). Ovo pravilo važi i za sama imena, gde objekti i funkcije poslovne logike treba da sadrže samo reči koje potiču iz domena problema, odnosno od naših klijenata. Označi imena funkcija koje smatraš da potiču iz domena poslovne logike:');
@@ -307,8 +307,8 @@ INSERT INTO public."MrqItems"(
 VALUES (-1065, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -106);
 
 INSERT INTO public."AssessmentEvents"(
-    "Id", "KnowledgeComponentId")
-VALUES (-107, -10);
+    "Id", "KnowledgeComponentId", "Order")
+VALUES (-107, -10, 9);
 INSERT INTO public."MultiResponseQuestions"(
     "Id", "Text")
 VALUES (-107, 'Kada dizajniramo softver, bitan cilj je da razdvojimo funkcionalnosti poslovne logike (npr. pravilo kako se stornira kupovina) od logike koja je vezana za tehnološke detalje (npr. kod za formiranje HTTP zahteva). Ovo pravilo važi i za sama imena, gde objekti i funkcije poslovne logike treba da sadrže samo reči koje potiču iz domena problema, odnosno od naših klijenata. Označi imena funkcija koje smatraš da potiču iz domena poslovne logike:');
@@ -394,111 +394,111 @@ INSERT INTO public."KnowledgeComponents"(
 	"Id", "Name", "Description", "UnitId")
 	VALUES (-211, 'Odredi semantičku svrhu metode', '', -2);
 
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-16, 0.0, -21, -1, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-17, 0.0, -22, -1, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-18, 0.0, -23, -1, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-19, 0.0, -24, -1, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-20, 0.0, -25, -1, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-21, 0.0, -26, -1, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-22, 0.0, -27, -1, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-23, 0.0, -28, -1, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-24, 0.0, -29, -1, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-25, 0.0, -210, -1, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-26, 0.0, -211, -1, false, false, false);
 
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-27, 0.0, -21, -2, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-28, 0.0, -22, -2, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-29, 0.0, -23, -2, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-30, 0.0, -24, -2, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-31, 0.0, -25, -2, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-32, 0.0, -26, -2, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-33, 0.0, -27, -2, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-34, 0.0, -28, -2, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-35, 0.0, -29, -2, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-36, 0.0, -210, -2, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-37, 0.0, -211, -2, false, false, false);
 
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-38, 0.0, -21, -3, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-39, 0.0, -22, -3, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-40, 0.0, -23, -3, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-41, 0.0, -24, -3, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-42, 0.0, -25, -3, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-43, 0.0, -26, -3, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-44, 0.0, -27, -3, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-45, 0.0, -28, -3, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-46, 0.0, -29, -3, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-47, 0.0, -210, -3, false, false, false);
-INSERT INTO public."KcMastery"(
+INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-48, 0.0, -211, -3, false, false, false);
 
 INSERT INTO public."AssessmentEvents"(
-	"Id", "KnowledgeComponentId")
-	VALUES (-2111, -211);
+	"Id", "KnowledgeComponentId", "Order")
+	VALUES (-2111, -211, 10);
 INSERT INTO public."ArrangeTasks"(
 	"Id", "Text")
 	VALUES (-2111, 'Prateći kod predstavlja primer čiste funkcije.
@@ -550,8 +550,8 @@ INSERT INTO public."ArrangeTaskElements"(
 	VALUES (-5, -5, 'Uzima u obzir da li je lekar na bitnom sastanku u traženo vreme.');
 
 INSERT INTO public."AssessmentEvents"(
-	"Id", "KnowledgeComponentId")
-	VALUES (-211, -21);
+	"Id", "KnowledgeComponentId", "Order")
+	VALUES (-211, -21, 11);
 INSERT INTO public."Challenges"(
 	"Id", "Description", "Url", "TestSuiteLocation", "SolutionUrl")
 	VALUES (-211, 'Da imamo kratke metode ne treba da bude naš konačan cilj, već posledica praćenja dobrih praksi. Ipak, funkcija koja prevazilazi nekoliko desetina linija je dobar kandidat za refaktorisanje. U sklopu direktorijuma "Methods/01. Small Methods" ekstrahuj logički povezan kod tako da završiš sa kolekcijom sitnijih metoda čije ime jasno označava njihovu svrhu.', 'https://github.com/Clean-CaDET/challenge-repository', 'Methods.Small', 'https://youtu.be/79a8Zp6FBfU');
@@ -565,8 +565,8 @@ INSERT INTO public."BasicMetricCheckers"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId")
 	VALUES (-1, 'MELOC', 1, 18, -1);
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId") VALUES
-	(-212, -21);
+INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+	(-212, -21, 12);
 INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
 	(-212, 'Iz sledećeg koda navedi sve nazive identifikatora (razdvojene zarezom) koji krše česte konvencije u pisanju programa.
 
@@ -588,8 +588,8 @@ INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VAL
     }}', '{{"Words, word_parts, idx, abc"}}');
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId") VALUES
-	(-995, -21);
+INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+	(-995, -21, 13);
 INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
 	(-995, 'Posmatrajući sledeću strukturu paketa, navedi nazive klasa (razdvojene zarezom i bez .cs) koji krše konvenciju.
 

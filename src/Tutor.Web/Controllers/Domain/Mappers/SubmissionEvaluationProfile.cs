@@ -4,10 +4,10 @@ using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
 using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTask;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenge;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestion;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTasks;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenges;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestions;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestions;
 
 namespace Tutor.Web.Controllers.Domain.Mappers
 {
@@ -38,12 +38,12 @@ namespace Tutor.Web.Controllers.Domain.Mappers
                 .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.FullItem.Text))
                 .ForMember(dest => dest.Feedback, opt => opt.MapFrom(src => src.FullItem.Feedback));
 
-            CreateMap<ArrangeTaskEvaluation, ArrangeTaskEvaluationDto>();
-            CreateMap<ArrangeTaskContainerEvaluation, ArrangeTaskContainerEvaluationDto>()
+            CreateMap<ArrangeTaskEvaluation, AtEvaluationDto>();
+            CreateMap<ArrangeTaskContainerEvaluation, AtContainerEvaluationDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.FullAnswer.Id))
                 .ForMember(dest => dest.CorrectElements, opt => opt.MapFrom(src => src.FullAnswer.Elements));
-            CreateMap<ArrangeTaskSubmissionDto, ArrangeTaskSubmission>();
-            CreateMap<ArrangeTaskContainerSubmissionDto, ArrangeTaskContainerSubmission>();
+            CreateMap<AtSubmissionDto, ArrangeTaskSubmission>();
+            CreateMap<AtContainerSubmissionDto, ArrangeTaskContainerSubmission>();
             
             CreateMap<SaqEvaluation, SaqEvaluationDto>();
             CreateMap<SaqSubmissionDto, SaqSubmission>();

@@ -5,7 +5,7 @@ using Tutor.Core.DomainModel.InstructionalEvents;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
-    public interface IKCService
+    public interface IKcService
     {
         Result<List<Unit>> GetUnits();
 
@@ -15,7 +15,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         Result<List<AssessmentEvent>> GetAssessmentEventsByKnowledgeComponent(int id);
 
-        Result<List<InstructionalEvent>> GetInstructionalEventsByKnowledgeComponent(int id);
+        Result<List<InstructionalEvent>> GetInstructionalEvents(int knowledgeComponentId, int learnerId);
 
         Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId);
 

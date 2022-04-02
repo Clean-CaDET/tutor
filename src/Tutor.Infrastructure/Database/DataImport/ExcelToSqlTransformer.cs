@@ -34,7 +34,7 @@ DELETE FROM public.""ArrangeTasks"";
 DELETE FROM public.""ShortAnswerQuestions"";
 DELETE FROM public.""AssessmentEvents"";
 DELETE FROM public.""InstructionalEvents"";
-DELETE FROM public.""KcMastery"";
+DELETE FROM public.""KcMasteries"";
 DELETE FROM public.""KnowledgeComponents"";
 DELETE FROM public.""Units"";
 DELETE FROM public.""Learners"";

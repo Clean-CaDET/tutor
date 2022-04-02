@@ -12,7 +12,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
     public class KnowledgeComponentMastery : EventSourcedAggregateRoot
     {
-        public const double PassThreshold = 0.9;
+        private const double PassThreshold = 0.9;
 
         public double Mastery { get; private set; }
         public KnowledgeComponent KnowledgeComponent { get; private set; }
@@ -110,7 +110,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             Causes(new AssessmentEventAnswered()
             {
                 Submission = submission,
-                Timestamp = submission.TimeStamp
+                TimeStamp = submission.TimeStamp
             });
 
             return Result.Ok(evaluation);
@@ -131,6 +131,16 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
                 });
 
             return result;
+        }
+
+        public Result RecordInstructionalEventSelection()
+        {
+            Causes(new InstructionalEventsSelected()
+            {
+                LearnerId = LearnerId,
+                KnowledgeComponentId = KnowledgeComponent.Id
+            });
+            return Result.Ok();
         }
 
         private void TryPass()
@@ -252,6 +262,11 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
              * Possibly save information that the AE has been selected somewhere in the 
              * model.
              */
+        }
+
+        private void When(InstructionalEventsSelected @event)
+        {
+            // No action necessary for now.
         }
 
         private void When(SoughtHelp @event)

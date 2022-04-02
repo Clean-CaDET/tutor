@@ -5,7 +5,7 @@ namespace Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore
 {
     public class EventContext : DbContext
     {
-        internal DbSet<StoredDomainEvent> Events { get; set; }
+        internal DbSet<StoredDomainEvent> Events { get; private set; }
 
         public EventContext(DbContextOptions<EventContext> options) : base(options)
         {
@@ -15,8 +15,9 @@ namespace Tutor.Infrastructure.Database.EventStore.PostgreSqlEventStore
         {
             modelBuilder.Entity<StoredDomainEvent>().Property(e => e.DomainEvent).HasColumnType("jsonb");
             modelBuilder.Entity<StoredDomainEvent>().Property(e => e.DomainEvent).HasConversion(
-            v => EventSerializer.Serialize(v),
-            v => EventSerializer.Deserialize(v));
+                v => EventSerializer.Serialize(v),
+                v => EventSerializer.Deserialize(v));
+            modelBuilder.Entity<StoredDomainEvent>().HasIndex(e => e.TimeStamp);
         }
     }
 }

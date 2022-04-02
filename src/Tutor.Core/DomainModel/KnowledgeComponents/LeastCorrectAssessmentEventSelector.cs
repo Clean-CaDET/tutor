@@ -25,7 +25,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         private AssessmentEvent FindAeWithNoSubmission(List<AssessmentEvent> assessmentEvents)
         {
-            var ae = assessmentEvents.FirstOrDefault(ae => ae.Submissions.Count == 0);
+            var ae = assessmentEvents.OrderBy(ae => ae.Order).FirstOrDefault(ae => ae.Submissions.Count == 0);
             return ae != null ? _assessmentEventRepository.GetDerivedAssessmentEvent(ae.Id) : null;
         }
 

@@ -6,13 +6,13 @@ using Tutor.Core.DomainModel.InstructionalEvents;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
-    public class KcService : IKCService
+    public class KcService : IKcService
     {
-        private readonly IKCRepository _kcRepository;
+        private readonly IKcRepository _kcRepository;
         private readonly IAssessmentEventRepository _assessmentEventRepository;
         private readonly IAssessmentEventSelector _assessmentEventSelector;
 
-        public KcService(IKCRepository ikcRepository,
+        public KcService(IKcRepository ikcRepository,
             IAssessmentEventRepository assessmentEventRepository,
             IAssessmentEventSelector assessmentEventSelector)
         {
@@ -43,16 +43,25 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             return Result.Ok(_assessmentEventRepository.GetAssessmentEventsByKnowledgeComponent(id));
         }
 
-        public Result<List<InstructionalEvent>> GetInstructionalEventsByKnowledgeComponent(int id)
+        public Result<List<InstructionalEvent>> GetInstructionalEvents(int knowledgeComponentId, int learnerId)
         {
-            return Result.Ok(_kcRepository.GetInstructionalEventsByKnowledgeComponent(id));
+            var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
+            var instructionalEvents = _kcRepository.GetInstructionalEvents(knowledgeComponentId);
+
+            var result = knowledgeComponentMastery.RecordInstructionalEventSelection();
+            _kcRepository.UpdateKcMastery(knowledgeComponentMastery);
+
+            if (result.IsFailed)
+                return result.ToResult<List<InstructionalEvent>>();
+            else
+                return Result.Ok(instructionalEvents);
         }
 
         public Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId)
         {
             var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
             var result = knowledgeComponentMastery.SelectSuitableAssessmentEvent(_assessmentEventSelector);
-            _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
+            _kcRepository.UpdateKcMastery(knowledgeComponentMastery);
             return result;
         }
 

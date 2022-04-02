@@ -9,7 +9,7 @@ using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestions;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
@@ -27,7 +27,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKCService>());
+                scope.ServiceProvider.GetRequiredService<IKcService>());
 
             var actualSuitableAssessmentEvent =
                 ((OkObjectResult) controller.GetSuitableAssessmentEvent(request).Result)?.Value as AssessmentEventDto;
@@ -50,7 +50,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             
             controller.SubmitMultipleResponseQuestion(submission);
             
-            var actualKcMastery = dbContext.KcMastery.FirstOrDefault(kcm => kcm.LearnerId == submission.LearnerId
+            var actualKcMastery = dbContext.KcMasteries.FirstOrDefault(kcm => kcm.LearnerId == submission.LearnerId
             && kcm.KnowledgeComponent.Id == knowledgeComponent.Id);
             
             actualKcMastery.Mastery.ShouldBe(expectedKcMastery);

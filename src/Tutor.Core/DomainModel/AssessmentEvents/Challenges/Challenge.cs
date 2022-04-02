@@ -2,8 +2,6 @@
 using CodeModel.CaDETModel;
 using System;
 using System.Collections.Generic;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategy;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FunctionalityTester;
 
 namespace Tutor.Core.DomainModel.AssessmentEvents.Challenges
 {

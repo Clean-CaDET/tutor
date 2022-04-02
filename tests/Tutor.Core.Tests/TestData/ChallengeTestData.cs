@@ -1,8 +1,8 @@
 ﻿namespace Tutor.Core.Tests.TestData
 {
-    internal class ChallengeTestData
+    internal static class ChallengeTestData
     {
-        public static string[] GetTwoPassingClasses()
+        internal static string[] GetTwoPassingClasses()
         {
             return new[] {
 @"using System;
@@ -37,7 +37,7 @@ namespace Methods.Small
             };
         }
 
-        public static string[] GetTwoViolatingClasses()
+        internal static string[] GetTwoViolatingClasses()
         {
             return new[]
             {

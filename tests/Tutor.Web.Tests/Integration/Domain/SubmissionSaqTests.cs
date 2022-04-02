@@ -5,8 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Web.Controllers.Domain;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestion;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestions;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
@@ -124,6 +123,31 @@ namespace Tutor.Web.Tests.Integration.Domain
                         CorrectnessLevel = 0.5
                     }
                 },
+                new object[]
+                {
+                    new SaqSubmissionDto
+                    {
+                        AssessmentEventId = -995,
+                        LearnerId = -1
+                    },
+                    new SaqEvaluationDto
+                    {
+                        CorrectnessLevel = 0
+                    }
+                },
+                new object[]
+                {
+                    new SaqSubmissionDto
+                    {
+                        AssessmentEventId = -995,
+                        LearnerId = -1,
+                        Answer = " "
+                    },
+                    new SaqEvaluationDto
+                    {
+                        CorrectnessLevel = 0
+                    }
+                }
             };
         }
     }

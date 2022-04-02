@@ -34,7 +34,7 @@ namespace Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks
         private Evaluation EvaluateAt(ArrangeTaskSubmission atSubmission)
         {
             var evaluations = EvaluateContainers(atSubmission.Containers);
-            var correctness = 1 - (double) evaluations.Sum(c => c.IncorrectElementsCount) / Containers.Sum(c => c.Elements.Count);
+            var correctness = 1 - ((double) evaluations.Sum(c => c.IncorrectElementsCount) / Containers.Sum(c => c.Elements.Count));
 
             return new ArrangeTaskEvaluation(Id, correctness, evaluations);
         }

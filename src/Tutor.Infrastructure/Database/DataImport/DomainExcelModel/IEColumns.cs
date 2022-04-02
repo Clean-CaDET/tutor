@@ -8,5 +8,6 @@
         public string Text { get; internal set; }
         public string Url { get; internal set; }
         public string Caption { get; internal set; }
+        public int Order { get; set; }
     }
 }
