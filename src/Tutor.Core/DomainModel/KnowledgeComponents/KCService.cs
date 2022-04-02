@@ -81,7 +81,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         {
             var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
             var result = knowledgeComponentMastery.LaunchSession();
-            _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
+            _kcRepository.UpdateKcMastery(knowledgeComponentMastery);
             return result;
         }
 
@@ -89,7 +89,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         {
             var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
             var result = knowledgeComponentMastery.TerminateSession();
-            _kcRepository.UpdateKCMastery(knowledgeComponentMastery);
+            _kcRepository.UpdateKcMastery(knowledgeComponentMastery);
             return result;
         }
     }

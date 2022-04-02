@@ -42,7 +42,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         private KCController SetupController(IServiceScope scope)
         {
             return new KCController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKCService>())
+                scope.ServiceProvider.GetRequiredService<IKcService>())
             {
                 ControllerContext = new ControllerContext()
                 {
