@@ -9,9 +9,9 @@ using Xunit;
 namespace Tutor.Web.Tests.Integration.Learner
 {
     [Collection("Sequential")]
-    public class LearnerTests : BaseIntegrationTest
+    public class LoginTests : BaseIntegrationTest
     {
-        public LearnerTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
+        public LoginTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
         [Fact]
         public void Successfully_login()

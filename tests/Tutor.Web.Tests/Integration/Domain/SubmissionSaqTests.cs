@@ -5,8 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Web.Controllers.Domain;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestion;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestions;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestions;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain

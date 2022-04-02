@@ -1,4 +1,4 @@
-﻿namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestion
+﻿namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestions
 {
     public class SaqSubmissionDto
     {

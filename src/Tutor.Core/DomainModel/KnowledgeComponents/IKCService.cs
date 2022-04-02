@@ -5,7 +5,7 @@ using Tutor.Core.DomainModel.InstructionalEvents;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
-    public interface IKCService
+    public interface IKcService
     {
         Result<List<Unit>> GetUnits();
 

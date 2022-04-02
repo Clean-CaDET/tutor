@@ -9,10 +9,10 @@ using Tutor.Core.DomainModel.InstructionalEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Web.Controllers.Domain.DTOs;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTask;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenge;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestion;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTasks;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenges;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestions;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestions;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
 using KnowledgeComponentStatistics = Tutor.Core.DomainModel.KnowledgeComponents.KnowledgeComponentStatistics;
 
@@ -35,13 +35,13 @@ namespace Tutor.Web.Controllers.Domain.Mappers
 
             CreateMap<AssessmentEvent, AssessmentEventDto>().IncludeAllDerived();
             CreateMap<Challenge, ChallengeDto>();
-            CreateMap<Mrq, MultiResponseQuestionDto>();
+            CreateMap<Mrq, MrqDto>();
             CreateMap<MrqItem, MrqItemDto>();
-            CreateMap<ArrangeTask, ArrangeTaskDto>()
+            CreateMap<ArrangeTask, AtDto>()
                 .ForMember(dest => dest.UnarrangedElements, opt => opt.MapFrom(src => src.Containers.SelectMany(c => c.Elements).ToList()));
-            CreateMap<ArrangeTaskContainer, ArrangeTaskContainerDto>();
-            CreateMap<ArrangeTaskElement, ArrangeTaskElementDto>();
-            CreateMap<Saq, ShortAnswerQuestionDto>();
+            CreateMap<ArrangeTaskContainer, AtContainerDto>();
+            CreateMap<ArrangeTaskElement, AtElementDto>();
+            CreateMap<Saq, SaqDto>();
         }
     }
 }

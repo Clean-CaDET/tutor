@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenge
+namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenges
 {
     public class ChallengeHintDto
     {

@@ -6,7 +6,7 @@ using Tutor.Core.DomainModel.InstructionalEvents;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
-    public class KcService : IKCService
+    public class KcService : IKcService
     {
         private readonly IKcRepository _kcRepository;
         private readonly IAssessmentEventRepository _assessmentEventRepository;

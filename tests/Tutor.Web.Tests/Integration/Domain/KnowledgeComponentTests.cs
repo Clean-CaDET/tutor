@@ -24,7 +24,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKCService>());
+                scope.ServiceProvider.GetRequiredService<IKcService>());
 
             var units = ((OkObjectResult) controller.GetUnits().Result).Value as List<UnitDto>;
 
@@ -66,7 +66,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKCService>());
+                scope.ServiceProvider.GetRequiredService<IKcService>());
 
             var IEs = ((OkObjectResult)controller.GetAssessmentEvents(knowledgeComponentId).Result).Value as List<AssessmentEventDto>;
 
@@ -108,7 +108,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         private KCController SetupController(IServiceScope scope)
         {
             return new KCController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKCService>())
+                scope.ServiceProvider.GetRequiredService<IKcService>())
             {
                 ControllerContext = new ControllerContext()
                 {

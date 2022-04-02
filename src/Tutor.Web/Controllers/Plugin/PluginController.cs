@@ -4,7 +4,7 @@ using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
 using Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp;
 using Tutor.Core.LearnerModel;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenge;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenges;
 using Tutor.Web.Controllers.Learners.DTOs;
 
 namespace Tutor.Web.Controllers.Plugin

@@ -7,10 +7,10 @@ using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
 using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTask;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenge;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestion;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTasks;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenges;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestions;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestions;
 
 namespace Tutor.Web.Controllers.Domain
 {
@@ -47,12 +47,12 @@ namespace Tutor.Web.Controllers.Domain
         }
 
         [HttpPost("arrange-task")]
-        public ActionResult<List<ArrangeTaskContainerEvaluationDto>> SubmitArrangeTask(
-            [FromBody] ArrangeTaskSubmissionDto submission)
+        public ActionResult<List<AtContainerEvaluationDto>> SubmitArrangeTask(
+            [FromBody] AtSubmissionDto submission)
         {
             var result = _submissionService.EvaluateAndSaveSubmission(_mapper.Map<ArrangeTaskSubmission>(submission));
             if (result.IsFailed) return BadRequest(result.Errors);
-            return Ok(_mapper.Map<ArrangeTaskEvaluationDto>(result.Value));
+            return Ok(_mapper.Map<AtEvaluationDto>(result.Value));
         }
 
         [HttpPost("short-answer")]
@@ -66,7 +66,7 @@ namespace Tutor.Web.Controllers.Domain
 
         // Rework when we separate the controllers and AEMastery.
         [HttpPost("max-correctness")]
-        public ActionResult<List<ArrangeTaskContainerEvaluationDto>> SubmitShortAnswerQuestion(
+        public ActionResult<List<AtContainerEvaluationDto>> SubmitShortAnswerQuestion(
             [FromBody] ChallengeSubmissionDto submission)
         {
             var result = _submissionService.GetMaxCorrectness(submission.AssessmentEventId, submission.LearnerId);

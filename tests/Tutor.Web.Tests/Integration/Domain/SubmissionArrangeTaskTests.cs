@@ -5,7 +5,7 @@ using Shouldly;
 using System.Collections.Generic;
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Web.Controllers.Domain;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTask;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTasks;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
@@ -17,12 +17,12 @@ namespace Tutor.Web.Tests.Integration.Domain
 
         [Theory]
         [MemberData(nameof(AtSubmissions))]
-        public void Submits_arrange_task(ArrangeTaskSubmissionDto submission, ArrangeTaskEvaluationDto expectedEvaluation)
+        public void Submits_arrange_task(AtSubmissionDto submission, AtEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>());
 
-            var actualEvaluation = ((OkObjectResult)controller.SubmitArrangeTask(submission).Result).Value as ArrangeTaskEvaluationDto;
+            var actualEvaluation = ((OkObjectResult)controller.SubmitArrangeTask(submission).Result).Value as AtEvaluationDto;
 
             actualEvaluation.ShouldNotBeNull();
             actualEvaluation.CorrectnessLevel.ShouldBe(expectedEvaluation.CorrectnessLevel);
@@ -31,7 +31,7 @@ namespace Tutor.Web.Tests.Integration.Domain
 
         [Theory]
         [MemberData(nameof(InvalidAtSubmissions))]
-        public void Submits_invalid_arrange_task(ArrangeTaskSubmissionDto submission)
+        public void Submits_invalid_arrange_task(AtSubmissionDto submission)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>());
@@ -47,11 +47,11 @@ namespace Tutor.Web.Tests.Integration.Domain
             {
                 new object[]
                 {
-                    new ArrangeTaskSubmissionDto
+                    new AtSubmissionDto
                     {
                         AssessmentEventId = -2111,
                         LearnerId = -1,
-                        Containers= new List<ArrangeTaskContainerSubmissionDto>
+                        Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1, -2, -3}},
                             new() {ArrangeTaskContainerId = -2},
@@ -60,10 +60,10 @@ namespace Tutor.Web.Tests.Integration.Domain
                             new() {ArrangeTaskContainerId = -5, ElementIds = new List<int> {-5}}
                         }
                     },
-                    new ArrangeTaskEvaluationDto
+                    new AtEvaluationDto
                     {
                         CorrectnessLevel = 0.6,
-                        ContainerEvaluations = new List<ArrangeTaskContainerEvaluationDto>
+                        ContainerEvaluations = new List<AtContainerEvaluationDto>
                         {
                             new() {Id = -1},
                             new() {Id = -2},
@@ -75,11 +75,11 @@ namespace Tutor.Web.Tests.Integration.Domain
                 },
                 new object[]
                 {
-                    new ArrangeTaskSubmissionDto
+                    new AtSubmissionDto
                     {
                         AssessmentEventId = -2111,
                         LearnerId = -1,
-                        Containers= new List<ArrangeTaskContainerSubmissionDto>
+                        Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1}},
                             new() {ArrangeTaskContainerId = -2, ElementIds = new List<int> {-2}},
@@ -88,10 +88,10 @@ namespace Tutor.Web.Tests.Integration.Domain
                             new() {ArrangeTaskContainerId = -5, ElementIds = new List<int> {-5}}
                         }
                     },
-                    new ArrangeTaskEvaluationDto
+                    new AtEvaluationDto
                     {
                         CorrectnessLevel = 1,
-                        ContainerEvaluations = new List<ArrangeTaskContainerEvaluationDto>
+                        ContainerEvaluations = new List<AtContainerEvaluationDto>
                         {
                             new() {Id = -1},
                             new() {Id = -2},
@@ -103,11 +103,11 @@ namespace Tutor.Web.Tests.Integration.Domain
                 },
                 new object[]
                 {
-                    new ArrangeTaskSubmissionDto
+                    new AtSubmissionDto
                     {
                         AssessmentEventId = -2111,
                         LearnerId = -1,
-                        Containers= new List<ArrangeTaskContainerSubmissionDto>
+                        Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1, -2, -3, -4, -5}},
                             new() {ArrangeTaskContainerId = -2},
@@ -116,10 +116,10 @@ namespace Tutor.Web.Tests.Integration.Domain
                             new() {ArrangeTaskContainerId = -5}
                         }
                     },
-                    new ArrangeTaskEvaluationDto
+                    new AtEvaluationDto
                     {
                         CorrectnessLevel = 0.2,
-                        ContainerEvaluations = new List<ArrangeTaskContainerEvaluationDto>
+                        ContainerEvaluations = new List<AtContainerEvaluationDto>
                         {
                             new() {Id = -1},
                             new() {Id = -2},
@@ -138,11 +138,11 @@ namespace Tutor.Web.Tests.Integration.Domain
             {
                 new object[]
                 {
-                    new ArrangeTaskSubmissionDto
+                    new AtSubmissionDto
                     {
                         AssessmentEventId = -2111,
                         LearnerId = -1,
-                        Containers= new List<ArrangeTaskContainerSubmissionDto>
+                        Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1},
                             new() {ArrangeTaskContainerId = -2},
@@ -154,11 +154,11 @@ namespace Tutor.Web.Tests.Integration.Domain
                 },
                 new object[]
                 {
-                    new ArrangeTaskSubmissionDto
+                    new AtSubmissionDto
                     {
                         AssessmentEventId = -2111,
                         LearnerId = -1,
-                        Containers= new List<ArrangeTaskContainerSubmissionDto>
+                        Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1},
                             new() {ArrangeTaskContainerId = -2}
@@ -167,11 +167,11 @@ namespace Tutor.Web.Tests.Integration.Domain
                 },
                 new object[]
                 {
-                    new ArrangeTaskSubmissionDto
+                    new AtSubmissionDto
                     {
                         AssessmentEventId = -2112,
                         LearnerId = -1,
-                        Containers= new List<ArrangeTaskContainerSubmissionDto>
+                        Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1, -2, -3, -4, -5}},
                             new() {ArrangeTaskContainerId = -2},

@@ -1,4 +1,4 @@
-﻿namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion
+﻿namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestions
 {
     public class MrqItemEvaluationDto
     {

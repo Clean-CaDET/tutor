@@ -16,9 +16,9 @@ namespace Tutor.Web.Controllers.Domain
     public class KCController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IKCService _kcService;
+        private readonly IKcService _kcService;
 
-        public KCController(IMapper mapper, IKCService kcService)
+        public KCController(IMapper mapper, IKcService kcService)
         {
             _mapper = mapper;
             _kcService = kcService;

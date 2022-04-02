@@ -1,6 +1,6 @@
-﻿namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTask
+﻿namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTasks
 {
-    public class ArrangeTaskElementDto
+    public class AtElementDto
     {
         public int Id { get; set; }
         public string Text { get; set; }

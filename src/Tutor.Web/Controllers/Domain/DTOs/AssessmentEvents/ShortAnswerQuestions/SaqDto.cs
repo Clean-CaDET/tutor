@@ -1,9 +1,9 @@
 ﻿using Dahomey.Json.Attributes;
 
-namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestion
+namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestions
 {
     [JsonDiscriminator("shortAnswerQuestion", Policy = DiscriminatorPolicy.Always)]
-    public class ShortAnswerQuestionDto : AssessmentEventDto
+    public class SaqDto : AssessmentEventDto
     {
         public string Text { get; set; }
     }

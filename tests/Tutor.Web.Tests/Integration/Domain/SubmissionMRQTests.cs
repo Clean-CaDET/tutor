@@ -5,7 +5,7 @@ using Shouldly;
 using System.Collections.Generic;
 using Tutor.Core.DomainModel.AssessmentEvents;
 using Tutor.Web.Controllers.Domain;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestions;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain

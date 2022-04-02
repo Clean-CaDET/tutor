@@ -4,12 +4,12 @@ namespace Tutor.Web.Tests.TestData
 {
     internal class IntegrationTestCode
     {
-        public static string[] GetFailingAchievement()
+        internal static string[] GetFailingAchievement()
         {
 	        return GetCode("FailingAchievement.txt");
         }
 
-        public static string[] GetPassingAchievement()
+        internal static string[] GetPassingAchievement()
         {
 	        return GetCode("PassingAchievement.txt");
         }

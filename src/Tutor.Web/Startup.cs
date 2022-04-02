@@ -24,9 +24,9 @@ using Tutor.Infrastructure.Database.Repositories.Learners;
 using Tutor.Infrastructure.Security;
 using Tutor.Infrastructure.Security.Authorization;
 using Tutor.Infrastructure.Security.Authorization.JWT;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTask;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenge;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestion;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTasks;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenges;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestions;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
 using Tutor.Web.IAM;
 using Tutor.Web.IAM.Keycloak;
@@ -64,10 +64,10 @@ namespace Tutor.Web
                 registry.ClearConventions();
                 registry.RegisterConvention(
                     new DefaultDiscriminatorConvention<string>(serializerOptions, "typeDiscriminator"));
-                registry.RegisterType<ArrangeTaskDto>();
+                registry.RegisterType<AtDto>();
                 registry.RegisterType<ChallengeDto>();
                 registry.RegisterType<ImageDto>();
-                registry.RegisterType<MultiResponseQuestionDto>();
+                registry.RegisterType<MrqDto>();
                 registry.RegisterType<TextDto>();
                 registry.RegisterType<VideoDto>();
 
@@ -85,7 +85,7 @@ namespace Tutor.Web
                     });
             });
 
-            services.AddScoped<IKCService, KcService>();
+            services.AddScoped<IKcService, KcService>();
             services.AddScoped<IKcRepository, KcDatabaseRepository>();
             services.AddScoped<IAssessmentEventRepository, AssessmentEventDatabaseRepository>();
             services.AddScoped<ISubmissionService, SubmissionService>();
