@@ -17,9 +17,10 @@ namespace Tutor.Infrastructure.Database.DataImport
             sqlBuilder.AppendLine().AppendLine();
             foreach (var learner in learners)
             {
-                sqlBuilder.Append("INSERT INTO public.\"Learners\"(\"Id\", \"StudentIndex\", \"Password\", \"Salt\") VALUES");
+                sqlBuilder.Append("INSERT INTO public.\"Learners\"(\"Id\", \"StudentIndex\", \"Name\", \"Surname\", \"Password\", \"Salt\") VALUES");
                 sqlBuilder.AppendLine();
                 sqlBuilder.Append("\t(" + learner.Id + ", '" + learner.StudentIndex + "', '"
+                                    + learner.Name + "', '" + learner.Surname + "', '"
                                   + learner.Password + "', '" + learner.Salt + "');");
                 sqlBuilder.AppendLine().AppendLine();
             }
@@ -36,7 +37,7 @@ namespace Tutor.Infrastructure.Database.DataImport
                 foreach (var kc in kcs)
                 {
                     sqlBuilder.Append(
-                        "INSERT INTO public.\"KcMastery\"(\"Id\", \"Mastery\", \"KnowledgeComponentId\", \"LearnerId\", \"IsPassed\", \"IsSatisfied\") VALUES");
+                        "INSERT INTO public.\"KcMasteries\"(\"Id\", \"Mastery\", \"KnowledgeComponentId\", \"LearnerId\", \"IsPassed\", \"IsSatisfied\") VALUES");
                     sqlBuilder.AppendLine();
                     sqlBuilder.Append("\t(" + startingId++ + ", 0.00, " + kc.Id + ", "
                                       + learner.Id + ", false, false);");
