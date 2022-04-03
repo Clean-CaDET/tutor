@@ -49,6 +49,8 @@ namespace Tutor.Infrastructure.Database.DataImport
                     {
                         Id = startingId++,
                         StudentIndex = index,
+                        Name = sheet.Cells["E" + row].Text,
+                        Surname = sheet.Cells["D" + row].Text,
                         Salt = Convert.ToBase64String(salt),
                         Password = PasswordUtilities.HashPassword(passwordSeed, salt)
                     });
