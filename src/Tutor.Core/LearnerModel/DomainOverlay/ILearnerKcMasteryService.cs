@@ -12,6 +12,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
         Result<List<Unit>> GetUnits();
 
         Result<Unit> GetUnit(int id, int learnerId);
+        Result<List<KnowledgeComponentMastery>> GetKnowledgeComponentMasteries(List<int> kcIds, int learnerId);
 
         Result<KnowledgeComponent> GetKnowledgeComponentById(int id);
 

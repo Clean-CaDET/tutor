@@ -102,7 +102,6 @@ namespace Tutor.Web
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
 
-
             if (!bool.Parse(Environment.GetEnvironmentVariable("KEYCLOAK_ON") ?? "false"))
             {
                 SetupJwtService(services);

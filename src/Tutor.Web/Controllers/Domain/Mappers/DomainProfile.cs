@@ -24,8 +24,7 @@ namespace Tutor.Web.Controllers.Domain.Mappers
         public DomainProfile()
         {
             CreateMap<Unit, UnitDto>();
-            CreateMap<KnowledgeComponent, KnowledgeComponentDto>()
-                .ForMember(dest => dest.Mastery, opt => opt.MapFrom(src => src.KnowledgeComponentMasteries.FirstOrDefault()));
+            CreateMap<KnowledgeComponent, KnowledgeComponentDto>();
             CreateMap<KnowledgeComponentMastery, KnowledgeComponentMasteryDto>();
             CreateMap<KnowledgeComponentStatistics, KnowledgeComponentStatisticsDto>();
 

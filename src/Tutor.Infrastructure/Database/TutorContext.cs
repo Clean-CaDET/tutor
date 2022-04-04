@@ -80,6 +80,9 @@ namespace Tutor.Infrastructure.Database
             modelBuilder.Entity<Learner>()
                 .OwnsOne(l => l.Workspace)
                 .Property(w => w.Path).HasColumnName("WorkspacePath");
+            modelBuilder.Entity<KnowledgeComponentMastery>()
+                .HasOne(kcm => kcm.KnowledgeComponent)
+                .WithMany();
         }
 
         private static void ConfigureArrangeTask(ModelBuilder modelBuilder)

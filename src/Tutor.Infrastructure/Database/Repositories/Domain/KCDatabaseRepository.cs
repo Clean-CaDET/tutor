@@ -33,21 +33,19 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             return _dbContext.Units.ToList();
         }
 
-        private void LoadKCs(List<KnowledgeComponent> parentKCs, int learnerId)
+        private void LoadKcHierarchy(List<KnowledgeComponent> parentKCs)
         {
             foreach (var knowledgeComponent in parentKCs)
             {
                 _dbContext.Entry(knowledgeComponent).Collection(kc => kc.KnowledgeComponents).Load();
-                _dbContext.Entry(knowledgeComponent)
-                    .Collection(kc => kc.KnowledgeComponentMasteries).Query().Where(m => m.LearnerId == learnerId).Load();
-                LoadKCs(knowledgeComponent.KnowledgeComponents, learnerId);
+                LoadKcHierarchy(knowledgeComponent.KnowledgeComponents);
             }
         }
 
-        public Unit GetUnit(int id, int learnerId)
+        public Unit GetUnitWithKcs(int id)
         {
             var unit = _dbContext.Units.Where(unit => unit.Id == id).Include(u => u.KnowledgeComponents).FirstOrDefault();
-            LoadKCs(unit?.KnowledgeComponents, learnerId);
+            LoadKcHierarchy(unit?.KnowledgeComponents);
             return unit;
         }
 
@@ -114,6 +112,11 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
         {
             return _dbContext.Submissions.Where(sub => sub.AssessmentItemId == assessmentItemId && sub.LearnerId == learnerId)
                 .OrderBy(sub => sub.CorrectnessLevel).LastOrDefault();
+        }
+
+        public List<KnowledgeComponentMastery> GetKnowledgeComponentMasteries(List<int> kcIds, int learnerId)
+        {
+            return _dbContext.KcMasteries.Where(kcm => kcm.LearnerId == learnerId && kcIds.Contains(kcm.KnowledgeComponent.Id)).ToList();
         }
     }
 }

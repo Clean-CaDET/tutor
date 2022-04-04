@@ -10,7 +10,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
     {
         List<Unit> GetUnits();
 
-        Unit GetUnit(int id, int learnerId);
+        Unit GetUnitWithKcs(int id);
 
         KnowledgeComponent GetKnowledgeComponent(int id);
 
@@ -27,5 +27,6 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
         AssessmentItem GetDerivedAssessmentItem(int assessmentItemId);
 
         Submission FindSubmissionWithMaxCorrectness(int assessmentItemId, int learnerId);
+        List<KnowledgeComponentMastery> GetKnowledgeComponentMasteries(List<int> kcIds, int learnerId);
     }
 }

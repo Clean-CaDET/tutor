@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.LearnerModel.DomainOverlay;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
 using Tutor.Infrastructure.Security.Authorization.JWT;
 using Tutor.Web.Controllers.Domain.DTOs;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems;
@@ -33,11 +34,44 @@ namespace Tutor.Web.Controllers.Domain
         }
 
         [HttpGet("{unitId:int}")]
-        public ActionResult<List<UnitDto>> GetUnit(int unitId, [FromQuery] int learnerId)
+        public ActionResult<List<UnitDto>> GetUnit(int unitId)
         {
-            var result = _learnerKcMasteryService.GetUnit(unitId, learnerId);
-            if (result.IsSuccess) return Ok(_mapper.Map<UnitDto>(result.Value));
-            return NotFound(result.Errors);
+            var result = _learnerKcMasteryService.GetUnit(unitId, User.Id());
+            if (result.IsFailed) return NotFound(result.Errors);
+
+            var unitDto = _mapper.Map<UnitDto>(result.Value);
+            AppendMasteriesToResponse(unitDto, User.Id());
+
+            return Ok(unitDto);
+        }
+
+        private void AppendMasteriesToResponse(UnitDto unitDto, int learnerId)
+        {
+            var kcIds = GetKcIds(unitDto.KnowledgeComponents);
+            var masteries = _learnerKcMasteryService.GetKnowledgeComponentMasteries(kcIds, learnerId).Value;
+            PopulateMasteries(unitDto.KnowledgeComponents, masteries);
+        }
+
+        private static List<int> GetKcIds(List<KnowledgeComponentDto> knowledgeComponents)
+        {
+            var kcIds = new List<int>();
+            foreach (var k in knowledgeComponents)
+            {
+                kcIds.Add(k.Id);
+                kcIds.AddRange(GetKcIds(k.KnowledgeComponents));
+            }
+
+            return kcIds;
+        }
+
+        private static void PopulateMasteries(List<KnowledgeComponentDto> kcs, List<KnowledgeComponentMastery> masteries)
+        {
+            foreach (var kc in kcs)
+            {
+                var mastery = masteries.Find(m => m.KnowledgeComponent.Id == kc.Id);
+                kc.Mastery = new KnowledgeComponentMasteryDto { Mastery = mastery.Mastery, IsSatisfied = mastery.IsSatisfied };
+                PopulateMasteries(kc.KnowledgeComponents, masteries);
+            }
         }
 
         [HttpGet("knowledge-components/{knowledgeComponentId:int}")]

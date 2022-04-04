@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Web.Controllers.Domain;
@@ -28,6 +29,39 @@ namespace Tutor.Web.Tests.Integration.Domain
             var units = ((OkObjectResult) controller.GetUnits().Result).Value as List<UnitDto>;
 
             units.Count.ShouldBe(2);
+        }
+
+        [Theory]
+        [MemberData(nameof(KnowledgeComponentMasteries))]
+        public void Retrieves_kc_mastery_for_unit(int unitId, List<KnowledgeComponentDto> expectedKCs)
+        {
+            using var scope = Factory.Services.CreateScope();
+            var controller = SetupController(scope);
+
+            var unit = ((OkObjectResult)controller.GetUnit(unitId).Result).Value as UnitDto;
+
+            expectedKCs.All(expectedKc => unit.KnowledgeComponents.Any(
+                    kc => expectedKc.Id == kc.Id && expectedKc.Mastery.Mastery == kc.Mastery.Mastery))
+                .ShouldBe(true);
+        }
+
+        public static IEnumerable<object[]> KnowledgeComponentMasteries()
+        {
+            return new List<object[]>
+            {
+                new object[]
+                {
+                    -1,
+                    new List<KnowledgeComponentDto>
+                    {
+                        new() {Id = -11, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.1 }},
+                        new() {Id = -12, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.2 }},
+                        new() {Id = -13, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.3 }},
+                        new() {Id = -14, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.4 }},
+                        new() {Id = -15, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.5 }}
+                    }
+                }
+            };
         }
 
         [Theory]
@@ -68,7 +102,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             var kcMasteryStatistics = ((OkObjectResult)controller.GetKnowledgeComponentStatistics(-15).Result).Value as KnowledgeComponentStatisticsDto;
 
             kcMasteryStatistics.IsSatisfied.ShouldBe(false);
-            kcMasteryStatistics.Mastery.ShouldBe(0);
+            kcMasteryStatistics.Mastery.ShouldBe(0.5);
             kcMasteryStatistics.TotalCount.ShouldBe(4);
             kcMasteryStatistics.AttemptedCount.ShouldBe(4);
             kcMasteryStatistics.CompletedCount.ShouldBe(0);
