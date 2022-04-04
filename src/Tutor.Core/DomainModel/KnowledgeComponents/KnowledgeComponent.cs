@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.AssessmentItems;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
@@ -13,11 +13,11 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         public List<KnowledgeComponent> KnowledgeComponents { get; private set; }
         public List<KnowledgeComponentMastery> KnowledgeComponentMasteries { get; private set; }
-        public List<AssessmentEvent> AssessmentEvents { get; private set; }
+        public List<AssessmentItem> AssessmentItems { get; private set; }
 
-        public AssessmentEvent GetAssessmentEvent(int assessmentEventId)
+        public AssessmentItem GetAssessmentItem(int assessmentItemId)
         {
-            return AssessmentEvents.FirstOrDefault(ae => ae.Id == assessmentEventId);
+            return AssessmentItems.FirstOrDefault(ae => ae.Id == assessmentItemId);
         }
     }
 }

@@ -5,8 +5,8 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Web.Controllers.Domain.DTOs;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
-using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems;
+using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
 using Tutor.Infrastructure.Security.Authorization.JWT;
 
 namespace Tutor.Web.Controllers.Domain
@@ -48,25 +48,18 @@ namespace Tutor.Web.Controllers.Domain
             return NotFound(result.Errors);
         }
 
-        [HttpGet("knowledge-components/{knowledgeComponentId:int}/assessment-events/")]
-        public ActionResult<List<AssessmentEventDto>> GetAssessmentEvents(int knowledgeComponentId)
+        [HttpGet("knowledge-components/{knowledgeComponentId:int}/instructional-items/")]
+        public ActionResult<List<InstructionalItemDto>> GetInstructionalItems(int knowledgeComponentId)
         {
-            var result = _kcService.GetAssessmentEventsByKnowledgeComponent(knowledgeComponentId);
-            return Ok(result.Value.Select(ae => _mapper.Map<AssessmentEventDto>(ae)).ToList());
-        }
-
-        [HttpGet("knowledge-components/{knowledgeComponentId:int}/instructional-events/")]
-        public ActionResult<List<InstructionalEventDto>> GetInstructionalEvents(int knowledgeComponentId)
-        {
-            var result = _kcService.GetInstructionalEvents(knowledgeComponentId, User.Id());
-            return Ok(result.Value.Select(ie => _mapper.Map<InstructionalEventDto>(ie)).ToList());
+            var result = _kcService.GetInstructionalItems(knowledgeComponentId, User.Id());
+            return Ok(result.Value.Select(ie => _mapper.Map<InstructionalItemDto>(ie)).ToList());
         }
 
         [HttpPost("knowledge-component")]
-        public ActionResult<AssessmentEventDto> GetSuitableAssessmentEvent([FromBody] AssessmentEventRequestDto assessmentEventRequest)
+        public ActionResult<AssessmentItemDto> GetSuitableAssessmentItem([FromBody] AssessmentItemRequestDto assessmentItemRequest)
         {
-            var result = _kcService.SelectSuitableAssessmentEvent(assessmentEventRequest.KnowledgeComponentId, assessmentEventRequest.LearnerId);
-            if (result.IsSuccess) return Ok(_mapper.Map<AssessmentEventDto>(result.Value));
+            var result = _kcService.SelectSuitableAssessmentItem(assessmentItemRequest.KnowledgeComponentId, assessmentItemRequest.LearnerId);
+            if (result.IsSuccess) return Ok(_mapper.Map<AssessmentItemDto>(result.Value));
             return NotFound(result.Errors);
         }
 

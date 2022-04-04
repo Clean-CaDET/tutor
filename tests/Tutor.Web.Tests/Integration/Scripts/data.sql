@@ -14,9 +14,9 @@ DELETE FROM public."MultiResponseQuestions";
 DELETE FROM public."ArrangeTaskElements";
 DELETE FROM public."ArrangeTaskContainers";
 DELETE FROM public."ArrangeTasks";
-DELETE FROM public."AssessmentEvents";
+DELETE FROM public."AssessmentItems";
 DELETE FROM public."ShortAnswerQuestions";
-DELETE FROM public."InstructionalEvents";
+DELETE FROM public."InstructionalItems";
 DELETE FROM public."KcMasteries";
 DELETE FROM public."KnowledgeComponents";
 DELETE FROM public."Units";
@@ -114,33 +114,33 @@ INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-51, 0.0, -10, -3, false, false, false);
 
-INSERT INTO public."InstructionalEvents"(
+INSERT INTO public."InstructionalItems"(
 	"Id", "KnowledgeComponentId", "Order")
 	VALUES (-111, -11, 1);
 INSERT INTO public."Texts"(
 	"Id", "Content")
 	VALUES (-111, 'Imenovanje je proces određivanja i dodeljivanja imena identifikatoru. Identifikatore pronalazimo svuda u kodu. Tako imenujemo datoteke, direktorijume, klase, metode i promenljive. U Java programima imenujemo pakete i JAR datoteke, dok kod C# jezika imenujemo namespace i DLL datoteke. Dobro ime treba da **objasni svrhu elementa** koji imenujemo i da pokuša da odgovori na pitanja: Zašto dati element postoji? Šta radi? Kako se koristi?');
-INSERT INTO public."InstructionalEvents"(
+INSERT INTO public."InstructionalItems"(
 	"Id", "KnowledgeComponentId", "Order")
 	VALUES (-112, -11, 2);
 INSERT INTO public."Images"(
 	"Id", "Url", "Caption")
 	VALUES (-112, 'https://i.ibb.co/vqjMTyJ/simple-names-sr.png', 'U većini slučajeva kada hoćemo da stavimo komentar, pravo rešenje je smišljanje jasnijeg imena.');
 
-INSERT INTO public."InstructionalEvents"(
+INSERT INTO public."InstructionalItems"(
 	"Id", "KnowledgeComponentId", "Order")
 	VALUES (-151, -15, 3);
 INSERT INTO public."Images"(
 	"Id", "Url", "Caption")
 	VALUES (-151, 'https://i.ibb.co/Tw9qktR/domain-names-sr.png', 'Lakše ćemo razumeti nove zahteve kada koristimo u kodu isti jezik kao naši klijenti.');
-INSERT INTO public."InstructionalEvents"(
+INSERT INTO public."InstructionalItems"(
 	"Id", "KnowledgeComponentId", "Order")
 	VALUES (-152, -15, 4);
 INSERT INTO public."Images"(
 	"Id", "Url", "Caption")
 	VALUES (-152, 'https://i.ibb.co/f144vCk/names-example.png', 'Ovako objektno orijentisani programer imenuje stvari kada izbegava reči iz poslovnog domena.');
 
-INSERT INTO public."AssessmentEvents"(
+INSERT INTO public."AssessmentItems"(
 	"Id", "KnowledgeComponentId", "Order")
 	VALUES (-153, -15, 1);
 INSERT INTO public."MultiResponseQuestions"(
@@ -162,7 +162,7 @@ INSERT INTO public."MrqItems"(
 	"Id", "Text", "IsCorrect", "Feedback", "MrqId")
 	VALUES (-1535, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -153);
 
-INSERT INTO public."AssessmentEvents"(
+INSERT INTO public."AssessmentItems"(
     "Id", "KnowledgeComponentId", "Order")
 VALUES (-155, -15, 2);
 INSERT INTO public."MultiResponseQuestions"(
@@ -184,7 +184,7 @@ INSERT INTO public."MrqItems"(
     "Id", "Text", "IsCorrect", "Feedback", "MrqId")
 VALUES (-1555, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -155);
 
-INSERT INTO public."AssessmentEvents"(
+INSERT INTO public."AssessmentItems"(
     "Id", "KnowledgeComponentId", "Order")
 VALUES (-156, -15, 3);
 INSERT INTO public."MultiResponseQuestions"(
@@ -206,7 +206,7 @@ INSERT INTO public."MrqItems"(
     "Id", "Text", "IsCorrect", "Feedback", "MrqId")
 VALUES (-1565, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -156);
 
-INSERT INTO public."AssessmentEvents"(
+INSERT INTO public."AssessmentItems"(
 	"Id", "KnowledgeComponentId", "Order")
 	VALUES (-154, -15, 4);
 INSERT INTO public."Challenges"(
@@ -223,7 +223,7 @@ INSERT INTO public."RequiredWordsCheckers"(
     "Id", "RequiredWords", "HintId")
 VALUES (-1541, '{{"Enroll","newCourse","Maximum","Active"}}', -1541);
 
-INSERT INTO public."AssessmentEvents"(
+INSERT INTO public."AssessmentItems"(
     "Id", "KnowledgeComponentId", "Order")
 VALUES (-134, -13, 5);
 INSERT INTO public."Challenges"(
@@ -240,7 +240,7 @@ INSERT INTO public."RequiredWordsCheckers"(
     "Id", "RequiredWords", "HintId")
 VALUES (-1341, '{{"Enroll","newCourse","Maximum","Active"}}', -1341);
 
-INSERT INTO public."AssessmentEvents"(
+INSERT INTO public."AssessmentItems"(
     "Id", "KnowledgeComponentId", "Order")
 VALUES (-143, -14, 6);
 INSERT INTO public."MultiResponseQuestions"(
@@ -262,7 +262,7 @@ INSERT INTO public."MrqItems"(
     "Id", "Text", "IsCorrect", "Feedback", "MrqId")
 VALUES (-1435, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -143);
 
-INSERT INTO public."AssessmentEvents"(
+INSERT INTO public."AssessmentItems"(
     "Id", "KnowledgeComponentId", "Order")
 VALUES (-144, -14, 7);
 INSERT INTO public."MultiResponseQuestions"(
@@ -284,7 +284,7 @@ INSERT INTO public."MrqItems"(
     "Id", "Text", "IsCorrect", "Feedback", "MrqId")
 VALUES (-1445, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -144);
 
-INSERT INTO public."AssessmentEvents"(
+INSERT INTO public."AssessmentItems"(
     "Id", "KnowledgeComponentId", "Order")
 VALUES (-106, -10, 8);
 INSERT INTO public."MultiResponseQuestions"(
@@ -306,7 +306,7 @@ INSERT INTO public."MrqItems"(
     "Id", "Text", "IsCorrect", "Feedback", "MrqId")
 VALUES (-1065, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -106);
 
-INSERT INTO public."AssessmentEvents"(
+INSERT INTO public."AssessmentItems"(
     "Id", "KnowledgeComponentId", "Order")
 VALUES (-107, -10, 9);
 INSERT INTO public."MultiResponseQuestions"(
@@ -329,31 +329,31 @@ INSERT INTO public."MrqItems"(
 VALUES (-1075, 'RegisterMember(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. biblioteke). Naspram toga, operacija registracije korisnika aplikacije (npr. RegisterUser) bi podrazumevala tehnološku logiku koja bi mogla da uključi poslovnu ako bi se prilikom registracije formirao i član koji nije samo sistemski korisnik.', -107);
 
 INSERT INTO public."Submissions"(
-    "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
+    "Id", "AssessmentItemId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
 VALUES (-1, -134, -2, false, '2021-12-19 21:25:50.379749+01', 'MrqSubmission', 0.75);
 
 INSERT INTO public."Submissions"(
-    "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
+    "Id", "AssessmentItemId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
 VALUES (-2, -155, -2, false, '2021-12-19 21:26:50.379749+01', 'MrqSubmission', 0.75);
 
 INSERT INTO public."Submissions"(
-    "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
+    "Id", "AssessmentItemId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
 VALUES (-3, -155, -2, false, '2021-12-19 21:27:50.379749+01', 'MrqSubmission', 0.3);
 
 INSERT INTO public."Submissions"(
-    "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
+    "Id", "AssessmentItemId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
 VALUES (-4, -153, -2, false, '2021-12-19 21:28:50.379749+01', 'MrqSubmission', 0.6);
 
 INSERT INTO public."Submissions"(
-    "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
+    "Id", "AssessmentItemId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
 VALUES (-5, -154, -2, false, '2021-12-19 21:29:50.379749+01', 'MrqSubmission', 0.7);
 
 INSERT INTO public."Submissions"(
-    "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
+    "Id", "AssessmentItemId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
 VALUES (-6, -156, -2, false, '2021-12-19 21:30:50.379749+01', 'MrqSubmission', 0.4);
 
 INSERT INTO public."Submissions"(
-    "Id", "AssessmentEventId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
+    "Id", "AssessmentItemId", "LearnerId", "IsCorrect", "TimeStamp", "Discriminator", "CorrectnessLevel")
 VALUES (-7, -143, -2, false, '2021-12-19 21:25:50.379749+01', 'MrqSubmission', 1.0);
 
 -- == Unit 2: Readable methods
@@ -496,7 +496,7 @@ INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "HasActiveSession")
 VALUES (-48, 0.0, -211, -3, false, false, false);
 
-INSERT INTO public."AssessmentEvents"(
+INSERT INTO public."AssessmentItems"(
 	"Id", "KnowledgeComponentId", "Order")
 	VALUES (-2111, -211, 10);
 INSERT INTO public."ArrangeTasks"(
@@ -549,7 +549,7 @@ INSERT INTO public."ArrangeTaskElements"(
 	"Id", "ArrangeTaskContainerId", "Text")
 	VALUES (-5, -5, 'Uzima u obzir da li je lekar na bitnom sastanku u traženo vreme.');
 
-INSERT INTO public."AssessmentEvents"(
+INSERT INTO public."AssessmentItems"(
 	"Id", "KnowledgeComponentId", "Order")
 	VALUES (-211, -21, 11);
 INSERT INTO public."Challenges"(
@@ -565,7 +565,7 @@ INSERT INTO public."BasicMetricCheckers"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId")
 	VALUES (-1, 'MELOC', 1, 18, -1);
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-212, -21, 12);
 INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
 	(-212, 'Iz sledećeg koda navedi sve nazive identifikatora (razdvojene zarezom) koji krše česte konvencije u pisanju programa.
@@ -588,7 +588,7 @@ INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VAL
     }}', '{{"Words, word_parts, idx, abc"}}');
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-995, -21, 13);
 INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
 	(-995, 'Posmatrajući sledeću strukturu paketa, navedi nazive klasa (razdvojene zarezom i bez .cs) koji krše konvenciju.

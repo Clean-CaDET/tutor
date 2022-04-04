@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
-using Tutor.Core.DomainModel.AssessmentEvents;
-using Tutor.Core.DomainModel.InstructionalEvents;
+using Tutor.Core.DomainModel.AssessmentItems;
+using Tutor.Core.DomainModel.InstructionalItems;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
@@ -13,11 +13,11 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         Result<KnowledgeComponent> GetKnowledgeComponentById(int id);
 
-        Result<List<AssessmentEvent>> GetAssessmentEventsByKnowledgeComponent(int id);
+        Result<List<AssessmentItem>> GetAssessmentItemsByKnowledgeComponent(int id);
 
-        Result<List<InstructionalEvent>> GetInstructionalEvents(int knowledgeComponentId, int learnerId);
+        Result<List<InstructionalItem>> GetInstructionalItems(int knowledgeComponentId, int learnerId);
 
-        Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId);
+        Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId);
 
         Result<KnowledgeComponentStatistics> GetKnowledgeComponentStatistics(int learnerId, int knowledgeComponentId);
 

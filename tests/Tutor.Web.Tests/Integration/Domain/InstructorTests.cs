@@ -4,12 +4,12 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Domain;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestions;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
@@ -22,31 +22,31 @@ namespace Tutor.Web.Tests.Integration.Domain
         }
 
         [Theory]
-        [MemberData(nameof(AssessmentEventRequest))]
-        public void Get_Suitable_Assessment_Event(AssessmentEventRequestDto request, int expectedSuitableAssessmentEventId)
+        [MemberData(nameof(AssessmentItemRequest))]
+        public void Get_Suitable_Assessment_Event(AssessmentItemRequestDto request, int expectedSuitableAssessmentItemId)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IKcService>());
 
-            var actualSuitableAssessmentEvent =
-                ((OkObjectResult) controller.GetSuitableAssessmentEvent(request).Result)?.Value as AssessmentEventDto;
-            actualSuitableAssessmentEvent.ShouldNotBeNull();
+            var actualSuitableAssessmentItem =
+                ((OkObjectResult) controller.GetSuitableAssessmentItem(request).Result)?.Value as AssessmentItemDto;
+            actualSuitableAssessmentItem.ShouldNotBeNull();
             
-            actualSuitableAssessmentEvent.Id.ShouldBe(expectedSuitableAssessmentEventId);
+            actualSuitableAssessmentItem.Id.ShouldBe(expectedSuitableAssessmentItemId);
         }
         
         [Theory]
-        [MemberData(nameof(MRQSubmission))]
+        [MemberData(nameof(MrqSubmission))]
         public void Update_Kc_Mastery(MrqSubmissionDto submission, double expectedKcMastery)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), 
                 scope.ServiceProvider.GetRequiredService<ISubmissionService>());
             var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
-            var assessmentEvent = dbContext.AssessmentEvents.FirstOrDefault(ae => ae.Id == submission.AssessmentEventId);
+            var assessmentItem = dbContext.AssessmentItems.FirstOrDefault(ae => ae.Id == submission.AssessmentItemId);
             var knowledgeComponent =
-                dbContext.KnowledgeComponents.FirstOrDefault(kc => kc.Id == assessmentEvent.KnowledgeComponentId);
+                dbContext.KnowledgeComponents.FirstOrDefault(kc => kc.Id == assessmentItem.KnowledgeComponentId);
             
             controller.SubmitMultipleResponseQuestion(submission);
             
@@ -56,7 +56,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             actualKcMastery.Mastery.ShouldBe(expectedKcMastery);
         }
 
-        public static IEnumerable<object[]> MRQSubmission()
+        public static IEnumerable<object[]> MrqSubmission()
         {
             return new List<object[]>
             {
@@ -64,7 +64,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -106,
+                        AssessmentItemId = -106,
                         LearnerId = -3,
                         Answers = new List<MrqItemDto>
                         {
@@ -78,7 +78,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -106,
+                        AssessmentItemId = -106,
                         LearnerId = -3,
                         Answers = new List<MrqItemDto>
                         {
@@ -92,7 +92,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -107,
+                        AssessmentItemId = -107,
                         LearnerId = -3,
                         Answers = new List<MrqItemDto>
                         {
@@ -107,7 +107,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -107,
+                        AssessmentItemId = -107,
                         LearnerId = -3,
                         Answers = new List<MrqItemDto>
                         {
@@ -122,7 +122,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -107,
+                        AssessmentItemId = -107,
                         LearnerId = -3,
                         Answers = new List<MrqItemDto>
                         {
@@ -136,7 +136,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -107,
+                        AssessmentItemId = -107,
                         LearnerId = -3,
                         Answers = new List<MrqItemDto>
                         {
@@ -150,7 +150,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -106,
+                        AssessmentItemId = -106,
                         LearnerId = -2,
                         Answers = new List<MrqItemDto>
                         {
@@ -164,7 +164,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -106,
+                        AssessmentItemId = -106,
                         LearnerId = -2,
                         Answers = new List<MrqItemDto>
                         {
@@ -178,7 +178,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -107,
+                        AssessmentItemId = -107,
                         LearnerId = -2,
                         Answers = new List<MrqItemDto>
                         {
@@ -193,7 +193,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -107,
+                        AssessmentItemId = -107,
                         LearnerId = -2,
                         Answers = new List<MrqItemDto>
                         {
@@ -208,7 +208,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -107,
+                        AssessmentItemId = -107,
                         LearnerId = -2,
                         Answers = new List<MrqItemDto>
                         {
@@ -222,7 +222,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -107,
+                        AssessmentItemId = -107,
                         LearnerId = -2,
                         Answers = new List<MrqItemDto>
                         {
@@ -235,13 +235,13 @@ namespace Tutor.Web.Tests.Integration.Domain
             };
         }
 
-        public static IEnumerable<object[]> AssessmentEventRequest()
+        public static IEnumerable<object[]> AssessmentItemRequest()
         {
             return new List<object[]>
             {
                 new object[]
                 {
-                    new AssessmentEventRequestDto
+                    new AssessmentItemRequestDto
                     {
                         LearnerId = -2,
                         KnowledgeComponentId = -14
@@ -250,7 +250,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 },
                 new object[]
                 {
-                    new AssessmentEventRequestDto
+                    new AssessmentItemRequestDto
                     {
                         LearnerId = -2,
                         KnowledgeComponentId = -15
@@ -259,7 +259,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 },
                 new object[]
                 {
-                    new AssessmentEventRequestDto
+                    new AssessmentItemRequestDto
                     {
                         LearnerId = -2,
                         KnowledgeComponentId = -13

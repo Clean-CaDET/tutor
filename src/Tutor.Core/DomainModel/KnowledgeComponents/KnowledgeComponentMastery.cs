@@ -1,9 +1,8 @@
 ﻿using FluentResults;
 using System;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Core.DomainModel.AssessmentEvents;
-using Tutor.Core.DomainModel.KnowledgeComponents.Events.AssessmentEventEvents;
-using Tutor.Core.DomainModel.KnowledgeComponents.Events.AssessmentEventEvents.HelpEvents;
+using Tutor.Core.DomainModel.AssessmentItems;
+using Tutor.Core.DomainModel.KnowledgeComponents.Events.AssessmentItemEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents.Events.KnowledgeComponentEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents.Events.KnowledgeComponentEvents.SessionLifecycleEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents.MoveOn;
@@ -24,9 +23,9 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         {
             get
             {
-                foreach (AssessmentEvent assessmentEvent in KnowledgeComponent.AssessmentEvents)
+                foreach (AssessmentItem assessmentItem in KnowledgeComponent.AssessmentItems)
                 {
-                    if (assessmentEvent.Submissions.Count == 0)
+                    if (assessmentItem.Submissions.Count == 0)
                         return false;
                 }
                 return true;
@@ -73,7 +72,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             return Result.Ok();
         }
 
-        public Result<Evaluation> SubmitAssessmentEventAnswer(Submission submission)
+        public Result<Evaluation> SubmitAssessmentItemAnswer(Submission submission)
         {
             if (!HasActiveSession)
                 LaunchSession();
@@ -91,14 +90,14 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         private Result<Evaluation> EvaluateAndSaveSubmission(Submission submission)
         {
-            var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(submission.AssessmentEventId);
-            if (assessmentEvent == null)
-                return Result.Fail("No assessment event with ID: " + submission.AssessmentEventId);
+            var assessmentItem = KnowledgeComponent.GetAssessmentItem(submission.AssessmentItemId);
+            if (assessmentItem == null)
+                return Result.Fail("No assessment event with ID: " + submission.AssessmentItemId);
 
             Evaluation evaluation = null;
             try
             {
-                evaluation = assessmentEvent.EvaluateSubmission(submission);
+                evaluation = assessmentItem.EvaluateSubmission(submission);
             }
             catch (ArgumentException ex)
             {
@@ -107,7 +106,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             if (evaluation.Correct) submission.MarkCorrect();
             submission.CorrectnessLevel = evaluation.CorrectnessLevel;
 
-            Causes(new AssessmentEventAnswered()
+            Causes(new AssessmentItemAnswered()
             {
                 Submission = submission,
                 TimeStamp = submission.TimeStamp
@@ -116,29 +115,29 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             return Result.Ok(evaluation);
         }
 
-        public Result<AssessmentEvent> SelectSuitableAssessmentEvent(IAssessmentEventSelector assessmentEventSelector)
+        public Result<AssessmentItem> SelectSuitableAssessmentItem(IAssessmentItemSelector assessmentItemSelector)
         {
             if (!HasActiveSession)
                 LaunchSession();
 
-            var result = assessmentEventSelector.SelectSuitableAssessmentEvent(KnowledgeComponent.Id, LearnerId);
+            var result = assessmentItemSelector.SelectSuitableAssessmentItem(KnowledgeComponent.Id, LearnerId);
             if (result.IsSuccess)
-                Causes(new AssessmentEventSelected()
+                Causes(new AssessmentItemSelected()
                 {
                     LearnerId = LearnerId,
                     KnowledgeComponentId = KnowledgeComponent.Id,
-                    AssessmentEventId = result.Value.Id
+                    AssessmentItemId = result.Value.Id
                 });
 
             return result;
         }
 
-        public Result RecordInstructionalEventSelection()
+        public Result RecordInstructionalItemSelection()
         {
             if (!HasActiveSession)
                 LaunchSession();
 
-            Causes(new InstructionalEventsSelected()
+            Causes(new InstructionalItemsSelected()
             {
                 LearnerId = LearnerId,
                 KnowledgeComponentId = KnowledgeComponent.Id
@@ -191,14 +190,14 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
                 });
         }
 
-        public Result SeekHelpForAssessmentEvent(SoughtHelp helpEvent)
+        public Result SeekHelpForAssessmentItem(SoughtHelp helpEvent)
         {
             if (!HasActiveSession)
                 LaunchSession();
 
-            var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(helpEvent.AssessmentEventId);
-            if (assessmentEvent == null)
-                return Result.Fail("No assessment event with ID: " + helpEvent.AssessmentEventId);
+            var assessmentItem = KnowledgeComponent.GetAssessmentItem(helpEvent.AssessmentItemId);
+            if (assessmentItem == null)
+                return Result.Fail("No assessment event with ID: " + helpEvent.AssessmentItemId);
 
             Causes(helpEvent);
             return Result.Ok();
@@ -224,22 +223,22 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             HasActiveSession = false;
         }
 
-        private void When(AssessmentEventAnswered @event)
+        private void When(AssessmentItemAnswered @event)
         {
             /* Probably refactor to move the GetMaximumSubmissionCorrectness from AE to KCMastery, or a 
              * child object (which would be created here if it doesn't exist yet). The Apply method
              * should never fail, silently or otherwise, and fetching the AE can fail.
              */
-            var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(@event.Submission.AssessmentEventId);
-            if (assessmentEvent == null)
+            var assessmentItem = KnowledgeComponent.GetAssessmentItem(@event.Submission.AssessmentItemId);
+            if (assessmentItem == null)
                 return;
 
-            var currentCorrectnessLevel = assessmentEvent.GetMaximumSubmissionCorrectness();
+            var currentCorrectnessLevel = assessmentItem.GetMaximumSubmissionCorrectness();
 
-            assessmentEvent.Submissions.Add(@event.Submission);
+            assessmentItem.Submissions.Add(@event.Submission);
 
             if (currentCorrectnessLevel > @event.Submission.CorrectnessLevel) return;
-            var kcMasteryIncrement = Math.Round(100.0 / KnowledgeComponent.AssessmentEvents.Count
+            var kcMasteryIncrement = Math.Round(100.0 / KnowledgeComponent.AssessmentItems.Count
                 * (@event.Submission.CorrectnessLevel - currentCorrectnessLevel) / 100.0, 2);
             Mastery += kcMasteryIncrement;
         }
@@ -259,7 +258,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             IsSatisfied = true;
         }
 
-        private void When(AssessmentEventSelected @event)
+        private void When(AssessmentItemSelected @event)
         {
             /* 
              * Possibly save information that the AE has been selected somewhere in the 
@@ -267,7 +266,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
              */
         }
 
-        private void When(InstructionalEventsSelected @event)
+        private void When(InstructionalItemsSelected item)
         {
             // No action necessary for now.
         }

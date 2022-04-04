@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Tutor.Core.DomainModel.AssessmentEvents;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
+using Tutor.Core.DomainModel.AssessmentItems;
+using Tutor.Core.DomainModel.AssessmentItems.Challenges;
 using Tutor.Core.LearnerModel;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenges;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Controllers.Learners.DTOs;
 
 namespace Tutor.Web.Controllers.Plugin
@@ -16,9 +16,9 @@ namespace Tutor.Web.Controllers.Plugin
         private readonly ILearnerRepository _learnerRepository;
         private readonly IMapper _mapper;
         private readonly ISubmissionService _submissionService;
-        private readonly IAssessmentEventHelpService _aeHelpService;
+        private readonly IAssessmentItemHelpService _aeHelpService;
 
-        public PluginController(ILearnerRepository learnerRepository, IMapper mapper, ISubmissionService submissionService, IAssessmentEventHelpService aeHelpService)
+        public PluginController(ILearnerRepository learnerRepository, IMapper mapper, ISubmissionService submissionService, IAssessmentItemHelpService aeHelpService)
         {
             _learnerRepository = learnerRepository;
             _mapper = mapper;
@@ -46,13 +46,13 @@ namespace Tutor.Web.Controllers.Plugin
         [HttpPost("challenge/hints")]
         public void SeekHints([FromBody] ChallengeSubmissionDto submission)
         {
-            _aeHelpService.SeekChallengeHints(submission.LearnerId, submission.AssessmentEventId);
+            _aeHelpService.SeekChallengeHints(submission.LearnerId, submission.AssessmentItemId);
         }
 
         [HttpPost("challenge/solution")]
         public void SeekSolution([FromBody] ChallengeSubmissionDto submission)
         {
-            _aeHelpService.SeekChallengeSolution(submission.LearnerId, submission.AssessmentEventId);
+            _aeHelpService.SeekChallengeSolution(submission.LearnerId, submission.AssessmentItemId);
         }
     }
 }

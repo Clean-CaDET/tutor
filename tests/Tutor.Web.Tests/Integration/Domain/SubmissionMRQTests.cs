@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
-using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Web.Controllers.Domain;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestions;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
@@ -42,7 +42,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -153,
+                        AssessmentItemId = -153,
                         LearnerId = -1,
                         Answers = new List<MrqItemDto>
                         {
@@ -69,7 +69,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -153,
+                        AssessmentItemId = -153,
                         LearnerId = -1,
                         Answers = new List<MrqItemDto>
                         {
@@ -93,7 +93,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -153,
+                        AssessmentItemId = -153,
                         LearnerId = -1
                     },
                     new MrqEvaluationDto

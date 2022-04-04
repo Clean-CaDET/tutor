@@ -2,15 +2,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using Tutor.Core.DomainModel.AssessmentEvents;
-using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
-using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
-using Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTasks;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenges;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestions;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestions;
+using Tutor.Core.DomainModel.AssessmentItems;
+using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
+using Tutor.Core.DomainModel.AssessmentItems.Challenges;
+using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
+using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ShortAnswerQuestions;
 
 namespace Tutor.Web.Controllers.Domain
 {
@@ -69,7 +69,7 @@ namespace Tutor.Web.Controllers.Domain
         public ActionResult<List<AtContainerEvaluationDto>> SubmitShortAnswerQuestion(
             [FromBody] ChallengeSubmissionDto submission)
         {
-            var result = _submissionService.GetMaxCorrectness(submission.AssessmentEventId, submission.LearnerId);
+            var result = _submissionService.GetMaxCorrectness(submission.AssessmentItemId, submission.LearnerId);
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(result.Value);
         }

@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
-using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Web.Controllers.Domain;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTasks;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
@@ -49,7 +49,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new AtSubmissionDto
                     {
-                        AssessmentEventId = -2111,
+                        AssessmentItemId = -2111,
                         LearnerId = -1,
                         Containers= new List<AtContainerSubmissionDto>
                         {
@@ -77,7 +77,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new AtSubmissionDto
                     {
-                        AssessmentEventId = -2111,
+                        AssessmentItemId = -2111,
                         LearnerId = -1,
                         Containers= new List<AtContainerSubmissionDto>
                         {
@@ -105,7 +105,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new AtSubmissionDto
                     {
-                        AssessmentEventId = -2111,
+                        AssessmentItemId = -2111,
                         LearnerId = -1,
                         Containers= new List<AtContainerSubmissionDto>
                         {
@@ -140,7 +140,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new AtSubmissionDto
                     {
-                        AssessmentEventId = -2111,
+                        AssessmentItemId = -2111,
                         LearnerId = -1,
                         Containers= new List<AtContainerSubmissionDto>
                         {
@@ -156,7 +156,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new AtSubmissionDto
                     {
-                        AssessmentEventId = -2111,
+                        AssessmentItemId = -2111,
                         LearnerId = -1,
                         Containers= new List<AtContainerSubmissionDto>
                         {
@@ -169,7 +169,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new AtSubmissionDto
                     {
-                        AssessmentEventId = -2112,
+                        AssessmentItemId = -2112,
                         LearnerId = -1,
                         Containers= new List<AtContainerSubmissionDto>
                         {

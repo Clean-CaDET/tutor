@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Tutor.Core.DomainModel.InstructionalEvents;
+using Tutor.Core.DomainModel.InstructionalItems;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
@@ -11,11 +11,11 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         KnowledgeComponent GetKnowledgeComponent(int id);
 
-        List<InstructionalEvent> GetInstructionalEvents(int knowledgeComponentId);
+        List<InstructionalItem> GetInstructionalItems(int knowledgeComponentId);
 
         KnowledgeComponentMastery GetKnowledgeComponentMastery(int learnerId, int knowledgeComponentId);
 
-        KnowledgeComponentMastery GetKnowledgeComponentMasteryByAssessmentEvent(int learnerId, int assessmentEventId);
+        KnowledgeComponentMastery GetKnowledgeComponentMasteryByAssessmentItem(int learnerId, int assessmentItemId);
 
         void UpdateKcMastery(KnowledgeComponentMastery kcMastery);
 

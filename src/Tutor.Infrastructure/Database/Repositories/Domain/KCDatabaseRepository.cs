@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.DomainModel.InstructionalEvents;
+using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.DomainModel.KnowledgeComponents.MoveOn;
 using Tutor.Infrastructure.Database.EventStore;
@@ -49,9 +49,9 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             return _dbContext.KnowledgeComponents.FirstOrDefault(l => l.Id == id);
         }
 
-        public List<InstructionalEvent> GetInstructionalEvents(int knowledgeComponentId)
+        public List<InstructionalItem> GetInstructionalItems(int knowledgeComponentId)
         {
-            var query = _dbContext.InstructionalEvents
+            var query = _dbContext.InstructionalItems
                 .Where(ie => ie.KnowledgeComponentId == knowledgeComponentId)
                 .OrderBy(ie => ie.Order);
             return query.ToList();
@@ -61,7 +61,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
         {
             var kcm = _dbContext.KcMasteries
                 .Include(kcm => kcm.KnowledgeComponent)
-                .ThenInclude(kc => kc.AssessmentEvents)
+                .ThenInclude(kc => kc.AssessmentItems)
                 .ThenInclude(ae => ae.Submissions.Where(sub => sub.LearnerId == learnerId))
                 .FirstOrDefault(kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponent.Id == knowledgeComponentId);
             kcm.MoveOnCriteria = _moveOnCriteria;
@@ -81,10 +81,10 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             return _dbContext.KnowledgeComponents.ToList();
         }
 
-        public KnowledgeComponentMastery GetKnowledgeComponentMasteryByAssessmentEvent(int learnerId, int assessmentEventId)
+        public KnowledgeComponentMastery GetKnowledgeComponentMasteryByAssessmentItem(int learnerId, int assessmentItemId)
         {
-            var assessmentEvent = _dbContext.AssessmentEvents.FirstOrDefault(ae => ae.Id == assessmentEventId);
-            return assessmentEvent == null ? null : GetKnowledgeComponentMastery(learnerId, assessmentEvent.KnowledgeComponentId);
+            var assessmentItem = _dbContext.AssessmentItems.FirstOrDefault(ae => ae.Id == assessmentItemId);
+            return assessmentItem == null ? null : GetKnowledgeComponentMastery(learnerId, assessmentItem.KnowledgeComponentId);
         }
     }
 }

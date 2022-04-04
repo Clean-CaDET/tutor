@@ -12,8 +12,8 @@ public static class DomainSqlExporter
         var sqlBuilder = new StringBuilder();
         sqlBuilder.Append(BuildUnitsSql(content.Units));
         sqlBuilder.Append(BuildKCsSql(content.KnowledgeComponents));
-        sqlBuilder.Append(BuildIEsSql(content.InstructionalEvents));
-        sqlBuilder.Append(BuildAEsSql(content.AssessmentEvents));
+        sqlBuilder.Append(BuildIEsSql(content.InstructionalItems));
+        sqlBuilder.Append(BuildAEsSql(content.AssessmentItems));
 
         return sqlBuilder.ToString();
     }
@@ -58,7 +58,7 @@ public static class DomainSqlExporter
 
         foreach (var ie in ies)
         {
-            sqlBuilder.Append("INSERT INTO public.\"InstructionalEvents\"(\"Id\", \"KnowledgeComponentId\", \"Order\") VALUES");
+            sqlBuilder.Append("INSERT INTO public.\"InstructionalItems\"(\"Id\", \"KnowledgeComponentId\", \"Order\") VALUES");
             sqlBuilder.AppendLine();
             sqlBuilder.Append("\t(" + ie.Id + ", " + ie.KnowledgeComponentId + ", " + ie.Order + ");");
             sqlBuilder.AppendLine();
@@ -112,7 +112,7 @@ public static class DomainSqlExporter
 
         foreach (var ae in aes)
         {
-            sqlBuilder.Append("INSERT INTO public.\"AssessmentEvents\"(\"Id\", \"KnowledgeComponentId\", \"Order\") VALUES");
+            sqlBuilder.Append("INSERT INTO public.\"AssessmentItems\"(\"Id\", \"KnowledgeComponentId\", \"Order\") VALUES");
             sqlBuilder.AppendLine();
             sqlBuilder.Append("\t(" + ae.Id + ", " + ae.KnowledgeComponentId + ", " + ae.Order + ");");
             sqlBuilder.AppendLine();

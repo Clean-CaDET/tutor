@@ -4,12 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
-using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
-using Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions;
-using Tutor.Core.DomainModel.KnowledgeComponents.Events.AssessmentEventEvents;
-using Tutor.Core.DomainModel.KnowledgeComponents.Events.AssessmentEventEvents.HelpEvents;
+using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
+using Tutor.Core.DomainModel.AssessmentItems.Challenges;
+using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
+using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
+using Tutor.Core.DomainModel.KnowledgeComponents.Events.AssessmentItemEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents.Events.KnowledgeComponentEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents.Events.KnowledgeComponentEvents.SessionLifecycleEvents;
 
@@ -19,17 +18,17 @@ namespace Tutor.Infrastructure.Serialization
     {
         private static readonly IDictionary<Type, string> eventRelatedTypes = new Dictionary<Type, string>()
         {
-            { typeof(AssessmentEventAnswered), "AssessmentEventAnswered" },
+            { typeof(AssessmentItemAnswered), "AssessmentItemAnswered" },
             { typeof(SoughtHints), "SoughtChallengeHints" },
             { typeof(SoughtSolution), "SoughtChallengeSolution" },
             { typeof(KnowledgeComponentPassed), "KnowledgeComponentPassed" },
             { typeof(KnowledgeComponentCompleted), "KnowledgeComponentCompleted" },
             { typeof(KnowledgeComponentSatisfied), "KnowledgeComponentSatisfied" },
-            { typeof(AssessmentEventSelected), "AssessmentEventSelected" },
+            { typeof(AssessmentItemSelected), "AssessmentItemSelected" },
             { typeof(SessionLaunched), "SessionLaunched" },
             { typeof(SessionTerminated), "SessionTerminated" },
             { typeof(SessionAbandoned), "SessionAbandoned" },
-            { typeof(InstructionalEventsSelected), "InstructionalEventsSelected" },
+            { typeof(InstructionalItemsSelected), "InstructionalItemsSelected" },
 #region Submissions
             { typeof(ArrangeTaskSubmission), "ArrangeTaskSubmission" },
             { typeof(ChallengeSubmission), "ChallengeSubmission" },

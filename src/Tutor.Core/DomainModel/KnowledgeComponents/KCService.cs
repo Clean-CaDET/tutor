@@ -1,24 +1,24 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.DomainModel.AssessmentEvents;
-using Tutor.Core.DomainModel.InstructionalEvents;
+using Tutor.Core.DomainModel.AssessmentItems;
+using Tutor.Core.DomainModel.InstructionalItems;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
     public class KcService : IKcService
     {
         private readonly IKcRepository _kcRepository;
-        private readonly IAssessmentEventRepository _assessmentEventRepository;
-        private readonly IAssessmentEventSelector _assessmentEventSelector;
+        private readonly IAssessmentItemRepository _assessmentItemRepository;
+        private readonly IAssessmentItemSelector _assessmentItemSelector;
 
         public KcService(IKcRepository ikcRepository,
-            IAssessmentEventRepository assessmentEventRepository,
-            IAssessmentEventSelector assessmentEventSelector)
+            IAssessmentItemRepository assessmentItemRepository,
+            IAssessmentItemSelector assessmentItemSelector)
         {
             _kcRepository = ikcRepository;
-            _assessmentEventRepository = assessmentEventRepository;
-            _assessmentEventSelector = assessmentEventSelector;
+            _assessmentItemRepository = assessmentItemRepository;
+            _assessmentItemSelector = assessmentItemSelector;
         }
 
         public Result<List<Unit>> GetUnits()
@@ -38,29 +38,26 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             return Result.Ok(knowledgeComponent);
         }
 
-        public Result<List<AssessmentEvent>> GetAssessmentEventsByKnowledgeComponent(int id)
+        public Result<List<AssessmentItem>> GetAssessmentItemsByKnowledgeComponent(int id)
         {
-            return Result.Ok(_assessmentEventRepository.GetAssessmentEventsByKnowledgeComponent(id));
+            return Result.Ok(_assessmentItemRepository.GetAssessmentItemsByKnowledgeComponent(id));
         }
 
-        public Result<List<InstructionalEvent>> GetInstructionalEvents(int knowledgeComponentId, int learnerId)
+        public Result<List<InstructionalItem>> GetInstructionalItems(int knowledgeComponentId, int learnerId)
         {
             var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
-            var instructionalEvents = _kcRepository.GetInstructionalEvents(knowledgeComponentId);
+            var instructionalItems = _kcRepository.GetInstructionalItems(knowledgeComponentId);
 
-            var result = knowledgeComponentMastery.RecordInstructionalEventSelection();
+            var result = knowledgeComponentMastery.RecordInstructionalItemSelection();
             _kcRepository.UpdateKcMastery(knowledgeComponentMastery);
 
-            if (result.IsFailed)
-                return result.ToResult<List<InstructionalEvent>>();
-            else
-                return Result.Ok(instructionalEvents);
+            return result.IsFailed ? result.ToResult<List<InstructionalItem>>() : Result.Ok(instructionalItems);
         }
 
-        public Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId)
+        public Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId)
         {
             var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
-            var result = knowledgeComponentMastery.SelectSuitableAssessmentEvent(_assessmentEventSelector);
+            var result = knowledgeComponentMastery.SelectSuitableAssessmentItem(_assessmentItemSelector);
             _kcRepository.UpdateKcMastery(knowledgeComponentMastery);
             return result;
         }
@@ -68,13 +65,13 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         public Result<KnowledgeComponentStatistics> GetKnowledgeComponentStatistics(int learnerId, int knowledgeComponentId)
         {
             var mastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
-            var assessmentEvents = mastery.KnowledgeComponent.AssessmentEvents;
+            var assessmentItems = mastery.KnowledgeComponent.AssessmentItems;
 
-            var countCompleted = assessmentEvents.Count(ae => ae.IsCompleted);
-            var countAttempted = assessmentEvents.Count(ae => ae.IsAttempted);
+            var countCompleted = assessmentItems.Count(ae => ae.IsCompleted);
+            var countAttempted = assessmentItems.Count(ae => ae.IsAttempted);
             
             return Result.Ok(new KnowledgeComponentStatistics(
-                mastery.Mastery, assessmentEvents.Count, countCompleted, countAttempted, mastery.IsSatisfied));
+                mastery.Mastery, assessmentItems.Count, countCompleted, countAttempted, mastery.IsSatisfied));
         }
 
         public Result LaunchSession(int learnerId, int knowledgeComponentId)

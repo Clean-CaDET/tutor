@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Domain.DTOs;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
-using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems;
+using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
@@ -32,18 +32,18 @@ namespace Tutor.Web.Tests.Integration.Domain
         }
 
         [Theory]
-        [MemberData(nameof(InstructionalEvents))]
+        [MemberData(nameof(InstructionalItems))]
         public void Retrieves_kc_instructional_events(int knowledgeComponentId, int expectedIEsCount)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = SetupController(scope);
 
-            var IEs = ((OkObjectResult)controller.GetInstructionalEvents(knowledgeComponentId).Result).Value as List<InstructionalEventDto>;
+            var IEs = ((OkObjectResult)controller.GetInstructionalItems(knowledgeComponentId).Result).Value as List<InstructionalItemDto>;
 
             IEs.Count.ShouldBe(expectedIEsCount);
         }
 
-        public static IEnumerable<object[]> InstructionalEvents()
+        public static IEnumerable<object[]> InstructionalItems()
         {
             return new List<object[]>
             {
@@ -56,36 +56,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     -15,
                     2
-                }
-            };
-        }
-
-        [Theory]
-        [MemberData(nameof(AssessmentEvents))]
-        public void Retrieves_kc_assessment_events(int knowledgeComponentId, int expectedAEsCount)
-        {
-            using var scope = Factory.Services.CreateScope();
-            var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKcService>());
-
-            var IEs = ((OkObjectResult)controller.GetAssessmentEvents(knowledgeComponentId).Result).Value as List<AssessmentEventDto>;
-
-            IEs.Count.ShouldBe(expectedAEsCount);
-        }
-
-        public static IEnumerable<object[]> AssessmentEvents()
-        {
-            return new List<object[]>
-            {
-                new object[]
-                {
-                    -11,
-                    0
-                },
-                new object[]
-                {
-                    -15,
-                    4
                 }
             };
         }
