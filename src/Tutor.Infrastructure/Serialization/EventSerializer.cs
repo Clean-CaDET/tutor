@@ -10,7 +10,7 @@ using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Core.DomainModel.KnowledgeComponents.Events.AssessmentItemEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents.Events.KnowledgeComponentEvents;
-using Tutor.Core.DomainModel.KnowledgeComponents.Events.KnowledgeComponentEvents.SessionLifecycleEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents.Events.SessionLifecycleEvents;
 
 namespace Tutor.Infrastructure.Serialization
 {

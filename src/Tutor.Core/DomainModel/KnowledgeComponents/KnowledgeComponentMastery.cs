@@ -4,7 +4,7 @@ using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Core.DomainModel.KnowledgeComponents.Events.AssessmentItemEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents.Events.KnowledgeComponentEvents;
-using Tutor.Core.DomainModel.KnowledgeComponents.Events.KnowledgeComponentEvents.SessionLifecycleEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents.Events.SessionLifecycleEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents.MoveOn;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
