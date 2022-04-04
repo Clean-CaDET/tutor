@@ -1,5 +1,5 @@
 using AutoMapper;
-using Tutor.Core.LearnerModel.Learners;
+using Tutor.Core.LearnerModel;
 using Tutor.Web.Controllers.Learners.DTOs;
 
 namespace Tutor.Web.Controllers.Learners

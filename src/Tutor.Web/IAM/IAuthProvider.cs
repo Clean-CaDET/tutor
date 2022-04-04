@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Tutor.Core.LearnerModel.Learners;
+using Tutor.Core.LearnerModel;
 
 namespace Tutor.Web.IAM
 {

@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Tutor.Core.LearnerModel.Learners;
+using Tutor.Core.LearnerModel;
 using Tutor.Infrastructure.Security;
 
 namespace Tutor.Web.IAM.Keycloak

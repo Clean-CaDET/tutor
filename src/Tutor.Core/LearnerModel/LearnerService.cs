@@ -1,7 +1,6 @@
 using System.Linq;
 using FluentResults;
 using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Core.LearnerModel.Learners;
 using Tutor.Core.LearnerModel.Workspaces;
 
 namespace Tutor.Core.LearnerModel
@@ -32,12 +31,6 @@ namespace Tutor.Core.LearnerModel
             CreateWorkspace(savedLearner);
 
             return Result.Ok(savedLearner);
-        }
-
-        public Result<Learner> Login(string studentIndex)
-        {
-            var learner = _learnerRepository.GetByIndex(studentIndex);
-            return learner == null ? Result.Fail("The username or password is incorrect!") : Result.Ok(learner);
         }
 
         private void CreateWorkspace(Learner learner)

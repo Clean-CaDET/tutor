@@ -1,5 +1,5 @@
 ﻿using FluentResults;
-using Tutor.Core.LearnerModel.Learners;
+using Tutor.Core.LearnerModel;
 
 namespace Tutor.Infrastructure.Security.Authorization
 {

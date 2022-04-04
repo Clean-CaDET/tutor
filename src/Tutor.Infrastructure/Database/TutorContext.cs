@@ -8,7 +8,7 @@ using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Core.DomainModel.Feedback;
 using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Core.LearnerModel.Learners;
+using Tutor.Core.LearnerModel;
 
 namespace Tutor.Infrastructure.Database
 {
