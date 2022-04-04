@@ -16,9 +16,13 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         Result<List<AssessmentEvent>> GetAssessmentEventsByKnowledgeComponent(int id);
 
         Result<List<InstructionalEvent>> GetInstructionalEvents(int knowledgeComponentId, int learnerId);
-        
+
         Result<AssessmentEvent> SelectSuitableAssessmentEvent(int knowledgeComponentId, int learnerId);
 
         Result<KnowledgeComponentStatistics> GetKnowledgeComponentStatistics(int learnerId, int knowledgeComponentId);
+
+        Result LaunchSession(int learnerId, int knowledgeComponentId);
+
+        Result TerminateSession(int learnerId, int knowledgeComponentId);
     }
 }

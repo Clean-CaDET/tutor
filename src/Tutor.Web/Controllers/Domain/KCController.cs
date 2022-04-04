@@ -7,6 +7,7 @@ using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Web.Controllers.Domain.DTOs;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
+using Tutor.Infrastructure.Security.Authorization.JWT;
 
 namespace Tutor.Web.Controllers.Domain
 {
@@ -57,8 +58,7 @@ namespace Tutor.Web.Controllers.Domain
         [HttpGet("knowledge-components/{knowledgeComponentId:int}/instructional-events/")]
         public ActionResult<List<InstructionalEventDto>> GetInstructionalEvents(int knowledgeComponentId)
         {
-            var result = _kcService.GetInstructionalEvents(
-                knowledgeComponentId, int.Parse(User.Claims.First(i => i.Type == "id").Value));
+            var result = _kcService.GetInstructionalEvents(knowledgeComponentId, User.Id());
             return Ok(result.Value.Select(ie => _mapper.Map<InstructionalEventDto>(ie)).ToList());
         }
 
@@ -73,9 +73,25 @@ namespace Tutor.Web.Controllers.Domain
         [HttpGet("knowledge-components/statistics/{knowledgeComponentId:int}")]
         public ActionResult<KnowledgeComponentStatisticsDto> GetKnowledgeComponentStatistics(int knowledgeComponentId)
         {
-            var result = _kcService.GetKnowledgeComponentStatistics(int.Parse(User.Claims.First(i => i.Type == "id").Value), knowledgeComponentId);
+            var result = _kcService.GetKnowledgeComponentStatistics(User.Id(), knowledgeComponentId);
             if (result.IsSuccess) return Ok(_mapper.Map<KnowledgeComponentStatisticsDto>(result.Value));
             return NotFound(result.Errors);
+        }
+
+        [HttpPost("knowledge-components/{knowledgeComponentId:int}/session/launch")]
+        public ActionResult LaunchSession(int knowledgeComponentId)
+        {
+            var result = _kcService.LaunchSession(User.Id(), knowledgeComponentId);
+            if (result.IsSuccess) return Ok();
+            return BadRequest(result.Errors);
+        }
+
+        [HttpPost("knowledge-components/{knowledgeComponentId:int}/session/terminate")]
+        public ActionResult TerminateSession(int knowledgeComponentId)
+        {
+            var result = _kcService.TerminateSession(User.Id(), knowledgeComponentId);
+            if (result.IsSuccess) return Ok();
+            return BadRequest(result.Errors);
         }
     }
 }

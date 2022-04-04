@@ -2,7 +2,10 @@
 using System;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.AssessmentEvents;
-using Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp;
+using Tutor.Core.DomainModel.KnowledgeComponents.Events.AssessmentEventEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents.Events.AssessmentEventEvents.HelpEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents.Events.KnowledgeComponentEvents;
+using Tutor.Core.DomainModel.KnowledgeComponents.Events.KnowledgeComponentEvents.SessionLifecycleEvents;
 using Tutor.Core.DomainModel.KnowledgeComponents.MoveOn;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
@@ -14,6 +17,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         public double Mastery { get; private set; }
         public KnowledgeComponent KnowledgeComponent { get; private set; }
         public int LearnerId { get; private set; }
+        public bool HasActiveSession { get; private set; }
         public bool IsPassed { get; private set; }
         public bool IsSatisfied { get; private set; }
         public bool IsCompleted
@@ -37,12 +41,43 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         {
             Mastery = 0.0;
             KnowledgeComponent = knowledgeComponent;
-            IsPassed = false;
-            IsSatisfied = false;
+        }
+
+        public Result LaunchSession()
+        {
+            if (HasActiveSession)
+                Causes(new SessionAbandoned()
+                {
+                    KnowledgeComponentId = KnowledgeComponent.Id,
+                    LearnerId = LearnerId
+                });
+
+            Causes(new SessionLaunched()
+            {
+                KnowledgeComponentId = KnowledgeComponent.Id,
+                LearnerId = LearnerId
+            });
+            return Result.Ok();
+        }
+
+        public Result TerminateSession()
+        {
+            if (!HasActiveSession)
+                return Result.Fail("No active session to terminate.");
+
+            Causes(new SessionTerminated()
+            {
+                KnowledgeComponentId = KnowledgeComponent.Id,
+                LearnerId = LearnerId
+            });
+            return Result.Ok();
         }
 
         public Result<Evaluation> SubmitAssessmentEventAnswer(Submission submission)
         {
+            if (!HasActiveSession)
+                LaunchSession();
+
             bool IsCompletedBeforeSubmission = IsCompleted;
             Result<Evaluation> result = EvaluateAndSaveSubmission(submission);
             if (result.IsSuccess)
@@ -83,6 +118,9 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         public Result<AssessmentEvent> SelectSuitableAssessmentEvent(IAssessmentEventSelector assessmentEventSelector)
         {
+            if (!HasActiveSession)
+                LaunchSession();
+
             var result = assessmentEventSelector.SelectSuitableAssessmentEvent(KnowledgeComponent.Id, LearnerId);
             if (result.IsSuccess)
                 Causes(new AssessmentEventSelected()
@@ -97,6 +135,9 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         public Result RecordInstructionalEventSelection()
         {
+            if (!HasActiveSession)
+                LaunchSession();
+
             Causes(new InstructionalEventsSelected()
             {
                 LearnerId = LearnerId,
@@ -152,6 +193,9 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         public Result SeekHelpForAssessmentEvent(SoughtHelp helpEvent)
         {
+            if (!HasActiveSession)
+                LaunchSession();
+
             var assessmentEvent = KnowledgeComponent.GetAssessmentEvent(helpEvent.AssessmentEventId);
             if (assessmentEvent == null)
                 return Result.Fail("No assessment event with ID: " + helpEvent.AssessmentEventId);
@@ -165,9 +209,24 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             When((dynamic)@event);
         }
 
+        private void When(SessionLaunched @event)
+        {
+            HasActiveSession = true;
+        }
+
+        private void When(SessionTerminated @event)
+        {
+            HasActiveSession = false;
+        }
+
+        private void When(SessionAbandoned @event)
+        {
+            HasActiveSession = false;
+        }
+
         private void When(AssessmentEventAnswered @event)
         {
-            /* TODO: refactor to move the GetMaximumSubmissionCorrectness from AE to KCMastery, or a 
+            /* Probably refactor to move the GetMaximumSubmissionCorrectness from AE to KCMastery, or a 
              * child object (which would be created here if it doesn't exist yet). The Apply method
              * should never fail, silently or otherwise, and fetching the AE can fail.
              */
@@ -203,8 +262,8 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         private void When(AssessmentEventSelected @event)
         {
             /* 
-             * TODO: save information that the AE has been selected somewhere in the 
-             * model, probably in AeMastery when it's added.
+             * Possibly save information that the AE has been selected somewhere in the 
+             * model.
              */
         }
 
@@ -216,7 +275,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         private void When(SoughtHelp @event)
         {
             /*
-             * Possibly record how many times help was sought in AeMastery?             
+             * Possibly record how many times help was sought somewhere?             
              */
         }
     }

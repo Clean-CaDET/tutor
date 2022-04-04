@@ -1,6 +1,8 @@
 ﻿using FluentResults;
+using Tutor.Core.DomainModel.KnowledgeComponents;
+using Tutor.Core.DomainModel.KnowledgeComponents.Events.AssessmentEventEvents.HelpEvents;
 
-namespace Tutor.Core.DomainModel.KnowledgeComponents.AssessmentEventHelp
+namespace Tutor.Core.DomainModel.AssessmentEvents
 {
     public class AssessmentEventHelpService : IAssessmentEventHelpService
     {

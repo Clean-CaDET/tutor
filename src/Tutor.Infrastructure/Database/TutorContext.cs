@@ -113,8 +113,6 @@ namespace Tutor.Infrastructure.Database
         {
             modelBuilder.Entity<KnowledgeComponentMastery>().Ignore(kcm => kcm.MoveOnCriteria);
             modelBuilder.Entity<KnowledgeComponentMastery>().Ignore(kcm => kcm.IsCompleted);
-            modelBuilder.Entity<KnowledgeComponentMastery>().Property(kcm => kcm.IsPassed).HasDefaultValue(false);
-            modelBuilder.Entity<KnowledgeComponentMastery>().Property(kcm => kcm.IsSatisfied).HasDefaultValue(false);
         }
     }
 }

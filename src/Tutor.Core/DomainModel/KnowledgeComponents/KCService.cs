@@ -76,5 +76,21 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             return Result.Ok(new KnowledgeComponentStatistics(
                 mastery.Mastery, assessmentEvents.Count, countCompleted, countAttempted, mastery.IsSatisfied));
         }
+
+        public Result LaunchSession(int learnerId, int knowledgeComponentId)
+        {
+            var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
+            var result = knowledgeComponentMastery.LaunchSession();
+            _kcRepository.UpdateKcMastery(knowledgeComponentMastery);
+            return result;
+        }
+
+        public Result TerminateSession(int learnerId, int knowledgeComponentId)
+        {
+            var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
+            var result = knowledgeComponentMastery.TerminateSession();
+            _kcRepository.UpdateKcMastery(knowledgeComponentMastery);
+            return result;
+        }
     }
 }
