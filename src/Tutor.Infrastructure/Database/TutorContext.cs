@@ -9,6 +9,7 @@ using Tutor.Core.DomainModel.Feedback;
 using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
 
 namespace Tutor.Infrastructure.Database
 {

@@ -8,7 +8,9 @@ using Tutor.Core.DomainModel.AssessmentItems.Challenges.FulfillmentStrategies;
 using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Core.DomainModel.KnowledgeComponents.MoveOn;
+using Tutor.Core.LearnerModel.DomainOverlay;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.MoveOn;
 using Tutor.Infrastructure.Database.EventStore;
 
 namespace Tutor.Infrastructure.Database.Repositories.Domain

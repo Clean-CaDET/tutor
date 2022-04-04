@@ -7,6 +7,7 @@ using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
 using Tutor.Web.Controllers.Domain.DTOs;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
@@ -14,7 +15,7 @@ using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
-using KnowledgeComponentStatistics = Tutor.Core.DomainModel.KnowledgeComponents.KnowledgeComponentStatistics;
+using KnowledgeComponentStatistics = Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.KnowledgeComponentStatistics;
 
 namespace Tutor.Web.Controllers.Domain.Mappers
 {

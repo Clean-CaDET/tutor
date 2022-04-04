@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Authorization;
-using Tutor.Core.DomainModel.KnowledgeComponents;
+using Tutor.Core.LearnerModel.DomainOverlay;
+using Tutor.Infrastructure.Security.Authorization.JWT;
 using Tutor.Web.Controllers.Domain.DTOs;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
-using Tutor.Infrastructure.Security.Authorization.JWT;
 
 namespace Tutor.Web.Controllers.Domain
 {
@@ -17,25 +17,25 @@ namespace Tutor.Web.Controllers.Domain
     public class KcController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IKcService _kcService;
+        private readonly ILearnerKcMasteryService _learnerKcMasteryService;
 
-        public KcController(IMapper mapper, IKcService kcService)
+        public KcController(IMapper mapper, ILearnerKcMasteryService learnerKcMasteryService)
         {
             _mapper = mapper;
-            _kcService = kcService;
+            _learnerKcMasteryService = learnerKcMasteryService;
         }
 
         [HttpGet]
         public ActionResult<List<UnitDto>> GetUnits()
         {
-            var result = _kcService.GetUnits();
+            var result = _learnerKcMasteryService.GetUnits();
             return Ok(result.Value.Select(u => _mapper.Map<UnitDto>(u)).ToList());
         }
 
         [HttpGet("{unitId:int}")]
         public ActionResult<List<UnitDto>> GetUnit(int unitId, [FromQuery] int learnerId)
         {
-            var result = _kcService.GetUnit(unitId, learnerId);
+            var result = _learnerKcMasteryService.GetUnit(unitId, learnerId);
             if (result.IsSuccess) return Ok(_mapper.Map<UnitDto>(result.Value));
             return NotFound(result.Errors);
         }
@@ -43,7 +43,7 @@ namespace Tutor.Web.Controllers.Domain
         [HttpGet("knowledge-components/{knowledgeComponentId:int}")]
         public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
         {
-            var result = _kcService.GetKnowledgeComponentById(knowledgeComponentId);
+            var result = _learnerKcMasteryService.GetKnowledgeComponentById(knowledgeComponentId);
             if (result.IsSuccess) return Ok(_mapper.Map<KnowledgeComponentDto>(result.Value));
             return NotFound(result.Errors);
         }
@@ -51,14 +51,14 @@ namespace Tutor.Web.Controllers.Domain
         [HttpGet("knowledge-components/{knowledgeComponentId:int}/instructional-items/")]
         public ActionResult<List<InstructionalItemDto>> GetInstructionalItems(int knowledgeComponentId)
         {
-            var result = _kcService.GetInstructionalItems(knowledgeComponentId, User.Id());
+            var result = _learnerKcMasteryService.GetInstructionalItems(knowledgeComponentId, User.Id());
             return Ok(result.Value.Select(ie => _mapper.Map<InstructionalItemDto>(ie)).ToList());
         }
 
         [HttpPost("knowledge-component")]
         public ActionResult<AssessmentItemDto> GetSuitableAssessmentItem([FromBody] AssessmentItemRequestDto assessmentItemRequest)
         {
-            var result = _kcService.SelectSuitableAssessmentItem(assessmentItemRequest.KnowledgeComponentId, assessmentItemRequest.LearnerId);
+            var result = _learnerKcMasteryService.SelectSuitableAssessmentItem(assessmentItemRequest.KnowledgeComponentId, assessmentItemRequest.LearnerId);
             if (result.IsSuccess) return Ok(_mapper.Map<AssessmentItemDto>(result.Value));
             return NotFound(result.Errors);
         }
@@ -66,7 +66,7 @@ namespace Tutor.Web.Controllers.Domain
         [HttpGet("knowledge-components/statistics/{knowledgeComponentId:int}")]
         public ActionResult<KnowledgeComponentStatisticsDto> GetKnowledgeComponentStatistics(int knowledgeComponentId)
         {
-            var result = _kcService.GetKnowledgeComponentStatistics(User.Id(), knowledgeComponentId);
+            var result = _learnerKcMasteryService.GetKnowledgeComponentStatistics(User.Id(), knowledgeComponentId);
             if (result.IsSuccess) return Ok(_mapper.Map<KnowledgeComponentStatisticsDto>(result.Value));
             return NotFound(result.Errors);
         }
@@ -74,7 +74,7 @@ namespace Tutor.Web.Controllers.Domain
         [HttpPost("knowledge-components/{knowledgeComponentId:int}/session/launch")]
         public ActionResult LaunchSession(int knowledgeComponentId)
         {
-            var result = _kcService.LaunchSession(User.Id(), knowledgeComponentId);
+            var result = _learnerKcMasteryService.LaunchSession(User.Id(), knowledgeComponentId);
             if (result.IsSuccess) return Ok();
             return BadRequest(result.Errors);
         }
@@ -82,7 +82,7 @@ namespace Tutor.Web.Controllers.Domain
         [HttpPost("knowledge-components/{knowledgeComponentId:int}/session/terminate")]
         public ActionResult TerminateSession(int knowledgeComponentId)
         {
-            var result = _kcService.TerminateSession(User.Id(), knowledgeComponentId);
+            var result = _learnerKcMasteryService.TerminateSession(User.Id(), knowledgeComponentId);
             if (result.IsSuccess) return Ok();
             return BadRequest(result.Errors);
         }

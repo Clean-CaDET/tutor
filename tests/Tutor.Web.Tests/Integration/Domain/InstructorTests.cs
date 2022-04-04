@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using Tutor.Core.DomainModel.AssessmentItems;
-using Tutor.Core.DomainModel.KnowledgeComponents;
+using System.Collections.Generic;
+using System.Linq;
+using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems;
@@ -27,7 +26,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new KcController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKcService>());
+                scope.ServiceProvider.GetRequiredService<ILearnerKcMasteryService>());
 
             var actualSuitableAssessmentItem =
                 ((OkObjectResult) controller.GetSuitableAssessmentItem(request).Result)?.Value as AssessmentItemDto;
@@ -42,7 +41,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), 
-                scope.ServiceProvider.GetRequiredService<ISubmissionService>());
+                scope.ServiceProvider.GetRequiredService<ILearnerAssessmentsService>());
             var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
             var assessmentItem = dbContext.AssessmentItems.FirstOrDefault(ae => ae.Id == submission.AssessmentItemId);
             var knowledgeComponent =

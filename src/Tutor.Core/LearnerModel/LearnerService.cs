@@ -1,6 +1,7 @@
-using System.Linq;
 using FluentResults;
-using Tutor.Core.DomainModel.KnowledgeComponents;
+using System.Linq;
+using Tutor.Core.LearnerModel.DomainOverlay;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
 using Tutor.Core.LearnerModel.Workspaces;
 
 namespace Tutor.Core.LearnerModel

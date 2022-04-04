@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using System.Security.Claims;
-using Tutor.Core.DomainModel.KnowledgeComponents;
+using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Web.Controllers.Domain;
 using Xunit;
-using Shouldly;
 
 namespace Tutor.Web.Tests.Integration.Domain
 {
@@ -42,7 +42,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         private KcController SetupController(IServiceScope scope)
         {
             return new KcController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKcService>())
+                scope.ServiceProvider.GetRequiredService<ILearnerKcMasteryService>())
             {
                 ControllerContext = new ControllerContext()
                 {

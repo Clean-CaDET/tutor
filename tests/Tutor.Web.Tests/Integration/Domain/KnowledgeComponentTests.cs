@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using Tutor.Core.DomainModel.KnowledgeComponents;
+using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Domain.DTOs;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
@@ -23,7 +23,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new KcController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKcService>());
+                scope.ServiceProvider.GetRequiredService<ILearnerKcMasteryService>());
 
             var units = ((OkObjectResult) controller.GetUnits().Result).Value as List<UnitDto>;
 
@@ -77,7 +77,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         private KcController SetupController(IServiceScope scope)
         {
             return new KcController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKcService>())
+                scope.ServiceProvider.GetRequiredService<ILearnerKcMasteryService>())
             {
                 ControllerContext = new ControllerContext()
                 {
