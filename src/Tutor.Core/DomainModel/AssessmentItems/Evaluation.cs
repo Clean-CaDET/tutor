@@ -6,7 +6,7 @@ namespace Tutor.Core.DomainModel.AssessmentItems
     {
         public int AssessmentItemId { get; }
         public double CorrectnessLevel { get; }
-        public bool Correct => CorrectnessLevel > 0.95;
+        public bool Correct => CorrectnessLevel >= 0.9;
 
         public Evaluation(int assessmentItemId, double correctnessLevel)
         {

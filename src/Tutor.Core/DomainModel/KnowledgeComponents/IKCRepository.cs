@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Core.DomainModel.InstructionalItems;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
@@ -20,5 +21,9 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         void UpdateKcMastery(KnowledgeComponentMastery kcMastery);
 
         List<KnowledgeComponent> GetAllKnowledgeComponents();
+
+        AssessmentItem GetDerivedAssessmentItem(int assessmentItemId);
+
+        Submission FindSubmissionWithMaxCorrectness(int assessmentItemId, int learnerId);
     }
 }

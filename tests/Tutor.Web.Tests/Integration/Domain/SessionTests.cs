@@ -39,9 +39,9 @@ namespace Tutor.Web.Tests.Integration.Domain
             terminationResult.ShouldBeOfType<BadRequestObjectResult>();
         }
 
-        private KCController SetupController(IServiceScope scope)
+        private KcController SetupController(IServiceScope scope)
         {
-            return new KCController(Factory.Services.GetRequiredService<IMapper>(),
+            return new KcController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IKcService>())
             {
                 ControllerContext = new ControllerContext()

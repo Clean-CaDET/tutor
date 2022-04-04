@@ -13,8 +13,6 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         Result<KnowledgeComponent> GetKnowledgeComponentById(int id);
 
-        Result<List<AssessmentItem>> GetAssessmentItemsByKnowledgeComponent(int id);
-
         Result<List<InstructionalItem>> GetInstructionalItems(int knowledgeComponentId, int learnerId);
 
         Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId);

@@ -22,7 +22,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Retrieves_units()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
+            var controller = new KcController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IKcService>());
 
             var units = ((OkObjectResult) controller.GetUnits().Result).Value as List<UnitDto>;
@@ -74,9 +74,9 @@ namespace Tutor.Web.Tests.Integration.Domain
             kcMasteryStatistics.CompletedCount.ShouldBe(0);
         }
 
-        private KCController SetupController(IServiceScope scope)
+        private KcController SetupController(IServiceScope scope)
         {
-            return new KCController(Factory.Services.GetRequiredService<IMapper>(),
+            return new KcController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IKcService>())
             {
                 ControllerContext = new ControllerContext()

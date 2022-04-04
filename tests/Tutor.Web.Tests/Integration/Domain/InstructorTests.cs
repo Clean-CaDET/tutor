@@ -26,7 +26,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Get_Suitable_Assessment_Event(AssessmentItemRequestDto request, int expectedSuitableAssessmentItemId)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
+            var controller = new KcController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IKcService>());
 
             var actualSuitableAssessmentItem =

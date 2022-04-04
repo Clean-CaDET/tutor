@@ -1,6 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using Tutor.Core.DomainModel.AssessmentItems;
+using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
+using Tutor.Core.DomainModel.AssessmentItems.Challenges;
+using Tutor.Core.DomainModel.AssessmentItems.Challenges.FulfillmentStrategies;
+using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.DomainModel.KnowledgeComponents.MoveOn;
@@ -85,6 +90,28 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
         {
             var assessmentItem = _dbContext.AssessmentItems.FirstOrDefault(ae => ae.Id == assessmentItemId);
             return assessmentItem == null ? null : GetKnowledgeComponentMastery(learnerId, assessmentItem.KnowledgeComponentId);
+        }
+
+        public AssessmentItem GetDerivedAssessmentItem(int assessmentItemId)
+        {
+            return _dbContext.AssessmentItems
+                .Where(ae => ae.Id == assessmentItemId)
+                .Include(ae => (ae as Mrq).Items)
+                .Include(ae => (ae as ArrangeTask).Containers)
+                .ThenInclude(c => c.Elements)
+                .Include(ae => (ae as Challenge).FulfillmentStrategies)
+                .ThenInclude(s => (s as BannedWordsChecker).Hint)
+                .Include(ae => (ae as Challenge).FulfillmentStrategies)
+                .ThenInclude(s => (s as RequiredWordsChecker).Hint)
+                .Include(ae => (ae as Challenge).FulfillmentStrategies)
+                .ThenInclude(s => (s as BasicMetricChecker).Hint)
+                .FirstOrDefault();
+        }
+
+        public Submission FindSubmissionWithMaxCorrectness(int assessmentItemId, int learnerId)
+        {
+            return _dbContext.Submissions.Where(sub => sub.AssessmentItemId == assessmentItemId && sub.LearnerId == learnerId)
+                .OrderBy(sub => sub.CorrectnessLevel).LastOrDefault();
         }
     }
 }

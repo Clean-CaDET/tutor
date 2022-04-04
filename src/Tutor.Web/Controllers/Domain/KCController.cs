@@ -14,12 +14,12 @@ namespace Tutor.Web.Controllers.Domain
     [Authorize(Policy = "learnerPolicy")]
     [Route("api/units/")]
     [ApiController]
-    public class KCController : ControllerBase
+    public class KcController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IKcService _kcService;
 
-        public KCController(IMapper mapper, IKcService kcService)
+        public KcController(IMapper mapper, IKcService kcService)
         {
             _mapper = mapper;
             _kcService = kcService;

@@ -9,15 +9,11 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
     public class KcService : IKcService
     {
         private readonly IKcRepository _kcRepository;
-        private readonly IAssessmentItemRepository _assessmentItemRepository;
         private readonly IAssessmentItemSelector _assessmentItemSelector;
 
-        public KcService(IKcRepository ikcRepository,
-            IAssessmentItemRepository assessmentItemRepository,
-            IAssessmentItemSelector assessmentItemSelector)
+        public KcService(IKcRepository ikcRepository, IAssessmentItemSelector assessmentItemSelector)
         {
             _kcRepository = ikcRepository;
-            _assessmentItemRepository = assessmentItemRepository;
             _assessmentItemSelector = assessmentItemSelector;
         }
 
@@ -38,11 +34,6 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             return Result.Ok(knowledgeComponent);
         }
 
-        public Result<List<AssessmentItem>> GetAssessmentItemsByKnowledgeComponent(int id)
-        {
-            return Result.Ok(_assessmentItemRepository.GetAssessmentItemsByKnowledgeComponent(id));
-        }
-
         public Result<List<InstructionalItem>> GetInstructionalItems(int knowledgeComponentId, int learnerId)
         {
             var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
@@ -59,7 +50,8 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             var knowledgeComponentMastery = _kcRepository.GetKnowledgeComponentMastery(learnerId, knowledgeComponentId);
             var result = knowledgeComponentMastery.SelectSuitableAssessmentItem(_assessmentItemSelector);
             _kcRepository.UpdateKcMastery(knowledgeComponentMastery);
-            return result;
+
+            return result.IsFailed ? result : Result.Ok(_kcRepository.GetDerivedAssessmentItem(result.Value.Id));
         }
 
         public Result<KnowledgeComponentStatistics> GetKnowledgeComponentStatistics(int learnerId, int knowledgeComponentId)

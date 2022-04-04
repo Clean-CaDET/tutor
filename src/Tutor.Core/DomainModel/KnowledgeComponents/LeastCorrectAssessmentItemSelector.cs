@@ -1,35 +1,25 @@
 using System.Collections.Generic;
 using System.Linq;
-using FluentResults;
 using Tutor.Core.DomainModel.AssessmentItems;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
     public class LeastCorrectAssessmentItemSelector : IAssessmentItemSelector
     {
-        private readonly IAssessmentItemRepository _assessmentItemRepository;
-
-        public LeastCorrectAssessmentItemSelector(IAssessmentItemRepository assessmentItemRepository)
+        public AssessmentItem SelectSuitableAssessmentItem(List<AssessmentItem> itemsWithSubmissions)
         {
-            _assessmentItemRepository = assessmentItemRepository;
+            if (itemsWithSubmissions.Count == 0) return null;
+
+            var aeNoSubmission = FindAeWithNoSubmission(itemsWithSubmissions);
+            return aeNoSubmission ?? FindAeWithMinCorrectSubmission(itemsWithSubmissions);
         }
 
-        public Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId)
+        private static AssessmentItem FindAeWithNoSubmission(List<AssessmentItem> assessmentItems)
         {
-            var assessmentItems = _assessmentItemRepository.GetAssessmentItemsWithLearnerSubmissions(knowledgeComponentId, learnerId);
-            if (assessmentItems.Count == 0) return Result.Fail("No available assessment events.");
-
-            var aeNoSubmission = FindAeWithNoSubmission(assessmentItems);
-            return Result.Ok(aeNoSubmission ?? FindAeWithMinCorrectSubmission(assessmentItems));
+            return assessmentItems.OrderBy(ae => ae.Order).FirstOrDefault(ae => ae.Submissions.Count == 0);
         }
 
-        private AssessmentItem FindAeWithNoSubmission(List<AssessmentItem> assessmentItems)
-        {
-            var ae = assessmentItems.OrderBy(ae => ae.Order).FirstOrDefault(ae => ae.Submissions.Count == 0);
-            return ae != null ? _assessmentItemRepository.GetDerivedAssessmentItem(ae.Id) : null;
-        }
-
-        private AssessmentItem FindAeWithMinCorrectSubmission(List<AssessmentItem> assessmentItems)
+        private static AssessmentItem FindAeWithMinCorrectSubmission(List<AssessmentItem> assessmentItems)
         {
             var lastSubmissions = FindLastSubmissionForEachAe(assessmentItems);
             var maxCorrectnessSubmissions = FindMaxCorrectnessSubmissionForEachAe(assessmentItems);
@@ -43,7 +33,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             }
 
             var submissionWithMinCorrectness = maxCorrectnessSubmissions.OrderBy(sub => sub.CorrectnessLevel).First();
-            return _assessmentItemRepository.GetDerivedAssessmentItem(submissionWithMinCorrectness.AssessmentItemId);
+            return assessmentItems.Find(ai => ai.Id == submissionWithMinCorrectness.AssessmentItemId);
         }
 
         private static List<Submission> FindLastSubmissionForEachAe(List<AssessmentItem> assessmentItems)

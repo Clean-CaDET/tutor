@@ -5,18 +5,16 @@ namespace Tutor.Core.DomainModel.AssessmentItems
 {
     public class SubmissionService : ISubmissionService
     {
-        private readonly IAssessmentItemRepository _assessmentItemRepository;
         private readonly IKcRepository _kcRepository;
 
-        public SubmissionService(IAssessmentItemRepository assessmentItemRepository, IKcRepository kcRepository)
+        public SubmissionService(IKcRepository kcRepository)
         {
-            _assessmentItemRepository = assessmentItemRepository;
             _kcRepository = kcRepository;
         }
 
         public Result<Evaluation> EvaluateAndSaveSubmission(Submission submission)
         {
-            var assessmentItem = _assessmentItemRepository.GetDerivedAssessmentItem(submission.AssessmentItemId);
+            var assessmentItem = _kcRepository.GetDerivedAssessmentItem(submission.AssessmentItemId);
             if (assessmentItem == null)
                 return Result.Fail("No assessment event with ID: " + submission.AssessmentItemId);
 
@@ -34,7 +32,7 @@ namespace Tutor.Core.DomainModel.AssessmentItems
 
         public Result<double> GetMaxCorrectness(int aeId, int learnerId)
         {
-            var submission = _assessmentItemRepository.FindSubmissionWithMaxCorrectness(aeId, learnerId);
+            var submission = _kcRepository.FindSubmissionWithMaxCorrectness(aeId, learnerId);
             return Result.Ok(submission?.CorrectnessLevel ?? 0.0);
         }
     }

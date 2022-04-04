@@ -120,16 +120,17 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
             if (!HasActiveSession)
                 LaunchSession();
 
-            var result = assessmentItemSelector.SelectSuitableAssessmentItem(KnowledgeComponent.Id, LearnerId);
-            if (result.IsSuccess)
-                Causes(new AssessmentItemSelected()
-                {
-                    LearnerId = LearnerId,
-                    KnowledgeComponentId = KnowledgeComponent.Id,
-                    AssessmentItemId = result.Value.Id
-                });
+            var ai = assessmentItemSelector.SelectSuitableAssessmentItem(KnowledgeComponent.AssessmentItems);
+            if (ai == null) return Result.Fail("No assessment item found for knowledge component with ID " + KnowledgeComponent.Id);
 
-            return result;
+            Causes(new AssessmentItemSelected()
+            {
+                LearnerId = LearnerId,
+                KnowledgeComponentId = KnowledgeComponent.Id,
+                AssessmentItemId = ai.Id
+            });
+
+            return Result.Ok(ai);
         }
 
         public Result RecordInstructionalItemSelection()
