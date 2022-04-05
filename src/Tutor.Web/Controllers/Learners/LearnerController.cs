@@ -1,5 +1,9 @@
+using System;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Tutor.Core.LearnerModel;
 using Tutor.Infrastructure.Security.Authorization;
+using Tutor.Infrastructure.Security.Authorization.JWT;
 using Tutor.Web.Controllers.Learners.DTOs;
 
 namespace Tutor.Web.Controllers.Learners
@@ -9,10 +13,14 @@ namespace Tutor.Web.Controllers.Learners
     public class LearnerController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IMapper _mapper;
+        private readonly ILearnerService _learnerService;
 
-        public LearnerController(IAuthService authService)
+        public LearnerController(IAuthService authService, ILearnerService learnerService, IMapper mapper)
         {
             _authService = authService;
+            _learnerService = learnerService;
+            _mapper = mapper;
         }
 
         [HttpPost("login")]
@@ -29,6 +37,14 @@ namespace Tutor.Web.Controllers.Learners
             var result = _authService.RefreshToken(authenticationTokens);
             if (result.IsSuccess) return Ok(result.Value);
             return BadRequest(result.Errors);
+        }
+
+        [HttpGet("info")]
+        public ActionResult<LearnerDto> GetInformations()
+        {
+            var result = _learnerService.GetInformations(User.Id());
+            if (result.IsFailed) return BadRequest(result.Errors);
+            return Ok(_mapper.Map<LearnerDto>(result.Value));
         }
     }
 }

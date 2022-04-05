@@ -23,5 +23,10 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
             _dbContext.SaveChanges();
             return learner;
         }
+
+        public Learner GetInformations(int id)
+        {
+            return _dbContext.Learners.FirstOrDefault(learner => learner.Id.Equals(id));
+        }
     }
 }

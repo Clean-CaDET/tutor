@@ -1,3 +1,4 @@
+using System;
 using FluentResults;
 using System.Linq;
 using Tutor.Core.LearnerModel.DomainOverlay;
@@ -32,6 +33,12 @@ namespace Tutor.Core.LearnerModel
             CreateWorkspace(savedLearner);
 
             return Result.Ok(savedLearner);
+        }
+
+        public Result<Learner> GetInformations(int id)
+        {
+            var learner = _learnerRepository.GetInformations(id);
+            return learner == null ? Result.Fail("Learner with id " + id + "does not exist.") : Result.Ok(learner);
         }
 
         private void CreateWorkspace(Learner learner)

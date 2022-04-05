@@ -29,6 +29,7 @@ namespace Tutor.Infrastructure.Serialization
             { typeof(SessionTerminated), "SessionTerminated" },
             { typeof(SessionAbandoned), "SessionAbandoned" },
             { typeof(InstructionalItemsSelected), "InstructionalItemsSelected" },
+            { typeof(InstructorMessageEvent), "InstructorMessageEvent" },
 #region Submissions
             { typeof(ArrangeTaskSubmission), "ArrangeTaskSubmission" },
             { typeof(ChallengeSubmission), "ChallengeSubmission" },
