@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.DomainModel.AssessmentItems;
+using Tutor.Core.DomainModel.InstructionalItems;
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
@@ -13,6 +14,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
 
         public List<KnowledgeComponent> KnowledgeComponents { get; private set; }
         public List<AssessmentItem> AssessmentItems { get; private set; }
+        public List<InstructionalItem> InstructionalItems { get; private set; }
 
         public AssessmentItem GetAssessmentItem(int assessmentItemId)
         {

@@ -77,7 +77,7 @@ namespace Tutor.Web.Controllers.Domain
         [HttpGet("knowledge-components/{knowledgeComponentId:int}")]
         public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
         {
-            var result = _learnerKcMasteryService.GetKnowledgeComponentById(knowledgeComponentId);
+            var result = _learnerKcMasteryService.GetKnowledgeComponent(knowledgeComponentId, User.Id());
             if (result.IsSuccess) return Ok(_mapper.Map<KnowledgeComponentDto>(result.Value));
             return NotFound(result.Errors);
         }
@@ -100,7 +100,7 @@ namespace Tutor.Web.Controllers.Domain
         [HttpGet("knowledge-components/statistics/{knowledgeComponentId:int}")]
         public ActionResult<KnowledgeComponentStatisticsDto> GetKnowledgeComponentStatistics(int knowledgeComponentId)
         {
-            var result = _learnerKcMasteryService.GetKnowledgeComponentStatistics(User.Id(), knowledgeComponentId);
+            var result = _learnerKcMasteryService.GetKnowledgeComponentStatistics(knowledgeComponentId, User.Id());
             if (result.IsSuccess) return Ok(_mapper.Map<KnowledgeComponentStatisticsDto>(result.Value));
             return NotFound(result.Errors);
         }
@@ -108,7 +108,7 @@ namespace Tutor.Web.Controllers.Domain
         [HttpPost("knowledge-components/{knowledgeComponentId:int}/session/launch")]
         public ActionResult LaunchSession(int knowledgeComponentId)
         {
-            var result = _learnerKcMasteryService.LaunchSession(User.Id(), knowledgeComponentId);
+            var result = _learnerKcMasteryService.LaunchSession(knowledgeComponentId, User.Id());
             if (result.IsSuccess) return Ok();
             return BadRequest(result.Errors);
         }
@@ -116,7 +116,7 @@ namespace Tutor.Web.Controllers.Domain
         [HttpPost("knowledge-components/{knowledgeComponentId:int}/session/terminate")]
         public ActionResult TerminateSession(int knowledgeComponentId)
         {
-            var result = _learnerKcMasteryService.TerminateSession(User.Id(), knowledgeComponentId);
+            var result = _learnerKcMasteryService.TerminateSession(knowledgeComponentId, User.Id());
             if (result.IsSuccess) return Ok();
             return BadRequest(result.Errors);
         }

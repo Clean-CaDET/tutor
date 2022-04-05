@@ -85,7 +85,7 @@ namespace Tutor.Web
             });
 
             services.AddScoped<ILearnerKcMasteryService, LearnerKcMasteryService>();
-            services.AddScoped<IKcRepository, KcDatabaseRepository>();
+            services.AddScoped<IKcMasteryRepository, KcMasteryDatabaseRepository>();
             services.AddScoped<ILearnerAssessmentsService, LearnerAssessmentsService>();
             services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
 

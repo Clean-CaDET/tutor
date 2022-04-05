@@ -6,34 +6,34 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
 {
     public class LearnerAssessmentsService : ILearnerAssessmentsService
     {
-        private readonly IKcRepository _kcRepository;
+        private readonly IKcMasteryRepository _kcMasteryRepository;
 
-        public LearnerAssessmentsService(IKcRepository kcRepository)
+        public LearnerAssessmentsService(IKcMasteryRepository kcMasteryRepository)
         {
-            _kcRepository = kcRepository;
+            _kcMasteryRepository = kcMasteryRepository;
         }
 
         public Result<Evaluation> EvaluateAndSaveSubmission(Submission submission)
         {
-            var assessmentItem = _kcRepository.GetDerivedAssessmentItem(submission.AssessmentItemId);
+            var assessmentItem = _kcMasteryRepository.GetDerivedAssessmentItem(submission.AssessmentItemId);
             if (assessmentItem == null)
                 return Result.Fail("No assessment item with ID: " + submission.AssessmentItemId);
 
-            var knowledgeComponentMastery = _kcRepository
-                .GetKnowledgeComponentMastery(submission.LearnerId, assessmentItem.KnowledgeComponentId);
+            var knowledgeComponentMastery = _kcMasteryRepository
+                .GetKcMasteryWithInstructionsAndAssessments(assessmentItem.KnowledgeComponentId, submission.LearnerId);
             if (knowledgeComponentMastery == null)
                 return Result.Fail("The Learner isn't enrolled to knowledge component with ID: " + assessmentItem.KnowledgeComponentId);
 
             var result = knowledgeComponentMastery.SubmitAssessmentItemAnswer(submission);   
 
-            _kcRepository.UpdateKcMastery(knowledgeComponentMastery);
+            _kcMasteryRepository.UpdateKcMastery(knowledgeComponentMastery);
 
             return result;
         }
 
         public Result<double> GetMaxSubmissionCorrectness(int aiId, int learnerId)
         {
-            var submission = _kcRepository.FindSubmissionWithMaxCorrectness(aiId, learnerId);
+            var submission = _kcMasteryRepository.FindSubmissionWithMaxCorrectness(aiId, learnerId);
             return Result.Ok(submission?.CorrectnessLevel ?? 0.0);
         }
 
@@ -57,14 +57,14 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
 
         private Result SeekHelp(SoughtHelp helpEvent)
         {
-            var knowledgeComponentMastery = _kcRepository
-                .GetKnowledgeComponentMasteryByAssessmentItem(helpEvent.LearnerId, helpEvent.AssessmentItemId);
+            var knowledgeComponentMastery = _kcMasteryRepository
+                .GetKcMasteryForAssessmentItem(helpEvent.AssessmentItemId, helpEvent.LearnerId);
             if (knowledgeComponentMastery == null)
                 return Result.Fail("Cannot seek help for assessment item with ID: " + helpEvent.AssessmentItemId);
 
             var result = knowledgeComponentMastery.SeekHelpForAssessmentItem(helpEvent);
 
-            _kcRepository.UpdateKcMastery(knowledgeComponentMastery);
+            _kcMasteryRepository.UpdateKcMastery(knowledgeComponentMastery);
 
             return result;
         }

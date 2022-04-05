@@ -9,13 +9,13 @@ namespace Tutor.Core.LearnerModel
     public class LearnerService : ILearnerService
     {
         private readonly ILearnerRepository _learnerRepository;
-        private readonly IKcRepository _kcRepository;
+        private readonly IKcMasteryRepository _kcMasteryRepository;
         private readonly IWorkspaceCreator _workspaceCreator;
 
-        public LearnerService(ILearnerRepository learnerRepository, IKcRepository kcRepository, IWorkspaceCreator workspaceCreator)
+        public LearnerService(ILearnerRepository learnerRepository, IKcMasteryRepository kcMasteryRepository, IWorkspaceCreator workspaceCreator)
         {
             _learnerRepository = learnerRepository;
-            _kcRepository = kcRepository;
+            _kcMasteryRepository = kcMasteryRepository;
             _workspaceCreator = workspaceCreator;
         }
 
@@ -24,7 +24,7 @@ namespace Tutor.Core.LearnerModel
             if (_learnerRepository.GetByIndex(learner.StudentIndex) != null)
                 return Result.Fail("Learner with index " + learner.StudentIndex + " is already registered.");
 
-            var kcs = _kcRepository.GetAllKnowledgeComponents();
+            var kcs = _kcMasteryRepository.GetAllKnowledgeComponents();
             learner.KnowledgeComponentMasteries.AddRange(
                 kcs.Select(kc => new KnowledgeComponentMastery(kc)).ToList());
 

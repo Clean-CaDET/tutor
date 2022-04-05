@@ -11,19 +11,19 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
     {
         Result<List<Unit>> GetUnits();
 
-        Result<Unit> GetUnit(int id, int learnerId);
+        Result<Unit> GetUnit(int unitId, int learnerId);
         Result<List<KnowledgeComponentMastery>> GetKnowledgeComponentMasteries(List<int> kcIds, int learnerId);
 
-        Result<KnowledgeComponent> GetKnowledgeComponentById(int id);
+        Result<KnowledgeComponent> GetKnowledgeComponent(int knowledgeComponentId, int learnerId);
 
         Result<List<InstructionalItem>> GetInstructionalItems(int knowledgeComponentId, int learnerId);
 
         Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId);
 
-        Result<KnowledgeComponentStatistics> GetKnowledgeComponentStatistics(int learnerId, int knowledgeComponentId);
+        Result<KnowledgeComponentStatistics> GetKnowledgeComponentStatistics(int knowledgeComponentId, int learnerId);
 
-        Result LaunchSession(int learnerId, int knowledgeComponentId);
+        Result LaunchSession(int knowledgeComponentId, int learnerId);
 
-        Result TerminateSession(int learnerId, int knowledgeComponentId);
+        Result TerminateSession(int knowledgeComponentId, int learnerId);
     }
 }
