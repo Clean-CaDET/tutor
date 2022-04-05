@@ -8,15 +8,17 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.IdentityModel.Tokens;
-using Tutor.Core.DomainModel.AssessmentEvents;
-using Tutor.Core.DomainModel.KnowledgeComponents;
+using Tutor.Core.DomainModel.Feedback;
 using Tutor.Core.LearnerModel;
+using Tutor.Core.LearnerModel.DomainOverlay;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.MoveOn;
 using Tutor.Core.LearnerModel.Workspaces;
 using Tutor.Infrastructure;
 using Tutor.Infrastructure.Database.Repositories.Domain;
@@ -24,15 +26,13 @@ using Tutor.Infrastructure.Database.Repositories.Learners;
 using Tutor.Infrastructure.Security;
 using Tutor.Infrastructure.Security.Authorization;
 using Tutor.Infrastructure.Security.Authorization.JWT;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTasks;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenges;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestions;
-using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
+using Tutor.Infrastructure.Serialization;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
+using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
 using Tutor.Web.IAM;
 using Tutor.Web.IAM.Keycloak;
-using Tutor.Infrastructure.Serialization;
-using Tutor.Core.DomainModel.Feedback;
-using Tutor.Core.DomainModel.KnowledgeComponents.MoveOn;
 
 namespace Tutor.Web
 {
@@ -84,11 +84,10 @@ namespace Tutor.Web
                     });
             });
 
-            services.AddScoped<IKcService, KcService>();
-            services.AddScoped<IKcRepository, KcDatabaseRepository>();
-            services.AddScoped<IAssessmentEventRepository, AssessmentEventDatabaseRepository>();
-            services.AddScoped<ISubmissionService, SubmissionService>();
-            services.AddScoped<IAssessmentEventSelector, LeastCorrectAssessmentEventSelector>();
+            services.AddScoped<ILearnerKcMasteryService, LearnerKcMasteryService>();
+            services.AddScoped<IKcMasteryRepository, KcMasteryDatabaseRepository>();
+            services.AddScoped<ILearnerAssessmentsService, LearnerAssessmentsService>();
+            services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
 
             services.AddScoped<ILearnerService, LearnerService>();
             services.Configure<WorkspaceOptions>(Configuration.GetSection("Workspace"));
@@ -102,8 +101,6 @@ namespace Tutor.Web
 
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
-
-            services.AddScoped<IAssessmentEventHelpService, AssessmentEventHelpService>();
 
             if (!bool.Parse(Environment.GetEnvironmentVariable("KEYCLOAK_ON") ?? "false"))
             {

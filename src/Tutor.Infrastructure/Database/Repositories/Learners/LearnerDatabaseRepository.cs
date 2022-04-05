@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Tutor.Core.LearnerModel;
-using Tutor.Core.LearnerModel.Learners;
 
 namespace Tutor.Infrastructure.Database.Repositories.Learners
 {
@@ -11,11 +10,6 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
         public LearnerDatabaseRepository(TutorContext dbContext)
         {
             _dbContext = dbContext;
-        }
-
-        public Learner GetById(int learnerId)
-        {
-            return _dbContext.Learners.FirstOrDefault(l => l.Id == learnerId);
         }
 
         public Learner GetByIndex(string index)

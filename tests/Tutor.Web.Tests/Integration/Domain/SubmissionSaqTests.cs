@@ -1,17 +1,17 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using Tutor.Core.DomainModel.AssessmentEvents;
+using System.Collections.Generic;
+using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Web.Controllers.Domain;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestions;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ShortAnswerQuestions;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
 {
     [Collection("Sequential")]
-    public class SubmissionSaqTests : BaseIntegrationTest
+    public class SubmissionSaqTests : BaseWebIntegrationTest
     {
         public SubmissionSaqTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
 
@@ -20,7 +20,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Submits_short_answer_questions(SaqSubmissionDto submission, SaqEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>());
+            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ILearnerAssessmentsService>());
 
             var actualEvaluation = ((OkObjectResult)controller.SubmitShortAnswerQuestion(submission).Result).Value as SaqEvaluationDto;
 
@@ -36,7 +36,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new SaqSubmissionDto
                     {
-                        AssessmentEventId = -212,
+                        AssessmentItemId = -212,
                         LearnerId = -1,
                         Answer = "Words, word_parts, idx, abc"
                     },
@@ -49,7 +49,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new SaqSubmissionDto
                     {
-                        AssessmentEventId = -212,
+                        AssessmentItemId = -212,
                         LearnerId = -1,
                         Answer = "Words, word_parts, idx"
                     },
@@ -62,7 +62,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new SaqSubmissionDto
                     {
-                        AssessmentEventId = -212,
+                        AssessmentItemId = -212,
                         LearnerId = -1,
                         Answer = "Words, word_parts, idx, abc, cba"
                     },
@@ -75,7 +75,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new SaqSubmissionDto
                     {
-                        AssessmentEventId = -212,
+                        AssessmentItemId = -212,
                         LearnerId = -1,
                         Answer = ""
                     },
@@ -88,7 +88,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new SaqSubmissionDto
                     {
-                        AssessmentEventId = -212,
+                        AssessmentItemId = -212,
                         LearnerId = -1,
                         Answer = "cba"
                     },
@@ -101,7 +101,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new SaqSubmissionDto
                     {
-                        AssessmentEventId = -212,
+                        AssessmentItemId = -212,
                         LearnerId = -1,
                         Answer = "abc, cba"
                     },
@@ -114,7 +114,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new SaqSubmissionDto
                     {
-                        AssessmentEventId = -995,
+                        AssessmentItemId = -995,
                         LearnerId = -1,
                         Answer = "MedicalRecordService"
                     },
@@ -127,7 +127,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new SaqSubmissionDto
                     {
-                        AssessmentEventId = -995,
+                        AssessmentItemId = -995,
                         LearnerId = -1
                     },
                     new SaqEvaluationDto
@@ -139,7 +139,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new SaqSubmissionDto
                     {
-                        AssessmentEventId = -995,
+                        AssessmentItemId = -995,
                         LearnerId = -1,
                         Answer = " "
                     },

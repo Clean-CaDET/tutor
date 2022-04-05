@@ -1,20 +1,21 @@
 ﻿using AutoMapper;
 using System.Linq;
-using Tutor.Core.DomainModel.AssessmentEvents;
-using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
-using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
-using Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions;
-using Tutor.Core.DomainModel.InstructionalEvents;
+using Tutor.Core.DomainModel.AssessmentItems;
+using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
+using Tutor.Core.DomainModel.AssessmentItems.Challenges;
+using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
+using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
+using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
 using Tutor.Web.Controllers.Domain.DTOs;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTasks;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenges;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestions;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestions;
-using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
-using KnowledgeComponentStatistics = Tutor.Core.DomainModel.KnowledgeComponents.KnowledgeComponentStatistics;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ShortAnswerQuestions;
+using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
+using KnowledgeComponentStatistics = Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.KnowledgeComponentStatistics;
 
 namespace Tutor.Web.Controllers.Domain.Mappers
 {
@@ -23,17 +24,16 @@ namespace Tutor.Web.Controllers.Domain.Mappers
         public DomainProfile()
         {
             CreateMap<Unit, UnitDto>();
-            CreateMap<KnowledgeComponent, KnowledgeComponentDto>()
-                .ForMember(dest => dest.Mastery, opt => opt.MapFrom(src => src.KnowledgeComponentMasteries.FirstOrDefault()));
+            CreateMap<KnowledgeComponent, KnowledgeComponentDto>();
             CreateMap<KnowledgeComponentMastery, KnowledgeComponentMasteryDto>();
             CreateMap<KnowledgeComponentStatistics, KnowledgeComponentStatisticsDto>();
 
-            CreateMap<InstructionalEvent, InstructionalEventDto>().IncludeAllDerived();
+            CreateMap<InstructionalItem, InstructionalItemDto>().IncludeAllDerived();
             CreateMap<Text, TextDto>();
             CreateMap<Image, ImageDto>();
             CreateMap<Video, VideoDto>();
 
-            CreateMap<AssessmentEvent, AssessmentEventDto>().IncludeAllDerived();
+            CreateMap<AssessmentItem, AssessmentItemDto>().IncludeAllDerived();
             CreateMap<Challenge, ChallengeDto>();
             CreateMap<Mrq, MrqDto>();
             CreateMap<MrqItem, MrqItemDto>();

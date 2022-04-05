@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Tutor.Core.DomainModel.AssessmentEvents;
-using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges.FulfillmentStrategies;
-using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
-using Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions;
+using Tutor.Core.DomainModel.AssessmentItems;
+using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
+using Tutor.Core.DomainModel.AssessmentItems.Challenges;
+using Tutor.Core.DomainModel.AssessmentItems.Challenges.FulfillmentStrategies;
+using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
+using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Core.DomainModel.Feedback;
-using Tutor.Core.DomainModel.InstructionalEvents;
+using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Core.LearnerModel.Learners;
+using Tutor.Core.LearnerModel;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
 
 namespace Tutor.Infrastructure.Database
 {
@@ -18,8 +19,8 @@ namespace Tutor.Infrastructure.Database
 
         public DbSet<Unit> Units { get; set; }
         public DbSet<KnowledgeComponent> KnowledgeComponents { get; set; }
-        public DbSet<AssessmentEvent> AssessmentEvents { get; set; }
-        public DbSet<InstructionalEvent> InstructionalEvents { get; set; }
+        public DbSet<AssessmentItem> AssessmentItems { get; set; }
+        public DbSet<InstructionalItem> InstructionalItems { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Text> Texts { get; set; }
         public DbSet<Video> Videos { get; set; }
@@ -79,6 +80,9 @@ namespace Tutor.Infrastructure.Database
             modelBuilder.Entity<Learner>()
                 .OwnsOne(l => l.Workspace)
                 .Property(w => w.Path).HasColumnName("WorkspacePath");
+            modelBuilder.Entity<KnowledgeComponentMastery>()
+                .HasOne(kcm => kcm.KnowledgeComponent)
+                .WithMany();
         }
 
         private static void ConfigureArrangeTask(ModelBuilder modelBuilder)

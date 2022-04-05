@@ -15,8 +15,8 @@ DELETE FROM public."ArrangeTaskElements";
 DELETE FROM public."ArrangeTaskContainers";
 DELETE FROM public."ArrangeTasks";
 DELETE FROM public."ShortAnswerQuestions";
-DELETE FROM public."AssessmentEvents";
-DELETE FROM public."InstructionalEvents";
+DELETE FROM public."AssessmentItems";
+DELETE FROM public."InstructionalItems";
 DELETE FROM public."KcMasteries";
 DELETE FROM public."KnowledgeComponents";
 DELETE FROM public."Units";
@@ -73,7 +73,7 @@ INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "U
 INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "UnitId", "ParentId") VALUES
 	(-86, 'F08', 'Odredi semantičku svrhu funkcije', '', NULL, -93);
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-1000, -100, 1);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-1000, 'Van jednostavnih slučajeva, izbor pravog naziva je proces koji podrazumeva sledeće korake:
@@ -86,12 +86,12 @@ INSERT INTO public."Texts"("Id", "Content") VALUES
 
 Navedeni algoritam nije jednokratna aktivnost. Često je potrebno nekoliko iteracija i preimenovanja da bismo stigli do imena koje je dovoljno jasno i značajno. Na sreću, savremeni IDE alati pružaju podršku za lako preimenovanje elemenata koda. Ako kod prolazi *build* posle preimenovanja, možemo biti uvereni da nismo uveli nove greške u kod.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-999, -100, 2);
 INSERT INTO public."Images"("Id", "Url", "Caption") VALUES
 	(-999, 'https://i.ibb.co/vqjMTyJ/simple-names-sr.png', 'U većini slučajeva kada hoćemo da stavimo komentar, pravo rešenje je smišljanje jasnijeg imena.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-998, -99, 1);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-998, 'Idealan naziv treba jasno da odredi neku operaciju ili pojam. Zbog ovoga je neophodno izbegavati sinonime i pratiti timske konvencije.
@@ -100,7 +100,7 @@ Kao primer možemo zamisliti skup klasa čiji zadatak je da učitaju različite 
 
 Prethodni problem neće izazvati velik trošak vremena, no gomila ovakvih prekršaja će svakako opteretiti programera. Dalje, postoji mogućnost da će programer u nedostatku *Get* funkcije implementirati takvu metodu, iako nespretno nazvan *Load* već radi traženi posao.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-997, -99, 2);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-997, 'Određene konvencije potiču iz programskog jezika ili tehnologija koje koristimo. One mogu i često jesu usvojene kao timske konvencije. Primeri ovakvih konvencija uključuju:
@@ -109,7 +109,7 @@ INSERT INTO public."Texts"("Id", "Content") VALUES
 - *Controller*, *Service*, *Repository* i *Dto* reči koje se koriste kao sufiksi u nazivima određenih klasa, gde date reči jasno označavaju deo odgovornosti date klase.
 - Upotreba *PascalCase* notacije za nazivanje klasa i metoda u C# programskom jeziku, kao i upotreba *pascalCase* notacije za formiranje naziva ostalih identifikatora.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-996, -98, 1);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-996, 'Prilikom formiranja naziva treba da izbegnemo dodavanje beznačajnih prefiksa i sufiksa. Tipičan primer nepotrebnog sufiksa nastaje kada se radi *copy & paste* izraza koji definiše promenljivu, gde se na kraj kopirane promenljive doda *1*. Ovaj potez rezultuje brzom pisanju nove instrukcije, ali usporava svako naknadno čitanje.
@@ -118,12 +118,12 @@ Treba da izbegavamo redundantne reči koje ponovo ističu tip elementa (npr. *st
 
 U opštem slučaju, prefiksi i sufiksi su prihvatljivi samo kada se prati konvencija tima (čest primer za ovo su *Controller* i *Service* sufiksi koji nose jasno značenje), no i tada se moramo postarati da imamo značajno ime pre nego što uvedemo ovakve dodatke.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-995, -98, 2);
 INSERT INTO public."Videos"("Id", "Url") VALUES
 	(-995, 'https://youtu.be/IusayOJt79E');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-994, -97, 1);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-994, 'Česta konvencija je da reči koje formiraju naziv metode rezultuju glagolom, označavajući da se *nešto radi*, odnosno operacija izvršava kada se metoda pozove. Primeri za ovo uključuju:
@@ -141,7 +141,7 @@ Nazivi ostalih vrsta identifikatora (npr. za promenljive, polja, klase i pakete)
 - *retiredEmployees*
 - *ConfigurationUtilities*');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-993, -96, 1);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-993, '*Domen problema* predstavlja oblast za koju pravimo softver, koji rešava problem u tom domenu. Primeri domena problema su zdravstvo, obrazovanje, ekonomija i ekologija. Softver retko pokriva toliko širok domen kao što je "zdravstvo", već je specijalizovan za neki manji poddomen. Primer poddomena je "radiologija", gde bi softver koji rešava problem u ovom domenu mogao da bude alat za automatsku analizu radioloških slika.
@@ -152,29 +152,29 @@ Ako pravimo aplikaciju za bolnicu, domen problema uključuje titule i odgovornos
 
 Za prethodni primer ova terminologija može da uključi *Doctor* i *Nurse*, zatim *Medical Record* i *Prescription Drug*, kao i *Schedule Operation* i *Cancel Appointment*. Dobra praksa je da konzistentno koristimo ove nazive u delu koda koji modeluje domen problema, kako bismo sav naš razgovor sa korisnicima i stručnjacima iz ovog domena jednostavno mapirali na naš kod.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-992, -96, 2);
 INSERT INTO public."Videos"("Id", "Url") VALUES
 	(-992, 'https://youtu.be/wcIJOmP0R7I');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-991, -96, 3);
 INSERT INTO public."Images"("Id", "Url", "Caption") VALUES
 	(-991, 'https://i.ibb.co/Tw9qktR/domain-names-sr.png', 'Kada razvijamo poslovnu logiku za koju nemamo dobar naziv, možemo sastaviti komentar koji opisuje šta kod radi tako da koristimo što više reči iz domena problema. Iz ovog teksta možemo izdvojiti ključne reči da definišu naziv.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-990, -96, 4);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-990, 'Zamislimo promenljivu tipa *List<Doctor>*. Šta očekujemo da sadrži ova lista ako je ime promenljive *doctors*, a šta ako je *availableDoctors*, *capableDoctors* ili *suitableDoctor*?
 
 Možemo zamisliti da će se za određenu operaciju razlikovati spisak svih lekara bolnice od onih koji su sposobni ili dostupni da urade datu operaciju. U ovom primeru vidimo kako upotreba odgovarajućeg atributa (slobodan, sposoban ili prikladan) u nazivu ograničava i jasnije određuje očekivani skup vrednosti u promenljivi.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-989, -96, 5);
 INSERT INTO public."Images"("Id", "Url", "Caption") VALUES
 	(-989, 'https://i.ibb.co/f144vCk/names-example.png', 'Ovako objektno orijentisani programer imenuje stvari kada izbegava reči iz poslovnog domena.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-988, -95, 1);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-988, 'Svaki element koda pripada nekom širem kontekstu. Promenljive i parametri pripadaju metodi. Atributi i metode pripadaju klasi i dodatno su opisani svojim tipom, odnosno tipom svoje povratne vrednosti. Klasa ima svoj paket, odnosno *namespace*. *Namespace* je deo neke aplikacije.
@@ -185,7 +185,7 @@ Kao primer možemo sagledati metodu sa nazivom *IsCapable*. Bez šireg konteksta
 
 Za drugi primer možemo zamisliti promenljivu sa nazivom *state* koja je definisana u okviru metode *FindAvailableRooms*. Posmatrajući samo naziv teško je odrediti kakav podatak je smešten u ovu promenljivu, da li je neko stanje sobe (poput zauzeta, spremna za čišćenja ili slobodna) ili je informacija o opštini u kojoj se traži soba. Naziv tipa promenljive bi mogao da pomogne, no savremeni programski jezici favorizuju upotrebu generične reči za definisanje promenljive, poput *var* ili *let*. Moguće rešenje bi bilo da se naziv preimenuje u *roomState* ili *addressState*.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-987, -94, 1);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-987, 'Jasan naziv objašnjava **šta** povezano parče koda predstavlja, a ne **kako** radi ili od kojih podelemenata se sastoji. Tako jedna funkcija može imati sledeća imena:
@@ -195,7 +195,7 @@ INSERT INTO public."Texts"("Id", "Content") VALUES
 
 Poslednji naziv je na višem nivou apstrakcije od opisa skupa koraka i tipa povratne vrednosti funkcije. Iz perspektive programera koji prvi put gleda ovaj kod, razumemo nameru funkcije bez da ulazimo u detalje njene implementacije i strukture njene povratne vrednosti. Ako nam je zadatak da modifikujemo algoritam za računanje plate, ova funkcija će nam biti interesantna i dublje ćemo je ispitati. Ako nam zadatak nema veze sa ovom funkcionalnošću biće nam dovoljno da pogledamo ime funkcije da znamo da ne moramo da gledamo kod njene implementacije.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-986, -94, 2);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-986, '*Repository* je ključna reč koja se koristi u nazivima klasa čiji zadatak je da interaguju sa skladištem nekakvih podataka. Tako će *EmployeeRepository* imati zadatak da pročita sadržaj nekog skladišta (npr. baze podataka ili datoteke) i formira instance *Employee* klase.
@@ -208,7 +208,7 @@ U kontekstu različitih nivoa apstrakcije postavlja se pitanje kako razlikujemo 
 
 Kada pišemo kod koji radi sa EmployeeRepository apstrakcijom, ne moramo da se opterećujemo da li se ispod haube dešava interakcija sa bazom ili datotekom. U ovom primeru je koncept "skladišta" apstraktniji od koncepta "datoteke" ili "SQL baze" i naziv ovo oslikava.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-985, -93, 1);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-985, 'Kada saberemo sve do sada, vidimo da čista funkcija ima sledeće karakteristike:
@@ -224,19 +224,19 @@ Kod koji prati prethodne smernice će posedovati visok broj jednostavnih funkcij
 - Ispunjavanje novog zahteva je jednostavno, gde se brzo može identifikovati funkcija koju treba izmeniti ili proširiti.
 - Pojava *bug*a postaje retka, a i kada se desi je jednostavno pronaći logiku koja je kriva za neočekivano ponašanje.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-984, -92, 1);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-984, 'Prosta smernica za ispitivanje čistoće funkcije predstavlja provera broja linija koda. Funkcija koja ima ispod 5 linija koda *verovatno* nije problematična. Funkcija koja ima preko 50 linija koda *verovatno* jeste problematična. Ključna reč je "verovatno" i izuzeci svakako postoje. Postavlja se pitanje da li je funkcija sa 20 linija koda problematična i videćemo da puno faktora utiče na to da li jeste ili nije, uključujući i subjektivnu percepciju programera i njegovu familijarnost sa kodom koji se razmatra. Drugim rečima, postoji siva zona između 5 i 50 linija koda u koju upadaju funkcije koje i jesu i nisu problematične.
 
 Zbog date sive zone, kao i izuzetaka na pravila da manje od 5 nije problem i veće od 50 jeste, posmatranje broja linija koda nije dovoljno da otkrijemo problematičan kod. Umesto toga, vredi identifikovati regione logički povezanog koda koji se mogu smisleno izdvojiti u zasebne funkcije, posebno kada uspemo dobar naziv da smislimo za dati kod. Ovi regioni često prirodno nastanu u kodu tako što programer ostavi par **praznih redova** da razdvoji regione ili **komentar** koji opisuje šta naredni kod radi. Ovo ne znači da ćemo za svaki komentar praviti funkciju. Tek kada se komentar odnosi na više linija koda ili na par veoma složenih linija imamo kandidata za ekstrakciju.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-983, -92, 2);
 INSERT INTO public."Videos"("Id", "Url") VALUES
 	(-983, 'https://youtu.be/D5Ubdm2fccQ');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-982, -91, 1);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-982, 'Složena logika je često posledica nepažljivog programiranja. Lako je upasti u klopku gde proizvodimo složen i nerazumljiv kod kada smo fokusirani na novu funkcionalnost i programiramo "u zoni". Pošto je sve sveže u umu, nije problem izboriti se sa zamršenom logikom i složenim nizovima instrukcija i operacija. Problem nastaje kada drugi programer treba da razume i modifikuje naš kod ili kada smo sami prisiljeni to da radimo šest meseci kasnije.
@@ -249,7 +249,7 @@ Kada uočimo da funkcija poseduje netrivijalnu logiku, treba da postavimo slede�
 
 Što bolje poznajemo programski jezik to više možemo da redukujemo složenost koda. Ovo uključuje poznavanje osnovnih stvari poput tipova podataka i funkcija standardne biblioteke jezika, do naprednijih koncepata poput delegata i LINQ izraza u C# programskom jeziku.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-981, -90, 1);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-981, '
@@ -303,7 +303,7 @@ public bool IsTeenager(Person p)
 ```
 Prvobitna funkcija je brojala 10 linija koda u svom telu, dok poslednja ima jednu liniju koda. Sve što je potrebno za ovu uštedu je poznavanje *bool* tipa podataka i razmišljanje koje se ne završava na nivou jedne linije koda već razmatra širu sliku tela funkcije.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-980, -89, 1);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-980, 'Ponekad imamo funkciju koja se sastoji od više trivijalnih linija koda i nekoliko linija zbog kojih se drastično poveća složenost cele funkcije. Složene linije koda dolaze u nekoliko varijanti. Jedan primer je lanac poziva metoda, poput:
@@ -318,7 +318,7 @@ Treći primer predstavlja duboko ugnježdavanje (npr. FOR u IF u FOR u TRY).
 
 Kod ovakvog koda treba da se zapitamo da li bi se jasnoća povećala sa ekstrakcijom nekog segmenta u zasebnu metodu, gde ćemo tu složenost sakriti iza dobrog naziva. Ekstrakcija složenih izraza u posebnu funkciju je posebno pogodna opcija ako dati izraz pozivamo na više mesta u našem kodu.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-979, -88, 1);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-979, 'Složene linije koda dolaze u nekoliko varijanti. Jedan primer je dugačak lanac poziva metoda, poput:
@@ -337,19 +337,19 @@ Tako možemo da definišemo promenljivu:
 
 da izbegnemo opterećivanje programera koji sada može tumačenje lanaca poruka da zameni sa razumevanjem naziva promenljive.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-978, -87, 1);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-978, 'Čiste funkcije treba da teže ka što manjem broju parametara. Ovaj broj je idealno nula, no svakako su funkcije sa jednim ili dva parametra prihvatljive i česte. Tako imamo funkcije koje prihvataju parametar da bi ga transformisali u novi objekat (npr. deserijalizacija stringa u objekat), funkcije koje ispituju neko svojstvo parametra, kao i funkcije koje izvršavaju komandu spram ulaznog podatka ili obrađuju prosleđeni događaj. Sve preko dva parametra je ozbiljan kandidat za refaktorisanje. Takve funkcije obično rešavaju više zadataka i sadrže opterećujuću kompleksnost. Izuzetak na ovo pravilo su konstruktori koji često prihvataju više podataka kako bi formirali složeni objekat.
 
 Potrebno je odrediti pogodnu strategiju za redukciju broja parametra. Treba da ispitamo da li određeni parametar smisleno može da postoji kao atribut klase, pa da se kroz konstruktor definiše. Treba da sagledamo da li su parametri usko povezani, u kom slučaju ćemo ih spojiti u klasu. Najzad, vredi razmotriti da li je metoda previše složena, gde bismo segmentacijom poslova u više metoda mogli da izdvojimo deo parametra koji su potreban za jedan posao u jednu metodu, a ostatak u drugu.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-977, -87, 2);
 INSERT INTO public."Images"("Id", "Url", "Caption") VALUES
 	(-977, 'https://i.ibb.co/nm4mh3m/RS-params.png', 'Navedene strategije možemo redom razmotriti kada pronađemo funkciju koja ima 3 ili više parametra.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-976, -87, 3);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-976, 'U određenim situacijama parametar metode vredi pretvoriti u atribut klase. Parametar je kandidat za promociju u atribut kada važi nešto od sledećeg:
@@ -360,26 +360,26 @@ INSERT INTO public."Texts"("Id", "Content") VALUES
 
 Razmotri *UserFileRepository* koja nudi metode poput *Get*, *Save*, *Update* i *Delete*. Ako pretpostavimo da se datoteke sa korisnicima čitaju iz istog iz istog direktorijuma, prva opcija nam je da zakucamo u kodu svake metode *baseFolder* putanju. Ako bismo želeli da učinimo klasu konfigurabilnom, jedna opcija bi bila da svaka metoda ima *baseFolder* parametar. Međutim, ovaj podatak se retko menja, a verovatno nikad između poziva metoda. Dalje, ovaj atribut predstavlja koncept koji svakako ima semantičkog smisla da stoji u datoj klasi. Najzad, ako ostane kao atribut pojaviće se u zaglavlju svake od navedenih metoda. Zbog svega navedenog ima smisla da postane atribut.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-975, -87, 4);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-975, 'Svaki parametar predstavlja nekakav podatak koji u praksi ima određenu semantiku i ograničen skup mogućih vrednosti. *string name* može da sadrži bilo kakav tekst, no u praksi će verovatno sadržati nečije ime ili specijalnu vrednost poput praznog teksta. Ponekad će više parametra metode predstavljati skup podataka koji često "ide zajedno". Ovo "zajedništvo" se može tumačiti na nivou semantike (npr. *name*, *surname*, *index* su podaci koji se odnose na nekakvog *Student*a. Ono se takođe može posmatrati u kodu, gde više metoda koje radi neke analize vremenskog rasporeda mogu posedovati parametre poput *DateTime from* i *DateTime to*.
 
 Kada pronađemo funkciju koja ima više parametra, vredi razmotriti da li oni "idu zajedno". Kada to jeste slučaj, možemo kreirati novu klasu koja će imati atribute koji se mapiraju na date parametre.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-974, -86, 1);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-974, 'Kažemo da dobro-formirana funkcija treba da rešava jedan zadatak. Kako definišemo zadatak? Idealno, funkcija koja radi jedan zadatak zna koji su koraci potrebni da se uradi taj zadatak, bez da poznaje detalje svakog od navedenih koraka (npr. bez da zna koji su koraci potrebni da bi se rešio njen prvi korak).
 
 *GetSuitableDoctors* zna da je za operaciju potrebno pronaći lekare koji su sposobni da urade operaciju i dostupni u predloženom terminu. Ova funkcija neće znati šta znači da je "lekar sposoban", niti kako da interaguje sa skladištem podataka kako bi dobavila lekare. Dalje, *IsAvailable* će znati šta sve treba proveriti da se odredi da li je lekar dostupan, što podrazumeva pregled njegovog radnog vremena i razmatranje da li već ima bitne obaveze u datom vremenskom opsegu. Ova funkcija neće poznavati detalje ovih koraka, poput logike koja određuje da li neki *DateTime* upada u određeni vremenski opseg.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-973, -86, 2);
 INSERT INTO public."Images"("Id", "Url", "Caption") VALUES
 	(-973, 'https://i.ibb.co/x1KBmTk/RS-method-semantic.png', '"Zadatak" može da opiše logiku na raznim nivoima apstrakcije - od "GetSuitableDoctors(operation)" do "Sum(a,b)".');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-972, -86, 3);
 INSERT INTO public."Texts"("Id", "Content") VALUES
 	(-972, 'Zadatak koji funkcija rešava definiše *semantičku svrhu* funkcije. Kada opišemo ovu svrhu u nekoliko dobro-odabranih reči dobijamo prikladan naziv za funkciju.
@@ -390,12 +390,12 @@ Naspram primera iz domena problema možemo razmotriti funkcije koje rade sa tehn
 
 Funkcije za koje je teško definisati semantičku svrhu su često funkcije koje rešavaju previše zadataka. Kod složenijih funkcija treba uložiti trud u identifikaciju ovih zadataka i njihovo izdvajanje u zasebne metode.');
 
-INSERT INTO public."InstructionalEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-971, -86, 4);
 INSERT INTO public."Images"("Id", "Url", "Caption") VALUES
 	(-971, 'https://i.ibb.co/rFJK6Z8/RS-Methods-Hierarchy.png', 'Uzmi po jednu metodu svake boje i opiši u rečenici šta rade, odnosno koje korake rešavaju. Razmisli koliko je apstraktan opis ljubičaste metode, a koliko konkretan opis plave metode.');
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-1000, -100, 1);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-1000, 'Iz sledećeg spiska odaberi istinite tvrdnje:');
@@ -407,7 +407,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-10002, 'Kada formiramo ime za neki element, treba da uzmemo u obzir njegov kontekst (tip, modul kom pripada, itd.)', true, 'Izjava je tačna. Kada zadajemo ime treba da izbegnemo ponavljanje informacije koja je jasno vidljiva iz npr. tipa povratne vrednosti funkcije ili objekta nad kojim se poziva metoda.', -1000);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-999, -100, 2);
 INSERT INTO public."Challenges"("Id", "Description", "Url", "TestSuiteLocation", "SolutionUrl") VALUES
 	(-999, 'Sabrali smo sve smernice i prakse za davanje značajnog naziva u jednostavan algoritam. U sklopu direktorijuma "Naming/03. Meaningful Names" isprati zadatke u zaglavlju klase i primeni dati algoritam kako bi unapredio nazive koji se koriste u kodu.', 'https://github.com/Clean-CaDET/challenge-repository', 'Naming.Meaning', 'https://youtu.be/kna0fx6TglA');
@@ -441,7 +441,7 @@ INSERT INTO public."RequiredWordsCheckers"(
 	"Id", "RequiredWords", "HintId")
 	VALUES (-33, '{"syntagms","pascalCase","capital"}', -33);
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-998, -100, 3);
 INSERT INTO public."ArrangeTasks"("Id", "Text") VALUES
 	(-998, 'Analiziraj sledeći kod i rasporedi nazive u odgovarajuće kategorije u zavisnosti od toga da li krše neki princip dobrog imenovanja.
@@ -494,7 +494,7 @@ INSERT INTO public."ArrangeTaskElements"("Id", "ArrangeTaskContainerId", "Text",
 	(-99850,-9985, 'EvaluateMrqSubmission', '"MrqSubmission" se jednostavno može izvući iz parametra.');
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-997, -100, 4);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-997, 'Iz sledećeg spiska odaberi istinite tvrdnje:');
@@ -506,7 +506,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9972, 'Potrebno je dobro ime izabrati u startu, zato što je naknadna promena skupa.', false, 'Izjava nije tačna. Promena imena za gotovo svaki element koda je trivijalna operacija uz pomoć savremenih editora koda.', -997);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-996, -100, 5);
 INSERT INTO public."ArrangeTasks"("Id", "Text") VALUES
 	(-996, '
@@ -574,7 +574,7 @@ INSERT INTO public."ArrangeTaskElements"("Id", "ArrangeTaskContainerId", "Text",
 	(-99650,-9965, 'AddItemToCart', 'Pošto se poziva nad instancom klase Cart, "ToCart" je suvišno. Pošto prihvata kao jedini parametar CartItem, i "Item" može biti suvišno, posebno ako je ovo jedina metoda koja dodaje nešto.');
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-995, -99, 1);
 INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
 	(-995, 'Posmatrajući sledeću strukturu paketa, navedi nazive klasa (razdvojene zarezom i bez .cs) koji krše konvenciju.
@@ -606,7 +606,7 @@ INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VAL
     - PatientRecordController.cs
     - ScheduleController.cs', '{"MedicalRecordService, PhysicianStorage"}');
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-994, -99, 2);
 INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
 	(-994, 'Iz sledećeg koda navedi sve nazive identifikatora (razdvojene zarezom) koji krše česte konvencije u pisanju programa.
@@ -629,7 +629,7 @@ public List<string> GetCamelCaseWords(List<string> Words)
 }
 ```', '{"Words, word_parts, idx"}');
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-993, -98, 1);
 INSERT INTO public."Challenges"("Id", "Description", "Url", "TestSuiteLocation", "SolutionUrl") VALUES
 	(-993, 'Često definišemo naše nazive koristeći generične ili beznačajne reči koje ponavljaju očiglednu informaciju ili ništa posebno ne kažu. U sklopu direktorijuma "Naming/01. Noise Words" isprati zadatke u zaglavlju klase i ukloni suvišne reči iz imena u kodu.', 'https://github.com/Clean-CaDET/challenge-repository', 'Naming.Noise', 'https://youtu.be/sR8hjHldAfI');
@@ -643,7 +643,7 @@ INSERT INTO public."BannedWordsCheckers"(
 	"Id", "BannedWords", "HintId")
 	VALUES (-11, '{"Data","Info","Str","Set","The"}', -11);
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-992, -98, 2);
 INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
 	(-992, 'Iz sledećeg koda navedi sve nazive identifikatora (razdvojene zarezom) koji sadrža beznačajne reči.
@@ -660,7 +660,7 @@ public int GetEffectiveLinesOfCode(string codeAsString)
 }
 ```', '{"codeAsString, ignoreLineCount2"}');
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-991, -98, 3);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-991, 'Analiziraj sledeći kod i označi sve nazive koje smatraš da sadrže beznačajne reči.
@@ -692,7 +692,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9912, 'FullName', false, 'Obe reči su bitne. Ovaj primer zahteva dublje razumevanje koncepta punog imena klase, koji podrazumeva uz naziv klase i naziv namespace-a kom pripada.', -991);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-990, -97, 1);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-990, 'Označi nazive koji ne poštuju pravilo za upotrebu prikladnog tipa reči.');
@@ -708,7 +708,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9904, 'public class ValidateUser', true, 'Ovo nije ispravan naziv, jer se glagol koristi da označi naziv klase.', -990);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-989, -97, 2);
 INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
 	(-989, 'Posmatrajući sledeći kod, unesi naziv identifikatora koji ne koristi ispravan tip reči.
@@ -733,7 +733,7 @@ public void AddToCart(int carId)
 }
 ```', '{"CartItem"}');
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-988, -97, 3);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-988, 'Označi nazive koji predstavljaju ispravan tip reči.');
@@ -747,13 +747,13 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9883, 'public class Registry', true, 'Naziv klase je ispravno imenica.', -988);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-987, -96, 1);
 INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
 	(-987, '`Order` klasa predstavlja porudžbinu koju korisnik može da formira (npr. u kontekstu poručivanja hrane preko Wolt/Glovo aplikacija). Instance ove klase sadrže podatke poput stavki porudžbine i njenog statusa (npr. kreirana, prihvaćena, otkazana).
 Koristeći terminologiju domena problema, kako bismo nazvali (na engleskom, *PascalCase*) metodu koja treba da se pozove nad instancom `Order` klase kada korisnik želi da otkaže svoje porudžbinu?', '{"Cancel", "CancelOrder"}');
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-986, -96, 2);
 INSERT INTO public."Challenges"("Id", "Description", "Url", "TestSuiteLocation", "SolutionUrl") VALUES
 	(-986, 'U svojoj brzopletosti, često nabacamo kratke nazive kako bismo što pre formirali kod koji radi. U sklopu direktorijuma "Naming/02. Domain Words" izmeni nazive tako da ukloniš potrebu za komentarima i isprati zadatke u zaglavlju klase.', 'https://github.com/Clean-CaDET/challenge-repository', 'Naming.Domain', 'https://youtu.be/8OYsu0dza0k');
@@ -767,7 +767,7 @@ INSERT INTO public."RequiredWordsCheckers"(
 	"Id", "RequiredWords", "HintId")
 	VALUES (-21, '{"Enroll","newCourse","Maximum","Active"}', -21);
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-985, -96, 3);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-985, 'Označi kod iz naredne liste koji smatraš da potiče iz klasa koje opisuju domen problema, odnosno poslovne logike.');
@@ -783,13 +783,13 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9854, 'Register(Member newMember)', true, 'Ovakva funkcija je deo poslovne logike oko registracije novog člana (npr. sportskog kluba ili biblioteke).', -985);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-984, -96, 4);
 INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
 	(-984, '`Schedule` klasa sabira sastanke i obaveze koje korisnik ima u toku dana (npr. u kontekstu *Google Calendar* aplikacije). Instance ove klase sadrže spisak događaja (engl. *Appointment*), gde je svaki definisan sa nazivom, vremenom početka i završetka.
 Koristeći terminologiju domena problema, kako bismo nazvali (na engleskom, *PascalCase*) metodu koja se poziva nad `Schedule` objektom, prihvata dužinu trajanja događaja u minutima i pronalazi prvi slobodan termin (engl. Timeslot) kada se događaj može zakazati.', '{"FindFirstAvailableTimeslot", "GetFirstAvailableTimeslot"}');
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-983, -95, 1);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-983, 'Razmotri sledeći kod.
@@ -834,7 +834,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9835, 'AddCandidateInstance', true, 'Naziv je redundantan, uzimajući u obzir naziv parametra i njegovog tipa. "Add" bi bio dovoljan pod pretpostavkom da nema drugih metoda koje nešto dodaju. U suprotnom bi "AddInstances" mogao da bude dovoljan.', -983);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-982, -95, 2);
 INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
 	(-982, 'Analiziraj sledeći kod koji je deo `CCMethod` klase i navedi sve nazive (odvojene zarezom) koje smatraš da se mogu pojednostaviti analizom šireg konteksta.
@@ -859,7 +859,7 @@ public string GetMethodSignature()
 }
 ```', '{"GetMethodSignature, FullNameOfType"}');
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-981, -95, 3);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-981, 'Ako treba da analiziramo širi kontekst prilikom formiranja naziva, označi nazive funkcija koje sadrže dobar naziv.');
@@ -875,7 +875,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9814, 'void RegisterUser(User user)', false, 'Ovo nije dobar naziv, gde je reč "User" redundantna.', -981);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-980, -94, 1);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-980, 'Ako tvrdimo da jasan naziv objašnjava šta parče koda radi, a ne kako to radi, označi funkcije koje imaju naziv na dobrom nivou apstrakcije.');
@@ -889,14 +889,14 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9803, 'void SaveIfValid(Employee employee)', false, 'Ovo nije dobar naziv jer otkriva detalje implementacije u vidu provere validnosti prosleđenog objekta. "Save" je naziv na boljem nivou apstrakcije.', -980);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-979, -94, 2);
 INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
 	(-979, 'Razmotri sledeći zahtev i definiši ime funkcije na prikladnom nivou apstrakcije (samo ime, bez zagrada i parametra), prateći *PascalCase* konvenciju i koristeći engleski jezik.
 
 Pored osnovnih podataka, entitet zaposlenog sadrži listu odsustva koje uključuju godišnje odmore i bolovanja (engl. *sick leave*). Potrebno je definisati funkciju koja će da pronađe sve zaposlene koji nisu uzeli bolovanje u određenoj godini, gde se godina prosleđuje kao parametar. Šta je prikladno ime za ovu funkciju?', '{"GetEmployeesWithoutSickLeave", "FindEmployeesWithoutSickLeave", "GetEmployeesWithNoSickLeave", "FindEmployeesWithNoSickLeave"}');
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-978, -94, 3);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-978, 'Ako tvrdimo da jasan naziv objašnjava šta parče koda radi, a ne kako to radi, označi funkcije koje imaju naziv na dobrom nivou apstrakcije.');
@@ -910,14 +910,14 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9783, 'List<Doctor> Get(Operation operation)', false, 'Ovaj naziv je previše apstraktan. Uz ozbiljno mentalno mapiranje je moguće razumeti nameru ove funkcije ako se posmatra povratna vrednost i parametar. Ovakav napor želimo da izbegnemo u našem kodu.', -978);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-977, -94, 4);
 INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
 	(-977, 'Razmotri sledeći zahtev i definiši ime funkcije na prikladnom nivou apstrakcije (samo ime, bez zagrada i parametra), prateći *PascalCase* konvenciju i koristeći engleski jezik.
 
 Postoji klasa koja predstavlja duž (`Line`). Ona sadrži dva atributa tipa `Point` gde svaki predstavlja jednu tačku duži i sastoji se od koordinata X i Y. `Line` klasa nudi metodu koja računa rastojanje između dve tačke koristeći formulu `√((p2.x-p1.x)²+(p2.y-p1.y)²)`, čime se dobija dužina duži. Šta je prikladno ime za ovu funkciju?', '{"GetLength", "CalculateLength"}');
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-976, -93, 1);
 INSERT INTO public."ArrangeTasks"("Id", "Text") VALUES
 	(-976, 'Prateći kod predstavlja primer čiste funkcije.
@@ -959,7 +959,7 @@ INSERT INTO public."ArrangeTaskElements"("Id", "ArrangeTaskContainerId", "Text",
 	(-97640,-9764, 'Uzima u obzir da li je lekar na bitnom sastanku u traženo vreme.', 'Proširujemo definiciju šta znači da je lekar dostupan, a IsAvailable metoda baš tu proveru pravi.');
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-975, -93, 2);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-975, 'Iz sledećeg spiska odaberi istinite tvrdnje:');
@@ -977,7 +977,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9755, 'Kada pišemo čiste funkcije, naši klijenti mogu da čitaju i razumeju naš kod.', false, 'Izjava nije tačna. Čiste funkcije koje opisuju poslovnu logiku treba da budu razumljive našim klijentima. Međutim, ne treba zaboraviti značajan deo logike koja će omogućiti obradu HTTP zahteva, interakciju sa bazom, kriptografiju i ostale tehničke detalje koji su poznati inženjnerima softvera, ali ne i ljudima za koje se pravi softver.', -975);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-974, -93, 3);
 INSERT INTO public."ArrangeTasks"("Id", "Text") VALUES
 	(-974, 'Za sledeći kod:
@@ -1023,7 +1023,7 @@ INSERT INTO public."ArrangeTaskContainers"("Id", "ArrangeTaskId", "Title") VALUE
 	(-9744, -974, '41-50');
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-973, -92, 1);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-973, '
@@ -1077,7 +1077,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9733, 'GenerateDropletsBetweenPoints(Event current, Event previous, CancellationToken token) sadrži kod iz tela petlje.', false, 'Funkcija nije dobro koncipirana. Njen naziv ističe da se vrši generisanje "droleta", gde kompletna petlja radi više od toga.', -973);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-972, -92, 2);
 INSERT INTO public."Challenges"("Id", "Description", "Url", "TestSuiteLocation", "SolutionUrl") VALUES
 	(-972, 'Da imamo kratke metode ne treba da bude naš konačan cilj, već posledica praćenja dobrih praksi. Ipak, funkcija koja prevazilazi nekoliko desetina linija je dobar kandidat za refaktorisanje. U sklopu direktorijuma "Methods/01. Small Methods" ekstrahuj logički povezan kod tako da završiš sa kolekcijom sitnijih metoda čije ime jasno označava njihovu svrhu.', 'https://github.com/Clean-CaDET/challenge-repository', 'Methods.Small', 'https://youtu.be/79a8Zp6FBfU');
@@ -1091,7 +1091,7 @@ INSERT INTO public."BasicMetricCheckers"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId")
 	VALUES (-71, 'MELOC', 1, 18, -71);
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-971, -92, 3);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-971, '
@@ -1133,7 +1133,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9713, '3', false, 'Ovaj broj je preteran pošto je logika funkcije jednostavna. Iako imamo 3 komentara, izdvajanjem toliko sitnih funkcija bismo dobili kolekciju glupavih funkcija čiji naziv nosi isto značenje kao i telo.', -971);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-970, -92, 4);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-970, 'Označi sve linije koda koje ima smisla izdvojiti u posebnu funkciju:
@@ -1204,7 +1204,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9705, '40-46', false, 'Datu logiku je teško izdvojiti u zasebnu funkciju pošto je potrebno vratiti 3 vrednosti kao rezultat.', -970);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-969, -91, 1);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-969, 'Razmotri sledeći kod i označi koje transformacije bi značajno doprinele redukciji njegove složenosti.
@@ -1263,7 +1263,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9695, 'Izdvoj računanje rezultata (linije 18-22) u funkciju "GetShape(double x, double y)"', true, 'Pošto "container" dobijamo iz Project polja klase, možemo ga jednako izvući unutar GetShape funkcije, čime bismo prepolovili kod OnDropStyle funkcije.', -969);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-968, -91, 2);
 INSERT INTO public."Challenges"("Id", "Description", "Url", "TestSuiteLocation", "SolutionUrl") VALUES
 	(-968, 'Složene funkcije su one koje zahtevaju visok mentalni napor da se razume sva logika i tokovi kontrole. Mnogi aspekti koda doprinose otežanom razumevanju - nejasni nazivi, dugački izrazi, duboko ugnježdavanje. U sklopu direktorijuma "Methods/02. Simple Methods" refaktoriši funkcije tako da ih pojednostaviš i smanjiš dupliranje koda.', 'https://github.com/Clean-CaDET/challenge-repository', 'Methods.Simple', 'https://youtu.be/-TF5b_R9JG4');
@@ -1286,7 +1286,7 @@ INSERT INTO public."BasicMetricCheckers"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId")
 	VALUES (-42, 'MELOC', 1, 12, -42);
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-967, -91, 3);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-967, 'Razmotri sledeći kod i označi koje transformacije bi  doprinele redukciji njegove složenosti.
@@ -1347,7 +1347,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9673, 'Izdvoj size.Width u promenljivu width, a size.Height u promenljivu height.', false, 'Oba izraza su veoma jednostavna i pojavljuju se dva puta, što ne opravdava dve posebne promenljive.', -967);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-966, -91, 4);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-966, 'Razmotri sledeći kod i označi koje transformacije bi značajno doprinele redukciji njegove složenosti.
@@ -1392,7 +1392,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9664, 'Zameni trenutnu liniju 3 sa "if (renderer.State.SelectedShapes == null) return;"', true, 'Ovakva transformacija prati takozvani "return early" princip.  Inverzijom IF uslova možemo da izbegnemo potrebu za dodatnim stepenom ugnježdavanja. U ovom slučaju ćemo sav preostali kod uvući za jedan stepen indentacije.', -966);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-965, -90, 1);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-965, '
@@ -1429,7 +1429,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9653, '10', false, 'Ne bismo puno uradili sa ovakvom transformacijom.', -965);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-964, -90, 2);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-964, '
@@ -1467,7 +1467,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9644, '13', false, 'Ovaj broj možemo dobiti npr. izbacivanjem nepotrebnog ELSE bloka. Međutim to nije jedina stvar koju možemo promeniti.', -964);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-963, -89, 1);
 INSERT INTO public."ArrangeTasks"("Id", "Text") VALUES
 	(-963, '
@@ -1518,7 +1518,7 @@ INSERT INTO public."ArrangeTaskContainers"("Id", "ArrangeTaskId", "Title") VALUE
 	(-9634, -963, 'Premesti u novu "ReportFileChange(item)" funkciju.');
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-962, -89, 2);
 INSERT INTO public."Challenges"("Id", "Description", "Url", "TestSuiteLocation", "SolutionUrl") VALUES
 	(-962, 'Složene funkcije su one koje zahtevaju visok mentalni napor da se razume sva logika i tokovi kontrole. Mnogi aspekti koda doprinose otežanom razumevanju, gde je mnogo složene logike i duboko ugnježdavanje glavni krivac. U sklopu direktorijuma "Methods/04. Nesting" refaktoriši funkcije tako da redukuješ ugnježdavanje i izdvojiš složenost u zasebne funkcije.', 'https://github.com/Clean-CaDET/challenge-repository', 'Methods.Nesting', 'https://youtu.be/7N7H8W7LdFU');
@@ -1548,7 +1548,7 @@ INSERT INTO public."BasicMetricCheckers"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId")
 	VALUES (-63, 'MELOC', 1, 16, -62);
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-961, -89, 3);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-961, 'Iz sledećeg spiska odaberi istinite tvrdnje:');
@@ -1564,7 +1564,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9614, 'Kada unutar grananja imamo petlju unutar koje imamo još jednu petlju u čijem telu stoji grananje, treba da izdvojimo deo ugnježdenih instrukcija u zasebnu funkciju.', false, 'Tvrdnja je previše rigorozna. Ovakvo ugnježdavanje je odličan kandidat za refaktorisanje i često ima smisla da se napravi posebna funkcija. Međutim, ako ne postoji višestruko grananje i sve instrukcije su jednostavne, možemo dozvoliti ovakvoj funkciji da postoji. Primer je IF koji proverava da li lista nije null, nakon čega prolazi kroz svaki objekat i svaki element liste koji dati objekat poseduje, nad kojim se vrši jednostavan upit (poslednje grananje).', -961);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-960, -89, 4);
 INSERT INTO public."ArrangeTasks"("Id", "Text") VALUES
 	(-960, 'Analiziraj kod i rasporedi ponuđene instrukcije u odgovarajuću funkciju.
@@ -1629,7 +1629,7 @@ INSERT INTO public."ArrangeTaskContainers"("Id", "ArrangeTaskId", "Title") VALUE
 	(-9603, -960, 'IncludeLinkedChildren(bool include, User user, List<ChildItem> children)');
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-959, -88, 1);
 INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
 	(-959, 'Navedena funkcija prihvata čvor iz sintaksnog stabla programskog koda, uzima izvorni kod i uklanja sve komentare koji se u njemu pojavljuju.
@@ -1646,7 +1646,7 @@ private static string RemoveCommentsFromCode(CSharpSyntaxNode node)
 ```
 Kolekcija koja sadrži komentare se dobija složenim izrazom koji vredi premestiti iznad petlje i sačuvati njegov rezultat u *explanatory variable*. Šta je pogodan naziv za ovu promenljivu?', '{"comments", "allComments"}');
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-958, -88, 2);
 INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
 	(-958, 'Sledeća funkcija vrši upload datoteke, gde se logika svodi na pripremu HTTP zahteva. Navedi broj linije koda (razdvojene zarezom ako ih ima više) koje smatraš da sadrže izraze koji su dovoljno složeni da ih treba izdvojiti u promenljivu sa značajnim nazivom.
@@ -1666,7 +1666,7 @@ private string Upload(Stream stream, string fileName)
 }
 ```', '{"9"}');
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-957, -87, 1);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-957, 'Sledeća funkcija se nalazi u okviru `Uploader` klase. Zadatak instance ove klase je da vrši upload sadržaja određenog tipa (engl. *content type*) na udaljeni servis, vodeći računa da se servis ne preoptereti frekventnim uploadom i beležeći sve greške koje se dese u komunikaciji. `GetResponse` je metoda koja na zahtev korisnika priprema i sprovodi odgovarajući zahtev za upload, formirajući konačan odgovor i vraćajući ga kao rezultat.
@@ -1712,7 +1712,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9573, 'Nije potrebno redukovati broj parametra funkcije.', false, 'Šest parametra će uglavnom biti problem, osim kada je u pitanju konstruktor ili funkcija čiji zadatak je da delegira veću količinu parametra nekoliko manjim funkcijama.', -957);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-956, -87, 2);
 INSERT INTO public."Challenges"("Id", "Description", "Url", "TestSuiteLocation", "SolutionUrl") VALUES
 	(-956, 'Redukcija broja parametra pozitivno utiče na razumevanje zaglavlja funkcije i zadatka koji rešava. Pored toga, redukcijom liste parametra često smanjujemo broj zadataka koje funkcija radi. U sklopu direktorijuma "Methods/03. Parameter Lists" primeni strategije za redukciju parametra i refaktoriši funkcije.', 'https://github.com/Clean-CaDET/challenge-repository', 'Methods.Params', 'https://youtu.be/yKnxsH0CJzY');
@@ -1735,7 +1735,7 @@ INSERT INTO public."BasicMetricCheckers"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId")
 	VALUES (-52, 'NMD', 0, 2, -52);
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-955, -87, 3);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-955, 'Sledeća funkcija se nalazi u okviru `Engine` klase koja opisuje srž rada video igre. Zadatak navedene funkcije je da kreira instancu ove klase.
@@ -1767,7 +1767,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9553, 'Sabiranje "title" i "version" parametra u GameSpecs klasu.', false, 'Nemamo informaciju da se ova dva podatka koriste zajedno, te nije opravdano uvođenje nove klase.', -955);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-954, -87, 4);
 INSERT INTO public."MultiResponseQuestions"("Id", "Text") VALUES
 	(-954, 'Sledeće dve funkcije se nalaze u okviru `ImageShape` klase koja opisuje geometrijsku reprezentaciju slike. Zadatak prve funkcije je da proveri da li se određena tačka nalazi u polju slike, dok druga funkcija proverava da li se određeno polje preklapa sa slikom.
@@ -1818,7 +1818,7 @@ INSERT INTO public."MrqItems"("Id", "Text", "IsCorrect", "Feedback", "MrqId") VA
 	(-9544, 'Uklanjanje "registered" parametra.', true, 'Navedeni parametar se nigde ne koristi i treba ga ukloniti.', -954);
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-953, -86, 1);
 INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
 	(-953, 'Sledeća funkcija radi dva zadatka, gde je samo jedan definisan njenim imenom.
@@ -1840,7 +1840,7 @@ private List<string> LoadSyntaxTrees(IEnumerable<string> sourceCode)
 ```
 Navedi linije koda, razdvojene zarezom, koje se odnose na drugi zadatak.', '{"3, 9, 10, 12"}');
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-952, -86, 2);
 INSERT INTO public."ArrangeTasks"("Id", "Text") VALUES
 	(-952, 'Sledeća funkcija prihvata HTML stranicu i modifikuje njen sadržaj tako da se dodaju metapodaci na početak stranice i na kraj. U zavisnosti od drugog parametra se dodaju dodatni podaci na početak i kraj stranice.
@@ -1917,7 +1917,7 @@ INSERT INTO public."ArrangeTaskElements"("Id", "ArrangeTaskContainerId", "Text",
 	(-95232,-9523, '23-43', 'Ovaj region koda ne predstavlja semantički kohezivnu celinu i nema smisla grupisati ga u posebnu funkciju.');
 
 
-INSERT INTO public."AssessmentEvents"("Id", "KnowledgeComponentId", "Order") VALUES
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-951, -86, 3);
 INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
 	(-951, 'Zadatak "SetupRepository" funkcije je da postavi prosleđeni git repozitorijum na lokalnoj mašini. Funkcija prihvata lokaciju gde treba da se klonira repozitorijum, zajedno sa njegovom putanjom koja sadrži URL i konkretan commit koji treba da bude učitan (engl. *checkout*) da bi postavka bila kompletna (primer takve putanje je https://github.com/Clean-CaDET/tutor/tree/2219c278592c2d0893f63694c760ae16ccb91904).

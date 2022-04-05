@@ -6,14 +6,14 @@ namespace Tutor.Infrastructure.Database.DataImport.DomainExcelModel
     {
         public List<UnitColumns> Units { get; }
         public List<KCColumns> KnowledgeComponents { get; }
-        public List<IEColumns> InstructionalEvents { get; }
-        public List<AEColumns> AssessmentEvents { get; }
-        public DomainExcelContent(List<UnitColumns> units, List<KCColumns> kcs, List<IEColumns> ies, List<AEColumns> aes)
+        public List<IEColumns> InstructionalItems { get; }
+        public List<AEColumns> AssessmentItems { get; }
+        public DomainExcelContent(List<UnitColumns> units, List<KCColumns> kcs, List<IEColumns> its, List<AEColumns> aes)
         {
             Units = units;
             KnowledgeComponents = kcs;
-            InstructionalEvents = ies;
-            AssessmentEvents = aes;
+            InstructionalItems = its;
+            AssessmentItems = aes;
         }
     }
 }

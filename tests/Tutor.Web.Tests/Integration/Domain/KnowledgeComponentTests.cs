@@ -1,21 +1,16 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Web.Controllers.Domain;
+using System.Linq;
 using Tutor.Web.Controllers.Domain.DTOs;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents;
-using Tutor.Web.Controllers.Domain.DTOs.InstructionalEvents;
+using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
 {
     [Collection("Sequential")]
-    public class KnowledgeComponentTests : BaseIntegrationTest
+    public class KnowledgeComponentTests : BaseWebIntegrationTest
     {
         public KnowledgeComponentTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
@@ -23,8 +18,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Retrieves_units()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKcService>());
+            var controller = SetupKcmController(scope);
 
             var units = ((OkObjectResult) controller.GetUnits().Result).Value as List<UnitDto>;
 
@@ -32,60 +26,63 @@ namespace Tutor.Web.Tests.Integration.Domain
         }
 
         [Theory]
-        [MemberData(nameof(InstructionalEvents))]
-        public void Retrieves_kc_instructional_events(int knowledgeComponentId, int expectedIEsCount)
+        [MemberData(nameof(KnowledgeComponentMasteries))]
+        public void Retrieves_kc_mastery_for_unit(int unitId, List<KnowledgeComponentDto> expectedKCs)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupController(scope);
+            var controller = SetupKcmController(scope);
 
-            var IEs = ((OkObjectResult)controller.GetInstructionalEvents(knowledgeComponentId).Result).Value as List<InstructionalEventDto>;
+            var unit = ((OkObjectResult)controller.GetUnit(unitId).Result).Value as UnitDto;
 
-            IEs.Count.ShouldBe(expectedIEsCount);
+            expectedKCs.All(expectedKc => unit.KnowledgeComponents.Any(
+                    kc => expectedKc.Id == kc.Id && expectedKc.Mastery.Mastery == kc.Mastery.Mastery))
+                .ShouldBe(true);
         }
 
-        public static IEnumerable<object[]> InstructionalEvents()
+        public static IEnumerable<object[]> KnowledgeComponentMasteries()
         {
             return new List<object[]>
             {
                 new object[]
                 {
-                    -11,
-                    2
-                },
-                new object[]
-                {
-                    -15,
-                    2
+                    -1,
+                    new List<KnowledgeComponentDto>
+                    {
+                        new() {Id = -11, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.1 }},
+                        new() {Id = -12, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.2 }},
+                        new() {Id = -13, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.3 }},
+                        new() {Id = -14, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.4 }},
+                        new() {Id = -15, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.5 }}
+                    }
                 }
             };
         }
 
         [Theory]
-        [MemberData(nameof(AssessmentEvents))]
-        public void Retrieves_kc_assessment_events(int knowledgeComponentId, int expectedAEsCount)
+        [MemberData(nameof(InstructionalItems))]
+        public void Retrieves_kc_instructional_events(int knowledgeComponentId, int expectedIEsCount)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new KCController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKcService>());
+            var controller = SetupKcmController(scope);
 
-            var IEs = ((OkObjectResult)controller.GetAssessmentEvents(knowledgeComponentId).Result).Value as List<AssessmentEventDto>;
+            var IEs = ((OkObjectResult)controller.GetInstructionalItems(knowledgeComponentId).Result).Value as List<InstructionalItemDto>;
 
-            IEs.Count.ShouldBe(expectedAEsCount);
+            IEs.Count.ShouldBe(expectedIEsCount);
         }
 
-        public static IEnumerable<object[]> AssessmentEvents()
+        public static IEnumerable<object[]> InstructionalItems()
         {
             return new List<object[]>
             {
                 new object[]
                 {
                     -11,
-                    0
+                    2
                 },
                 new object[]
                 {
                     -15,
-                    4
+                    2
                 }
             };
         }
@@ -94,33 +91,15 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Retrieves_kc_statistics()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupController(scope);
+            var controller = SetupKcmController(scope);
 
             var kcMasteryStatistics = ((OkObjectResult)controller.GetKnowledgeComponentStatistics(-15).Result).Value as KnowledgeComponentStatisticsDto;
 
             kcMasteryStatistics.IsSatisfied.ShouldBe(false);
-            kcMasteryStatistics.Mastery.ShouldBe(0);
+            kcMasteryStatistics.Mastery.ShouldBe(0.5);
             kcMasteryStatistics.TotalCount.ShouldBe(4);
             kcMasteryStatistics.AttemptedCount.ShouldBe(4);
             kcMasteryStatistics.CompletedCount.ShouldBe(0);
-        }
-
-        private KCController SetupController(IServiceScope scope)
-        {
-            return new KCController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKcService>())
-            {
-                ControllerContext = new ControllerContext()
-                {
-                    HttpContext = new DefaultHttpContext()
-                    {
-                        User = new ClaimsPrincipal(new ClaimsIdentity(new[]
-                        {
-                            new Claim("id", "-2")
-                        }))
-                    }
-                }
-            };
         }
     }
 }

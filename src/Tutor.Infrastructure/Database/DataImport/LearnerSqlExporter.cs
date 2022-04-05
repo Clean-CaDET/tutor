@@ -37,10 +37,10 @@ namespace Tutor.Infrastructure.Database.DataImport
                 foreach (var kc in kcs)
                 {
                     sqlBuilder.Append(
-                        "INSERT INTO public.\"KcMasteries\"(\"Id\", \"Mastery\", \"KnowledgeComponentId\", \"LearnerId\", \"IsPassed\", \"IsSatisfied\") VALUES");
+                        "INSERT INTO public.\"KcMasteries\"(\"Id\", \"Mastery\", \"KnowledgeComponentId\", \"LearnerId\", \"IsPassed\", \"IsSatisfied\", \"HasActiveSession\") VALUES");
                     sqlBuilder.AppendLine();
                     sqlBuilder.Append("\t(" + startingId++ + ", 0.00, " + kc.Id + ", "
-                                      + learner.Id + ", false, false);");
+                                      + learner.Id + ", false, false, false);");
                     sqlBuilder.AppendLine().AppendLine();
                 }
             }

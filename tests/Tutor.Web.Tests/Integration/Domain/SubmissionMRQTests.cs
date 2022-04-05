@@ -3,15 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
-using Tutor.Core.DomainModel.AssessmentEvents;
+using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Web.Controllers.Domain;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestions;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
 {
     [Collection("Sequential")]
-    public class SubmissionMrqTests : BaseIntegrationTest
+    public class SubmissionMrqTests : BaseWebIntegrationTest
     {
         public SubmissionMrqTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
@@ -20,7 +20,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Submits_multiple_response_questions(MrqSubmissionDto submission, MrqEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ISubmissionService>());
+            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ILearnerAssessmentsService>());
 
             var actualEvaluation = ((OkObjectResult)controller.SubmitMultipleResponseQuestion(submission).Result).Value as MrqEvaluationDto;
 
@@ -42,7 +42,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -153,
+                        AssessmentItemId = -153,
                         LearnerId = -1,
                         Answers = new List<MrqItemDto>
                         {
@@ -69,7 +69,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -153,
+                        AssessmentItemId = -153,
                         LearnerId = -1,
                         Answers = new List<MrqItemDto>
                         {
@@ -93,7 +93,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentEventId = -153,
+                        AssessmentItemId = -153,
                         LearnerId = -1
                     },
                     new MrqEvaluationDto

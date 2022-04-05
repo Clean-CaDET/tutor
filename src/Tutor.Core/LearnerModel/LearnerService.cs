@@ -1,7 +1,7 @@
-using System.Linq;
 using FluentResults;
-using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Core.LearnerModel.Learners;
+using System.Linq;
+using Tutor.Core.LearnerModel.DomainOverlay;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
 using Tutor.Core.LearnerModel.Workspaces;
 
 namespace Tutor.Core.LearnerModel
@@ -9,13 +9,13 @@ namespace Tutor.Core.LearnerModel
     public class LearnerService : ILearnerService
     {
         private readonly ILearnerRepository _learnerRepository;
-        private readonly IKcRepository _kcRepository;
+        private readonly IKcMasteryRepository _kcMasteryRepository;
         private readonly IWorkspaceCreator _workspaceCreator;
 
-        public LearnerService(ILearnerRepository learnerRepository, IKcRepository kcRepository, IWorkspaceCreator workspaceCreator)
+        public LearnerService(ILearnerRepository learnerRepository, IKcMasteryRepository kcMasteryRepository, IWorkspaceCreator workspaceCreator)
         {
             _learnerRepository = learnerRepository;
-            _kcRepository = kcRepository;
+            _kcMasteryRepository = kcMasteryRepository;
             _workspaceCreator = workspaceCreator;
         }
 
@@ -24,7 +24,7 @@ namespace Tutor.Core.LearnerModel
             if (_learnerRepository.GetByIndex(learner.StudentIndex) != null)
                 return Result.Fail("Learner with index " + learner.StudentIndex + " is already registered.");
 
-            var kcs = _kcRepository.GetAllKnowledgeComponents();
+            var kcs = _kcMasteryRepository.GetAllKnowledgeComponents();
             learner.KnowledgeComponentMasteries.AddRange(
                 kcs.Select(kc => new KnowledgeComponentMastery(kc)).ToList());
 
@@ -32,12 +32,6 @@ namespace Tutor.Core.LearnerModel
             CreateWorkspace(savedLearner);
 
             return Result.Ok(savedLearner);
-        }
-
-        public Result<Learner> Login(string studentIndex)
-        {
-            var learner = _learnerRepository.GetByIndex(studentIndex);
-            return learner == null ? Result.Fail("The username or password is incorrect!") : Result.Ok(learner);
         }
 
         private void CreateWorkspace(Learner learner)

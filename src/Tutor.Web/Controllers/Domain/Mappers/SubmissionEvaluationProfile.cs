@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using System.Linq;
-using Tutor.Core.DomainModel.AssessmentEvents.ArrangeTasks;
-using Tutor.Core.DomainModel.AssessmentEvents.Challenges;
-using Tutor.Core.DomainModel.AssessmentEvents.MultiResponseQuestions;
-using Tutor.Core.DomainModel.AssessmentEvents.ShortAnswerQuestions;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ArrangeTasks;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.Challenges;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.MultiResponseQuestions;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentEvents.ShortAnswerQuestions;
+using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
+using Tutor.Core.DomainModel.AssessmentItems.Challenges;
+using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
+using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ShortAnswerQuestions;
 
 namespace Tutor.Web.Controllers.Domain.Mappers
 {
