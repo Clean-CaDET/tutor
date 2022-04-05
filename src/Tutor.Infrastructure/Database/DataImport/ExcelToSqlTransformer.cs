@@ -10,7 +10,7 @@ public static class ExcelToSqlTransformer
         var domainSql = DomainSqlExporter.BuildSql(domainContent);
 
         var learners = LearnerExcelImporter.Import(learnerSource, "simsoni");
-        var learnerSql = LearnerSqlExporter.BuildSql(learners, domainContent.KnowledgeComponents);
+        var learnerSql = LearnerSqlExporter.BuildSql(learners, domainContent.KnowledgeComponents, domainContent.Units);
 
         Save(DeleteCommands + domainSql + learnerSql, destination);
     }
@@ -36,6 +36,7 @@ DELETE FROM public.""AssessmentItems"";
 DELETE FROM public.""InstructionalItems"";
 DELETE FROM public.""KcMasteries"";
 DELETE FROM public.""KnowledgeComponents"";
+DELETE FROM public.""UnitEnrollments"";
 DELETE FROM public.""Units"";
 DELETE FROM public.""Learners"";
 

@@ -9,6 +9,7 @@ using Tutor.Core.DomainModel.Feedback;
 using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel;
+using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
 
 namespace Tutor.Infrastructure.Database
@@ -58,6 +59,7 @@ namespace Tutor.Infrastructure.Database
         #endregion
 
         public DbSet<Learner> Learners { get; set; }
+        public DbSet<UnitEnrollment> UnitEnrollments { get; set; }
         public DbSet<KnowledgeComponentMastery> KcMasteries { get; set; }
 
         public TutorContext(DbContextOptions<TutorContext> options) : base(options)

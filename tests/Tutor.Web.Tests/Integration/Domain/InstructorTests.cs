@@ -25,7 +25,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Get_Suitable_Assessment_Event(int knowledgeComponentId, int expectedSuitableAssessmentItemId)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupKcmController(scope);
+            var controller = SetupKcmController(scope, "-2");
 
             var actualSuitableAssessmentItem =
                 ((OkObjectResult) controller.GetSuitableAssessmentItem(knowledgeComponentId).Result)?.Value as AssessmentItemDto;

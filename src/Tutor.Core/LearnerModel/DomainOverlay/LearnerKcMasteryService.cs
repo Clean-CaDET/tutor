@@ -21,12 +21,12 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
 
         public Result<List<Unit>> GetUnits(int learnerId)
         {
-            return Result.Ok(_kcMasteryRepository.GetUnits());
+            return Result.Ok(_kcMasteryRepository.GetEnrolledUnits(learnerId));
         }
 
         public Result<Unit> GetUnit(int unitId, int learnerId)
         {
-            return Result.Ok(_kcMasteryRepository.GetUnitWithKcs(unitId));
+            return Result.Ok(_kcMasteryRepository.GetUnitWithKcs(unitId, learnerId));
         }
 
         public Result<List<KnowledgeComponentMastery>> GetKnowledgeComponentMasteries(List<int> kcIds, int learnerId)

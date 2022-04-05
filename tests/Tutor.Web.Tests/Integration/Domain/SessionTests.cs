@@ -14,7 +14,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Launches_and_terminates_session()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupKcmController(scope);
+            var controller = SetupKcmController(scope, "-2");
 
             var launchResult = controller.LaunchSession(-15);
             var terminationResult = controller.TerminateSession(-15);
@@ -27,7 +27,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Termination_fails_without_active_session()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupKcmController(scope);
+            var controller = SetupKcmController(scope, "-2");
 
             var terminationResult = controller.TerminateSession(-15);
 

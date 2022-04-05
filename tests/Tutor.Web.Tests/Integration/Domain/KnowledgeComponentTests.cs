@@ -14,15 +14,17 @@ namespace Tutor.Web.Tests.Integration.Domain
     {
         public KnowledgeComponentTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
-        [Fact]
-        public void Retrieves_units()
+        [Theory]
+        [InlineData(-2, 2)]
+        [InlineData(-1, 0)]
+        public void Retrieves_units(int learnerId, int expectedUnitCount)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupKcmController(scope);
+            var controller = SetupKcmController(scope, learnerId.ToString());
 
             var units = ((OkObjectResult) controller.GetUnits().Result).Value as List<UnitDto>;
 
-            units.Count.ShouldBe(2);
+            units.Count.ShouldBe(expectedUnitCount);
         }
 
         [Theory]
@@ -30,7 +32,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Retrieves_kc_mastery_for_unit(int unitId, List<KnowledgeComponentDto> expectedKCs)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupKcmController(scope);
+            var controller = SetupKcmController(scope, "-2");
 
             var unit = ((OkObjectResult)controller.GetUnit(unitId).Result).Value as UnitDto;
 
@@ -63,7 +65,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Retrieves_kc_instructional_events(int knowledgeComponentId, int expectedIEsCount)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupKcmController(scope);
+            var controller = SetupKcmController(scope, "-2");
 
             var IEs = ((OkObjectResult)controller.GetInstructionalItems(knowledgeComponentId).Result).Value as List<InstructionalItemDto>;
 
@@ -91,7 +93,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Retrieves_kc_statistics()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupKcmController(scope);
+            var controller = SetupKcmController(scope, "-2");
 
             var kcMasteryStatistics = ((OkObjectResult)controller.GetKnowledgeComponentStatistics(-15).Result).Value as KnowledgeComponentStatisticsDto;
 

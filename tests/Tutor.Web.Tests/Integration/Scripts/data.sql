@@ -19,8 +19,8 @@ DELETE FROM public."ShortAnswerQuestions";
 DELETE FROM public."InstructionalItems";
 DELETE FROM public."KcMasteries";
 DELETE FROM public."KnowledgeComponents";
+DELETE FROM public."UnitEnrollments";
 DELETE FROM public."Units";
-
 DELETE FROM public."Learners";
 
 INSERT INTO public."Learners"(
@@ -620,3 +620,10 @@ INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VAL
     - PatientRecordController.cs
     - EmployeeController.cs
     - ScheduleController.cs', '{{"MedicalRecordService, PhysicianStorage"}}');
+
+INSERT INTO public."UnitEnrollments"(
+	"Id", "LearnerId", "UnitId", "Start", "Status")
+	VALUES (-1, -2, -1, '2021-12-19 21:29:50.379749+01', 0);
+INSERT INTO public."UnitEnrollments"(
+	"Id", "LearnerId", "UnitId", "Start", "Status")
+	VALUES (-2, -2, -2, '2021-12-19 21:29:50.379749+01', 0);

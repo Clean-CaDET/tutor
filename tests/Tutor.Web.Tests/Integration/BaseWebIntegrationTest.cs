@@ -18,7 +18,7 @@ namespace Tutor.Web.Tests.Integration
             Factory = factory;
         }
 
-        protected KcController SetupKcmController(IServiceScope scope)
+        protected KcController SetupKcmController(IServiceScope scope, string userId)
         {
             return new KcController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<ILearnerKcMasteryService>())
@@ -29,7 +29,7 @@ namespace Tutor.Web.Tests.Integration
                     {
                         User = new ClaimsPrincipal(new ClaimsIdentity(new[]
                         {
-                            new Claim("id", "-2")
+                            new Claim("id", userId)
                         }))
                     }
                 }
