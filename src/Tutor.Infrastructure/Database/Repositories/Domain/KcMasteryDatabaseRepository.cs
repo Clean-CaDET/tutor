@@ -59,7 +59,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             return _dbContext.KcMasteries.Where(kcm => kcm.LearnerId == learnerId && kcIds.Contains(kcm.KnowledgeComponent.Id)).ToList();
         }
 
-        public KnowledgeComponentMastery GetKcMasteryWithInstructionsAndAssessments(int knowledgeComponentId,
+        public KnowledgeComponentMastery GetFullKcMastery(int knowledgeComponentId,
             int learnerId)
         {
             var kcm = _dbContext.KcMasteries
@@ -75,7 +75,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
         public KnowledgeComponentMastery GetKcMasteryForAssessmentItem(int assessmentItemId, int learnerId)
         {
             var assessmentItem = _dbContext.AssessmentItems.FirstOrDefault(ae => ae.Id == assessmentItemId);
-            return assessmentItem == null ? null : GetKcMasteryWithInstructionsAndAssessments(assessmentItem.KnowledgeComponentId, learnerId);
+            return assessmentItem == null ? null : GetFullKcMastery(assessmentItem.KnowledgeComponentId, learnerId);
         }
 
         public void UpdateKcMastery(KnowledgeComponentMastery kcMastery)

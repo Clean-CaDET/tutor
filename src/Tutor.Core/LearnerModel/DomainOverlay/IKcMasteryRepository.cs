@@ -12,7 +12,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
 
         KnowledgeComponentMastery GetBasicKcMastery(int knowledgeComponentId, int learnerId);
         List<KnowledgeComponentMastery> GetBasicKcMasteries(List<int> kcIds, int learnerId);
-        KnowledgeComponentMastery GetKcMasteryWithInstructionsAndAssessments(int knowledgeComponentId, int learnerId);
+        KnowledgeComponentMastery GetFullKcMastery(int knowledgeComponentId, int learnerId);
         KnowledgeComponentMastery GetKcMasteryForAssessmentItem(int assessmentItemId, int learnerId);
         void UpdateKcMastery(KnowledgeComponentMastery kcMastery);
 

@@ -250,7 +250,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             IsPassed = true;
         }
 
-        private void When(KnowledgeComponentCompleted @event)
+        private static void When(KnowledgeComponentCompleted @event)
         {
             // No action necessary since IsCompleted is calculated.
         }
@@ -260,7 +260,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             IsSatisfied = true;
         }
 
-        private void When(AssessmentItemSelected @event)
+        private static void When(AssessmentItemSelected @event)
         {
             /* 
              * Possibly save information that the AE has been selected somewhere in the 
@@ -268,12 +268,12 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
              */
         }
 
-        private void When(InstructionalItemsSelected item)
+        private static void When(InstructionalItemsSelected item)
         {
             // No action necessary for now.
         }
 
-        private void When(SoughtHelp @event)
+        private static void When(SoughtHelp @event)
         {
             /*
              * Possibly record how many times help was sought somewhere?             

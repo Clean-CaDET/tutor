@@ -20,7 +20,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
                 return Result.Fail("No assessment item with ID: " + submission.AssessmentItemId);
 
             var knowledgeComponentMastery = _kcMasteryRepository
-                .GetKcMasteryWithInstructionsAndAssessments(assessmentItem.KnowledgeComponentId, submission.LearnerId);
+                .GetFullKcMastery(assessmentItem.KnowledgeComponentId, submission.LearnerId);
             if (knowledgeComponentMastery == null)
                 return Result.Fail("The Learner isn't enrolled to knowledge component with ID: " + assessmentItem.KnowledgeComponentId);
 

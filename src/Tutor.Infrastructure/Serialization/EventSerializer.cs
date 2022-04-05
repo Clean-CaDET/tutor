@@ -16,7 +16,7 @@ namespace Tutor.Infrastructure.Serialization
 {
     public static class EventSerializer
     {
-        private static readonly IDictionary<Type, string> eventRelatedTypes = new Dictionary<Type, string>()
+        private static readonly IDictionary<Type, string> EventRelatedTypes = new Dictionary<Type, string>()
         {
             { typeof(AssessmentItemAnswered), "AssessmentItemAnswered" },
             { typeof(SoughtHints), "SoughtChallengeHints" },
@@ -40,9 +40,9 @@ namespace Tutor.Infrastructure.Serialization
         public static JsonSerializerOptions SetupEvents(this JsonSerializerOptions options)
         {
             DiscriminatorConventionRegistry registry = options.GetDiscriminatorConventionRegistry();
-            registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(options, eventRelatedTypes, "$discriminator"));
+            registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(options, EventRelatedTypes, "$discriminator"));
 
-            foreach (Type type in eventRelatedTypes.Keys)
+            foreach (Type type in EventRelatedTypes.Keys)
             {
                 registry.RegisterType(type);
             }
