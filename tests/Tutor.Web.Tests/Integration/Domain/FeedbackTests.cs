@@ -13,7 +13,7 @@ using Xunit;
 namespace Tutor.Web.Tests.Integration.Domain
 {
     [Collection("Sequential")]
-    public class FeedbackTests : BaseIntegrationTest
+    public class FeedbackTests : BaseWebIntegrationTest
     {
         public FeedbackTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 

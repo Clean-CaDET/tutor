@@ -95,7 +95,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             if (assessmentItem == null)
                 return Result.Fail("No assessment event with ID: " + submission.AssessmentItemId);
 
-            Evaluation evaluation = null;
+            Evaluation evaluation;
             try
             {
                 evaluation = assessmentItem.EvaluateSubmission(submission);

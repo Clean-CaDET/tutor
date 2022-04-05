@@ -14,7 +14,7 @@ using Xunit;
 namespace Tutor.Web.Tests.Integration.Domain
 {
     [Collection("Sequential")]
-    public class InstructorTests : BaseIntegrationTest
+    public class InstructorTests : BaseWebIntegrationTest
     {
         public InstructorTests(TutorApplicationTestFactory<Startup> factory) : base(factory)
         {
@@ -22,14 +22,13 @@ namespace Tutor.Web.Tests.Integration.Domain
 
         [Theory]
         [MemberData(nameof(AssessmentItemRequest))]
-        public void Get_Suitable_Assessment_Event(AssessmentItemRequestDto request, int expectedSuitableAssessmentItemId)
+        public void Get_Suitable_Assessment_Event(int knowledgeComponentId, int expectedSuitableAssessmentItemId)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new KcController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<ILearnerKcMasteryService>());
+            var controller = SetupKcmController(scope);
 
             var actualSuitableAssessmentItem =
-                ((OkObjectResult) controller.GetSuitableAssessmentItem(request).Result)?.Value as AssessmentItemDto;
+                ((OkObjectResult) controller.GetSuitableAssessmentItem(knowledgeComponentId).Result)?.Value as AssessmentItemDto;
             actualSuitableAssessmentItem.ShouldNotBeNull();
             
             actualSuitableAssessmentItem.Id.ShouldBe(expectedSuitableAssessmentItemId);
@@ -240,29 +239,17 @@ namespace Tutor.Web.Tests.Integration.Domain
             {
                 new object[]
                 {
-                    new AssessmentItemRequestDto
-                    {
-                        LearnerId = -2,
-                        KnowledgeComponentId = -14
-                    },
+                    -14,
                     -144
                 },
                 new object[]
                 {
-                    new AssessmentItemRequestDto
-                    {
-                        LearnerId = -2,
-                        KnowledgeComponentId = -15
-                    },
+                    -15,
                     -153
                 },
                 new object[]
                 {
-                    new AssessmentItemRequestDto
-                    {
-                        LearnerId = -2,
-                        KnowledgeComponentId = -13
-                    },
+                    -13,
                     -134
                 }
             };

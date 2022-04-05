@@ -29,7 +29,7 @@ namespace Tutor.Web.Controllers.Domain
         [HttpGet]
         public ActionResult<List<UnitDto>> GetUnits()
         {
-            var result = _learnerKcMasteryService.GetUnits();
+            var result = _learnerKcMasteryService.GetUnits(User.Id());
             return Ok(result.Value.Select(u => _mapper.Map<UnitDto>(u)).ToList());
         }
 
@@ -89,10 +89,10 @@ namespace Tutor.Web.Controllers.Domain
             return Ok(result.Value.Select(ie => _mapper.Map<InstructionalItemDto>(ie)).ToList());
         }
 
-        [HttpPost("knowledge-component")]
-        public ActionResult<AssessmentItemDto> GetSuitableAssessmentItem([FromBody] AssessmentItemRequestDto assessmentItemRequest)
+        [HttpGet("knowledge-component/{knowledgeComponentId:int}/assessment-item/")]
+        public ActionResult<AssessmentItemDto> GetSuitableAssessmentItem(int knowledgeComponentId)
         {
-            var result = _learnerKcMasteryService.SelectSuitableAssessmentItem(assessmentItemRequest.KnowledgeComponentId, assessmentItemRequest.LearnerId);
+            var result = _learnerKcMasteryService.SelectSuitableAssessmentItem(knowledgeComponentId, User.Id());
             if (result.IsSuccess) return Ok(_mapper.Map<AssessmentItemDto>(result.Value));
             return NotFound(result.Errors);
         }

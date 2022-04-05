@@ -1,13 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using Tutor.Core.LearnerModel.DomainOverlay;
-using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Domain.DTOs;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
 using Xunit;
@@ -15,7 +10,7 @@ using Xunit;
 namespace Tutor.Web.Tests.Integration.Domain
 {
     [Collection("Sequential")]
-    public class KnowledgeComponentTests : BaseIntegrationTest
+    public class KnowledgeComponentTests : BaseWebIntegrationTest
     {
         public KnowledgeComponentTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
@@ -23,8 +18,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Retrieves_units()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new KcController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<ILearnerKcMasteryService>());
+            var controller = SetupKcmController(scope);
 
             var units = ((OkObjectResult) controller.GetUnits().Result).Value as List<UnitDto>;
 
@@ -36,7 +30,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Retrieves_kc_mastery_for_unit(int unitId, List<KnowledgeComponentDto> expectedKCs)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupController(scope);
+            var controller = SetupKcmController(scope);
 
             var unit = ((OkObjectResult)controller.GetUnit(unitId).Result).Value as UnitDto;
 
@@ -69,7 +63,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Retrieves_kc_instructional_events(int knowledgeComponentId, int expectedIEsCount)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupController(scope);
+            var controller = SetupKcmController(scope);
 
             var IEs = ((OkObjectResult)controller.GetInstructionalItems(knowledgeComponentId).Result).Value as List<InstructionalItemDto>;
 
@@ -97,7 +91,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Retrieves_kc_statistics()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupController(scope);
+            var controller = SetupKcmController(scope);
 
             var kcMasteryStatistics = ((OkObjectResult)controller.GetKnowledgeComponentStatistics(-15).Result).Value as KnowledgeComponentStatisticsDto;
 
@@ -106,24 +100,6 @@ namespace Tutor.Web.Tests.Integration.Domain
             kcMasteryStatistics.TotalCount.ShouldBe(4);
             kcMasteryStatistics.AttemptedCount.ShouldBe(4);
             kcMasteryStatistics.CompletedCount.ShouldBe(0);
-        }
-
-        private KcController SetupController(IServiceScope scope)
-        {
-            return new KcController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<ILearnerKcMasteryService>())
-            {
-                ControllerContext = new ControllerContext()
-                {
-                    HttpContext = new DefaultHttpContext()
-                    {
-                        User = new ClaimsPrincipal(new ClaimsIdentity(new[]
-                        {
-                            new Claim("id", "-2")
-                        }))
-                    }
-                }
-            };
         }
     }
 }

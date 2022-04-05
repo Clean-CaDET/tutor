@@ -9,7 +9,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
 {
     public interface ILearnerKcMasteryService
     {
-        Result<List<Unit>> GetUnits();
+        Result<List<Unit>> GetUnits(int learnerId);
 
         Result<Unit> GetUnit(int unitId, int learnerId);
         Result<List<KnowledgeComponentMastery>> GetKnowledgeComponentMasteries(List<int> kcIds, int learnerId);
