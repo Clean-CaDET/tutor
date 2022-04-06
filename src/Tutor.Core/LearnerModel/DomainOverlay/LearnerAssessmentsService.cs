@@ -60,7 +60,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
         public Result SaveInstructorMessage(string message, int kcId, int learnerId)
         {
             var knowledgeComponentMastery = _kcMasteryRepository
-                .GetFullKcMastery(kcId, learnerId);
+                .GetBasicKcMastery(kcId, learnerId);
             if (knowledgeComponentMastery == null) return Result.Fail("The Learner isn't enrolled to knowledge component with ID: " + kcId);
 
             var result = knowledgeComponentMastery.RecordInstructorMessage(message);

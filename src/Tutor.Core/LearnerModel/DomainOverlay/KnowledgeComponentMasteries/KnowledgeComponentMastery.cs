@@ -292,6 +292,9 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 
         private static void When(InstructorMessageEvent @event)
         {
+            /* 
+             *  No action necessary for now.
+             */
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
             return learner;
         }
 
-        public Learner GetInformations(int id)
+        public Learner GetLearnerProfile(int id)
         {
             return _dbContext.Learners.FirstOrDefault(learner => learner.Id.Equals(id));
         }

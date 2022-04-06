@@ -39,10 +39,10 @@ namespace Tutor.Web.Controllers.Learners
             return BadRequest(result.Errors);
         }
 
-        [HttpGet("info")]
-        public ActionResult<LearnerDto> GetInformations()
+        [HttpGet("profile")]
+        public ActionResult<LearnerDto> GetLearnerProfile()
         {
-            var result = _learnerService.GetInformations(User.Id());
+            var result = _learnerService.GetLearnerProfile(User.Id());
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<LearnerDto>(result.Value));
         }

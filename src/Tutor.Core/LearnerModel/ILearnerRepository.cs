@@ -4,6 +4,6 @@
     {
         Learner GetByIndex(string index);
         Learner Save(Learner learner);
-        Learner GetInformations(int id);
+        Learner GetLearnerProfile(int id);
     }
 }

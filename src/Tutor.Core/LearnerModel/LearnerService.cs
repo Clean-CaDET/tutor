@@ -35,9 +35,9 @@ namespace Tutor.Core.LearnerModel
             return Result.Ok(savedLearner);
         }
 
-        public Result<Learner> GetInformations(int id)
+        public Result<Learner> GetLearnerProfile(int id)
         {
-            var learner = _learnerRepository.GetInformations(id);
+            var learner = _learnerRepository.GetLearnerProfile(id);
             return learner == null ? Result.Fail("Learner with id " + id + "does not exist.") : Result.Ok(learner);
         }
 
