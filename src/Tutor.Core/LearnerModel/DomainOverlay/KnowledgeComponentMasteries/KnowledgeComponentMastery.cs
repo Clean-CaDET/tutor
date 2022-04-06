@@ -205,6 +205,16 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             return Result.Ok();
         }
 
+        public Result RecordInstructorMessage(string message)
+        {
+            var instructorMessageEvent = new InstructorMessageEvent
+            {
+                Message = message, KnowledgeComponentId = Id, LearnerId = LearnerId
+            };
+            Causes(instructorMessageEvent);
+            return Result.Ok();
+        }
+
         protected override void Apply(DomainEvent @event)
         {
             When((dynamic)@event);
@@ -277,6 +287,13 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         {
             /*
              * Possibly record how many times help was sought somewhere?             
+             */
+        }
+
+        private static void When(InstructorMessageEvent @event)
+        {
+            /* 
+             *  No action necessary for now.
              */
         }
     }

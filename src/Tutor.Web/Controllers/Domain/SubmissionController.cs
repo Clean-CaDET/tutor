@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -7,10 +8,13 @@ using Tutor.Core.DomainModel.AssessmentItems.Challenges;
 using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Core.LearnerModel.DomainOverlay;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.KnowledgeComponentEvents;
+using Tutor.Infrastructure.Security.Authorization.JWT;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ShortAnswerQuestions;
+using Tutor.Web.Controllers.Domain.DTOs.InstructorFeedback;
 
 namespace Tutor.Web.Controllers.Domain
 {
@@ -72,6 +76,15 @@ namespace Tutor.Web.Controllers.Domain
             var result = _learnerAssessmentsService.GetMaxSubmissionCorrectness(submission.AssessmentItemId, submission.LearnerId);
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(result.Value);
+        }
+        
+        [HttpPost("tutor-Message")]
+        public ActionResult SaveInstructorMessage([FromBody] InstructorMessageDto instructorMessageDto)
+        {
+            var result = _learnerAssessmentsService.SaveInstructorMessage(instructorMessageDto.message,
+                instructorMessageDto.kcId, User.Id());
+            if (result.IsFailed) return BadRequest(result.Errors);
+            return Ok();
         }
     }
 }

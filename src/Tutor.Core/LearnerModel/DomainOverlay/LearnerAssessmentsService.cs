@@ -1,6 +1,8 @@
-﻿using FluentResults;
+﻿using System;
+using FluentResults;
 using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.KnowledgeComponentEvents;
 
 namespace Tutor.Core.LearnerModel.DomainOverlay
 {
@@ -53,6 +55,17 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
                 LearnerId = learnerId,
                 AssessmentItemId = assessmentItemId
             });
+        }
+
+        public Result SaveInstructorMessage(string message, int kcId, int learnerId)
+        {
+            var knowledgeComponentMastery = _kcMasteryRepository
+                .GetBasicKcMastery(kcId, learnerId);
+            if (knowledgeComponentMastery == null) return Result.Fail("The Learner isn't enrolled to knowledge component with ID: " + kcId);
+
+            var result = knowledgeComponentMastery.RecordInstructorMessage(message);
+            _kcMasteryRepository.UpdateKcMastery(knowledgeComponentMastery);
+            return result;
         }
 
         private Result SeekHelp(SoughtHelp helpEvent)

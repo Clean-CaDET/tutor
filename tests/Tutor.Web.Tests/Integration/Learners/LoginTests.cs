@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using Tutor.Core.LearnerModel;
 using Tutor.Infrastructure.Security.Authorization;
 using Tutor.Web.Controllers.Learners;
 using Tutor.Web.Controllers.Learners.DTOs;
@@ -17,7 +19,8 @@ namespace Tutor.Web.Tests.Integration.Learners
         public void Successfully_login()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new LearnerController(scope.ServiceProvider.GetRequiredService<IAuthService>());
+            var controller = new LearnerController(scope.ServiceProvider.GetRequiredService<IAuthService>(), scope.ServiceProvider.GetRequiredService<ILearnerService>(),
+                scope.ServiceProvider.GetRequiredService<IMapper>());
             var loginSubmission = new LoginDto {StudentIndex = "SU-1-2021", Password = "123"};
 
             var authenticationResponse = ((OkObjectResult) controller.Login(loginSubmission).Result)?.Value as AuthenticationResponse;
@@ -29,7 +32,8 @@ namespace Tutor.Web.Tests.Integration.Learners
         public void Nonexisting_user_login()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new LearnerController(scope.ServiceProvider.GetRequiredService<IAuthService>());
+            var controller = new LearnerController(scope.ServiceProvider.GetRequiredService<IAuthService>(), scope.ServiceProvider.GetRequiredService<ILearnerService>(),
+                scope.ServiceProvider.GetRequiredService<IMapper>());
             var loginSubmission = new LoginDto {StudentIndex = "SA-1-2021", Password = "123"};
 
             var code = ((NotFoundObjectResult) controller.Login(loginSubmission).Result).StatusCode;
