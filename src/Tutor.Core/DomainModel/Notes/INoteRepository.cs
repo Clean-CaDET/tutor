@@ -6,9 +6,7 @@ namespace Tutor.Core.DomainModel.Notes
     {
         Note Save(Note note);
 
-        Note FindById(int id);
-        
-        int Delete(Note note);
+        int? Delete(int id);
 
         Note Update(Note note);
 

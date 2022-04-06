@@ -17,10 +17,10 @@ namespace Tutor.Core.DomainModel.Notes
             return Result.Ok(_noteRepository.Save(note));
         }
 
-        public Result<int> Delete(int id)
+        public Result<int?> Delete(int id)
         {
-            var note = _noteRepository.FindById(id);
-            return Result.Ok(_noteRepository.Delete(note));
+            var removedId = _noteRepository.Delete(id);
+            return removedId == null ? Result.Fail("No note with ID" + id) : Result.Ok(removedId);
         }
 
         public Result<Note> Update(Note note)

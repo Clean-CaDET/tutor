@@ -7,7 +7,7 @@ namespace Tutor.Core.DomainModel.Notes
     {
         Result<Note> Save(Note note);
 
-        Result<int> Delete(int id);
+        Result<int?> Delete(int id);
 
         Result<Note> Update(Note note);
 

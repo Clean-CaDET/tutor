@@ -56,7 +56,6 @@ namespace Tutor.Web.Tests.Integration.Domain
         [Fact]
         public void Get_suitable_notes()
         {
-            
             using var scope = Factory.Services.CreateScope();
             var controller = SetupNotesController(scope, "-1");
             
@@ -64,7 +63,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             notes.Count.ShouldBe(2);
         }
         
-        private NoteController SetupNotesController(IServiceScope scope, string userId)
+        private static NoteController SetupNotesController(IServiceScope scope, string userId)
         {
             return new NoteController(scope.ServiceProvider.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<INoteService>())

@@ -20,13 +20,14 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             return note;
         }
 
-        public Note FindById(int id)
+        public int? Delete(int id)
         {
-            return _dbContext.Notes.Find(id);
-        }
+            var note = _dbContext.Notes.Find(id);
+            if (note == null)
+            {
+                return null;
+            }
 
-        public int Delete(Note note)
-        {
             _dbContext.Remove(note);
             _dbContext.SaveChanges();
             return note.Id;
