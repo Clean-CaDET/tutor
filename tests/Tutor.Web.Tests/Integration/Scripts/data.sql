@@ -627,3 +627,15 @@ INSERT INTO public."UnitEnrollments"(
 INSERT INTO public."UnitEnrollments"(
 	"Id", "LearnerId", "UnitId", "Start", "Status")
 	VALUES (-2, -2, -2, '2021-12-19 21:29:50.379749+01', 0);
+
+INSERT INTO public."Notes"(
+    "Id", "LearnerId", "UnitId", "Text")
+VALUES (-1, -2, -1, 'Ovaj se briše.');
+
+INSERT INTO public."Notes"(
+    "Id", "LearnerId", "UnitId", "Text")
+VALUES (-2, -1, -1, 'Ovde se radi update.');
+
+INSERT INTO public."Notes"(
+    "Id", "LearnerId", "UnitId", "Text")
+VALUES (-3, -1, -1, 'Treći note');
