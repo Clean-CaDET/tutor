@@ -37,7 +37,7 @@ DELETE FROM public.""InstructionalItems"";
 DELETE FROM public.""KcMasteries"";
 DELETE FROM public.""KnowledgeComponents"";
 DELETE FROM public.""UnitEnrollments"";
-DELETE FROM public.""Units"";
+DELETE FROM public.""KnowledgeUnits"";
 DELETE FROM public.""Learners"";
 
 ";
