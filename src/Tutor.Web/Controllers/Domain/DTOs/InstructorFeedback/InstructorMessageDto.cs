@@ -2,7 +2,7 @@
 {
     public class InstructorMessageDto
     {
-        public int kcId { get; set; }
-        public string message { get; set; }
+        public int KcId { get; set; }
+        public string Message { get; set; }
     }
 }

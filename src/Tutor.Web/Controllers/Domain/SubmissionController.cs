@@ -81,8 +81,8 @@ namespace Tutor.Web.Controllers.Domain
         [HttpPost("tutor-Message")]
         public ActionResult SaveInstructorMessage([FromBody] InstructorMessageDto instructorMessageDto)
         {
-            var result = _learnerAssessmentsService.SaveInstructorMessage(instructorMessageDto.message,
-                instructorMessageDto.kcId, User.Id());
+            var result = _learnerAssessmentsService.SaveInstructorMessage(instructorMessageDto.Message,
+                instructorMessageDto.KcId, User.Id());
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok();
         }
