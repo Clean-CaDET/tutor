@@ -19,12 +19,12 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             _assessmentItemSelector = assessmentItemSelector;
         }
 
-        public Result<List<Unit>> GetUnits(int learnerId)
+        public Result<List<KnowledgeUnit>> GetUnits(int learnerId)
         {
             return Result.Ok(_kcMasteryRepository.GetEnrolledUnits(learnerId));
         }
 
-        public Result<Unit> GetUnit(int unitId, int learnerId)
+        public Result<KnowledgeUnit> GetUnit(int unitId, int learnerId)
         {
             return Result.Ok(_kcMasteryRepository.GetUnitWithKcs(unitId, learnerId));
         }

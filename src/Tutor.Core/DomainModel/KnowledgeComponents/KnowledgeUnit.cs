@@ -2,7 +2,7 @@
 
 namespace Tutor.Core.DomainModel.KnowledgeComponents
 {
-    public class Unit
+    public class KnowledgeUnit
     {
         public int Id { get; private set; }
         public string Code { get; private set; }

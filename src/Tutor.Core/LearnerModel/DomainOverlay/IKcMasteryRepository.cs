@@ -7,8 +7,8 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
 {
     public interface IKcMasteryRepository
     {
-        List<Unit> GetEnrolledUnits(int learnerId);
-        Unit GetUnitWithKcs(int unitId, int learnerId);
+        List<KnowledgeUnit> GetEnrolledUnits(int learnerId);
+        KnowledgeUnit GetUnitWithKcs(int unitId, int learnerId);
 
         KnowledgeComponentMastery GetBasicKcMastery(int knowledgeComponentId, int learnerId);
         List<KnowledgeComponentMastery> GetBasicKcMasteries(List<int> kcIds, int learnerId);

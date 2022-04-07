@@ -18,12 +18,12 @@ namespace Tutor.Infrastructure.Database
     {
         #region Domain Model
 
-        public DbSet<Unit> Units { get; set; }
+        public DbSet<KnowledgeUnit> KnowledgeUnits { get; set; }
         public DbSet<KnowledgeComponent> KnowledgeComponents { get; set; }
         public DbSet<AssessmentItem> AssessmentItems { get; set; }
         public DbSet<InstructionalItem> InstructionalItems { get; set; }
         public DbSet<Image> Images { get; set; }
-        public DbSet<Text> Texts { get; set; }
+        public DbSet<Markdown> Texts { get; set; }
         public DbSet<Video> Videos { get; set; }
         public DbSet<Mrq> MultiResponseQuestions { get; set; }
         public DbSet<MrqItem> MrqItems { get; set; }
@@ -68,7 +68,7 @@ namespace Tutor.Infrastructure.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Text>().ToTable("Texts");
+            modelBuilder.Entity<Markdown>().ToTable("Texts");
             modelBuilder.Entity<Image>().ToTable("Images");
             modelBuilder.Entity<Video>().ToTable("Videos");
             modelBuilder.Entity<Mrq>().ToTable("MultiResponseQuestions");

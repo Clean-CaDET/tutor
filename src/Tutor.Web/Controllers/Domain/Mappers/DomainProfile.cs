@@ -23,13 +23,13 @@ namespace Tutor.Web.Controllers.Domain.Mappers
     {
         public DomainProfile()
         {
-            CreateMap<Unit, UnitDto>();
+            CreateMap<KnowledgeUnit, UnitDto>();
             CreateMap<KnowledgeComponent, KnowledgeComponentDto>();
             CreateMap<KnowledgeComponentMastery, KnowledgeComponentMasteryDto>();
             CreateMap<KnowledgeComponentStatistics, KnowledgeComponentStatisticsDto>();
 
             CreateMap<InstructionalItem, InstructionalItemDto>().IncludeAllDerived();
-            CreateMap<Text, TextDto>();
+            CreateMap<Markdown, TextDto>();
             CreateMap<Image, ImageDto>();
             CreateMap<Video, VideoDto>();
 

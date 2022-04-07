@@ -19,58 +19,58 @@ DELETE FROM public."AssessmentItems";
 DELETE FROM public."InstructionalItems";
 DELETE FROM public."KcMasteries";
 DELETE FROM public."KnowledgeComponents";
-DELETE FROM public."Units";
+DELETE FROM public."KnowledgeUnits";
 DELETE FROM public."Learners";
 
-INSERT INTO public."Units"("Id", "Code", "Name", "Description") VALUES
+INSERT INTO public."KnowledgeUnits"("Id", "Code", "Name", "Description") VALUES
 	(-100, 'CC01', 'Značajni nazivi', 'Nazive pronalazimo u svim segmentima razvoja softvera - kod identifikatora promenljive, funkcije, klase, ali i biblioteke i aplikacije. Jasan naziv funkcije nas oslobađa od čitanja njenog tela, dok će misteriozni naziv zahtevati dodatan mentalni napor da razumemo svrhu koncepta koji opisuje. U najgorem slučaju, loš naziv će nas naterati da formiramo pogrešnu pretpostavku, što će nam drastično produžiti vreme razvoja. Kroz ovaj modul ispitujemo dobre i loše prakse za formiranja naziva identifikatora u kodu.');
 
-INSERT INTO public."Units"("Id", "Code", "Name", "Description") VALUES
+INSERT INTO public."KnowledgeUnits"("Id", "Code", "Name", "Description") VALUES
 	(-99, 'CC02', 'Čiste funkcije', 'Tradicionalna funkcija predstavlja *imenovani* blok koda koji obuhvata smislen zadatak. U objektno-orijentisanom programiranju funkcije su često *metode* koje definišu ponašanje objekta nad kojim se pozivaju. Principi koje poštujemo za formiranje čistih funkcija su jednako primenjivi na metode. Čista funkcija je *fokusirana na jedan zadatak*. Ovaj zadatak je jasno opisan kroz nazive u zaglavlju funkcije, što uključuje naziv funkcije i nazive njenih parametra. Čista funkcija ima jednostavno telo i sastoji se od koda koji zahteva malo mentalnog napora da se razume. Kao posledica, ovakve funkcije često sadrže mali broj linija koda. Kroz ovaj modul ispitujemo dobre i loše prakse za pisanje funkcija.');
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "UnitId", "ParentId") VALUES
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "KnowledgeUnitId", "ParentId") VALUES
 	(-100, 'N01', 'Konstruiši značajne nazive za identifikatore u kodu', '', -100, NULL);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "UnitId", "ParentId") VALUES
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "KnowledgeUnitId", "ParentId") VALUES
 	(-99, 'N02', 'Prati timske konvencije prilikom formiranja naziva', '', NULL, -100);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "UnitId", "ParentId") VALUES
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "KnowledgeUnitId", "ParentId") VALUES
 	(-98, 'N03', 'Izbegavaj beznačajne reči', '', NULL, -100);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "UnitId", "ParentId") VALUES
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "KnowledgeUnitId", "ParentId") VALUES
 	(-97, 'N04', 'Primeni prikladne tipove reči', '', NULL, -100);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "UnitId", "ParentId") VALUES
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "KnowledgeUnitId", "ParentId") VALUES
 	(-96, 'N05', 'Koristi terminologiju domena problema', '', NULL, -100);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "UnitId", "ParentId") VALUES
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "KnowledgeUnitId", "ParentId") VALUES
 	(-95, 'N06', 'Analiziraj širi kontekst prilikom formiranja naziva', '', NULL, -100);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "UnitId", "ParentId") VALUES
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "KnowledgeUnitId", "ParentId") VALUES
 	(-94, 'N07', 'Formiraj naziv na dobrom nivou apstrakcije', '', NULL, -100);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "UnitId", "ParentId") VALUES
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "KnowledgeUnitId", "ParentId") VALUES
 	(-93, 'F01', 'Konstruiši čiste funkcije', '', -99, NULL);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "UnitId", "ParentId") VALUES
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "KnowledgeUnitId", "ParentId") VALUES
 	(-92, 'F02', 'Segmentiraj dugačku funkciju spram regiona povezane logike', '', NULL, -93);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "UnitId", "ParentId") VALUES
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "KnowledgeUnitId", "ParentId") VALUES
 	(-91, 'F03', 'Umanji složenost funkcije', '', NULL, -93);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "UnitId", "ParentId") VALUES
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "KnowledgeUnitId", "ParentId") VALUES
 	(-90, 'F04', 'Reorganizuj logiku funkcije radi smanjenja njene složenosti', '', NULL, -91);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "UnitId", "ParentId") VALUES
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "KnowledgeUnitId", "ParentId") VALUES
 	(-89, 'F05', 'Izdvoj složenu logiku u posebnu funkciju', '', NULL, -91);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "UnitId", "ParentId") VALUES
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "KnowledgeUnitId", "ParentId") VALUES
 	(-88, 'F06', 'Imenuj rezultat složene logike', '', NULL, -91);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "UnitId", "ParentId") VALUES
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "KnowledgeUnitId", "ParentId") VALUES
 	(-87, 'F07', 'Smanji broj parametra funkcije upotrebom prikladne strategije', '', NULL, -93);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "UnitId", "ParentId") VALUES
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "KnowledgeUnitId", "ParentId") VALUES
 	(-86, 'F08', 'Odredi semantičku svrhu funkcije', '', NULL, -93);
 
 INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES

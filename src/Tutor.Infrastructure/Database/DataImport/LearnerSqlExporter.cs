@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Tutor.Infrastructure.Database.DataImport.DomainExcelModel;
 
@@ -33,14 +34,14 @@ namespace Tutor.Infrastructure.Database.DataImport
         {
             var sqlBuilder = new StringBuilder();
             var startingId = -100000;
-            foreach (var learner in learners)
+            foreach (var learnerId in learners.Select(l => l.Id))
             {
                 foreach (var unit in units)
                 {
                     sqlBuilder.Append(
-                        "INSERT INTO public.\"UnitEnrollments\"(\"Id\", \"LearnerId\", \"UnitId\", \"Start\", \"Status\") VALUES");
+                        "INSERT INTO public.\"UnitEnrollments\"(\"Id\", \"LearnerId\", \"KnowledgeUnitId\", \"Start\", \"Status\") VALUES");
                     sqlBuilder.AppendLine();
-                    sqlBuilder.Append("\t(" + startingId++ + ", " + learner.Id + ", "
+                    sqlBuilder.Append("\t(" + startingId++ + ", " + learnerId + ", "
                                       + unit.Id + ", '" + DateTime.Now + "', " + 0 +");");
                     sqlBuilder.AppendLine().AppendLine();
                 }
@@ -50,7 +51,7 @@ namespace Tutor.Infrastructure.Database.DataImport
                         "INSERT INTO public.\"KcMasteries\"(\"Id\", \"Mastery\", \"KnowledgeComponentId\", \"LearnerId\", \"IsPassed\", \"IsSatisfied\", \"HasActiveSession\") VALUES");
                     sqlBuilder.AppendLine();
                     sqlBuilder.Append("\t(" + startingId++ + ", 0.00, " + kc.Id + ", "
-                                      + learner.Id + ", false, false, false);");
+                                      + learnerId + ", false, false, false);");
                     sqlBuilder.AppendLine().AppendLine();
                 }
             }

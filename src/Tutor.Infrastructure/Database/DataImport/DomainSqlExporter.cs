@@ -24,7 +24,7 @@ public static class DomainSqlExporter
 
         foreach (var unit in units)
         {
-            sqlBuilder.Append("INSERT INTO public.\"Units\"(\"Id\", \"Code\", \"Name\", \"Description\") VALUES");
+            sqlBuilder.Append("INSERT INTO public.\"KnowledgeUnits\"(\"Id\", \"Code\", \"Name\", \"Description\") VALUES");
             sqlBuilder.AppendLine();
             sqlBuilder.Append("\t(" + unit.Id + ", '" + unit.Code + "', '"
                               + unit.Name + "', '" + unit.Description + "');");
@@ -40,7 +40,7 @@ public static class DomainSqlExporter
 
         foreach (var kc in kcs)
         {
-            sqlBuilder.Append("INSERT INTO public.\"KnowledgeComponents\"(\"Id\", \"Code\", \"Name\", \"Description\", \"UnitId\", \"ParentId\") VALUES");
+            sqlBuilder.Append("INSERT INTO public.\"KnowledgeComponents\"(\"Id\", \"Code\", \"Name\", \"Description\", \"KnowledgeUnitId\", \"ParentId\") VALUES");
             sqlBuilder.AppendLine();
             sqlBuilder.Append("\t(" + kc.Id + ", '" + kc.Code + "', '"
                               + kc.Name + "', '" + kc.Description + "', "

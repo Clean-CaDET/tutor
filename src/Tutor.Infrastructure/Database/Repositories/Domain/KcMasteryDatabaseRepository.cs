@@ -27,21 +27,21 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             _moveOnCriteria = moveOnCriteria;
         }
 
-        public List<Unit> GetEnrolledUnits(int learnerId)
+        public List<KnowledgeUnit> GetEnrolledUnits(int learnerId)
         {
             return _dbContext.UnitEnrollments
                 .Where(e => e.LearnerId == learnerId)
-                .Include(e => e.Unit)
-                .Select(e => e.Unit).ToList();
+                .Include(e => e.KnowledgeUnit)
+                .Select(e => e.KnowledgeUnit).ToList();
         }
 
-        public Unit GetUnitWithKcs(int unitId, int learnerId)
+        public KnowledgeUnit GetUnitWithKcs(int unitId, int learnerId)
         {
             var unit = _dbContext.UnitEnrollments
-                .Where(e => e.LearnerId == learnerId && e.Unit.Id == unitId)
-                .Include(e => e.Unit)
+                .Where(e => e.LearnerId == learnerId && e.KnowledgeUnit.Id == unitId)
+                .Include(e => e.KnowledgeUnit)
                 .ThenInclude(u => u.KnowledgeComponents)
-                .Select(e => e.Unit).FirstOrDefault();
+                .Select(e => e.KnowledgeUnit).FirstOrDefault();
             LoadKcHierarchy(unit?.KnowledgeComponents);
             return unit;
         }

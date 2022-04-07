@@ -20,7 +20,7 @@ DELETE FROM public."InstructionalItems";
 DELETE FROM public."KcMasteries";
 DELETE FROM public."KnowledgeComponents";
 DELETE FROM public."UnitEnrollments";
-DELETE FROM public."Units";
+DELETE FROM public."KnowledgeUnits";
 DELETE FROM public."Learners";
 
 INSERT INTO public."Learners"(
@@ -34,27 +34,27 @@ INSERT INTO public."Learners"(
 VALUES (-3, 'SU-3-2021', 'C:/Smart-Tutor/3/Workspace', 'SXQ0w0gW19OPoX3+jZ+tmcU6xl9uQFa5wRFcYbN8UKo=', '+ZcRExvqgCaST38r2oPT5A==');
 
 --== Unit 1: Meaningful names
-INSERT INTO public."Units"(
+INSERT INTO public."KnowledgeUnits"(
 	"Id", "Name", "Description")
 	VALUES (-1, 'Značajna imena', 'Imena pronalazimo u svim segmentima razvoja softvera - kao identifikator promenljive, funkcije, klase, ali i biblioteke i aplikacije. Jasno ime funkcije nas oslobađa od čitanja njenog tela, dok će misteriozno ime zahtevati dodatan mentalni napor da razumemo svrhu koncepta koji opisuje. U najgorem slučaju, loše ime će nas navesti na pogrešan put i drastično nam produžiti vreme razvoja. Kroz ovu lekciju ispitujemo dobre i loše prakse za imenovanje elemenata našeg koda.');
 
 INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "UnitId")
+    "Id", "Name", "Description", "KnowledgeUnitId")
 VALUES (-10, 'Dodeli značajna imena identifikatorima', '', -1);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
+	"Id", "Name", "Description", "KnowledgeUnitId")
 	VALUES (-11, 'Dodeli značajna imena identifikatorima', '', -1);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
+	"Id", "Name", "Description", "KnowledgeUnitId")
 	VALUES (-12, 'Koristi ispravne tipove reči', '', -1);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
+	"Id", "Name", "Description", "KnowledgeUnitId")
 	VALUES (-13, 'Prati timske konvencije', '', -1);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
+	"Id", "Name", "Description", "KnowledgeUnitId")
 	VALUES (-14, 'Izbegavaj beznačajne reči', '', -1);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
+	"Id", "Name", "Description", "KnowledgeUnitId")
 	VALUES (-15, 'Koristi terminologiju domena problema', '', -1);
 
 INSERT INTO public."KcMasteries"(
@@ -357,41 +357,41 @@ INSERT INTO public."Submissions"(
 VALUES (-7, -143, -2, false, '2021-12-19 21:25:50.379749+01', 'MrqSubmission', 1.0);
 
 -- == Unit 2: Readable methods
-INSERT INTO public."Units"(
+INSERT INTO public."KnowledgeUnits"(
 	"Id", "Name", "Description")
 	VALUES (-2, 'Čitljive funkcije', 'Čest savet je da naše funkcije treba da imaju mali broj linija koda. Ovako povećavamo fokusiranost i jasnoću funkcije, kao i mogućnost ponovne upotrebe ovog parčeta koda. Međutim, greška je reći da nam je cilj da imamo kratke funkcije. Nama je cilj da ispoštujemo više dobrih praksi za formiranje čistih funkcija, a kao posledicu primene tih praksi ćemo dobiti kratke funkcije. Kroz ovu lekciju analiziramo dobre i loše prakse za formiranje čistih funkcija.');
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
+	"Id", "Name", "Description", "KnowledgeUnitId")
 	VALUES (-21, 'Segmentiraj dugačke metode', '', -2);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
+	"Id", "Name", "Description", "KnowledgeUnitId")
 	VALUES (-22, 'Redukuj kompleksnost funkcije', '', -2);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
+	"Id", "Name", "Description", "KnowledgeUnitId")
 	VALUES (-23, 'Reorganizuj logiku', '', -2);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
+	"Id", "Name", "Description", "KnowledgeUnitId")
 	VALUES (-24, 'Ekstrahuj složenu logiku', '', -2);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
+	"Id", "Name", "Description", "KnowledgeUnitId")
 	VALUES (-25, 'Imenuj složenu logiku', '', -2);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
+	"Id", "Name", "Description", "KnowledgeUnitId")
 	VALUES (-26, 'Redukuj broj parametra funkcije', '', -2);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
+	"Id", "Name", "Description", "KnowledgeUnitId")
 	VALUES (-27, 'Premesti metodu u prikladniji modul', '', -2);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
+	"Id", "Name", "Description", "KnowledgeUnitId")
 	VALUES (-28, 'Promoviši parametar u atribut', '', -2);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
+	"Id", "Name", "Description", "KnowledgeUnitId")
 	VALUES (-29, 'Enkapsuliraj skup usko povezanih parametara', '', -2);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
+	"Id", "Name", "Description", "KnowledgeUnitId")
 	VALUES (-210, 'Ekstrahuj pojedinačne zadatke iz metode', '', -2);
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "UnitId")
+	"Id", "Name", "Description", "KnowledgeUnitId")
 	VALUES (-211, 'Odredi semantičku svrhu metode', '', -2);
 
 INSERT INTO public."KcMasteries"(
@@ -622,8 +622,8 @@ INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VAL
     - ScheduleController.cs', '{{"MedicalRecordService, PhysicianStorage"}}');
 
 INSERT INTO public."UnitEnrollments"(
-	"Id", "LearnerId", "UnitId", "Start", "Status")
+	"Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
 	VALUES (-1, -2, -1, '2021-12-19 21:29:50.379749+01', 0);
 INSERT INTO public."UnitEnrollments"(
-	"Id", "LearnerId", "UnitId", "Start", "Status")
+	"Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
 	VALUES (-2, -2, -2, '2021-12-19 21:29:50.379749+01', 0);
