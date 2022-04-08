@@ -83,6 +83,24 @@ namespace Tutor.Web.Tests.Integration.Domain
                     Correct = true, AssessmentItemId = -154,
                     ApplicableHints = new List<ChallengeHintDto>()
                 }
+            },
+            new object[]
+            {
+                new ChallengeSubmissionDto { AssessmentItemId = -956, LearnerId = -1, SourceCode = IntegrationTestCode.GetFailingParams()},
+                new ChallengeEvaluationDto
+                {
+                    Correct = false, AssessmentItemId = -956,
+                    ApplicableHints = new List<ChallengeHintDto> { new() {Id = -51}, new() { Id = -52 } }
+                }
+            },
+            new object[]
+            {
+                new ChallengeSubmissionDto { AssessmentItemId = -956, LearnerId = -1, SourceCode = IntegrationTestCode.GetPassingParams()},
+                new ChallengeEvaluationDto
+                {
+                    Correct = true, AssessmentItemId = -956,
+                    ApplicableHints = new List<ChallengeHintDto>()
+                }
             }
         };
 

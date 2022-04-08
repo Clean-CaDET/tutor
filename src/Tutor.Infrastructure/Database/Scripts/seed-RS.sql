@@ -19,8 +19,10 @@ DELETE FROM public."AssessmentItems";
 DELETE FROM public."InstructionalItems";
 DELETE FROM public."KcMasteries";
 DELETE FROM public."KnowledgeComponents";
+DELETE FROM public."UnitEnrollments";
 DELETE FROM public."KnowledgeUnits";
 DELETE FROM public."Learners";
+DELETE FROM public."Notes";
 
 INSERT INTO public."KnowledgeUnits"("Id", "Code", "Name", "Description") VALUES
 	(-100, 'CC01', 'Značajni nazivi', 'Nazive pronalazimo u svim segmentima razvoja softvera - kod identifikatora promenljive, funkcije, klase, ali i biblioteke i aplikacije. Jasan naziv funkcije nas oslobađa od čitanja njenog tela, dok će misteriozni naziv zahtevati dodatan mentalni napor da razumemo svrhu koncepta koji opisuje. U najgorem slučaju, loš naziv će nas naterati da formiramo pogrešnu pretpostavku, što će nam drastično produžiti vreme razvoja. Kroz ovaj modul ispitujemo dobre i loše prakse za formiranja naziva identifikatora u kodu.');
@@ -637,8 +639,8 @@ INSERT INTO public."ChallengeHints"(
 	"Id", "Content")
 	VALUES (-11, 'Izbegavaj generične reči koje se mogu koristiti da opišu bilo kakav kod (npr. Manager, Data), kao i one koje ponavljaju informacije koje već stoje u nazivu tipa (npr. List, Num).');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (-11, -993, 'Naming.NoiseWords.Doctor');
+	"Id", "ChallengeId")
+	VALUES (-11, -993);
 INSERT INTO public."BannedWordsCheckers"(
 	"Id", "BannedWords", "HintId")
 	VALUES (-11, '{"Data","Info","Str","Set","The"}', -11);
@@ -761,8 +763,8 @@ INSERT INTO public."ChallengeHints"(
 	"Id", "Content")
 	VALUES (-21, 'Razmisli kako da integrišeš domenski značajne reči poput "Enroll", "newCourse", "Maximum" i "Active" u nazive koje koristiš u svom kodu.');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (-21, -986, 'Naming.MeaningfulWords.Course');
+	"Id", "ChallengeId")
+	VALUES (-21, -986);
 INSERT INTO public."RequiredWordsCheckers"(
 	"Id", "RequiredWords", "HintId")
 	VALUES (-21, '{"Enroll","newCourse","Maximum","Active"}', -21);
@@ -1085,8 +1087,8 @@ INSERT INTO public."ChallengeHints"(
 	"Id", "Content")
 	VALUES (-71, 'Identifikuj regione povezanog koda (obrati pažnju na komentare) i izdvoj ih u funkciju kojoj možeš dati jasan naziv.');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (-71, -972, 'Methods.SmallMethods.Achievement');
+	"Id", "ChallengeId")
+	VALUES (-71, -972);
 INSERT INTO public."BasicMetricCheckers"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId")
 	VALUES (-71, 'MELOC', 1, 18, -71);
@@ -1723,17 +1725,23 @@ INSERT INTO public."ChallengeHints"(
 	"Id", "Content")
 	VALUES (-52, 'Vredna strategija za redukciju parametra podrazumeva premeštanje metoda i polja klase tako da se ukloni potreba za parametrom. Razmisli da li ima smisla premestiti neku metodu iz ove klase u drugu.');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId")
-	VALUES (-51, -956);
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (-51, -956, 'Methods.Params.CourseService');
 INSERT INTO public."BasicMetricCheckers"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId")
 	VALUES (-51, 'NOP', 0, 1, -51);
 INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId")
-	VALUES (-52, -956);
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (-52, -956, 'Methods.Params.Course');
 INSERT INTO public."BasicMetricCheckers"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId")
-	VALUES (-52, 'NMD', 0, 2, -52);
+	VALUES (-52, 'NOP', 0, 1, -51);
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-53, -956);
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-53, 'NMD', 0, 2, -52);
 
 INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-955, -87, 3);

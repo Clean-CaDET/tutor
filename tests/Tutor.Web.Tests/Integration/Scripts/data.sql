@@ -14,8 +14,8 @@ DELETE FROM public."MultiResponseQuestions";
 DELETE FROM public."ArrangeTaskElements";
 DELETE FROM public."ArrangeTaskContainers";
 DELETE FROM public."ArrangeTasks";
-DELETE FROM public."AssessmentItems";
 DELETE FROM public."ShortAnswerQuestions";
+DELETE FROM public."AssessmentItems";
 DELETE FROM public."InstructionalItems";
 DELETE FROM public."KcMasteries";
 DELETE FROM public."KnowledgeComponents";
@@ -130,13 +130,13 @@ VALUES (-112, 'https://i.ibb.co/vqjMTyJ/simple-names-sr.png', 'U većini slučaj
 
 INSERT INTO public."InstructionalItems"(
     "Id", "KnowledgeComponentId", "Order")
-VALUES (-151, -15, 3);
+VALUES (-151, -15, 4);
 INSERT INTO public."Images"(
     "Id", "Url", "Caption")
 VALUES (-151, 'https://i.ibb.co/Tw9qktR/domain-names-sr.png', 'Lakše ćemo razumeti nove zahteve kada koristimo u kodu isti jezik kao naši klijenti.');
 INSERT INTO public."InstructionalItems"(
     "Id", "KnowledgeComponentId", "Order")
-VALUES (-152, -15, 4);
+VALUES (-152, -15, 3);
 INSERT INTO public."Images"(
     "Id", "Url", "Caption")
 VALUES (-152, 'https://i.ibb.co/f144vCk/names-example.png', 'Ovako objektno orijentisani programer imenuje stvari kada izbegava reči iz poslovnog domena.');
@@ -640,3 +640,32 @@ VALUES (-2, -1, -1, 'Ovde se radi update');
 INSERT INTO public."Notes"(
     "Id", "LearnerId", "UnitId", "Text")
 VALUES (-3, -1, -1, 'Drugi notes');
+
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
+	(-956, -21, 2);
+INSERT INTO public."Challenges"("Id", "Description", "Url", "TestSuiteLocation", "SolutionUrl") VALUES
+	(-956, 'Redukcija broja parametra pozitivno utiče na razumevanje zaglavlja funkcije i zadatka koji rešava. Pored toga, redukcijom liste parametra često smanjujemo broj zadataka koje funkcija radi. U sklopu direktorijuma "Methods/03. Parameter Lists" primeni strategije za redukciju parametra i refaktoriši funkcije.', 'https://github.com/Clean-CaDET/challenge-repository', 'Methods.Params', 'https://youtu.be/yKnxsH0CJzY');
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-51, 'Funkcija ima previše parametra. Razmisli koja strategija za redukciju parametra najviše odgovara skupu parametra u datoj funkciji, pa je primeni.');
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-52, 'Vredna strategija za redukciju parametra podrazumeva premeštanje metoda i polja klase tako da se ukloni potreba za parametrom. Razmisli da li ima smisla premestiti neku metodu iz ove klase u drugu.');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (-51, -956, 'Methods.Params.CourseService');
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-51, 'NOP', 0, 1, -51);
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (-52, -956, 'Methods.Params.Course');
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-52, 'NOP', 0, 1, -51);
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-53, -956);
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-53, 'NMD', 0, 2, -52);
