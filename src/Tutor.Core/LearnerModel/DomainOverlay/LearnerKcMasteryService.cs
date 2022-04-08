@@ -50,7 +50,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             kcMastery.RecordInstructionalItemSelection();
             _kcMasteryRepository.UpdateKcMastery(kcMastery);
 
-            return Result.Ok(kcMastery.KnowledgeComponent.InstructionalItems);
+            return Result.Ok(kcMastery.KnowledgeComponent.InstructionalItems.OrderBy(i => i.Order).ToList());
         }
 
         public Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId)
