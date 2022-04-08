@@ -54,7 +54,8 @@ namespace Tutor.Web.Tests.Integration
 
         private static void InitializeDbForTests(TutorContext db)
         {
-            var startingDb = File.ReadAllText("../../../Integration/Scripts/data.sql");
+            var testScripts = Directory.GetFiles("../../../TestData/Scripts/");
+            var startingDb = string.Join('\n', testScripts.Select(File.ReadAllText));
             db.Database.ExecuteSqlRaw(startingDb);
         }
 

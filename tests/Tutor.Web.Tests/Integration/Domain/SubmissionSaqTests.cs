@@ -37,7 +37,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new SaqSubmissionDto
                     {
                         AssessmentItemId = -212,
-                        LearnerId = -1,
+                        LearnerId = -3,
                         Answer = "Words, word_parts, idx, abc"
                     },
                     new SaqEvaluationDto
@@ -50,7 +50,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new SaqSubmissionDto
                     {
                         AssessmentItemId = -212,
-                        LearnerId = -1,
+                        LearnerId = -3,
                         Answer = "Words, word_parts, idx"
                     },
                     new SaqEvaluationDto
@@ -63,7 +63,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new SaqSubmissionDto
                     {
                         AssessmentItemId = -212,
-                        LearnerId = -1,
+                        LearnerId = -3,
                         Answer = "Words, word_parts, idx, abc, cba"
                     },
                     new SaqEvaluationDto
@@ -76,7 +76,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new SaqSubmissionDto
                     {
                         AssessmentItemId = -212,
-                        LearnerId = -1,
+                        LearnerId = -3,
                         Answer = ""
                     },
                     new SaqEvaluationDto
@@ -89,7 +89,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new SaqSubmissionDto
                     {
                         AssessmentItemId = -212,
-                        LearnerId = -1,
+                        LearnerId = -3,
                         Answer = "cba"
                     },
                     new SaqEvaluationDto
@@ -102,7 +102,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new SaqSubmissionDto
                     {
                         AssessmentItemId = -212,
-                        LearnerId = -1,
+                        LearnerId = -3,
                         Answer = "abc, cba"
                     },
                     new SaqEvaluationDto
@@ -115,7 +115,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new SaqSubmissionDto
                     {
                         AssessmentItemId = -995,
-                        LearnerId = -1,
+                        LearnerId = -3,
                         Answer = "MedicalRecordService"
                     },
                     new SaqEvaluationDto
@@ -128,7 +128,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new SaqSubmissionDto
                     {
                         AssessmentItemId = -995,
-                        LearnerId = -1
+                        LearnerId = -3
                     },
                     new SaqEvaluationDto
                     {
@@ -140,7 +140,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new SaqSubmissionDto
                     {
                         AssessmentItemId = -995,
-                        LearnerId = -1,
+                        LearnerId = -3,
                         Answer = " "
                     },
                     new SaqEvaluationDto

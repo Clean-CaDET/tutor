@@ -50,6 +50,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     -1,
                     new List<KnowledgeComponentDto>
                     {
+                        new() {Id = -10, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.0 }},
                         new() {Id = -11, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.1 }},
                         new() {Id = -12, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.2 }},
                         new() {Id = -13, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.3 }},

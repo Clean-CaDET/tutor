@@ -50,7 +50,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new AtSubmissionDto
                     {
                         AssessmentItemId = -2111,
-                        LearnerId = -1,
+                        LearnerId = -3,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1, -2, -3}},
@@ -78,7 +78,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new AtSubmissionDto
                     {
                         AssessmentItemId = -2111,
-                        LearnerId = -1,
+                        LearnerId = -3,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1}},
@@ -106,7 +106,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new AtSubmissionDto
                     {
                         AssessmentItemId = -2111,
-                        LearnerId = -1,
+                        LearnerId = -3,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1, -2, -3, -4, -5}},
@@ -141,7 +141,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new AtSubmissionDto
                     {
                         AssessmentItemId = -2111,
-                        LearnerId = -1,
+                        LearnerId = -3,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1},
@@ -157,7 +157,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new AtSubmissionDto
                     {
                         AssessmentItemId = -2111,
-                        LearnerId = -1,
+                        LearnerId = -3,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1},
@@ -170,7 +170,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new AtSubmissionDto
                     {
                         AssessmentItemId = -2112,
-                        LearnerId = -1,
+                        LearnerId = -3,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1, -2, -3, -4, -5}},
