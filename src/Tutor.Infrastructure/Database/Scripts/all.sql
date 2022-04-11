@@ -1,10 +1,83 @@
+-- T00 challenge strategies & hints
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-1, 'Cilj "hinta" je da ti usmeri razmišljanje bez da direktno ponudi odgovor na zadatak. Spram toga "rešenje" nudi kod ili video koji direktno prikazuju kako izgleda konačno rešenje. Da bi završio ovaj izazov neophodno je da preimenuješ polje "Challenge" u "_completed". Vidimo da je ovaj hint izuzetak zato što nudi konačno rešenje.');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-1, /*-1000*/);
+INSERT INTO public."BannedWordsCheckers"(
+	"Id", "BannedWords", "HintId")
+	VALUES (-1, '{"Challenge"}', -1);
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-2, /*-1000*/);
+INSERT INTO public."RequiredWordsCheckers"(
+	"Id", "RequiredWords", "HintId")
+	VALUES (-2, '{"_completed"}', -1);
+
+-- =================================
+-- N01 challenge strategies & hints
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-31, 'Izbegavaj redundantne reči koje ponavljaju informacije koje već stoje u tipu (npr. List, Num).');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-31, /*-994*/);
+INSERT INTO public."BannedWordsCheckers"(
+	"Id", "BannedWords", "HintId")
+	VALUES (-31, '{"List","string"}', -31);
+	
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-32, 'Izbegavaj misteriozne nazive koji ne objašnjavaju šta dati identifikator predstavlja (npr. nazive sa jednim slovom, a da nisu iteratori petlje).');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-32, /*-994*/);
+INSERT INTO public."BannedWordsCheckers"(
+	"Id", "BannedWords", "HintId")
+	VALUES (-32, '{"s","e"}', -32);
+	
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-33, 'Razmisli kako da integrišeš domenski značajne reči poput "Syntagms", "pascalCase", "capital" u nazive koje koristiš u svom kodu.');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-33, /*-994*/);
+INSERT INTO public."RequiredWordsCheckers"(
+	"Id", "RequiredWords", "HintId")
+	VALUES (-33, '{"syntagms","pascalCase","capital"}', -33);
+
+-- N03 challenge strategies & hints
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-11, 'Izbegavaj generične reči koje se mogu koristiti da opišu bilo kakav kod (npr. Manager, Data), kao i one koje ponavljaju informacije koje već stoje u nazivu tipa (npr. List, Num).');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-11, /*-988*/);
+INSERT INTO public."BannedWordsCheckers"(
+	"Id", "BannedWords", "HintId")
+	VALUES (-11, '{"Data","Info","Str","Set","The"}', -11);
+	
+
+-- N05 challenge strategies & hints
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-21, 'Razmisli kako da integrišeš domenski značajne reči poput "Enroll", "newCourse", "Maximum" i "Active" u nazive koje koristiš u svom kodu.');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-21, /*-981*/);
+INSERT INTO public."RequiredWordsCheckers"(
+	"Id", "RequiredWords", "HintId")
+	VALUES (-21, '{"Enroll","newCourse","Maximum","Active"}', -21);
+
+-- =================================
 -- F02 challenge strategies & hints
 INSERT INTO public."ChallengeHints"(
 	"Id", "Content")
 	VALUES (-71, 'Identifikuj regione povezanog koda (obrati pažnju na komentare) i izdvoj ih u funkciju kojoj možeš dati jasan naziv.');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (-71, /*TODO*/, 'Methods.SmallMethods.Achievement');
+	"Id", "ChallengeId")
+	VALUES (-71, /*-967*/);
 INSERT INTO public."BasicMetricCheckers"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId")
 	VALUES (-71, 'MELOC', 1, 18, -71);
@@ -19,39 +92,17 @@ INSERT INTO public."ChallengeHints"(
 	VALUES (-42, 'Ne zaboravi da vodiš računa o linijama koda.');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId")
-	VALUES (-41, /*TODO*/);
+	VALUES (-41, /*-963*/);
 INSERT INTO public."BasicMetricCheckers"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId")
 	VALUES (-41, 'CYCLO', 1, 5, -41);
 INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId")
-	VALUES (-42, /*TODO*/);
+	VALUES (-42, /*-963*/);
 INSERT INTO public."BasicMetricCheckers"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId")
 	VALUES (-42, 'MELOC', 1, 12, -42);
 
-	
--- F07 challenge strategies & hints
-INSERT INTO public."ChallengeHints"(
-	"Id", "Content")
-	VALUES (-51, 'Funkcija ima previše parametra. Razmisli koja strategija za redukciju parametra najviše odgovara skupu parametra u datoj funkciji, pa je primeni.');
-INSERT INTO public."ChallengeHints"(
-	"Id", "Content")
-	VALUES (-52, 'Vredna strategija za redukciju parametra podrazumeva premeštanje metoda i polja klase tako da se ukloni potreba za parametrom. Razmisli da li ima smisla premestiti neku metodu iz ove klase u drugu.');
-INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId")
-	VALUES (-51, /*TODO*/);
-INSERT INTO public."BasicMetricCheckers"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId")
-	VALUES (-51, 'NOP', 0, 1, -51);
-INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId")
-	VALUES (-52, /*TODO*/);
-INSERT INTO public."BasicMetricCheckers"(
-	"Id", "MetricName", "FromValue", "ToValue", "HintId")
-	VALUES (-52, 'NMD', 0, 2, -52);
-	
-	
 -- F05 challenge strategies & hints
 INSERT INTO public."ChallengeHints"(
 	"Id", "Content")
@@ -61,81 +112,150 @@ INSERT INTO public."ChallengeHints"(
 	VALUES (-62, 'Ne zaboravi da vodiš računa o linijama koda.');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId")
-	VALUES (-61, /*TODO*/);
+	VALUES (-61, /*-957*/);
 INSERT INTO public."BasicMetricCheckers"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId")
 	VALUES (-61, 'CYCLO', 1, 4, -61);
 INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId")
-	VALUES (-61, /*TODO*/);
+	VALUES (-62, /*-957*/);
 INSERT INTO public."BasicMetricCheckers"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId")
 	VALUES (-62, 'MMNB', 1, 2, -61); -- TODO: Check if 3 is suitable; Check these rules in general
 INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId")
-	VALUES (-63, /*TODO*/);
+	VALUES (-63, /*-957*/);
 INSERT INTO public."BasicMetricCheckers"(
 	"Id", "MetricName", "FromValue", "ToValue", "HintId")
 	VALUES (-63, 'MELOC', 1, 16, -62);
-
-
--- N03 challenge strategies & hints
+	
+-- F07 challenge strategies & hints
 INSERT INTO public."ChallengeHints"(
 	"Id", "Content")
-	VALUES (-11, 'Izbegavaj generične reči koje se mogu koristiti da opišu bilo kakav kod (npr. Manager, Data), kao i one koje ponavljaju informacije koje već stoje u nazivu tipa (npr. List, Num).');
+	VALUES (-51, 'Funkcija ima previše parametra. Razmisli koja strategija za redukciju parametra najviše odgovara skupu parametra u datoj funkciji, pa je primeni.');
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-52, 'Vredna strategija za redukciju parametra podrazumeva premeštanje metoda i polja klase tako da se ukloni potreba za parametrom. Razmisli da li ima smisla premestiti neku metodu iz ove klase u drugu.');
 INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (-11, /*TODO*/, 'Naming.NoiseWords.Doctor');
-INSERT INTO public."BannedWordsCheckers"(
-	"Id", "BannedWords", "HintId")
-	VALUES (-11, '{"Data","Info","Str","Set","The"}', -11);
-	
-
--- N05 challenge strategies & hints
-INSERT INTO public."ChallengeHints"(
-	"Id", "Content")
-	VALUES (-21, 'Razmisli kako da integrišeš domenski značajne reči poput "Enroll", "newCourse", "Maximum" i "Active" u nazive koje koristiš u svom kodu.');
+	VALUES (-51, /*-951*/, 'Methods.Params.CourseService');
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-51, 'NOP', 0, 1, -51);
 INSERT INTO public."ChallengeFulfillmentStrategies"(
 	"Id", "ChallengeId", "CodeSnippetId")
-	VALUES (-21, /*TODO*/, 'Naming.MeaningfulWords.Course');
-INSERT INTO public."RequiredWordsCheckers"(
-	"Id", "RequiredWords", "HintId")
-	VALUES (-21, '{"Enroll","newCourse","Maximum","Active"}', -21);
+	VALUES (-52, /*-951*/, 'Methods.Params.Course');
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-52, 'NOP', 0, 1, -51);
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId")
+	VALUES (-53, /*-951*/);
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-53, 'NMD', 0, 2, -52);
+
+-- =================================
+-- C31 (srp) challenge strategies & hints
+-- Books
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-141, 'Book klasa rešava više odgovornosti i potrebno je razložiti u nekoliko klasa koje će podeliti teret i odgovoriti na dodatne zahteve istaknute u zadatku.');
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-142, 'Book klasa ima previše metoda u sebi, gde neke pripadaju "BookReading" konceptu, odnosno klasi koja će da predstavlja čitanje neke konkretne knjige od strane jednog korisnika.');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (-141, /*-945*/, 'Classes.SRP.Books.Book');
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-141, 'CELOC', 3, 8, -141);
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (-142, /*-945*/, 'Classes.SRP.Books.Book');
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-142, 'NMD', 1, 1, -142);
+	
+-- Achievements
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-131, 'AchievementService poseduje mnogo odgovornosti, od koordinacije raznih operacija do poznavanje detalja implementacije svake operacije. Potrebno je pojednostaviti logiku klase tako da se samo bavi koordinacijom, odnosno pozivima metoda drugih objekata.');
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-132, 'Kao koordinator u ovom problemu, AchievementService bi trebao da radi sa 2-3 klase, gde bi svaka imala sopstvenu odgovornost, poput perzistencije i poslovne logike rada sa postignućima.');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (-131, /*-943*/, 'Classes.SRP.Achievements.AchievementService');
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-131, 'CELOC', 3, 15, -131);
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (-132, /*-943*/, 'Classes.SRP.Achievements.AchievementService');
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-132, 'CBO', 2, 3, -132);
+	
+-- C33 (struct coh) challenge strategies & hints
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-101, 'CourseService klasa poseduje mnogo metoda koje nisu vezane samo za kurseve. Analiziraj nazive svih metoda i vidi da li ima smisla da se neke metode premeste ili da se formira nova klasa koja će ih skladištiti.');
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-102, 'CourseService klasa ima nisku strukturalnu koheziju. Ovo se dešava kada metode koriste manji deo atributa. Iako ne moramo da imamo idealnu koheziju, treba težiti da većina metoda koristi većinu atributa i spram toga organizovati metode u klase.');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (-101, /*-938*/, 'Classes.Structural.CourseService');
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-101, 'CELOC', 8, 17, -101);
+
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (-102, /*-938*/, 'Classes.Structural.CourseService');
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-102, 'LCOM', -1, 0.25, -102);
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (-103, /*-938*/, 'Classes.Structural.CourseService');
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-103, 'TCC', 0.75, 1, -102);
+
+-- C35 (coupling) challenge strategies & hints
+-- Employees
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-111, 'EmployeeService kopa podatke iz Employee objekta da bi uradio neku pamet nad njima, poput izmene njihove vrednosti. Idealno bi bilo ako bi Employee klasa ovo radila, posebno zato što je izmena navedenih atributa usko-povezana operacija kojoj možemo smisliti dobar naziv.');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (-111, /*-931*/, 'Classes.Coupling.Employees.EmployeeService');
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-111, 'ATFD', 0, 1, -111);
+	
+-- Rental
+INSERT INTO public."ChallengeHints"(
+	"Id", "Content")
+	VALUES (-121, 'Česta rasporedimo logiku i kompletne metode u pogrešnu klasu. Da li možeš da izdvojiš komad logike iz RentalSchedule klase u zasebnu metodu, koju bi potom mogao smisleno da premestiš u DateRange klasu?');
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (-121, /*-929*/, 'Classes.Coupling.Rental.DateRange');
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-121, 'CELOC', 5, 15, -121);
+INSERT INTO public."ChallengeFulfillmentStrategies"(
+	"Id", "ChallengeId", "CodeSnippetId")
+	VALUES (-122, /*-929*/, 'Classes.Coupling.Rental.RentalSchedule');
+INSERT INTO public."BasicMetricCheckers"(
+	"Id", "MetricName", "FromValue", "ToValue", "HintId")
+	VALUES (-122, 'CYCLO', 0, 4, -121);
+	
 
 
--- N01 challenge strategies & hints
-INSERT INTO public."ChallengeHints"(
-	"Id", "Content")
-	VALUES (-31, 'Izbegavaj redundantne reči koje ponavljaju informacije koje već stoje u tipu (npr. List, Num).');
-INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId")
-	VALUES (-31, /*TODO*/);
-INSERT INTO public."BannedWordsCheckers"(
-	"Id", "BannedWords", "HintId")
-	VALUES (-31, '{"List","string"}', -31);
-	
-INSERT INTO public."ChallengeHints"(
-	"Id", "Content")
-	VALUES (-32, 'Izbegavaj misteriozne nazive koji ne objašnjavaju šta dati identifikator predstavlja (npr. nazive sa jednim slovom, a da nisu iteratori petlje).');
-INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId")
-	VALUES (-32, /*TODO*/);
-INSERT INTO public."BannedWordsCheckers"(
-	"Id", "BannedWords", "HintId")
-	VALUES (-32, '{"s","e"}', -32);
-	
-INSERT INTO public."ChallengeHints"(
-	"Id", "Content")
-	VALUES (-33, 'Razmisli kako da integrišeš domenski značajne reči poput "Syntagms", "pascalCase", "capital" u nazive koje koristiš u svom kodu.');
-INSERT INTO public."ChallengeFulfillmentStrategies"(
-	"Id", "ChallengeId")
-	VALUES (-33, /*TODO*/);
-INSERT INTO public."RequiredWordsCheckers"(
-	"Id", "RequiredWords", "HintId")
-	VALUES (-33, '{"syntagms","pascalCase","capital"}', -33);
-	
-	
-	
+
 
 
 -- Currently unused
@@ -200,23 +320,4 @@ INSERT INTO public."Texts"(
 	
 - Funkcije kao najjednostavniji autonomni modul ima visoku koheziju ako njene instrukcije kolektivno izvršavaju jedan zadatak. Funkcija sa niskom kohezijom često poseduje "regione" instrukcija (odvojene komentarom ili praznim redom), gde se svaki region bavi posebnim zadatkom. U goroj varijanti, ovi regioni su isprepletani i teško je odrediti koje sve zadatke vrši funkcija. Kod funkcija je semantička kohezija značajnija metrika jer je teško definisati strukturalnu metriku za veze između instrukcija.
 - Visoko-kohezivni paketi podrazumevaju kolekciju klasa koje rade zajedno kako bi ostvarili neki cilj višeg nivoa apstrakcije. Ovakav paket izvršava značajan deo poslovne ili aplikativne logike uz minimalnu podršku drugih paketa. Pored semantičke kohezije, moguće je uposliti strukturalne metrike koje određuju spregnutost između klasa (engl. *Coupling between objects*; *CBO*). Dobro formiran paket će imati dosta više sprega između objekata koji su deo tog paketa nego između unutrašnjih i spoljašnjih objekata. Ovakve pakete je jednostavno promovisati u zasebne aplikacije ili mikroservise ukoliko postoji potreba za time.');
-
-
-
-
-
-
---== Cohesion ==- PK Node 2
-INSERT INTO public."KnowledgeNodes"(
-	"Id", "LearningObjective", "Type", "LectureId")
-	VALUES (17, 'Primeni formulu za računanje semantičke kohezije klase i skup refaktorisanja za njeno unapređenje.', 1, 3);
-
-INSERT INTO public."LearningObjectSummaries"(
-	"Id", "Description", "KnowledgeNodeId")
-	VALUES (120, 'Semantic Cohesion Advanced Example', 17);
-	
-INSERT INTO public."LearningObjectSummaries"(
-	"Id", "Description", "KnowledgeNodeId")
-	VALUES (121, 'Semantic Cohesion Formula', 17); -- TODO: Zadatak (npr. ArrangeTask za odgovornosti).
-	
 

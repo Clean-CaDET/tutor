@@ -9,7 +9,7 @@ public static class ExcelToSqlTransformer
         var domainContent = DomainExcelImporter.Import(domainSource);
         var domainSql = DomainSqlExporter.BuildSql(domainContent);
 
-        var learners = LearnerExcelImporter.Import(learnerSource, "simsoni");
+        var learners = LearnerExcelImporter.Import(learnerSource);
         var learnerSql = LearnerSqlExporter.BuildSql(learners, domainContent.KnowledgeComponents, domainContent.Units);
 
         Save(DeleteCommands + domainSql + learnerSql, destination);

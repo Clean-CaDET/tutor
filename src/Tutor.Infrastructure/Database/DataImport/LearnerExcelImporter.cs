@@ -9,10 +9,10 @@ namespace Tutor.Infrastructure.Database.DataImport
 {
     internal static class LearnerExcelImporter
     {
-        internal static List<LearnerColumns> Import(string sourceFolder, string passwordSeed)
+        internal static List<LearnerColumns> Import(string sourceFolder)
         {
             var sheets = GetWorksheets(GetExcelDocuments(sourceFolder));
-            return Process(sheets, passwordSeed);
+            return Process(sheets);
         }
         
         private static IEnumerable<ExcelPackage> GetExcelDocuments(string sourceFolder)
@@ -33,7 +33,7 @@ namespace Tutor.Infrastructure.Database.DataImport
             return sheets;
         }
 
-        private static List<LearnerColumns> Process(List<ExcelWorksheet> sheets, string passwordSeed)
+        private static List<LearnerColumns> Process(List<ExcelWorksheet> sheets)
         {
             var learners = new List<LearnerColumns>();
             var startingId = -1000;
@@ -52,7 +52,7 @@ namespace Tutor.Infrastructure.Database.DataImport
                         Name = sheet.Cells["E" + row].Text,
                         Surname = sheet.Cells["D" + row].Text,
                         Salt = Convert.ToBase64String(salt),
-                        Password = PasswordUtilities.HashPassword(passwordSeed, salt)
+                        Password = PasswordUtilities.HashPassword(sheet.Cells["G" + row].Text, salt)
                     });
                 }
             }
