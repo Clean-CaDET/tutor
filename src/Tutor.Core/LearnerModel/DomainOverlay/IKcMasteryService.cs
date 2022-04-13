@@ -7,7 +7,7 @@ using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
 
 namespace Tutor.Core.LearnerModel.DomainOverlay
 {
-    public interface ILearnerKcMasteryService
+    public interface IKcMasteryService
     {
         Result<List<KnowledgeUnit>> GetUnits(int learnerId);
 

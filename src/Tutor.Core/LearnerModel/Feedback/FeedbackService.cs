@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 
-namespace Tutor.Core.DomainModel.Feedback
+namespace Tutor.Core.LearnerModel.Feedback
 {
     public class FeedbackService : IFeedbackService
     {

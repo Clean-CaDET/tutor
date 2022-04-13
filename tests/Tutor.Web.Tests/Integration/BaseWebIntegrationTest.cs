@@ -18,10 +18,10 @@ namespace Tutor.Web.Tests.Integration
             Factory = factory;
         }
 
-        protected KcController SetupKcmController(IServiceScope scope, string userId)
+        protected DomainOverlayController SetupKcmController(IServiceScope scope, string userId)
         {
-            return new KcController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<ILearnerKcMasteryService>())
+            return new DomainOverlayController(Factory.Services.GetRequiredService<IMapper>(),
+                scope.ServiceProvider.GetRequiredService<IKcMasteryService>())
             {
                 ControllerContext = new ControllerContext()
                 {

@@ -1,4 +1,4 @@
-﻿namespace Tutor.Web.Controllers.Domain.DTOs.Feedback
+﻿namespace Tutor.Web.Controllers.Learners.DTOs.Feedback
 {
     public class TutorImprovementFeedbackDto
     {

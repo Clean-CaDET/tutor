@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tutor.Core.DomainModel.Notes;
+using System.Collections.Generic;
+using System.Linq;
+using Tutor.Core.LearnerModel.Notes;
 using Tutor.Infrastructure.Security.Authorization.JWT;
-using Tutor.Web.Controllers.Domain.DTOs.Notes;
+using Tutor.Web.Controllers.Learners.DTOs.Notes;
 
-namespace Tutor.Web.Controllers.Domain
+namespace Tutor.Web.Controllers.Learners
 {
     [Authorize(Policy = "learnerPolicy")]
     [Route("api/notes/")]

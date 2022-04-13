@@ -1,4 +1,4 @@
-﻿using Tutor.Core.DomainModel.Feedback;
+﻿using Tutor.Core.LearnerModel.Feedback;
 
 namespace Tutor.Infrastructure.Database.Repositories.Domain
 {

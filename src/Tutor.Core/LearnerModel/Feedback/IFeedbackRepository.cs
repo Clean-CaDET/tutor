@@ -1,4 +1,4 @@
-﻿namespace Tutor.Core.DomainModel.Feedback
+﻿namespace Tutor.Core.LearnerModel.Feedback
 {
     public interface IFeedbackRepository
     { 

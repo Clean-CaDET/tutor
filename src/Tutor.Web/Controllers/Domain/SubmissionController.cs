@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -8,7 +7,6 @@ using Tutor.Core.DomainModel.AssessmentItems.Challenges;
 using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Core.LearnerModel.DomainOverlay;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.KnowledgeComponentEvents;
 using Tutor.Infrastructure.Security.Authorization.JWT;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;

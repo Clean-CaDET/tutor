@@ -14,12 +14,12 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Tutor.Core.DomainModel.Feedback;
-using Tutor.Core.DomainModel.Notes;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.MoveOn;
+using Tutor.Core.LearnerModel.Feedback;
+using Tutor.Core.LearnerModel.Notes;
 using Tutor.Core.LearnerModel.Workspaces;
 using Tutor.Infrastructure;
 using Tutor.Infrastructure.Database.Repositories.Domain;
@@ -85,7 +85,7 @@ namespace Tutor.Web
                     });
             });
 
-            services.AddScoped<ILearnerKcMasteryService, LearnerKcMasteryService>();
+            services.AddScoped<IKcMasteryService, KcMasteryService>();
             services.AddScoped<IKcMasteryRepository, KcMasteryDatabaseRepository>();
             services.AddScoped<ILearnerAssessmentsService, LearnerAssessmentsService>();
             services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
@@ -132,6 +132,8 @@ namespace Tutor.Web
             {
                 options.AddPolicy("learnerPolicy", policy =>
                     policy.RequireRole("learner"));
+                options.AddPolicy("administratorPolicy", policy =>
+                    policy.RequireRole("administrator"));
             });
 
             var key = EnvironmentConnection.GetSecret("JWT_KEY") ?? "tutor_secret_key";

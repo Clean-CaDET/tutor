@@ -4,10 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.DomainModel.Feedback;
+using Tutor.Core.LearnerModel.Feedback;
 using Tutor.Infrastructure.Database;
-using Tutor.Web.Controllers.Domain;
-using Tutor.Web.Controllers.Domain.DTOs.Feedback;
+using Tutor.Web.Controllers.Learners;
+using Tutor.Web.Controllers.Learners.DTOs.Feedback;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain

@@ -8,12 +8,12 @@ using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
 
 namespace Tutor.Core.LearnerModel.DomainOverlay
 {
-    public class LearnerKcMasteryService : ILearnerKcMasteryService
+    public class KcMasteryService : IKcMasteryService
     {
         private readonly IKcMasteryRepository _kcMasteryRepository;
         private readonly IAssessmentItemSelector _assessmentItemSelector;
 
-        public LearnerKcMasteryService(IKcMasteryRepository ikcMasteryRepository, IAssessmentItemSelector assessmentItemSelector)
+        public KcMasteryService(IKcMasteryRepository ikcMasteryRepository, IAssessmentItemSelector assessmentItemSelector)
         {
             _kcMasteryRepository = ikcMasteryRepository;
             _assessmentItemSelector = assessmentItemSelector;

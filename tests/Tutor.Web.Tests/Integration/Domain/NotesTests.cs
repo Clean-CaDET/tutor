@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using Tutor.Core.DomainModel.Notes;
-using Tutor.Web.Controllers.Domain;
-using Tutor.Web.Controllers.Domain.DTOs.Notes;
+using System.Collections.Generic;
+using System.Security.Claims;
+using Tutor.Core.LearnerModel.Notes;
+using Tutor.Web.Controllers.Learners;
+using Tutor.Web.Controllers.Learners.DTOs.Notes;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
@@ -25,10 +25,10 @@ namespace Tutor.Web.Tests.Integration.Domain
             using var scope = Factory.Services.CreateScope();
             var controller = SetupNotesController(scope, "-2");
 
-            var noteDto = new NoteDto() {text = "Test", UnitId = -1};
+            var noteDto = new NoteDto() {Text = "Test", UnitId = -1};
             var note = ((OkObjectResult) controller.SaveNote(noteDto).Result)?.Value as NoteDto;
             
-            note.text.ShouldBe("Test");
+            note.Text.ShouldBe("Test");
         }
 
         [Fact]
@@ -47,10 +47,10 @@ namespace Tutor.Web.Tests.Integration.Domain
             using var scope = Factory.Services.CreateScope();
             var controller = SetupNotesController(scope, "-1");
 
-            var noteDto = new NoteDto() {text = "Test update", Id = -2, UnitId = -1};
+            var noteDto = new NoteDto() {Text = "Test update", Id = -2, UnitId = -1};
             var note = ((OkObjectResult) controller.UpdateNote(noteDto).Result)?.Value as NoteDto;
             
-            note.text.ShouldBe("Test update");
+            note.Text.ShouldBe("Test update");
         }
 
         [Fact]

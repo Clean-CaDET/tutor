@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tutor.Core.DomainModel.Feedback;
-using Tutor.Web.Controllers.Domain.DTOs.Feedback;
+using Tutor.Core.LearnerModel.Feedback;
+using Tutor.Web.Controllers.Learners.DTOs.Feedback;
 
-namespace Tutor.Web.Controllers.Domain
+namespace Tutor.Web.Controllers.Learners
 {
     [Authorize(Policy = "learnerPolicy")]
     [Route("api/feedback/")]

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Tutor.Core.DomainModel.Notes;
-using Tutor.Web.Controllers.Domain.DTOs.Notes;
+using Tutor.Core.LearnerModel.Notes;
+using Tutor.Web.Controllers.Learners.DTOs.Notes;
 
-namespace Tutor.Web.Controllers.Domain.Mappers
+namespace Tutor.Web.Controllers.Learners.Mappers
 {
     public class NoteProfile : Profile
     {
