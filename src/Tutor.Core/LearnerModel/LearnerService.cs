@@ -20,19 +20,9 @@ namespace Tutor.Core.LearnerModel
             _workspaceCreator = workspaceCreator;
         }
 
-        public Result<Learner> Register(Learner learner)
+        public Result Enroll(int learnerId, int unitId)
         {
-            if (_learnerRepository.GetByIndex(learner.StudentIndex) != null)
-                return Result.Fail("Learner with index " + learner.StudentIndex + " is already registered.");
-
-            var kcs = _kcMasteryRepository.GetAllKnowledgeComponents();
-            learner.KnowledgeComponentMasteries.AddRange(
-                kcs.Select(kc => new KnowledgeComponentMastery(kc)).ToList());
-
-            var savedLearner = _learnerRepository.Save(learner);
-            CreateWorkspace(savedLearner);
-
-            return Result.Ok(savedLearner);
+            throw new NotImplementedException();
         }
 
         public Result<Learner> GetLearnerProfile(int id)

@@ -93,11 +93,6 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             _eventStore.Save(kcMastery);
         }
 
-        public List<KnowledgeComponent> GetAllKnowledgeComponents()
-        {
-            return _dbContext.KnowledgeComponents.ToList();
-        }
-
         public AssessmentItem GetDerivedAssessmentItem(int assessmentItemId)
         {
             return _dbContext.AssessmentItems
