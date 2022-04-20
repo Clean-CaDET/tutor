@@ -1,8 +1,6 @@
-using System;
 using FluentResults;
-using System.Linq;
+using System;
 using Tutor.Core.LearnerModel.DomainOverlay;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
 using Tutor.Core.LearnerModel.Workspaces;
 
 namespace Tutor.Core.LearnerModel
@@ -33,11 +31,7 @@ namespace Tutor.Core.LearnerModel
 
         private void CreateWorkspace(Learner learner)
         {
-            var workspace = _workspaceCreator.Create(learner.Id);
-            if (workspace == null) return;
-
-            learner.Workspace = workspace;
-            _learnerRepository.Save(learner);
+            learner.Workspace = _workspaceCreator.Create(learner.StudentIndex);
         }
     }
 }

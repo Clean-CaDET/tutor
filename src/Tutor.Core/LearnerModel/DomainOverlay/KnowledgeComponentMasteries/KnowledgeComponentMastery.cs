@@ -1,7 +1,10 @@
 ﻿using FluentResults;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.AssessmentItems;
+using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.KnowledgeComponentEvents;
@@ -134,7 +137,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             return Result.Ok(ai);
         }
 
-        public Result RecordInstructionalItemSelection()
+        public Result<List<InstructionalItem>> GetInstructionalItems()
         {
             if (!HasActiveSession)
                 LaunchSession();
@@ -144,7 +147,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
                 LearnerId = LearnerId,
                 KnowledgeComponentId = KnowledgeComponent.Id
             });
-            return Result.Ok();
+            return Result.Ok(KnowledgeComponent.InstructionalItems.OrderBy(i => i.Order).ToList());
         }
 
         private void TryPass()

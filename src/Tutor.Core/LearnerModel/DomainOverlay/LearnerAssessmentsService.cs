@@ -1,8 +1,6 @@
-﻿using System;
-using FluentResults;
+﻿using FluentResults;
 using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.KnowledgeComponentEvents;
 
 namespace Tutor.Core.LearnerModel.DomainOverlay
 {

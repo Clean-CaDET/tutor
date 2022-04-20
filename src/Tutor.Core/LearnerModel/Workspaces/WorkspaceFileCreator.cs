@@ -11,7 +11,7 @@ namespace Tutor.Core.LearnerModel.Workspaces
         {
             _basePath = options.Value.BasePath;
         }
-        public Workspace Create(int learnerId)
+        public Workspace Create(string learnerId)
         {
             var relativeWorkspacePath = Path.Combine(learnerId.ToString(), "Workspace");
             var absoluteWorkspacePath = Path.Combine(_basePath, relativeWorkspacePath);

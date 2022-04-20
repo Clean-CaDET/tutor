@@ -2,7 +2,7 @@
 {
     public class NoWorkspaceCreator : IWorkspaceCreator
     {
-        public Workspace Create(int learnerId)
+        public Workspace Create(string learnerId)
         {
             return null;
         }

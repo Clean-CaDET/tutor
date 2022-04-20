@@ -47,10 +47,10 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
             if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
 
-            kcMastery.RecordInstructionalItemSelection();
+            var result = kcMastery.GetInstructionalItems();
             _kcMasteryRepository.UpdateKcMastery(kcMastery);
 
-            return Result.Ok(kcMastery.KnowledgeComponent.InstructionalItems.OrderBy(i => i.Order).ToList());
+            return result;
         }
 
         public Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId)
