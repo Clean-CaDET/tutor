@@ -9,7 +9,7 @@ using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Learners.Feedback;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Domain
+namespace Tutor.Web.Tests.Integration.Learners
 {
     [Collection("Sequential")]
     public class FeedbackTests : BaseWebIntegrationTest

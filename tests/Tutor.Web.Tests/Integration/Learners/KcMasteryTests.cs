@@ -8,21 +8,53 @@ using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
+using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
 using Tutor.Web.Controllers.Learners.DomainOverlay;
+using Tutor.Web.Controllers.Learners.DomainOverlay.DTOs;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Domain
+namespace Tutor.Web.Tests.Integration.Learners
 {
     [Collection("Sequential")]
-    public class InstructorTests : BaseWebIntegrationTest
+    public class KcMasteryTests : BaseWebIntegrationTest
     {
-        public InstructorTests(TutorApplicationTestFactory<Startup> factory) : base(factory)
+        public KcMasteryTests(TutorApplicationTestFactory<Startup> factory) : base(factory)
         {
         }
 
         [Theory]
+        [MemberData(nameof(InstructionalItems))]
+        public void Retrieves_instructional_events(int knowledgeComponentId, int expectedIEsCount)
+        {
+            using var scope = Factory.Services.CreateScope();
+            var controller = SetupKcmController(scope, "-2");
+
+            var items = ((OkObjectResult)controller.GetInstructionalItems(knowledgeComponentId).Result).Value as List<InstructionalItemDto>;
+
+            items.ShouldNotBeNull();
+            items.Count.ShouldBe(expectedIEsCount);
+        }
+
+        public static IEnumerable<object[]> InstructionalItems()
+        {
+            return new List<object[]>
+            {
+                new object[]
+                {
+                    -11,
+                    2
+                },
+                new object[]
+                {
+                    -15,
+                    2
+                }
+            };
+        }
+
+        [Theory]
         [MemberData(nameof(AssessmentItemRequest))]
-        public void Get_Suitable_Assessment_Event(int knowledgeComponentId, int expectedSuitableAssessmentItemId)
+        public void Gets_suitable_assessment_event(int knowledgeComponentId, int expectedSuitableAssessmentItemId)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = SetupKcmController(scope, "-2");
@@ -33,10 +65,32 @@ namespace Tutor.Web.Tests.Integration.Domain
             
             actualSuitableAssessmentItem.Id.ShouldBe(expectedSuitableAssessmentItemId);
         }
-        
+
+        public static IEnumerable<object[]> AssessmentItemRequest()
+        {
+            return new List<object[]>
+            {
+                new object[]
+                {
+                    -14,
+                    -144
+                },
+                new object[]
+                {
+                    -15,
+                    -153
+                },
+                new object[]
+                {
+                    -13,
+                    -134
+                }
+            };
+        }
+
         [Theory]
         [MemberData(nameof(MrqSubmission))]
-        public void Update_Kc_Mastery(MrqSubmissionDto submission, double expectedKcMastery)
+        public void Updates_Kc_Mastery(MrqSubmissionDto submission, double expectedKcMastery)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new LearnerAssessmentController(Factory.Services.GetRequiredService<IMapper>(), 
@@ -233,26 +287,20 @@ namespace Tutor.Web.Tests.Integration.Domain
             };
         }
 
-        public static IEnumerable<object[]> AssessmentItemRequest()
+        [Fact]
+        public void Retrieves_kcm_statistics()
         {
-            return new List<object[]>
-            {
-                new object[]
-                {
-                    -14,
-                    -144
-                },
-                new object[]
-                {
-                    -15,
-                    -153
-                },
-                new object[]
-                {
-                    -13,
-                    -134
-                }
-            };
+            using var scope = Factory.Services.CreateScope();
+            var controller = SetupKcmController(scope, "-2");
+
+            var kcMasteryStatistics = ((OkObjectResult)controller.GetKcMasteryStatistics(-15).Result).Value as KcMasteryStatisticsDto;
+
+            kcMasteryStatistics.ShouldNotBeNull();
+            kcMasteryStatistics.IsSatisfied.ShouldBe(false);
+            kcMasteryStatistics.Mastery.ShouldBe(0.5);
+            kcMasteryStatistics.TotalCount.ShouldBe(4);
+            kcMasteryStatistics.AttemptedCount.ShouldBe(4);
+            kcMasteryStatistics.CompletedCount.ShouldBe(0);
         }
     }
 }

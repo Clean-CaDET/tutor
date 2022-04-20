@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Domain
+namespace Tutor.Web.Tests.Integration.Learners
 {
     [Collection("Sequential")]
     public class SessionTests : BaseWebIntegrationTest

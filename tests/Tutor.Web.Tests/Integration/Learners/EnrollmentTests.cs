@@ -1,24 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using System.Collections.Generic;
-using System.Linq;
 using Tutor.Web.Controllers.Domain.DTOs;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
 using Tutor.Web.Controllers.Learners.DomainOverlay.DTOs;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Domain
+namespace Tutor.Web.Tests.Integration.Learners
 {
     [Collection("Sequential")]
-    public class KnowledgeComponentTests : BaseWebIntegrationTest
+    public class EnrollmentTests : BaseWebIntegrationTest
     {
-        public KnowledgeComponentTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
+        public EnrollmentTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
         [Theory]
         [InlineData(-2, 2)]
         [InlineData(-1, 0)]
-        public void Retrieves_units(int learnerId, int expectedUnitCount)
+        public void Retrieves_enrolled_units(int learnerId, int expectedUnitCount)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = SetupKcmController(scope, learnerId.ToString());
@@ -60,50 +60,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                     }
                 }
             };
-        }
-
-        [Theory]
-        [MemberData(nameof(InstructionalItems))]
-        public void Retrieves_kc_instructional_events(int knowledgeComponentId, int expectedIEsCount)
-        {
-            using var scope = Factory.Services.CreateScope();
-            var controller = SetupKcmController(scope, "-2");
-
-            var IEs = ((OkObjectResult)controller.GetInstructionalItems(knowledgeComponentId).Result).Value as List<InstructionalItemDto>;
-
-            IEs.Count.ShouldBe(expectedIEsCount);
-        }
-
-        public static IEnumerable<object[]> InstructionalItems()
-        {
-            return new List<object[]>
-            {
-                new object[]
-                {
-                    -11,
-                    2
-                },
-                new object[]
-                {
-                    -15,
-                    2
-                }
-            };
-        }
-
-        [Fact]
-        public void Retrieves_kc_statistics()
-        {
-            using var scope = Factory.Services.CreateScope();
-            var controller = SetupKcmController(scope, "-2");
-
-            var kcMasteryStatistics = ((OkObjectResult)controller.GetKcMasteryStatistics(-15).Result).Value as KcMasteryStatisticsDto;
-
-            kcMasteryStatistics.IsSatisfied.ShouldBe(false);
-            kcMasteryStatistics.Mastery.ShouldBe(0.5);
-            kcMasteryStatistics.TotalCount.ShouldBe(4);
-            kcMasteryStatistics.AttemptedCount.ShouldBe(4);
-            kcMasteryStatistics.CompletedCount.ShouldBe(0);
         }
     }
 }

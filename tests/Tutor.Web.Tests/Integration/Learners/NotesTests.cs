@@ -1,15 +1,15 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using System.Collections.Generic;
-using System.Security.Claims;
 using Tutor.Core.LearnerModel.Notes;
 using Tutor.Web.Controllers.Learners.Notes;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Domain
+namespace Tutor.Web.Tests.Integration.Learners
 {
     [Collection("Sequential")]
     public class NotesTests : BaseWebIntegrationTest
@@ -19,7 +19,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         }
 
         [Fact]
-        public void Add_note()
+        public void Creates_new_note()
         {
             using var scope = Factory.Services.CreateScope();
             var controller = SetupNotesController(scope, "-2");
@@ -31,7 +31,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         }
 
         [Fact]
-        public void Remove_note()
+        public void Deletes_existing_note()
         {
             using var scope = Factory.Services.CreateScope();
             var controller = SetupNotesController(scope, "-2");
@@ -41,7 +41,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         }
 
         [Fact]
-        public void Update_note()
+        public void Updates_existing_note()
         {
             using var scope = Factory.Services.CreateScope();
             var controller = SetupNotesController(scope, "-1");
@@ -53,7 +53,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         }
 
         [Fact]
-        public void Get_suitable_notes()
+        public void Gets_stored_notes()
         {
             using var scope = Factory.Services.CreateScope();
             var controller = SetupNotesController(scope, "-1");
