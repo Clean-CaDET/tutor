@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Tutor.Core.LearnerModel;
 using Tutor.Infrastructure.Security.Authorization;
 using Tutor.Infrastructure.Security.Authorization.JWT;
-using Tutor.Web.Controllers.Learners.DTOs;
 
 namespace Tutor.Web.Controllers.Learners
 {

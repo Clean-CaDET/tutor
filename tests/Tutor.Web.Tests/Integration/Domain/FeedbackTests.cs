@@ -6,8 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.LearnerModel.Feedback;
 using Tutor.Infrastructure.Database;
-using Tutor.Web.Controllers.Learners;
-using Tutor.Web.Controllers.Learners.DTOs.Feedback;
+using Tutor.Web.Controllers.Learners.Feedback;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain

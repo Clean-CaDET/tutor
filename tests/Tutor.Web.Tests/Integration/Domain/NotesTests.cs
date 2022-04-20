@@ -6,8 +6,7 @@ using Shouldly;
 using System.Collections.Generic;
 using System.Security.Claims;
 using Tutor.Core.LearnerModel.Notes;
-using Tutor.Web.Controllers.Learners;
-using Tutor.Web.Controllers.Learners.DTOs.Notes;
+using Tutor.Web.Controllers.Learners.Notes;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain

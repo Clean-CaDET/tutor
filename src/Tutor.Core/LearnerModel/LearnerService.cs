@@ -25,7 +25,7 @@ namespace Tutor.Core.LearnerModel
 
         public Result<Learner> GetLearnerProfile(int id)
         {
-            var learner = _learnerRepository.GetLearnerProfile(id);
+            var learner = _learnerRepository.Get(id);
             return learner == null ? Result.Fail("Learner with id " + id + "does not exist.") : Result.Ok(learner);
         }
 

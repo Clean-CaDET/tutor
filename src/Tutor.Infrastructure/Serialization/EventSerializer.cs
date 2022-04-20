@@ -1,5 +1,4 @@
 ﻿using Dahomey.Json;
-using Dahomey.Json.Serialization.Conventions;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -30,20 +29,19 @@ namespace Tutor.Infrastructure.Serialization
             { typeof(SessionAbandoned), "SessionAbandoned" },
             { typeof(InstructionalItemsSelected), "InstructionalItemsSelected" },
             { typeof(InstructorMessageEvent), "InstructorMessageEvent" },
-#region Submissions
+
             { typeof(ArrangeTaskSubmission), "ArrangeTaskSubmission" },
             { typeof(ChallengeSubmission), "ChallengeSubmission" },
             { typeof(MrqSubmission), "MrqSubmission" },
             { typeof(SaqSubmission), "SaqSubmission" },
-#endregion
         };
 
         public static JsonSerializerOptions SetupEvents(this JsonSerializerOptions options)
         {
-            DiscriminatorConventionRegistry registry = options.GetDiscriminatorConventionRegistry();
+            var registry = options.GetDiscriminatorConventionRegistry();
             registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(options, EventRelatedTypes, "$discriminator"));
 
-            foreach (Type type in EventRelatedTypes.Keys)
+            foreach (var type in EventRelatedTypes.Keys)
             {
                 registry.RegisterType(type);
             }
@@ -53,7 +51,7 @@ namespace Tutor.Infrastructure.Serialization
 
         public static JsonSerializerOptions GetEventSerializerOptions()
         {
-            JsonSerializerOptions options = new JsonSerializerOptions();
+            var options = new JsonSerializerOptions();
             options.SetupExtensions();
             options.GetDiscriminatorConventionRegistry().ClearConventions();
             options.SetupEvents();

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Web.Controllers.Domain.DTOs;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
+using Tutor.Web.Controllers.Learners.DomainOverlay.DTOs;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
@@ -96,7 +97,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             using var scope = Factory.Services.CreateScope();
             var controller = SetupKcmController(scope, "-2");
 
-            var kcMasteryStatistics = ((OkObjectResult)controller.GetKnowledgeComponentStatistics(-15).Result).Value as KnowledgeComponentStatisticsDto;
+            var kcMasteryStatistics = ((OkObjectResult)controller.GetKcMasteryStatistics(-15).Result).Value as KcMasteryStatisticsDto;
 
             kcMasteryStatistics.IsSatisfied.ShouldBe(false);
             kcMasteryStatistics.Mastery.ShouldBe(0.5);

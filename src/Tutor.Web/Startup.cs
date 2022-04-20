@@ -1,10 +1,8 @@
 using Dahomey.Json;
 using Dahomey.Json.Serialization.Conventions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,7 +20,6 @@ using Tutor.Core.LearnerModel.Feedback;
 using Tutor.Core.LearnerModel.Notes;
 using Tutor.Core.LearnerModel.Workspaces;
 using Tutor.Infrastructure;
-using Tutor.Infrastructure.Database.Repositories.Domain;
 using Tutor.Infrastructure.Database.Repositories.Learners;
 using Tutor.Infrastructure.Security;
 using Tutor.Infrastructure.Security.Authorization;
@@ -32,8 +29,6 @@ using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
-using Tutor.Web.IAM;
-using Tutor.Web.IAM.Keycloak;
 
 namespace Tutor.Web
 {
@@ -87,7 +82,7 @@ namespace Tutor.Web
 
             services.AddScoped<IKcMasteryService, KcMasteryService>();
             services.AddScoped<IKcMasteryRepository, KcMasteryDatabaseRepository>();
-            services.AddScoped<ILearnerAssessmentsService, LearnerAssessmentsService>();
+            services.AddScoped<ILearnerAssessmentService, LearnerAssessmentService>();
             services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
 
             services.AddScoped<ILearnerService, LearnerService>();
@@ -97,7 +92,6 @@ namespace Tutor.Web
             services.AddScoped<ITokenService, JwtService>();
             services.AddScoped<IRefreshTokenValidator, RefreshTokenValidator>();
 
-            services.AddScoped<IAuthProvider, KeycloakAuthProvider>();
             services.AddScoped<IAuthService, AuthService>();
 
             services.AddScoped<IFeedbackService, FeedbackService>();
@@ -106,15 +100,7 @@ namespace Tutor.Web
             services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<INoteService, NoteService>();
 
-            if (!bool.Parse(Environment.GetEnvironmentVariable("KEYCLOAK_ON") ?? "false"))
-            {
-                SetupJwtService(services);
-            }
-            else
-            {
-                KeycloakAuthenticationConfig(services);
-                KeycloakAuthorizationConfig(services);
-            }
+            SetupJwtService(services);
 
             SetupMoveOn(services);
         }
@@ -122,7 +108,7 @@ namespace Tutor.Web
         private void SetupMoveOn(IServiceCollection services)
         {
             var moveOnCriteria = Configuration.GetValue<string>("MoveOn");
-            Type moveOnType = MoveOnResolver.ResolveOrDefault(moveOnCriteria);
+            var moveOnType = MoveOnResolver.ResolveOrDefault(moveOnCriteria);
             services.AddScoped(typeof(IMoveOnCriteria), moveOnType);
         }
 
@@ -167,48 +153,6 @@ namespace Tutor.Web
                         }
                     };
                 });
-        }
-
-        private static void KeycloakAuthorizationConfig(IServiceCollection services)
-        {
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("learnerPolicy", policy =>
-                    policy.Requirements.Add(new KeycloakRole("Learner")));
-                options.AddPolicy("professorPolicy", policy =>
-                    policy.Requirements.Add(new KeycloakRole("Professor")));
-            });
-            services.AddSingleton<IAuthorizationHandler, KeycloakRoleHandler>();
-        }
-
-        private void KeycloakAuthenticationConfig(IServiceCollection services)
-        {
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.Authority = Environment.GetEnvironmentVariable("AUTHORITY") ??
-                                    "http://localhost:8080/auth/realms/master";
-                options.Audience = Environment.GetEnvironmentVariable("AUDIENCE") ?? "demo-app";
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.Events = new JwtBearerEvents
-
-                {
-                    OnAuthenticationFailed = failedContext =>
-                    {
-                        failedContext.NoResult();
-                        failedContext.Response.StatusCode = 500;
-                        failedContext.Response.ContentType = "text/plain";
-
-                        return failedContext.Response.WriteAsync(Env.IsDevelopment()
-                            ? failedContext.Exception.ToString()
-                            : "An error occured processing your authentication.");
-                    }
-                };
-            });
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Infrastructure.Database;
-using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
+using Tutor.Web.Controllers.Learners.DomainOverlay;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
@@ -39,8 +39,8 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Update_Kc_Mastery(MrqSubmissionDto submission, double expectedKcMastery)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), 
-                scope.ServiceProvider.GetRequiredService<ILearnerAssessmentsService>());
+            var controller = new LearnerAssessmentController(Factory.Services.GetRequiredService<IMapper>(), 
+                scope.ServiceProvider.GetRequiredService<ILearnerAssessmentService>());
             var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
             var assessmentItem = dbContext.AssessmentItems.FirstOrDefault(ae => ae.Id == submission.AssessmentItemId);
             var knowledgeComponent =
