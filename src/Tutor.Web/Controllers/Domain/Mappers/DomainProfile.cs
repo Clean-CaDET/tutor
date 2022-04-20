@@ -25,7 +25,7 @@ namespace Tutor.Web.Controllers.Domain.Mappers
             CreateMap<KnowledgeUnit, UnitDto>();
             CreateMap<KnowledgeComponent, KnowledgeComponentDto>();
             CreateMap<KnowledgeComponentMastery, KnowledgeComponentMasteryDto>();
-            CreateMap<KnowledgeComponentStatistics, KnowledgeComponentStatisticsDto>();
+            CreateMap<KcMasteryStatistics, KnowledgeComponentStatisticsDto>();
 
             CreateMap<InstructionalItem, InstructionalItemDto>().IncludeAllDerived();
             CreateMap<Markdown, TextDto>();

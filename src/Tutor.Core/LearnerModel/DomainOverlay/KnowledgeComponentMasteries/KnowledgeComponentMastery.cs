@@ -27,16 +27,22 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         {
             get
             {
-                foreach (AssessmentItem assessmentItem in KnowledgeComponent.AssessmentItems)
-                {
-                    if (assessmentItem.Submissions.Count == 0)
-                        return false;
-                }
-                return true;
+                return KnowledgeComponent.AssessmentItems.All(assessmentItem => assessmentItem.Submissions.Count != 0);
             }
         }
 
         public IMoveOnCriteria MoveOnCriteria { get; set; }
+
+        public KcMasteryStatistics Statistics
+        {
+            get
+            {
+                var items = KnowledgeComponent.AssessmentItems;
+                var countCompleted = items.Count(ae => ae.IsCompleted);
+                var countAttempted = items.Count(ae => ae.IsAttempted);
+                return new KcMasteryStatistics(Mastery, items.Count, countCompleted, countAttempted, IsSatisfied);
+            }
+        }
 
         private KnowledgeComponentMastery() { }
 
@@ -49,13 +55,15 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         public Result LaunchSession()
         {
             if (HasActiveSession)
-                Causes(new SessionAbandoned()
+            {
+                Causes(new SessionAbandoned
                 {
                     KnowledgeComponentId = KnowledgeComponent.Id,
                     LearnerId = LearnerId
                 });
+            }
 
-            Causes(new SessionLaunched()
+            Causes(new SessionLaunched
             {
                 KnowledgeComponentId = KnowledgeComponent.Id,
                 LearnerId = LearnerId
@@ -65,10 +73,9 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 
         public Result TerminateSession()
         {
-            if (!HasActiveSession)
-                return Result.Fail("No active session to terminate.");
+            if (!HasActiveSession) return Result.Fail("No active session to terminate.");
 
-            Causes(new SessionTerminated()
+            Causes(new SessionTerminated
             {
                 KnowledgeComponentId = KnowledgeComponent.Id,
                 LearnerId = LearnerId
@@ -78,15 +85,14 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 
         public Result<Evaluation> SubmitAssessmentItemAnswer(Submission submission)
         {
-            if (!HasActiveSession)
-                LaunchSession();
+            if (!HasActiveSession) LaunchSession();
 
-            bool IsCompletedBeforeSubmission = IsCompleted;
-            Result<Evaluation> result = EvaluateAndSaveSubmission(submission);
+            var isCompletedBeforeSubmission = IsCompleted;
+            var result = EvaluateAndSaveSubmission(submission);
             if (result.IsSuccess)
             {
                 TryPass();
-                TryComplete(IsCompletedBeforeSubmission);
+                TryComplete(isCompletedBeforeSubmission);
             }
 
             return result;
@@ -95,8 +101,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         private Result<Evaluation> EvaluateAndSaveSubmission(Submission submission)
         {
             var assessmentItem = KnowledgeComponent.GetAssessmentItem(submission.AssessmentItemId);
-            if (assessmentItem == null)
-                return Result.Fail("No assessment event with ID: " + submission.AssessmentItemId);
+            if (assessmentItem == null) return Result.Fail("No assessment event with ID: " + submission.AssessmentItemId);
 
             Evaluation evaluation;
             try
@@ -110,7 +115,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             if (evaluation.Correct) submission.MarkCorrect();
             submission.CorrectnessLevel = evaluation.CorrectnessLevel;
 
-            Causes(new AssessmentItemAnswered()
+            Causes(new AssessmentItemAnswered
             {
                 Submission = submission,
                 TimeStamp = submission.TimeStamp
@@ -121,13 +126,12 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 
         public Result<AssessmentItem> SelectSuitableAssessmentItem(IAssessmentItemSelector assessmentItemSelector)
         {
-            if (!HasActiveSession)
-                LaunchSession();
+            if (!HasActiveSession) LaunchSession();
 
             var ai = assessmentItemSelector.SelectSuitableAssessmentItem(KnowledgeComponent.AssessmentItems);
             if (ai == null) return Result.Fail("No assessment item found for knowledge component with ID " + KnowledgeComponent.Id);
 
-            Causes(new AssessmentItemSelected()
+            Causes(new AssessmentItemSelected
             {
                 LearnerId = LearnerId,
                 KnowledgeComponentId = KnowledgeComponent.Id,
@@ -139,10 +143,9 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 
         public Result<List<InstructionalItem>> GetInstructionalItems()
         {
-            if (!HasActiveSession)
-                LaunchSession();
+            if (!HasActiveSession) LaunchSession();
 
-            Causes(new InstructionalItemsSelected()
+            Causes(new InstructionalItemsSelected
             {
                 LearnerId = LearnerId,
                 KnowledgeComponentId = KnowledgeComponent.Id
@@ -152,57 +155,45 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 
         private void TryPass()
         {
-            if (IsPassed)
-                return;
+            if (IsPassed || Mastery < PassThreshold) return;
 
-            if (Mastery >= PassThreshold)
+            Causes(new KnowledgeComponentPassed
             {
-                Causes(new KnowledgeComponentPassed()
-                {
-                    KnowledgeComponentId = KnowledgeComponent.Id,
-                    LearnerId = LearnerId
-                });
-                TrySatisfy();
-            }
+                KnowledgeComponentId = KnowledgeComponent.Id,
+                LearnerId = LearnerId
+            });
+            TrySatisfy();
         }
 
         private void TryComplete(bool isCompletedBeforeSubmission)
         {
-            if (isCompletedBeforeSubmission)
-                return;
+            if (isCompletedBeforeSubmission || !IsCompleted) return;
 
-            if (IsCompleted)
+            Causes(new KnowledgeComponentCompleted
             {
-                Causes(new KnowledgeComponentCompleted()
-                {
-                    KnowledgeComponentId = KnowledgeComponent.Id,
-                    LearnerId = LearnerId
-                });
-                TrySatisfy();
-            }
+                KnowledgeComponentId = KnowledgeComponent.Id,
+                LearnerId = LearnerId
+            });
+            TrySatisfy();
         }
 
         private void TrySatisfy()
         {
-            if (IsSatisfied)
-                return;
+            if (IsSatisfied || !MoveOnCriteria.IsSatisfied(IsCompleted, IsPassed)) return;
 
-            if (MoveOnCriteria.IsSatisfied(IsCompleted, IsPassed))
-                Causes(new KnowledgeComponentSatisfied()
-                {
-                    KnowledgeComponentId = KnowledgeComponent.Id,
-                    LearnerId = LearnerId
-                });
+            Causes(new KnowledgeComponentSatisfied
+            {
+                KnowledgeComponentId = KnowledgeComponent.Id,
+                LearnerId = LearnerId
+            });
         }
 
         public Result SeekHelpForAssessmentItem(SoughtHelp helpEvent)
         {
-            if (!HasActiveSession)
-                LaunchSession();
+            if (!HasActiveSession) LaunchSession();
 
             var assessmentItem = KnowledgeComponent.GetAssessmentItem(helpEvent.AssessmentItemId);
-            if (assessmentItem == null)
-                return Result.Fail("No assessment event with ID: " + helpEvent.AssessmentItemId);
+            if (assessmentItem == null) return Result.Fail("No assessment event with ID: " + helpEvent.AssessmentItemId);
 
             Causes(helpEvent);
             return Result.Ok();
@@ -242,11 +233,9 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         {
             /* Probably refactor to move the GetMaximumSubmissionCorrectness from AE to KCMastery, or a 
              * child object (which would be created here if it doesn't exist yet). The Apply method
-             * should never fail, silently or otherwise, and fetching the AE can fail.
-             */
+             * should never fail, silently or otherwise, and fetching the AE can fail. */
             var assessmentItem = KnowledgeComponent.GetAssessmentItem(@event.Submission.AssessmentItemId);
-            if (assessmentItem == null)
-                return;
+            if (assessmentItem == null) return;
 
             var currentCorrectnessLevel = assessmentItem.GetMaximumSubmissionCorrectness();
 
@@ -274,30 +263,23 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         }
 
         private static void When(AssessmentItemSelected @event)
-        {
-            /* 
-             * Possibly save information that the AE has been selected somewhere in the 
-             * model.
-             */
+        { 
+            // Possibly save information that the AE has been selected somewhere in the model.
         }
 
-        private static void When(InstructionalItemsSelected item)
+        private static void When(InstructionalItemsSelected @event)
         {
             // No action necessary for now.
         }
 
         private static void When(SoughtHelp @event)
         {
-            /*
-             * Possibly record how many times help was sought somewhere?             
-             */
+            // Possibly record how many times help was sought somewhere.
         }
 
         private static void When(InstructorMessageEvent @event)
         {
-            /* 
-             *  No action necessary for now.
-             */
+            // No action necessary for now.
         }
     }
 }

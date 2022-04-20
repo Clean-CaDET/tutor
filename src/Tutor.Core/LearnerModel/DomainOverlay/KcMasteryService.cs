@@ -1,6 +1,5 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
-using System.Linq;
 using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
@@ -26,7 +25,10 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
 
         public Result<KnowledgeUnit> GetUnit(int unitId, int learnerId)
         {
-            return Result.Ok(_kcMasteryRepository.GetUnitWithKcs(unitId, learnerId));
+            var unit = _kcMasteryRepository.GetUnitWithKcs(unitId, learnerId);
+            if(unit == null) return Result.Fail("Learner not enrolled in KC: " + unitId);
+
+            return Result.Ok(unit);
         }
 
         public Result<List<KnowledgeComponentMastery>> GetKnowledgeComponentMasteries(List<int> kcIds, int learnerId)
@@ -64,19 +66,12 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             return result.IsFailed ? result : Result.Ok(_kcMasteryRepository.GetDerivedAssessmentItem(result.Value.Id));
         }
 
-        public Result<KnowledgeComponentStatistics> GetKnowledgeComponentStatistics(int knowledgeComponentId,
-            int learnerId)
+        public Result<KcMasteryStatistics> GetKcMasteryStatistics(int knowledgeComponentId, int learnerId)
         {
             var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
             if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
 
-            var assessmentItems = kcMastery.KnowledgeComponent.AssessmentItems;
-
-            var countCompleted = assessmentItems.Count(ae => ae.IsCompleted);
-            var countAttempted = assessmentItems.Count(ae => ae.IsAttempted);
-            
-            return Result.Ok(new KnowledgeComponentStatistics(
-                kcMastery.Mastery, assessmentItems.Count, countCompleted, countAttempted, kcMastery.IsSatisfied));
+            return Result.Ok(kcMastery.Statistics);
         }
 
         public Result LaunchSession(int knowledgeComponentId, int learnerId)

@@ -42,7 +42,9 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
                 .Include(e => e.KnowledgeUnit)
                 .ThenInclude(u => u.KnowledgeComponents)
                 .Select(e => e.KnowledgeUnit).FirstOrDefault();
-            LoadKcHierarchy(unit?.KnowledgeComponents);
+            if (unit == null) return null;
+            
+            LoadKcHierarchy(unit.KnowledgeComponents);
             return unit;
         }
         private void LoadKcHierarchy(List<KnowledgeComponent> parentKCs)

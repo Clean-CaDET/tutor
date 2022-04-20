@@ -20,7 +20,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
 
         Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId);
 
-        Result<KnowledgeComponentStatistics> GetKnowledgeComponentStatistics(int knowledgeComponentId, int learnerId);
+        Result<KcMasteryStatistics> GetKcMasteryStatistics(int knowledgeComponentId, int learnerId);
 
         Result LaunchSession(int knowledgeComponentId, int learnerId);
 

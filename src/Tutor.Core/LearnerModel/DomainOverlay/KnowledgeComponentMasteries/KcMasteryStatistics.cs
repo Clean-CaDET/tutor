@@ -1,6 +1,6 @@
 ﻿namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 {
-    public class KnowledgeComponentStatistics
+    public class KcMasteryStatistics
     {
         public double Mastery { get; }
         public int TotalCount { get; }
@@ -8,7 +8,7 @@
         public int AttemptedCount { get; }
         public bool IsSatisfied { get; }
 
-        public KnowledgeComponentStatistics(double mastery, int totalCount, int completedCount, int attemptedCount, bool isSatisfied)
+        public KcMasteryStatistics(double mastery, int totalCount, int completedCount, int attemptedCount, bool isSatisfied)
         {
             Mastery = mastery;
             TotalCount = totalCount;
