@@ -3,7 +3,7 @@ using Tutor.Infrastructure.Security.Authentication;
 
 namespace Tutor.Web.Controllers.Users;
 
-[Route("api/plugin")]
+[Route("api/users")]
 [ApiController]
 public class UserController : ControllerBase
 {

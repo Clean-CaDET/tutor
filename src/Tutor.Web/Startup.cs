@@ -95,7 +95,7 @@ namespace Tutor.Web
             services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<INoteService, NoteService>();
 
-            SetupJwtService(services);
+            SetupAuth(services);
 
             SetupMoveOn(services);
         }
@@ -107,17 +107,16 @@ namespace Tutor.Web
             services.AddScoped(typeof(IMoveOnCriteria), moveOnType);
         }
 
-        private static void SetupJwtService(IServiceCollection services)
+        private static void SetupAuth(IServiceCollection services)
         {
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserRepository, UserDatabaseRepository>();
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("learnerPolicy", policy =>
-                    policy.RequireRole("learner"));
-                options.AddPolicy("administratorPolicy", policy =>
-                    policy.RequireRole("administrator"));
+                options.AddPolicy("administratorPolicy", policy => policy.RequireRole("administrator"));
+                options.AddPolicy("instructorPolicy", policy => policy.RequireRole("instructor"));
+                options.AddPolicy("learnerPolicy", policy => policy.RequireRole("learner"));
             });
 
             var key = EnvironmentConnection.GetSecret("JWT_KEY") ?? "tutor_secret_key";
