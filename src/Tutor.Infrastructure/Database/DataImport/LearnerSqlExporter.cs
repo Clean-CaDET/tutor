@@ -8,29 +8,34 @@ namespace Tutor.Infrastructure.Database.DataImport
 {
     internal static class LearnerSqlExporter
     {
-        internal static string BuildSql(List<LearnerColumns> learners, List<KCColumns> kcs, List<UnitColumns> units)
+        internal static string BuildSql(List<UserLearnerColumns> learners, List<KCColumns> kcs, List<UnitColumns> units)
         {
-            return BuildLearnerSql(learners) + BuildMasterySql(learners, kcs, units);
+            return BuildUserLearnerSql(learners) + BuildMasterySql(learners, kcs, units);
         }
 
-        private static string BuildLearnerSql(List<LearnerColumns> learners)
+        private static string BuildUserLearnerSql(List<UserLearnerColumns> learners)
         {
             var sqlBuilder = new StringBuilder();
             sqlBuilder.AppendLine().AppendLine();
             foreach (var learner in learners)
             {
-                sqlBuilder.Append("INSERT INTO public.\"Learners\"(\"Id\", \"StudentIndex\", \"Name\", \"Surname\", \"Password\", \"Salt\") VALUES");
+                sqlBuilder.Append("INSERT INTO public.\"Users\"(\"Id\", \"Username\", \"Password\", \"Salt\", \"Role\") VALUES");
                 sqlBuilder.AppendLine();
-                sqlBuilder.Append("\t(" + learner.Id + ", '" + learner.StudentIndex + "', '"
-                                    + learner.Name + "', '" + learner.Surname + "', '"
-                                  + learner.Password + "', '" + learner.Salt + "');");
+                sqlBuilder.Append("\t(" + learner.Id + ", '" + learner.Index + "', '"
+                                  + learner.Password + "', '" + learner.Salt + "', 2);");
+                sqlBuilder.AppendLine().AppendLine();
+
+                sqlBuilder.Append("INSERT INTO public.\"Learners\"(\"Id\", \"UserId\", \"Index\", \"Name\", \"Surname\") VALUES");
+                sqlBuilder.AppendLine();
+                sqlBuilder.Append("\t(" + learner.Id + ", " + learner.Id + ", '" + learner.Index + "', '"
+                                    + learner.Name + "', '" + learner.Surname + "');");
                 sqlBuilder.AppendLine().AppendLine();
             }
 
             return sqlBuilder.ToString();
         }
 
-        private static string BuildMasterySql(List<LearnerColumns> learners, List<KCColumns> kcs, List<UnitColumns> units)
+        private static string BuildMasterySql(List<UserLearnerColumns> learners, List<KCColumns> kcs, List<UnitColumns> units)
         {
             var sqlBuilder = new StringBuilder();
             var startingId = -100000;

@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using Tutor.Core.LearnerModel;
-using Tutor.Infrastructure.Security.Authorization;
-using Tutor.Web.Controllers.Learners;
+using Tutor.Infrastructure.Security.Authentication;
+using Tutor.Web.Controllers.Users;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Learners
@@ -18,11 +16,10 @@ namespace Tutor.Web.Tests.Integration.Learners
         public void Successfully_login()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new LearnerController(scope.ServiceProvider.GetRequiredService<IAuthService>(), scope.ServiceProvider.GetRequiredService<ILearnerService>(),
-                scope.ServiceProvider.GetRequiredService<IMapper>());
-            var loginSubmission = new LoginDto {StudentIndex = "SU-1-2021", Password = "123"};
+            var controller = new UserController(scope.ServiceProvider.GetRequiredService<IAuthService>());
+            var loginSubmission = new CredentialsDto {Username = "SU-1-2021", Password = "123"};
 
-            var authenticationResponse = ((OkObjectResult) controller.Login(loginSubmission).Result)?.Value as AuthenticationResponse;
+            var authenticationResponse = ((OkObjectResult) controller.Login(loginSubmission).Result)?.Value as AuthenticationTokens;
 
             authenticationResponse.Id.ShouldBe(-1);
         }
@@ -31,11 +28,10 @@ namespace Tutor.Web.Tests.Integration.Learners
         public void Nonexisting_user_login()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new LearnerController(scope.ServiceProvider.GetRequiredService<IAuthService>(), scope.ServiceProvider.GetRequiredService<ILearnerService>(),
-                scope.ServiceProvider.GetRequiredService<IMapper>());
-            var loginSubmission = new LoginDto {StudentIndex = "SA-1-2021", Password = "123"};
+            var controller = new UserController(scope.ServiceProvider.GetRequiredService<IAuthService>());
+            var loginSubmission = new CredentialsDto {Username = "SA-1-2021", Password = "123"};
 
-            var code = ((NotFoundObjectResult) controller.Login(loginSubmission).Result).StatusCode;
+            var code = ((NotFoundObjectResult) controller.Login(loginSubmission).Result)?.StatusCode;
 
             code.ShouldBe(404);
         }

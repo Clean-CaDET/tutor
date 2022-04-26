@@ -12,14 +12,14 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
             _dbContext = dbContext;
         }
 
-        public Learner Get(int id)
+        public Learner GetByUserId(int userId)
         {
-            return _dbContext.Learners.FirstOrDefault(learner => learner.Id.Equals(id));
+            return _dbContext.Learners.FirstOrDefault(learner => learner.UserId.Equals(userId));
         }
 
         public Learner GetByIndex(string index)
         {
-            return _dbContext.Learners.FirstOrDefault(learner => learner.StudentIndex.Equals(index));
+            return _dbContext.Learners.FirstOrDefault(learner => learner.Index.Equals(index));
         }
 
         public Learner Save(Learner learner)

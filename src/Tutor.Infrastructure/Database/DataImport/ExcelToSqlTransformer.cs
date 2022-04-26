@@ -39,7 +39,9 @@ DELETE FROM public.""KnowledgeComponents"";
 DELETE FROM public.""UnitEnrollments"";
 DELETE FROM public.""KnowledgeUnits"";
 DELETE FROM public.""Learners"";
+DELETE FROM public.""Events"";
 
+DELETE FROM public.""Users"";
 ";
 
     private static void Save(string sqlScript, string destination)

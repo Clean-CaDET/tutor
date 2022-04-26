@@ -73,7 +73,8 @@ namespace Tutor.Web.Tests.Integration.Learners
                     {
                         User = new ClaimsPrincipal(new ClaimsIdentity(new[]
                         {
-                            new Claim("id", userId)
+                            new Claim("id", userId),
+                            new Claim("learnerId", userId)
                         }))
                     }
                 }

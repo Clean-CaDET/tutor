@@ -25,13 +25,13 @@ namespace Tutor.Core.LearnerModel
 
         public Result<Learner> GetLearnerProfile(int id)
         {
-            var learner = _learnerRepository.Get(id);
-            return learner == null ? Result.Fail("Learner with id " + id + "does not exist.") : Result.Ok(learner);
+            var learner = _learnerRepository.GetByUserId(id);
+            return learner == null ? Result.Fail("Learner tied to user id " + id + " does not exist.") : Result.Ok(learner);
         }
 
         private void CreateWorkspace(Learner learner)
         {
-            learner.Workspace = _workspaceCreator.Create(learner.StudentIndex);
+            learner.Workspace = _workspaceCreator.Create(learner.Index);
         }
     }
 }

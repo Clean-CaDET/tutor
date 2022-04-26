@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
-using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,10 +19,10 @@ using Tutor.Core.LearnerModel.Feedback;
 using Tutor.Core.LearnerModel.Notes;
 using Tutor.Core.LearnerModel.Workspaces;
 using Tutor.Infrastructure;
+using Tutor.Infrastructure.Database.Repositories;
 using Tutor.Infrastructure.Database.Repositories.Learners;
 using Tutor.Infrastructure.Security;
-using Tutor.Infrastructure.Security.Authorization;
-using Tutor.Infrastructure.Security.Authorization.JWT;
+using Tutor.Infrastructure.Security.Authentication;
 using Tutor.Infrastructure.Serialization;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
@@ -89,10 +88,6 @@ namespace Tutor.Web
             services.Configure<WorkspaceOptions>(Configuration.GetSection("Workspace"));
             services.AddScoped<IWorkspaceCreator, NoWorkspaceCreator>();
             services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
-            services.AddScoped<ITokenService, JwtService>();
-            services.AddScoped<IRefreshTokenValidator, RefreshTokenValidator>();
-
-            services.AddScoped<IAuthService, AuthService>();
 
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
@@ -114,6 +109,9 @@ namespace Tutor.Web
 
         private static void SetupJwtService(IServiceCollection services)
         {
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserRepository, UserDatabaseRepository>();
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("learnerPolicy", policy =>

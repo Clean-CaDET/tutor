@@ -23,3 +23,6 @@ DELETE FROM public."UnitEnrollments";
 DELETE FROM public."KnowledgeUnits";
 DELETE FROM public."Learners";
 DELETE FROM public."Notes";
+DELETE FROM public."Events";
+
+DELETE FROM public."Users";

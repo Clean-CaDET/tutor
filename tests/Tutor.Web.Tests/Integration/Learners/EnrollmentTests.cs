@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.Web.Controllers.Domain.DTOs;
-using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
 using Tutor.Web.Controllers.Learners.DomainOverlay.DTOs;
 using Xunit;
 

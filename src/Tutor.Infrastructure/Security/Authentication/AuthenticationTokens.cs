@@ -1,6 +1,6 @@
-﻿namespace Tutor.Infrastructure.Security.Authorization
+﻿namespace Tutor.Infrastructure.Security.Authentication
 {
-    public class AuthenticationResponse
+    public class AuthenticationTokens
     {
         public int Id { get; set; }
 
