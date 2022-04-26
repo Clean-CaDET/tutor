@@ -2,7 +2,7 @@
 {
     public interface ILearnerRepository
     {
-        Learner Get(int id);
+        Learner GetByUserId(int userId);
         Learner GetByIndex(string index);
         Learner Save(Learner learner);
     }

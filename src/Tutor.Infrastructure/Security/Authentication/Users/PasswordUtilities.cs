@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
-namespace Tutor.Infrastructure.Security.Authorization;
+namespace Tutor.Infrastructure.Security.Authentication.Users;
 
 public static class PasswordUtilities
 {

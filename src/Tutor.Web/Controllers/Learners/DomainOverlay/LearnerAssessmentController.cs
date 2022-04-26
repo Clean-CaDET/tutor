@@ -7,7 +7,7 @@ using Tutor.Core.DomainModel.AssessmentItems.Challenges;
 using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Core.LearnerModel.DomainOverlay;
-using Tutor.Infrastructure.Security.Authorization.JWT;
+using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
@@ -80,7 +80,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         public ActionResult SaveInstructorMessage([FromBody] InstructorMessageDto instructorMessageDto)
         {
             var result = _learnerAssessmentService
-                .SaveInstructorMessage(instructorMessageDto.Message, instructorMessageDto.KcId, User.Id());
+                .SaveInstructorMessage(instructorMessageDto.Message, instructorMessageDto.KcId, User.LearnerId());
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok();
         }

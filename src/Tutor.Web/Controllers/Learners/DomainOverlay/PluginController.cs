@@ -4,6 +4,7 @@ using Tutor.Core.DomainModel.AssessmentItems.Challenges;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
+using Tutor.Web.Controllers.Users;
 
 namespace Tutor.Web.Controllers.Learners.DomainOverlay
 {
@@ -24,9 +25,9 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         }
 
         [HttpPost("login")]
-        public ActionResult<LearnerDto> LoginPlugin([FromBody] LoginDto login)
+        public ActionResult<LearnerDto> LoginPlugin([FromBody] CredentialsDto credentials)
         {
-            var learner = _learnerRepository.GetByIndex(login.StudentIndex);
+            var learner = _learnerRepository.GetByIndex(credentials.Username);
             if (learner != null) return Ok(learner);
             return NotFound("Invalid index.");
         }

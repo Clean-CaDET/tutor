@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.LearnerModel.Notes;
-using Tutor.Infrastructure.Security.Authorization.JWT;
+using Tutor.Infrastructure.Security.Authentication.Users;
 
 namespace Tutor.Web.Controllers.Learners.Notes
 {
@@ -26,7 +26,7 @@ namespace Tutor.Web.Controllers.Learners.Notes
         public ActionResult<NoteDto> SaveNote([FromBody] NoteDto noteDto)
         {
             var note = _mapper.Map<Note>(noteDto);
-            note.LearnerId = User.Id();
+            note.LearnerId = User.LearnerId();
             var result = _noteService.Save(note);
             return Ok(_mapper.Map<NoteDto>(result.Value));
         }
@@ -35,7 +35,7 @@ namespace Tutor.Web.Controllers.Learners.Notes
         public ActionResult<NoteDto> UpdateNote([FromBody] NoteDto noteDto)
         {
             var note = _mapper.Map<Note>(noteDto);
-            note.LearnerId = User.Id();
+            note.LearnerId = User.LearnerId();
             var result = _noteService.Update(note);
             return Ok(_mapper.Map<NoteDto>(result.Value));
         }
@@ -50,7 +50,7 @@ namespace Tutor.Web.Controllers.Learners.Notes
         [HttpGet("{unitId:int}")]
         public ActionResult<List<NoteDto>> GetAppropriateNotes(int unitId)
         {
-            var result = _noteService.GetAppropriateNotes(User.Id(), unitId);
+            var result = _noteService.GetAppropriateNotes(User.LearnerId(), unitId);
             return Ok(result.Value.Select(note => _mapper.Map<NoteDto>(note)).ToList());
         }
     }

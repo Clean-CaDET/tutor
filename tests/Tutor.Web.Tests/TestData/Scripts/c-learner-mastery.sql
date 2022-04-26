@@ -1,12 +1,12 @@
 ﻿INSERT INTO public."Learners"(
-    "Id", "Name", "StudentIndex", "Password", "Salt") -- Password: 123
-VALUES (-1, 'Unenrolled Student', 'SU-1-2021', 'SXQ0w0gW19OPoX3+jZ+tmcU6xl9uQFa5wRFcYbN8UKo=', '+ZcRExvqgCaST38r2oPT5A==');
+    "Id", "UserId", "Name", "Index")
+VALUES (-1, -1, 'Unenrolled Student', 'SU-1-2021');
 INSERT INTO public."Learners"(
-    "Id", "Name", "StudentIndex", "Password", "Salt") -- Password: 123
-VALUES (-2, 'Enrolled Student for KCM', 'SU-2-2021', 'SXQ0w0gW19OPoX3+jZ+tmcU6xl9uQFa5wRFcYbN8UKo=', '+ZcRExvqgCaST38r2oPT5A==');
+    "Id", "UserId", "Name", "Index")
+VALUES (-2, -2, 'Enrolled Student for KCM', 'SU-2-2021');
 INSERT INTO public."Learners"(
-    "Id", "Name", "StudentIndex", "Password", "Salt") -- Password: 123
-VALUES (-3, 'Enrolled Student for Submissions', 'SU-3-2021', 'SXQ0w0gW19OPoX3+jZ+tmcU6xl9uQFa5wRFcYbN8UKo=', '+ZcRExvqgCaST38r2oPT5A==');
+    "Id", "UserId", "Name", "Index")
+VALUES (-3, -3, 'Enrolled Student for Submissions', 'SU-3-2021');
 
 INSERT INTO public."UnitEnrollments"(
 	"Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
