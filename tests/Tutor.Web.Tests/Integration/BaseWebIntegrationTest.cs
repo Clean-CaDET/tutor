@@ -1,10 +1,10 @@
-﻿using System.Security.Claims;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
 using Tutor.Core.LearnerModel.DomainOverlay;
-using Tutor.Web.Controllers.Domain;
+using Tutor.Web.Controllers.Learners.DomainOverlay;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration
@@ -18,10 +18,10 @@ namespace Tutor.Web.Tests.Integration
             Factory = factory;
         }
 
-        protected KcController SetupKcmController(IServiceScope scope, string userId)
+        protected KcMasteryController SetupKcmController(IServiceScope scope, string userId)
         {
-            return new KcController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<ILearnerKcMasteryService>())
+            return new KcMasteryController(Factory.Services.GetRequiredService<IMapper>(),
+                scope.ServiceProvider.GetRequiredService<IKcMasteryService>())
             {
                 ControllerContext = new ControllerContext()
                 {

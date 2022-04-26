@@ -4,7 +4,7 @@ namespace Tutor.Core.LearnerModel
 {
     public interface ILearnerService
     {
-        Result<Learner> Register(Learner learner);
+        Result Enroll(int learnerId, int unitId);
         Result<Learner> GetLearnerProfile(int id);
     }
 }

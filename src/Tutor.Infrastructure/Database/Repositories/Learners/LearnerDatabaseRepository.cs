@@ -12,6 +12,11 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
             _dbContext = dbContext;
         }
 
+        public Learner Get(int id)
+        {
+            return _dbContext.Learners.FirstOrDefault(learner => learner.Id.Equals(id));
+        }
+
         public Learner GetByIndex(string index)
         {
             return _dbContext.Learners.FirstOrDefault(learner => learner.StudentIndex.Equals(index));
@@ -22,11 +27,6 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
             _dbContext.Learners.Attach(learner);
             _dbContext.SaveChanges();
             return learner;
-        }
-
-        public Learner GetLearnerProfile(int id)
-        {
-            return _dbContext.Learners.FirstOrDefault(learner => learner.Id.Equals(id));
         }
     }
 }

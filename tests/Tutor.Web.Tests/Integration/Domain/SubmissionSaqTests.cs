@@ -4,8 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using Tutor.Core.LearnerModel.DomainOverlay;
-using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ShortAnswerQuestions;
+using Tutor.Web.Controllers.Learners.DomainOverlay;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
@@ -20,7 +20,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Submits_short_answer_questions(SaqSubmissionDto submission, SaqEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ILearnerAssessmentsService>());
+            var controller = new LearnerAssessmentController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ILearnerAssessmentService>());
 
             var actualEvaluation = ((OkObjectResult)controller.SubmitShortAnswerQuestion(submission).Result).Value as SaqEvaluationDto;
 
