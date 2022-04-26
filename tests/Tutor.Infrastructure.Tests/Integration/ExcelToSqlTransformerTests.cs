@@ -11,8 +11,8 @@ namespace Tutor.Infrastructure.Tests.Integration
         public void Can_transform_to_sql()
         {
             const string sourceFolder = "C:/temp/tutor-excel-data/all-domain";
-            const string learnerFolder = "C:/temp/tutor-excel-data/learner";
-            const string destinationFile = "C:/temp/tutor-excel-data/output-v1.sql";
+            const string learnerFolder = "C:/temp/tutor-excel-data/learner-ftn-of";
+            const string destinationFile = "C:/temp/tutor-excel-data/output-v10.sql";
 
             ExcelToSqlTransformer.Transform(sourceFolder, learnerFolder, destinationFile);
 
