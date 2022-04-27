@@ -203,7 +203,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         {
             var instructorMessageEvent = new InstructorMessageEvent
             {
-                Message = message, KnowledgeComponentId = Id, LearnerId = LearnerId
+                Message = message, KnowledgeComponentId = KnowledgeComponent.Id, LearnerId = LearnerId
             };
             Causes(instructorMessageEvent);
             return Result.Ok();

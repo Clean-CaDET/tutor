@@ -23,16 +23,21 @@ namespace Tutor.Web.Tests.Integration
             return new KcMasteryController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IKcMasteryService>())
             {
-                ControllerContext = new ControllerContext()
+                ControllerContext = BuildContext(userAndLearnerId)
+            };
+        }
+
+        protected static ControllerContext BuildContext(string userAndLearnerId)
+        {
+            return new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext()
                 {
-                    HttpContext = new DefaultHttpContext()
+                    User = new ClaimsPrincipal(new ClaimsIdentity(new[]
                     {
-                        User = new ClaimsPrincipal(new ClaimsIdentity(new[]
-                        {
-                            new Claim("id", userAndLearnerId),
-                            new Claim("learnerId", userAndLearnerId),
-                        }))
-                    }
+                        new Claim("id", userAndLearnerId),
+                        new Claim("learnerId", userAndLearnerId),
+                    }))
                 }
             };
         }
