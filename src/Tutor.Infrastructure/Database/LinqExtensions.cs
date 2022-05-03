@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using Tutor.Core.BuildingBlocks;
 
-namespace Tutor.Infrastructure.Database.BuildingBlocks
+namespace Tutor.Infrastructure.Database
 {
     public static class LinqExtensions
     {

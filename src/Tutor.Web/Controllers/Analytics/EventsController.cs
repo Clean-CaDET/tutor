@@ -1,12 +1,12 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Infrastructure.Database.BuildingBlocks;
 using Tutor.Infrastructure.Database.EventStore;
 
 namespace Tutor.Web.Controllers.Analytics;
 
-[Route("api/events")]
+[Route("api/analytics/events")]
 [ApiController]
 public class EventsController : ControllerBase
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Tutor.Infrastructure.Database.BuildingBlocks
+namespace Tutor.Core.BuildingBlocks
 {
     public class PagedResult<T>
     {

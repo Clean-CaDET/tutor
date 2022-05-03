@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Infrastructure.Database.BuildingBlocks;
 
 namespace Tutor.Infrastructure.Database.EventStore
 {
@@ -16,9 +16,6 @@ namespace Tutor.Infrastructure.Database.EventStore
 
         public async Task<PagedResult<DomainEvent>> GetEventsAsync(int page, int pageSize)
         {
-            page = page == 0 ? 1 : page;
-            pageSize = pageSize > 1000 || pageSize < 0 ? 10 : pageSize;
-            // Move to EventsRequest constructor?
             var storedEvents = await _eventContext.Events
                 .GetPaged(page, pageSize);
 
