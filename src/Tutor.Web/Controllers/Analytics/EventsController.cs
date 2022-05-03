@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Tutor.Core.BuildingBlocks.EventSourcing;
+using Tutor.Infrastructure.Database.BuildingBlocks;
 using Tutor.Infrastructure.Database.EventStore;
 
 namespace Tutor.Web.Controllers.Analytics;
@@ -17,8 +18,10 @@ public class EventsController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<DomainEvent>> GetEvents()
+    public ActionResult<PagedResult<DomainEvent>> GetEvents([FromQuery] int page, [FromQuery] int pageSize)
     {
-        return Ok(_eventStore.GetEvents(null, null));
+        var task = _eventStore.GetEventsAsync(page, pageSize);
+        Task.WaitAll(task);
+        return Ok(task.Result);
     }
 }
