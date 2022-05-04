@@ -23,8 +23,6 @@ DELETE FROM public.""Learners"";
 DELETE FROM public.""KcEvents"";
 DELETE FROM public.""Users"";
 
-DELETE FROM public.""Submissions"";
-DELETE FROM public.""ArrangeTaskContainerSubmissions"";
 DELETE FROM public.""Texts"";
 DELETE FROM public.""Images"";
 DELETE FROM public.""Videos"";

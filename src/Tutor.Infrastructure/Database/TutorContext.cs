@@ -42,17 +42,6 @@ namespace Tutor.Infrastructure.Database
 
         #endregion
 
-        #region Submissions
-
-        public DbSet<Submission> Submissions { get; set; }
-        public DbSet<SaqSubmission> SaqSubmissions { get; set; }
-        public DbSet<ArrangeTaskSubmission> ArrangeTaskSubmissions { get; set; }
-        public DbSet<ArrangeTaskContainerSubmission> ArrangeTaskContainerSubmissions { get; set; }
-        public DbSet<ChallengeSubmission> ChallengeSubmissions { get; set; }
-        public DbSet<MrqSubmission> MrqSubmissions { get; set; }
-
-        #endregion
-
         #region Feedbacks
 
         public DbSet<EmotionsFeedback> EmotionsFeedbacks { get; set; }
@@ -96,11 +85,6 @@ namespace Tutor.Infrastructure.Database
         private static void ConfigureArrangeTask(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ArrangeTask>().ToTable("ArrangeTasks");
-
-            modelBuilder.Entity<ArrangeTaskSubmission>()
-                .HasMany(at => at.Containers)
-                .WithOne()
-                .HasForeignKey("SubmissionId");
         }
 
         private static void ConfigureChallenge(ModelBuilder modelBuilder)
