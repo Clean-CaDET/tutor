@@ -1,4 +1,13 @@
-﻿DELETE FROM public."Submissions";
+﻿DELETE FROM public."AssessmentItemMasteries";
+DELETE FROM public."KcMasteries";
+DELETE FROM public."UnitEnrollments";
+DELETE FROM public."Notes";
+DELETE FROM public."Events";
+DELETE FROM public."Learners";
+
+DELETE FROM public."Users";
+
+DELETE FROM public."Submissions";
 DELETE FROM public."ArrangeTaskContainerSubmissions";
 DELETE FROM public."Texts";
 DELETE FROM public."Images";
@@ -17,12 +26,5 @@ DELETE FROM public."ArrangeTasks";
 DELETE FROM public."ShortAnswerQuestions";
 DELETE FROM public."AssessmentItems";
 DELETE FROM public."InstructionalItems";
-DELETE FROM public."KcMasteries";
 DELETE FROM public."KnowledgeComponents";
-DELETE FROM public."UnitEnrollments";
 DELETE FROM public."KnowledgeUnits";
-DELETE FROM public."Learners";
-DELETE FROM public."Notes";
-DELETE FROM public."Events";
-
-DELETE FROM public."Users";

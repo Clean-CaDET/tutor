@@ -17,6 +17,5 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
         void UpdateKcMastery(KnowledgeComponentMastery kcMastery);
 
         AssessmentItem GetDerivedAssessmentItem(int assessmentItemId);
-        Submission FindSubmissionWithMaxCorrectness(int assessmentItemId, int learnerId);
     }
 }

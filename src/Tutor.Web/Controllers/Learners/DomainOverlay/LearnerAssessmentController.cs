@@ -70,7 +70,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         [HttpPost("max-correctness")]
         public ActionResult<double> GetMaxCorrectness([FromBody] ChallengeSubmissionDto submission)
         {
-            var result = _learnerAssessmentService.GetMaxSubmissionCorrectness(submission.AssessmentItemId, submission.LearnerId);
+            var result = _learnerAssessmentService.GetMaxCorrectness(submission.AssessmentItemId, submission.LearnerId);
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(result.Value);
         }

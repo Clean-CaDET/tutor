@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using Tutor.Core.DomainModel.AssessmentItems;
+using FluentResults;
 
 namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 {
     public interface IAssessmentItemSelector
     {
-        AssessmentItem SelectSuitableAssessmentItem(List<AssessmentItem> itemsWithSubmissions);
+        Result<int> SelectSuitableAssessmentItemId(List<AssessmentItemMastery> assessmentMasteries, bool isPassed);
     }
 }

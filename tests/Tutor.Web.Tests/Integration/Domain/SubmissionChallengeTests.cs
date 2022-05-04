@@ -5,7 +5,6 @@ using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.LearnerModel.DomainOverlay;
-using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Controllers.Learners.DomainOverlay;
 using Tutor.Web.Tests.TestData;
@@ -24,7 +23,6 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new LearnerAssessmentController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ILearnerAssessmentService>());
-            var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
 
             var actualEvaluation = ((OkObjectResult)controller.SubmitChallenge(submission).Result).Value as ChallengeEvaluationDto;
 
@@ -34,9 +32,6 @@ namespace Tutor.Web.Tests.Integration.Domain
             actualEvaluation.ApplicableHints.Select(h => h.Id)
                 .All(expectedEvaluation.ApplicableHints.Select(i => i.Id).Contains).ShouldBeTrue();
             actualEvaluation.Correct.ShouldBe(expectedEvaluation.Correct);
-
-            var actualSubmission = dbContext.ChallengeSubmissions.OrderBy(s => s.TimeStamp).Last(c => c.AssessmentItemId == submission.AssessmentItemId);
-            actualSubmission.IsCorrect.ShouldBe(expectedEvaluation.Correct);
         }
 
         public static IEnumerable<object[]> ChallengeSubmissions() => new List<object[]>
