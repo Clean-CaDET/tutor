@@ -52,16 +52,16 @@ namespace Tutor.Infrastructure.Database.DataImport
                                       + unit.Id + ", '" + DateTime.Now + "', " + 0 +");");
                     sqlBuilder.AppendLine().AppendLine();
                 }
-                foreach (var kc in domainContent.KnowledgeComponents)
+                foreach (var kcId in domainContent.KnowledgeComponents.Select(kc => kc.Id))
                 {
                     sqlBuilder.Append(
                         "INSERT INTO public.\"KcMasteries\"(\"Id\", \"Mastery\", \"KnowledgeComponentId\", \"LearnerId\", \"IsPassed\", \"IsSatisfied\", \"IsCompleted\", \"HasActiveSession\") VALUES");
                     sqlBuilder.AppendLine();
-                    sqlBuilder.Append("\t(" + ++kcMasteryId + ", 0.00, " + kc.Id + ", "
+                    sqlBuilder.Append("\t(" + ++kcMasteryId + ", 0.00, " + kcId + ", "
                                       + learnerId + ", false, false, false, false);");
                     sqlBuilder.AppendLine().AppendLine();
 
-                    var assessmentItems = domainContent.AssessmentItems.Where(ai => ai.KnowledgeComponentId == kc.Id).OrderBy(ai => ai.Order);
+                    var assessmentItems = domainContent.AssessmentItems.Where(ai => ai.KnowledgeComponentId == kcId).OrderBy(ai => ai.Order);
                     foreach (var item in assessmentItems)
                     {
                         sqlBuilder.Append(

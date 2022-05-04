@@ -196,10 +196,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             if (assessmentMastery == null)
                 throw new InvalidOperationException("No assessment mastery for item: " + itemId +". Were the masteries created and loaded correctly?");
 
-            assessmentMastery.LastSubmissionTime = @event.TimeStamp;
-            if (assessmentMastery.Mastery > @event.Submission.CorrectnessLevel) return;
-
-            assessmentMastery.UpdateMastery(@event.Submission.CorrectnessLevel);
+            assessmentMastery.UpdateMastery(@event.Submission);
             UpdateMastery();
         }
 

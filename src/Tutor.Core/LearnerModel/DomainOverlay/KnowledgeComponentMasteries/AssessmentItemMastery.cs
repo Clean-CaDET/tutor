@@ -1,5 +1,6 @@
 ﻿using System;
 using Tutor.Core.BuildingBlocks;
+using Tutor.Core.DomainModel.AssessmentItems;
 
 namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 {
@@ -9,11 +10,11 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         public double Mastery { get; private set; }
         public int SubmissionCount { get; private set; }
         public DateTime? LastSubmissionTime { get; set; }
-        //TODO: Consider if we need Submission list.
-        public void UpdateMastery(double newCorrectnessLevel)
+        public void UpdateMastery(Submission newSubmission)
         {
-            Mastery = newCorrectnessLevel;
+            if (Mastery <= newSubmission.CorrectnessLevel) Mastery = newSubmission.CorrectnessLevel;
             SubmissionCount++;
+            LastSubmissionTime = newSubmission.TimeStamp;
         }
     }
 }

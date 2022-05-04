@@ -13,7 +13,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 
             if(assessmentMasteries.Count > 1) assessmentMasteries = RemoveLastSubmitted(assessmentMasteries);
 
-            if (isPassed) return Result.Ok(FindLeastAttemptedItem(assessmentMasteries));
+            if (isPassed) return Result.Ok(FindItemWithOldestAttempt(assessmentMasteries));
 
             var itemWithoutSubmission = FindItemWithoutSubmissions(assessmentMasteries);
             return Result.Ok(itemWithoutSubmission != 0 ? itemWithoutSubmission : FindMinCorrectnessItem(assessmentMasteries));
@@ -27,9 +27,9 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             return retVal;
         }
 
-        private static int FindLeastAttemptedItem(List<AssessmentItemMastery> assessmentMasteries)
+        private static int FindItemWithOldestAttempt(List<AssessmentItemMastery> assessmentMasteries)
         {
-            return assessmentMasteries.MinBy(am => am.SubmissionCount).AssessmentItemId;
+            return assessmentMasteries.MinBy(am => am.LastSubmissionTime).AssessmentItemId;
         }
 
         private static int FindItemWithoutSubmissions(List<AssessmentItemMastery> assessmentMasteries)
