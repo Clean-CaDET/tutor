@@ -38,7 +38,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         {
             new object[]
             {
-                new ChallengeSubmissionDto { AssessmentItemId = -211, LearnerId = -3, SourceCode = IntegrationTestCode.GetFailingAchievement()},
+                new ChallengeSubmissionDto { AssessmentItemId = -211, LearnerId = -3, SourceCode = ChallengeSubmissionTestCode.GetFailingAchievement()},
                 new ChallengeEvaluationDto
                 {
                     Correct = false, AssessmentItemId = -211,
@@ -51,7 +51,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             },
             new object[]
             {
-                new ChallengeSubmissionDto { AssessmentItemId = -211, LearnerId = -3, SourceCode = IntegrationTestCode.GetPassingAchievement()},
+                new ChallengeSubmissionDto { AssessmentItemId = -211, LearnerId = -3, SourceCode = ChallengeSubmissionTestCode.GetPassingAchievement()},
                 new ChallengeEvaluationDto
                 {
                     Correct = true, AssessmentItemId = -211,
@@ -60,7 +60,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             },
             new object[]
             {
-                new ChallengeSubmissionDto { AssessmentItemId = -154, LearnerId = -3, SourceCode = IntegrationTestCode.GetFailingCourse()},
+                new ChallengeSubmissionDto { AssessmentItemId = -154, LearnerId = -3, SourceCode = ChallengeSubmissionTestCode.GetFailingCourse()},
                 new ChallengeEvaluationDto
                 {
                     Correct = false, AssessmentItemId = -154,
@@ -72,7 +72,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             },
             new object[]
             {
-                new ChallengeSubmissionDto { AssessmentItemId = -154, LearnerId = -3, SourceCode = IntegrationTestCode.GetPassingCourse()},
+                new ChallengeSubmissionDto { AssessmentItemId = -154, LearnerId = -3, SourceCode = ChallengeSubmissionTestCode.GetPassingCourse()},
                 new ChallengeEvaluationDto
                 {
                     Correct = true, AssessmentItemId = -154,
@@ -81,7 +81,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             },
             new object[]
             {
-                new ChallengeSubmissionDto { AssessmentItemId = -956, LearnerId = -3, SourceCode = IntegrationTestCode.GetFailingParams()},
+                new ChallengeSubmissionDto { AssessmentItemId = -956, LearnerId = -3, SourceCode = ChallengeSubmissionTestCode.GetFailingParams()},
                 new ChallengeEvaluationDto
                 {
                     Correct = false, AssessmentItemId = -956,
@@ -90,7 +90,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             },
             new object[]
             {
-                new ChallengeSubmissionDto { AssessmentItemId = -956, LearnerId = -2, SourceCode = IntegrationTestCode.GetPassingParams()},
+                new ChallengeSubmissionDto { AssessmentItemId = -956, LearnerId = -2, SourceCode = ChallengeSubmissionTestCode.GetPassingParams()},
                 new ChallengeEvaluationDto
                 {
                     Correct = true, AssessmentItemId = -956,

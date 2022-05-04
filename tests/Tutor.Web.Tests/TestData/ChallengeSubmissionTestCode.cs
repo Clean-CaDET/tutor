@@ -2,7 +2,7 @@
 
 namespace Tutor.Web.Tests.TestData
 {
-    internal static class IntegrationTestCode
+    internal static class ChallengeSubmissionTestCode
     {
         internal static string[] GetFailingAchievement()
         {
@@ -12,14 +12,6 @@ namespace Tutor.Web.Tests.TestData
         internal static string[] GetPassingAchievement()
         {
 	        return GetCode("PassingAchievement.txt");
-        }
-
-        private static string[] GetCode(string path)
-        {
-	        return new[]
-	        {
-                File.ReadAllText("../../../TestData/" + path)
-            };
         }
 
         internal static string[] GetFailingCourse()
@@ -40,6 +32,14 @@ namespace Tutor.Web.Tests.TestData
         public static string[] GetPassingParams()
         {
             return GetCode("PassingParams.txt");
+        }
+
+        private static string[] GetCode(string path)
+        {
+	        return new[]
+	        {
+                File.ReadAllText("../../../TestData/ChallengeSubmissions/" + path)
+            };
         }
     }
 }

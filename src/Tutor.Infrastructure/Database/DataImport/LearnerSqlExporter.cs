@@ -8,9 +8,9 @@ namespace Tutor.Infrastructure.Database.DataImport
 {
     internal static class LearnerSqlExporter
     {
-        internal static string BuildSql(List<UserLearnerColumns> learners, List<KCColumns> kcs, List<UnitColumns> units)
+        internal static string BuildSql(List<UserLearnerColumns> learners, DomainExcelContent domainContent)
         {
-            return BuildUserLearnerSql(learners) + BuildMasterySql(learners, kcs, units);
+            return BuildUserLearnerSql(learners) + BuildMasterySql(learners, domainContent);
         }
 
         private static string BuildUserLearnerSql(List<UserLearnerColumns> learners)
@@ -35,29 +35,43 @@ namespace Tutor.Infrastructure.Database.DataImport
             return sqlBuilder.ToString();
         }
 
-        private static string BuildMasterySql(List<UserLearnerColumns> learners, List<KCColumns> kcs, List<UnitColumns> units)
+        private static string BuildMasterySql(List<UserLearnerColumns> learners, DomainExcelContent domainContent)
         {
             var sqlBuilder = new StringBuilder();
-            var startingId = -100000;
+            var enrollmentId = -10000;
+            var kcMasteryId = -10000;
+            var aiMasteryId = -100000;
             foreach (var learnerId in learners.Select(l => l.Id))
             {
-                foreach (var unit in units)
+                foreach (var unit in domainContent.Units)
                 {
                     sqlBuilder.Append(
                         "INSERT INTO public.\"UnitEnrollments\"(\"Id\", \"LearnerId\", \"KnowledgeUnitId\", \"Start\", \"Status\") VALUES");
                     sqlBuilder.AppendLine();
-                    sqlBuilder.Append("\t(" + startingId++ + ", " + learnerId + ", "
+                    sqlBuilder.Append("\t(" + ++enrollmentId + ", " + learnerId + ", "
                                       + unit.Id + ", '" + DateTime.Now + "', " + 0 +");");
                     sqlBuilder.AppendLine().AppendLine();
                 }
-                foreach (var kc in kcs)
+                foreach (var kc in domainContent.KnowledgeComponents)
                 {
                     sqlBuilder.Append(
-                        "INSERT INTO public.\"KcMasteries\"(\"Id\", \"Mastery\", \"KnowledgeComponentId\", \"LearnerId\", \"IsPassed\", \"IsSatisfied\", \"HasActiveSession\") VALUES");
+                        "INSERT INTO public.\"KcMasteries\"(\"Id\", \"Mastery\", \"KnowledgeComponentId\", \"LearnerId\", \"IsPassed\", \"IsSatisfied\", \"IsCompleted\", \"HasActiveSession\") VALUES");
                     sqlBuilder.AppendLine();
-                    sqlBuilder.Append("\t(" + startingId++ + ", 0.00, " + kc.Id + ", "
-                                      + learnerId + ", false, false, false);");
+                    sqlBuilder.Append("\t(" + ++kcMasteryId + ", 0.00, " + kc.Id + ", "
+                                      + learnerId + ", false, false, false, false);");
                     sqlBuilder.AppendLine().AppendLine();
+
+                    var assessmentItems = domainContent.AssessmentItems.Where(ai => ai.KnowledgeComponentId == kc.Id).OrderBy(ai => ai.Order);
+                    foreach (var item in assessmentItems)
+                    {
+                        sqlBuilder.Append(
+                            "INSERT INTO public.\"AssessmentItemMasteries\"(\"Id\", \"AssessmentItemId\", \"Mastery\", \"SubmissionCount\", \"LastSubmissionTime\", \"KnowledgeComponentMasteryId\") VALUES");
+                        sqlBuilder.AppendLine();
+                        sqlBuilder.Append("\t(" + aiMasteryId++ + ", " + item.Id
+                                          + ", 0.00, 0, NULL, "
+                                          + kcMasteryId + ");");
+                        sqlBuilder.AppendLine().AppendLine();
+                    }
                 }
             }
 
