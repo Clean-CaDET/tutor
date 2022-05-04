@@ -2,7 +2,7 @@
 DELETE FROM public."KcMasteries";
 DELETE FROM public."UnitEnrollments";
 DELETE FROM public."Notes";
-DELETE FROM public."Events";
+DELETE FROM public."KcEvents";
 DELETE FROM public."Learners";
 
 DELETE FROM public."Users";

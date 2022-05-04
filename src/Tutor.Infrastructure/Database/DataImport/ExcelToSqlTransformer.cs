@@ -20,7 +20,7 @@ DELETE FROM public.""AssessmentItemMasteries"";
 DELETE FROM public.""KcMasteries"";
 DELETE FROM public.""UnitEnrollments"";
 DELETE FROM public.""Learners"";
-DELETE FROM public.""Events"";
+DELETE FROM public.""KcEvents"";
 DELETE FROM public.""Users"";
 
 DELETE FROM public.""Submissions"";
