@@ -76,7 +76,9 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             Causes(new AssessmentItemAnswered
             {
                 Submission = submission,
-                TimeStamp = submission.TimeStamp
+                TimeStamp = submission.TimeStamp,
+                KnowledgeComponentId = KnowledgeComponent.Id,
+                LearnerId = LearnerId
             });
 
             TryPass();
@@ -152,6 +154,8 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         public Result SeekHelpForAssessmentItem(SoughtHelp helpEvent)
         {
             if (!HasActiveSession) LaunchSession();
+            helpEvent.KnowledgeComponentId = KnowledgeComponent.Id;
+            helpEvent.LearnerId = LearnerId;
 
             Causes(helpEvent);
             return Result.Ok();
