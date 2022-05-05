@@ -33,7 +33,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             get
             {
                 var countCompleted = AssessmentMasteries.Count(ae => ae.Mastery > PassThreshold);
-                var countAttempted = AssessmentMasteries.Count(ae => ae.SubmissionCount > 0);
+                var countAttempted = AssessmentMasteries.Count(ae => ae.IsAttempted());
                 return new KcMasteryStatistics(Mastery, AssessmentMasteries.Count, countCompleted, countAttempted, IsSatisfied);
             }
         }
@@ -132,7 +132,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 
         private void TryComplete()
         {
-            if (IsCompleted) return;
+            if (IsCompleted || AssessmentMasteries.Any(am => !am.IsAttempted())) return;
 
             Causes(new KnowledgeComponentCompleted
             {

@@ -16,5 +16,10 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             SubmissionCount++;
             LastSubmissionTime = answer.TimeStamp;
         }
+
+        public bool IsAttempted()
+        {
+            return SubmissionCount > 0;
+        }
     }
 }
