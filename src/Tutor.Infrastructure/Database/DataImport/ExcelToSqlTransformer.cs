@@ -10,13 +10,19 @@ public static class ExcelToSqlTransformer
         var domainSql = DomainSqlExporter.BuildSql(domainContent);
 
         var learners = LearnerExcelImporter.Import(learnerSource);
-        var learnerSql = LearnerSqlExporter.BuildSql(learners, domainContent.KnowledgeComponents, domainContent.Units);
+        var learnerSql = LearnerSqlExporter.BuildSql(learners, domainContent);
 
         Save(DeleteCommands + domainSql + learnerSql, destination);
     }
 
-    private const string DeleteCommands = @"DELETE FROM public.""Submissions"";
-DELETE FROM public.""ArrangeTaskContainerSubmissions"";
+    private const string DeleteCommands = @"
+DELETE FROM public.""AssessmentItemMasteries"";
+DELETE FROM public.""KcMasteries"";
+DELETE FROM public.""UnitEnrollments"";
+DELETE FROM public.""Learners"";
+DELETE FROM public.""Events"";
+DELETE FROM public.""Users"";
+
 DELETE FROM public.""Texts"";
 DELETE FROM public.""Images"";
 DELETE FROM public.""Videos"";
@@ -34,14 +40,8 @@ DELETE FROM public.""ArrangeTasks"";
 DELETE FROM public.""ShortAnswerQuestions"";
 DELETE FROM public.""AssessmentItems"";
 DELETE FROM public.""InstructionalItems"";
-DELETE FROM public.""KcMasteries"";
 DELETE FROM public.""KnowledgeComponents"";
-DELETE FROM public.""UnitEnrollments"";
 DELETE FROM public.""KnowledgeUnits"";
-DELETE FROM public.""Learners"";
-DELETE FROM public.""Events"";
-
-DELETE FROM public.""Users"";
 ";
 
     private static void Save(string sqlScript, string destination)

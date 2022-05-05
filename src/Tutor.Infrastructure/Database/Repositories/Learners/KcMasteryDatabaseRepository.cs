@@ -72,9 +72,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
             int learnerId)
         {
             var kcm = _dbContext.KcMasteries
-                .Include(kcm => kcm.KnowledgeComponent)
-                .ThenInclude(kc => kc.AssessmentItems)
-                .ThenInclude(ae => ae.Submissions.Where(sub => sub.LearnerId == learnerId))
+                .Include(kcm => kcm.AssessmentMasteries)
                 .Include(kcm => kcm.KnowledgeComponent)
                 .ThenInclude(kc => kc.InstructionalItems)
                 .FirstOrDefault(kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponent.Id == knowledgeComponentId);
@@ -109,12 +107,6 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
                 .Include(ae => (ae as Challenge).FulfillmentStrategies)
                 .ThenInclude(s => (s as BasicMetricChecker).Hint)
                 .FirstOrDefault();
-        }
-
-        public Submission FindSubmissionWithMaxCorrectness(int assessmentItemId, int learnerId)
-        {
-            return _dbContext.Submissions.Where(sub => sub.AssessmentItemId == assessmentItemId && sub.LearnerId == learnerId)
-                .OrderBy(sub => sub.CorrectnessLevel).LastOrDefault();
         }
     }
 }

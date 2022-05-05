@@ -5,7 +5,7 @@ namespace Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions
     public class MrqEvaluation : Evaluation
     {
         public List<MrqItemEvaluation> ItemEvaluations { get; }
-        public MrqEvaluation(int assessmentItemId, double correctnessLevel, List<MrqItemEvaluation> evaluations) : base(assessmentItemId, correctnessLevel)
+        public MrqEvaluation(double correctnessLevel, List<MrqItemEvaluation> evaluations) : base(correctnessLevel)
         {
             ItemEvaluations = evaluations;
         }

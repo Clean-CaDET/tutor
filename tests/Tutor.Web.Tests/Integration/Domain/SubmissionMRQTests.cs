@@ -16,7 +16,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public SubmissionMrqTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
         [Theory]
-        [MemberData(nameof(MRQSubmissions))]
+        [MemberData(nameof(MrqSubmissions))]
         public void Submits_multiple_response_questions(MrqSubmissionDto submission, MrqEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
@@ -34,7 +34,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             }
         }
 
-        public static IEnumerable<object[]> MRQSubmissions()
+        public static IEnumerable<object[]> MrqSubmissions()
         {
             return new List<object[]>
             {

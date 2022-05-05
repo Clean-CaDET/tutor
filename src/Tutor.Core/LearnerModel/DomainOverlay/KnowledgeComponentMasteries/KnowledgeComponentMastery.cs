@@ -17,19 +17,14 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
     {
         private const double PassThreshold = 0.9;
 
-        public double Mastery { get; private set; }
-        public KnowledgeComponent KnowledgeComponent { get; private set; }
         public int LearnerId { get; private set; }
+        public KnowledgeComponent KnowledgeComponent { get; private set; }
+        public List<AssessmentItemMastery> AssessmentMasteries { get; private set; }
+        public double Mastery { get; private set; }
         public bool HasActiveSession { get; private set; }
         public bool IsPassed { get; private set; }
         public bool IsSatisfied { get; private set; }
-        public bool IsCompleted
-        {
-            get
-            {
-                return KnowledgeComponent.AssessmentItems.All(assessmentItem => assessmentItem.Submissions.Count != 0);
-            }
-        }
+        public bool IsCompleted { get; private set; }
 
         public IMoveOnCriteria MoveOnCriteria { get; set; }
 
@@ -37,19 +32,10 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         {
             get
             {
-                var items = KnowledgeComponent.AssessmentItems;
-                var countCompleted = items.Count(ae => ae.IsCompleted);
-                var countAttempted = items.Count(ae => ae.IsAttempted);
-                return new KcMasteryStatistics(Mastery, items.Count, countCompleted, countAttempted, IsSatisfied);
+                var countCompleted = AssessmentMasteries.Count(ae => ae.Mastery > PassThreshold);
+                var countAttempted = AssessmentMasteries.Count(ae => ae.IsAttempted());
+                return new KcMasteryStatistics(Mastery, AssessmentMasteries.Count, countCompleted, countAttempted, IsSatisfied);
             }
-        }
-
-        private KnowledgeComponentMastery() { }
-
-        public KnowledgeComponentMastery(KnowledgeComponent knowledgeComponent)
-        {
-            Mastery = 0.0;
-            KnowledgeComponent = knowledgeComponent;
         }
 
         public Result LaunchSession()
@@ -83,62 +69,41 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             return Result.Ok();
         }
 
-        public Result<Evaluation> SubmitAssessmentItemAnswer(Submission submission)
+        public Result SubmitAssessmentItemAnswer(int assessmentItemId, Submission submission, Evaluation evaluation)
         {
             if (!HasActiveSession) LaunchSession();
-
-            var isCompletedBeforeSubmission = IsCompleted;
-            var result = EvaluateAndSaveSubmission(submission);
-            if (result.IsSuccess)
-            {
-                TryPass();
-                TryComplete(isCompletedBeforeSubmission);
-            }
-
-            return result;
-        }
-
-        private Result<Evaluation> EvaluateAndSaveSubmission(Submission submission)
-        {
-            var assessmentItem = KnowledgeComponent.GetAssessmentItem(submission.AssessmentItemId);
-            if (assessmentItem == null) return Result.Fail("No assessment event with ID: " + submission.AssessmentItemId);
-
-            Evaluation evaluation;
-            try
-            {
-                evaluation = assessmentItem.EvaluateSubmission(submission);
-            }
-            catch (ArgumentException ex)
-            {
-                return Result.Fail(ex.Message);
-            }
-            if (evaluation.Correct) submission.MarkCorrect();
-            submission.CorrectnessLevel = evaluation.CorrectnessLevel;
-
+            
             Causes(new AssessmentItemAnswered
             {
+                TimeStamp = DateTime.UtcNow,
+                LearnerId = LearnerId,
+                KnowledgeComponentId = KnowledgeComponent.Id,
+                AssessmentItemId = assessmentItemId,
                 Submission = submission,
-                TimeStamp = submission.TimeStamp
+                Evaluation = evaluation
             });
 
-            return Result.Ok(evaluation);
+            TryPass();
+            TryComplete();
+
+            return Result.Ok();
         }
 
-        public Result<AssessmentItem> SelectSuitableAssessmentItem(IAssessmentItemSelector assessmentItemSelector)
+        public Result<int> SelectSuitableAssessmentItemId(IAssessmentItemSelector assessmentItemSelector)
         {
             if (!HasActiveSession) LaunchSession();
 
-            var ai = assessmentItemSelector.SelectSuitableAssessmentItem(KnowledgeComponent.AssessmentItems);
-            if (ai == null) return Result.Fail("No assessment item found for knowledge component with ID " + KnowledgeComponent.Id);
+            var result = assessmentItemSelector.SelectSuitableAssessmentItemId(AssessmentMasteries, IsPassed);
+            if (result.IsFailed) return result;
 
             Causes(new AssessmentItemSelected
             {
                 LearnerId = LearnerId,
                 KnowledgeComponentId = KnowledgeComponent.Id,
-                AssessmentItemId = ai.Id
+                AssessmentItemId = result.Value
             });
 
-            return Result.Ok(ai);
+            return result;
         }
 
         public Result<List<InstructionalItem>> GetInstructionalItems()
@@ -165,9 +130,9 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             TrySatisfy();
         }
 
-        private void TryComplete(bool isCompletedBeforeSubmission)
+        private void TryComplete()
         {
-            if (isCompletedBeforeSubmission || !IsCompleted) return;
+            if (IsCompleted || AssessmentMasteries.Any(am => !am.IsAttempted())) return;
 
             Causes(new KnowledgeComponentCompleted
             {
@@ -191,9 +156,8 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         public Result SeekHelpForAssessmentItem(SoughtHelp helpEvent)
         {
             if (!HasActiveSession) LaunchSession();
-
-            var assessmentItem = KnowledgeComponent.GetAssessmentItem(helpEvent.AssessmentItemId);
-            if (assessmentItem == null) return Result.Fail("No assessment event with ID: " + helpEvent.AssessmentItemId);
+            helpEvent.KnowledgeComponentId = KnowledgeComponent.Id;
+            helpEvent.LearnerId = LearnerId;
 
             Causes(helpEvent);
             return Result.Ok();
@@ -203,7 +167,9 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         {
             var instructorMessageEvent = new InstructorMessageEvent
             {
-                Message = message, KnowledgeComponentId = Id, LearnerId = LearnerId
+                Message = message,
+                KnowledgeComponentId = KnowledgeComponent.Id,
+                LearnerId = LearnerId
             };
             Causes(instructorMessageEvent);
             return Result.Ok();
@@ -231,20 +197,19 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 
         private void When(AssessmentItemAnswered @event)
         {
-            /* Probably refactor to move the GetMaximumSubmissionCorrectness from AE to KCMastery, or a 
-             * child object (which would be created here if it doesn't exist yet). The Apply method
-             * should never fail, silently or otherwise, and fetching the AE can fail. */
-            var assessmentItem = KnowledgeComponent.GetAssessmentItem(@event.Submission.AssessmentItemId);
-            if (assessmentItem == null) return;
+            var itemId = @event.AssessmentItemId;
+            var assessmentMastery = AssessmentMasteries.Find(am => am.AssessmentItemId == itemId);
+            if (assessmentMastery == null)
+                throw new InvalidOperationException("No assessment mastery for item: " + itemId +". Were the masteries created and loaded correctly?");
 
-            var currentCorrectnessLevel = assessmentItem.GetMaximumSubmissionCorrectness();
+            assessmentMastery.UpdateMastery(@event);
+            UpdateMastery();
+        }
 
-            assessmentItem.Submissions.Add(@event.Submission);
-
-            if (currentCorrectnessLevel > @event.Submission.CorrectnessLevel) return;
-            var kcMasteryIncrement = Math.Round(100.0 / KnowledgeComponent.AssessmentItems.Count
-                * (@event.Submission.CorrectnessLevel - currentCorrectnessLevel) / 100.0, 2);
-            Mastery += kcMasteryIncrement;
+        private void UpdateMastery()
+        {
+            Mastery = Math.Round(AssessmentMasteries.Sum(am => am.Mastery) / AssessmentMasteries.Count, 2);
+            if (Mastery > 0.97) Mastery = 1; // Resolves rounding errors.
         }
 
         private void When(KnowledgeComponentPassed @event)
@@ -252,9 +217,9 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             IsPassed = true;
         }
 
-        private static void When(KnowledgeComponentCompleted @event)
+        private void When(KnowledgeComponentCompleted @event)
         {
-            // No action necessary since IsCompleted is calculated.
+            IsCompleted = true;
         }
 
         private void When(KnowledgeComponentSatisfied @event)

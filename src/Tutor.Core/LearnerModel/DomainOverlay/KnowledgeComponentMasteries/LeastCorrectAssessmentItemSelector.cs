@@ -1,63 +1,46 @@
+using FluentResults;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.DomainModel.AssessmentItems;
 
 namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 {
     public class LeastCorrectAssessmentItemSelector : IAssessmentItemSelector
     {
-        public AssessmentItem SelectSuitableAssessmentItem(List<AssessmentItem> itemsWithSubmissions)
+        public Result<int> SelectSuitableAssessmentItemId(List<AssessmentItemMastery> assessmentMasteries, bool isPassed)
         {
-            if (itemsWithSubmissions.Count == 0) return null;
+            if (assessmentMasteries == null || assessmentMasteries.Count == 0)
+                return Result.Fail("No assessment item masteries available for selection.");
 
-            var aeNoSubmission = FindAeWithNoSubmission(itemsWithSubmissions);
-            return aeNoSubmission ?? FindAeWithMinCorrectSubmission(itemsWithSubmissions);
+            if(assessmentMasteries.Count > 1) assessmentMasteries = RemoveLastSubmitted(assessmentMasteries);
+
+            if (isPassed) return Result.Ok(FindItemWithOldestAttempt(assessmentMasteries));
+
+            var itemWithoutSubmission = FindItemWithoutSubmissions(assessmentMasteries);
+            return Result.Ok(itemWithoutSubmission != 0 ? itemWithoutSubmission : FindMinCorrectnessItem(assessmentMasteries));
         }
 
-        private static AssessmentItem FindAeWithNoSubmission(List<AssessmentItem> assessmentItems)
+        private static List<AssessmentItemMastery> RemoveLastSubmitted(List<AssessmentItemMastery> assessmentMasteries)
         {
-            return assessmentItems.OrderBy(ae => ae.Order).FirstOrDefault(ae => ae.Submissions.Count == 0);
+            var retVal = new List<AssessmentItemMastery>(assessmentMasteries);
+            var lastSubmitted = retVal.MaxBy(am => am.LastSubmissionTime);
+            retVal.Remove(lastSubmitted);
+            return retVal;
         }
 
-        private static AssessmentItem FindAeWithMinCorrectSubmission(List<AssessmentItem> assessmentItems)
+        private static int FindItemWithOldestAttempt(List<AssessmentItemMastery> assessmentMasteries)
         {
-            var lastSubmissions = FindLastSubmissionForEachAe(assessmentItems);
-            var maxCorrectnessSubmissions = FindMaxCorrectnessSubmissionForEachAe(assessmentItems);
-
-            if (lastSubmissions.Count != 1)
-            {
-                // Remove last made submission to avoid giving the learner the same AE.
-                var lastSubmission = lastSubmissions.OrderBy(sub => sub.TimeStamp).Last();
-                lastSubmissions.Remove(lastSubmission);
-                maxCorrectnessSubmissions.Remove(lastSubmission);
-            }
-
-            var submissionWithMinCorrectness = maxCorrectnessSubmissions.OrderBy(sub => sub.CorrectnessLevel).First();
-            return assessmentItems.Find(ai => ai.Id == submissionWithMinCorrectness.AssessmentItemId);
+            return assessmentMasteries.MinBy(am => am.LastSubmissionTime).AssessmentItemId;
         }
 
-        private static List<Submission> FindLastSubmissionForEachAe(List<AssessmentItem> assessmentItems)
+        private static int FindItemWithoutSubmissions(List<AssessmentItemMastery> assessmentMasteries)
         {
-            var lastSubmissions = new List<Submission>();
-
-            foreach (var ae in assessmentItems)
-            {
-                lastSubmissions.Add(ae.Submissions.OrderBy(sub => sub.TimeStamp).Last());
-            }
-
-            return lastSubmissions;
+            var noSubmissionItem = assessmentMasteries.FirstOrDefault(am => am.SubmissionCount == 0);
+            return noSubmissionItem?.AssessmentItemId ?? 0;
         }
 
-        private static List<Submission> FindMaxCorrectnessSubmissionForEachAe(List<AssessmentItem> assessmentItems)
+        private static int FindMinCorrectnessItem(List<AssessmentItemMastery> assessmentMasteries)
         {
-            var maxCorrectnessSubmissions = new List<Submission>();
-
-            foreach (var ae in assessmentItems)
-            {
-                maxCorrectnessSubmissions.Add(ae.Submissions.OrderBy(sub => sub.CorrectnessLevel).Last());
-            }
-
-            return maxCorrectnessSubmissions;
+            return assessmentMasteries.MinBy(am => am.Mastery).AssessmentItemId;
         }
     }
 }
