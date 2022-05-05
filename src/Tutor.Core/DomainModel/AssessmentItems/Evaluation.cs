@@ -4,14 +4,12 @@ namespace Tutor.Core.DomainModel.AssessmentItems
 {
     public class Evaluation
     {
-        public int AssessmentItemId { get; }
         public double CorrectnessLevel { get; }
         public bool Correct => CorrectnessLevel >= 0.9;
 
-        public Evaluation(int assessmentItemId, double correctnessLevel)
+        public Evaluation(double correctnessLevel)
         {
             if (correctnessLevel < 0 || correctnessLevel > 1) throw new ArgumentException("Invalid value for correctness level: " + correctnessLevel);
-            AssessmentItemId = assessmentItemId;
             CorrectnessLevel = Math.Round(correctnessLevel, 2);
         }
     }

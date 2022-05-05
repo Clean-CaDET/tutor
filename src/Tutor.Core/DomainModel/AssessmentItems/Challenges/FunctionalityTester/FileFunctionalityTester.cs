@@ -59,7 +59,7 @@ namespace Tutor.Core.DomainModel.AssessmentItems.Challenges.FunctionalityTester
 
             result = result.Contains("Failed") ? ProcessFailedTest(result) : ProcessCompilationError(result);
 
-            var evaluation = new ChallengeEvaluation(0, 0, null, null);
+            var evaluation = new ChallengeEvaluation(0, null, null);
             evaluation.ApplicableHints.AddHint("FUNCTIONAL TEST RESULTS", new ChallengeHint(0, result));
             return evaluation;
         }

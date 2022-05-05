@@ -19,7 +19,7 @@ namespace Tutor.Core.DomainModel.AssessmentItems.Challenges
             FulfillmentStrategies = fulfillmentStrategies;
         }
 
-        public override Evaluation EvaluateSubmission(Submission submission)
+        public override Evaluation Evaluate(Submission submission)
         {
             if (submission is ChallengeSubmission challengeSubmission) return EvaluateChallenge(challengeSubmission.SourceCode, null);
             throw new ArgumentException("Incorrect submission supplied to challenge with ID " + Id);
@@ -49,7 +49,7 @@ namespace Tutor.Core.DomainModel.AssessmentItems.Challenges
         {
             if (syntaxErrors.Count == 0) return null;
 
-            var evaluation = new ChallengeEvaluation(Id, 0, null, null);
+            var evaluation = new ChallengeEvaluation(0, null, null);
             evaluation.ApplicableHints.AddHint("SYNTAX ERRORS", new ChallengeHint(1, string.Join("\n", syntaxErrors)));
             return evaluation;
         }
@@ -62,7 +62,7 @@ namespace Tutor.Core.DomainModel.AssessmentItems.Challenges
                 var result = strategy.EvaluateSubmission(solution);
                 hints.MergeHints(result);
             }
-            return new ChallengeEvaluation(Id, CalculateCorrectness(hints), hints, SolutionUrl);
+            return new ChallengeEvaluation(CalculateCorrectness(hints), hints, SolutionUrl);
         }
 
         private double CalculateCorrectness(HintDirectory hints)

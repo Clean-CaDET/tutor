@@ -9,7 +9,7 @@ namespace Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks
         public string Text { get; private set; }
         public List<ArrangeTaskContainer> Containers { get; private set; }
 
-        public override Evaluation EvaluateSubmission(Submission submission)
+        public override Evaluation Evaluate(Submission submission)
         {
             ValidateSubmission(submission);
             return EvaluateAt(submission as ArrangeTaskSubmission);
@@ -36,7 +36,7 @@ namespace Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks
             var evaluations = EvaluateContainers(atSubmission.Containers);
             var correctness = 1 - ((double) evaluations.Sum(c => c.IncorrectElementsCount) / Containers.Sum(c => c.Elements.Count));
 
-            return new ArrangeTaskEvaluation(Id, correctness, evaluations);
+            return new ArrangeTaskEvaluation(correctness, evaluations);
         }
 
         private List<ArrangeTaskContainerEvaluation> EvaluateContainers(List<ArrangeTaskContainerSubmission> containers)

@@ -6,8 +6,8 @@ namespace Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks
     {
         public List<ArrangeTaskContainerEvaluation> ContainerEvaluations { get; }
 
-        public ArrangeTaskEvaluation(int assessmentItemId, double correctnessLevel,
-            List<ArrangeTaskContainerEvaluation> containerEvaluations) : base(assessmentItemId, correctnessLevel)
+        public ArrangeTaskEvaluation(double correctnessLevel,
+            List<ArrangeTaskContainerEvaluation> containerEvaluations) : base(correctnessLevel)
         {
             ContainerEvaluations = containerEvaluations;
         }

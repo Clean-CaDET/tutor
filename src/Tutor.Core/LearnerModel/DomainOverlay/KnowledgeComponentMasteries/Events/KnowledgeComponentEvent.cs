@@ -1,6 +1,6 @@
 ﻿using Tutor.Core.BuildingBlocks.EventSourcing;
 
-namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.KnowledgeComponentEvents
+namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events
 {
     public abstract class KnowledgeComponentEvent : DomainEvent
     {

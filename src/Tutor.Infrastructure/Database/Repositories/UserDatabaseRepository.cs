@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using Tutor.Infrastructure.Security.Authentication;
 using Tutor.Infrastructure.Security.Authentication.Users;
 
