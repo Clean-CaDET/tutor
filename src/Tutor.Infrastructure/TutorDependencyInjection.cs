@@ -16,7 +16,7 @@ namespace Tutor.Infrastructure
                 opt.UseNpgsql(CreateConnectionStringFromEnvironment()));
             services.AddDbContext<EventContext>(opt =>
                 opt.UseNpgsql(CreateConnectionStringFromEnvironment()));
-            services.AddScoped<IEventStore, PostgresStore>();
+            services.AddScoped<IEventStore, PostgreSqlStore>();
 
             return services;
         }

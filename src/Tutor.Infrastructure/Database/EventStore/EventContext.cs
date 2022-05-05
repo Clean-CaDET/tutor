@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events;
 using Tutor.Infrastructure.Serialization;
 
 namespace Tutor.Infrastructure.Database.EventStore
 {
     public class EventContext : DbContext
     {
-        internal DbSet<StoredKcEvent> KcEvents { get; private set; }
+        internal DbSet<StoredDomainEvent> Events { get; private set; }
 
         public EventContext(DbContextOptions<EventContext> options) : base(options)
         {
@@ -14,13 +13,11 @@ namespace Tutor.Infrastructure.Database.EventStore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<StoredKcEvent>().Property(e => e.KcEvent).HasColumnType("jsonb");
-            modelBuilder.Entity<StoredKcEvent>().Property(e => e.KcEvent).HasConversion(
+            modelBuilder.Entity<StoredDomainEvent>().Property(e => e.DomainEvent).HasColumnType("jsonb");
+            modelBuilder.Entity<StoredDomainEvent>().Property(e => e.DomainEvent).HasConversion(
                 v => EventSerializer.Serialize(v),
-                v => (KnowledgeComponentEvent)EventSerializer.Deserialize(v));
-            modelBuilder.Entity<StoredKcEvent>().HasIndex(e => e.TimeStamp);
-            modelBuilder.Entity<StoredKcEvent>().HasIndex(e => e.LearnerId);
-            modelBuilder.Entity<StoredKcEvent>().HasIndex(e => e.KnowledgeComponentId);
+                v => EventSerializer.Deserialize(v));
+            modelBuilder.Entity<StoredDomainEvent>().HasIndex(e => e.TimeStamp);
         }
     }
 }

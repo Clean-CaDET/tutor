@@ -29,10 +29,12 @@ namespace Tutor.Infrastructure.Serialization
             { typeof(SessionAbandoned), "SessionAbandoned" },
             { typeof(InstructionalItemsSelected), "InstructionalItemsSelected" },
             { typeof(InstructorMessageEvent), "InstructorMessageEvent" },
+            #region Submissions
             { typeof(ArrangeTaskSubmission), "ArrangeTaskSubmission" },
             { typeof(ChallengeSubmission), "ChallengeSubmission" },
             { typeof(MrqSubmission), "MrqSubmission" },
             { typeof(SaqSubmission), "SaqSubmission" }
+            #endregion
         };
 
         public static JsonSerializerOptions SetupEvents(this JsonSerializerOptions options)
