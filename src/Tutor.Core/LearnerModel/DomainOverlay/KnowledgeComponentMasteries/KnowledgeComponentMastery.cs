@@ -69,16 +69,18 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             return Result.Ok();
         }
 
-        public Result SubmitAssessmentItemAnswer(Submission submission)
+        public Result SubmitAssessmentItemAnswer(int assessmentItemId, Submission submission, Evaluation evaluation)
         {
             if (!HasActiveSession) LaunchSession();
             
             Causes(new AssessmentItemAnswered
             {
-                Submission = submission,
-                TimeStamp = submission.TimeStamp,
+                TimeStamp = DateTime.UtcNow,
+                LearnerId = LearnerId,
                 KnowledgeComponentId = KnowledgeComponent.Id,
-                LearnerId = LearnerId
+                AssessmentItemId = assessmentItemId,
+                Submission = submission,
+                Evaluation = evaluation
             });
 
             TryPass();
@@ -195,12 +197,12 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 
         private void When(AssessmentItemAnswered @event)
         {
-            var itemId = @event.Submission.AssessmentItemId;
+            var itemId = @event.AssessmentItemId;
             var assessmentMastery = AssessmentMasteries.Find(am => am.AssessmentItemId == itemId);
             if (assessmentMastery == null)
                 throw new InvalidOperationException("No assessment mastery for item: " + itemId +". Were the masteries created and loaded correctly?");
 
-            assessmentMastery.UpdateMastery(@event.Submission);
+            assessmentMastery.UpdateMastery(@event);
             UpdateMastery();
         }
 

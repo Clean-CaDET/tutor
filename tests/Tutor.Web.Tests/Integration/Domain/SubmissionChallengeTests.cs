@@ -27,7 +27,6 @@ namespace Tutor.Web.Tests.Integration.Domain
             var actualEvaluation = ((OkObjectResult)controller.SubmitChallenge(submission).Result).Value as ChallengeEvaluationDto;
 
             actualEvaluation.ShouldNotBeNull();
-            actualEvaluation.AssessmentItemId.ShouldBe(expectedEvaluation.AssessmentItemId);
             actualEvaluation.ApplicableHints.Count.ShouldBe(expectedEvaluation.ApplicableHints.Count);
             actualEvaluation.ApplicableHints.Select(h => h.Id)
                 .All(expectedEvaluation.ApplicableHints.Select(i => i.Id).Contains).ShouldBeTrue();
@@ -41,7 +40,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 new ChallengeSubmissionDto { AssessmentItemId = -211, LearnerId = -3, SourceCode = ChallengeSubmissionTestCode.GetFailingAchievement()},
                 new ChallengeEvaluationDto
                 {
-                    Correct = false, AssessmentItemId = -211,
+                    Correct = false,
                     ApplicableHints = new List<ChallengeHintDto> { new()
                     {
                         Id = -1,
@@ -54,7 +53,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 new ChallengeSubmissionDto { AssessmentItemId = -211, LearnerId = -3, SourceCode = ChallengeSubmissionTestCode.GetPassingAchievement()},
                 new ChallengeEvaluationDto
                 {
-                    Correct = true, AssessmentItemId = -211,
+                    Correct = true,
                     ApplicableHints = new List<ChallengeHintDto>()
                 }
             },
@@ -63,7 +62,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 new ChallengeSubmissionDto { AssessmentItemId = -154, LearnerId = -3, SourceCode = ChallengeSubmissionTestCode.GetFailingCourse()},
                 new ChallengeEvaluationDto
                 {
-                    Correct = false, AssessmentItemId = -154,
+                    Correct = false,
                     ApplicableHints = new List<ChallengeHintDto> { new()
                     {
                         Id = -1541
@@ -75,7 +74,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 new ChallengeSubmissionDto { AssessmentItemId = -154, LearnerId = -3, SourceCode = ChallengeSubmissionTestCode.GetPassingCourse()},
                 new ChallengeEvaluationDto
                 {
-                    Correct = true, AssessmentItemId = -154,
+                    Correct = true,
                     ApplicableHints = new List<ChallengeHintDto>()
                 }
             },
@@ -84,7 +83,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 new ChallengeSubmissionDto { AssessmentItemId = -956, LearnerId = -3, SourceCode = ChallengeSubmissionTestCode.GetFailingParams()},
                 new ChallengeEvaluationDto
                 {
-                    Correct = false, AssessmentItemId = -956,
+                    Correct = false,
                     ApplicableHints = new List<ChallengeHintDto> { new() {Id = -51}, new() { Id = -52 } }
                 }
             },
@@ -93,7 +92,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 new ChallengeSubmissionDto { AssessmentItemId = -956, LearnerId = -2, SourceCode = ChallengeSubmissionTestCode.GetPassingParams()},
                 new ChallengeEvaluationDto
                 {
-                    Correct = true, AssessmentItemId = -956,
+                    Correct = true,
                     ApplicableHints = new List<ChallengeHintDto>()
                 }
             }

@@ -15,7 +15,7 @@ namespace Tutor.Infrastructure.Serialization
 {
     public static class EventSerializer
     {
-        private static readonly IDictionary<Type, string> EventRelatedTypes = new Dictionary<Type, string>()
+        private static readonly IDictionary<Type, string> EventRelatedTypes = new Dictionary<Type, string>
         {
             { typeof(AssessmentItemAnswered), "AssessmentItemAnswered" },
             { typeof(SoughtHints), "SoughtChallengeHints" },
@@ -33,7 +33,13 @@ namespace Tutor.Infrastructure.Serialization
             { typeof(ArrangeTaskSubmission), "ArrangeTaskSubmission" },
             { typeof(ChallengeSubmission), "ChallengeSubmission" },
             { typeof(MrqSubmission), "MrqSubmission" },
-            { typeof(SaqSubmission), "SaqSubmission" }
+            { typeof(SaqSubmission), "SaqSubmission" },
+            #endregion
+            #region Evaluations
+            { typeof(ArrangeTaskEvaluation), "ArrangeTaskEvaluation" },
+            { typeof(ChallengeEvaluation), "ChallengeEvaluation" },
+            { typeof(MrqEvaluation), "MrqEvaluation" },
+            { typeof(SaqEvaluation), "SaqEvaluation" }
             #endregion
         };
 

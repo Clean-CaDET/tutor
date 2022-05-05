@@ -1,6 +1,6 @@
 ﻿using System;
 using Tutor.Core.BuildingBlocks;
-using Tutor.Core.DomainModel.AssessmentItems;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
 
 namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 {
@@ -10,11 +10,11 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         public double Mastery { get; private set; }
         public int SubmissionCount { get; private set; }
         public DateTime? LastSubmissionTime { get; set; }
-        public void UpdateMastery(Submission newSubmission)
+        public void UpdateMastery(AssessmentItemAnswered answer)
         {
-            if (Mastery <= newSubmission.CorrectnessLevel) Mastery = newSubmission.CorrectnessLevel;
+            if (Mastery <= answer.Evaluation.CorrectnessLevel) Mastery = answer.Evaluation.CorrectnessLevel;
             SubmissionCount++;
-            LastSubmissionTime = newSubmission.TimeStamp;
+            LastSubmissionTime = answer.TimeStamp;
         }
     }
 }

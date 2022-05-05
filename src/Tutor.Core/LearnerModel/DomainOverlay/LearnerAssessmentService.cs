@@ -14,32 +14,31 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             _kcMasteryRepository = kcMasteryRepository;
         }
 
-        public Result<Evaluation> EvaluateAndSaveSubmission(Submission submission)
+        public Result<Evaluation> EvaluateAndSaveSubmission(int learnerId, int assessmentItemId, Submission submission)
         {
-            var assessmentItem = _kcMasteryRepository.GetDerivedAssessmentItem(submission.AssessmentItemId);
-            if (assessmentItem == null) return Result.Fail("No assessment item with ID: " + submission.AssessmentItemId);
+            var assessmentItem = _kcMasteryRepository.GetDerivedAssessmentItem(assessmentItemId);
+            if (assessmentItem == null) return Result.Fail("No assessment item with ID: " + assessmentItemId);
 
-            var kcm = _kcMasteryRepository.GetFullKcMastery(assessmentItem.KnowledgeComponentId, submission.LearnerId);
+            var kcm = _kcMasteryRepository.GetFullKcMastery(assessmentItem.KnowledgeComponentId, learnerId);
             if (kcm == null) return Result.Fail("Learner not enrolled in KC: " + assessmentItem.KnowledgeComponentId);
 
             Evaluation evaluation;
             try
             {
-                evaluation = assessmentItem.EvaluateSubmission(submission);
-                submission.UpdateCorrectness(evaluation);
+                evaluation = assessmentItem.Evaluate(submission);
             }
             catch (ArgumentException ex)
             {
                 return Result.Fail(ex.Message);
             }
             
-            kcm.SubmitAssessmentItemAnswer(submission);
+            kcm.SubmitAssessmentItemAnswer(assessmentItemId, submission, evaluation);
             _kcMasteryRepository.UpdateKcMastery(kcm);
 
             return Result.Ok(evaluation);
         }
 
-        public Result<double> GetMaxCorrectness(int assessmentItemId, int learnerId)
+        public Result<double> GetMaxCorrectness(int learnerId, int assessmentItemId)
         {
             var kcm = _kcMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
             var itemMastery = kcm.AssessmentMasteries.Find(am => am.AssessmentItemId == assessmentItemId);

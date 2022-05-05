@@ -14,6 +14,6 @@
             KnowledgeComponentId = knowledgeComponentId;
         }
 
-        public abstract Evaluation EvaluateSubmission(Submission submission);
+        public abstract Evaluation Evaluate(Submission submission);
     }
 }

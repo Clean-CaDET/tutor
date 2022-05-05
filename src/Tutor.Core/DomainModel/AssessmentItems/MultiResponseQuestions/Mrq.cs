@@ -9,7 +9,7 @@ namespace Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions
         public string Text { get; private set; }
         public List<MrqItem> Items { get; private set; }
 
-        public override Evaluation EvaluateSubmission(Submission submission)
+        public override Evaluation Evaluate(Submission submission)
         {
             if (submission is MrqSubmission mrqSubmission) return EvaluateMrq(mrqSubmission);
             throw new ArgumentException("Incorrect submission supplied to MRQ with ID " + Id);
@@ -20,7 +20,7 @@ namespace Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions
             var answerEvaluations = CheckAnswers(mrqSubmission.SubmittedAnswerIds);
             var correctness = (double)answerEvaluations.Count(a => a.SubmissionWasCorrect) / answerEvaluations.Count;
             
-            return new MrqEvaluation(Id, correctness, answerEvaluations);
+            return new MrqEvaluation(correctness, answerEvaluations);
         }
 
         private List<MrqItemEvaluation> CheckAnswers(List<int> submittedAnswerIds)
