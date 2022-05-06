@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Infrastructure.Database.EventStore;
@@ -21,7 +20,7 @@ public class EventsController : ControllerBase
     public ActionResult<PagedResult<DomainEvent>> GetEvents([FromQuery] int page, [FromQuery] int pageSize)
     {
         var task = _eventStore.GetEventsAsync(page, pageSize);
-        Task.WaitAll(task);
+        task.Wait();
         return Ok(task.Result);
     }
 }

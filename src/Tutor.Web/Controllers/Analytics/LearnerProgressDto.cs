@@ -5,7 +5,7 @@ namespace Tutor.Web.Controllers.Analytics
 {
     public class LearnerProgressDto
     {
-        public LearnerDto Learner;
-        public List<KcmProgressDto> KnowledgeComponentProgress;
+        public LearnerDto Learner { get; set; }
+        public List<KcmProgressDto> KnowledgeComponentProgress { get; set; }
     }
 }
