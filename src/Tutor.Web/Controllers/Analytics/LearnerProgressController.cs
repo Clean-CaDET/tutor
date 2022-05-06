@@ -1,11 +1,13 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.LearnerModel;
 
 namespace Tutor.Web.Controllers.Analytics
 {
+    [Authorize(Policy = "instructorPolicy")]
     [Route("api/analytics/learner-progress")]
     [ApiController]
     public class LearnerProgressController : ControllerBase

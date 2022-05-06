@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Infrastructure.Database.EventStore;
 
 namespace Tutor.Web.Controllers.Analytics;
 
+[Authorize(Policy = "instructorPolicy")]
 [Route("api/analytics/events")]
 [ApiController]
 public class EventsController : ControllerBase
