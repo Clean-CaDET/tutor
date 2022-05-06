@@ -36,6 +36,9 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
         {
             return await _dbContext.Learners
                 .Include(l => l.KnowledgeComponentMasteries)
+                .ThenInclude(kcm => kcm.AssessmentMasteries)
+                .Include(l => l.KnowledgeComponentMasteries)
+                .ThenInclude(kcm => kcm.KnowledgeComponent)
                 .GetPaged(page, pageSize);
         }
     }
