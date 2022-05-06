@@ -9,6 +9,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         public KcMasteryProfile()
         {
             CreateMap<KnowledgeComponentMastery, KnowledgeComponentMasteryDto>();
+            CreateMap<AssessmentItemMastery, AssessmentItemMasteryDto>();
             CreateMap<KcMasteryStatistics, KcMasteryStatisticsDto>();
         }
     }

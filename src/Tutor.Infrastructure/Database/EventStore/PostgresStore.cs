@@ -1,33 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 
 namespace Tutor.Infrastructure.Database.EventStore
 {
-    public class PostgreSqlStore : IEventStore
+    public class PostgresStore : IEventStore
     {
         private readonly EventContext _eventContext;
 
-        public PostgreSqlStore(EventContext eventContext)
+        public PostgresStore(EventContext eventContext)
         {
             _eventContext = eventContext;
         }
 
-        public IEnumerable<DomainEvent> GetEvents(DateTime? start, DateTime? end)
+        public async Task<PagedResult<DomainEvent>> GetEventsAsync(int page, int pageSize)
         {
-            DateTime min = start ?? DateTime.MinValue;
-            DateTime max = end ?? DateTime.MaxValue;
-            return _eventContext.Events.Where(
-                e => e.DomainEvent.TimeStamp > min && e.DomainEvent.TimeStamp < max).Select(e => e.DomainEvent).ToList();
+            var storedEvents = await _eventContext.Events
+                .GetPaged(page, pageSize);
+
+            return new PagedResult<DomainEvent>(
+                storedEvents.Results.Select(e => e.DomainEvent).ToList(),
+                storedEvents.TotalCount);
         }
 
         public void Save(EventSourcedAggregateRoot aggregate)
         {
             // class name is temporarily used as aggregate type until we choose a better approach
-            string aggregateType = aggregate.GetType().Name;
+            var aggregateType = aggregate.GetType().Name;
 
-            IEnumerable<StoredDomainEvent> eventsToSave = aggregate.GetChanges().Select(
+            var eventsToSave = aggregate.GetChanges().Select(
                 e => new StoredDomainEvent()
                 {
                     AggregateType = aggregateType,
