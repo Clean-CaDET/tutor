@@ -42,18 +42,8 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
                 .Include(e => e.KnowledgeUnit)
                 .ThenInclude(u => u.KnowledgeComponents)
                 .Select(e => e.KnowledgeUnit).FirstOrDefault();
-            if (unit == null) return null;
-            
-            LoadKcHierarchy(unit.KnowledgeComponents);
+
             return unit;
-        }
-        private void LoadKcHierarchy(List<KnowledgeComponent> parentKCs)
-        {
-            foreach (var knowledgeComponent in parentKCs)
-            {
-                _dbContext.Entry(knowledgeComponent).Collection(kc => kc.KnowledgeComponents).Load();
-                LoadKcHierarchy(knowledgeComponent.KnowledgeComponents);
-            }
         }
 
         public KnowledgeComponentMastery GetBasicKcMastery(int knowledgeComponentId, int learnerId)

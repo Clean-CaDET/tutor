@@ -101,7 +101,7 @@ namespace Tutor.Infrastructure.Database
             modelBuilder.Entity<KnowledgeComponent>()
                 .HasMany(kc => kc.KnowledgeComponents)
                 .WithOne()
-                .HasForeignKey("ParentId")
+                .HasForeignKey(kc => kc.ParentId)
                 .IsRequired(false);
         }
 
