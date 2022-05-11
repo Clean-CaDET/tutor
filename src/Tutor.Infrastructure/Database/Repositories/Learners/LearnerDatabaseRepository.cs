@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks;
@@ -32,7 +33,30 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
             return learner;
         }
 
-        public async Task<PagedResult<Learner>> GetLearnersWithMasteriesAsync(int page, int pageSize)
+        public async Task<PagedResult<Learner>> GetLearnersAsync(int page, int pageSize, int groupId)
+        {
+            if (groupId == 0)
+            {
+                return await GetAllLearnersAsync(page, pageSize);
+            }
+            return await GetLearnersByGroupAsync(page, pageSize, groupId);
+        }
+
+        private Task<PagedResult<Learner>> GetLearnersByGroupAsync(int page, int pageSize, int groupId)
+        {
+            return _dbContext.GroupMemberships
+                .Where(g => g.LearnerGroupId == groupId)
+                .Include(g => g.Learner)
+                .ThenInclude(l => l.KnowledgeComponentMasteries)
+                .ThenInclude(kcm => kcm.AssessmentMasteries)
+                .Include(g => g.Learner)
+                .ThenInclude(l => l.KnowledgeComponentMasteries)
+                .ThenInclude(kcm => kcm.KnowledgeComponent)
+                .Select(g => g.Learner)
+                .GetPaged(page, pageSize);
+        }
+
+        private async Task<PagedResult<Learner>> GetAllLearnersAsync(int page, int pageSize)
         {
             return await _dbContext.Learners
                 .Include(l => l.KnowledgeComponentMasteries)
@@ -40,6 +64,11 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
                 .Include(l => l.KnowledgeComponentMasteries)
                 .ThenInclude(kcm => kcm.KnowledgeComponent)
                 .GetPaged(page, pageSize);
+        }
+
+        public List<LearnerGroup> GetGroups()
+        {
+            return _dbContext.LearnerGroups.ToList();
         }
     }
 }

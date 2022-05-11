@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks;
 
 namespace Tutor.Core.LearnerModel
@@ -8,6 +9,7 @@ namespace Tutor.Core.LearnerModel
         Learner GetByUserId(int userId);
         Learner GetByIndex(string index);
         Learner Save(Learner learner);
-        Task<PagedResult<Learner>> GetLearnersWithMasteriesAsync(int page, int pageSize);
+        Task<PagedResult<Learner>> GetLearnersAsync(int page, int pageSize, int groupId);
+        List<LearnerGroup> GetGroups();
     }
 }

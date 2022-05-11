@@ -8,6 +8,19 @@ INSERT INTO public."Learners"(
     "Id", "UserId", "Name", "Index")
 VALUES (-3, -3, 'Enrolled Student for Submissions', 'SU-3-2021');
 
+INSERT INTO public."LearnerGroups"(
+	"Id", "Name")
+VALUES (-1, 'Test Group');
+INSERT INTO public."GroupMemberships"(
+	"Id", "LearnerId", "LearnerGroupId")
+	VALUES (-1, -1, -1);
+INSERT INTO public."GroupMemberships"(
+	"Id", "LearnerId", "LearnerGroupId")
+	VALUES (-2, -2, -1);
+INSERT INTO public."GroupMemberships"(
+	"Id", "LearnerId", "LearnerGroupId")
+	VALUES (-3, -3, -1);
+
 INSERT INTO public."UnitEnrollments"(
 	"Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
 	VALUES (-1, -2, -1, '2021-12-19 21:29:50.379749+01', 0);

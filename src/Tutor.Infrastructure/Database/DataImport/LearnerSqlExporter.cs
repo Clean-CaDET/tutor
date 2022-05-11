@@ -3,33 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Tutor.Infrastructure.Database.DataImport.DomainExcelModel;
+using Tutor.Infrastructure.Database.DataImport.LearnerExcelModel;
 
 namespace Tutor.Infrastructure.Database.DataImport
 {
     internal static class LearnerSqlExporter
     {
-        internal static string BuildSql(List<UserLearnerColumns> learners, DomainExcelContent domainContent)
+        internal static string BuildSql(List<LearnerGroupsColumns> groups, DomainExcelContent domainContent)
         {
-            return BuildUserLearnerSql(learners) + BuildMasterySql(learners, domainContent);
+            return BuildLearnerGroupsSql(groups)
+                   + BuildMasterySql(groups.SelectMany(g => g.Learners).ToList(), domainContent);
         }
 
-        private static string BuildUserLearnerSql(List<UserLearnerColumns> learners)
+        private static string BuildLearnerGroupsSql(List<LearnerGroupsColumns> groups)
         {
+            var startingId = -1000;
             var sqlBuilder = new StringBuilder();
             sqlBuilder.AppendLine().AppendLine();
-            foreach (var learner in learners)
+            foreach (var group in groups)
             {
-                sqlBuilder.Append("INSERT INTO public.\"Users\"(\"Id\", \"Username\", \"Password\", \"Salt\", \"Role\") VALUES");
+                sqlBuilder.Append("INSERT INTO public.\"LearnerGroups\"(\"Id\", \"Name\") VALUES");
                 sqlBuilder.AppendLine();
-                sqlBuilder.Append("\t(" + learner.Id + ", '" + learner.Index + "', '"
-                                  + learner.Password + "', '" + learner.Salt + "', 2);");
+                sqlBuilder.Append("\t(" + group.Id + ", '" + group.GroupName + "');");
                 sqlBuilder.AppendLine().AppendLine();
 
-                sqlBuilder.Append("INSERT INTO public.\"Learners\"(\"Id\", \"UserId\", \"Index\", \"Name\", \"Surname\") VALUES");
-                sqlBuilder.AppendLine();
-                sqlBuilder.Append("\t(" + learner.Id + ", " + learner.Id + ", '" + learner.Index + "', '"
-                                    + learner.Name + "', '" + learner.Surname + "');");
-                sqlBuilder.AppendLine().AppendLine();
+                foreach (var learner in group.Learners)
+                {
+                    sqlBuilder.Append("INSERT INTO public.\"Users\"(\"Id\", \"Username\", \"Password\", \"Salt\", \"Role\") VALUES");
+                    sqlBuilder.AppendLine();
+                    sqlBuilder.Append("\t(" + learner.Id + ", '" + learner.Index + "', '"
+                                      + learner.Password + "', '" + learner.Salt + "', 2);");
+                    sqlBuilder.AppendLine().AppendLine();
+
+                    sqlBuilder.Append("INSERT INTO public.\"Learners\"(\"Id\", \"UserId\", \"Index\", \"Name\", \"Surname\") VALUES");
+                    sqlBuilder.AppendLine();
+                    sqlBuilder.Append("\t(" + learner.Id + ", " + learner.Id + ", '" + learner.Index + "', '"
+                                      + learner.Name + "', '" + learner.Surname + "');");
+                    sqlBuilder.AppendLine().AppendLine();
+
+                    sqlBuilder.Append("INSERT INTO public.\"GroupMemberships\"(\"Id\", \"LearnerId\", \"LearnerGroupId\") VALUES");
+                    sqlBuilder.AppendLine();
+                    sqlBuilder.Append("\t(" + startingId++ + ", " + learner.Id + ", " + group.Id + ");");
+                    sqlBuilder.AppendLine().AppendLine();
+                }
             }
 
             return sqlBuilder.ToString();
