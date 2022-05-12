@@ -1,4 +1,4 @@
-﻿namespace Tutor.Infrastructure.Database.DataImport
+﻿namespace Tutor.Infrastructure.Database.DataImport.LearnerExcelModel
 {
     public class UserLearnerColumns
     {

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FluentResults;
 using Tutor.Core.LearnerModel.Workspaces;
 
@@ -18,6 +19,12 @@ namespace Tutor.Core.LearnerModel
         {
             var learner = _learnerRepository.GetByUserId(id);
             return learner == null ? Result.Fail("Learner tied to user id " + id + " does not exist.") : Result.Ok(learner);
+        }
+
+        public Result<List<LearnerGroup>> GetGroups(int instructorId)
+        {
+            // Instructor id can be used to retrieve active groups the instructor is responsible for.
+            return Result.Ok(_learnerRepository.GetGroups());
         }
 
         private void CreateWorkspace(Learner learner)

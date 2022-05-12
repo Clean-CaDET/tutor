@@ -25,5 +25,13 @@ namespace Tutor.Web.Controllers.Learners
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<LearnerDto>(result.Value));
         }
+
+        [HttpGet("groups")]
+        public ActionResult<LearnerGroup> GetGroups()
+        {
+            var result = _learnerService.GetGroups(User.Id());
+            if (result.IsFailed) return BadRequest(result.Errors);
+            return Ok(result.Value);
+        }
     }
 }

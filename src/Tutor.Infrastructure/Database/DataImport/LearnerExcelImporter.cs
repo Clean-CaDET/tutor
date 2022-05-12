@@ -3,13 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Tutor.Infrastructure.Database.DataImport.LearnerExcelModel;
 using Tutor.Infrastructure.Security.Authentication.Users;
 
 namespace Tutor.Infrastructure.Database.DataImport
 {
     internal static class LearnerExcelImporter
     {
-        internal static List<UserLearnerColumns> Import(string sourceFolder)
+        internal static List<LearnerGroupsColumns> Import(string sourceFolder)
         {
             var sheets = GetWorksheets(GetExcelDocuments(sourceFolder));
             return Process(sheets);
@@ -33,13 +34,13 @@ namespace Tutor.Infrastructure.Database.DataImport
             return sheets;
         }
 
-        private static List<UserLearnerColumns> Process(List<ExcelWorksheet> sheets)
+        private static List<LearnerGroupsColumns> Process(List<ExcelWorksheet> sheets)
         {
-            var learners = new List<UserLearnerColumns>();
             var startingId = -1000;
-
+            var groups = new List<LearnerGroupsColumns>();
             foreach (var sheet in sheets)
             {
+                var learners = new List<UserLearnerColumns>();
                 for (var row = 2; row <= sheet.Dimension.End.Row; row++)
                 {
                     if (string.IsNullOrEmpty(sheet.Cells["B" + row].Text)) break;
@@ -55,9 +56,16 @@ namespace Tutor.Infrastructure.Database.DataImport
                         Password = PasswordUtilities.HashPassword(sheet.Cells["G" + row].Text, salt)
                     });
                 }
+
+                groups.Add(new LearnerGroupsColumns
+                {
+                    Id = startingId++,
+                    GroupName = sheet.Cells["H1"].Text,
+                    Learners = learners
+                });
             }
 
-            return learners;
+            return groups;
         }
 
         private static string ExtractIndex(string text)

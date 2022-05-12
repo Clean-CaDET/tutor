@@ -19,6 +19,8 @@ public static class ExcelToSqlTransformer
 DELETE FROM public.""AssessmentItemMasteries"";
 DELETE FROM public.""KcMasteries"";
 DELETE FROM public.""UnitEnrollments"";
+DELETE FROM public.""GroupMemberships"";
+DELETE FROM public.""LearnerGroups"";
 DELETE FROM public.""Learners"";
 DELETE FROM public.""Events"";
 DELETE FROM public.""Users"";
