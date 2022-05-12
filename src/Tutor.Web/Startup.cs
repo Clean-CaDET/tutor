@@ -11,6 +11,7 @@ using Microsoft.Net.Http.Headers;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Tutor.Core.DomainModel;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
@@ -20,6 +21,7 @@ using Tutor.Core.LearnerModel.Notes;
 using Tutor.Core.LearnerModel.Workspaces;
 using Tutor.Infrastructure;
 using Tutor.Infrastructure.Database.Repositories;
+using Tutor.Infrastructure.Database.Repositories.Domain;
 using Tutor.Infrastructure.Database.Repositories.Learners;
 using Tutor.Infrastructure.Security;
 using Tutor.Infrastructure.Security.Authentication;
@@ -78,6 +80,8 @@ namespace Tutor.Web
                             .WithMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
                     });
             });
+
+            services.AddScoped<IDomainRepository, DomainDatabaseRepository>();
 
             services.AddScoped<IKcMasteryService, KcMasteryService>();
             services.AddScoped<IKcMasteryRepository, KcMasteryDatabaseRepository>();

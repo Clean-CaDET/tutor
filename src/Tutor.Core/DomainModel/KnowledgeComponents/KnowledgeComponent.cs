@@ -11,7 +11,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         public string Name { get; private set; }
         public string Description { get; private set; }
 
-        public int? UnitId { get; private set; }
+        public int? KnowledgeUnitId { get; private set; }
         public int? ParentId { get; private set; }
         public List<KnowledgeComponent> KnowledgeComponents { get; private set; }
         public List<AssessmentItem> AssessmentItems { get; private set; }
