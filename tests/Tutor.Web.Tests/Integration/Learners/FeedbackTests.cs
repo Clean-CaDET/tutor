@@ -21,7 +21,10 @@ namespace Tutor.Web.Tests.Integration.Learners
         public void Stores_emotions_feedback(EmotionsFeedbackDto postedFeedback, EmotionsFeedbackDto expectedFeedback)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new FeedbackController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<IFeedbackService>());
+            var controller = new FeedbackController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<IFeedbackService>())
+            {
+                ControllerContext = BuildContext("-1")
+            };
             var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
 
             var actualFeedback = ((OkObjectResult)controller.PostEmotionsFeedback(postedFeedback).Result).Value as EmotionsFeedbackDto;
@@ -40,7 +43,10 @@ namespace Tutor.Web.Tests.Integration.Learners
         public void Stores_tutor_improvement_feedback(TutorImprovementFeedbackDto postedFeedback, TutorImprovementFeedbackDto expectedFeedback)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new FeedbackController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<IFeedbackService>());
+            var controller = new FeedbackController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<IFeedbackService>())
+            {
+                ControllerContext = BuildContext("-1")
+            };
             var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
 
             var actualFeedback = ((OkObjectResult)controller.PostTutorImprovementFeedback(postedFeedback).Result).Value as TutorImprovementFeedbackDto;
@@ -65,8 +71,8 @@ namespace Tutor.Web.Tests.Integration.Learners
             },
             new object[]
             {
-                new EmotionsFeedbackDto {LearnerId = -2, KnowledgeComponentId = -2, Comment = "I was bored"},
-                new EmotionsFeedbackDto {LearnerId = -2, KnowledgeComponentId = -2, Comment = "I was bored"}
+                new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -2, Comment = "I was bored"},
+                new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -2, Comment = "I was bored"}
             }
         };
 
@@ -93,14 +99,14 @@ namespace Tutor.Web.Tests.Integration.Learners
             {
                 new TutorImprovementFeedbackDto 
                 {
-                    LearnerId = -2, 
+                    LearnerId = -1, 
                     UnitId = -2,
                     SoftwareComment = "I would like to have a highlighting tool", 
                     ContentComment = "There should be less videos"
                 },
                 new TutorImprovementFeedbackDto
                 {
-                    LearnerId = -2,
+                    LearnerId = -1,
                     UnitId = -2,
                     SoftwareComment = "I would like to have a highlighting tool",
                     ContentComment = "There should be less videos"

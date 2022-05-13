@@ -1,11 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
-using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ShortAnswerQuestions;
-using Tutor.Web.Controllers.Learners.DomainOverlay;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
@@ -20,7 +17,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Submits_short_answer_questions(SaqSubmissionDto submission, SaqEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new LearnerAssessmentController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ILearnerAssessmentService>());
+            var controller = SetupAssessmentsController(scope, "-3");
 
             var actualEvaluation = ((OkObjectResult)controller.SubmitShortAnswerQuestion(submission).Result).Value as SaqEvaluationDto;
 
@@ -37,7 +34,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new SaqSubmissionDto
                     {
                         AssessmentItemId = -212,
-                        LearnerId = -3,
                         Answer = "Words, word_parts, idx, abc"
                     },
                     new SaqEvaluationDto
@@ -50,7 +46,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new SaqSubmissionDto
                     {
                         AssessmentItemId = -212,
-                        LearnerId = -3,
                         Answer = "Words, word_parts, idx"
                     },
                     new SaqEvaluationDto
@@ -63,7 +58,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new SaqSubmissionDto
                     {
                         AssessmentItemId = -212,
-                        LearnerId = -3,
                         Answer = "Words, word_parts, idx, abc, cba"
                     },
                     new SaqEvaluationDto
@@ -76,7 +70,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new SaqSubmissionDto
                     {
                         AssessmentItemId = -212,
-                        LearnerId = -3,
                         Answer = ""
                     },
                     new SaqEvaluationDto
@@ -89,7 +82,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new SaqSubmissionDto
                     {
                         AssessmentItemId = -212,
-                        LearnerId = -3,
                         Answer = "cba"
                     },
                     new SaqEvaluationDto
@@ -102,7 +94,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new SaqSubmissionDto
                     {
                         AssessmentItemId = -212,
-                        LearnerId = -3,
                         Answer = "abc, cba"
                     },
                     new SaqEvaluationDto
@@ -115,7 +106,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new SaqSubmissionDto
                     {
                         AssessmentItemId = -995,
-                        LearnerId = -3,
                         Answer = "MedicalRecordService"
                     },
                     new SaqEvaluationDto
@@ -127,8 +117,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new SaqSubmissionDto
                     {
-                        AssessmentItemId = -995,
-                        LearnerId = -3
+                        AssessmentItemId = -995
                     },
                     new SaqEvaluationDto
                     {
@@ -140,7 +129,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new SaqSubmissionDto
                     {
                         AssessmentItemId = -995,
-                        LearnerId = -3,
                         Answer = " "
                     },
                     new SaqEvaluationDto

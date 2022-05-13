@@ -21,9 +21,8 @@ namespace Tutor.Core.LearnerModel
             return learner == null ? Result.Fail("Learner tied to user id " + id + " does not exist.") : Result.Ok(learner);
         }
 
-        public Result<List<LearnerGroup>> GetGroups(int instructorId)
+        public Result<List<LearnerGroup>> GetGroups()
         {
-            // Instructor id can be used to retrieve active groups the instructor is responsible for.
             return Result.Ok(_learnerRepository.GetGroups());
         }
 

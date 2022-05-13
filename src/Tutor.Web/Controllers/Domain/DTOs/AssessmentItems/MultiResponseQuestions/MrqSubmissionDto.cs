@@ -5,7 +5,6 @@ namespace Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestio
     public class MrqSubmissionDto
     {
         public List<MrqItemDto> Answers { get; set; }
-        public int LearnerId { get; set; }
         public int AssessmentItemId { get; set; }
     }
 }

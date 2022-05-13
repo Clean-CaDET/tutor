@@ -27,6 +27,15 @@ namespace Tutor.Web.Tests.Integration
             };
         }
 
+        protected LearnerAssessmentController SetupAssessmentsController(IServiceScope scope, string userAndLearnerId)
+        {
+            return new LearnerAssessmentController(Factory.Services.GetRequiredService<IMapper>(),
+                scope.ServiceProvider.GetRequiredService<ILearnerAssessmentService>())
+            {
+                ControllerContext = BuildContext(userAndLearnerId)
+            };
+        }
+
         protected static ControllerContext BuildContext(string userAndLearnerId)
         {
             return new ControllerContext()

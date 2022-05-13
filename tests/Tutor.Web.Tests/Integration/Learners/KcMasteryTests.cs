@@ -1,15 +1,12 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
-using Tutor.Web.Controllers.Learners.DomainOverlay;
 using Tutor.Web.Controllers.Learners.DomainOverlay.DTOs;
 using Xunit;
 
@@ -90,11 +87,10 @@ namespace Tutor.Web.Tests.Integration.Learners
 
         [Theory]
         [MemberData(nameof(MrqSubmission))]
-        public void Updates_Kc_Mastery(MrqSubmissionDto submission, double expectedKcMastery)
+        public void Updates_Kc_Mastery(int learnerId, MrqSubmissionDto submission, double expectedKcMastery)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new LearnerAssessmentController(Factory.Services.GetRequiredService<IMapper>(), 
-                scope.ServiceProvider.GetRequiredService<ILearnerAssessmentService>());
+            var controller = SetupAssessmentsController(scope, learnerId.ToString());
             var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
             var assessmentItem = dbContext.AssessmentItems.FirstOrDefault(ae => ae.Id == submission.AssessmentItemId);
             var knowledgeComponent =
@@ -102,7 +98,7 @@ namespace Tutor.Web.Tests.Integration.Learners
             
             controller.SubmitMultipleResponseQuestion(submission);
             
-            var actualKcMastery = dbContext.KcMasteries.FirstOrDefault(kcm => kcm.LearnerId == submission.LearnerId
+            var actualKcMastery = dbContext.KcMasteries.FirstOrDefault(kcm => kcm.LearnerId == learnerId
             && kcm.KnowledgeComponent.Id == knowledgeComponent.Id);
             
             actualKcMastery.Mastery.ShouldBe(expectedKcMastery);
@@ -114,10 +110,10 @@ namespace Tutor.Web.Tests.Integration.Learners
             {
                 new object[]
                 {
+                    -3,
                     new MrqSubmissionDto
                     {
                         AssessmentItemId = -106,
-                        LearnerId = -3,
                         Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1062},
@@ -128,10 +124,10 @@ namespace Tutor.Web.Tests.Integration.Learners
                 },
                 new object[]
                 {
+                    -3,
                     new MrqSubmissionDto
                     {
                         AssessmentItemId = -106,
-                        LearnerId = -3,
                         Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1061},
@@ -142,10 +138,10 @@ namespace Tutor.Web.Tests.Integration.Learners
                 },
                 new object[]
                 {
+                    -3,
                     new MrqSubmissionDto
                     {
                         AssessmentItemId = -107,
-                        LearnerId = -3,
                         Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1071},
@@ -157,10 +153,10 @@ namespace Tutor.Web.Tests.Integration.Learners
                 },
                 new object[]
                 {
+                    -3,
                     new MrqSubmissionDto
                     {
                         AssessmentItemId = -107,
-                        LearnerId = -3,
                         Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1071},
@@ -172,10 +168,10 @@ namespace Tutor.Web.Tests.Integration.Learners
                 },
                 new object[]
                 {
+                    -3,
                     new MrqSubmissionDto
                     {
                         AssessmentItemId = -107,
-                        LearnerId = -3,
                         Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1072},
@@ -186,10 +182,10 @@ namespace Tutor.Web.Tests.Integration.Learners
                 },
                 new object[]
                 {
+                    -3,
                     new MrqSubmissionDto
                     {
                         AssessmentItemId = -107,
-                        LearnerId = -3,
                         Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1072},
@@ -200,10 +196,10 @@ namespace Tutor.Web.Tests.Integration.Learners
                 },
                 new object[]
                 {
+                    -2,
                     new MrqSubmissionDto
                     {
                         AssessmentItemId = -106,
-                        LearnerId = -2,
                         Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1062},
@@ -214,10 +210,10 @@ namespace Tutor.Web.Tests.Integration.Learners
                 },
                 new object[]
                 {
+                    -2,
                     new MrqSubmissionDto
                     {
                         AssessmentItemId = -106,
-                        LearnerId = -2,
                         Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1061},
@@ -228,10 +224,10 @@ namespace Tutor.Web.Tests.Integration.Learners
                 },
                 new object[]
                 {
+                    -2,
                     new MrqSubmissionDto
                     {
                         AssessmentItemId = -107,
-                        LearnerId = -2,
                         Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1071},
@@ -243,10 +239,10 @@ namespace Tutor.Web.Tests.Integration.Learners
                 },
                 new object[]
                 {
+                    -2,
                     new MrqSubmissionDto
                     {
                         AssessmentItemId = -107,
-                        LearnerId = -2,
                         Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1071},
@@ -258,10 +254,10 @@ namespace Tutor.Web.Tests.Integration.Learners
                 },
                 new object[]
                 {
+                    -2,
                     new MrqSubmissionDto
                     {
                         AssessmentItemId = -107,
-                        LearnerId = -2,
                         Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1072},
@@ -272,10 +268,10 @@ namespace Tutor.Web.Tests.Integration.Learners
                 },
                 new object[]
                 {
+                    -2,
                     new MrqSubmissionDto
                     {
                         AssessmentItemId = -107,
-                        LearnerId = -2,
                         Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1072},
