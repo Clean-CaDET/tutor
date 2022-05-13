@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.Core.LearnerModel.Feedback;
+using Tutor.Infrastructure.Security.Authentication.Users;
 
 namespace Tutor.Web.Controllers.Learners.Feedback
 {
@@ -22,6 +23,7 @@ namespace Tutor.Web.Controllers.Learners.Feedback
         [HttpPost("emotions")]
         public ActionResult<EmotionsFeedbackDto> PostEmotionsFeedback([FromBody] EmotionsFeedbackDto emotionsFeedback)
         {
+            emotionsFeedback.LearnerId = User.LearnerId();
             var result = _feedbackService.SaveEmotionsFeedback(_mapper.Map<EmotionsFeedback>(emotionsFeedback));
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<EmotionsFeedbackDto>(emotionsFeedback));
@@ -30,6 +32,7 @@ namespace Tutor.Web.Controllers.Learners.Feedback
         [HttpPost("improvements")]
         public ActionResult<TutorImprovementFeedbackDto> PostTutorImprovementFeedback([FromBody] TutorImprovementFeedbackDto tutorImprovementFeedback)
         {
+            tutorImprovementFeedback.LearnerId = User.LearnerId();
             var result = _feedbackService.SaveTutorImprovementFeedback(_mapper.Map<TutorImprovementFeedback>(tutorImprovementFeedback));
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<TutorImprovementFeedbackDto>(tutorImprovementFeedback));

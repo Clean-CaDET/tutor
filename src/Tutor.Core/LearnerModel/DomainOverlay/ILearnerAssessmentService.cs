@@ -9,6 +9,6 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
         Result<double> GetMaxCorrectness(int learnerId, int assessmentItemId);
         Result SeekChallengeHints(int learnerId, int assessmentItemId);
         Result SeekChallengeSolution(int learnerId, int assessmentItemId);
-        Result SaveInstructorMessage(string message, int kcId, int learnerId);
+        Result SaveInstructorMessage(int learnerId, int kcId, string message);
     }
 }

@@ -29,7 +29,7 @@ namespace Tutor.Web.Controllers.Learners
         [HttpGet("groups")]
         public ActionResult<LearnerGroup> GetGroups()
         {
-            var result = _learnerService.GetGroups(User.Id());
+            var result = _learnerService.GetGroups();
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(result.Value);
         }

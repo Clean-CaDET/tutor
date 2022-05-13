@@ -76,7 +76,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
         }
 
         //Should be moved to an instructor service or whatever will be used to interact with the chatbot
-        public Result SaveInstructorMessage(string message, int kcId, int learnerId)
+        public Result SaveInstructorMessage(int learnerId, int kcId, string message)
         {
             var kcm = _kcMasteryRepository.GetBasicKcMastery(kcId, learnerId);
             if (kcm == null) return Result.Fail("Learner not enrolled in KC: " + kcId);

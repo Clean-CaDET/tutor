@@ -1,11 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
-using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
-using Tutor.Web.Controllers.Learners.DomainOverlay;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain
@@ -20,7 +17,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Submits_arrange_task(AtSubmissionDto submission, AtEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new LearnerAssessmentController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ILearnerAssessmentService>());
+            var controller = SetupAssessmentsController(scope, "-3");
 
             var actualEvaluation = ((OkObjectResult)controller.SubmitArrangeTask(submission).Result).Value as AtEvaluationDto;
 
@@ -34,7 +31,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Submits_invalid_arrange_task(AtSubmissionDto submission)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new LearnerAssessmentController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ILearnerAssessmentService>());
+            var controller = SetupAssessmentsController(scope, "-3");
 
             var actualEvaluation = ((BadRequestObjectResult)controller.SubmitArrangeTask(submission).Result).Value;
 
@@ -50,7 +47,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new AtSubmissionDto
                     {
                         AssessmentItemId = -2111,
-                        LearnerId = -3,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1, -2, -3}},
@@ -78,7 +74,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new AtSubmissionDto
                     {
                         AssessmentItemId = -2111,
-                        LearnerId = -3,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1}},
@@ -106,7 +101,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new AtSubmissionDto
                     {
                         AssessmentItemId = -2111,
-                        LearnerId = -3,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1, -2, -3, -4, -5}},
@@ -141,7 +135,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new AtSubmissionDto
                     {
                         AssessmentItemId = -2111,
-                        LearnerId = -3,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1},
@@ -157,7 +150,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new AtSubmissionDto
                     {
                         AssessmentItemId = -2111,
-                        LearnerId = -3,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1},
@@ -170,7 +162,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new AtSubmissionDto
                     {
                         AssessmentItemId = -2112,
-                        LearnerId = -3,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1, -2, -3, -4, -5}},
