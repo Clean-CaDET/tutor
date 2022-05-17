@@ -8,8 +8,9 @@ namespace Tutor.Core.LearnerModel
     {
         Learner GetByUserId(int userId);
         Learner GetByIndex(string index);
+        List<Learner> GetByGroupId(int groupId);
         Learner Save(Learner learner);
-        Task<PagedResult<Learner>> GetLearnersAsync(int page, int pageSize, int groupId);
+        Task<PagedResult<Learner>> GetLearnersWithMasteriesAsync(int page, int pageSize, int groupId);
         List<LearnerGroup> GetGroups();
     }
 }

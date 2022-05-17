@@ -58,8 +58,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
             return _dbContext.KcMasteries.Where(kcm => kcm.LearnerId == learnerId && kcIds.Contains(kcm.KnowledgeComponent.Id)).ToList();
         }
 
-        public KnowledgeComponentMastery GetFullKcMastery(int knowledgeComponentId,
-            int learnerId)
+        public KnowledgeComponentMastery GetFullKcMastery(int knowledgeComponentId, int learnerId)
         {
             var kcm = _dbContext.KcMasteries
                 .Include(kcm => kcm.AssessmentMasteries)

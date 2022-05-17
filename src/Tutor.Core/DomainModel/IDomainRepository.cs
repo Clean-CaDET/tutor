@@ -5,6 +5,7 @@ namespace Tutor.Core.DomainModel
 {
     public interface IDomainRepository
     {
+        KnowledgeUnit GetUnit(int id);
         List<KnowledgeUnit> GetUnits();
     }
 }
