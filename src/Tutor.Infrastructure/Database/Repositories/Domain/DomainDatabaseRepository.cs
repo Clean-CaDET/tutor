@@ -25,6 +25,5 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
         {
             return _dbContext.KnowledgeUnits.ToList();
         }
-
     }
 }

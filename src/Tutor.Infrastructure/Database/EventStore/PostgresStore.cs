@@ -28,12 +28,21 @@ namespace Tutor.Infrastructure.Database.EventStore
 
         public List<KnowledgeComponentEvent> GetKcEvents(List<int> kcIds, List<int> learnerIds)
         {
-            // Should be refactored to send a better query to the DB.
+            if (learnerIds == null) return GetAllKcEvents(kcIds);
+            // Should be refactored to send a better query to the DB. Also a better name for these methods.
             var allEvents = _eventContext.Events
                 .Select(e => e.DomainEvent as KnowledgeComponentEvent).ToList();
 
             return allEvents.Where(e => learnerIds.Contains(e.LearnerId)
                             && kcIds.Contains(e.KnowledgeComponentId)).ToList();
+        }
+
+        private List<KnowledgeComponentEvent> GetAllKcEvents(List<int> kcIds)
+        {
+            var allEvents = _eventContext.Events
+                .Select(e => e.DomainEvent as KnowledgeComponentEvent).ToList();
+
+            return allEvents.Where(e => kcIds.Contains(e.KnowledgeComponentId)).ToList();
         }
 
         public void Save(EventSourcedAggregateRoot aggregate)

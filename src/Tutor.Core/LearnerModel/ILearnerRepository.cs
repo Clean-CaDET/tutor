@@ -12,5 +12,6 @@ namespace Tutor.Core.LearnerModel
         Learner Save(Learner learner);
         Task<PagedResult<Learner>> GetLearnersWithMasteriesAsync(int page, int pageSize, int groupId);
         List<LearnerGroup> GetGroups();
+        int CountEnrolledInUnit(int unitId, List<int> learnerIds);
     }
 }

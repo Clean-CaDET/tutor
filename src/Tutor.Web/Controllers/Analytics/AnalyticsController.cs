@@ -47,20 +47,23 @@ namespace Tutor.Web.Controllers.Analytics
         {
             // Should refactor. Need to research appropriate patterns for this case. AnalyticsService seems to be a simple solution.
             var unit = _domainRepository.GetUnit(unitId);
-            var learnerIds = _learnerRepository.GetByGroupId(groupId).Select(l => l.Id).ToList();
+            List<int> learnerIds = null;
+            if(groupId != 0) learnerIds = _learnerRepository.GetByGroupId(groupId).Select(l => l.Id).ToList();
 
             var events = _eventStore.GetKcEvents(unit.KnowledgeComponents.Select(kc => kc.Id).ToList(), learnerIds);
-            
-            return Ok(CalculateKcStatistics(unit, events));
+            var enrolledLearnersCount = _learnerRepository.CountEnrolledInUnit(unit.Id, learnerIds);
+
+            return Ok(CalculateKcStatistics(unit, events, enrolledLearnersCount));
         }
 
-        private static List<KcStatisticsDto> CalculateKcStatistics(KnowledgeUnit unit, List<KnowledgeComponentEvent> events)
+        private List<KcStatisticsDto> CalculateKcStatistics(KnowledgeUnit unit, List<KnowledgeComponentEvent> events, int enrolledLearnersCount)
         {
             return unit.KnowledgeComponents.Select(kc =>
                 new KcStatisticsDto
                 {
                     KcCode = kc.Code,
                     KcName = kc.Name,
+                    TotalRegistered = enrolledLearnersCount,
                     TotalStarted = events.Where(e => e is SessionLaunched && e.KnowledgeComponentId == kc.Id).Select(e => e.LearnerId).Distinct().Count(),
                     TotalCompleted = events.Where(e => e is KnowledgeComponentCompleted && e.KnowledgeComponentId == kc.Id).Select(e => e.LearnerId).Distinct().Count(),
                     TotalPassed = events.Where(e => e is KnowledgeComponentPassed && e.KnowledgeComponentId == kc.Id).Select(e => e.LearnerId).Distinct().Count()

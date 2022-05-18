@@ -78,5 +78,13 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
         {
             return _dbContext.LearnerGroups.ToList();
         }
+
+        public int CountEnrolledInUnit(int unitId, List<int> learnerIds)
+        {
+            if (learnerIds == null)
+                return _dbContext.UnitEnrollments.Count(enrollment => enrollment.KnowledgeUnit.Id == unitId);
+            return _dbContext.UnitEnrollments.Count(enrollment => 
+                enrollment.KnowledgeUnit.Id == unitId && learnerIds.Contains(enrollment.LearnerId));
+        }
     }
 }
