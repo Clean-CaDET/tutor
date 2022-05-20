@@ -66,12 +66,12 @@ namespace Tutor.Infrastructure.Serialization
             return options;
         }
 
-        public static string Serialize(DomainEvent @event)
+        public static JsonDocument Serialize(DomainEvent @event)
         {
-            return JsonSerializer.Serialize(@event, GetEventSerializerOptions());
+            return JsonSerializer.SerializeToDocument(@event, GetEventSerializerOptions());
         }
 
-        public static DomainEvent Deserialize(string @event)
+        public static DomainEvent Deserialize(JsonDocument @event)
         {
             return JsonSerializer.Deserialize<DomainEvent>(@event, GetEventSerializerOptions());
         }

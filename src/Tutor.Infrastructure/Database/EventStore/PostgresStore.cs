@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events;
+using Tutor.Infrastructure.Serialization;
 
 namespace Tutor.Infrastructure.Database.EventStore
 {
@@ -22,7 +23,7 @@ namespace Tutor.Infrastructure.Database.EventStore
                 .GetPaged(page, pageSize);
 
             return new PagedResult<DomainEvent>(
-                storedEvents.Results.Select(e => e.DomainEvent).ToList(),
+                storedEvents.Results.Select(e => EventSerializer.Deserialize(e.Event)).ToList(),
                 storedEvents.TotalCount);
         }
 
@@ -31,7 +32,7 @@ namespace Tutor.Infrastructure.Database.EventStore
             if (learnerIds == null) return GetAllKcEvents(kcIds);
             // Should be refactored to send a better query to the DB. Also a better name for these methods.
             var allEvents = _eventContext.Events
-                .Select(e => e.DomainEvent as KnowledgeComponentEvent).ToList();
+                .Select(e => EventSerializer.Deserialize(e.Event) as KnowledgeComponentEvent).ToList();
 
             return allEvents.Where(e => learnerIds.Contains(e.LearnerId)
                             && kcIds.Contains(e.KnowledgeComponentId)).ToList();
@@ -40,7 +41,7 @@ namespace Tutor.Infrastructure.Database.EventStore
         private List<KnowledgeComponentEvent> GetAllKcEvents(List<int> kcIds)
         {
             var allEvents = _eventContext.Events
-                .Select(e => e.DomainEvent as KnowledgeComponentEvent).ToList();
+                .Select(e => EventSerializer.Deserialize(e.Event) as KnowledgeComponentEvent).ToList();
 
             return allEvents.Where(e => kcIds.Contains(e.KnowledgeComponentId)).ToList();
         }
@@ -56,7 +57,7 @@ namespace Tutor.Infrastructure.Database.EventStore
                     AggregateType = aggregateType,
                     AggregateId = aggregate.Id,
                     TimeStamp = e.TimeStamp,
-                    DomainEvent = e
+                    Event = EventSerializer.Serialize(e)
                 });
             _eventContext.Events.AddRange(eventsToSave);
             _eventContext.SaveChanges();

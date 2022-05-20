@@ -1,5 +1,5 @@
 ﻿using System;
-using Tutor.Core.BuildingBlocks.EventSourcing;
+using System.Text.Json;
 
 namespace Tutor.Infrastructure.Database.EventStore
 {
@@ -9,6 +9,6 @@ namespace Tutor.Infrastructure.Database.EventStore
         public string AggregateType { get; set; }
         public int AggregateId { get; set; }
         public DateTime TimeStamp { get; set; }
-        public DomainEvent DomainEvent { get; set; }
+        public JsonDocument Event { get; set; }
     }
 }
