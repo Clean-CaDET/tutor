@@ -9,6 +9,6 @@ namespace Tutor.Infrastructure.Database.EventStore
         public string AggregateType { get; set; }
         public int AggregateId { get; set; }
         public DateTime TimeStamp { get; set; }
-        public JsonDocument Event { get; set; }
+        public JsonDocument DomainEvent { get; set; }
     }
 }

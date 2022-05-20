@@ -12,7 +12,7 @@ namespace Tutor.Infrastructure.Database.EventStore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<StoredDomainEvent>().Property(e => e.Event).HasColumnType("jsonb");
+            modelBuilder.Entity<StoredDomainEvent>().Property(e => e.DomainEvent).HasColumnType("jsonb");
             modelBuilder.Entity<StoredDomainEvent>().HasIndex(e => e.TimeStamp);
         }
     }
