@@ -11,10 +11,12 @@ namespace Tutor.Infrastructure.Database.EventStore
     public class PostgresStore : IEventStore
     {
         private readonly EventContext _eventContext;
+        private readonly IEventSerializer _eventSerializer;
 
-        public PostgresStore(EventContext eventContext)
+        public PostgresStore(EventContext eventContext, IEventSerializer eventSerializer)
         {
             _eventContext = eventContext;
+            _eventSerializer = eventSerializer;
         }
 
         public async Task<PagedResult<DomainEvent>> GetEventsAsync(int page, int pageSize)
@@ -23,7 +25,7 @@ namespace Tutor.Infrastructure.Database.EventStore
                 .GetPaged(page, pageSize);
 
             return new PagedResult<DomainEvent>(
-                storedEvents.Results.Select(e => EventSerializer.Deserialize(e.Event)).ToList(),
+                storedEvents.Results.Select(e => _eventSerializer.Deserialize(e.Event)).ToList(),
                 storedEvents.TotalCount);
         }
 
@@ -32,7 +34,7 @@ namespace Tutor.Infrastructure.Database.EventStore
             if (learnerIds == null) return GetAllKcEvents(kcIds);
             // Should be refactored to send a better query to the DB. Also a better name for these methods.
             var allEvents = _eventContext.Events
-                .Select(e => EventSerializer.Deserialize(e.Event) as KnowledgeComponentEvent).ToList();
+                .Select(e => _eventSerializer.Deserialize(e.Event) as KnowledgeComponentEvent).ToList();
 
             return allEvents.Where(e => learnerIds.Contains(e.LearnerId)
                             && kcIds.Contains(e.KnowledgeComponentId)).ToList();
@@ -41,7 +43,7 @@ namespace Tutor.Infrastructure.Database.EventStore
         private List<KnowledgeComponentEvent> GetAllKcEvents(List<int> kcIds)
         {
             var allEvents = _eventContext.Events
-                .Select(e => EventSerializer.Deserialize(e.Event) as KnowledgeComponentEvent).ToList();
+                .Select(e => _eventSerializer.Deserialize(e.Event) as KnowledgeComponentEvent).ToList();
 
             return allEvents.Where(e => kcIds.Contains(e.KnowledgeComponentId)).ToList();
         }
@@ -57,7 +59,7 @@ namespace Tutor.Infrastructure.Database.EventStore
                     AggregateType = aggregateType,
                     AggregateId = aggregate.Id,
                     TimeStamp = e.TimeStamp,
-                    Event = EventSerializer.Serialize(e)
+                    Event = _eventSerializer.Serialize(e)
                 });
             _eventContext.Events.AddRange(eventsToSave);
             _eventContext.SaveChanges();

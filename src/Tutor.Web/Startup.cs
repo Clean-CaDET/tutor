@@ -20,6 +20,7 @@ using Tutor.Core.LearnerModel.Feedback;
 using Tutor.Core.LearnerModel.Notes;
 using Tutor.Core.LearnerModel.Workspaces;
 using Tutor.Infrastructure;
+using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.Repositories;
 using Tutor.Infrastructure.Database.Repositories.Domain;
 using Tutor.Infrastructure.Database.Repositories.Learners;
@@ -98,6 +99,8 @@ namespace Tutor.Web
             
             services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<INoteService, NoteService>();
+
+            services.AddScoped<IEventSerializer, EventSerializer>();
 
             SetupAuth(services);
 
