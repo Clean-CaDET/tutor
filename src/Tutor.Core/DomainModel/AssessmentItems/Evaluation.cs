@@ -2,7 +2,7 @@
 
 namespace Tutor.Core.DomainModel.AssessmentItems
 {
-    public class Evaluation
+    public abstract class Evaluation
     {
         public double CorrectnessLevel { get; }
         public bool Correct => CorrectnessLevel >= 0.9;

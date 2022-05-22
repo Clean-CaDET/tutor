@@ -71,10 +71,10 @@ namespace Tutor.Infrastructure.Database.DataImport
                 foreach (var kcId in domainContent.KnowledgeComponents.Select(kc => kc.Id))
                 {
                     sqlBuilder.Append(
-                        "INSERT INTO public.\"KcMasteries\"(\"Id\", \"Mastery\", \"KnowledgeComponentId\", \"LearnerId\", \"IsPassed\", \"IsSatisfied\", \"IsCompleted\", \"HasActiveSession\") VALUES");
+                        "INSERT INTO public.\"KcMasteries\"(\"Id\", \"Mastery\", \"KnowledgeComponentId\", \"LearnerId\", \"IsStarted\", \"IsPassed\", \"IsSatisfied\", \"IsCompleted\", \"HasActiveSession\") VALUES");
                     sqlBuilder.AppendLine();
                     sqlBuilder.Append("\t(" + ++kcMasteryId + ", 0.00, " + kcId + ", "
-                                      + learnerId + ", false, false, false, false);");
+                                      + learnerId + ", false, false, false, false, false);");
                     sqlBuilder.AppendLine().AppendLine();
 
                     var assessmentItems = domainContent.AssessmentItems.Where(ai => ai.KnowledgeComponentId == kcId).OrderBy(ai => ai.Order);

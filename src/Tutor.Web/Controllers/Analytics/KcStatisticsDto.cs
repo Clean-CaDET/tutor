@@ -1,4 +1,6 @@
-﻿namespace Tutor.Web.Controllers.Analytics
+﻿using System.Collections.Generic;
+
+namespace Tutor.Web.Controllers.Analytics
 {
     public class KcStatisticsDto
     {
@@ -8,5 +10,7 @@
         public int TotalStarted { get; set; }
         public int TotalCompleted { get; set; }
         public int TotalPassed { get; set; }
+        public List<int> MinutesToCompletion { get; set; }
+        public List<int> MinutesToPass { get; set; }
     }
 }

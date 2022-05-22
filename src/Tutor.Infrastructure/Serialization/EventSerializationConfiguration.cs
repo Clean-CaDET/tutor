@@ -1,10 +1,7 @@
 ﻿using Dahomey.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentItems.Challenges;
 using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
@@ -22,6 +19,7 @@ namespace Tutor.Infrastructure.Serialization
             { typeof(AssessmentItemAnswered), "AssessmentItemAnswered" },
             { typeof(SoughtHints), "SoughtChallengeHints" },
             { typeof(SoughtSolution), "SoughtChallengeSolution" },
+            { typeof(KnowledgeComponentStarted), "KnowledgeComponentStarted" },
             { typeof(KnowledgeComponentPassed), "KnowledgeComponentPassed" },
             { typeof(KnowledgeComponentCompleted), "KnowledgeComponentCompleted" },
             { typeof(KnowledgeComponentSatisfied), "KnowledgeComponentSatisfied" },
