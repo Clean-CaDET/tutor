@@ -18,7 +18,6 @@ using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.MoveOn;
 using Tutor.Core.LearnerModel.Feedback;
 using Tutor.Core.LearnerModel.Notes;
-using Tutor.Core.LearnerModel.Workspaces;
 using Tutor.Infrastructure;
 using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.Repositories;
@@ -90,8 +89,6 @@ namespace Tutor.Web
             services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
 
             services.AddScoped<ILearnerService, LearnerService>();
-            services.Configure<WorkspaceOptions>(Configuration.GetSection("Workspace"));
-            services.AddScoped<IWorkspaceCreator, NoWorkspaceCreator>();
             services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
 
             services.AddScoped<IFeedbackService, FeedbackService>();
