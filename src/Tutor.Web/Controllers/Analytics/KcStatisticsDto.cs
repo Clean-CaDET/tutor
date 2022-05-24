@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Tutor.Web.Controllers.Analytics
 {
@@ -12,5 +13,24 @@ namespace Tutor.Web.Controllers.Analytics
         public int TotalPassed { get; set; }
         public List<int> MinutesToCompletion { get; set; }
         public List<int> MinutesToPass { get; set; }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is not KcStatisticsDto other) return false;
+            return KcCode == other.KcCode
+                   && TotalCompleted == other.TotalCompleted
+                   && TotalPassed == other.TotalPassed
+                   && TotalStarted == other.TotalStarted
+                   && TotalRegistered == other.TotalRegistered
+                   && MinutesToCompletion.Count == other.MinutesToCompletion.Count
+                   && MinutesToPass.Count == other.MinutesToPass.Count
+                   && MinutesToCompletion.All(other.MinutesToCompletion.Contains)
+                   && MinutesToPass.All(other.MinutesToPass.Contains);
+        }
     }
 }

@@ -3,7 +3,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
+using Tutor.Core.DomainModel;
+using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.DomainOverlay;
+using Tutor.Infrastructure.Database.EventStore;
+using Tutor.Web.Controllers.Analytics;
 using Tutor.Web.Controllers.Learners.DomainOverlay;
 using Xunit;
 
@@ -33,6 +37,18 @@ namespace Tutor.Web.Tests.Integration
                 scope.ServiceProvider.GetRequiredService<ILearnerAssessmentService>())
             {
                 ControllerContext = BuildContext(userAndLearnerId)
+            };
+        }
+
+        protected AnalyticsController CreateAnalyticsController(IServiceScope scope, string userId)
+        {
+            return new AnalyticsController(
+                scope.ServiceProvider.GetRequiredService<ILearnerRepository>(),
+                scope.ServiceProvider.GetRequiredService<IDomainRepository>(),
+                scope.ServiceProvider.GetRequiredService<IEventStore>(),
+                Factory.Services.GetRequiredService<IMapper>())
+            {
+                ControllerContext = BuildContext(userId)
             };
         }
 

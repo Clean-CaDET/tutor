@@ -7,6 +7,12 @@ VALUES (-2, -2, 'Enrolled Student for KCM', 'SU-2-2021');
 INSERT INTO public."Learners"(
     "Id", "UserId", "Name", "Index")
 VALUES (-3, -3, 'Enrolled Student for Submissions', 'SU-3-2021');
+INSERT INTO public."Learners"(
+    "Id", "UserId", "Name", "Index")
+VALUES (-4, -4, 'Enrolled Student for Events', 'SU-4-2021');
+INSERT INTO public."Learners"(
+    "Id", "UserId", "Name", "Index")
+VALUES (-5, -5, 'Enrolled Student for Events', 'SU-5-2021');
 
 INSERT INTO public."LearnerGroups"(
 	"Id", "Name")
@@ -20,6 +26,12 @@ INSERT INTO public."GroupMemberships"(
 INSERT INTO public."GroupMemberships"(
 	"Id", "LearnerId", "LearnerGroupId")
 	VALUES (-3, -3, -1);
+INSERT INTO public."GroupMemberships"(
+	"Id", "LearnerId", "LearnerGroupId")
+	VALUES (-4, -4, -1);
+INSERT INTO public."GroupMemberships"(
+	"Id", "LearnerId", "LearnerGroupId")
+	VALUES (-5, -5, -1);
 
 INSERT INTO public."UnitEnrollments"(
 	"Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
@@ -33,6 +45,12 @@ VALUES (-3, -3, -1, '2021-12-19 21:29:50.379749+01', 0);
 INSERT INTO public."UnitEnrollments"(
     "Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
 VALUES (-4, -3, -2, '2021-12-19 21:29:50.379749+01', 0);
+INSERT INTO public."UnitEnrollments"(
+    "Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
+VALUES (-5, -4, -1, '2021-12-19 21:29:50.379749+01', 0);
+INSERT INTO public."UnitEnrollments"(
+    "Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
+VALUES (-6, -5, -1, '2021-12-19 21:29:50.379749+01', 0);
 
 INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "IsCompleted", "HasActiveSession", "IsStarted")
