@@ -178,7 +178,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     public Result RecordInstructorMessage(string message)
     {
-        var instructorMessageEvent = new InstructorMessageEvent
+        var instructorMessageEvent = new EncouragingMessageSent
         {
             Message = message,
             KnowledgeComponentId = KnowledgeComponent.Id,

@@ -16,7 +16,7 @@ namespace Tutor.Web.Controllers.Analytics
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return KcCode.GetHashCode();
         }
 
         public override bool Equals(object obj)
