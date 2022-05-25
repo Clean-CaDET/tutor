@@ -42,7 +42,7 @@ The vision and high-level idea behind Clean CaDET is described in the [overview 
 <p align="justify">
 A significant module of Clean CaDET is its <b>Tutor</b>. It hosts the learner's model, a collection of learning objects, and instructional rules that select the most appropriate educational content for the particular learner. This functionality is integrated into the code quality analysis workflow, and it can be accessed as a standalone educational tool. By directly interacting with the <b>Tutor</b>, learners can explore various clean code topics and engage with the challenge subsystem to learn how to refactor and analyze code quality in a gamified environment.
 <ul>
-  <li>For more details regarding the <b>Tutor</b> module, useful for <i>learners and educators</i>, check out the <a href="https://github.com/Clean-CaDET/tutor#readme" target="_blank">module's page</a>.</li>
+  <li>For more details regarding the <b>Tutor</b> module, useful for <i>learners and educators</i>, check out the <a href="https://github.com/Clean-CaDET/tutor/wiki" target="_blank">wiki page</a>.</li>
 </ul>
 </p>
 
