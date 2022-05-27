@@ -6,12 +6,14 @@ using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events;
 
-namespace Tutor.Infrastructure.Database.EventStore
+namespace Tutor.Infrastructure.Database.EventStore.Postgres
 {
     public class PostgresStore : IEventStore
     {
         private readonly EventContext _eventContext;
         private readonly IEventSerializer _eventSerializer;
+
+        public IEventQueryable Events => new PostgresEventQueryable(_eventContext.Events, _eventSerializer);
 
         public PostgresStore(EventContext eventContext, IEventSerializer eventSerializer)
         {
@@ -34,7 +36,7 @@ namespace Tutor.Infrastructure.Database.EventStore
             if (learnerIds == null) return GetAllKcEvents(kcIds);
 
             var events = _eventContext.Events.
-                Where(e => EF.Functions.JsonExistAll(e.DomainEvent, "KnowledgeComponentId", "LearnerId") 
+                Where(e => EF.Functions.JsonExistAll(e.DomainEvent, "KnowledgeComponentId", "LearnerId")
                             && kcIds.Contains(e.DomainEvent.RootElement.GetProperty("KnowledgeComponentId").GetInt32())
                             && learnerIds.Contains(e.DomainEvent.RootElement.GetProperty("LearnerId").GetInt32()));
 

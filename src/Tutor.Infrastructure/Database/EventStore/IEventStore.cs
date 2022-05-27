@@ -9,6 +9,7 @@ namespace Tutor.Infrastructure.Database.EventStore
     public interface IEventStore
     {
         void Save(EventSourcedAggregateRoot aggregate);
+        IEventQueryable Events { get; }
         Task<PagedResult<DomainEvent>> GetEventsAsync(int page, int pageSize);
         List<KnowledgeComponentEvent> GetKcEvents(List<int> kcIds, List<int> learnerIds);
     }

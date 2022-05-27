@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Tutor.Infrastructure.Database.EventStore
+namespace Tutor.Infrastructure.Database.EventStore.Postgres
 {
     public class EventContext : DbContext
     {
