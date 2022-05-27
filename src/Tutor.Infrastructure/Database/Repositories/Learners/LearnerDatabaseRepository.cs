@@ -26,6 +26,14 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
             return _dbContext.Learners.FirstOrDefault(learner => learner.Index.Equals(index));
         }
 
+        public List<Learner> GetByGroupId(int groupId)
+        {
+            return _dbContext.GroupMemberships
+                .Where(m => m.LearnerGroupId == groupId)
+                .Include(m => m.Learner)
+                .Select(m => m.Learner).ToList();
+        }
+
         public Learner Save(Learner learner)
         {
             _dbContext.Learners.Attach(learner);
@@ -33,7 +41,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
             return learner;
         }
 
-        public async Task<PagedResult<Learner>> GetLearnersAsync(int page, int pageSize, int groupId)
+        public async Task<PagedResult<Learner>> GetLearnersWithMasteriesAsync(int page, int pageSize, int groupId)
         {
             if (groupId == 0)
             {
@@ -69,6 +77,14 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
         public List<LearnerGroup> GetGroups()
         {
             return _dbContext.LearnerGroups.ToList();
+        }
+
+        public int CountEnrolledInUnit(int unitId, List<int> learnerIds)
+        {
+            if (learnerIds == null)
+                return _dbContext.UnitEnrollments.Count(enrollment => enrollment.KnowledgeUnit.Id == unitId);
+            return _dbContext.UnitEnrollments.Count(enrollment => 
+                enrollment.KnowledgeUnit.Id == unitId && learnerIds.Contains(enrollment.LearnerId));
         }
     }
 }

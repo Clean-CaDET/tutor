@@ -3,23 +3,23 @@
 	VALUES (-1, 'Značajna imena', 'Imena pronalazimo u svim segmentima razvoja softvera - kao identifikator promenljive, funkcije, klase, ali i biblioteke i aplikacije. Jasno ime funkcije nas oslobađa od čitanja njenog tela, dok će misteriozno ime zahtevati dodatan mentalni napor da razumemo svrhu koncepta koji opisuje. U najgorem slučaju, loše ime će nas navesti na pogrešan put i drastično nam produžiti vreme razvoja. Kroz ovu lekciju ispitujemo dobre i loše prakse za imenovanje elemenata našeg koda.');
 
 INSERT INTO public."KnowledgeComponents"(
-    "Id", "Name", "Description", "KnowledgeUnitId")
-	VALUES (-10, 'Dodeli značajna imena identifikatorima', '', -1);
+    "Id", "Name", "Description", "KnowledgeUnitId", "Code")
+	VALUES (-10, 'Dodeli značajna imena identifikatorima', '', -1, 'N00');
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "KnowledgeUnitId")
-	VALUES (-11, 'Dodeli značajna imena identifikatorima', '', -1);
+	"Id", "Name", "Description", "KnowledgeUnitId", "Code")
+	VALUES (-11, 'Dodeli značajna imena identifikatorima', '', -1, 'N01');
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "KnowledgeUnitId")
-	VALUES (-12, 'Koristi ispravne tipove reči', '', -1);
+	"Id", "Name", "Description", "KnowledgeUnitId", "Code")
+	VALUES (-12, 'Koristi ispravne tipove reči', '', -1, 'N02');
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "KnowledgeUnitId")
-	VALUES (-13, 'Prati timske konvencije', '', -1);
+	"Id", "Name", "Description", "KnowledgeUnitId", "Code")
+	VALUES (-13, 'Prati timske konvencije', '', -1, 'N03');
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "KnowledgeUnitId")
-	VALUES (-14, 'Izbegavaj beznačajne reči', '', -1);
+	"Id", "Name", "Description", "KnowledgeUnitId", "Code")
+	VALUES (-14, 'Izbegavaj beznačajne reči', '', -1, 'N04');
 INSERT INTO public."KnowledgeComponents"(
-	"Id", "Name", "Description", "KnowledgeUnitId")
-	VALUES (-15, 'Koristi terminologiju domena problema', '', -1);
+	"Id", "Name", "Description", "KnowledgeUnitId", "Code")
+	VALUES (-15, 'Koristi terminologiju domena problema', '', -1, 'N05');
 
 INSERT INTO public."KnowledgeUnits"(
 	"Id", "Name", "Description")

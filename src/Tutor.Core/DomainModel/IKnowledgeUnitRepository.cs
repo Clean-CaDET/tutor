@@ -3,8 +3,9 @@ using Tutor.Core.DomainModel.KnowledgeComponents;
 
 namespace Tutor.Core.DomainModel
 {
-    public interface IDomainRepository
+    public interface IKnowledgeUnitRepository
     {
-        List<KnowledgeUnit> GetUnits();
+        KnowledgeUnit Get(int id);
+        List<KnowledgeUnit> GetAll();
     }
 }

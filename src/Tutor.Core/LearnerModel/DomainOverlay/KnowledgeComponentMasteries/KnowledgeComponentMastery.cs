@@ -6,245 +6,247 @@ using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.KnowledgeComponentEvents;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.SessionLifecycleEvents;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.MoveOn;
 
-namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
+namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
+
+public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 {
-    public class KnowledgeComponentMastery : EventSourcedAggregateRoot
+    private const double PassThreshold = 0.9;
+
+    public int LearnerId { get; private set; }
+    public KnowledgeComponent KnowledgeComponent { get; private set; }
+    public List<AssessmentItemMastery> AssessmentMasteries { get; private set; }
+    public double Mastery { get; private set; }
+    public bool HasActiveSession { get; private set; }
+    public bool IsStarted { get; private set; }
+    public bool IsPassed { get; private set; }
+    public bool IsSatisfied { get; private set; }
+    public bool IsCompleted { get; private set; }
+
+    public IMoveOnCriteria MoveOnCriteria { get; set; }
+
+    public KcMasteryStatistics Statistics
     {
-        private const double PassThreshold = 0.9;
-
-        public int LearnerId { get; private set; }
-        public KnowledgeComponent KnowledgeComponent { get; private set; }
-        public List<AssessmentItemMastery> AssessmentMasteries { get; private set; }
-        public double Mastery { get; private set; }
-        public bool HasActiveSession { get; private set; }
-        public bool IsPassed { get; private set; }
-        public bool IsSatisfied { get; private set; }
-        public bool IsCompleted { get; private set; }
-
-        public IMoveOnCriteria MoveOnCriteria { get; set; }
-
-        public KcMasteryStatistics Statistics
+        get
         {
-            get
-            {
-                var countCompleted = AssessmentMasteries.Count(ae => ae.Mastery > PassThreshold);
-                var countAttempted = AssessmentMasteries.Count(ae => ae.IsAttempted());
-                return new KcMasteryStatistics(Mastery, AssessmentMasteries.Count, countCompleted, countAttempted, IsSatisfied);
-            }
+            var countCompleted = AssessmentMasteries.Count(ae => ae.Mastery > PassThreshold);
+            var countAttempted = AssessmentMasteries.Count(ae => ae.IsAttempted());
+            return new KcMasteryStatistics(Mastery, AssessmentMasteries.Count, countCompleted, countAttempted, IsSatisfied);
         }
+    }
 
-        public Result LaunchSession()
+    public Result LaunchSession()
+    {
+        if (HasActiveSession)
         {
-            if (HasActiveSession)
-            {
-                Causes(new SessionAbandoned
-                {
-                    KnowledgeComponentId = KnowledgeComponent.Id,
-                    LearnerId = LearnerId
-                });
-            }
-
-            Causes(new SessionLaunched
+            Causes(new SessionAbandoned
             {
                 KnowledgeComponentId = KnowledgeComponent.Id,
                 LearnerId = LearnerId
             });
-            return Result.Ok();
         }
 
-        public Result TerminateSession()
+        Causes(new SessionLaunched
         {
-            if (!HasActiveSession) return Result.Fail("No active session to terminate.");
+            KnowledgeComponentId = KnowledgeComponent.Id,
+            LearnerId = LearnerId
+        });
+        TryStart();
+        return Result.Ok();
+    }
 
-            Causes(new SessionTerminated
-            {
-                KnowledgeComponentId = KnowledgeComponent.Id,
-                LearnerId = LearnerId
-            });
-            return Result.Ok();
-        }
+    private void TryStart()
+    {
+        if (IsStarted) return;
 
-        public Result SubmitAssessmentItemAnswer(int assessmentItemId, Submission submission, Evaluation evaluation)
+        Causes(new KnowledgeComponentStarted
         {
-            if (!HasActiveSession) LaunchSession();
+            KnowledgeComponentId = KnowledgeComponent.Id,
+            LearnerId = LearnerId
+        });
+    }
+
+    public Result TerminateSession()
+    {
+        if (!HasActiveSession) return Result.Fail("No active session to terminate.");
+
+        Causes(new SessionTerminated
+        {
+            KnowledgeComponentId = KnowledgeComponent.Id,
+            LearnerId = LearnerId
+        });
+        return Result.Ok();
+    }
+
+    public Result SubmitAssessmentItemAnswer(int assessmentItemId, Submission submission, Evaluation evaluation)
+    {
+        if (!HasActiveSession) LaunchSession();
             
-            Causes(new AssessmentItemAnswered
-            {
-                TimeStamp = DateTime.UtcNow,
-                LearnerId = LearnerId,
-                KnowledgeComponentId = KnowledgeComponent.Id,
-                AssessmentItemId = assessmentItemId,
-                Submission = submission,
-                Evaluation = evaluation
-            });
-
-            TryPass();
-            TryComplete();
-
-            return Result.Ok();
-        }
-
-        public Result<int> SelectSuitableAssessmentItemId(IAssessmentItemSelector assessmentItemSelector)
+        Causes(new AssessmentItemAnswered
         {
-            if (!HasActiveSession) LaunchSession();
+            LearnerId = LearnerId,
+            KnowledgeComponentId = KnowledgeComponent.Id,
+            AssessmentItemId = assessmentItemId,
+            Submission = submission,
+            Evaluation = evaluation
+        });
 
-            var result = assessmentItemSelector.SelectSuitableAssessmentItemId(AssessmentMasteries, IsPassed);
-            if (result.IsFailed) return result;
+        TryPass();
+        TryComplete();
 
-            Causes(new AssessmentItemSelected
-            {
-                LearnerId = LearnerId,
-                KnowledgeComponentId = KnowledgeComponent.Id,
-                AssessmentItemId = result.Value
-            });
+        return Result.Ok();
+    }
 
-            return result;
-        }
+    public Result<int> SelectSuitableAssessmentItemId(IAssessmentItemSelector assessmentItemSelector)
+    {
+        if (!HasActiveSession) LaunchSession();
 
-        public Result<List<InstructionalItem>> GetInstructionalItems()
+        var result = assessmentItemSelector.SelectSuitableAssessmentItemId(AssessmentMasteries, IsPassed);
+        if (result.IsFailed) return result;
+
+        Causes(new AssessmentItemSelected
         {
-            if (!HasActiveSession) LaunchSession();
+            LearnerId = LearnerId,
+            KnowledgeComponentId = KnowledgeComponent.Id,
+            AssessmentItemId = result.Value
+        });
 
-            Causes(new InstructionalItemsSelected
-            {
-                LearnerId = LearnerId,
-                KnowledgeComponentId = KnowledgeComponent.Id
-            });
-            return Result.Ok(KnowledgeComponent.InstructionalItems.OrderBy(i => i.Order).ToList());
-        }
+        return result;
+    }
 
-        private void TryPass()
+    public Result<List<InstructionalItem>> GetInstructionalItems()
+    {
+        if (!HasActiveSession) LaunchSession();
+
+        Causes(new InstructionalItemsSelected
         {
-            if (IsPassed || Mastery < PassThreshold) return;
+            LearnerId = LearnerId,
+            KnowledgeComponentId = KnowledgeComponent.Id
+        });
+        return Result.Ok(KnowledgeComponent.InstructionalItems.OrderBy(i => i.Order).ToList());
+    }
 
-            Causes(new KnowledgeComponentPassed
-            {
-                KnowledgeComponentId = KnowledgeComponent.Id,
-                LearnerId = LearnerId
-            });
-            TrySatisfy();
-        }
+    private void TryPass()
+    {
+        if (IsPassed || Mastery < PassThreshold) return;
 
-        private void TryComplete()
+        Causes(new KnowledgeComponentPassed
         {
-            if (IsCompleted || AssessmentMasteries.Any(am => !am.IsAttempted())) return;
+            KnowledgeComponentId = KnowledgeComponent.Id,
+            LearnerId = LearnerId
+        });
+        TrySatisfy();
+    }
 
-            Causes(new KnowledgeComponentCompleted
-            {
-                KnowledgeComponentId = KnowledgeComponent.Id,
-                LearnerId = LearnerId
-            });
-            TrySatisfy();
-        }
+    private void TryComplete()
+    {
+        if (IsCompleted || AssessmentMasteries.Any(am => !am.IsAttempted())) return;
 
-        private void TrySatisfy()
+        Causes(new KnowledgeComponentCompleted
         {
-            if (IsSatisfied || !MoveOnCriteria.IsSatisfied(IsCompleted, IsPassed)) return;
+            KnowledgeComponentId = KnowledgeComponent.Id,
+            LearnerId = LearnerId
+        });
+        TrySatisfy();
+    }
 
-            Causes(new KnowledgeComponentSatisfied
-            {
-                KnowledgeComponentId = KnowledgeComponent.Id,
-                LearnerId = LearnerId
-            });
-        }
+    private void TrySatisfy()
+    {
+        if (IsSatisfied || !MoveOnCriteria.IsSatisfied(IsCompleted, IsPassed)) return;
 
-        public Result SeekHelpForAssessmentItem(SoughtHelp helpEvent)
+        Causes(new KnowledgeComponentSatisfied
         {
-            if (!HasActiveSession) LaunchSession();
-            helpEvent.KnowledgeComponentId = KnowledgeComponent.Id;
-            helpEvent.LearnerId = LearnerId;
+            KnowledgeComponentId = KnowledgeComponent.Id,
+            LearnerId = LearnerId
+        });
+    }
 
-            Causes(helpEvent);
-            return Result.Ok();
-        }
+    public Result SeekHelpForAssessmentItem(SoughtHelp helpEvent)
+    {
+        if (!HasActiveSession) LaunchSession();
+        helpEvent.KnowledgeComponentId = KnowledgeComponent.Id;
+        helpEvent.LearnerId = LearnerId;
 
-        public Result RecordInstructorMessage(string message)
+        Causes(helpEvent);
+        return Result.Ok();
+    }
+
+    public Result RecordInstructorMessage(string message)
+    {
+        var instructorMessageEvent = new EncouragingMessageSent
         {
-            var instructorMessageEvent = new InstructorMessageEvent
-            {
-                Message = message,
-                KnowledgeComponentId = KnowledgeComponent.Id,
-                LearnerId = LearnerId
-            };
-            Causes(instructorMessageEvent);
-            return Result.Ok();
-        }
+            Message = message,
+            KnowledgeComponentId = KnowledgeComponent.Id,
+            LearnerId = LearnerId
+        };
+        Causes(instructorMessageEvent);
+        return Result.Ok();
+    }
 
-        protected override void Apply(DomainEvent @event)
-        {
-            When((dynamic)@event);
-        }
+    protected override void Apply(DomainEvent @event)
+    {
+        When((dynamic)@event);
+    }
 
-        private void When(SessionLaunched @event)
-        {
-            HasActiveSession = true;
-        }
+    private void When(SessionLaunched @event)
+    {
+        HasActiveSession = true;
+    }
 
-        private void When(SessionTerminated @event)
-        {
-            HasActiveSession = false;
-        }
+    private void When(SessionTerminated @event)
+    {
+        HasActiveSession = false;
+    }
 
-        private void When(SessionAbandoned @event)
-        {
-            HasActiveSession = false;
-        }
+    private void When(SessionAbandoned @event)
+    {
+        HasActiveSession = false;
+    }
 
-        private void When(AssessmentItemAnswered @event)
-        {
-            var itemId = @event.AssessmentItemId;
-            var assessmentMastery = AssessmentMasteries.Find(am => am.AssessmentItemId == itemId);
-            if (assessmentMastery == null)
-                throw new InvalidOperationException("No assessment mastery for item: " + itemId +". Were the masteries created and loaded correctly?");
+    private void When(KnowledgeComponentStarted @event)
+    {
+        IsStarted = true;
+    }
 
-            assessmentMastery.UpdateMastery(@event);
-            UpdateMastery();
-        }
+    private void When(KnowledgeComponentPassed @event)
+    {
+        IsPassed = true;
+    }
 
-        private void UpdateMastery()
-        {
-            Mastery = Math.Round(AssessmentMasteries.Sum(am => am.Mastery) / AssessmentMasteries.Count, 2);
-            if (Mastery > 0.97) Mastery = 1; // Resolves rounding errors.
-        }
+    private void When(KnowledgeComponentCompleted @event)
+    {
+        IsCompleted = true;
+    }
 
-        private void When(KnowledgeComponentPassed @event)
-        {
-            IsPassed = true;
-        }
+    private void When(KnowledgeComponentSatisfied @event)
+    {
+        IsSatisfied = true;
+    }
 
-        private void When(KnowledgeComponentCompleted @event)
-        {
-            IsCompleted = true;
-        }
+    private static void When(KnowledgeComponentEvent @event)
+    {
+        // No action for AssessmentItemSelected, InstructionalItemsSelected, SoughtHelp, InstructorMessageEvent.
+    }
 
-        private void When(KnowledgeComponentSatisfied @event)
-        {
-            IsSatisfied = true;
-        }
+    private void When(AssessmentItemAnswered @event)
+    {
+        var itemId = @event.AssessmentItemId;
+        var assessmentMastery = AssessmentMasteries.Find(am => am.AssessmentItemId == itemId);
+        if (assessmentMastery == null)
+            throw new InvalidOperationException("No assessment mastery for item: " + itemId +". Were the masteries created and loaded correctly?");
 
-        private static void When(AssessmentItemSelected @event)
-        { 
-            // Possibly save information that the AE has been selected somewhere in the model.
-        }
+        assessmentMastery.UpdateMastery(@event);
+        UpdateMastery();
+    }
 
-        private static void When(InstructionalItemsSelected @event)
-        {
-            // No action necessary for now.
-        }
-
-        private static void When(SoughtHelp @event)
-        {
-            // Possibly record how many times help was sought somewhere.
-        }
-
-        private static void When(InstructorMessageEvent @event)
-        {
-            // No action necessary for now.
-        }
+    private void UpdateMastery()
+    {
+        Mastery = Math.Round(AssessmentMasteries.Sum(am => am.Mastery) / AssessmentMasteries.Count, 2);
+        if (Mastery > 0.97) Mastery = 1; // Resolves rounding errors.
     }
 }

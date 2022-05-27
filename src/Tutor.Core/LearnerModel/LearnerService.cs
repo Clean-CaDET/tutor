@@ -1,18 +1,15 @@
 using System.Collections.Generic;
 using FluentResults;
-using Tutor.Core.LearnerModel.Workspaces;
 
 namespace Tutor.Core.LearnerModel
 {
     public class LearnerService : ILearnerService
     {
         private readonly ILearnerRepository _learnerRepository;
-        private readonly IWorkspaceCreator _workspaceCreator;
 
-        public LearnerService(ILearnerRepository learnerRepository, IWorkspaceCreator workspaceCreator)
+        public LearnerService(ILearnerRepository learnerRepository)
         {
             _learnerRepository = learnerRepository;
-            _workspaceCreator = workspaceCreator;
         }
 
         public Result<Learner> GetLearnerProfile(int id)
@@ -24,11 +21,6 @@ namespace Tutor.Core.LearnerModel
         public Result<List<LearnerGroup>> GetGroups()
         {
             return Result.Ok(_learnerRepository.GetGroups());
-        }
-
-        private void CreateWorkspace(Learner learner)
-        {
-            learner.Workspace = _workspaceCreator.Create(learner.Index);
         }
     }
 }

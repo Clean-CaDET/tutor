@@ -76,9 +76,6 @@ namespace Tutor.Infrastructure.Database
             ConfigureKnowledgeComponent(modelBuilder);
             ConfigureKcMastery(modelBuilder);
 
-            modelBuilder.Entity<Learner>()
-                .OwnsOne(l => l.Workspace)
-                .Property(w => w.Path).HasColumnName("WorkspacePath");
             modelBuilder.Entity<GroupMembership>()
                 .HasOne(g => g.Learner)
                 .WithMany();
