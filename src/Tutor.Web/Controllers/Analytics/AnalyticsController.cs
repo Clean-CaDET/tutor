@@ -21,14 +21,14 @@ namespace Tutor.Web.Controllers.Analytics;
 public class AnalyticsController : ControllerBase
 {
     private readonly ILearnerRepository _learnerRepository;
-    private readonly IDomainRepository _domainRepository;
+    private readonly IKnowledgeUnitRepository _knowledgeUnitRepository;
     private readonly IEventStore _eventStore;
     private readonly IMapper _mapper;
 
-    public AnalyticsController(ILearnerRepository learnerRepository, IDomainRepository domainRepository, IEventStore eventStore, IMapper mapper)
+    public AnalyticsController(ILearnerRepository learnerRepository, IKnowledgeUnitRepository knowledgeUnitRepository, IEventStore eventStore, IMapper mapper)
     {
         _learnerRepository = learnerRepository;
-        _domainRepository = domainRepository;
+        _knowledgeUnitRepository = knowledgeUnitRepository;
         _eventStore = eventStore;
         _mapper = mapper;
     }
@@ -46,7 +46,7 @@ public class AnalyticsController : ControllerBase
     public ActionResult<List<KcStatisticsDto>> GetKcStatistics([FromQuery] int unitId, [FromQuery] int groupId)
     {
         // Should refactor. Need to research appropriate patterns for this case. AnalyticsService seems to be a simple solution.
-        var unit = _domainRepository.GetUnit(unitId);
+        var unit = _knowledgeUnitRepository.Get(unitId);
         List<int> learnerIds = null;
         if(groupId != 0) learnerIds = _learnerRepository.GetByGroupId(groupId).Select(l => l.Id).ToList();
 

@@ -11,21 +11,21 @@ namespace Tutor.Web.Controllers.Domain
     [Route("api/domain")]
     [Authorize(Policy = "instructorPolicy")]
     [ApiController]
-    public class DomainController : ControllerBase
+    public class UnitController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IDomainRepository _domainRepository;
+        private readonly IKnowledgeUnitRepository _knowledgeUnitRepository;
 
-        public DomainController(IDomainRepository domainRepository, IMapper mapper)
+        public UnitController(IKnowledgeUnitRepository knowledgeUnitRepository, IMapper mapper)
         {
-            _domainRepository = domainRepository;
+            _knowledgeUnitRepository = knowledgeUnitRepository;
             _mapper = mapper;
         }
 
         [HttpGet("units")]
-        public ActionResult<List<UnitDto>> GetUnits()
+        public ActionResult<List<UnitDto>> GetAll()
         {
-            var result = _domainRepository.GetUnits();
+            var result = _knowledgeUnitRepository.GetAll();
             return Ok(result.Select(u => _mapper.Map<UnitDto>(u)).ToList());
         }
     }

@@ -81,7 +81,7 @@ namespace Tutor.Web
                     });
             });
 
-            services.AddScoped<IDomainRepository, DomainDatabaseRepository>();
+            services.AddScoped<IKnowledgeUnitRepository, KnowledgeUnitDatabaseRepository>();
 
             services.AddScoped<IKcMasteryService, KcMasteryService>();
             services.AddScoped<IKcMasteryRepository, KcMasteryDatabaseRepository>();

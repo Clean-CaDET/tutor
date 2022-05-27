@@ -1,4 +1,7 @@
-﻿DELETE FROM public."AssessmentItemMasteries";
+﻿DELETE FROM public."EmotionsFeedbacks";
+DELETE FROM public."TutorImprovementFeedbacks";
+
+DELETE FROM public."AssessmentItemMasteries";
 DELETE FROM public."KcMasteries";
 DELETE FROM public."UnitEnrollments";
 DELETE FROM public."Notes";

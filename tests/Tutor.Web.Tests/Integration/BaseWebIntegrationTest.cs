@@ -44,7 +44,7 @@ namespace Tutor.Web.Tests.Integration
         {
             return new AnalyticsController(
                 scope.ServiceProvider.GetRequiredService<ILearnerRepository>(),
-                scope.ServiceProvider.GetRequiredService<IDomainRepository>(),
+                scope.ServiceProvider.GetRequiredService<IKnowledgeUnitRepository>(),
                 scope.ServiceProvider.GetRequiredService<IEventStore>(),
                 Factory.Services.GetRequiredService<IMapper>())
             {

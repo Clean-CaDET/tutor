@@ -42,7 +42,6 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     public Result LaunchSession()
     {
-        TryStart();
         if (HasActiveSession)
         {
             Causes(new SessionAbandoned
@@ -57,6 +56,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
             KnowledgeComponentId = KnowledgeComponent.Id,
             LearnerId = LearnerId
         });
+        TryStart();
         return Result.Ok();
     }
 

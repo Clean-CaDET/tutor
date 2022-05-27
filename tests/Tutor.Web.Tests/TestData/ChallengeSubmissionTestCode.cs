@@ -24,12 +24,12 @@ namespace Tutor.Web.Tests.TestData
             return GetCode("PassingCourse.txt");
         }
 
-        public static string[] GetFailingParams()
+        internal static string[] GetFailingParams()
         {
             return GetCode("FailingParams.txt");
         }
 
-        public static string[] GetPassingParams()
+        internal static string[] GetPassingParams()
         {
             return GetCode("PassingParams.txt");
         }
