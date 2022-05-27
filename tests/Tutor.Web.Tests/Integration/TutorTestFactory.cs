@@ -19,14 +19,14 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
         builder.ConfigureServices(services =>
         {
             using var scope = BuildServiceProvider(services).CreateScope();
-            var scopedServices = scope.ServiceProvider;
-
-            InitializeEventDbForTests(scopedServices.GetRequiredService<EventContext>());
+            var scopedServices = scope.ServiceProvider;            
             
             var db = scopedServices.GetRequiredService<TutorContext>();
             db.Database.EnsureCreated();
-            var logger = scopedServices.GetRequiredService<ILogger<TutorApplicationTestFactory<TStartup>>>();
 
+            InitializeEventDbForTests(scopedServices.GetRequiredService<EventContext>());
+
+            var logger = scopedServices.GetRequiredService<ILogger<TutorApplicationTestFactory<TStartup>>>();
             try
             {
                 InitializeDbForTests(db);

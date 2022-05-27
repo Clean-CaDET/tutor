@@ -11,6 +11,8 @@ using Tutor.Web.Controllers.Analytics;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Analytics;
+
+[Collection("Sequential")]
 public class KcStatisticsTests : BaseWebIntegrationTest
 {
     public KcStatisticsTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
