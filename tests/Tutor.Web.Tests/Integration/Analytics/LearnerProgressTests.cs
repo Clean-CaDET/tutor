@@ -7,6 +7,8 @@ using Tutor.Web.Controllers.Analytics;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Analytics;
+
+[Collection("Sequential")]
 public class LearnerProgressTests : BaseWebIntegrationTest
 {
     public LearnerProgressTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }

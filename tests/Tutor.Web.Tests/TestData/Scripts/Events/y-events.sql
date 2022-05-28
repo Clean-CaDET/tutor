@@ -1,4 +1,6 @@
 ﻿
+DELETE FROM public."Events";
+
 INSERT INTO public."Events" VALUES (-266, 'KnowledgeComponentMastery', -9998, '2022-05-22 09:07:03.323641+02', '{{"LearnerId": -5, "TimeStamp": "2022-05-22T07:07:03.3236419Z", "$discriminator": "KnowledgeComponentStarted", "KnowledgeComponentId": -10}}');
 INSERT INTO public."Events" VALUES (-267, 'KnowledgeComponentMastery', -9998, '2022-05-22 09:07:03.372343+02', '{{"LearnerId": -5, "TimeStamp": "2022-05-22T07:07:03.372343Z", "$discriminator": "SessionLaunched", "KnowledgeComponentId": -10}}');
 INSERT INTO public."Events" VALUES (-268, 'KnowledgeComponentMastery', -9998, '2022-05-22 09:07:03.566225+02', '{{"LearnerId": -5, "TimeStamp": "2022-05-22T07:07:03.5662255Z", "$discriminator": "InstructionalItemsSelected", "KnowledgeComponentId": -10}}');
