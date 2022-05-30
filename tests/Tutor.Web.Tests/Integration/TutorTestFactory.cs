@@ -19,42 +19,29 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
         builder.ConfigureServices(services =>
         {
             using var scope = BuildServiceProvider(services).CreateScope();
-            var scopedServices = scope.ServiceProvider;
-
-            InitializeEventDbForTests(scopedServices.GetRequiredService<EventContext>());
-            
+            var scopedServices = scope.ServiceProvider;  
             var db = scopedServices.GetRequiredService<TutorContext>();
-            db.Database.EnsureCreated();
+            var eventDb = scopedServices.GetRequiredService<EventContext>();
             var logger = scopedServices.GetRequiredService<ILogger<TutorApplicationTestFactory<TStartup>>>();
 
-            try
-            {
-                InitializeDbForTests(db);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "An error occurred seeding the database with test data. Error: {Message}", ex.Message);
-            }
+            InitializeDatabase(db, "../../../TestData/Scripts/", logger);
+            InitializeDatabase(eventDb, "../../../TestData/Scripts/Events/", logger);
         });
     }
 
-    private static void InitializeDbForTests(TutorContext db)
+    private static void InitializeDatabase(DbContext context, string scriptFolder, ILogger<TutorApplicationTestFactory<TStartup>> logger)
     {
-        var testScripts = Directory.GetFiles("../../../TestData/Scripts/");
-        var startingDb = string.Join('\n', testScripts.Select(File.ReadAllText));
-        db.Database.ExecuteSqlRaw(startingDb);
-    }
+        context.Database.EnsureCreated();
 
-    private static void InitializeEventDbForTests(EventContext db)
-    {
-        var createScript = db.Database.GenerateCreateScript();
         try
         {
-            db.Database.ExecuteSqlRaw(createScript);
+            var scriptFiles = Directory.GetFiles(scriptFolder);
+            var script = string.Join('\n', scriptFiles.Select(File.ReadAllText));
+            context.Database.ExecuteSqlRaw(script);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            // Triggers when the Events table already exists.
+            logger.LogError(ex, "An error occurred seeding the database with test data. Error: {Message}", ex.Message);
         }
     }
 
@@ -65,9 +52,8 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
         var eventDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<EventContext>));
         services.Remove(eventDescriptor);
 
-        var connectionString = CreateConnectionStringForTest();
-        services.AddDbContext<TutorContext>(opt => opt.UseNpgsql(connectionString));
-        services.AddDbContext<EventContext>(opt => opt.UseNpgsql(connectionString));
+        services.AddDbContext<TutorContext>(opt => opt.UseNpgsql(CreateConnectionStringForTest()));
+        services.AddDbContext<EventContext>(opt => opt.UseNpgsql(CreateConnectionStringForEvents()));
         return services.BuildServiceProvider();
     }
 
@@ -76,6 +62,20 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
         var server = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "localhost";
         var port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "5432";
         var database = EnvironmentConnection.GetSecret("DATABASE_SCHEMA") ?? "smart-tutor-test";
+        var user = EnvironmentConnection.GetSecret("DATABASE_USERNAME") ?? "postgres";
+        var password = EnvironmentConnection.GetSecret("DATABASE_PASSWORD") ?? "super";
+        var integratedSecurity = Environment.GetEnvironmentVariable("DATABASE_INTEGRATED_SECURITY") ?? "false";
+        var pooling = Environment.GetEnvironmentVariable("DATABASE_POOLING") ?? "true";
+
+        return
+            $"Server={server};Port={port};Database={database};User ID={user};Password={password};Integrated Security={integratedSecurity};Pooling={pooling};";
+    }
+
+    private static string CreateConnectionStringForEvents()
+    {
+        var server = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "localhost";
+        var port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "5432";
+        var database = EnvironmentConnection.GetSecret("EVENT_DATABASE_SCHEMA") ?? "smart-tutor-test-events";
         var user = EnvironmentConnection.GetSecret("DATABASE_USERNAME") ?? "postgres";
         var password = EnvironmentConnection.GetSecret("DATABASE_PASSWORD") ?? "super";
         var integratedSecurity = Environment.GetEnvironmentVariable("DATABASE_INTEGRATED_SECURITY") ?? "false";
