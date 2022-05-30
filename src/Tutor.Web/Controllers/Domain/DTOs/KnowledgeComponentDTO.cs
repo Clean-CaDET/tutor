@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Tutor.Web.Controllers.Learners.DomainOverlay.DTOs;
 
 namespace Tutor.Web.Controllers.Domain.DTOs
 {

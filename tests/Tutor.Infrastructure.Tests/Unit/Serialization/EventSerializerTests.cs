@@ -13,8 +13,10 @@ namespace Tutor.Infrastructure.Tests.Unit.Serialization
         [MemberData(nameof(Events))]
         public void Serializes_and_deserializes_events(DomainEvent @event)
         {
-            var serialized = EventSerializer.Serialize(@event);
-            var deserialized = EventSerializer.Deserialize(serialized);
+            var serializer = new EventSerializer();
+
+            var serialized = serializer.Serialize(@event);
+            var deserialized = serializer.Deserialize(serialized);
 
             deserialized.ShouldNotBeNull();
             deserialized.ShouldBeOfType(@event.GetType());

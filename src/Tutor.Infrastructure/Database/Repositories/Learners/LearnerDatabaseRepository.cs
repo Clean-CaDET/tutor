@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.LearnerModel;
 
 namespace Tutor.Infrastructure.Database.Repositories.Learners
@@ -12,9 +16,22 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
             _dbContext = dbContext;
         }
 
+        public Learner GetByUserId(int userId)
+        {
+            return _dbContext.Learners.FirstOrDefault(learner => learner.UserId.Equals(userId));
+        }
+
         public Learner GetByIndex(string index)
         {
-            return _dbContext.Learners.FirstOrDefault(learner => learner.StudentIndex.Equals(index));
+            return _dbContext.Learners.FirstOrDefault(learner => learner.Index.Equals(index));
+        }
+
+        public List<Learner> GetByGroupId(int groupId)
+        {
+            return _dbContext.GroupMemberships
+                .Where(m => m.LearnerGroupId == groupId)
+                .Include(m => m.Learner)
+                .Select(m => m.Learner).ToList();
         }
 
         public Learner Save(Learner learner)
@@ -24,9 +41,50 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
             return learner;
         }
 
-        public Learner GetLearnerProfile(int id)
+        public async Task<PagedResult<Learner>> GetLearnersWithMasteriesAsync(int page, int pageSize, int groupId)
         {
-            return _dbContext.Learners.FirstOrDefault(learner => learner.Id.Equals(id));
+            if (groupId == 0)
+            {
+                return await GetAllLearnersAsync(page, pageSize);
+            }
+            return await GetLearnersByGroupAsync(page, pageSize, groupId);
+        }
+
+        private Task<PagedResult<Learner>> GetLearnersByGroupAsync(int page, int pageSize, int groupId)
+        {
+            return _dbContext.GroupMemberships
+                .Where(g => g.LearnerGroupId == groupId)
+                .Include(g => g.Learner)
+                .ThenInclude(l => l.KnowledgeComponentMasteries)
+                .ThenInclude(kcm => kcm.AssessmentMasteries)
+                .Include(g => g.Learner)
+                .ThenInclude(l => l.KnowledgeComponentMasteries)
+                .ThenInclude(kcm => kcm.KnowledgeComponent)
+                .Select(g => g.Learner)
+                .GetPaged(page, pageSize);
+        }
+
+        private async Task<PagedResult<Learner>> GetAllLearnersAsync(int page, int pageSize)
+        {
+            return await _dbContext.Learners
+                .Include(l => l.KnowledgeComponentMasteries)
+                .ThenInclude(kcm => kcm.AssessmentMasteries)
+                .Include(l => l.KnowledgeComponentMasteries)
+                .ThenInclude(kcm => kcm.KnowledgeComponent)
+                .GetPaged(page, pageSize);
+        }
+
+        public List<LearnerGroup> GetGroups()
+        {
+            return _dbContext.LearnerGroups.ToList();
+        }
+
+        public int CountEnrolledInUnit(int unitId, List<int> learnerIds)
+        {
+            if (learnerIds == null)
+                return _dbContext.UnitEnrollments.Count(enrollment => enrollment.KnowledgeUnit.Id == unitId);
+            return _dbContext.UnitEnrollments.Count(enrollment => 
+                enrollment.KnowledgeUnit.Id == unitId && learnerIds.Contains(enrollment.LearnerId));
         }
     }
 }

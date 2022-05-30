@@ -9,7 +9,7 @@ namespace Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions
         public string Text { get; private set; }
         public List<string> AcceptableAnswers { get; private set; }
 
-        public override Evaluation EvaluateSubmission(Submission submission)
+        public override Evaluation Evaluate(Submission submission)
         {
             if (submission is SaqSubmission saqSubmission) return EvaluateSaq(saqSubmission);
             throw new ArgumentException("Incorrect submission supplied to SAQ with ID " + Id);
@@ -17,7 +17,7 @@ namespace Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions
 
         private SaqEvaluation EvaluateSaq(SaqSubmission saqSubmission)
         {
-            return new SaqEvaluation(Id, CalculateWordListCorrectness(saqSubmission.Answer), AcceptableAnswers);
+            return new SaqEvaluation(CalculateWordListCorrectness(saqSubmission.Answer), AcceptableAnswers);
         }
 
         private double CalculateWordListCorrectness(string saqSubmissionAnswer)

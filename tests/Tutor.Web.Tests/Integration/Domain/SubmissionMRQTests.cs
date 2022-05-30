@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
-using Tutor.Core.LearnerModel.DomainOverlay;
-using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Xunit;
 
@@ -16,11 +13,11 @@ namespace Tutor.Web.Tests.Integration.Domain
         public SubmissionMrqTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
         [Theory]
-        [MemberData(nameof(MRQSubmissions))]
+        [MemberData(nameof(MrqSubmissions))]
         public void Submits_multiple_response_questions(MrqSubmissionDto submission, MrqEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new SubmissionController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ILearnerAssessmentsService>());
+            var controller = SetupAssessmentsController(scope, "-3");
 
             var actualEvaluation = ((OkObjectResult)controller.SubmitMultipleResponseQuestion(submission).Result).Value as MrqEvaluationDto;
 
@@ -34,7 +31,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             }
         }
 
-        public static IEnumerable<object[]> MRQSubmissions()
+        public static IEnumerable<object[]> MrqSubmissions()
         {
             return new List<object[]>
             {
@@ -43,7 +40,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new MrqSubmissionDto
                     {
                         AssessmentItemId = -153,
-                        LearnerId = -3,
                         Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1531},
@@ -70,7 +66,6 @@ namespace Tutor.Web.Tests.Integration.Domain
                     new MrqSubmissionDto
                     {
                         AssessmentItemId = -153,
-                        LearnerId = -3,
                         Answers = new List<MrqItemDto>
                         {
                             new() {Id = -1532},
@@ -93,8 +88,7 @@ namespace Tutor.Web.Tests.Integration.Domain
                 {
                     new MrqSubmissionDto
                     {
-                        AssessmentItemId = -153,
-                        LearnerId = -3
+                        AssessmentItemId = -153
                     },
                     new MrqEvaluationDto
                     {

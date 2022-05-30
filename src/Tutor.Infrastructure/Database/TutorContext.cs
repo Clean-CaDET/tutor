@@ -5,20 +5,20 @@ using Tutor.Core.DomainModel.AssessmentItems.Challenges;
 using Tutor.Core.DomainModel.AssessmentItems.Challenges.FulfillmentStrategies;
 using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
-using Tutor.Core.DomainModel.Feedback;
 using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Core.DomainModel.Notes;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
+using Tutor.Core.LearnerModel.Feedback;
+using Tutor.Core.LearnerModel.Notes;
+using Tutor.Infrastructure.Security.Authentication.Users;
 
 namespace Tutor.Infrastructure.Database
 {
     public class TutorContext : DbContext
     {
         #region Domain Model
-
         public DbSet<KnowledgeUnit> KnowledgeUnits { get; set; }
         public DbSet<KnowledgeComponent> KnowledgeComponents { get; set; }
         public DbSet<AssessmentItem> AssessmentItems { get; set; }
@@ -41,33 +41,27 @@ namespace Tutor.Infrastructure.Database
 
         #endregion
 
-        #region Submissions
-
-        public DbSet<Submission> Submissions { get; set; }
-        public DbSet<SaqSubmission> SaqSubmissions { get; set; }
-        public DbSet<ArrangeTaskSubmission> ArrangeTaskSubmissions { get; set; }
-        public DbSet<ArrangeTaskContainerSubmission> ArrangeTaskContainerSubmissions { get; set; }
-        public DbSet<ChallengeSubmission> ChallengeSubmissions { get; set; }
-        public DbSet<MrqSubmission> MrqSubmissions { get; set; }
-
-        #endregion
-
-        #region Feedbacks
-
+        #region Feedback & Notes
         public DbSet<EmotionsFeedback> EmotionsFeedbacks { get; set; }
         public DbSet<TutorImprovementFeedback> TutorImprovementFeedbacks { get; set; }
+        public DbSet<Note> Notes { get; set; }
 
         #endregion
 
+        #region Learners
         public DbSet<Learner> Learners { get; set; }
+        public DbSet<LearnerGroup> LearnerGroups { get; set; }
+        public DbSet<GroupMembership> GroupMemberships { get; set; }
         public DbSet<UnitEnrollment> UnitEnrollments { get; set; }
         public DbSet<KnowledgeComponentMastery> KcMasteries { get; set; }
+        public DbSet<AssessmentItemMastery> AssessmentItemMasteries { get; set; }
+        #endregion
+
+        public DbSet<User> Users { get; set; }
 
         public TutorContext(DbContextOptions<TutorContext> options) : base(options)
         {
         }
-        
-        public DbSet<Note> Notes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -82,22 +76,14 @@ namespace Tutor.Infrastructure.Database
             ConfigureKnowledgeComponent(modelBuilder);
             ConfigureKcMastery(modelBuilder);
 
-            modelBuilder.Entity<Learner>()
-                .OwnsOne(l => l.Workspace)
-                .Property(w => w.Path).HasColumnName("WorkspacePath");
-            modelBuilder.Entity<KnowledgeComponentMastery>()
-                .HasOne(kcm => kcm.KnowledgeComponent)
+            modelBuilder.Entity<GroupMembership>()
+                .HasOne(g => g.Learner)
                 .WithMany();
         }
 
         private static void ConfigureArrangeTask(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ArrangeTask>().ToTable("ArrangeTasks");
-
-            modelBuilder.Entity<ArrangeTaskSubmission>()
-                .HasMany(at => at.Containers)
-                .WithOne()
-                .HasForeignKey("SubmissionId");
         }
 
         private static void ConfigureChallenge(ModelBuilder modelBuilder)
@@ -114,14 +100,19 @@ namespace Tutor.Infrastructure.Database
             modelBuilder.Entity<KnowledgeComponent>()
                 .HasMany(kc => kc.KnowledgeComponents)
                 .WithOne()
-                .HasForeignKey("ParentId")
+                .HasForeignKey(kc => kc.ParentId)
                 .IsRequired(false);
         }
 
         private static void ConfigureKcMastery(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<KnowledgeComponentMastery>().Ignore(kcm => kcm.MoveOnCriteria);
-            modelBuilder.Entity<KnowledgeComponentMastery>().Ignore(kcm => kcm.IsCompleted);
+            modelBuilder.Entity<KnowledgeComponentMastery>()
+                .HasOne(kcm => kcm.KnowledgeComponent)
+                .WithMany();
+            modelBuilder.Entity<KnowledgeComponentMastery>()
+                .HasMany(kcm => kcm.AssessmentMasteries)
+                .WithOne();
         }
     }
 }

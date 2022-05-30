@@ -33,27 +33,27 @@ namespace Tutor.Infrastructure.Tests.TestData
 
         private abstract class ClassBase
         {
-            public int FieldA { get; set; }
+            internal int FieldA { get; set; }
         }
 
         private class ClassB : ClassBase
         {
-            public int FieldB { get; set; }
+            internal int FieldB { get; set; }
         }
 
         private sealed class ClassC : ClassBase
         {
-            public int FieldC { get; set; }
+            internal int FieldC { get; set; }
         }
 
         private sealed class ClassD : ClassB
         {
-            public int FieldDE { get; set; }
+            internal int FieldDE { get; set; }
         }
 
         private sealed class ClassE : ClassB
         {
-            public int FieldDE { get; set; }
+            internal int FieldDE { get; set; }
         }
     }
 }

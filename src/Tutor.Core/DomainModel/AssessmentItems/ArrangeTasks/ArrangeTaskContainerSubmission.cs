@@ -4,8 +4,6 @@ namespace Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks
 {
     public class ArrangeTaskContainerSubmission
     {
-        public int Id { get; private set; }
-        public int SubmissionId { get; private set; }
         public int ArrangeTaskContainerId { get; private set; }
         public List<int> ElementIds { get; private set; }
     }
