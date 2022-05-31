@@ -10,16 +10,8 @@ RUN chmod +x ./install-dependencies.sh && \
 COPY ./front/environment.ts.template ./app
 COPY ./scripts/build-app.sh .
 ARG SMART_TUTOR_API_URL
-ARG KEYCLOAK_AUTH_URL
-ARG KEYCLOAK_ON
-ARG KEYCLOAK_REALM
-ARG KEYCLOAK_AUDIENCE
 RUN chmod +x ./build-app.sh && \
-    ./build-app.sh ${SMART_TUTOR_API_URL} \
-        ${KEYCLOAK_ON} \
-        ${KEYCLOAK_AUTH_URL} \
-        ${KEYCLOAK_REALM} \
-        ${KEYCLOAK_AUDIENCE}
+    ./build-app.sh ${SMART_TUTOR_API_URL}
 
 FROM nginx:1.21.6-alpine AS gatewayWithFront
 COPY --from=frontBuild /app /usr/share/nginx/html/app
