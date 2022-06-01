@@ -1,10 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events;
 
 namespace Tutor.Infrastructure.Database.EventStore.Postgres
 {

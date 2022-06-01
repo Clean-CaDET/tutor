@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events;
 
 namespace Tutor.Infrastructure.Database.EventStore
 {
