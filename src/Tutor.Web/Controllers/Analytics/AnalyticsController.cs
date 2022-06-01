@@ -49,8 +49,13 @@ public class AnalyticsController : ControllerBase
         var unit = _knowledgeUnitRepository.Get(unitId);
         List<int> learnerIds = null;
         if(groupId != 0) learnerIds = _learnerRepository.GetByGroupId(groupId).Select(l => l.Id).ToList();
+        List<int> kcIds = unit.KnowledgeComponents.Select(kc => kc.Id).ToList();
 
-        var events = _eventStore.GetKcEvents(unit.KnowledgeComponents.Select(kc => kc.Id).ToList(), learnerIds);
+        var eventQuery = _eventStore.Events.Where(e => kcIds.Contains(e.RootElement.GetProperty("KnowledgeComponentId").GetInt32()));
+        if (learnerIds != null)
+            eventQuery = eventQuery.Where(e => learnerIds.Contains(e.RootElement.GetProperty("LearnerId").GetInt32()));
+        var events = eventQuery.ToList<KnowledgeComponentEvent>();
+
         var enrolledLearnersCount = _learnerRepository.CountEnrolledInUnit(unit.Id, learnerIds);
 
         return Ok(CalculateKcStatistics(unit, events, enrolledLearnersCount));

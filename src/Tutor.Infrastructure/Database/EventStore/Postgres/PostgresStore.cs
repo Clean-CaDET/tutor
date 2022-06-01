@@ -31,27 +31,6 @@ namespace Tutor.Infrastructure.Database.EventStore.Postgres
                 storedEvents.TotalCount);
         }
 
-        public List<KnowledgeComponentEvent> GetKcEvents(List<int> kcIds, List<int> learnerIds)
-        {
-            if (learnerIds == null) return GetAllKcEvents(kcIds);
-
-            var events = _eventContext.Events.
-                Where(e => EF.Functions.JsonExistAll(e.DomainEvent, "KnowledgeComponentId", "LearnerId")
-                            && kcIds.Contains(e.DomainEvent.RootElement.GetProperty("KnowledgeComponentId").GetInt32())
-                            && learnerIds.Contains(e.DomainEvent.RootElement.GetProperty("LearnerId").GetInt32()));
-
-            return events.Select(e => _eventSerializer.Deserialize(e.DomainEvent) as KnowledgeComponentEvent).ToList();
-        }
-
-        private List<KnowledgeComponentEvent> GetAllKcEvents(List<int> kcIds)
-        {
-            var events = _eventContext.Events.
-                Where(e => EF.Functions.JsonExistAll(e.DomainEvent, "KnowledgeComponentId")
-                            && kcIds.Contains(e.DomainEvent.RootElement.GetProperty("KnowledgeComponentId").GetInt32()));
-
-            return events.Select(e => _eventSerializer.Deserialize(e.DomainEvent) as KnowledgeComponentEvent).ToList();
-        }
-
         public void Save(EventSourcedAggregateRoot aggregate)
         {
             // class name is temporarily used as aggregate type until we choose a better approach

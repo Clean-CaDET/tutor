@@ -65,7 +65,7 @@ namespace Tutor.Infrastructure.Database.EventStore.Postgres
             return ApplyConditions().Where(e => e is T).Select(e => e as T).ToList();
         }
 
-        private IQueryable<DomainEvent> ApplyConditions()
+        private IEnumerable<DomainEvent> ApplyConditions()
         {
             IQueryable<JsonDocument> events = EventSource.Select(e => e.DomainEvent);
             foreach (Expression<Func<JsonDocument, bool>> condition in Conditions)
