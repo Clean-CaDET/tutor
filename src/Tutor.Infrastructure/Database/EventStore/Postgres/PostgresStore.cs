@@ -1,17 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events;
 
-namespace Tutor.Infrastructure.Database.EventStore
+namespace Tutor.Infrastructure.Database.EventStore.Postgres
 {
     public class PostgresStore : IEventStore
     {
         private readonly EventContext _eventContext;
         private readonly IEventSerializer _eventSerializer;
+
+        public IEventQueryable Events => new PostgresEventQueryable(_eventContext.Events, _eventSerializer);
 
         public PostgresStore(EventContext eventContext, IEventSerializer eventSerializer)
         {
@@ -29,27 +28,6 @@ namespace Tutor.Infrastructure.Database.EventStore
                 storedEvents.TotalCount);
         }
 
-        public List<KnowledgeComponentEvent> GetKcEvents(List<int> kcIds, List<int> learnerIds)
-        {
-            if (learnerIds == null) return GetAllKcEvents(kcIds);
-
-            var events = _eventContext.Events.
-                Where(e => EF.Functions.JsonExistAll(e.DomainEvent, "KnowledgeComponentId", "LearnerId") 
-                            && kcIds.Contains(e.DomainEvent.RootElement.GetProperty("KnowledgeComponentId").GetInt32())
-                            && learnerIds.Contains(e.DomainEvent.RootElement.GetProperty("LearnerId").GetInt32()));
-
-            return events.Select(e => _eventSerializer.Deserialize(e.DomainEvent) as KnowledgeComponentEvent).ToList();
-        }
-
-        private List<KnowledgeComponentEvent> GetAllKcEvents(List<int> kcIds)
-        {
-            var events = _eventContext.Events.
-                Where(e => EF.Functions.JsonExistAll(e.DomainEvent, "KnowledgeComponentId")
-                            && kcIds.Contains(e.DomainEvent.RootElement.GetProperty("KnowledgeComponentId").GetInt32()));
-
-            return events.Select(e => _eventSerializer.Deserialize(e.DomainEvent) as KnowledgeComponentEvent).ToList();
-        }
-
         public void Save(EventSourcedAggregateRoot aggregate)
         {
             // class name is temporarily used as aggregate type until we choose a better approach
@@ -60,7 +38,7 @@ namespace Tutor.Infrastructure.Database.EventStore
                 {
                     AggregateType = aggregateType,
                     AggregateId = aggregate.Id,
-                    TimeStamp = e.TimeStamp,
+                    TimeStamp = e.TimeStamp.ToUniversalTime(),
                     DomainEvent = _eventSerializer.Serialize(e)
                 });
             _eventContext.Events.AddRange(eventsToSave);
