@@ -61,7 +61,7 @@ namespace Tutor.Infrastructure.Database.EventStore.Postgres
 
         public List<T> ToList<T>() where T : DomainEvent
         {
-            return ApplyConditions().Where(e => e is T).Select(e => e as T).ToList();
+            return ApplyConditions().OfType<T>().ToList();
         }
 
         private IEnumerable<DomainEvent> ApplyConditions()
