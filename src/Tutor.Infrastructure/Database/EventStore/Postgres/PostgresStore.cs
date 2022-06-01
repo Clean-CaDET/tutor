@@ -62,7 +62,7 @@ namespace Tutor.Infrastructure.Database.EventStore.Postgres
                 {
                     AggregateType = aggregateType,
                     AggregateId = aggregate.Id,
-                    TimeStamp = e.TimeStamp,
+                    TimeStamp = e.TimeStamp.ToUniversalTime(),
                     DomainEvent = _eventSerializer.Serialize(e)
                 });
             _eventContext.Events.AddRange(eventsToSave);
