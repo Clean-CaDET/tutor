@@ -7,17 +7,22 @@ FROM mcr.microsoft.com/dotnet/aspnet:${ASPNET_VERSION} AS base
 WORKDIR /app
  
 
-FROM mcr.microsoft.com/dotnet/sdk:${SDK_VERSION} AS build
+FROM mcr.microsoft.com/dotnet/sdk:${SDK_VERSION} as build
 ENV PROJECT=Tutor.Web
+ARG SRC_URL=https://github.com/Clean-CaDET/tutor/archive/refs/heads/master.tar.gz
 WORKDIR /src
-COPY /src .
+RUN apt update && apt install curl tar && \
+    mkdir ../downloads && cd ../downloads && \
+    curl -L ${SRC_URL} | tar -xz && \
+    mv $(ls -d */|head -n 1) app && mv app/* /src
+WORKDIR /src/src
 RUN dotnet restore "${PROJECT}/${PROJECT}.csproj" && \
     dotnet build "${PROJECT}/${PROJECT}.csproj" -c Release
- 
+
 
 FROM build AS publish
 ENV PROJECT=Tutor.Web
-RUN dotnet publish "${PROJECT}/${PROJECT}.csproj" -c Release -o /app/publish 
+RUN dotnet publish "${PROJECT}/${PROJECT}.csproj" -c Release -o /app/publish
 
 
 FROM base AS final
@@ -27,7 +32,7 @@ WORKDIR /app/publish
 CMD ["dotnet", "Tutor.Web.dll"]
 
 
-FROM build AS migration-base
+FROM build as migration-base
 RUN PATH="$PATH:/root/.dotnet/tools"; \
     dotnet tool install --global dotnet-ef
 
@@ -53,7 +58,7 @@ CMD PATH="$PATH:/root/.dotnet/tools"; \
         -s "${STARTUP_PROJECT}/${STARTUP_PROJECT}.csproj"\
         -p "${TARGET_PROJECT}/${TARGET_PROJECT}.csproj" \
         -c "TutorContext" \
-        --configuration Release && \ 
+        --configuration Release && \
     dotnet-ef database update "${MIGRATION}-tutor" \
         -s "${STARTUP_PROJECT}/${STARTUP_PROJECT}.csproj"\
         -p "${TARGET_PROJECT}/${TARGET_PROJECT}.csproj" \
