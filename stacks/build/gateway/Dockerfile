@@ -3,7 +3,7 @@
 FROM node:16.14.0-alpine3.14 AS base
 WORKDIR /src
 COPY ./files/scripts/install-dependencies.sh .
-ARG FRONTEND_APP_SRC_URL=https://github.com/Clean-CaDET/platform-tutor-ui-web/archive/refs/heads/master.tar.gz
+ARG FRONTEND_APP_SRC_URL=https://github.com/Clean-CaDET/platform-tutor-ui-web/archive/refs/heads/localDeployment.tar.gz
 SHELL ["/bin/ash", "-o", "pipefail", "-c"]
 RUN ./install-dependencies.sh ${FRONTEND_APP_SRC_URL}
 COPY ./files/front/environment.ts.template ./app
