@@ -41,6 +41,11 @@ namespace Tutor.Infrastructure.Database.EventStore
             return events.Select(e => _eventSerializer.Deserialize(e.DomainEvent) as KnowledgeComponentEvent).ToList();
         }
 
+        public List<DomainEvent> GetAllEvents()
+        {
+            return _eventContext.Events.Select(e => _eventSerializer.Deserialize(e.DomainEvent)).ToList();
+        }
+
         private List<KnowledgeComponentEvent> GetAllKcEvents(List<int> kcIds)
         {
             var events = _eventContext.Events.
