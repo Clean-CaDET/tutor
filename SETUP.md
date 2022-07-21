@@ -26,9 +26,7 @@ Default configuration creates `cleancadet/smart-tutor:latest` and `cleancadet/ga
 Also build Smart Tutor migration image that creates required database schema for Smart Tutor service.
 
 ```shell
-docker-compose --env-file config/env-en.conf \
-  --file docker-compose.migration.yml \
-  build
+docker-compose --env-file config/env-en.conf --file docker-compose.migration.yml build
 ```
 
 Previous command creates `cleancadet/smart-tutor:migration-latest` image.
@@ -67,9 +65,7 @@ database_1     | 2021-08-31 11:42:52.852 UTC [1] LOG:  database system is ready 
 Run the migration script for Smart Tutor service:
 
 ```shell
-docker-compose --env-file config/env-en.conf \
-  --file docker-compose.migration.yml \
-  run smart-tutor-migration
+docker-compose --env-file config/env-en.conf --file docker-compose.migration.yml run smart-tutor-migration
 ```
 
 The services are accessible on http://127.0.0.1:8080 address. By default, database schema for Smart Tutor service is empty. If data for that service needs to be ingested with already prepared data, take a look at Data Ingest section.
@@ -79,12 +75,16 @@ The services are accessible on http://127.0.0.1:8080 address. By default, databa
 The next command ingest data into database used by Smart Tutor service:
 
 ```shell
-docker-compose --env-file config/env-en.conf \
-  exec \
-    --user postgres \
-    database \
-    psql -f /tmp/smart-tutor-init.sql
+docker-compose --env-file config/env-en.conf exec --user postgres database psql -f /tmp/smart-tutor-init.sql
 ```
+
+### Test credentials
+| Username    | Password    | Role        |
+| ----------- | ----------- | ----------- |
+| TT-1-2022   | tutor1      | student     |
+| TT-2-2022   | tutor2      | student     |
+| TT-3-2022   | tutor3      | student     |
+| TT-4-2022   | tutor4      | teacher     |
 
 ### 5. Destroy Infrastructure
 
