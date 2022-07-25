@@ -12,6 +12,7 @@ Initial setup requires all 4 steps to be executed. After initial setup, only sec
 Building Images, Data migration and Data ingest are meant to be run only once.
 
 **Note**: All commands require to be executed in `stacks` directory!
+**IMPORTANT**: Clone repository with this command: git clone https://github.com/Clean-CaDET/tutor.git --config core.autocrlf=input
 
 ### 1. Building Images
 
