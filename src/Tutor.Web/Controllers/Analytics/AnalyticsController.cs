@@ -109,7 +109,7 @@ public class AnalyticsController : ControllerBase
     [HttpGet("all-events")]
     public ActionResult<List<DomainEvent>> GetAllEvents()
     {
-        var result = _eventStore.GetAllEvents();
+        var result = _eventStore.Events.ToList();
         return Ok(result);
     }
 }
