@@ -105,4 +105,11 @@ public class AnalyticsController : ControllerBase
         task.Wait();
         return Ok(task.Result);
     }
+    
+    [HttpGet("all-events")]
+    public ActionResult<List<DomainEvent>> GetAllEvents()
+    {
+        var result = _eventStore.GetAllEvents();
+        return Ok(result);
+    }
 }
