@@ -8,7 +8,6 @@ namespace Tutor.Infrastructure.Tests.TestData.EventStore
     {
         public string? PropertyA { get; set; }
 
-
         public override bool Equals(object? obj)
         {
             return obj is TestEventA a &&

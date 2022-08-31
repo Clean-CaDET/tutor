@@ -40,5 +40,4 @@ namespace Tutor.Infrastructure.Tests.TestData.EventStore
             return result;
         }
     }
-
 }
