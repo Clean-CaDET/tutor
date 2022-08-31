@@ -11,24 +11,26 @@ namespace Tutor.Infrastructure.Tests.TestData.EventStore
                                                                  IEnumerable<DateTime> beforeParameters,
                                                                  IEnumerable<ConditionParameter> conditionParameters)
         {
-            IEnumerable<Query> queries = new List<Query> { new Query() };
+            IList<Query> queries = new List<Query> { new Query() };
 
+            foreach (var conditionParameter in conditionParameters)
+                queries = AddConditionParameter(queries, conditionParameter);
             foreach (var afterParameter in afterParameters)
                 queries = AddAfterParameter(queries, afterParameter);
             foreach (var beforeParameter in beforeParameters)
                 queries = AddBeforeParameter(queries, beforeParameter);
-            foreach (var conditionParameter in conditionParameters)
-                queries = AddConditionParameter(queries, conditionParameter);
 
             return queries;
         }
 
-        public static IEnumerable<Query> AddAfterParameter(IEnumerable<Query> currentQueries, DateTime afterParameter)
+        public static IList<Query> AddAfterParameter(IList<Query> currentQueries, DateTime afterParameter)
         {
             var newQueries = new List<Query>(currentQueries);
 
-            foreach (var query in currentQueries)
+            var indexes = GenerateIndexes(20, newQueries.Count);
+            foreach (var index in indexes)
             {
+                var query = currentQueries.ElementAt(index);
                 newQueries.Add(new Query()
                 {
                     AfterParameters = query.AfterParameters.Append(afterParameter),
@@ -40,12 +42,14 @@ namespace Tutor.Infrastructure.Tests.TestData.EventStore
             return newQueries;
         }
 
-        public static IEnumerable<Query> AddBeforeParameter(IEnumerable<Query> currentQueries, DateTime beforeParameter)
+        public static IList<Query> AddBeforeParameter(IList<Query> currentQueries, DateTime beforeParameter)
         {
             var newQueries = new List<Query>(currentQueries);
 
-            foreach (var query in currentQueries)
+            var indexes = GenerateIndexes(20, newQueries.Count);
+            foreach (var index in indexes)
             {
+                var query = currentQueries.ElementAt(index);
                 newQueries.Add(new Query()
                 {
                     AfterParameters = query.AfterParameters,
@@ -57,12 +61,14 @@ namespace Tutor.Infrastructure.Tests.TestData.EventStore
             return newQueries;
         }
 
-        public static IEnumerable<Query> AddConditionParameter(IEnumerable<Query> currentQueries, ConditionParameter conditionParameter)
+        public static IList<Query> AddConditionParameter(IList<Query> currentQueries, ConditionParameter conditionParameter)
         {
             var newQueries = new List<Query>(currentQueries);
 
-            foreach (var query in currentQueries)
+            var indexes = GenerateIndexes(20, newQueries.Count);
+            foreach (var index in indexes)
             {
+                var query = currentQueries.ElementAt(index);
                 newQueries.Add(new Query()
                 {
                     AfterParameters = query.AfterParameters,
@@ -72,6 +78,28 @@ namespace Tutor.Infrastructure.Tests.TestData.EventStore
             }
 
             return newQueries;
+        }
+
+        private static IEnumerable<int> GenerateIndexes(int maxAmount, int listCount)
+        {
+            var indexes = new HashSet<int>();
+
+            if (listCount <= maxAmount)
+            {
+                for (int i = 0; i < listCount; i++) indexes.Add(i);
+            }
+            else
+            {
+                var random = new Random(Guid.NewGuid().GetHashCode());
+                while (indexes.Count < maxAmount)
+                {
+                    int possibleIndex = random.Next(0, listCount);
+                    if (!indexes.Contains(possibleIndex))
+                        indexes.Add(possibleIndex);
+                }
+            }
+
+            return indexes;
         }
     }
 }

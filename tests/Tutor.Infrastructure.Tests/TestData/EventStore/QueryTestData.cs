@@ -13,7 +13,7 @@ namespace Tutor.Infrastructure.Tests.TestData.EventStore
         {
             if (_queries.Count == 0)
             {
-                var queries = QueryBuilder.BuildAllPossibleQueries(_afterParameters, _beforeParameters, _conditionParameters);
+                var queries = QueryBuilder.BuildAllPossibleQueries(_timeParameters, _timeParameters, _conditionParameters);
                 foreach (var query in queries)
                 {
                     _queries.Add(new object[] { query });
@@ -39,17 +39,15 @@ namespace Tutor.Infrastructure.Tests.TestData.EventStore
             new TestEventC() { TimeStamp = new DateTime(2022, 8, 30), PropertyB = 30, PropertyA = "lala" },
         };
 
-        private static readonly IEnumerable<DateTime> _afterParameters = new List<DateTime>
+        private static readonly IEnumerable<DateTime> _timeParameters = new List<DateTime>
         {
+            new DateTime(2022, 7, 31),
+            new DateTime(2022, 8, 1),
+            new DateTime(2022, 8, 12),
             new DateTime(2022, 8, 15),
             new DateTime(2022, 8, 21),
-            DateTime.MinValue
-        };
-
-        private static readonly IEnumerable<DateTime> _beforeParameters = new List<DateTime>
-        {
-            new DateTime(2022, 8, 15),
-            new DateTime(2022, 8, 21),
+            new DateTime(2022, 9, 1),
+            DateTime.MinValue,
             DateTime.MaxValue
         };
 
