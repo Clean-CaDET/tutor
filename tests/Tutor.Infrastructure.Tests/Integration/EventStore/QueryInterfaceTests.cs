@@ -3,7 +3,7 @@ using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Tests.TestData.EventStore;
 using Xunit;
 
-namespace Tutor.Infrastructure.Tests.Unit.EventStore
+namespace Tutor.Infrastructure.Tests.Integration.EventStore
 {
     public class QueryInterfaceTests : IClassFixture<EventStoreManager>
     {

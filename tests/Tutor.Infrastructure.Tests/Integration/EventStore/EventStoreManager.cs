@@ -3,10 +3,9 @@ using System;
 using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.Infrastructure.Database.EventStore.Postgres;
-using Tutor.Infrastructure.Tests.TestData.EventStore;
 using static Tutor.Infrastructure.Tests.TestData.EventStore.TestEvents;
 
-namespace Tutor.Infrastructure.Tests.Unit.EventStore
+namespace Tutor.Infrastructure.Tests.Integration.EventStore
 {
     public class EventStoreManager : IDisposable
     {
