@@ -18,7 +18,7 @@ namespace Tutor.Infrastructure.Tests.Unit.EventStore
         [MemberData(nameof(QueryTestData.GetQueries), MemberType = typeof(QueryTestData))]
         public void After_before_conditions(Query parameters)
         {
-            var _expectedResult = parameters.GetExpectedResult(QueryTestData._allEvents);
+            var _expectedResult = parameters.GetExpectedResult(TestEvents.Examples);
 
             var query = _eventStore.Events;
             foreach (var moment in parameters.AfterParameters) query = query.After(moment);
@@ -33,7 +33,7 @@ namespace Tutor.Infrastructure.Tests.Unit.EventStore
         [MemberData(nameof(QueryTestData.GetQueries), MemberType = typeof(QueryTestData))]
         public void After_conditions_before(Query parameters)
         {
-            var _expectedResult = parameters.GetExpectedResult(QueryTestData._allEvents);
+            var _expectedResult = parameters.GetExpectedResult(TestEvents.Examples);
 
             var query = _eventStore.Events;
             foreach (var moment in parameters.AfterParameters) query = query.After(moment);
@@ -48,7 +48,7 @@ namespace Tutor.Infrastructure.Tests.Unit.EventStore
         [MemberData(nameof(QueryTestData.GetQueries), MemberType = typeof(QueryTestData))]
         public void Before_after_conditions(Query parameters)
         {
-            var _expectedResult = parameters.GetExpectedResult(QueryTestData._allEvents);
+            var _expectedResult = parameters.GetExpectedResult(TestEvents.Examples);
 
             var query = _eventStore.Events;
             foreach (var moment in parameters.BeforeParameters) query = query.Before(moment);
@@ -63,7 +63,7 @@ namespace Tutor.Infrastructure.Tests.Unit.EventStore
         [MemberData(nameof(QueryTestData.GetQueries), MemberType = typeof(QueryTestData))]
         public void Before_conditions_after(Query parameters)
         {
-            var _expectedResult = parameters.GetExpectedResult(QueryTestData._allEvents);
+            var _expectedResult = parameters.GetExpectedResult(TestEvents.Examples);
 
             var query = _eventStore.Events;
             foreach (var moment in parameters.BeforeParameters) query = query.Before(moment);
@@ -78,7 +78,7 @@ namespace Tutor.Infrastructure.Tests.Unit.EventStore
         [MemberData(nameof(QueryTestData.GetQueries), MemberType = typeof(QueryTestData))]
         public void Conditions_after_before(Query parameters)
         {
-            var _expectedResult = parameters.GetExpectedResult(QueryTestData._allEvents);
+            var _expectedResult = parameters.GetExpectedResult(TestEvents.Examples);
 
             var query = _eventStore.Events;
             foreach (var condition in parameters.ConditionParameters) query = query.Where(condition.JsonCondition);
@@ -93,7 +93,7 @@ namespace Tutor.Infrastructure.Tests.Unit.EventStore
         [MemberData(nameof(QueryTestData.GetQueries), MemberType = typeof(QueryTestData))]
         public void Conditions_before_after(Query parameters)
         {
-            var _expectedResult = parameters.GetExpectedResult(QueryTestData._allEvents);
+            var _expectedResult = parameters.GetExpectedResult(TestEvents.Examples);
 
             var query = _eventStore.Events;
             foreach (var condition in parameters.ConditionParameters) query = query.Where(condition.JsonCondition);

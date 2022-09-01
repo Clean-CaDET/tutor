@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using static Tutor.Infrastructure.Tests.TestData.EventStore.Query;
+using static Tutor.Infrastructure.Tests.TestData.EventStore.TestEvents;
 
 namespace Tutor.Infrastructure.Tests.TestData.EventStore
 {
@@ -21,23 +22,6 @@ namespace Tutor.Infrastructure.Tests.TestData.EventStore
             }
             return _queries;
         }
-
-        public static readonly IEnumerable<DomainEvent> _allEvents = new List<DomainEvent> {
-            new TestEventA() { TimeStamp = new DateTime(2022, 8, 1) },
-            new TestEventA() { TimeStamp = new DateTime(2022, 8, 15), PropertyA = "test" },
-            new TestEventA() { TimeStamp = new DateTime(2022, 8, 30), PropertyA = "testovi" },
-            new TestEventA() { TimeStamp = new DateTime(2022, 8, 15), PropertyA = "lalalalal" },
-            new TestEventB() { TimeStamp = new DateTime(2022, 8, 1) },
-            new TestEventB() { TimeStamp = new DateTime(2022, 8, 15), PropertyB = 1 },
-            new TestEventB() { TimeStamp = new DateTime(2022, 8, 30), PropertyB = 15 },
-            new TestEventB() { TimeStamp = new DateTime(2022, 8, 15), PropertyB = 30 },
-            new TestEventC() { TimeStamp = new DateTime(2022, 8, 1) },
-            new TestEventC() { TimeStamp = new DateTime(2022, 8, 15), PropertyB = 1 },
-            new TestEventC() { TimeStamp = new DateTime(2022, 8, 30), PropertyB = 15 },
-            new TestEventC() { TimeStamp = new DateTime(2022, 8, 15), PropertyB = 30 },
-            new TestEventC() { TimeStamp = new DateTime(2022, 8, 30), PropertyB = 15, PropertyA = "test" },
-            new TestEventC() { TimeStamp = new DateTime(2022, 8, 30), PropertyB = 30, PropertyA = "lala" },
-        };
 
         private static readonly IEnumerable<DateTime> _timeParameters = new List<DateTime>
         {

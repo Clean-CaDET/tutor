@@ -3,34 +3,27 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Infrastructure.Database.EventStore;
-using Tutor.Infrastructure.Serialization;
 
-namespace Tutor.Infrastructure.Tests.TestData.EventStore
+namespace Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer
 {
-    public class TestEventSerializer : IEventSerializer
+    public class DefaultEventSerializer : IEventSerializer
     {
-        private static readonly IDictionary<Type, string> EventTypes = new Dictionary<Type, string>
-        {
-            { typeof(TestEventA), "TestEventA" },
-            { typeof(TestEventB), "TestEventB" },
-            { typeof(TestEventC), "TestEventC" }
-        };
-
         private JsonSerializerOptions _options;
 
-        public TestEventSerializer()
+        public DefaultEventSerializer(IDictionary<Type, string> eventRelatedTypes, string discriminatorMemberName)
         {
             _options = new JsonSerializerOptions();
             _options.SetupExtensions();
             var registry = _options.GetDiscriminatorConventionRegistry();
             registry.ClearConventions();
-            registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(_options, EventTypes, "$discriminator"));
-            foreach (var type in EventTypes.Keys)
+            registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(_options, eventRelatedTypes, discriminatorMemberName));
+            foreach (var type in eventRelatedTypes.Keys)
             {
                 registry.RegisterType(type);
             }
         }
+
+        public DefaultEventSerializer(IDictionary<Type, string> eventRelatedTypes) : this(eventRelatedTypes, "$discriminator") { }
 
         public DomainEvent Deserialize(JsonDocument @event)
         {

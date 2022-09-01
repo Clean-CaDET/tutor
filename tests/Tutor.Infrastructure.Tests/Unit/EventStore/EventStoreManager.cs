@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using Tutor.Infrastructure.Database.EventStore;
+using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.Infrastructure.Database.EventStore.Postgres;
 using Tutor.Infrastructure.Tests.TestData.EventStore;
+using static Tutor.Infrastructure.Tests.TestData.EventStore.TestEvents;
 
 namespace Tutor.Infrastructure.Tests.Unit.EventStore
 {
@@ -18,10 +20,10 @@ namespace Tutor.Infrastructure.Tests.Unit.EventStore
             var options = new DbContextOptionsBuilder<EventContext>().UseNpgsql(_connectionString).Options;
             _eventContext = new EventContext(options);
             _eventContext.Database.EnsureCreated();
-            EventStore = new PostgresStore(_eventContext, new TestEventSerializer());
+            EventStore = new PostgresStore(_eventContext, new DefaultEventSerializer(Types));
 
             var eventSeeder = new TestAggregate();
-            eventSeeder.SeedEvents(QueryTestData._allEvents);
+            eventSeeder.SeedEvents(Examples);
             EventStore.Save(eventSeeder);
         }
 

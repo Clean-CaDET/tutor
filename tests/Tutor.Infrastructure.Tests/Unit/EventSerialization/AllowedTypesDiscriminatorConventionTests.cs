@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
-using Tutor.Infrastructure.Serialization;
+using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.Infrastructure.Tests.TestData;
 using Xunit;
 
-namespace Tutor.Infrastructure.Tests.Unit.Serialization
+namespace Tutor.Infrastructure.Tests.Unit.EventSerialization
 {
     public class AllowedTypesDiscriminatorConventionTests
     {

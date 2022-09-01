@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Tutor.Infrastructure.Serialization
+namespace Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer
 {
     public class AllowedTypesDiscriminatorConvention<T> : IDiscriminatorConvention where T : notnull
     {
