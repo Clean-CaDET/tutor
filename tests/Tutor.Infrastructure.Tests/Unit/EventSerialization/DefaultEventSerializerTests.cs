@@ -1,6 +1,7 @@
 ﻿using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
@@ -15,7 +16,7 @@ namespace Tutor.Infrastructure.Tests.Unit.EventSerialization
     {
         [Theory]
         [MemberData(nameof(Events))]
-        public void Serializes_and_deserializes_events(DomainEvent @event, IDictionary<Type, string> eventRelatedTypes)
+        public void Serializes_and_deserializes_events(DomainEvent @event, IImmutableDictionary<Type, string> eventRelatedTypes)
         {
             var serializer = new DefaultEventSerializer(eventRelatedTypes);
 

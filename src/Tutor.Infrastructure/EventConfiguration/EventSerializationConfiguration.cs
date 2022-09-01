@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentItems.Challenges;
 using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
@@ -12,7 +13,7 @@ namespace Tutor.Infrastructure.EventConfiguration
 {
     public static class EventSerializationConfiguration
     {
-        public static readonly IDictionary<Type, string> EventRelatedTypes = new Dictionary<Type, string>
+        public static readonly IImmutableDictionary<Type, string> EventRelatedTypes = new Dictionary<Type, string>
         {
             { typeof(AssessmentItemAnswered), "AssessmentItemAnswered" },
             { typeof(SoughtHints), "SoughtChallengeHints" },
@@ -39,6 +40,6 @@ namespace Tutor.Infrastructure.EventConfiguration
             { typeof(MrqEvaluation), "MrqEvaluation" },
             { typeof(SaqEvaluation), "SaqEvaluation" }
             #endregion
-        };
+        }.ToImmutableDictionary();
     }
 }

@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 
 namespace Tutor.Infrastructure.Tests.TestData.EventStore
 {
     public static class TestEvents
     {
-        public static readonly IDictionary<Type, string> Types = new Dictionary<Type, string>
+        public static readonly IImmutableDictionary<Type, string> Types = new Dictionary<Type, string>
         {
             { typeof(TestEventA), "TestEventA" },
             { typeof(TestEventB), "TestEventB" },
             { typeof(TestEventC), "TestEventC" }
-        };
+        }.ToImmutableDictionary();
 
         public static readonly IEnumerable<DomainEvent> Examples = new List<DomainEvent> {
             new TestEventA() { TimeStamp = new DateTime(2022, 8, 1) },

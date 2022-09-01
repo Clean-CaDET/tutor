@@ -1,6 +1,6 @@
 ﻿using Dahomey.Json;
 using System;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text.Json;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 
@@ -8,9 +8,9 @@ namespace Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer
 {
     public class DefaultEventSerializer : IEventSerializer
     {
-        private JsonSerializerOptions _options;
+        private readonly JsonSerializerOptions _options;
 
-        public DefaultEventSerializer(IDictionary<Type, string> eventRelatedTypes, string discriminatorMemberName)
+        public DefaultEventSerializer(IImmutableDictionary<Type, string> eventRelatedTypes, string discriminatorMemberName)
         {
             _options = new JsonSerializerOptions();
             _options.SetupExtensions();
@@ -23,7 +23,7 @@ namespace Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer
             }
         }
 
-        public DefaultEventSerializer(IDictionary<Type, string> eventRelatedTypes) : this(eventRelatedTypes, "$discriminator") { }
+        public DefaultEventSerializer(IImmutableDictionary<Type, string> eventRelatedTypes) : this(eventRelatedTypes, "$discriminator") { }
 
         public DomainEvent Deserialize(JsonDocument @event)
         {

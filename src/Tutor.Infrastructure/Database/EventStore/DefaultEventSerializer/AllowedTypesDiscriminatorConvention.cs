@@ -2,6 +2,7 @@
 using Dahomey.Json.Serialization.Conventions;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,7 +11,6 @@ namespace Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer
 {
     public class AllowedTypesDiscriminatorConvention<T> : IDiscriminatorConvention where T : notnull
     {
-        private readonly Dictionary<Type, T> _allowedTypes = new();
         private readonly JsonSerializerOptions _options;
         private readonly ReadOnlyMemory<byte> _memberName;
         private readonly Dictionary<T, Type> _typesByDiscriminator = new();
@@ -19,30 +19,26 @@ namespace Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer
 
         public ReadOnlySpan<byte> MemberName => _memberName.Span;
 
-        public AllowedTypesDiscriminatorConvention(JsonSerializerOptions options, IDictionary<Type, T> allowedTypes)
+        public AllowedTypesDiscriminatorConvention(JsonSerializerOptions options, IImmutableDictionary<Type, T> allowedTypes)
             : this(options, allowedTypes, "$type")
         {
         }
 
-        public AllowedTypesDiscriminatorConvention(JsonSerializerOptions options, IDictionary<Type, T> allowedTypes, string memberName)
+        public AllowedTypesDiscriminatorConvention(JsonSerializerOptions options, IImmutableDictionary<Type, T> allowedTypes, string memberName)
         {
             _options = options;
             _memberName = Encoding.UTF8.GetBytes(memberName);
             _jsonConverter = options.GetConverter<T>();
-            if (allowedTypes != null)
-                _allowedTypes = new Dictionary<Type, T>(allowedTypes);
+            foreach(var (type, discriminator) in allowedTypes)
+            {
+                _typesByDiscriminator.Add(discriminator, type);
+                _discriminatorsByType.Add(type, discriminator);
+            }
         }
 
         public bool TryRegisterType(Type type)
         {
-            if (_allowedTypes.TryGetValue(type, out T discriminator))
-            {
-                _typesByDiscriminator.Add(discriminator, type);
-                _discriminatorsByType.Add(type, discriminator);
-                return true;
-            }
-            else
-                return false;
+            return _discriminatorsByType.ContainsKey(type);
         }
 
         public Type ReadDiscriminator(ref Utf8JsonReader reader)
