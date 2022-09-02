@@ -1,28 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using static Tutor.Infrastructure.Tests.TestData.EventStore.EventQueryableTestCase;
+using static Tutor.Infrastructure.Tests.TestData.EventStore.EventQueryable.EventQueryableTestCase;
 
 namespace Tutor.Infrastructure.Tests.TestData.EventStore.EventQueryable
 {
     public static class EventQueryableTestCaseGenerator
     {
-        private static IEnumerable<object[]> _testCases = new List<object[]>();
-
-        public static IEnumerable<object[]> GenerateTestCases(IEnumerable<QueryParameter> parameters, int amountPerParameter)
+        public static IEnumerable<EventQueryableTestCase> GenerateTestCases(IEnumerable<IQueryParameter> parameters, int amountPerParameter)
         {
-            if (!_testCases.Any())
-            {
-                var testCases = new List<EventQueryableTestCase> { new EventQueryableTestCase() };
-                foreach (var parameter in parameters)
-                    testCases.AddRange(GenerateTestCasesWithParameter(testCases, parameter, amountPerParameter));
-                _testCases = testCases.Select(query => new object[] { query });
-            }
-            return _testCases;
+            var testCases = new List<EventQueryableTestCase> { new EventQueryableTestCase() };
+            foreach (var parameter in parameters)
+                testCases.AddRange(GenerateTestCasesWithParameter(testCases, parameter, amountPerParameter));
+            return testCases;
         }
 
         private static List<EventQueryableTestCase> GenerateTestCasesWithParameter(
-            List<EventQueryableTestCase> currentTestCases, QueryParameter parameter, int amount)
+            List<EventQueryableTestCase> currentTestCases, IQueryParameter parameter, int amount)
         {
             var testCasesWithParameter = new List<EventQueryableTestCase>();
             foreach (var index in GenerateRandomIndexes(amount, currentTestCases.Count))

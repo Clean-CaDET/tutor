@@ -6,11 +6,11 @@ using System.Text.Json;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Infrastructure.Database.EventStore;
 
-namespace Tutor.Infrastructure.Tests.TestData.EventStore
+namespace Tutor.Infrastructure.Tests.TestData.EventStore.EventQueryable
 {
     public class EventQueryableTestCase
     {
-        public IEnumerable<QueryParameter> QueryParameters { get; set; } = new List<QueryParameter>();
+        public IEnumerable<IQueryParameter> QueryParameters { get; set; } = new List<IQueryParameter>();
 
         public IEventQueryable Execute(IEventQueryable queryable)
         {
@@ -31,13 +31,13 @@ namespace Tutor.Infrastructure.Tests.TestData.EventStore
             return result;
         }
 
-        public interface QueryParameter
+        public interface IQueryParameter
         {
             public IEnumerable<DomainEvent> ApplyToEnumerable(IEnumerable<DomainEvent> events);
             public IEventQueryable ApplyToEventQueryable(IEventQueryable events);
         }
 
-        public class AfterParameter : QueryParameter
+        public class AfterParameter : IQueryParameter
         {
             public DateTime Moment { get; private set; }
 
@@ -57,7 +57,7 @@ namespace Tutor.Infrastructure.Tests.TestData.EventStore
             }
         }
 
-        public class BeforeParameter : QueryParameter
+        public class BeforeParameter : IQueryParameter
         {
             public DateTime Moment { get; private set; }
 
@@ -77,7 +77,7 @@ namespace Tutor.Infrastructure.Tests.TestData.EventStore
             }
         }
 
-        public class ConditionParameter : QueryParameter
+        public class ConditionParameter : IQueryParameter
         {
             public Expression<Func<JsonDocument, bool>> JsonCondition { get; private set; }
             public Func<dynamic, bool> DynamicCondition { get; private set; }

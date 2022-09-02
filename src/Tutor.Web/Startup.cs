@@ -69,7 +69,7 @@ namespace Tutor.Web
                 registry.RegisterType<VideoDto>();
 
                 registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(
-                    serializerOptions, EventSerializationConfiguration.EventRelatedTypes, "typeDiscriminator"));
+                    serializerOptions, EventSerializationConfiguration.EventRelatedTypes, "$discriminator"));
                 foreach (var type in EventSerializationConfiguration.EventRelatedTypes.Keys)
                 {
                     registry.RegisterType(type);

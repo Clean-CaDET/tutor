@@ -6,7 +6,7 @@ using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Tests.TestData.EventStore;
 using Tutor.Infrastructure.Tests.TestData.EventStore.EventQueryable;
 using Xunit;
-using static Tutor.Infrastructure.Tests.TestData.EventStore.EventQueryableTestCase;
+using static Tutor.Infrastructure.Tests.TestData.EventStore.EventQueryable.EventQueryableTestCase;
 using static Tutor.Infrastructure.Tests.TestData.EventStore.TestEvents;
 
 namespace Tutor.Infrastructure.Tests.Integration.EventStore
@@ -42,9 +42,17 @@ namespace Tutor.Infrastructure.Tests.Integration.EventStore
             result.ShouldBe(expectedResult, true);
         }
 
-        public static IEnumerable<object[]> TestCases() => EventQueryableTestCaseGenerator.GenerateTestCases(_queryParameters, 65);
+        public static IEnumerable<object[]> TestCases()
+        {
+            if (_testCases.Any()) return _testCases;
+            _testCases = EventQueryableTestCaseGenerator.GenerateTestCases(_queryParameters, 65)
+                .Select(testCase => new object[] { testCase });
+            return _testCases;
+        }
 
-        private static IEnumerable<QueryParameter> _queryParameters = new List<QueryParameter>
+        private static IEnumerable<object[]> _testCases = new List<object[]>();
+
+        private static IEnumerable<IQueryParameter> _queryParameters = new List<IQueryParameter>
         {
             new ConditionParameter(jsonEvent => jsonEvent.RootElement.GetProperty("PropertyA").GetString().Contains("test"),
                                    @event => @event.PropertyA.Contains("test")),

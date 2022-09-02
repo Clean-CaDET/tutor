@@ -27,7 +27,7 @@ namespace Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer
 
         public DomainEvent Deserialize(JsonDocument @event)
         {
-            return JsonSerializer.Deserialize<DomainEvent>(@event, _options);
+            return @event.Deserialize<DomainEvent>(_options);
         }
 
         public JsonDocument Serialize(DomainEvent @event)
