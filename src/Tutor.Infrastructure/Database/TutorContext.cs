@@ -3,6 +3,7 @@ using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentItems.Challenges;
 using Tutor.Core.DomainModel.AssessmentItems.Challenges.FulfillmentStrategies;
+using Tutor.Core.DomainModel.AssessmentItems.MultiChoiceQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Core.DomainModel.InstructionalItems;
@@ -27,6 +28,7 @@ namespace Tutor.Infrastructure.Database
         public DbSet<Markdown> Texts { get; set; }
         public DbSet<Video> Videos { get; set; }
         public DbSet<Mrq> MultiResponseQuestions { get; set; }
+        public DbSet<Mcq> MultiChoiceQuestions { get; set; }
         public DbSet<MrqItem> MrqItems { get; set; }
         public DbSet<Saq> ShortAnswerQuestions { get; set; }
         public DbSet<ArrangeTask> ArrangeTasks { get; set; }
@@ -69,6 +71,7 @@ namespace Tutor.Infrastructure.Database
             modelBuilder.Entity<Image>().ToTable("Images");
             modelBuilder.Entity<Video>().ToTable("Videos");
             modelBuilder.Entity<Mrq>().ToTable("MultiResponseQuestions");
+            modelBuilder.Entity<Mcq>().ToTable("MultiChoiceQuestions");
             modelBuilder.Entity<Saq>().ToTable("ShortAnswerQuestions");
             
             ConfigureArrangeTask(modelBuilder);
