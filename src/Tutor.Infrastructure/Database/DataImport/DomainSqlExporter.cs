@@ -121,6 +121,9 @@ public static class DomainSqlExporter
                 case "mrq":
                     sqlBuilder.Append(BuildMrqSql(ae));
                     break;
+                case "mcq":
+                    sqlBuilder.Append(BuildMcqSql(ae));
+                    break;
                 case "at":
                     sqlBuilder.Append(BuildAtSql(ae));
                     break;
@@ -158,6 +161,29 @@ public static class DomainSqlExporter
 
         sqlBuilder.AppendLine().AppendLine();
         return sqlBuilder.ToString();
+    }
+
+    private static string BuildMcqSql(AEColumns ae)
+    {
+        var sqlBuilder = new StringBuilder();
+        sqlBuilder.Append("INSERT INTO public.\"MultiChoiceQuestions\"(\"Id\", \"Text\", \"PossibleAnswers\", \"CorrectAnswer\", \"Feedback\") VALUES");
+        sqlBuilder.AppendLine();
+        var correctAnswer = FindMcqCorrectAnswerAndFeedback(ae.Items).Split("\n");
+        sqlBuilder.Append("\t(" + ae.Id + ", '" + ae.Text + "', '{" + BuildMcqAnswers(ae.Items) + "}', '" +
+                          correctAnswer[0] + "', ' " + correctAnswer[2] +"');");
+        sqlBuilder.AppendLine().AppendLine();
+        return sqlBuilder.ToString();
+    }
+
+    private static string FindMcqCorrectAnswerAndFeedback(List<string> aeItems)
+    {
+        return aeItems.First(item => item.Split('\n')[1] == "true");
+    }
+
+    private static string BuildMcqAnswers(List<string> aeItems)
+    {
+        var answers = aeItems.Select(item => "\"" + item.Split('\n')[0] + "\"");
+        return string.Join(',', answers);
     }
 
     private static string BuildAtSql(AEColumns ae)
