@@ -2,19 +2,20 @@
 using Shouldly;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text.Json;
-using Tutor.Infrastructure.Serialization;
+using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.Infrastructure.Tests.TestData;
 using Xunit;
 
-namespace Tutor.Infrastructure.Tests.Unit.Serialization
+namespace Tutor.Infrastructure.Tests.Unit.EventSerialization
 {
     public class AllowedTypesDiscriminatorConventionTests
     {
         [Theory]
         [MemberData(nameof(TypeRegistrationData))]
-        public void Only_registers_allowed_types(Type typeToRegister, bool expected, IDictionary<Type, string> allowedTypes)
+        public void Only_registers_allowed_types(Type typeToRegister, bool expected, IImmutableDictionary<Type, string> allowedTypes)
         {
             var convention = new AllowedTypesDiscriminatorConvention<string>(new JsonSerializerOptions(), allowedTypes);
 

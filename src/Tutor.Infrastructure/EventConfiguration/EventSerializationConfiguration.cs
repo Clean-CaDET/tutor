@@ -1,7 +1,6 @@
-﻿using Dahomey.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text.Json;
+using System.Collections.Immutable;
 using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentItems.Challenges;
 using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
@@ -10,11 +9,11 @@ using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.A
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.KnowledgeComponentEvents;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.SessionLifecycleEvents;
 
-namespace Tutor.Infrastructure.Serialization
+namespace Tutor.Infrastructure.EventConfiguration
 {
     public static class EventSerializationConfiguration
     {
-        private static readonly IDictionary<Type, string> EventRelatedTypes = new Dictionary<Type, string>
+        public static readonly IImmutableDictionary<Type, string> EventRelatedTypes = new Dictionary<Type, string>
         {
             { typeof(AssessmentItemAnswered), "AssessmentItemAnswered" },
             { typeof(SoughtHints), "SoughtChallengeHints" },
@@ -41,29 +40,6 @@ namespace Tutor.Infrastructure.Serialization
             { typeof(MrqEvaluation), "MrqEvaluation" },
             { typeof(SaqEvaluation), "SaqEvaluation" }
             #endregion
-        };
-
-        public static JsonSerializerOptions SetupEvents(this JsonSerializerOptions options)
-        {
-            var registry = options.GetDiscriminatorConventionRegistry();
-            registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(options, EventRelatedTypes, "$discriminator"));
-
-            foreach (var type in EventRelatedTypes.Keys)
-            {
-                registry.RegisterType(type);
-            }
-
-            return options;
-        }
-
-        public static JsonSerializerOptions GetEventSerializerOptions()
-        {
-            var options = new JsonSerializerOptions();
-            options.SetupExtensions();
-            options.GetDiscriminatorConventionRegistry().ClearConventions();
-            options.SetupEvents();
-
-            return options;
-        }
+        }.ToImmutableDictionary();
     }
 }

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Dahomey.Json.Attributes;
+using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Tutor.Infrastructure.Tests.TestData
 {
@@ -7,19 +9,19 @@ namespace Tutor.Infrastructure.Tests.TestData
     {
         public static Type AbstractRoot() => typeof(ClassBase);
 
-        public static IDictionary<Type, string> ConcreteWithDiscriminators() => new Dictionary<Type, string>()
+        public static IImmutableDictionary<Type, string> ConcreteWithDiscriminators() => new Dictionary<Type, string>()
         {
             { typeof(ClassB), "classB" },
             { typeof(ClassC), "classC"},
             { typeof(ClassD), "classD"},
             { typeof(ClassE), "classE"}
-        };
+        }.ToImmutableDictionary();
 
-        public static IDictionary<Type, string> ConcreteWithDiscriminatorsWithout(Type exclude)
+        public static IImmutableDictionary<Type, string> ConcreteWithDiscriminatorsWithout(Type exclude)
         {
             var classes = ConcreteWithDiscriminators();
             if (classes.ContainsKey(exclude))
-                classes.Remove(exclude);
+                classes = classes.Remove(exclude);
             return classes;
         }
 
