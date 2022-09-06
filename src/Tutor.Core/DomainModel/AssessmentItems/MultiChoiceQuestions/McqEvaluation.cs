@@ -9,5 +9,4 @@ public class McqEvaluation : Evaluation
         CorrectAnswer = correctAnswer;
         Feedback = feedback;
     }
-
 }
