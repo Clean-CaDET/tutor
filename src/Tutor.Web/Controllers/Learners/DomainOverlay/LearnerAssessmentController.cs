@@ -4,12 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentItems.Challenges;
+using Tutor.Core.DomainModel.AssessmentItems.MultiChoiceQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiChoiceQuestions;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Web.Controllers.Learners.DomainOverlay.DTOs;
@@ -46,6 +48,15 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
             var result = _learnerAssessmentService.EvaluateAndSaveSubmission(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<MrqSubmission>(submission));
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<MrqEvaluationDto>(result.Value));
+        }
+
+        [HttpPost("multiple-choice-question")]
+        public ActionResult<McqEvaluationDto> SubmitMultiChoiceQuestion(
+            [FromBody] McqSubmissionDto submission)
+        {
+            var result = _learnerAssessmentService.EvaluateAndSaveSubmission(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<McqSubmission>(submission));
+            if (result.IsFailed) return BadRequest(result.Errors);
+            return Ok(_mapper.Map<McqEvaluationDto>(result.Value));
         }
 
         [HttpPost("arrange-task")]
