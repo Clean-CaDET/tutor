@@ -6,7 +6,6 @@ using System.Linq;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
 using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
-using Tutor.Infrastructure.EventConfiguration;
 using Tutor.Infrastructure.Tests.TestData.EventStore;
 using Xunit;
 
@@ -42,12 +41,12 @@ namespace Tutor.Infrastructure.Tests.Unit.EventSerialization
                     AssessmentItemId = 2,
                     LearnerId = 3
                 },
-                EventSerializationConfiguration.EventRelatedTypes
+                EventConfiguration.SerializationConfiguration
             });
             events.Add(new object[]
             {
                 new AssessmentItemAnswered(),
-                EventSerializationConfiguration.EventRelatedTypes
+                EventConfiguration.SerializationConfiguration
             });
             return events;
         }

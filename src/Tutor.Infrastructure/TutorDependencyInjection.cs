@@ -3,8 +3,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Tutor.Infrastructure.Database;
-using Tutor.Infrastructure.Database.EventStore;
-using Tutor.Infrastructure.Database.EventStore.Postgres;
+using Tutor.Infrastructure.Database.EventStore.Configuration;
+using Tutor.Infrastructure.Database.EventStore.Configuration.EventSerializerConfiguration;
+using Tutor.Infrastructure.Database.EventStore.Postgres.Configuration;
 using Tutor.Infrastructure.Security;
 
 namespace Tutor.Infrastructure
@@ -15,9 +16,10 @@ namespace Tutor.Infrastructure
         {
             services.AddDbContext<TutorContext>(opt =>
                 opt.UseNpgsql(CreateConnectionStringFromEnvironment()));
-            services.AddDbContext<EventContext>(opt =>
-                opt.UseNpgsql(CreateConnectionStringFromEnvironment()));
-            services.AddScoped<IEventStore, PostgresStore>();
+
+            services.AddEventStore(opt =>
+                opt.UsePostgres(CreateConnectionStringFromEnvironment())
+                   .UseDefaultSerializer(EventConfiguration.SerializationConfiguration));
 
             return services;
         }

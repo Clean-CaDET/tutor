@@ -9,11 +9,11 @@ using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.A
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.KnowledgeComponentEvents;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.SessionLifecycleEvents;
 
-namespace Tutor.Infrastructure.EventConfiguration
+namespace Tutor.Infrastructure
 {
-    public static class EventSerializationConfiguration
+    public static class EventConfiguration
     {
-        public static readonly IImmutableDictionary<Type, string> EventRelatedTypes = new Dictionary<Type, string>
+        public static readonly IImmutableDictionary<Type, string> SerializationConfiguration = new Dictionary<Type, string>
         {
             { typeof(AssessmentItemAnswered), "AssessmentItemAnswered" },
             { typeof(SoughtHints), "SoughtChallengeHints" },

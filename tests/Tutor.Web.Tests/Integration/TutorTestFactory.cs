@@ -6,13 +6,12 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Linq;
+using Tutor.Infrastructure;
 using Tutor.Infrastructure.Database;
 using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.EventStore.Configuration;
 using Tutor.Infrastructure.Database.EventStore.Configuration.EventSerializerConfiguration;
-using Tutor.Infrastructure.Database.EventStore.Postgres;
 using Tutor.Infrastructure.Database.EventStore.Postgres.Configuration;
-using Tutor.Infrastructure.EventConfiguration;
 using Tutor.Infrastructure.Security;
 
 namespace Tutor.Web.Tests.Integration;
@@ -82,7 +81,7 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
 
         services.AddDbContext<TutorContext>(opt => opt.UseNpgsql(CreateConnectionStringForTest()));
         services.AddEventStore(opt => opt.UsePostgres(CreateConnectionStringForEvents())
-                                        .UseDefaultSerializer(EventSerializationConfiguration.EventRelatedTypes));
+                                        .UseDefaultSerializer(EventConfiguration.SerializationConfiguration));
         return services.BuildServiceProvider();
     }
 

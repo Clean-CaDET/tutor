@@ -19,12 +19,10 @@ using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.MoveOn;
 using Tutor.Core.LearnerModel.Feedback;
 using Tutor.Core.LearnerModel.Notes;
 using Tutor.Infrastructure;
-using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.Infrastructure.Database.Repositories;
 using Tutor.Infrastructure.Database.Repositories.Domain;
 using Tutor.Infrastructure.Database.Repositories.Learners;
-using Tutor.Infrastructure.EventConfiguration;
 using Tutor.Infrastructure.Security;
 using Tutor.Infrastructure.Security.Authentication;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
@@ -69,8 +67,8 @@ namespace Tutor.Web
                 registry.RegisterType<VideoDto>();
 
                 registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(
-                    serializerOptions, EventSerializationConfiguration.EventRelatedTypes, "$discriminator"));
-                foreach (var type in EventSerializationConfiguration.EventRelatedTypes.Keys)
+                    serializerOptions, EventConfiguration.SerializationConfiguration, "$discriminator"));
+                foreach (var type in EventConfiguration.SerializationConfiguration.Keys)
                 {
                     registry.RegisterType(type);
                 }
@@ -102,8 +100,6 @@ namespace Tutor.Web
 
             services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<INoteService, NoteService>();
-
-            services.AddSingleton<IEventSerializer>(new DefaultEventSerializer(EventSerializationConfiguration.EventRelatedTypes));
 
             SetupAuth(services);
 
