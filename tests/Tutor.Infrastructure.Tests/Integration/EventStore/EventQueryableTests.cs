@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Tests.TestData.EventStore;
 using Tutor.Infrastructure.Tests.TestData.EventStore.EventQueryable;
 using Xunit;
@@ -13,11 +12,11 @@ namespace Tutor.Infrastructure.Tests.Integration.EventStore
 {
     public class EventQueryableTests : IClassFixture<EventStoreManager>
     {
-        private readonly IEventQueryable _queryable;
+        private readonly EventStoreManager _eventStoreManager;
 
         public EventQueryableTests(EventStoreManager eventStoreManager)
         {
-            _queryable = eventStoreManager.EventStore.Events;
+            _eventStoreManager = eventStoreManager;
         }
 
         [Theory]
@@ -25,8 +24,9 @@ namespace Tutor.Infrastructure.Tests.Integration.EventStore
         public void Correctly_executes_query(EventQueryableTestCase testCase)
         {
             var expectedResult = testCase.GetExpectedResult(TestEvents.Examples);
+            var queryable = _eventStoreManager.GetEventQueryable();
 
-            var result = testCase.Execute(_queryable).ToList();
+            var result = testCase.Execute(queryable).ToList();
 
             result.ShouldBe(expectedResult, true);
         }
@@ -36,8 +36,9 @@ namespace Tutor.Infrastructure.Tests.Integration.EventStore
         public void Correctly_executes_query_with_type_cast(EventQueryableTestCase query)
         {
             var expectedResult = query.GetExpectedResult(TestEvents.Examples).OfType<TestEventB>();
+            var queryable = _eventStoreManager.GetEventQueryable();
 
-            var result = query.Execute(_queryable).ToList<TestEventB>();
+            var result = query.Execute(queryable).ToList<TestEventB>();
 
             result.ShouldBe(expectedResult, true);
         }

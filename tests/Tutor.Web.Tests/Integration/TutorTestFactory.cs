@@ -7,7 +7,12 @@ using System;
 using System.IO;
 using System.Linq;
 using Tutor.Infrastructure.Database;
+using Tutor.Infrastructure.Database.EventStore;
+using Tutor.Infrastructure.Database.EventStore.Configuration;
+using Tutor.Infrastructure.Database.EventStore.Configuration.EventSerializerConfiguration;
 using Tutor.Infrastructure.Database.EventStore.Postgres;
+using Tutor.Infrastructure.Database.EventStore.Postgres.Configuration;
+using Tutor.Infrastructure.EventConfiguration;
 using Tutor.Infrastructure.Security;
 
 namespace Tutor.Web.Tests.Integration;
@@ -19,29 +24,53 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
         builder.ConfigureServices(services =>
         {
             using var scope = BuildServiceProvider(services).CreateScope();
-            var scopedServices = scope.ServiceProvider;  
+            var scopedServices = scope.ServiceProvider;
             var db = scopedServices.GetRequiredService<TutorContext>();
-            var eventDb = scopedServices.GetRequiredService<EventContext>();
+            var eventStore = scopedServices.GetRequiredService<IEventStore>();
             var logger = scopedServices.GetRequiredService<ILogger<TutorApplicationTestFactory<TStartup>>>();
 
-            InitializeDatabase(db, "../../../TestData/Scripts/", logger);
-            InitializeDatabase(eventDb, "../../../TestData/Scripts/Events/", logger);
+            InitializeDatabase(db, LoadSeedingScript("../../../TestData/Scripts/", logger), logger);
+            InitializeEventStore(eventStore, LoadSeedingScript("../../../TestData/Scripts/Events/", logger), logger);
         });
     }
 
-    private static void InitializeDatabase(DbContext context, string scriptFolder, ILogger<TutorApplicationTestFactory<TStartup>> logger)
+    private static string LoadSeedingScript(string scriptFolder, ILogger<TutorApplicationTestFactory<TStartup>> logger)
     {
-        context.Database.EnsureCreated();
-
         try
         {
             var scriptFiles = Directory.GetFiles(scriptFolder);
-            var script = string.Join('\n', scriptFiles.Select(File.ReadAllText));
+            return string.Join('\n', scriptFiles.Select(File.ReadAllText));
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while loading seeding scripts. Error: {Message}", ex.Message);
+            return "";
+        }
+    }
+
+    private static void InitializeDatabase(DbContext context, string script, ILogger<TutorApplicationTestFactory<TStartup>> logger)
+    {
+        try
+        {
+            context.Database.EnsureCreated();
             context.Database.ExecuteSqlRaw(script);
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred seeding the database with test data. Error: {Message}", ex.Message);
+            logger.LogError(ex, "An error occurred while seeding the database with test data. Error: {Message}", ex.Message);
+        }
+    }
+
+    private static void InitializeEventStore(IEventStore eventStore, string script, ILogger<TutorApplicationTestFactory<TStartup>> logger)
+    {     
+        try
+        {
+            eventStore.EnsureCreated();
+            eventStore.ExecuteRaw(script);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while seeding the event store with test data. Error: {Message}", ex.Message);
         }
     }
 
@@ -49,11 +78,11 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
     {
         var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<TutorContext>));
         services.Remove(descriptor);
-        var eventDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<EventContext>));
-        services.Remove(eventDescriptor);
+        services.RemoveEventStore();
 
         services.AddDbContext<TutorContext>(opt => opt.UseNpgsql(CreateConnectionStringForTest()));
-        services.AddDbContext<EventContext>(opt => opt.UseNpgsql(CreateConnectionStringForEvents()));
+        services.AddEventStore(opt => opt.UsePostgres(CreateConnectionStringForEvents())
+                                        .UseDefaultSerializer(EventSerializationConfiguration.EventRelatedTypes));
         return services.BuildServiceProvider();
     }
 

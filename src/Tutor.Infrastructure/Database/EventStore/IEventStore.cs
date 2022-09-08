@@ -9,5 +9,8 @@ namespace Tutor.Infrastructure.Database.EventStore
         void Save(EventSourcedAggregateRoot aggregate);
         IEventQueryable Events { get; }
         Task<PagedResult<DomainEvent>> GetEventsAsync(int page, int pageSize);
+        void EnsureCreated();
+        void EnsureDeleted();
+        void ExecuteRaw(string query);
     }
 }

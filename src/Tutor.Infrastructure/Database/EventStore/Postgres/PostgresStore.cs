@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
@@ -44,6 +45,21 @@ namespace Tutor.Infrastructure.Database.EventStore.Postgres
             _eventContext.Events.AddRange(eventsToSave);
             _eventContext.SaveChanges();
             aggregate.ClearChanges();
+        }
+
+        public void EnsureCreated()
+        {
+            _eventContext.Database.EnsureCreated();
+        }
+
+        public void EnsureDeleted()
+        {
+            _eventContext.Database.EnsureDeleted();
+        }
+
+        public void ExecuteRaw(string query)
+        {
+            _eventContext.Database.ExecuteSqlRaw(query);
         }
     }
 }
