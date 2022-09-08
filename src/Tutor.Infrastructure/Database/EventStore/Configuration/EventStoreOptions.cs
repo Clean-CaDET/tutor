@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 
 namespace Tutor.Infrastructure.Database.EventStore.Configuration
 {
@@ -21,21 +20,7 @@ namespace Tutor.Infrastructure.Database.EventStore.Configuration
             }
         }
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            Validate();
-            try
-            {
-                EventSerializerProvider.ConfigureServices(services);
-                EventStoreProvider.ConfigureServices(services);
-            }
-            catch (Exception e)
-            {
-                throw new EventStoreConfigurationException("Invalid event store configuration.", e);
-            }
-        }
-
-        private void Validate()
+        public void Validate()
         {
             bool invalid = false;
             string message = string.Empty;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 
 namespace Tutor.Infrastructure.Database.EventStore.Configuration
 {
@@ -9,7 +10,15 @@ namespace Tutor.Infrastructure.Database.EventStore.Configuration
         {
             EventStoreOptions options = new EventStoreOptions();
             optionsAction(options);
-            options.ConfigureServices(services);
+            options.Validate();
+            services.Add(new ServiceDescriptor(typeof(IEventStore), _ => options.GetEventStore(), ServiceLifetime.Scoped));
+            return services;
+        }
+
+        public static IServiceCollection RemoveEventStore(this IServiceCollection services)
+        {
+            var eventStoreDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IEventStore));
+            services.Remove(eventStoreDescriptor);
             return services;
         }
     }

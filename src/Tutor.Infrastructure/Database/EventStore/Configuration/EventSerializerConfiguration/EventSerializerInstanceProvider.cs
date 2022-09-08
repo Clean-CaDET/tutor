@@ -11,11 +11,6 @@ namespace Tutor.Infrastructure.Database.EventStore.Configuration.EventSerializer
             _eventSerializer = eventSerializer;
         }
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddSingleton<IEventSerializer>(_eventSerializer);
-        }
-
         public IEventSerializer GetEventSerializer()
         {
             return _eventSerializer;
