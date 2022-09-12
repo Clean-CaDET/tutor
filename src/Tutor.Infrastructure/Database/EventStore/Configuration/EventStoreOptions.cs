@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Tutor.Infrastructure.Database.EventStore.Configuration
 {
@@ -20,7 +21,21 @@ namespace Tutor.Infrastructure.Database.EventStore.Configuration
             }
         }
 
-        public void Validate()
+        public void Configure(IServiceCollection services)
+        {
+            Validate();
+            EventSerializerProvider.Configure(services);
+            EventStoreProvider.Configure(services);
+        }
+
+        public void Unconfigure(IServiceCollection services)
+        {
+            Validate();
+            EventStoreProvider.Unconfigure(services);
+            EventSerializerProvider.Unconfigure(services);
+        }
+
+        private void Validate()
         {
             bool invalid = false;
             string message = string.Empty;

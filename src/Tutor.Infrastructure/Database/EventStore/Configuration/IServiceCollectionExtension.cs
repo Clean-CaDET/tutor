@@ -10,15 +10,27 @@ namespace Tutor.Infrastructure.Database.EventStore.Configuration
         {
             EventStoreOptions options = new EventStoreOptions();
             optionsAction(options);
-            options.Validate();
-            services.Add(new ServiceDescriptor(typeof(IEventStore), _ => options.GetEventStore(), ServiceLifetime.Scoped));
+            services.AddSingleton(options);
+            options.Configure(services);
             return services;
         }
 
         public static IServiceCollection RemoveEventStore(this IServiceCollection services)
         {
-            var eventStoreDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IEventStore));
-            services.Remove(eventStoreDescriptor);
+            var optionsDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(EventStoreOptions), null);
+            if (optionsDescriptor != null && optionsDescriptor.ImplementationInstance != null)
+            {
+                var options = optionsDescriptor.ImplementationInstance as EventStoreOptions;
+                options.Unconfigure(services);
+                services.Remove(optionsDescriptor);
+            }
+            return services;
+        }
+
+        internal static IServiceCollection RemoveService<T>(this IServiceCollection services)
+        {
+            var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(T));
+            services.Remove(descriptor);
             return services;
         }
     }
