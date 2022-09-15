@@ -12,6 +12,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Tutor.Core.DomainModel;
+using Tutor.Core.InstructorModel;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
@@ -23,6 +24,7 @@ using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.Infrastructure.Database.Repositories;
 using Tutor.Infrastructure.Database.Repositories.Domain;
+using Tutor.Infrastructure.Database.Repositories.Instructors;
 using Tutor.Infrastructure.Database.Repositories.Learners;
 using Tutor.Infrastructure.EventConfiguration;
 using Tutor.Infrastructure.Security;
@@ -102,6 +104,9 @@ namespace Tutor.Web
 
             services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<INoteService, NoteService>();
+
+            services.AddScoped<IInstructorRepository, InstructorDatabaseRepository>();
+            services.AddScoped<IInstructorService, InstructorService>();
 
             services.AddSingleton<IEventSerializer>(new DefaultEventSerializer(EventSerializationConfiguration.EventRelatedTypes));
 

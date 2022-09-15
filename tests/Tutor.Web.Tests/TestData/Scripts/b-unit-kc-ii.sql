@@ -1,6 +1,11 @@
-﻿INSERT INTO public."KnowledgeUnits"(
-	"Id", "Name", "Description")
-	VALUES (-1, 'Značajna imena', 'Imena pronalazimo u svim segmentima razvoja softvera - kao identifikator promenljive, funkcije, klase, ali i biblioteke i aplikacije. Jasno ime funkcije nas oslobađa od čitanja njenog tela, dok će misteriozno ime zahtevati dodatan mentalni napor da razumemo svrhu koncepta koji opisuje. U najgorem slučaju, loše ime će nas navesti na pogrešan put i drastično nam produžiti vreme razvoja. Kroz ovu lekciju ispitujemo dobre i loše prakse za imenovanje elemenata našeg koda.');
+﻿INSERT INTO public."Courses"(
+    "Id", "Name")
+VALUES (-1, 'TestCourse');
+
+INSERT INTO public."KnowledgeUnits"(
+	"Id", "Name", "Description", "CourseId")
+	VALUES (-1, 'Značajna imena', 'Imena pronalazimo u svim segmentima razvoja softvera - kao identifikator promenljive, funkcije, klase, ali i biblioteke i aplikacije. Jasno ime funkcije nas oslobađa od čitanja njenog tela, dok će misteriozno ime zahtevati dodatan mentalni napor da razumemo svrhu koncepta koji opisuje. U najgorem slučaju, loše ime će nas navesti na pogrešan put i drastično nam produžiti vreme razvoja. Kroz ovu lekciju ispitujemo dobre i loše prakse za imenovanje elemenata našeg koda.'
+	, -1);
 
 INSERT INTO public."KnowledgeComponents"(
     "Id", "Name", "Description", "KnowledgeUnitId", "Code")
@@ -22,8 +27,9 @@ INSERT INTO public."KnowledgeComponents"(
 	VALUES (-15, 'Koristi terminologiju domena problema', '', -1, 'N05');
 
 INSERT INTO public."KnowledgeUnits"(
-	"Id", "Name", "Description")
-	VALUES (-2, 'Čitljive funkcije', 'Čest savet je da naše funkcije treba da imaju mali broj linija koda. Ovako povećavamo fokusiranost i jasnoću funkcije, kao i mogućnost ponovne upotrebe ovog parčeta koda. Međutim, greška je reći da nam je cilj da imamo kratke funkcije. Nama je cilj da ispoštujemo više dobrih praksi za formiranje čistih funkcija, a kao posledicu primene tih praksi ćemo dobiti kratke funkcije. Kroz ovu lekciju analiziramo dobre i loše prakse za formiranje čistih funkcija.');
+	"Id", "Name", "Description", "CourseId")
+	VALUES (-2, 'Čitljive funkcije', 'Čest savet je da naše funkcije treba da imaju mali broj linija koda. Ovako povećavamo fokusiranost i jasnoću funkcije, kao i mogućnost ponovne upotrebe ovog parčeta koda. Međutim, greška je reći da nam je cilj da imamo kratke funkcije. Nama je cilj da ispoštujemo više dobrih praksi za formiranje čistih funkcija, a kao posledicu primene tih praksi ćemo dobiti kratke funkcije. Kroz ovu lekciju analiziramo dobre i loše prakse za formiranje čistih funkcija.'
+	, -1);
 
 INSERT INTO public."KnowledgeComponents"(
 	"Id", "Name", "Description", "KnowledgeUnitId")

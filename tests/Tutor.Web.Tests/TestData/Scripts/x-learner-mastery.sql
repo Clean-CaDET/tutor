@@ -15,8 +15,8 @@ INSERT INTO public."Learners"(
 VALUES (-5, -5, 'Enrolled Student for Events', 'SU-5-2021');
 
 INSERT INTO public."LearnerGroups"(
-	"Id", "Name")
-VALUES (-1, 'Test Group');
+	"Id", "Name", "CourseId")
+VALUES (-1, 'Test Group', -1);
 INSERT INTO public."GroupMemberships"(
 	"Id", "LearnerId", "LearnerGroupId")
 	VALUES (-1, -1, -1);
@@ -199,3 +199,14 @@ INSERT INTO public."AssessmentItemMasteries"(
 INSERT INTO public."AssessmentItemMasteries"(
 	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
 	VALUES (-29, -10001, 0.0, 0, -67, null);
+
+INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname") VALUES
+    (-51, -51, 'TestInstructor', 'TestInstructor');
+
+INSERT INTO public."InstructorLearnerGroup"(
+    "GroupsId", "InstructorsId")
+VALUES (-1, -51);
+
+INSERT INTO public."InstructorMemberships"(
+    "Id", "CourseId", "InstructorId")
+VALUES (-1000, -1000, -51);

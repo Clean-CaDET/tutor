@@ -1,7 +1,7 @@
 ﻿using System;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 
-namespace Tutor.Core.LearnerModel.DomainOverlay
+namespace Tutor.Core.LearnerModel.DomainOverlay.EnrollmentModel
 {
     public class UnitEnrollment
     {
