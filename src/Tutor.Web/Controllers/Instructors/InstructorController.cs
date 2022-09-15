@@ -15,8 +15,7 @@ public class InstructorController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IInstructorService _instructorService;
-
-
+    
     public InstructorController(IMapper mapper, IInstructorService instructorService)
     {
         _mapper = mapper;
