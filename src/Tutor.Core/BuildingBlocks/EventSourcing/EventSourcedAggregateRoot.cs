@@ -6,6 +6,8 @@ namespace Tutor.Core.BuildingBlocks.EventSourcing
     {
         private readonly List<DomainEvent> _changes = new();
 
+        public virtual void Initialize() { }
+
         public IEnumerable<DomainEvent> GetChanges()
         {
             return _changes;
@@ -18,10 +20,13 @@ namespace Tutor.Core.BuildingBlocks.EventSourcing
 
         public void LoadFromHistory(IEnumerable<DomainEvent> history)
         {
-            foreach (var @event in history) Apply(@event);
+            foreach (var @event in history)
+            {
+                Apply(@event);
+            }
         }
 
-        protected void Causes(DomainEvent @event)
+        protected internal void Causes(DomainEvent @event)
         {
             _changes.Add(@event);
             Apply(@event);
