@@ -23,7 +23,7 @@ public class InstructorDatabaseRepository : IInstructorRepository
 
     public List<Course> GetCourses(int instructorId)
     {
-        return _dbContext.InstructorMemberships
+        return _dbContext.InstructorsCourses
             .Where(m => m.Instructor.Id.Equals(instructorId))
             .Include(m => m.Course)
             .Select(m => m.Course).ToList();

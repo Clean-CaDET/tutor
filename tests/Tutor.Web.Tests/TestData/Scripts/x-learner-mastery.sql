@@ -207,6 +207,6 @@ INSERT INTO public."InstructorLearnerGroup"(
     "GroupsId", "InstructorsId")
 VALUES (-1, -51);
 
-INSERT INTO public."InstructorMemberships"(
+INSERT INTO public."InstructorsCourses"(
     "Id", "CourseId", "InstructorId")
-VALUES (-1000, -1000, -51);
+VALUES (-1, -1, -51);
