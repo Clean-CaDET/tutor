@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Immutable;
 
 namespace Tutor.Infrastructure.Database.EventStore.Configuration
 {
@@ -7,6 +8,27 @@ namespace Tutor.Infrastructure.Database.EventStore.Configuration
     {
         public IEventSerializerProvider EventSerializerProvider { get; set; }
         public IEventStoreProvider EventStoreProvider { get; set; }
+
+        public EventStoreOptions UseSerializer(IEventSerializer eventSerializer)
+        {
+            if (eventSerializer == null)
+                throw new EventStoreConfigurationException(
+                    "Invalid event serializer configuration.",
+                    new ArgumentNullException(nameof(eventSerializer)));
+            EventSerializerProvider = new EventSerializerInstanceProvider(eventSerializer);
+            return this;
+        }
+
+        public EventStoreOptions UseDefaultSerializer(IImmutableDictionary<Type, string> eventRelatedTypes)
+        {
+            if (eventRelatedTypes == null)
+                throw new EventStoreConfigurationException(
+                    "Invalid event serializer configuration.",
+                    new ArgumentNullException(nameof(eventRelatedTypes)));
+            var eventSerializer = new DefaultEventSerializer.DefaultEventSerializer(eventRelatedTypes);
+            EventSerializerProvider = new EventSerializerInstanceProvider(eventSerializer);
+            return this;
+        }
 
         public IEventStore GetEventStore()
         {

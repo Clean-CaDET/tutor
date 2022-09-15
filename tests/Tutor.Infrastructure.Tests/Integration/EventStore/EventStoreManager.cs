@@ -1,7 +1,6 @@
 ﻿using System;
 using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.EventStore.Configuration;
-using Tutor.Infrastructure.Database.EventStore.Configuration.EventSerializerConfiguration;
 using Tutor.Infrastructure.Database.EventStore.Postgres.Configuration;
 using static Tutor.Infrastructure.Tests.TestData.EventStore.TestEvents;
 

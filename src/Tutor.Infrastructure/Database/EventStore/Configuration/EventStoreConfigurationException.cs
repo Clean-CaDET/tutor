@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Tutor.Infrastructure.Database.EventStore.Configuration
 {
+    [Serializable]
     public class EventStoreConfigurationException : Exception
     {
         public EventStoreConfigurationException()

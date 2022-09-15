@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Tutor.Infrastructure.Database;
 using Tutor.Infrastructure.Database.EventStore.Configuration;
-using Tutor.Infrastructure.Database.EventStore.Configuration.EventSerializerConfiguration;
 using Tutor.Infrastructure.Database.EventStore.Postgres.Configuration;
 using Tutor.Infrastructure.Security;
 

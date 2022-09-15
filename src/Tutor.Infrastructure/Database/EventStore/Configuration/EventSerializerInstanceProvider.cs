@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
 
-namespace Tutor.Infrastructure.Database.EventStore.Configuration.EventSerializerConfiguration
+namespace Tutor.Infrastructure.Database.EventStore.Configuration
 {
     public class EventSerializerInstanceProvider : IEventSerializerProvider
     {
