@@ -21,18 +21,18 @@ public class InstructorDatabaseRepository : IInstructorRepository
         return _dbContext.Instructors.FirstOrDefault(i => i.UserId.Equals(userId));
     }
 
-    public List<Course> GetCourses(int instructorId)
+    public List<Course> GetOwnedCourses(int instructorId)
     {
-        return _dbContext.InstructorsCourses
+        return _dbContext.CourseOwnerships
             .Where(m => m.Instructor.Id.Equals(instructorId))
             .Include(m => m.Course)
             .Select(m => m.Course).ToList();
     }
 
-    public List<LearnerGroup> GetGroups(int instructorId, int courseId)
+    public List<LearnerGroup> GetAssignedGroups(int instructorId, int courseId)
     {
         return _dbContext.Instructors.Include(i => i.Groups)
-            .FirstOrDefault(i => i.Id.Equals(instructorId))
-            ?.Groups.ToList();
+            .FirstOrDefault(i => i.Id.Equals(instructorId))?.Groups
+            .Where(g => g.CourseId.Equals(courseId)).ToList();
     }
 }

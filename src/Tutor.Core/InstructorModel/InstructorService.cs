@@ -14,15 +14,13 @@ public class InstructorService : IInstructorService
         _instructorRepository = instructorRepository;
     }
     
-    public Result<List<Course>> GetCourses(int userId)
+    public Result<List<Course>> GetCourses(int instructorId)
     {
-        var instructor = _instructorRepository.GetByUserId(userId);
-        return _instructorRepository.GetCourses(instructor.Id).ToResult();
+        return _instructorRepository.GetOwnedCourses(instructorId).ToResult();
     }
 
-    public Result<List<LearnerGroup>> GetGroups(int userId, int courseId)
+    public Result<List<LearnerGroup>> GetGroups(int instructorId, int courseId)
     {
-        var instructor = _instructorRepository.GetByUserId(userId);
-        return _instructorRepository.GetGroups(instructor.Id, courseId).ToResult();
+        return _instructorRepository.GetAssignedGroups(instructorId, courseId).ToResult();
     }
 }

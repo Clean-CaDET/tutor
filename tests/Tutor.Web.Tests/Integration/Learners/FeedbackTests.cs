@@ -23,7 +23,7 @@ namespace Tutor.Web.Tests.Integration.Learners
             using var scope = Factory.Services.CreateScope();
             var controller = new FeedbackController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<IFeedbackService>())
             {
-                ControllerContext = BuildContext("-1")
+                ControllerContext = BuildContext("-1", "learner")
             };
             var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
 
@@ -45,7 +45,7 @@ namespace Tutor.Web.Tests.Integration.Learners
             using var scope = Factory.Services.CreateScope();
             var controller = new FeedbackController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<IFeedbackService>())
             {
-                ControllerContext = BuildContext("-1")
+                ControllerContext = BuildContext("-1", "learner")
             };
             var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
 

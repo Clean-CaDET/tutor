@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +24,7 @@ public class InstructorController : ControllerBase
     [HttpGet("courses")]
     public ActionResult<List<CourseDto>> GetCourses()
     {
-        var result = _instructorService.GetCourses(User.Id());
+        var result = _instructorService.GetCourses(User.InstructorId());
         if (result.IsFailed) return BadRequest(result.Errors);
         return Ok(result.Value.Select(c => _mapper.Map<CourseDto>(c)).ToList());
     }
@@ -33,8 +32,8 @@ public class InstructorController : ControllerBase
     [HttpGet("groups/{courseId:int}")]
     public ActionResult<GroupDto> GetGroups(int courseId)
     {
-        var result = _instructorService.GetGroups(User.Id(), courseId);
-        Console.WriteLine(result.Value);
+        var result = _instructorService.GetGroups(User.InstructorId(), courseId);
+        if (result.IsFailed) return BadRequest(result.Errors);
         return Ok(result.Value.Select(g => _mapper.Map<GroupDto>(g)).ToList());
     }
 }

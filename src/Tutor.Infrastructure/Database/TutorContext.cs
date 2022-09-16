@@ -65,7 +65,7 @@ namespace Tutor.Infrastructure.Database
         
         #region Instructors
         public DbSet<Instructor> Instructors { get; set; }
-        public DbSet<InstructorCourse> InstructorsCourses { get; set; }
+        public DbSet<CourseOwnership> CourseOwnerships { get; set; }
         #endregion
 
         public TutorContext(DbContextOptions<TutorContext> options) : base(options)

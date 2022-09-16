@@ -13,24 +13,28 @@ public class InstructorTests : BaseWebIntegrationTest
     public InstructorTests(TutorApplicationTestFactory<Startup> factory) : base(factory)
     {
     }
-    
-    [Fact]
-    public void Retrieves_courses()
+
+    [Theory]
+    [InlineData("-51", 1)]
+    [InlineData("-52", 2)]
+    public void Retrieves_owned_courses(string instructorId, int expectedResult)
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupInstructorController(scope, "-51");
+        var controller = SetupInstructorController(scope, instructorId);
         var result = ((OkObjectResult)controller.GetCourses().Result)?.Value as List<CourseDto>;
-            
-        result.Count.ShouldBe(1);
+
+        result.Count.ShouldBe(expectedResult);
     }
 
-    [Fact]
-    public void Retrieves_groups()
+    [Theory]
+    [InlineData("-51", -1, 1)]
+    [InlineData("-52", -2, 2)]
+    public void Retrieves_owned_groups(string instructorId, int courseId, int expectedResult)
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupInstructorController(scope, "-51");
-        var result = ((OkObjectResult)controller.GetGroups(-1000).Result)?.Value as List<GroupDto>;
-        
-        result.Count.ShouldBe(1);
+        var controller = SetupInstructorController(scope, instructorId);
+        var result = ((OkObjectResult)controller.GetGroups(courseId).Result)?.Value as List<GroupDto>;
+
+        result.Count.ShouldBe(expectedResult);
     }
 }
