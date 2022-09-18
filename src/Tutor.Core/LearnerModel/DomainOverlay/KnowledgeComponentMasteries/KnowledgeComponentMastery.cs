@@ -43,6 +43,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     public override void Initialize()
     {
+        if (SessionTracker == null) SessionTracker = new SessionTracker();
         SessionTracker.Initialize(this);
     }
 
@@ -159,11 +160,6 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         kcEvent.LearnerId = LearnerId;
 
         SessionTracker.Apply(kcEvent);
-        if (!(@event is SessionLifecycleEvent))
-        {
-            kcEvent.DurationOfCurrentSession = SessionTracker.DurationOfCurrentSession;
-            kcEvent.DurationOfPreviousSessions = SessionTracker.DurationOfPreviousSessions;
-        }
 
         When((dynamic)kcEvent);
     }

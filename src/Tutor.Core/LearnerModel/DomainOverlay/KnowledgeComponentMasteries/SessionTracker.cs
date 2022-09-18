@@ -16,27 +16,16 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 
         public void Launch()
         {
-            if (HasActiveSession) Causes(new SessionAbandoned()
-            {
-                DurationOfCurrentSession = DurationOfCurrentSession,
-                DurationOfPreviousSessions = DurationOfPreviousSessions
-            });
+            if (HasActiveSession) Causes(new SessionAbandoned());
 
-            Causes(new SessionLaunched()
-            {
-                DurationOfPreviousSessions = DurationOfPreviousSessions
-            });
+            Causes(new SessionLaunched());
         }
 
         public Result Terminate()
         {
             if (!HasActiveSession) return Result.Fail("No active session to terminate.");
 
-            Causes(new SessionTerminated()
-            {
-                DurationOfCurrentSession = DurationOfCurrentSession,
-                DurationOfPreviousSessions = DurationOfPreviousSessions
-            });
+            Causes(new SessionTerminated());
             return Result.Ok();
         }
 
@@ -44,11 +33,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         {
             if (!HasActiveSession) return Result.Fail("No active session to abandon.");
 
-            Causes(new SessionAbandoned()
-            {
-                DurationOfCurrentSession = DurationOfCurrentSession,
-                DurationOfPreviousSessions = DurationOfPreviousSessions
-            });
+            Causes(new SessionAbandoned());
             return Result.Ok();
         }
 
@@ -61,11 +46,18 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         {
             StartOfCurrentSession = @event.TimeStamp;
             LastActivity = @event.TimeStamp;
+
+            @event.DurationOfPreviousSessions = DurationOfPreviousSessions;
+            @event.DurationOfCurrentSession = DurationOfCurrentSession;
         }
 
         private void When(SessionTerminated @event)
         {
             LastActivity = @event.TimeStamp;
+
+            @event.DurationOfPreviousSessions = DurationOfPreviousSessions;
+            @event.DurationOfCurrentSession = DurationOfCurrentSession;
+
             DurationOfPreviousSessions += DurationOfCurrentSession;
             StartOfCurrentSession = null;
             LastActivity = null;
@@ -73,6 +65,9 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 
         private void When(SessionAbandoned @event)
         {
+            @event.DurationOfPreviousSessions = DurationOfPreviousSessions;
+            @event.DurationOfCurrentSession = DurationOfCurrentSession;
+
             DurationOfPreviousSessions += DurationOfCurrentSession;
             StartOfCurrentSession = null;
             LastActivity = null;
@@ -81,6 +76,9 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         private void When(KnowledgeComponentEvent @event)
         {
             LastActivity = @event.TimeStamp;
+
+            @event.DurationOfPreviousSessions = DurationOfPreviousSessions;
+            @event.DurationOfCurrentSession = DurationOfCurrentSession;
         }
     }
 }
