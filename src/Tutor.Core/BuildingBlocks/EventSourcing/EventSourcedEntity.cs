@@ -6,13 +6,15 @@ namespace Tutor.Core.BuildingBlocks.EventSourcing
     {
         private EventSourcedAggregateRoot _root;
 
-        public void Initialize(EventSourcedAggregateRoot root)
+        public virtual void Initialize(EventSourcedAggregateRoot root)
         {
             _root = root ?? throw new ArgumentNullException(nameof(root));
         }
 
         protected void Causes(DomainEvent @event)
         {
+            if (_root == null)
+                throw new EventSourcingException("Entity of type " + GetType() + " not initialized for Event Sourcing.");
             _root.Causes(@event);
         }
 
