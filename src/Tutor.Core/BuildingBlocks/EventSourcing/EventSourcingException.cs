@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Tutor.Core.BuildingBlocks.EventSourcing
 {
+    [Serializable]
     public class EventSourcingException : Exception
     {
         public EventSourcingException()
