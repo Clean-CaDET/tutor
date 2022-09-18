@@ -49,6 +49,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
             if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
 
+            kcMastery.Initialize();
             var result = kcMastery.GetInstructionalItems();
             _kcMasteryRepository.UpdateKcMastery(kcMastery);
 
@@ -60,6 +61,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
             if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
 
+            kcMastery.Initialize();
             var result = kcMastery.SelectSuitableAssessmentItemId(_assessmentItemSelector);
             _kcMasteryRepository.UpdateKcMastery(kcMastery);
 
@@ -81,6 +83,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
             if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
 
+            kcMastery.Initialize();
             var result = kcMastery.LaunchSession();
             _kcMasteryRepository.UpdateKcMastery(kcMastery);
             return result;
@@ -91,6 +94,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
             if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
 
+            kcMastery.Initialize();
             var result = kcMastery.TerminateSession();
             _kcMasteryRepository.UpdateKcMastery(kcMastery);
             return result;

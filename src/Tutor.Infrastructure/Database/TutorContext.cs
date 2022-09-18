@@ -116,6 +116,7 @@ namespace Tutor.Infrastructure.Database
             modelBuilder.Entity<KnowledgeComponentMastery>()
                 .HasMany(kcm => kcm.AssessmentMasteries)
                 .WithOne();
+            modelBuilder.Entity<KnowledgeComponentMastery>().OwnsOne(kcm => kcm.SessionTracker).Ignore(tracker => tracker.Id);
         }
     }
 }
