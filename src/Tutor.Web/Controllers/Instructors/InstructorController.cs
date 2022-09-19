@@ -22,17 +22,17 @@ public class InstructorController : ControllerBase
     }
 
     [HttpGet("courses")]
-    public ActionResult<List<CourseDto>> GetCourses()
+    public ActionResult<List<CourseDto>> GetOwnedCourses()
     {
-        var result = _instructorService.GetCourses(User.InstructorId());
+        var result = _instructorService.GetOwnedCourses(User.InstructorId());
         if (result.IsFailed) return BadRequest(result.Errors);
         return Ok(result.Value.Select(c => _mapper.Map<CourseDto>(c)).ToList());
     }
 
     [HttpGet("groups/{courseId:int}")]
-    public ActionResult<GroupDto> GetGroups(int courseId)
+    public ActionResult<GroupDto> GetAssignedGroups(int courseId)
     {
-        var result = _instructorService.GetGroups(User.InstructorId(), courseId);
+        var result = _instructorService.GetAssignedGroups(User.InstructorId(), courseId);
         if (result.IsFailed) return BadRequest(result.Errors);
         return Ok(result.Value.Select(g => _mapper.Map<GroupDto>(g)).ToList());
     }

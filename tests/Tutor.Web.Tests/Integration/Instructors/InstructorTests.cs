@@ -21,7 +21,7 @@ public class InstructorTests : BaseWebIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupInstructorController(scope, instructorId);
-        var result = ((OkObjectResult)controller.GetCourses().Result)?.Value as List<CourseDto>;
+        var result = ((OkObjectResult)controller.GetOwnedCourses().Result)?.Value as List<CourseDto>;
 
         result.Count.ShouldBe(expectedResult);
     }
@@ -33,7 +33,7 @@ public class InstructorTests : BaseWebIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupInstructorController(scope, instructorId);
-        var result = ((OkObjectResult)controller.GetGroups(courseId).Result)?.Value as List<GroupDto>;
+        var result = ((OkObjectResult)controller.GetAssignedGroups(courseId).Result)?.Value as List<GroupDto>;
 
         result.Count.ShouldBe(expectedResult);
     }

@@ -7,7 +7,7 @@ namespace Tutor.Core.InstructorModel;
 
 public interface IInstructorService
 {
-    Result<List<Course>> GetCourses(int instructorId);
+    Result<List<Course>> GetOwnedCourses(int instructorId);
 
-    Result<List<LearnerGroup>> GetGroups(int instructorId, int courseId);
+    Result<List<LearnerGroup>> GetAssignedGroups(int instructorId, int courseId);
 }
