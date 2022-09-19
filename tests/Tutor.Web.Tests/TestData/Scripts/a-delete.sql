@@ -31,3 +31,8 @@ DELETE FROM public."AssessmentItems";
 DELETE FROM public."InstructionalItems";
 DELETE FROM public."KnowledgeComponents";
 DELETE FROM public."KnowledgeUnits";
+
+DELETE FROM public."CourseOwnerships";
+DELETE FROM public."InstructorLearnerGroup";
+DELETE FROM public."Courses";
+DELETE FROM public."Instructors";

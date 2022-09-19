@@ -8,8 +8,9 @@ using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
+using Tutor.Core.InstructorModel;
 using Tutor.Core.LearnerModel;
-using Tutor.Core.LearnerModel.DomainOverlay;
+using Tutor.Core.LearnerModel.DomainOverlay.EnrollmentModel;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
 using Tutor.Core.LearnerModel.Feedback;
 using Tutor.Core.LearnerModel.Notes;
@@ -20,6 +21,7 @@ namespace Tutor.Infrastructure.Database
     public class TutorContext : DbContext
     {
         #region Domain Model
+        public DbSet<Course> Courses { get; set; }
         public DbSet<KnowledgeUnit> KnowledgeUnits { get; set; }
         public DbSet<KnowledgeComponent> KnowledgeComponents { get; set; }
         public DbSet<AssessmentItem> AssessmentItems { get; set; }
@@ -60,6 +62,11 @@ namespace Tutor.Infrastructure.Database
         #endregion
 
         public DbSet<User> Users { get; set; }
+        
+        #region Instructors
+        public DbSet<Instructor> Instructors { get; set; }
+        public DbSet<CourseOwnership> CourseOwnerships { get; set; }
+        #endregion
 
         public TutorContext(DbContextOptions<TutorContext> options) : base(options)
         {
