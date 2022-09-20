@@ -6,6 +6,7 @@ using Tutor.Core.DomainModel.AssessmentItems.Challenges.FulfillmentStrategies;
 using Tutor.Core.DomainModel.AssessmentItems.MultiChoiceQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
+using Tutor.Core.DomainModel.AssessmentItems.AIMicroChallenges;
 using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.InstructorModel;
@@ -42,6 +43,9 @@ namespace Tutor.Infrastructure.Database
         public DbSet<BannedWordsChecker> BannedWordsCheckers { get; set; }
         public DbSet<RequiredWordsChecker> RequiredWordsCheckers { get; set; }
         public DbSet<ChallengeHint> ChallengeHints { get; set; }
+        public DbSet<AIMicroChallenge> AIMicroChallenges { get; set; }
+        public DbSet<AIMicroChallengeHint> AIMicroChallengeHints { get; set; }
+
 
         #endregion
 
