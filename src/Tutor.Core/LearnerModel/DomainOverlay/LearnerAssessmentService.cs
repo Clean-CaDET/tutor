@@ -32,7 +32,6 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
                 return Result.Fail(ex.Message);
             }
 
-            kcm.Initialize();
             kcm.SubmitAssessmentItemAnswer(assessmentItemId, submission, evaluation);
             _kcMasteryRepository.UpdateKcMastery(kcm);
 
@@ -69,7 +68,6 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             var kcm = _kcMasteryRepository.GetKcMasteryForAssessmentItem(helpEvent.AssessmentItemId, helpEvent.LearnerId);
             if (kcm == null) return Result.Fail("Cannot seek help for assessment item with ID: " + helpEvent.AssessmentItemId);
 
-            kcm.Initialize();
             var result = kcm.SeekHelpForAssessmentItem(helpEvent);
 
             _kcMasteryRepository.UpdateKcMastery(kcm);
@@ -83,7 +81,6 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             var kcm = _kcMasteryRepository.GetBasicKcMastery(kcId, learnerId);
             if (kcm == null) return Result.Fail("Learner not enrolled in KC: " + kcId);
 
-            kcm.Initialize();
             var result = kcm.RecordInstructorMessage(message);
             _kcMasteryRepository.UpdateKcMastery(kcm);
             return result;

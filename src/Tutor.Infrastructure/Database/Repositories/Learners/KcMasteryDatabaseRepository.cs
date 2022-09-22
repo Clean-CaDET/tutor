@@ -52,12 +52,15 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
                 .Include(kcm => kcm.KnowledgeComponent)
                 .Include(kcm => kcm.SessionTracker)
                 .FirstOrDefault(kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponent.Id == knowledgeComponentId);
+            kcm.Initialize();
             return kcm;
         }
         public List<KnowledgeComponentMastery> GetBasicKcMasteries(List<int> kcIds, int learnerId)
         {
-            return _dbContext.KcMasteries.Include(kcm => kcm.SessionTracker)
+            var kcms = _dbContext.KcMasteries.Include(kcm => kcm.SessionTracker)
                 .Where(kcm => kcm.LearnerId == learnerId && kcIds.Contains(kcm.KnowledgeComponent.Id)).ToList();
+            foreach (var kcm in kcms) kcm.Initialize();
+            return kcms;
         }
 
         public KnowledgeComponentMastery GetFullKcMastery(int knowledgeComponentId, int learnerId)
@@ -69,6 +72,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
                 .ThenInclude(kc => kc.InstructionalItems)
                 .FirstOrDefault(kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponent.Id == knowledgeComponentId);
             kcm.MoveOnCriteria = _moveOnCriteria;
+            kcm.Initialize();
             return kcm;
         }
         public KnowledgeComponentMastery GetKcMasteryForAssessmentItem(int assessmentItemId, int learnerId)
