@@ -26,7 +26,6 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
     public bool IsSatisfied { get; private set; }
     public bool IsCompleted { get; private set; }
     public SessionTracker SessionTracker { get; private set; }
-    public bool HasActiveSession { get; private set; }
 
     public IMoveOnCriteria MoveOnCriteria { get; set; }
 
