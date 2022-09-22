@@ -1,12 +1,14 @@
 ﻿using System.Linq;
 using AutoMapper;
 using Tutor.Core.DomainModel.AssessmentItems;
+using Tutor.Core.DomainModel.AssessmentItems.AIMicroChallenges;
 using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentItems.Challenges;
 using Tutor.Core.DomainModel.AssessmentItems.MultiChoiceQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems;
+using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.AIMicroChallenges;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiChoiceQuestions;
@@ -74,6 +76,13 @@ namespace Tutor.Web.Controllers.Domain
                 });
             CreateMap<ChallengeHint, ChallengeHintDto>();
             CreateMap<ChallengeSubmissionDto, ChallengeSubmission>();
+            #endregion
+
+            #region AiMicroChallenge
+            CreateMap<AIMicroChallenge, AIMicroChallengeDto>();
+            CreateMap<AIMicroChallengeEvaluation, AIMicroChallengeEvaluationDto>();
+            CreateMap<AIMicroChallengeHint, AIMicroChallengeHintDto>();
+            CreateMap<AIMicroChallengeSubmission, AIMicroChallengeSubmissionDto>();
             #endregion
         }
     }

@@ -15,10 +15,15 @@ namespace Tutor.Core.DomainModel.AssessmentItems.AIMicroChallenges
         public string StarterSourceCode { get; private set; }
         public bool HasTransformer { get; private set; }
 
-
         public override Evaluation Evaluate(Submission submission)
         {
-            throw new NotImplementedException();
+            if (submission is AIMicroChallengeSubmission aIMicroChallengeSubmission) return EvaluateChallenge(aIMicroChallengeSubmission.SourceCode);
+            throw new ArgumentException("Incorrect submission supplied to challenge with ID " + Id);
+        }
+
+        public AIMicroChallengeEvaluation EvaluateChallenge(string sourceCode)
+        {
+            return null;
         }
     }
 }

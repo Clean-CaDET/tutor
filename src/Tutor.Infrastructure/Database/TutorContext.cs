@@ -46,7 +46,6 @@ namespace Tutor.Infrastructure.Database
         public DbSet<AIMicroChallenge> AIMicroChallenges { get; set; }
         public DbSet<AIMicroChallengeHint> AIMicroChallengeHints { get; set; }
 
-
         #endregion
 
         #region Feedback & Notes
@@ -89,6 +88,7 @@ namespace Tutor.Infrastructure.Database
             ConfigureChallenge(modelBuilder);
             ConfigureKnowledgeComponent(modelBuilder);
             ConfigureKcMastery(modelBuilder);
+            ConfigureAIMicroChallenge(modelBuilder);
 
             modelBuilder.Entity<GroupMembership>()
                 .HasOne(g => g.Learner)
@@ -127,6 +127,11 @@ namespace Tutor.Infrastructure.Database
             modelBuilder.Entity<KnowledgeComponentMastery>()
                 .HasMany(kcm => kcm.AssessmentMasteries)
                 .WithOne();
+        }
+
+        private static void ConfigureAIMicroChallenge(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<AIMicroChallenge>().ToTable("AIMicroChallenges");
         }
     }
 }
