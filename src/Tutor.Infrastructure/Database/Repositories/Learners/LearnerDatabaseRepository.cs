@@ -61,6 +61,9 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
                 .Include(g => g.Learner)
                 .ThenInclude(l => l.KnowledgeComponentMasteries)
                 .ThenInclude(kcm => kcm.KnowledgeComponent)
+                .Include(g => g.Learner)
+                .ThenInclude(l => l.KnowledgeComponentMasteries)
+                .ThenInclude(kcm => kcm.SessionTracker)
                 .Select(g => g.Learner)
                 .GetPaged(page, pageSize);
         }
@@ -72,6 +75,8 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
                 .ThenInclude(kcm => kcm.AssessmentMasteries)
                 .Include(l => l.KnowledgeComponentMasteries)
                 .ThenInclude(kcm => kcm.KnowledgeComponent)
+                .Include(l => l.KnowledgeComponentMasteries)
+                .ThenInclude(kcm => kcm.SessionTracker)
                 .GetPaged(page, pageSize);
         }
 

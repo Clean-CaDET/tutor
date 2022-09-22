@@ -2,28 +2,32 @@
 using System;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.KnowledgeComponentEvents;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.SessionLifecycleEvents;
 
 namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 {
     public class SessionTracker : EventSourcedEntity
     {
-        public TimeSpan DurationOfPreviousSessions { get; private set; } = new TimeSpan(0);
-        public TimeSpan DurationOfCurrentSession { get => HasActiveSession ? LastActivity.Value - StartOfCurrentSession.Value : new TimeSpan(0); }
-        public bool HasActiveSession { get => StartOfCurrentSession.HasValue; }
-        public DateTime? StartOfCurrentSession { get; private set; }
+        public int CountOfSessions { get; private set; } = 0;
+        public TimeSpan DurationOfAllSessions { get => DurationOfFinishedSessions + DurationOfUnfinishedSession.GetValueOrDefault(); }
+        public TimeSpan DurationOfFinishedSessions { get; private set; } = new TimeSpan(0);
+        public bool HasUnfinishedSession { get => StartOfUnfinishedSession.HasValue; }
+        public TimeSpan? DurationOfUnfinishedSession
+        { get => HasUnfinishedSession ? LastActivity.Value - StartOfUnfinishedSession.Value : null; }
+        public DateTime? StartOfUnfinishedSession { get; private set; }
         public DateTime? LastActivity { get; private set; }
 
         public void Launch()
         {
-            if (HasActiveSession) Causes(new SessionAbandoned());
+            if (HasUnfinishedSession) Causes(new SessionAbandoned());
 
             Causes(new SessionLaunched());
         }
 
         public Result Terminate()
         {
-            if (!HasActiveSession) return Result.Fail("No active session to terminate.");
+            if (!HasUnfinishedSession) return Result.Fail("No active session to terminate.");
 
             Causes(new SessionTerminated());
             return Result.Ok();
@@ -31,7 +35,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 
         public Result Abandon()
         {
-            if (!HasActiveSession) return Result.Fail("No active session to abandon.");
+            if (!HasUnfinishedSession) return Result.Fail("No active session to abandon.");
 
             Causes(new SessionAbandoned());
             return Result.Ok();
@@ -44,41 +48,48 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 
         private void When(SessionLaunched @event)
         {
-            StartOfCurrentSession = @event.TimeStamp;
+            StartOfUnfinishedSession = @event.TimeStamp;
             LastActivity = @event.TimeStamp;
-
-            @event.DurationOfPreviousSessions = DurationOfPreviousSessions;
-            @event.DurationOfCurrentSession = DurationOfCurrentSession;
+            CountOfSessions++;
         }
 
         private void When(SessionTerminated @event)
         {
             LastActivity = @event.TimeStamp;
 
-            @event.DurationOfPreviousSessions = DurationOfPreviousSessions;
-            @event.DurationOfCurrentSession = DurationOfCurrentSession;
-
-            DurationOfPreviousSessions += DurationOfCurrentSession;
-            StartOfCurrentSession = null;
+            DurationOfFinishedSessions += DurationOfUnfinishedSession.GetValueOrDefault();
+            StartOfUnfinishedSession = null;
             LastActivity = null;
         }
 
         private void When(SessionAbandoned @event)
         {
-            @event.DurationOfPreviousSessions = DurationOfPreviousSessions;
-            @event.DurationOfCurrentSession = DurationOfCurrentSession;
-
-            DurationOfPreviousSessions += DurationOfCurrentSession;
-            StartOfCurrentSession = null;
+            DurationOfFinishedSessions += DurationOfUnfinishedSession.GetValueOrDefault();
+            StartOfUnfinishedSession = null;
             LastActivity = null;
+        }
+
+        private void When(KnowledgeComponentCompleted @event)
+        {
+            @event.MinutesToCompletion = DurationOfAllSessions.TotalMinutes;
+            LastActivity = @event.TimeStamp;
+        }
+
+        private void When(KnowledgeComponentPassed @event)
+        {
+            @event.MinutesToPass = DurationOfAllSessions.TotalMinutes;
+            LastActivity = @event.TimeStamp;
+        }
+
+        private void When(KnowledgeComponentSatisfied @event)
+        {
+            @event.MinutesToSatisfaction = DurationOfAllSessions.TotalMinutes;
+            LastActivity = @event.TimeStamp;
         }
 
         private void When(KnowledgeComponentEvent @event)
         {
             LastActivity = @event.TimeStamp;
-
-            @event.DurationOfPreviousSessions = DurationOfPreviousSessions;
-            @event.DurationOfCurrentSession = DurationOfCurrentSession;
         }
     }
 }

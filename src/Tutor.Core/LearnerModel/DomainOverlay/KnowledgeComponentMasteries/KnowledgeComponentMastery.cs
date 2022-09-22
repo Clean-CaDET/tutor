@@ -9,7 +9,6 @@ using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.KnowledgeComponentEvents;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.SessionLifecycleEvents;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.MoveOn;
 
 namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
@@ -43,13 +42,12 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     public override void Initialize()
     {
-        if (SessionTracker == null) SessionTracker = new SessionTracker();
         SessionTracker.Initialize(this);
     }
 
     private void JoinOrLaunchSession()
     {
-        if (!SessionTracker.HasActiveSession) LaunchSession();
+        if (!SessionTracker.HasUnfinishedSession) LaunchSession();
     }
 
     public Result LaunchSession()

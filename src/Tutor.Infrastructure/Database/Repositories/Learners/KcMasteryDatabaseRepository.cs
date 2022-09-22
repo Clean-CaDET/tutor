@@ -75,6 +75,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
             kcm.Initialize();
             return kcm;
         }
+
         public KnowledgeComponentMastery GetKcMasteryForAssessmentItem(int assessmentItemId, int learnerId)
         {
             var assessmentItem = _dbContext.AssessmentItems.FirstOrDefault(ae => ae.Id == assessmentItemId);
