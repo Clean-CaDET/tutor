@@ -1,6 +1,6 @@
 ﻿using Tutor.Core.BuildingBlocks;
 
-namespace Tutor.Core.LearnerModel
+namespace Tutor.Core.LearnerModel.DomainOverlay.EnrollmentModel
 {
     public class GroupMembership : Entity
     {

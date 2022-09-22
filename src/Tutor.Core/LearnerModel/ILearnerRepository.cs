@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks;
+using Tutor.Core.LearnerModel.DomainOverlay.EnrollmentModel;
 
 namespace Tutor.Core.LearnerModel
 {

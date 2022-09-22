@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.Core.LearnerModel;
+using Tutor.Core.LearnerModel.DomainOverlay.EnrollmentModel;
 using Tutor.Infrastructure.Security.Authentication.Users;
 
 namespace Tutor.Web.Controllers.Learners

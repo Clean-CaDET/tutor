@@ -15,7 +15,7 @@ namespace Tutor.Infrastructure.Security.Authentication
         private readonly string _issuer = EnvironmentConnection.GetSecret("JWT_ISSUER") ?? "tutor";
         private readonly string _audience = EnvironmentConnection.GetSecret("JWT_AUDIENCE") ?? "tutor-front.com";
 
-        public Result<AuthenticationTokens> GenerateAccessToken(int userId, string role, int learnerId)
+        public Result<AuthenticationTokens> GenerateAccessToken(int userId, string role, int id)
         {
             var authenticationResponse = new AuthenticationTokens();
 
@@ -23,7 +23,7 @@ namespace Tutor.Infrastructure.Security.Authentication
             {
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new("id", userId.ToString()),
-                new("learnerId", learnerId.ToString()),
+                new(role + "Id", id.ToString()),
                 new(ClaimTypes.Role, role)
             };
             
