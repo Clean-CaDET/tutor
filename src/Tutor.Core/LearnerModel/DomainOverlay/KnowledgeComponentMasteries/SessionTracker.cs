@@ -71,20 +71,20 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 
         private void When(KnowledgeComponentCompleted @event)
         {
-            @event.MinutesToCompletion = DurationOfAllSessions.TotalMinutes;
             LastActivity = @event.TimeStamp;
+            @event.MinutesToCompletion = DurationOfAllSessions.TotalMinutes;
         }
 
         private void When(KnowledgeComponentPassed @event)
         {
-            @event.MinutesToPass = DurationOfAllSessions.TotalMinutes;
             LastActivity = @event.TimeStamp;
+            @event.MinutesToPass = DurationOfAllSessions.TotalMinutes;
         }
 
         private void When(KnowledgeComponentSatisfied @event)
         {
-            @event.MinutesToSatisfaction = DurationOfAllSessions.TotalMinutes;
             LastActivity = @event.TimeStamp;
+            @event.MinutesToSatisfaction = DurationOfAllSessions.TotalMinutes;
         }
 
         private void When(KnowledgeComponentEvent @event)
