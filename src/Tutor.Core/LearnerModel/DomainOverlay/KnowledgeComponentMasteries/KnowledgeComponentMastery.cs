@@ -72,15 +72,11 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     public Result SubmitAssessmentItemAnswer(int assessmentItemId, Submission submission, Evaluation evaluation)
     {
+        var aim = AssessmentMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
+        if (aim == null) return Result.Fail("No assessment item with id " + assessmentItemId + ".");
+
         JoinOrLaunchSession();
-
-        Causes(new AssessmentItemAnswered
-        {
-            AssessmentItemId = assessmentItemId,
-            Submission = submission,
-            Evaluation = evaluation
-        });
-
+        aim.SubmitAnswer(submission, evaluation);
         TryPass();
         TryComplete();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using Tutor.Core.BuildingBlocks.EventSourcing;
+using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
 
 namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
@@ -14,6 +15,16 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         public DateTime? LastSubmissionTime { get; set; }
         public bool IsCompleted { get => SubmissionCount > 0; }
         public bool IsPassed { get => Mastery > PassThreshold; }
+
+        public void SubmitAnswer(Submission submission, Evaluation evaluation)
+        {
+            Causes(new AssessmentItemAnswered
+            {
+                AssessmentItemId = AssessmentItemId,
+                Submission = submission,
+                Evaluation = evaluation
+            });
+        }
 
         public override void Apply(DomainEvent @event)
         {
