@@ -6,15 +6,14 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 {
     public class AssessmentItemMastery : EventSourcedEntity
     {
+        private const double PassThreshold = 0.9;
+
         public int AssessmentItemId { get; private set; }
         public double Mastery { get; private set; }
         public int SubmissionCount { get; private set; }
         public DateTime? LastSubmissionTime { get; set; }
-
-        public bool IsAttempted()
-        {
-            return SubmissionCount > 0;
-        }
+        public bool IsCompleted { get => SubmissionCount > 0; }
+        public bool IsPassed { get => Mastery > PassThreshold; }
 
         public override void Apply(DomainEvent @event)
         {
