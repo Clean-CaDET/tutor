@@ -42,6 +42,8 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
     public override void Initialize()
     {
         SessionTracker.Initialize(this);
+        foreach (var aim in AssessmentMasteries)
+            aim.Initialize(this);
     }
 
     private void JoinOrLaunchSession()
@@ -181,19 +183,14 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         IsSatisfied = true;
     }
 
-    private static void When(KnowledgeComponentEvent @event)
-    {
-        // No action for AssessmentItemSelected, InstructionalItemsSelected, SoughtHelp, InstructorMessageEvent, SessionTerminated, SessionAbandoned.
-    }
-
     private void When(AssessmentItemAnswered @event)
     {
         var itemId = @event.AssessmentItemId;
         var assessmentMastery = AssessmentMasteries.Find(am => am.AssessmentItemId == itemId);
         if (assessmentMastery == null)
-            throw new InvalidOperationException("No assessment mastery for item: " + itemId + ". Were the masteries created and loaded correctly?");
+            throw new EventSourcingException("No assessment mastery for item: " + itemId + ". Were the masteries created and loaded correctly?");
 
-        assessmentMastery.UpdateMastery(@event);
+        assessmentMastery.Apply(@event);
         UpdateMastery();
     }
 
@@ -201,5 +198,10 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
     {
         Mastery = Math.Round(AssessmentMasteries.Sum(am => am.Mastery) / AssessmentMasteries.Count, 2);
         if (Mastery > 0.97) Mastery = 1; // Resolves rounding errors.
+    }
+
+    private static void When(KnowledgeComponentEvent @event)
+    {
+        // No action for AssessmentItemSelected, InstructionalItemsSelected, SoughtHelp, InstructorMessageEvent, SessionTerminated, SessionAbandoned.
     }
 }
