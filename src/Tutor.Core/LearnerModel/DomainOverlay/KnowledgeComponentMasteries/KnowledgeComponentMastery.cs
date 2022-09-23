@@ -41,9 +41,11 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     public override void Initialize()
     {
-        SessionTracker.Initialize(this);
-        foreach (var aim in AssessmentMasteries)
-            aim.Initialize(this);
+        if (SessionTracker != null)
+            SessionTracker.Initialize(this);
+        if (AssessmentMasteries != null)
+            foreach (var aim in AssessmentMasteries)
+                aim.Initialize(this);
     }
 
     private void JoinOrLaunchSession()
