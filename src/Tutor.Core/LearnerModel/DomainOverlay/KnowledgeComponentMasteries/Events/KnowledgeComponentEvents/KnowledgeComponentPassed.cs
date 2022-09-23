@@ -2,5 +2,6 @@
 {
     public class KnowledgeComponentPassed : KnowledgeComponentEvent
     {
+        public double MinutesToPass { get; set; }
     }
 }

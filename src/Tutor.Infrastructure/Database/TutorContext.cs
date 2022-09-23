@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentItems.Challenges;
@@ -62,7 +63,7 @@ namespace Tutor.Infrastructure.Database
         #endregion
 
         public DbSet<User> Users { get; set; }
-        
+
         #region Instructors
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<CourseOwnership> CourseOwnerships { get; set; }
@@ -80,7 +81,7 @@ namespace Tutor.Infrastructure.Database
             modelBuilder.Entity<Mrq>().ToTable("MultiResponseQuestions");
             modelBuilder.Entity<Mcq>().ToTable("MultiChoiceQuestions");
             modelBuilder.Entity<Saq>().ToTable("ShortAnswerQuestions");
-            
+
             ConfigureArrangeTask(modelBuilder);
             ConfigureChallenge(modelBuilder);
             ConfigureKnowledgeComponent(modelBuilder);
@@ -116,13 +117,22 @@ namespace Tutor.Infrastructure.Database
 
         private static void ConfigureKcMastery(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<KnowledgeComponentMastery>().Ignore(kcm => kcm.MoveOnCriteria);
-            modelBuilder.Entity<KnowledgeComponentMastery>()
-                .HasOne(kcm => kcm.KnowledgeComponent)
-                .WithMany();
-            modelBuilder.Entity<KnowledgeComponentMastery>()
-                .HasMany(kcm => kcm.AssessmentMasteries)
-                .WithOne();
+            var kcmBuilder = modelBuilder.Entity<KnowledgeComponentMastery>();
+            kcmBuilder.Ignore(kcm => kcm.MoveOnCriteria);
+            kcmBuilder.HasOne(kcm => kcm.KnowledgeComponent).WithMany().IsRequired();
+            kcmBuilder.Property(kcm => kcm.Mastery).HasDefaultValue(0);
+            kcmBuilder.Property(kcm => kcm.IsStarted).HasDefaultValue(false);
+            kcmBuilder.Property(kcm => kcm.IsSatisfied).HasDefaultValue(false);
+            kcmBuilder.Property(kcm => kcm.IsCompleted).HasDefaultValue(false);
+            kcmBuilder.Property(kcm => kcm.IsPassed).HasDefaultValue(false);
+            kcmBuilder.HasMany(kcm => kcm.AssessmentMasteries).WithOne().IsRequired();
+            kcmBuilder.OwnsOne(kcm => kcm.SessionTracker, trackerBuilder =>
+                {
+                    trackerBuilder.Property(tracker => tracker.CountOfSessions).IsRequired().HasDefaultValue(0);
+                    trackerBuilder.Property(tracker => tracker.DurationOfFinishedSessions).IsRequired().HasDefaultValue(TimeSpan.Zero);
+                    trackerBuilder.Ignore(tracker => tracker.Id);
+                });
+            kcmBuilder.Navigation(kcm => kcm.SessionTracker).IsRequired();
         }
     }
 }

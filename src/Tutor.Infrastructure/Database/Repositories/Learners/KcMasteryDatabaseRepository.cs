@@ -50,24 +50,32 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
         {
             var kcm = _dbContext.KcMasteries
                 .Include(kcm => kcm.KnowledgeComponent)
+                .Include(kcm => kcm.SessionTracker)
                 .FirstOrDefault(kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponent.Id == knowledgeComponentId);
+            kcm.Initialize();
             return kcm;
         }
         public List<KnowledgeComponentMastery> GetBasicKcMasteries(List<int> kcIds, int learnerId)
         {
-            return _dbContext.KcMasteries.Where(kcm => kcm.LearnerId == learnerId && kcIds.Contains(kcm.KnowledgeComponent.Id)).ToList();
+            var kcms = _dbContext.KcMasteries.Include(kcm => kcm.SessionTracker)
+                .Where(kcm => kcm.LearnerId == learnerId && kcIds.Contains(kcm.KnowledgeComponent.Id)).ToList();
+            foreach (var kcm in kcms) kcm.Initialize();
+            return kcms;
         }
 
         public KnowledgeComponentMastery GetFullKcMastery(int knowledgeComponentId, int learnerId)
         {
             var kcm = _dbContext.KcMasteries
+                .Include(kcm => kcm.SessionTracker)
                 .Include(kcm => kcm.AssessmentMasteries)
                 .Include(kcm => kcm.KnowledgeComponent)
                 .ThenInclude(kc => kc.InstructionalItems)
                 .FirstOrDefault(kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponent.Id == knowledgeComponentId);
             kcm.MoveOnCriteria = _moveOnCriteria;
+            kcm.Initialize();
             return kcm;
         }
+
         public KnowledgeComponentMastery GetKcMasteryForAssessmentItem(int assessmentItemId, int learnerId)
         {
             var assessmentItem = _dbContext.AssessmentItems.FirstOrDefault(ae => ae.Id == assessmentItemId);

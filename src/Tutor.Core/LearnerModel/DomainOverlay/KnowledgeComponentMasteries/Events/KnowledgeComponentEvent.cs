@@ -1,4 +1,5 @@
-﻿using Tutor.Core.BuildingBlocks.EventSourcing;
+﻿using System;
+using Tutor.Core.BuildingBlocks.EventSourcing;
 
 namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events
 {

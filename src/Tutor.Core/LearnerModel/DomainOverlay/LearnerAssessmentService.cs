@@ -31,7 +31,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             {
                 return Result.Fail(ex.Message);
             }
-            
+
             kcm.SubmitAssessmentItemAnswer(assessmentItemId, submission, evaluation);
             _kcMasteryRepository.UpdateKcMastery(kcm);
 
