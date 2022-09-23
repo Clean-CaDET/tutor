@@ -88,7 +88,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
         JoinOrLaunchSession();
         aim.Select();
-        return Result.Ok();
+        return result;
     }
 
     public Result SubmitAssessmentItemAnswer(int assessmentItemId, Submission submission, Evaluation evaluation)
