@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentResults;
+using System;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
@@ -24,6 +25,20 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
                 Submission = submission,
                 Evaluation = evaluation
             });
+        }
+
+        public Result SeekHints()
+        {
+            // TODO: validation logic
+            Causes(new SoughtHints());
+            return Result.Ok();
+        }
+
+        public Result SeekSolution()
+        {
+            // TODO: validation logic
+            Causes(new SoughtSolution());
+            return Result.Ok();
         }
 
         public override void Apply(DomainEvent @event)

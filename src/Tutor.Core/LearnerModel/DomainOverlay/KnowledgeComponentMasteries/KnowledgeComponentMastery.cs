@@ -121,19 +121,30 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         return result;
     }
 
+    public Result SeekHintsForAssessmentItem(int assessmentItemId)
+    {
+        var aim = AssessmentMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
+        if (aim == null) return Result.Fail("No assessment item with id " + assessmentItemId + ".");
+
+        JoinOrLaunchSession();
+        return aim.SeekHints();
+    }
+
+    public Result SeekSolutionForAssessmentItem(int assessmentItemId)
+    {
+        var aim = AssessmentMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
+        if (aim == null) return Result.Fail("No assessment item with id " + assessmentItemId + ".");
+
+        JoinOrLaunchSession();
+        return aim.SeekSolution();
+    }
+
     public Result<List<InstructionalItem>> GetInstructionalItems()
     {
         JoinOrLaunchSession();
 
         Causes(new InstructionalItemsSelected());
         return Result.Ok(KnowledgeComponent.InstructionalItems.OrderBy(i => i.Order).ToList());
-    }
-
-    public Result SeekHelpForAssessmentItem(SoughtHelp helpEvent)
-    {
-        JoinOrLaunchSession();
-        Causes(helpEvent);
-        return Result.Ok();
     }
 
     public Result RecordInstructorMessage(string message)

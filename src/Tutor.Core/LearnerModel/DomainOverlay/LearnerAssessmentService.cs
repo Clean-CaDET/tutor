@@ -47,28 +47,22 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
 
         public Result SeekChallengeHints(int learnerId, int assessmentItemId)
         {
-            return SeekHelp(new SoughtHints
-            {
-                LearnerId = learnerId,
-                AssessmentItemId = assessmentItemId
-            });
+            var kcm = _kcMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
+            if (kcm == null) return Result.Fail("Cannot seek hints for assessment item with ID: " + assessmentItemId);
+
+            var result = kcm.SeekHintsForAssessmentItem(assessmentItemId);
+
+            _kcMasteryRepository.UpdateKcMastery(kcm);
+
+            return result;
         }
 
         public Result SeekChallengeSolution(int learnerId, int assessmentItemId)
         {
-            return SeekHelp(new SoughtSolution
-            {
-                LearnerId = learnerId,
-                AssessmentItemId = assessmentItemId
-            });
-        }
+            var kcm = _kcMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
+            if (kcm == null) return Result.Fail("Cannot seek solution for assessment item with ID: " + assessmentItemId);
 
-        private Result SeekHelp(SoughtHelp helpEvent)
-        {
-            var kcm = _kcMasteryRepository.GetKcMasteryForAssessmentItem(helpEvent.AssessmentItemId, helpEvent.LearnerId);
-            if (kcm == null) return Result.Fail("Cannot seek help for assessment item with ID: " + helpEvent.AssessmentItemId);
-
-            var result = kcm.SeekHelpForAssessmentItem(helpEvent);
+            var result = kcm.SeekSolutionForAssessmentItem(assessmentItemId);
 
             _kcMasteryRepository.UpdateKcMastery(kcm);
 
