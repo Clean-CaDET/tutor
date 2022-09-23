@@ -19,7 +19,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     public int LearnerId { get; private set; }
     public KnowledgeComponent KnowledgeComponent { get; private set; }
-    public List<AssessmentItemMastery> AssessmentMasteries { get; private set; }
+    public List<AssessmentItemMastery> AssessmentItemMasteries { get; private set; }
     public double Mastery { get; private set; }
     public bool IsStarted { get; private set; }
     public bool IsPassed { get; private set; }
@@ -33,9 +33,9 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
     {
         get
         {
-            var countPassed = AssessmentMasteries.Count(ae => ae.IsPassed);
-            var countCompleted = AssessmentMasteries.Count(ae => ae.IsCompleted);
-            return new KcMasteryStatistics(Mastery, AssessmentMasteries.Count, countPassed, countCompleted, IsSatisfied);
+            var countPassed = AssessmentItemMasteries.Count(ae => ae.IsPassed);
+            var countCompleted = AssessmentItemMasteries.Count(ae => ae.IsCompleted);
+            return new KcMasteryStatistics(Mastery, AssessmentItemMasteries.Count, countPassed, countCompleted, IsSatisfied);
         }
     }
 
@@ -43,8 +43,8 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
     {
         if (SessionTracker != null)
             SessionTracker.Initialize(this);
-        if (AssessmentMasteries != null)
-            foreach (var aim in AssessmentMasteries)
+        if (AssessmentItemMasteries != null)
+            foreach (var aim in AssessmentItemMasteries)
                 aim.Initialize(this);
     }
 
@@ -70,12 +70,20 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         if (!SessionTracker.HasUnfinishedSession) LaunchSession();
     }
 
+    public Result<List<InstructionalItem>> SelectInstructionalItems()
+    {
+        JoinOrLaunchSession();
+
+        Causes(new InstructionalItemsSelected());
+        return Result.Ok(KnowledgeComponent.InstructionalItems.OrderBy(i => i.Order).ToList());
+    }
+
     public Result<int> SelectAssessmentItem(IAssessmentItemSelector assessmentItemSelector)
     {
-        var result = assessmentItemSelector.SelectSuitableAssessmentItemId(AssessmentMasteries, IsPassed);
+        var result = assessmentItemSelector.SelectSuitableAssessmentItemId(AssessmentItemMasteries, IsPassed);
         if (result.IsFailed) return result;
 
-        var aim = AssessmentMasteries.Find(aim => aim.AssessmentItemId == result.Value);
+        var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == result.Value);
         if (aim == null) return NoAssessmentItemWithId(result.Value);
 
         JoinOrLaunchSession();
@@ -85,7 +93,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     public Result SubmitAssessmentItemAnswer(int assessmentItemId, Submission submission, Evaluation evaluation)
     {
-        var aim = AssessmentMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
+        var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
         if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
 
         JoinOrLaunchSession();
@@ -106,7 +114,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     private void TryComplete()
     {
-        if (IsCompleted || AssessmentMasteries.Any(am => !am.IsCompleted)) return;
+        if (IsCompleted || AssessmentItemMasteries.Any(am => !am.IsCompleted)) return;
 
         Causes(new KnowledgeComponentCompleted());
         TrySatisfy();
@@ -121,7 +129,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     public Result SeekHintsForAssessmentItem(int assessmentItemId)
     {
-        var aim = AssessmentMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
+        var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
         if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
 
         JoinOrLaunchSession();
@@ -130,7 +138,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     public Result SeekSolutionForAssessmentItem(int assessmentItemId)
     {
-        var aim = AssessmentMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
+        var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
         if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
 
         JoinOrLaunchSession();
@@ -139,27 +147,16 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     private Result NoAssessmentItemWithId(int assessmentItemId)
     {
-        return 
-            Result.Fail("No assessment item with id " + assessmentItemId + ". Were masteries created and loaded correctly?");
-    }
-
-    public Result<List<InstructionalItem>> GetInstructionalItems()
-    {
-        JoinOrLaunchSession();
-
-        Causes(new InstructionalItemsSelected());
-        return Result.Ok(KnowledgeComponent.InstructionalItems.OrderBy(i => i.Order).ToList());
+        return Result.Fail("No mastery for assessment item with id " + assessmentItemId + ". Were masteries created and loaded correctly?");
     }
 
     public Result RecordInstructorMessage(string message)
     {
         JoinOrLaunchSession();
-
-        var instructorMessageEvent = new EncouragingMessageSent
+        Causes(new EncouragingMessageSent
         {
             Message = message
-        };
-        Causes(instructorMessageEvent);
+        });
         return Result.Ok();
     }
 
@@ -172,7 +169,6 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         kcEvent.LearnerId = LearnerId;
 
         SessionTracker.Apply(kcEvent);
-
         When((dynamic)kcEvent);
     }
 
@@ -199,9 +195,9 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
     private void When(AssessmentItemAnswered @event)
     {
         var itemId = @event.AssessmentItemId;
-        var assessmentMastery = AssessmentMasteries.Find(am => am.AssessmentItemId == itemId);
+        var assessmentMastery = AssessmentItemMasteries.Find(am => am.AssessmentItemId == itemId);
         if (assessmentMastery == null)
-            throw new EventSourcingException("No assessment mastery for item: " + itemId + ". Were the masteries created and loaded correctly?");
+            throw new EventSourcingException("No mastery for assessment item with id: " + itemId + ". Were masteries created and loaded correctly?");
 
         assessmentMastery.Apply(@event);
         UpdateMastery();
@@ -209,7 +205,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     private void UpdateMastery()
     {
-        Mastery = Math.Round(AssessmentMasteries.Sum(am => am.Mastery) / AssessmentMasteries.Count, 2);
+        Mastery = Math.Round(AssessmentItemMasteries.Sum(am => am.Mastery) / AssessmentItemMasteries.Count, 2);
         if (Mastery > 0.97) Mastery = 1; // Resolves rounding errors.
     }
 

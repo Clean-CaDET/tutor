@@ -41,7 +41,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
         public Result<double> GetMaxCorrectness(int learnerId, int assessmentItemId)
         {
             var kcm = _kcMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
-            var itemMastery = kcm.AssessmentMasteries.Find(am => am.AssessmentItemId == assessmentItemId);
+            var itemMastery = kcm.AssessmentItemMasteries.Find(am => am.AssessmentItemId == assessmentItemId);
             return Result.Ok(itemMastery?.Mastery ?? 0.0);
         }
 

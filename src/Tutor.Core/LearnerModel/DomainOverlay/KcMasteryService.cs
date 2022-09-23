@@ -49,7 +49,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
             if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
 
-            var result = kcMastery.GetInstructionalItems();
+            var result = kcMastery.SelectInstructionalItems();
             _kcMasteryRepository.UpdateKcMastery(kcMastery);
 
             return result;

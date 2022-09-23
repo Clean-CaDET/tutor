@@ -67,7 +67,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
         {
             var kcm = _dbContext.KcMasteries
                 .Include(kcm => kcm.SessionTracker)
-                .Include(kcm => kcm.AssessmentMasteries)
+                .Include(kcm => kcm.AssessmentItemMasteries)
                 .Include(kcm => kcm.KnowledgeComponent)
                 .ThenInclude(kc => kc.InstructionalItems)
                 .FirstOrDefault(kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponent.Id == knowledgeComponentId);
