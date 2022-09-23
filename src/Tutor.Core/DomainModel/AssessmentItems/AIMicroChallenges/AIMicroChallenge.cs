@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,15 +15,17 @@ namespace Tutor.Core.DomainModel.AssessmentItems.AIMicroChallenges
         public string TestDatasetLocation { get; private set; }
         public string StarterSourceCode { get; private set; }
         public bool HasTransformer { get; private set; }
+        public List<AIMicroChallengeHint> Hints { get; private set; }
 
         public override Evaluation Evaluate(Submission submission)
         {
-            if (submission is AIMicroChallengeSubmission aIMicroChallengeSubmission) return EvaluateChallenge(aIMicroChallengeSubmission.SourceCode);
+            if (submission is AIMicroChallengeSubmission aIMicroChallengeSubmission) return EvaluateChallenge(aIMicroChallengeSubmission.SourceCode, null);
             throw new ArgumentException("Incorrect submission supplied to challenge with ID " + Id);
         }
 
-        public AIMicroChallengeEvaluation EvaluateChallenge(string sourceCode)
+        public AIMicroChallengeEvaluation EvaluateChallenge(string sourceCode, IPythonFunctionalityTester tester)
         {
+            Task<HttpResponseMessage> evaluationResponse = tester.IsPythonCodeFunctionallyCorrect(sourceCode, TrainDatasetLocation, TestDatasetLocation, HasTransformer, Hints);
             return null;
         }
     }

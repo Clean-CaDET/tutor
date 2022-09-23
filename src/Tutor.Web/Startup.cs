@@ -55,6 +55,8 @@ namespace Tutor.Web
 
             services.AddAutoMapper(typeof(Startup));
 
+            services.AddHttpClient();
+
             services.AddControllers().AddJsonOptions(options =>
             {
                 var serializerOptions = options.JsonSerializerOptions;
