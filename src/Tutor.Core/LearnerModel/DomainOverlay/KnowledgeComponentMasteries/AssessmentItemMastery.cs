@@ -17,6 +17,14 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         public bool IsCompleted { get => SubmissionCount > 0; }
         public bool IsPassed { get => Mastery > PassThreshold; }
 
+        public void Select()
+        {
+            Causes(new AssessmentItemSelected()
+            {
+                AssessmentItemId = AssessmentItemId,
+            });
+        }
+
         public void SubmitAnswer(Submission submission, Evaluation evaluation)
         {
             Causes(new AssessmentItemAnswered

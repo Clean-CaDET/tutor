@@ -48,11 +48,6 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
                 aim.Initialize(this);
     }
 
-    private void JoinOrLaunchSession()
-    {
-        if (!SessionTracker.HasUnfinishedSession) LaunchSession();
-    }
-
     public Result LaunchSession()
     {
         SessionTracker.Launch();
@@ -70,10 +65,28 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         return SessionTracker.Abandon();
     }
 
+    private void JoinOrLaunchSession()
+    {
+        if (!SessionTracker.HasUnfinishedSession) LaunchSession();
+    }
+
+    public Result<int> SelectAssessmentItem(IAssessmentItemSelector assessmentItemSelector)
+    {
+        var result = assessmentItemSelector.SelectSuitableAssessmentItemId(AssessmentMasteries, IsPassed);
+        if (result.IsFailed) return result;
+
+        var aim = AssessmentMasteries.Find(aim => aim.AssessmentItemId == result.Value);
+        if (aim == null) return NoAssessmentItemWithId(result.Value);
+
+        JoinOrLaunchSession();
+        aim.Select();
+        return Result.Ok();
+    }
+
     public Result SubmitAssessmentItemAnswer(int assessmentItemId, Submission submission, Evaluation evaluation)
     {
         var aim = AssessmentMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
-        if (aim == null) return Result.Fail("No assessment item with id " + assessmentItemId + ".");
+        if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
 
         JoinOrLaunchSession();
         aim.SubmitAnswer(submission, evaluation);
@@ -106,25 +119,10 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         Causes(new KnowledgeComponentSatisfied());
     }
 
-    public Result<int> SelectSuitableAssessmentItemId(IAssessmentItemSelector assessmentItemSelector)
-    {
-        JoinOrLaunchSession();
-
-        var result = assessmentItemSelector.SelectSuitableAssessmentItemId(AssessmentMasteries, IsPassed);
-        if (result.IsFailed) return result;
-
-        Causes(new AssessmentItemSelected
-        {
-            AssessmentItemId = result.Value
-        });
-
-        return result;
-    }
-
     public Result SeekHintsForAssessmentItem(int assessmentItemId)
     {
         var aim = AssessmentMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
-        if (aim == null) return Result.Fail("No assessment item with id " + assessmentItemId + ".");
+        if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
 
         JoinOrLaunchSession();
         return aim.SeekHints();
@@ -133,10 +131,16 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
     public Result SeekSolutionForAssessmentItem(int assessmentItemId)
     {
         var aim = AssessmentMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
-        if (aim == null) return Result.Fail("No assessment item with id " + assessmentItemId + ".");
+        if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
 
         JoinOrLaunchSession();
         return aim.SeekSolution();
+    }
+
+    private Result NoAssessmentItemWithId(int assessmentItemId)
+    {
+        return 
+            Result.Fail("No assessment item with id " + assessmentItemId + ". Were masteries created and loaded correctly?");
     }
 
     public Result<List<InstructionalItem>> GetInstructionalItems()
