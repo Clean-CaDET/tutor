@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.Core.InstructorModel;
 using Tutor.Infrastructure.Security.Authentication.Users;
+using Tutor.Web.Controllers.Domain.DTOs;
 using Tutor.Web.Controllers.Domain.DTOs.Enrollment;
 
 namespace Tutor.Web.Controllers.Instructors;
 
+[Authorize(Policy = "instructorPolicy")]
 [Route("api/instructors/")]
 [ApiController]
 public class InstructorController : ControllerBase

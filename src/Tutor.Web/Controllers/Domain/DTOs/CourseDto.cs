@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Tutor.Web.Controllers.Domain.DTOs.Enrollment;
+namespace Tutor.Web.Controllers.Domain.DTOs;
 
 public class CourseDto
 {
