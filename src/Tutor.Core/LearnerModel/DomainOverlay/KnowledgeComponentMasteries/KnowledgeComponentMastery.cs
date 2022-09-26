@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
@@ -86,8 +85,8 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         var result = aim.RecordInteraction(interaction);
         if (result.IsSuccess)
         {
-            TryPass();
-            TryComplete();
+            if (interaction is PassCausing) TryPass();
+            if (interaction is CompletionCausing) TryComplete();
         }
         return result;
     }
