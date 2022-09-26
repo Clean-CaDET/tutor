@@ -125,7 +125,7 @@ namespace Tutor.Infrastructure.Database
             kcmBuilder.Property(kcm => kcm.IsSatisfied).HasDefaultValue(false);
             kcmBuilder.Property(kcm => kcm.IsCompleted).HasDefaultValue(false);
             kcmBuilder.Property(kcm => kcm.IsPassed).HasDefaultValue(false);
-            kcmBuilder.HasMany(kcm => kcm.AssessmentMasteries).WithOne().IsRequired();
+            kcmBuilder.HasMany(kcm => kcm.AssessmentItemMasteries).WithOne().IsRequired();
             kcmBuilder.OwnsOne(kcm => kcm.SessionTracker, trackerBuilder =>
                 {
                     trackerBuilder.Property(tracker => tracker.CountOfSessions).IsRequired().HasDefaultValue(0);

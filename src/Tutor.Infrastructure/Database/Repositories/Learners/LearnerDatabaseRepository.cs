@@ -57,7 +57,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
                 .Where(g => g.LearnerGroupId == groupId)
                 .Include(g => g.Learner)
                 .ThenInclude(l => l.KnowledgeComponentMasteries)
-                .ThenInclude(kcm => kcm.AssessmentMasteries)
+                .ThenInclude(kcm => kcm.AssessmentItemMasteries)
                 .Include(g => g.Learner)
                 .ThenInclude(l => l.KnowledgeComponentMasteries)
                 .ThenInclude(kcm => kcm.KnowledgeComponent)
@@ -72,7 +72,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
         {
             return await _dbContext.Learners
                 .Include(l => l.KnowledgeComponentMasteries)
-                .ThenInclude(kcm => kcm.AssessmentMasteries)
+                .ThenInclude(kcm => kcm.AssessmentItemMasteries)
                 .Include(l => l.KnowledgeComponentMasteries)
                 .ThenInclude(kcm => kcm.KnowledgeComponent)
                 .Include(l => l.KnowledgeComponentMasteries)
