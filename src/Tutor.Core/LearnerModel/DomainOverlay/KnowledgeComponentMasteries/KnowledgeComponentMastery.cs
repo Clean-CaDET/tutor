@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events;
@@ -78,30 +77,20 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         return Result.Ok(KnowledgeComponent.InstructionalItems.OrderBy(i => i.Order).ToList());
     }
 
-    public Result<int> SelectAssessmentItem(IAssessmentItemSelector assessmentItemSelector)
+    public Result RecordAssessmentItemInteraction(AssessmentItemEvent interaction)
     {
-        var result = assessmentItemSelector.SelectSuitableAssessmentItemId(AssessmentItemMasteries, IsPassed);
-        if (result.IsFailed) return result;
-
-        var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == result.Value);
-        if (aim == null) return NoAssessmentItemWithId(result.Value);
+        var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == interaction.AssessmentItemId);
+        if (aim == null) return Result.Fail("No mastery for assessment item with id " + interaction.AssessmentItemId +
+                                            ". Were masteries created and loaded correctly?");
 
         JoinOrLaunchSession();
-        aim.Select();
+        var result = aim.RecordInteraction(interaction);
+        if (result.IsSuccess)
+        {
+            TryPass();
+            TryComplete();
+        }
         return result;
-    }
-
-    public Result SubmitAssessmentItemAnswer(int assessmentItemId, Submission submission, Evaluation evaluation)
-    {
-        var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
-        if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
-
-        JoinOrLaunchSession();
-        aim.SubmitAnswer(submission, evaluation);
-        TryPass();
-        TryComplete();
-
-        return Result.Ok();
     }
 
     private void TryPass()
@@ -125,29 +114,6 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         if (IsSatisfied || !MoveOnCriteria.IsSatisfied(IsCompleted, IsPassed)) return;
 
         Causes(new KnowledgeComponentSatisfied());
-    }
-
-    public Result SeekHintsForAssessmentItem(int assessmentItemId)
-    {
-        var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
-        if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
-
-        JoinOrLaunchSession();
-        return aim.SeekHints();
-    }
-
-    public Result SeekSolutionForAssessmentItem(int assessmentItemId)
-    {
-        var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
-        if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
-
-        JoinOrLaunchSession();
-        return aim.SeekSolution();
-    }
-
-    private Result NoAssessmentItemWithId(int assessmentItemId)
-    {
-        return Result.Fail("No mastery for assessment item with id " + assessmentItemId + ". Were masteries created and loaded correctly?");
     }
 
     public Result RecordInstructorMessage(string message)
@@ -192,25 +158,26 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         IsSatisfied = true;
     }
 
-    private void When(AssessmentItemAnswered @event)
+    private void When(AssessmentItemEvent @event)
     {
-        var itemId = @event.AssessmentItemId;
-        var assessmentMastery = AssessmentItemMasteries.Find(am => am.AssessmentItemId == itemId);
-        if (assessmentMastery == null)
-            throw new EventSourcingException("No mastery for assessment item with id: " + itemId + ". Were masteries created and loaded correctly?");
+        var aim = AssessmentItemMasteries.Find(am => am.AssessmentItemId == @event.AssessmentItemId);
+        if (aim == null)
+            throw new EventSourcingException("No mastery for assessment item with id: " + @event.AssessmentItemId +
+                                            ". Were masteries created and loaded correctly?");
 
-        assessmentMastery.Apply(@event);
-        UpdateMastery();
+        var aimBeforeEvent = aim.Mastery;
+        aim.Apply(@event);
+        if (aimBeforeEvent != aim.Mastery) UpdateMastery();
     }
 
     private void UpdateMastery()
     {
-        Mastery = Math.Round(AssessmentItemMasteries.Sum(am => am.Mastery) / AssessmentItemMasteries.Count, 2);
+        Mastery = Math.Round(AssessmentItemMasteries.Sum(aim => aim.Mastery) / AssessmentItemMasteries.Count, 2);
         if (Mastery > 0.97) Mastery = 1; // Resolves rounding errors.
     }
 
     private static void When(KnowledgeComponentEvent @event)
     {
-        // No action for AssessmentItemSelected, InstructionalItemsSelected, SoughtHelp, InstructorMessageEvent, SessionTerminated, SessionAbandoned.
+        // No action for InstructionalItemsSelected, InstructorMessageEvent, SessionLifecycleEvents.
     }
 }

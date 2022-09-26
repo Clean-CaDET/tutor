@@ -1,7 +1,6 @@
 ﻿using FluentResults;
 using System;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
 
 namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
@@ -17,33 +16,9 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         public bool IsCompleted { get => SubmissionCount > 0; }
         public bool IsPassed { get => Mastery > PassThreshold; }
 
-        public void Select()
+        public Result RecordInteraction(AssessmentItemEvent interaction)
         {
-            Causes(new AssessmentItemSelected()
-            {
-                AssessmentItemId = AssessmentItemId,
-            });
-        }
-
-        public void SubmitAnswer(Submission submission, Evaluation evaluation)
-        {
-            Causes(new AssessmentItemAnswered
-            {
-                AssessmentItemId = AssessmentItemId,
-                Submission = submission,
-                Evaluation = evaluation
-            });
-        }
-
-        public Result SeekHints()
-        {
-            Causes(new SoughtHints());
-            return Result.Ok();
-        }
-
-        public Result SeekSolution()
-        {
-            Causes(new SoughtSolution());
+            Causes(interaction);
             return Result.Ok();
         }
 
@@ -57,6 +32,11 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             if (Mastery <= @event.Evaluation.CorrectnessLevel) Mastery = @event.Evaluation.CorrectnessLevel;
             SubmissionCount++;
             LastSubmissionTime = @event.TimeStamp;
+        }
+
+        private void When(AssessmentItemEvent @event)
+        {
+            // no action needed for AssessmentItemSelected and SoughtHelp
         }
     }
 }

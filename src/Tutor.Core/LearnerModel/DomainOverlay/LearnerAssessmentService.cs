@@ -18,7 +18,6 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
         {
             var assessmentItem = _kcMasteryRepository.GetDerivedAssessmentItem(assessmentItemId);
             if (assessmentItem == null) return Result.Fail("No assessment item with ID: " + assessmentItemId);
-
             var kcm = _kcMasteryRepository.GetFullKcMastery(assessmentItem.KnowledgeComponentId, learnerId);
             if (kcm == null) return Result.Fail("Learner not enrolled in KC: " + assessmentItem.KnowledgeComponentId);
 
@@ -32,7 +31,14 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
                 return Result.Fail(ex.Message);
             }
 
-            kcm.SubmitAssessmentItemAnswer(assessmentItemId, submission, evaluation);
+            var result = kcm.RecordAssessmentItemInteraction(new AssessmentItemAnswered()
+            {
+                AssessmentItemId = assessmentItemId,
+                Submission = submission,
+                Evaluation = evaluation
+            });
+            if (result.IsFailed) return result;
+
             _kcMasteryRepository.UpdateKcMastery(kcm);
 
             return Result.Ok(evaluation);
@@ -50,7 +56,10 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             var kcm = _kcMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
             if (kcm == null) return Result.Fail("Cannot seek hints for assessment item with ID: " + assessmentItemId);
 
-            var result = kcm.SeekHintsForAssessmentItem(assessmentItemId);
+            var result = kcm.RecordAssessmentItemInteraction(new SoughtHints()
+            {
+                AssessmentItemId = assessmentItemId
+            });
 
             _kcMasteryRepository.UpdateKcMastery(kcm);
 
@@ -62,7 +71,10 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             var kcm = _kcMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
             if (kcm == null) return Result.Fail("Cannot seek solution for assessment item with ID: " + assessmentItemId);
 
-            var result = kcm.SeekSolutionForAssessmentItem(assessmentItemId);
+            var result = kcm.RecordAssessmentItemInteraction(new SoughtSolution()
+            {
+                AssessmentItemId = assessmentItemId
+            });
 
             _kcMasteryRepository.UpdateKcMastery(kcm);
 
