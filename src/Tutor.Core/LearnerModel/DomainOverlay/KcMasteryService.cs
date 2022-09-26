@@ -1,5 +1,6 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
+using System.Linq;
 using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
@@ -50,10 +51,12 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
             if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
 
-            var result = kcMastery.SelectInstructionalItems();
+            var result = kcMastery.RecordInstructionalItemSelection();
+            if (result.IsFailed) return result.ToResult<List<InstructionalItem>>();
+
             _kcMasteryRepository.UpdateKcMastery(kcMastery);
 
-            return result;
+            return Result.Ok(kcMastery.KnowledgeComponent.InstructionalItems.OrderBy(i => i.Order).ToList());
         }
 
         public Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId)
