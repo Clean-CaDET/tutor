@@ -37,14 +37,12 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 
         public Result SeekHints()
         {
-            // TODO: validation logic
             Causes(new SoughtHints());
             return Result.Ok();
         }
 
         public Result SeekSolution()
         {
-            // TODO: validation logic
             Causes(new SoughtSolution());
             return Result.Ok();
         }
