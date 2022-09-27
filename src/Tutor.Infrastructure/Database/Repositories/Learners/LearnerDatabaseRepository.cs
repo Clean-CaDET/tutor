@@ -30,7 +30,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
         public List<Learner> GetByGroupId(int groupId)
         {
             return _dbContext.GroupMemberships
-                .Where(m => m.LearnerGroupId == groupId)
+                .Where(m => m.Role.Equals(Role.Learner) && m.LearnerGroupId == groupId)
                 .Include(m => m.Learner)
                 .Select(m => m.Learner).ToList();
         }
@@ -54,7 +54,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
         private Task<PagedResult<Learner>> GetLearnersByGroupAsync(int page, int pageSize, int groupId)
         {
             return _dbContext.GroupMemberships
-                .Where(g => g.LearnerGroupId == groupId)
+                .Where(g => g.LearnerGroupId == groupId && g.Role.Equals(Role.Learner))
                 .Include(g => g.Learner)
                 .ThenInclude(l => l.KnowledgeComponentMasteries)
                 .ThenInclude(kcm => kcm.AssessmentMasteries)

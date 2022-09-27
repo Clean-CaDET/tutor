@@ -1,12 +1,10 @@
-
+DELETE FROM public."GroupMemberships";
 DELETE FROM public."CourseOwnerships";
-DELETE FROM public."InstructorLearnerGroup";
 DELETE FROM public."Instructors";
 
 DELETE FROM public."AssessmentItemMasteries";
 DELETE FROM public."KcMasteries";
 DELETE FROM public."UnitEnrollments";
-DELETE FROM public."GroupMemberships";
 DELETE FROM public."LearnerGroups";
 DELETE FROM public."Learners";
 DELETE FROM public."Events";
@@ -12724,3 +12722,14 @@ INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "Learn
 INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery", "SubmissionCount", "LastSubmissionTime", "KnowledgeComponentMasteryId") VALUES
 	(-98401, -985, 0.00, 0, NULL, -8400);
 
+INSERT INTO public."GroupMemberships"(
+    "Id", "LearnerGroupId", "LearnerId", "InstructorId", "Role")
+VALUES (-1000, -9999, -10000, null, 0);
+
+INSERT INTO public."GroupMemberships"(
+    "Id", "LearnerGroupId", "LearnerId", "InstructorId", "Role")
+VALUES (-999, -9999, null, -30000, 1);
+
+INSERT INTO public."CourseOwnerships"(
+    "Id", "CourseId", "InstructorId")
+VALUES (-1000, -100, -30000);
