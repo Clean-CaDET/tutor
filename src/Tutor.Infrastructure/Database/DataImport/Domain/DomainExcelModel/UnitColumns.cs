@@ -1,4 +1,4 @@
-﻿namespace Tutor.Infrastructure.Database.DataImport.DomainExcelModel
+﻿namespace Tutor.Infrastructure.Database.DataImport.Domain.DomainExcelModel
 {
     public class UnitColumns
     {
@@ -6,5 +6,6 @@
         public string Code { get; internal set; }
         public string Name { get; internal set; }
         public string Description { get; internal set; }
+        public int CourseId { get; set; }
     }
 }

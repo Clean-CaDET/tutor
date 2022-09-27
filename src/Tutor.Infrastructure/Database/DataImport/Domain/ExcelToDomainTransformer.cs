@@ -1,48 +1,48 @@
 ﻿using OfficeOpenXml;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Tutor.Infrastructure.Database.DataImport.DomainExcelModel;
+using Tutor.Infrastructure.Database.DataImport.Domain.DomainExcelModel;
+using static System.Int32;
 
-namespace Tutor.Infrastructure.Database.DataImport
+namespace Tutor.Infrastructure.Database.DataImport.Domain
 {
-    public static class DomainExcelImporter
+    public static class ExcelToDomainTransformer
     {
-        public static DomainExcelContent Import(string sourceFolder)
+        public static DomainExcelContent Transform(List<ExcelWorksheet> sheets)
         {
-            var sheets = GetWorksheets(GetExcelDocuments(sourceFolder));
-            return Process(sheets);
-        }
-        
-        private static IEnumerable<ExcelPackage> GetExcelDocuments(string sourceFolder)
-        {
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            var files = Directory.GetFiles(sourceFolder, "*.xlsx", SearchOption.AllDirectories);
-            return files.Select(path => new ExcelPackage(new FileInfo(path)));
-        }
-
-        private static List<ExcelWorksheet> GetWorksheets(IEnumerable<ExcelPackage> documents)
-        {
-            var sheets = new List<ExcelWorksheet>();
-            foreach (var document in documents)
-            {
-                sheets.AddRange(document.Workbook.Worksheets);
-            }
-
-            return sheets;
-        }
-
-        private static DomainExcelContent Process(List<ExcelWorksheet> sheets)
-        {
-            var units = CreateUnits(sheets.Where(s => s.Name == "Units"));
+            var courses = CreateCourses(sheets.Where(s => s.Name == "Courses"));
+            var units = CreateUnits(sheets.Where(s => s.Name == "Units"), courses);
             var kcs = CreateKCs(sheets.Where(s => s.Name == "KCs"), units);
             var ies = CreateIEs(sheets.Where(s => s.Name == "IEs"), kcs);
             var aes = CreateAEs(sheets.Where(s => s.Name == "AEs"), kcs);
 
-            return new DomainExcelContent(units, kcs, ies, aes);
+            return new DomainExcelContent(courses, units, kcs, ies, aes);
         }
-        
-        private static List<UnitColumns> CreateUnits(IEnumerable<ExcelWorksheet> unitSheets)
+
+        private static List<CourseColumns> CreateCourses(IEnumerable<ExcelWorksheet> courseSheets)
+        {
+            var courses = new List<CourseColumns>();
+            var startingId = -100;
+
+            foreach (var sheet in courseSheets)
+            {
+                for (var row = 2; row <= sheet.Dimension.End.Row; row++)
+                {
+                    if (string.IsNullOrEmpty(sheet.Cells["A" + row].Text)) break;
+                    courses.Add(new CourseColumns
+                    {
+                        Id = startingId++,
+                        Code = sheet.Cells["A" + row].Text,
+                        Name = sheet.Cells["B" + row].Text,
+                        Description = sheet.Cells["C" + row].Text
+                    });
+                }
+            }
+
+            return courses;
+        }
+
+        private static List<UnitColumns> CreateUnits(IEnumerable<ExcelWorksheet> unitSheets, List<CourseColumns> courses)
         {
             var units = new List<UnitColumns>();
             var startingId = -100;
@@ -57,7 +57,8 @@ namespace Tutor.Infrastructure.Database.DataImport
                         Id = startingId++,
                         Code = sheet.Cells["A" + row].Text,
                         Name = sheet.Cells["B" + row].Text,
-                        Description = sheet.Cells["C" + row].Text
+                        Description = sheet.Cells["C" + row].Text,
+                        CourseId = courses.First(c => c.Code.Equals(sheet.Cells["D" + row].Text)).Id
                     });
                 }
             }
@@ -80,17 +81,18 @@ namespace Tutor.Infrastructure.Database.DataImport
                         Id = startingId++,
                         Code = sheet.Cells["A" + row].Text,
                         Name = sheet.Cells["B" + row].Text,
-                        Description = sheet.Cells["C" + row].Text
+                        Description = sheet.Cells["C" + row].Text,
+                        ExpectedDurationInMinutes = Parse(sheet.Cells["D" + row].Text)
                     };
-
-                    if (!string.IsNullOrEmpty(sheet.Cells["D" + row].Text))
-                    {
-                        kc.UnitId = units.First(u => u.Code.Equals(sheet.Cells["D" + row].Text)).Id;
-                    }
 
                     if (!string.IsNullOrEmpty(sheet.Cells["E" + row].Text))
                     {
-                        kc.ParentId = kcs.First(k => k.Code.Equals(sheet.Cells["E" + row].Text)).Id;
+                        kc.UnitId = units.First(u => u.Code.Equals(sheet.Cells["E" + row].Text)).Id;
+                    }
+
+                    if (!string.IsNullOrEmpty(sheet.Cells["F" + row].Text))
+                    {
+                        kc.ParentId = kcs.First(k => k.Code.Equals(sheet.Cells["F" + row].Text)).Id;
                     }
 
                     kcs.Add(kc);
@@ -119,7 +121,7 @@ namespace Tutor.Infrastructure.Database.DataImport
                         Text = sheet.Cells["D" + row].Text,
                         Url = sheet.Cells["E" + row].Text,
                         Caption = sheet.Cells["F" + row].Text,
-                        Order = string.IsNullOrEmpty(sheet.Cells["G" + row].Text) ? -1 : int.Parse(sheet.Cells["G" + row].Text)
+                        Order = string.IsNullOrEmpty(sheet.Cells["G" + row].Text) ? -1 : Parse(sheet.Cells["G" + row].Text)
                     });
                 }
             }
@@ -145,7 +147,7 @@ namespace Tutor.Infrastructure.Database.DataImport
                         Type = sheet.Cells["C" + row].Text,
                         Text = sheet.Cells["D" + row].Text,
                         Items = GetAeItems(sheet, row),
-                        Order = string.IsNullOrEmpty(sheet.Cells["K" + row].Text) ? -1 : int.Parse(sheet.Cells["K" + row].Text)
+                        Order = string.IsNullOrEmpty(sheet.Cells["K" + row].Text) ? -1 : Parse(sheet.Cells["K" + row].Text)
                     });
                 }
             }

@@ -1,19 +1,35 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Tutor.Infrastructure.Database.DataImport.DomainExcelModel;
+using Tutor.Infrastructure.Database.DataImport.Domain.DomainExcelModel;
 
-namespace Tutor.Infrastructure.Database.DataImport;
+namespace Tutor.Infrastructure.Database.DataImport.Domain;
 
-public static class DomainSqlExporter
+public static class DomainToSqlTransformer
 {
-    public static string BuildSql(DomainExcelContent content)
+    public static string Transform(DomainExcelContent content)
     {
         var sqlBuilder = new StringBuilder();
+        sqlBuilder.Append(BuildCoursesSql(content.Courses));
         sqlBuilder.Append(BuildUnitsSql(content.Units));
         sqlBuilder.Append(BuildKCsSql(content.KnowledgeComponents));
         sqlBuilder.Append(BuildIEsSql(content.InstructionalItems));
         sqlBuilder.Append(BuildAEsSql(content.AssessmentItems));
+
+        return sqlBuilder.ToString();
+    }
+
+    private static string BuildCoursesSql(List<CourseColumns> courses)
+    {
+        var sqlBuilder = new StringBuilder();
+
+        foreach (var course in courses)
+        {
+            sqlBuilder.Append("INSERT INTO public.\"Courses\"(\"Id\", \"Code\", \"Name\", \"Description\") VALUES");
+            sqlBuilder.AppendLine();
+            sqlBuilder.Append("\t(" + course.Id + ", '" + course.Code + "', '" + course.Name + "', '" + course.Description + "');");
+            sqlBuilder.AppendLine().AppendLine();
+        }
 
         return sqlBuilder.ToString();
     }
@@ -24,10 +40,10 @@ public static class DomainSqlExporter
 
         foreach (var unit in units)
         {
-            sqlBuilder.Append("INSERT INTO public.\"KnowledgeUnits\"(\"Id\", \"Code\", \"Name\", \"Description\") VALUES");
+            sqlBuilder.Append("INSERT INTO public.\"KnowledgeUnits\"(\"Id\", \"Code\", \"Name\", \"Description\", \"CourseId\") VALUES");
             sqlBuilder.AppendLine();
             sqlBuilder.Append("\t(" + unit.Id + ", '" + unit.Code + "', '"
-                              + unit.Name + "', '" + unit.Description + "');");
+                              + unit.Name + "', '" + unit.Description + "', " + unit.CourseId + ");");
             sqlBuilder.AppendLine().AppendLine();
         }
 
@@ -40,10 +56,11 @@ public static class DomainSqlExporter
 
         foreach (var kc in kcs)
         {
-            sqlBuilder.Append("INSERT INTO public.\"KnowledgeComponents\"(\"Id\", \"Code\", \"Name\", \"Description\", \"KnowledgeUnitId\", \"ParentId\") VALUES");
+            sqlBuilder.Append("INSERT INTO public.\"KnowledgeComponents\"(\"Id\", \"Code\", \"Name\", \"Description\", \"ExpectedDurationInMinutes\", \"KnowledgeUnitId\", \"ParentId\") VALUES");
             sqlBuilder.AppendLine();
             sqlBuilder.Append("\t(" + kc.Id + ", '" + kc.Code + "', '"
                               + kc.Name + "', '" + kc.Description + "', "
+                              + kc.ExpectedDurationInMinutes + ", "
                               + (kc.UnitId == 0 ? "NULL" : kc.UnitId) + ", "
                               + (kc.ParentId == 0 ? "NULL" : kc.ParentId) + ");");
             sqlBuilder.AppendLine().AppendLine();
@@ -99,9 +116,9 @@ public static class DomainSqlExporter
     private static string BuildVideoSql(IEColumns ie)
     {
         var sqlBuilder = new StringBuilder();
-        sqlBuilder.Append("INSERT INTO public.\"Videos\"(\"Id\", \"Url\") VALUES");
+        sqlBuilder.Append("INSERT INTO public.\"Videos\"(\"Id\", \"Url\", \"Caption\") VALUES");
         sqlBuilder.AppendLine();
-        sqlBuilder.Append("\t(" + ie.Id + ", '" + ie.Url + "');");
+        sqlBuilder.Append("\t(" + ie.Id + ", '" + ie.Url + "', '" + ie.Caption + "');");
         sqlBuilder.AppendLine().AppendLine();
         return sqlBuilder.ToString();
     }
