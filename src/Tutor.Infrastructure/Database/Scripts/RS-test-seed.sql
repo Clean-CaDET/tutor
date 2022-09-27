@@ -370,601 +370,601 @@ INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VAL
 
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-10000, 'RA-1-2021', 'WQaf8OSW7n/QwtlZa5qXgF2T2ykumui58DAzsjuoMdk=', 'cfDY+/8mWRQAtH2r391D+g==', 2);
+	(-10000, 'RA-1-2021', 'NDxsNd4kbPnJE3+GzVRGgByfelK8zdJMB2PgX8ipgwg=', 'CmpquyxFlPIQl7drhEmlDw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-10000, -10000, 'RA-1-2021', 'Pera', 'Perić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9999, 'RA-2-2021', 'w0gvK5MkwrRvJ1mC/rObThUY0f3VxqkGr+odTliOklc=', 'co9GIszG1BX+iWMFuch2MA==', 2);
+	(-9999, 'RA-2-2021', 'Gwi8pxRD8q5FP7R/pzrGS7M9ozFaEKCBln1jaOQC56Q=', '0Ch0A3Q9BMSnrk3sHyvl+w==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9999, -9999, 'RA-2-2021', 'Marko', 'Mikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9998, 'RA-3-2021', 'OuDeVjhcUh5ANAB9iGXsEsaDQFyNnM/fTgYUWqTJaC8=', 'LdfbhiW/o+2c4VqMJ2sH5g==', 2);
+	(-9998, 'RA-3-2021', 'VaPtEfz9JXyRcjWh0UT+i4B98DIhqm9Y+D2FKxg7Ecg=', 'tArTCkyQ99EfG4Wt6g4ZYw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9998, -9998, 'RA-3-2021', 'Mika', 'Fikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9997, 'RA-4-2021', '3CyJMyV4yDiuLxHxsLGo3/suDTs+KrWTrhlh0wXHijM=', 'haHvsGe8nYX62ebFdUVQpw==', 2);
+	(-9997, 'RA-4-2021', 'JO76/CO3oIiufi5zxQXtraKschuX8oDlM7k+q3pQy9I=', '+MlRIblxe+/7o782sQx7Ng==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9997, -9997, 'RA-4-2021', 'Stefan', 'Tikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9996, 'RA-5-2021', 'hKlColm+P2kJ7yiE4NEykAAa+smHcIEfnYpuas8V1ag=', 'a2i6YC/da5o38vjgewzpMg==', 2);
+	(-9996, 'RA-5-2021', 'qB5KIkrluFSQjQ8FAgwodi6c6mvO5kN+POCRI/7rYIM=', 'VUKPnYAQKvrYZ4hel5FHGw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9996, -9996, 'RA-5-2021', 'Franc', 'Likić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9995, 'RA-6-2021', 'zeSXuv/Awovbc7P2ky9mYDYRWfrdPqVmpGp+2nHALKM=', 'pIvE4kX/ZIjfHdTohnv93A==', 2);
+	(-9995, 'RA-6-2021', 'FztrYClHwpJuTnYY4/Gp6EKdkI653VscmkXCiMfasVs=', 'd5jU24mzjBfv5Z2vIoWIUQ==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9995, -9995, 'RA-6-2021', 'Ranc', 'Kikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9994, 'RA-7-2021', 'IeHaZbWKblkm1WBrur6iojJj/QHf6Y+BxJbbAh9+MVA=', 'L6U9MN4yu8LnFkDd+j1D/w==', 2);
+	(-9994, 'RA-7-2021', 'mdwLCirc2ybCiYdhXrET4EXrI5xABmShbko43IV/OrQ=', 'oW/8th9l8zsCkMiGJkLLLw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9994, -9994, 'RA-7-2021', 'Kranc', 'Sinić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9993, 'RA-8-2021', 'v9sIm08E5vIslgkLfVLEsKOH5OtS1obr5+6nAZzsPu4=', 'hmqjysfXohazgf0SnsQ8zw==', 2);
+	(-9993, 'RA-8-2021', 'YObqfi3BCMY4V/3TZvu8Wocwy2E3BQDuVMQLnQ1Q2ek=', 'rn7fuH4X3vfO9zQNWHYBsw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9993, -9993, 'RA-8-2021', 'Jelena', 'Simić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9992, 'RA-1-2022', 'x3UAJyGaeh68E6Y9ym22GZCtdtcHS43t8o0z7ISagvE=', 'c92GwdmjOvhLcPP0vHVk5w==', 2);
+	(-9992, 'RA-1-2022', 'RJY1KJ0Yb5LO/lObiv008HMbLEXLeVDtHiUQlEk3zik=', 'jEGur3kLfoXlS3BDdTR2iw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9992, -9992, 'RA-1-2022', 'Milenko', 'Milić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9991, 'RA-2-2022', 'UYKONBiUcHE7M9u1CQzk9RG3CLRa5p1vhe1EXC4riy4=', '5pV00MO9CmRi+9A/K9E1jQ==', 2);
+	(-9991, 'RA-2-2022', 'd5jaAZXMShr2urQCtCEee2/wbv0cd1ycBUKWRvwZd70=', 'wttGsnFhyDH161eE3Gz6oQ==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9991, -9991, 'RA-2-2022', 'Nikola', 'Mamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9990, 'RA-3-2022', '8J7diAim6QTjoZ90B+zNrP9kS8k8m0ZEuwlS0P+d9FQ=', 'gxZPrX/3k03OiyIpx85Ovw==', 2);
+	(-9990, 'RA-3-2022', 'EjxPPPJlLA4X0nvtI9qc99rkcKBVAKvpD00r2WDypoI=', 'FTekrilZ9u+G9t06KClHhA==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9990, -9990, 'RA-3-2022', 'Pera', 'Pamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9989, 'RA-4-2022', 'E+t1C7+Ygaln1vPSSIX+vf5hC6/eJJw5eKqvqyq+KNg=', '5AIs7vRRtdwsLSHvzwa0pQ==', 2);
+	(-9989, 'RA-4-2022', '+3St4HDbimTaXEC7RAeVcAIz1FsG06BXdWsPG3OqDI0=', 'c+4pbLqoNUcvVUkPn0A/dw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9989, -9989, 'RA-4-2022', 'Marko', 'Tamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9988, 'RA-5-2022', '+qBzNdknUqfqAYYqjfk6oZwBMGkWyoaoloBPf8715YQ=', 'yXlHej0DFJ9qKjAPT0sNxg==', 2);
+	(-9988, 'RA-5-2022', 'Z/K0ycDW0H03v0PfoDoLuG7tCYD2oEP+algy9N7AIWo=', 'i1fbzKr1gC//1ofo57nT5Q==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9988, -9988, 'RA-5-2022', 'Mika', 'Kamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9987, 'RA-6-2022', '7y6VzSOqyCo4jICD68wQUxPzz0XpmJSutdXzeFHdUy8=', 'MFUHIHmTo9ZI1TsUuTqf+g==', 2);
+	(-9987, 'RA-6-2022', '4G4DANuLjX6hiOc0Ixt4fxW94V26JP2ELonukjmD7s8=', '+bbbNWhUmQV+lk6C3ITQOw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9987, -9987, 'RA-6-2022', 'Stefan', 'Perić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9986, 'RA-7-2022', 'vG9bXdc2r2BEOMvZo6LepE5cVxt2wvASc9A0F5yrbpM=', 'lgBX/OANb9LByy4rarAciQ==', 2);
+	(-9986, 'RA-7-2022', 'R6xfhdeVQZ5XtNSesyMWT7WX+fozsH7NneAlSNZYB2A=', 'mhKwgkx0d7il7bBK8VbK1w==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9986, -9986, 'RA-7-2022', 'Franc', 'Mikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9985, 'RA-8-2022', 'f20o63QTrtaQjwSdkJE5Bz2vmi19OPKl28Hk/UvvJLM=', 'a1r1T6ktIXeH3bhteQ9z8g==', 2);
+	(-9985, 'RA-8-2022', 'PIaSg2bEMnGw5QQ405t/D3oQX5jkSxIYRE5qMxrxYk8=', 'vKY6vQo274O5tQxg0+FiqQ==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9985, -9985, 'RA-8-2022', 'Ranc', 'Fikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9984, 'RA-1-2023', 's31/lMGwmcuECr1DoMrS34AxIWGJqydV7254C9RG1HA=', 'WPRut/nPHYkUm3sTHRrELw==', 2);
+	(-9984, 'RA-1-2023', 'riO/eda+lds2QiDWZQ8keL33lzbAoR9cw3HJjUWfjWI=', 'LdF2MkStYsOdsPGPb7Vqvg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9984, -9984, 'RA-1-2023', 'Kranc', 'Tikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9983, 'RA-2-2023', 'xIxclCu5AjHTXcgD6vUZfTq0AzAnBedaYmT26CYYXuE=', 'gRP1JRq9cH/pj+9/B9sYUg==', 2);
+	(-9983, 'RA-2-2023', 'st5JrIoGZWwaN+Jje+A7cgJiuaY2U2O7xCNrlQDywRk=', 'MJvpV/LbAd1awbdLK4S+Sg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9983, -9983, 'RA-2-2023', 'Jelena', 'Likić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9982, 'RA-3-2023', 'B9tA8LVY93+PE/bPHOczVKZkpt5dBYaJNQnOQM0Tz6M=', '+e9SWJTXwmpNPiS6FvE+Vw==', 2);
+	(-9982, 'RA-3-2023', 'OmIw3TxU1Zsqlz2PQhcf+Dn6fKeFRwI62LWgJxKVtKM=', '0t58dU7FYpv243M7qO4zDQ==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9982, -9982, 'RA-3-2023', 'Milenko', 'Kikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9981, 'RA-4-2023', '21NWXCvlSPp6vTO+jwuJ64PZuuHsnNmxVHczRkHZy+c=', 'iG2yzPL2M7DwbR3YVvy4oA==', 2);
+	(-9981, 'RA-4-2023', 'Hovm6YzM9DNBHgHBJNgXPcsnezs5vq2w/m8isZUqyHg=', 'IT5NW6FkMOECM46HpiXutA==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9981, -9981, 'RA-4-2023', 'Nikola', 'Sinić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9980, 'RA-5-2023', 'SNk6DCW4Z9TK+SAqFmu2uG1qqv9Ow8zoCij9TEHsjaY=', 'SqHseBUiLQ5jh5Zk4acUQQ==', 2);
+	(-9980, 'RA-5-2023', 'IQQsBF4ZL0NuMBGXLHNprZAx3tX58rjmtDnLyz5rVW8=', 'g6xUmM3dFSPhAqho3qfnDg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9980, -9980, 'RA-5-2023', 'Pera', 'Simić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9979, 'RA-6-2023', 'k7yAeskk3zqxL0gpQLxdZQndo8ISt1Gtn0hRGw2Ulro=', 'RnzcmT3MN8FYrD3Jno/UKg==', 2);
+	(-9979, 'RA-6-2023', 'pYNYcc0qEtvCJK/Fy2vv6LFlV+10+oFewNZ80GUcbZU=', 'dUKgvFYXKyGfe8sKmgmV6g==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9979, -9979, 'RA-6-2023', 'Marko', 'Milić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9978, 'RA-7-2023', 'orPdXV7kYhn2aD/zWYyJjdo+ZpR3bUyjsQ1beYTNzZ8=', 'x7IcduH8dyl2q7snDhhzPQ==', 2);
+	(-9978, 'RA-7-2023', 'wB2j2wlWmdikLgVZ8qd91zvdzIVPvfbXHqe/6iKc4G0=', '3sxjJYog+KJQ5lZBT0vizw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9978, -9978, 'RA-7-2023', 'Mika', 'Mamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9977, 'RA-8-2023', 'rZYPXgEHRAidlI8xX+yDpQgk7tY+KAW24R0UWmZ4r3A=', '47hT+VgwZryffCkm9jBFAA==', 2);
+	(-9977, 'RA-8-2023', 'Ua6esq6lZdMYDOi8BbLahDAuoUYrZrQ8h7XrTWW3GGU=', 'FpQcv8VnIoJLLGeK/V6zCg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9977, -9977, 'RA-8-2023', 'Stefan', 'Pamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9976, 'RA-1-2024', 'DK7kzlSa4dITrUprtIu/kTiTIAkECldvlQGcYeUQrwE=', '8ym2sstTJul58GILiZFaNQ==', 2);
+	(-9976, 'RA-1-2024', 'Z5/JfwG+v4PdHGf4b68h58DcI13pLhMyugsNoaSdnk8=', 'N84KSBRgjhBYbe5AP9SCZg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9976, -9976, 'RA-1-2024', 'Franc', 'Tamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9975, 'RA-2-2024', 'NvJM8KgJS7l1b9jFFKdOU+mhdRDqF2VaCDRUjePyNm8=', 'WJ1r65HyFDfqI+4kVb8JJw==', 2);
+	(-9975, 'RA-2-2024', '8O3K0MZNy+25c64B/rLXUR1doFK9dQ00NJsASy/uQ/s=', 'CRfeA22CRk/de2bP9YCoiQ==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9975, -9975, 'RA-2-2024', 'Ranc', 'Kamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9974, 'RA-3-2024', 'xnVSoKxlGBL/2IfgOv/4aVENcwZQaA3Z2MxTHRibOjc=', '4TttOVMY4TtpX8Fr76V93w==', 2);
+	(-9974, 'RA-3-2024', 'fv9lDnL8N4syEBrsWse1JYCIgCWRHgfZI48Uf7Pu3cw=', 'egE7HBvjARHzuCibnH3Dww==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9974, -9974, 'RA-3-2024', 'Kranc', 'Perić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9973, 'RA-4-2024', 'xWfuBY1pxS0Tw6ClnAgLPNz19cksLnPCj0+f1jhJOPg=', 'ta+N2j06tLC2hK+BbSohjw==', 2);
+	(-9973, 'RA-4-2024', 'curUAXgrmyAdwHkg9dc9QGEWCzGQo3XTAor505SwXgA=', 'Oy9gu64vLiNQ9tfzH7NusQ==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9973, -9973, 'RA-4-2024', 'Jelena', 'Mikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9972, 'RA-5-2024', '24n4+sKUdNR1pdFefb72H7MqaL1fGkBdMVgIO3ZqJ/k=', '1EV/9f701gYUhf04CKdr+Q==', 2);
+	(-9972, 'RA-5-2024', 'P3UpxMipzNkdADwZQRiZ+ul/QnE1Y/PuzA9OxeXx7do=', '16hMML4Nx31dv1cxBnP6vw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9972, -9972, 'RA-5-2024', 'Milenko', 'Fikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9971, 'RA-6-2024', 'dYJxXfRBM4HIF0MYjk9aRjqbdmXnglLP5L6egsKsMRQ=', 'Pz8hJAbYMy4jcczJvFPPgA==', 2);
+	(-9971, 'RA-6-2024', 'iAc70ynGxohp6bnSWEJ4I5GYZCS3ZTNEfxfRW61S7+g=', 'Ij8VgYOG7P7JGpLFpsCfiA==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9971, -9971, 'RA-6-2024', 'Nikola', 'Tikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9970, 'RA-7-2024', 'aO8PjE617+37qnbtZEBPO9VAa6XfXJvewn6ai7qQaCE=', 'cUxt9Cn6WQN7dCI27WwqJQ==', 2);
+	(-9970, 'RA-7-2024', 'U92qO+gr2wxD+N08KxqdLXp7H5co6ifF4Of6Lgd02fo=', 'NlpE9cv9HGKeoHZ2+dPbtg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9970, -9970, 'RA-7-2024', 'Pera', 'Likić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9969, 'RA-8-2024', 'u2np/fr7ow66kTk4z2LFW7TkpN1PMtnCf3jsgNuNO5I=', 'nM2dN9lnVxfXhQnu+azJMQ==', 2);
+	(-9969, 'RA-8-2024', '96j4o7wdxa6VfTXG71tiHrhVFuLX7acB86yu4uarQnc=', '5L/jXl42nApK8ytzC2G5Qw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9969, -9969, 'RA-8-2024', 'Marko', 'Kikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9968, 'RA-1-2025', 'N5oH4HOZZ2qQCtWuMKhg4vDqfvEDDwdWgNtoVjljqNU=', 'S/UF/scdhMLBv37VUWEwyw==', 2);
+	(-9968, 'RA-1-2025', '05b3YnV605PpxPd0XnKlcf3zsd/ca3s7siF6mv7XdiY=', 'J6r+g5rNpHnV72gFC5yTkA==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9968, -9968, 'RA-1-2025', 'Mika', 'Sinić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9967, 'RA-2-2025', 'TsdSLzafqF49o3Dvq5iVxwCoFL6I7QBFIuUuX+BrJZE=', '9nkt1JrQKeC0l1PmDwyaZg==', 2);
+	(-9967, 'RA-2-2025', 'EwK68JmGW/PBpA8GAwmomBLTV2Cx62If2OExI05eZmM=', 't1puE/Pw1DCk6A8b3QQQuw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9967, -9967, 'RA-2-2025', 'Stefan', 'Simić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9966, 'RA-3-2025', 'hCxMQeuY0wQgOwye6geRWRTMfzmWN0KMNQfXfUbTXD0=', 'tEwkZLGM0Aku1qy4q+/oFw==', 2);
+	(-9966, 'RA-3-2025', 'baWIwNTOk7ZKDiRyCNo05IX1ngUEJ7DWdb/17YYkrbY=', 'UXgmBVzxtZxR3O9hJh4qZA==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9966, -9966, 'RA-3-2025', 'Franc', 'Milić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9965, 'RA-4-2025', 'FzqqznUGO8LeLvvuWtpF+kjrKYiG/t14AcmNU1TIpik=', 'Rh0g4owKR1Gcj4JGxjdANg==', 2);
+	(-9965, 'RA-4-2025', 'KDoOx35/DyqsGGVYxHBMuKrHd+65OM/6Y3M7XVmzJqE=', '4rDZBHx5gqZQfBjlP3r2+w==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9965, -9965, 'RA-4-2025', 'Ranc', 'Mamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9964, 'RA-5-2025', 'mjw8yRiWq+ip0w4DE2sQ/W5BXPgdcc0F3nC+DMqN3T4=', 'IoyyWa7a0ChRe2LrgSnzOg==', 2);
+	(-9964, 'RA-5-2025', 'd1QRVy2+n86EdvNiYEuMNi39LKI8JYtJLUa/Y2v1a0o=', 'R/Wf43bGDP5fmj2K7IHI0w==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9964, -9964, 'RA-5-2025', 'Kranc', 'Pamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9963, 'RA-6-2025', 'XmVFexlbI4xUrlD/Fn+FDvWyjNbHEBnzpuoJbcRMe+A=', 'rtjohGzocCGeYYRUHYRxPg==', 2);
+	(-9963, 'RA-6-2025', '2hjGOevKOnn6EV6jCerHWP41v7GsxDzs0Pj00yCQMEw=', 'WV97G7dqaAH3hHI0zcOpLg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9963, -9963, 'RA-6-2025', 'Jelena', 'Tamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9962, 'RA-7-2025', 'wKP6x9WyBqfLw0QT2bC4vNmjVVyft2zJGb1jb6CSxeI=', 'batDMs/XR2x/V0SbBm2hIg==', 2);
+	(-9962, 'RA-7-2025', 'Lod+puUrHoxQMR4Wu3EwogMPeCA340LJOK8SwwAKngs=', 'x9gLWG4QFbP/F1Daty3I8A==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9962, -9962, 'RA-7-2025', 'Milenko', 'Kamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9961, 'RA-8-2025', 'SC624bS/EMq4CWUcL+dJ+izlSRtMnEUGBq6mg+PTdZI=', 'LAjBVFeN4SxMD73KwV5XYQ==', 2);
+	(-9961, 'RA-8-2025', 'p6B8LiybZjtWVnXYtDugzoPNi1MODVG/KpM3E9E+X7k=', 'v4k2F4goQZn4Wq34lrG+Bg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9961, -9961, 'RA-8-2025', 'Nikola', 'Perić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9960, 'RA-1-2026', '6wwjSs8P6GHPUeRea71iKY0jZje5j6IvyKrkSkcmKeM=', 'UECr6eo03VYS8DKpTfOoww==', 2);
+	(-9960, 'RA-1-2026', 'K4xe1kWRyzcxfxJAybm/OjZ7HRFsTF3ws7IWqCPPNBc=', 'xzYuBTQN22o8g5NXRiT+Rg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9960, -9960, 'RA-1-2026', 'Pera', 'Mikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9959, 'RA-2-2026', 'jKbnlhQv4iUm9W4UiWxghnM8GleHU6xKOZDaS3CqzhQ=', '5eki7l+Q0jRLV0BaiiciuA==', 2);
+	(-9959, 'RA-2-2026', 'S0F+r1UZh2dwDnMJN6ldQ08geFee5zNYKF7ylwiFLdU=', 'yYeDXRe7vF+8HTIIBusNKw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9959, -9959, 'RA-2-2026', 'Marko', 'Fikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9958, 'RA-3-2026', 'T2ATDhmZZBhy5iacwuACyzM17pMKaYCFdGXGSGtAwhU=', 'eMOap3a4i4eX5T7gn46ouA==', 2);
+	(-9958, 'RA-3-2026', 'EF9JYIkT+6q7C/BRr3KH4gPAgHxFPgUokIhUJlNV2Qw=', 'hKDF6ChCKmK/ppFtZ7zJ8w==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9958, -9958, 'RA-3-2026', 'Mika', 'Tikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9957, 'RA-4-2026', '8+zuBZr3+9NKjgPxczLs6g8YUaHq2bu+2izQ+f3ogok=', 'XnI5xMt9Oy2MecnXJQVvKQ==', 2);
+	(-9957, 'RA-4-2026', 'YDYC2pS6yK7OslXq7Jn+v+rN9Dbwl/4mBOOPNLwUXps=', 'zXHBjfsv+Odds3v4iONByQ==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9957, -9957, 'RA-4-2026', 'Stefan', 'Likić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9956, 'RA-5-2026', 'SL7NtmatmjGo6D7m23DRDtvm0Vw9lS/snB+n7Xt32Mc=', 'TSLJ6klDNm0q9bxuejsIvw==', 2);
+	(-9956, 'RA-5-2026', 'GHUGWMuCNaOb4mgRCYtmOYBcHh2ANMoIGHR0fcoCglk=', 'W5KxsCo1ZBMafg/lWgXNTA==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9956, -9956, 'RA-5-2026', 'Franc', 'Kikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9955, 'GE-1-2021', 'yIV/pzCxtiOyQ5o2V5sz4Up5xnhnvaoMFnBiuf8NN34=', 'irMICQB+eeFgS48KH7AZ2g==', 2);
+	(-9955, 'GE-1-2021', '4teMlzpGDuMeNZjmd/WHESonOinRVchUYSXVnRRaBpA=', 'QLqTQejHXnS2+toomtu+ng==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9955, -9955, 'GE-1-2021', 'Nikola', 'Perić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9954, 'GE-2-2021', 'ZEpuNfMZ0X3tDoRdXxHFKH8HRi+SnFrMSCy1L8lkCf8=', '0C/OE8A8JQjLVRxvN5KjnA==', 2);
+	(-9954, 'GE-2-2021', '/nIx+ZGZu4uYJ+qfs/Gjc6nxCPTO2U1ptIcmOBW+/1c=', 'B4dBeJxwabiSAIpT6ccd/g==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9954, -9954, 'GE-2-2021', 'Pera', 'Mikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9953, 'GE-3-2021', 'fTYeuywPg0iclASKpaSK4FTptdbr1W0xS52wOMgqm2k=', 'p/QIIqiVSb/sF2ijH1GCVQ==', 2);
+	(-9953, 'GE-3-2021', 'B0Ii3z8QHqCCoqPeM0lWoSKDBzCYKnYnfTHJkBt6hEs=', 'O6ngiQV2FkuqIIpLA3Gc+Q==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9953, -9953, 'GE-3-2021', 'Marko', 'Fikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9952, 'GE-4-2021', 'EmMdgTFrORHuEMPihiMQgEraGK5VromlpncDUMiX9mc=', '23nJ1TeV3UwKLTrs5A/rAQ==', 2);
+	(-9952, 'GE-4-2021', 'LbrQDO693w7PkBMPXcbZ/l4yuqaoBvp9iuYN+7pHZL4=', 'gex+eBu35YDRky2EOtoDNg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9952, -9952, 'GE-4-2021', 'Mika', 'Tikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9951, 'GE-5-2021', 'Y0H1z34AwzA2544SmlWvxfa/aMfvkU/kMCL4Qiucxlk=', '9VGI8XBOjtDXM9Xd8/5AuA==', 2);
+	(-9951, 'GE-5-2021', '/sSa35eDCY8E7YYCFQ2qlVmXLcwRZKTEzgqPfgbZK/k=', 'udfL4tQWtwUciT2XFzIGEw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9951, -9951, 'GE-5-2021', 'Stefan', 'Likić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9950, 'GE-6-2021', '20rWeuqHG6yE4ttEfdSU5uNWisjOGq/Af0SK8uPUtVI=', 'zjMm5ojN6x9CtaCFDocyVg==', 2);
+	(-9950, 'GE-6-2021', 'KwK0vy/rNsCU/ik9Z9eYQG3iBVAk60fKydKu2mc89+k=', '7FrFYwZDK5OwFtuyyPSb/A==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9950, -9950, 'GE-6-2021', 'Franc', 'Kikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9949, 'GE-7-2021', 'm+1uOv4hrc8P5UyfyXSxTsU2lhHDM2typKqA9/ukFUk=', 'D2TJVFvWWP+KtB4O6gPULg==', 2);
+	(-9949, 'GE-7-2021', 'vl/fu9Ev7d0UecLSdbLad6Abmi+/DFZtUwHndNj4KTQ=', 'xmxTosQq225WlcUhu4LzsQ==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9949, -9949, 'GE-7-2021', 'Ranc', 'Sinić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9948, 'GE-8-2021', 'yptOqpgmBteAwtSfONdkRxlQSu2TRB9s+7UrcqCyyUU=', '0EuKD6XQCcpb8nc31K8r4w==', 2);
+	(-9948, 'GE-8-2021', 'CO4VWvxr00MabYW6U9Vo1tFB6kWWnqJTeF96Xc0Ds0I=', 'Mkw+QHNxwWgoMJ0AhnppWg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9948, -9948, 'GE-8-2021', 'Kranc', 'Simić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9947, 'GE-9-2021', 'stzl6/1YI7m5owmgkOuq1T5dlFLPzTQFAZofb4DSuU0=', 'EeRoVY9rDAzfdEqsR9mrrw==', 2);
+	(-9947, 'GE-9-2021', 'jwy9AaVnOdjF99iXRrHMaBBZeIlhTHWciqxMz5tyT7c=', 'JusOuiWG6J4IXb5IbYLquw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9947, -9947, 'GE-9-2021', 'Jelena', 'Milić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9946, 'GE-10-2021', '5tC6jTKLrDdFYXqK/Y9IQuvlx4HosZcielMZukWPr80=', 'Evf4sRNCiwSJX37zNsq6qA==', 2);
+	(-9946, 'GE-10-2021', 'rbcBqwaWFUTyUOp/eU3IORdBBS+wfLWh0DKrTcIposo=', 'geChSF59eXvWVwRXwFrQyg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9946, -9946, 'GE-10-2021', 'Milenko', 'Mamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9945, 'GE-11-2021', 'zMHpD5CwK0JLdYxx7GUP9Xz6+docC43P7XNU5XI+bsI=', 'h/xOUKqS1mRUl1pBCwGN1w==', 2);
+	(-9945, 'GE-11-2021', '1WNdEBTjZkLJsYcevbtSm9h74BdbcBibjQJSRSxcCXU=', 'IqTwbdkAsL98ZfVL03paCw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9945, -9945, 'GE-11-2021', 'Nikola', 'Pamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9944, 'GE-12-2021', 'tv8nwkBds8lsy7TgPTXcBb+ziZni9Md5e++ZbjCBxxE=', '3dL2g1wBYRlNTi/KF0CpPw==', 2);
+	(-9944, 'GE-12-2021', 'RumBGY1BQkPvkliMJ9pM03OiPFKCpUeUOAZuiniXVWE=', 'i+jFHPj/JYQQ13vRLk/RIg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9944, -9944, 'GE-12-2021', 'Pera', 'Tamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9943, 'GE-13-2021', 'cqm3oXEKitAKsmRuwuc8dToLlNsiN+uH61xhjhr7g2c=', '0L1Q3LaZMRloz/YdsSnU6g==', 2);
+	(-9943, 'GE-13-2021', 'nE4niF+mYuwOp1U4Worej8uz7PH5vPlv8UNxAzItIvM=', 'C8Mx2kcEV8GnwwVazPPyeg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9943, -9943, 'GE-13-2021', 'Marko', 'Kamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9942, 'GE-14-2021', 'Cpy9PtSq0WK1IKma/lGPiy5inXl1D9B1YVoVtnv0qeg=', 'm1sfFSvOXcEXWg2oAZKqpA==', 2);
+	(-9942, 'GE-14-2021', 'igH16duSBDivo7cGO0bhBdYwDvMYo3fFqAJX/K9t7DY=', 'LCItG8mF3yXZyaSHJ1KFhg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9942, -9942, 'GE-14-2021', 'Mika', 'Perić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9941, 'GE-15-2021', 'gzicB293eAUjcHJirTpk3cZSlhJn/Fg4NMkbqblxFV8=', 'AHhM+HLhhD0f6oJoYsXL4Q==', 2);
+	(-9941, 'GE-15-2021', 'KIOMU1ZEsXYZci6XY1w4XVFf44UUIiqJaQ9uxHoNjJo=', 'oWauEvO0bhBd545n2kvhOw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9941, -9941, 'GE-15-2021', 'Stefan', 'Mikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9940, 'GE-16-2021', 'i9SCwPl1Dw4uRVDTsrNJ4Br4byjX+KBJF/3mWaxmJfU=', 'KItXTHgCFwKoe7UowXpiQg==', 2);
+	(-9940, 'GE-16-2021', 'amKQTsuiA2QYKI0spHizPximB3TUfFdvx0PXRP2r3vo=', 'GiuqZNngZRJtZbi/hTOVGw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9940, -9940, 'GE-16-2021', 'Franc', 'Fikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9939, 'GE-17-2021', 'MiYayrGpKdIYwaSXqxsygInLcbfJspRWnHTrijP6p7M=', 'fkWTVV+0rOdp5JH3+riUKQ==', 2);
+	(-9939, 'GE-17-2021', '+hM2tc8Jnd2Jsnkx+VtoTQTjlWRc95kdWMhOz+v6fmc=', 'CBICgRc/KnCPfuuACWYYnA==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9939, -9939, 'GE-17-2021', 'Ranc', 'Tikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9938, 'GE-18-2021', 'put2KRQYuWXQ02HPX5C4e0RRsU4cTYz+JQp/weA712s=', 'T5q085MmSEWXQWNn265Jug==', 2);
+	(-9938, 'GE-18-2021', 'A+nCTWazLUhE3hE872OaWYOXxapmFBvcXZzKrj+hV6k=', '0TlfakqDtWb8e2SQi9ZFGQ==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9938, -9938, 'GE-18-2021', 'Kranc', 'Likić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9937, 'GE-19-2021', '/gOEC5m80i9VFBS5Nf+y2yCs7WshfpZ83Z1Z2gvQYiE=', '4x4VdthnnxC4kyCSNsWGeA==', 2);
+	(-9937, 'GE-19-2021', 'w9+aHEgYYH7nsUed32JT2Eg8b4/GxA+JmNzwlUm94lI=', 'd3e3q+v7B96Vzr8hHu7mSg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9937, -9937, 'GE-19-2021', 'Jelena', 'Kikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9936, 'GE-20-2021', 'fxEgJh+6scrhcTXN0GnRxpS9RgsJhkUDWO6PH7nOt9Q=', 'RTAqdB5EZP6ECCevlenfTg==', 2);
+	(-9936, 'GE-20-2021', 'SK6w1Z+r69H6qbuwKJVLNbzMELNSe1gtx1t2HddcxYA=', 'gUsVkIKX/Rp7JMk2x1/+Uw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9936, -9936, 'GE-20-2021', 'Milenko', 'Sinić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9935, 'GE-21-2021', 'usPczHYdsKbytBdEl3yZMGSaAQlhaRz4AVrFelogEb0=', 'X2DcXqN+J9+gDGdQXLxdBA==', 2);
+	(-9935, 'GE-21-2021', '8Ah1KAAWHHM5xMZMB1owNj6QoTkau5QmKWq0lM4XOpg=', '+nOpCd4o8N2B6qMZ5q/smA==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9935, -9935, 'GE-21-2021', 'Nikola', 'Simić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9934, 'GE-22-2021', 'xuuifUdMgFaRXH3ZRJimZnlARDVQ61Rp/MEyhM3OD7k=', 'B3r1HyHhTfeJDKd/hW3upQ==', 2);
+	(-9934, 'GE-22-2021', 'Q9bArBmmZFQRF0tDZdAkJMbcfQF9Xt1Fc6ozH0FxqwE=', 'Q+wVGidm8Fk3HT55+3JEaA==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9934, -9934, 'GE-22-2021', 'Pera', 'Milić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9933, 'GE-23-2021', 'mpYEKIbQ928wsPOIohmWynA+eFC5A4EHMMoyU2aAab0=', 'OjYza8ZfWziK49UWWlBa9Q==', 2);
+	(-9933, 'GE-23-2021', 'AsxDQ+krECGgXlL+VFsYY+9pEDLJe75Pu1q3t3iwSZs=', 'ApJwZ1NMynePOvSn23OEeA==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9933, -9933, 'GE-23-2021', 'Marko', 'Mamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9932, 'GE-24-2021', 'BmUJw7M49ok5hG1wjsl80SZPy8hgAsgpTG2ZP1TwA68=', 'skKYPW1yfoQ8CWVxBvW5iA==', 2);
+	(-9932, 'GE-24-2021', 'aYpp2BIR+j+VU5nNjy/Z7MmvDdvB+dKFBXYRex1itR0=', 'ER5tjR5KQ3fpXkwZ7CJfuw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9932, -9932, 'GE-24-2021', 'Mika', 'Pamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9931, 'GE-25-2021', 'IkH3jLJek0Bo+7ZIPhSr7pq0c+/8mcUb69s/GZMP8GM=', '0bdJIhfTLwo9Al5jYDQe0A==', 2);
+	(-9931, 'GE-25-2021', 'mBuxmQwT8Oflx9HjLD3E0HxET8fAzYlLtQq9qjpZ8r0=', 'PH7f7ecxAACG7SmbBI2JOw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9931, -9931, 'GE-25-2021', 'Stefan', 'Tamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9930, 'GE-26-2021', 'u0nijLvS22TyRMmXRWyK5cnewzea9VAVN04b6spctpM=', 'rfw0u4pkcFF4flVN2OVuqg==', 2);
+	(-9930, 'GE-26-2021', 'q1PVIxJWoEgN7J1ZzOsl1dQvuF2nwoepMD7aEaHnf5I=', 'ZmjPmRUMuORbQYwyC8MF8w==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9930, -9930, 'GE-26-2021', 'Franc', 'Kamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9929, 'GE-27-2021', 'mbnRAP89fE7DE3M1JQfbP9+noUT0x6N/bI1Anq34OpY=', 'JnJkJ5JnASW2D9Lctd0Yyw==', 2);
+	(-9929, 'GE-27-2021', 'fgQsnXrWMB4kbcCP/KROuRTjm4MyHQKBjCiW/bsIbXY=', 'NFLEQHNcalOqKUHuqEUz8Q==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9929, -9929, 'GE-27-2021', 'Ranc', 'Perić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9928, 'GE-28-2021', 'UtmaCAeozFpSr4CumJ860Ss2XyM4k8t1A+d8TjI1gZg=', '7S7BZ4IU3VpQpG1LjIxTmQ==', 2);
+	(-9928, 'GE-28-2021', 'fxQ1GPj507Q0DbgY11dIsuaVHv85hnM+QRqfQCeK3HY=', '+twClnJ+T+NPSOnHY0+k6Q==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9928, -9928, 'GE-28-2021', 'Kranc', 'Mikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9927, 'GE-29-2021', 'QDNcidFYeOsMcdYPGDf8clutOIU3qZQGbHjAvZVcxR8=', '7UrSvQAb8u1XYQXC4bTaGw==', 2);
+	(-9927, 'GE-29-2021', '++Qp+NZBDTknR+de2mt0DpXVUsY5QXUtqwmkNSXbyB8=', 'Su02wUDnBjyhCXSD2mrV+Q==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9927, -9927, 'GE-29-2021', 'Jelena', 'Fikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9926, 'GE-30-2021', 'RZcLXiX22pElDUZdnOvbXdN8sdYp4G/4WY1FO5MDxqE=', 'DOMAYM4Llbk4X7m/58Ut+Q==', 2);
+	(-9926, 'GE-30-2021', 'eaay8+7zWSA/j0X7EdHWtN41IOgJ+l7ccQRyIFRWOmA=', 'X+DMA1TRSut71HU7fG/+5Q==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9926, -9926, 'GE-30-2021', 'Milenko', 'Tikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9925, 'GE-31-2021', 'd6vPpgKEdOlJI4AXlBRpH+h7QTK5pFlVuKF566glU60=', 'wT54hfzW2UHC81uzyY5UqQ==', 2);
+	(-9925, 'GE-31-2021', 'Ncsm+370uadGrLtai76Bxf6Bx4zncCBPYXnE5vXTwnM=', 'fh7ktv8elICSsvhXfqEDrg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9925, -9925, 'GE-31-2021', 'Nikola', 'Likić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9924, 'GE-32-2021', 'VKQKL6JmsxpW2RRlSXPAKnwnjFV8pEavPEb71FdO2MM=', '/76XTuzog6E6KINT6UUjDA==', 2);
+	(-9924, 'GE-32-2021', 'RvKR2atfs1QCWsW3ll1XZMB227TSUswE4zvv+kF9t/o=', '5eeISlqakfb2MQknmqcwyA==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9924, -9924, 'GE-32-2021', 'Pera', 'Kikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9923, 'GE-33-2021', 'Z50E4Pa72cuxzyltnwd8HRy7AlVLhFSslXLv9kGxtkA=', '5ge6msx6nM7wKUStOjz9dQ==', 2);
+	(-9923, 'GE-33-2021', 'd3JxtCb4g70i1+cuoOVhK/VgYQbuGaR/z2tu/kUsvC4=', 'mcblMN7/4QDaFT/ToJuxvw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9923, -9923, 'GE-33-2021', 'Marko', 'Sinić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9922, 'GE-34-2021', 'aa/GvPdYQytGBbT9JzUgd4QFeDGB9d8I4YfNpT/wSQ4=', 'BhWbMOe8uazcOnejgjIe3Q==', 2);
+	(-9922, 'GE-34-2021', 'FTuROix9WauR42yVAwVe/96jSnkddtVmRqoyuF6NDm4=', 'Z106+ROp098gzOCSEnltvA==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9922, -9922, 'GE-34-2021', 'Mika', 'Simić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9921, 'GE-35-2021', 'txP1hiMj290jwHksKESReEeBTpa8ZQZWe28XiBIBScc=', 'OaLDcUmunQLCkPwmHjG+vA==', 2);
+	(-9921, 'GE-35-2021', 'C+uu3tKqjxxi82kpyXTrOhJP2CYJQvTtvdpkizO1xTA=', 'XtF5mkaatBr97JUqAtTpwA==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9921, -9921, 'GE-35-2021', 'Stefan', 'Milić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9920, 'GE-36-2021', 'w8znT9LLvrd/b+aW30QYmBSrc53oJLhgG0RDL4W2mzU=', 'GN4ZW/BLXfvgIzKVnpTsbQ==', 2);
+	(-9920, 'GE-36-2021', 'urhYqhEB43z/TIUOQHQ191jKOAvREVDfJ5xe1+REvX4=', 'N7jnUG+nTk1w/YGtdqO1mA==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9920, -9920, 'GE-36-2021', 'Franc', 'Mamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9919, 'GE-37-2021', 'c4u7NwrGGhfNSTZCTiodXG9Z1sDf8A/wUn/w4MY7Yxo=', '7502f/Tr/c0u7q1p6y/a7w==', 2);
+	(-9919, 'GE-37-2021', 'om4YC+W0AAGkOiqI8dd6MgoR7s2p25hWVkgmAlnKa/g=', 'e4sL98V1I+SyLqjGCZxGDw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9919, -9919, 'GE-37-2021', 'Ranc', 'Pamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9918, 'GE-38-2021', 'iXM1NyrX0vAq3BWimZs2AB/eJ0zvtr6IkD/kETk4/SE=', 'Dg0DhLfDv9k2bfzZ2mpycg==', 2);
+	(-9918, 'GE-38-2021', 'ep1plOEJmAVbepwlgk/GGuBshZHEQ2Y9epRDxleThcI=', 'O5N9Lfx002yQLnLySp0bZQ==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9918, -9918, 'GE-38-2021', 'Kranc', 'Tamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9917, 'GE-39-2021', 'zWcFLM3rvyLTLT8JdLErbkXpPE09Fwj1v84xNeR7S58=', 'G9uElMnnnry3lzvvazFLNQ==', 2);
+	(-9917, 'GE-39-2021', 'Jy8YgO0wBCQwRy1BEsE3lWGUH1+is1fJXzWBU6vV7Yg=', 'jCdxGHnCu9i196AL/3fXYg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9917, -9917, 'GE-39-2021', 'Jelena', 'Kamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9916, 'GE-40-2021', 'J8sbsx2QWaJ1I/ezKxGPDY0/PP6fFh4yhrU56ebrJw0=', '0skvOBWf6eCFRX4lKvRbVA==', 2);
+	(-9916, 'GE-40-2021', 'l6WuyL7r/GvaSwN7t6E5N0E197fgcUwN/IUAGYbh1xE=', 'FfrsOgE9wQrjO/y5CZTSIQ==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9916, -9916, 'GE-40-2021', 'Milenko', 'Perić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9915, 'GE-41-2021', '53KFrcti2gKondbIjaw8jJFAo2ZYr7BjAlt7p4huu4g=', 'QH3m8cx/dZWQXQXLyyCS/A==', 2);
+	(-9915, 'GE-41-2021', 'G4Jc3z2lT0OjepaisebpsEyxfHG5nzAfL/fqDFneY9Q=', '5i87RUB7mloBC4RNsAOT3A==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9915, -9915, 'GE-41-2021', 'Nikola', 'Mikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9914, 'GE-42-2021', 'S0/Ad/sIKbFk4e+lpATRzsnmAX7aCp7a83Spq8+etdg=', 'DxjVvojdT2evKQ2CBtyd/A==', 2);
+	(-9914, 'GE-42-2021', '/CgzvFPosQ1UYBNNdVHLddZ72MkOx9RpybodlcmboD8=', 'EX6C3LTjZXRoEZ/axMs5Bg==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9914, -9914, 'GE-42-2021', 'Pera', 'Fikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9913, 'GE-43-2021', 'wlr1Si6dVQ1H6xQFKe9tBlpL+iHZHdnZIHoU2zHcGUY=', 'yMPjselS52mK85+chhC8WA==', 2);
+	(-9913, 'GE-43-2021', '+FKUhExBrE25QIb/8MUaHVoNfhaOB/HMS5SZv9MBnkQ=', 'ZU0c1MaZx0Rd37ZNqJ0LSQ==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9913, -9913, 'GE-43-2021', 'Marko', 'Tikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9912, 'GE-44-2021', 'r+BDtaUgdMcgM4MNGbs8iyl80JH7qdUJFkday8ECf80=', 'mmUP/pxLFRU0zKpK4O2WBA==', 2);
+	(-9912, 'GE-44-2021', 'SQlpeDs/bfyn3OhLPeEHmagwC6s10RnvJcFjNeYuBqQ=', 'CVNWFLCMr5UU67LVEcdGnA==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9912, -9912, 'GE-44-2021', 'Mika', 'Likić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9911, 'GE-45-2021', '9t758GHgILXyNhCm+udBf19wbquZGukfyeZ4n7XQdzw=', 'RXHuRLz7gk5jMOL0habL4w==', 2);
+	(-9911, 'GE-45-2021', 'RkzkjxuzRK3oRfrdWz8eZwDeCijkgbj14q2ko1KwjdE=', 'jtdSKjYq2uHyBcFFjcSB3g==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9911, -9911, 'GE-45-2021', 'Stefan', 'Kikić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9910, 'GE-46-2021', '9iO/uLsBcIpGftvjr+9qChYPBcfEpt0DNY/oioZLQa0=', 'dhJ9V5hl8lDC7BgEPgQ+Wg==', 2);
+	(-9910, 'GE-46-2021', 'VwWj51txv6jhTboeQbF0uoFjnRiazA9nYDskUZ6+mPE=', '9SV59gAHBt0a6zex4Og5KQ==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9910, -9910, 'GE-46-2021', 'Franc', 'Sinić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9909, 'GE-47-2021', 'qI2KRSztSF2dZb4lgpNxCId5jEfqR/rX/06hABBRkSk=', 'FLDP6tQbbcbFm8IAyQg27Q==', 2);
+	(-9909, 'GE-47-2021', '2FAnFtgl7ysVzjR51JtlnHZhPSsTxgMS+o+0t4Kka+s=', 'CpUGJeETQURDzUVilpLFzw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9909, -9909, 'GE-47-2021', 'Ranc', 'Simić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9908, 'GE-48-2021', 'n03NIWqHz6uxPvQWljx0s5bNcQJRT62G9mrQTgHKMaU=', 'O3z7HsYjQnzzqQAZhCFeGw==', 2);
+	(-9908, 'GE-48-2021', 'fqC56A9hW/9TT+ANnCRR9XfEzdtsCPjfyjOK0MJTemU=', 'MQve9+WzijCbfHY0vUvwmw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9908, -9908, 'GE-48-2021', 'Kranc', 'Milić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9907, 'GE-49-2021', 'fNrlc+5YxA0iDalAgsvas3Ed48xknGvswXNykKL08NE=', 'COQgELMFIeZ/hj8LssqOZw==', 2);
+	(-9907, 'GE-49-2021', 'MmwVzbFWalDZpwuNYOu0ETUiAJFfZ0N3bYv36VFMscs=', 'BwcojlaTHBIEZ1nCBR3thA==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9907, -9907, 'GE-49-2021', 'Jelena', 'Mamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9906, 'GE-50-2021', 'iGgDXVKrELWs8y7D0OE8pwM/tX4oDE7oyF5pxFaWrJU=', 'VtRQ/ikQglb/GOLIFxM81Q==', 2);
+	(-9906, 'GE-50-2021', 'O9/EnGp0GU1nO5TF2bN5t8hLdlQT8e2FKDcTSk+rzP4=', 'w0LJVcK+IDPk6PEmrDJRQw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9906, -9906, 'GE-50-2021', 'Milenko', 'Pamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9905, 'GE-51-2021', 'zSLkjBEwFATJvemGvEYRRCfuhsw7SkkBjZmDxMVZ68o=', 'GnKAYMVVaixYD+e/n74+1Q==', 2);
+	(-9905, 'GE-51-2021', 'mlcqoURe2o7aujkRVDie8B2XcbEZ0z08sXVhg1oOf64=', 'xNtRdhPRtBj23dOjMkkMYA==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9905, -9905, 'GE-51-2021', 'Sladislav', 'Tamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9904, 'GE-52-2021', '71IyvN5m5Jkl2iYd3981J+Ae0mTwwn68WTcdiOYWODM=', 'RwojqYWtqCRUjTWnXYGgBA==', 2);
+	(-9904, 'GE-52-2021', '7LkYXgFry2RMkdbMQoryH9VOUjmBsNr/FPWW0MX6IUQ=', 'mWrxlqmYfrmCinuN3gCcvw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9904, -9904, 'GE-52-2021', 'Vladislav', 'Kamić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9903, 'GE-53-2021', 'nRgdsiUCl+5gq3HpAShF2ORAF9yt4sVaEB3+FOKkEoU=', 'Xg2ZhXM0K8yU4sY1CmQV0w==', 2);
+	(-9903, 'GE-53-2021', 'zyEndzGZU4MtmFZwY0TLqCdiprDKVVRkfotkmjShdT4=', 'ITkCZj/BXZseq6WPwZ2xGQ==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9903, -9903, 'GE-53-2021', 'Kranc', 'Lalić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9902, 'GE-54-2021', 'bOBUcW+IKRPYYvxZfjPUfdiFM3qGqoef1xjCtefHW3k=', 'KVUUmWzRdyWeuE6CKhcOfQ==', 2);
+	(-9902, 'GE-54-2021', 'JmrJK4khrM28yu+4AidVGL/7A41rwDrRXIV+isyATTw=', 'pQ6RktJb2sEtmURmBDrdEw==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9902, -9902, 'GE-54-2021', 'Marko', 'Lekić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9901, 'GE-58-2021', 'kS4c/VffX2oi5kXaYBjxE0XOCKaaXOJT7qaR8QBgFq4=', 'gLlTsy+Bkytt8oH2i27tnA==', 2);
+	(-9901, 'GE-58-2021', 'lrbzY1QQ5yzIPg/Omg/GfTdL1eMiwyNrF09qSJ3WApI=', 'wDlCQmIzwRGWEHsnywas1A==', 2);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9901, -9901, 'GE-58-2021', 'Nikola', 'Kekić');
@@ -972,25 +972,25 @@ INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-30000, 'nikola.luburic', '1txSXY+uHGKeCjAxrm3vJlaMCOVxKBBDos9bgVQVQAs=', 'jeNwmEabIonWSm0YkkEawg==', 1);
+	(-30000, 'nikola.luburic', 'YI0f1j/50KzGQFMTdo5UONPEqYu3GBqlyZ3Gfkf4uBQ=', 'xEbT20CjFh6Jdl9pMi0APg==', 1);
 
 INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname") VALUES
 	(-30000, -30000, 'Nikola', 'Luburić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-29999, 'natasa.rajtarov', '2fB35AieElFl+cqvj8oGiYJXTKWEB98yTZo0p3am4YY=', 'Vn9Y/NCcIuVmXMs8RT+iXw==', 1);
+	(-29999, 'natasa.rajtarov', '1cMTWbCuXFREBsl74LCDW8eZnWZdA0pdc7LO4me8QYA=', '/Vz2FVX4Fcwur+BuSGTrCQ==', 1);
 
 INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname") VALUES
 	(-29999, -29999, 'Nataša', 'Rajtarov');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-29998, 'luka.doric', '4gRZ5I81NXfQeLFnpHTsxM4in4Ypp8vXGs8kP/hOVaw=', 'AI34I5GmyIuVyTjU4lbfgA==', 1);
+	(-29998, 'luka.doric', 'mujHug3IwVIJ3QlNKuvXYwzSHzfvWjF7v0YjRTWpSAU=', 'imglNow85dSoD34A1C1rlg==', 1);
 
 INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname") VALUES
 	(-29998, -29998, 'Luka', 'Dorić');
 
 INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-29997, 'simona.prokic', 'VtrtIphVbWpkGV4s3buPIP9EhkZr/oU4ctGIxP0QY2g=', 'WLaG/XSfvteUSPskQHf//g==', 1);
+	(-29997, 'simona.prokic', 'PZg0eJzIB7MOcnmoRYZ9YB06TcqC104YRP2YbZWjGvs=', 'ugCCWkOIkGBGCGP5M15fEg==', 1);
 
 INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname") VALUES
 	(-29997, -29997, 'Simona', 'Prokić');
@@ -1025,25 +1025,25 @@ INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9992, 'GEO-RP All', -99);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9999, -10000, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9999, -10000, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9998, -10000, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9998, -10000, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9997, -10000, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9997, -10000, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9996, -10000, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9996, -10000, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9995, -10000, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9995, -10000, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9994, -10000, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9994, -10000, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9993, -10000, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9993, -10000, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9999, 0.00, -100, -10000, false, false, false, false);
@@ -1142,25 +1142,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99985, -985, 0.00, 0, NULL, -9984);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9992, -9999, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9992, -9999, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9991, -9999, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9991, -9999, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9990, -9999, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9990, -9999, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9989, -9999, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9989, -9999, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9988, -9999, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9988, -9999, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9987, -9999, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9987, -9999, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9986, -9999, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9986, -9999, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9983, 0.00, -100, -9999, false, false, false, false);
@@ -1259,25 +1259,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99969, -985, 0.00, 0, NULL, -9968);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9985, -9998, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9985, -9998, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9984, -9998, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9984, -9998, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9983, -9998, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9983, -9998, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9982, -9998, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9982, -9998, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9981, -9998, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9981, -9998, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9980, -9998, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9980, -9998, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9979, -9998, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9979, -9998, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9967, 0.00, -100, -9998, false, false, false, false);
@@ -1376,25 +1376,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99953, -985, 0.00, 0, NULL, -9952);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9978, -9997, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9978, -9997, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9977, -9997, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9977, -9997, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9976, -9997, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9976, -9997, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9975, -9997, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9975, -9997, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9974, -9997, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9974, -9997, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9973, -9997, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9973, -9997, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9972, -9997, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9972, -9997, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9951, 0.00, -100, -9997, false, false, false, false);
@@ -1493,25 +1493,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99937, -985, 0.00, 0, NULL, -9936);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9971, -9996, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9971, -9996, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9970, -9996, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9970, -9996, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9969, -9996, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9969, -9996, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9968, -9996, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9968, -9996, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9967, -9996, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9967, -9996, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9966, -9996, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9966, -9996, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9965, -9996, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9965, -9996, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9935, 0.00, -100, -9996, false, false, false, false);
@@ -1610,25 +1610,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99921, -985, 0.00, 0, NULL, -9920);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9964, -9995, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9964, -9995, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9963, -9995, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9963, -9995, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9962, -9995, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9962, -9995, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9961, -9995, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9961, -9995, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9960, -9995, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9960, -9995, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9959, -9995, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9959, -9995, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9958, -9995, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9958, -9995, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9919, 0.00, -100, -9995, false, false, false, false);
@@ -1727,25 +1727,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99905, -985, 0.00, 0, NULL, -9904);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9957, -9994, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9957, -9994, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9956, -9994, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9956, -9994, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9955, -9994, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9955, -9994, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9954, -9994, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9954, -9994, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9953, -9994, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9953, -9994, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9952, -9994, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9952, -9994, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9951, -9994, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9951, -9994, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9903, 0.00, -100, -9994, false, false, false, false);
@@ -1844,25 +1844,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99889, -985, 0.00, 0, NULL, -9888);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9950, -9993, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9950, -9993, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9949, -9993, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9949, -9993, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9948, -9993, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9948, -9993, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9947, -9993, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9947, -9993, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9946, -9993, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9946, -9993, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9945, -9993, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9945, -9993, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9944, -9993, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9944, -9993, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9887, 0.00, -100, -9993, false, false, false, false);
@@ -1961,25 +1961,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99873, -985, 0.00, 0, NULL, -9872);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9943, -9992, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9943, -9992, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9942, -9992, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9942, -9992, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9941, -9992, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9941, -9992, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9940, -9992, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9940, -9992, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9939, -9992, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9939, -9992, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9938, -9992, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9938, -9992, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9937, -9992, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9937, -9992, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9871, 0.00, -100, -9992, false, false, false, false);
@@ -2078,25 +2078,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99857, -985, 0.00, 0, NULL, -9856);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9936, -9991, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9936, -9991, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9935, -9991, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9935, -9991, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9934, -9991, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9934, -9991, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9933, -9991, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9933, -9991, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9932, -9991, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9932, -9991, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9931, -9991, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9931, -9991, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9930, -9991, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9930, -9991, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9855, 0.00, -100, -9991, false, false, false, false);
@@ -2195,25 +2195,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99841, -985, 0.00, 0, NULL, -9840);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9929, -9990, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9929, -9990, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9928, -9990, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9928, -9990, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9927, -9990, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9927, -9990, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9926, -9990, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9926, -9990, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9925, -9990, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9925, -9990, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9924, -9990, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9924, -9990, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9923, -9990, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9923, -9990, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9839, 0.00, -100, -9990, false, false, false, false);
@@ -2312,25 +2312,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99825, -985, 0.00, 0, NULL, -9824);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9922, -9989, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9922, -9989, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9921, -9989, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9921, -9989, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9920, -9989, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9920, -9989, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9919, -9989, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9919, -9989, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9918, -9989, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9918, -9989, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9917, -9989, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9917, -9989, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9916, -9989, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9916, -9989, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9823, 0.00, -100, -9989, false, false, false, false);
@@ -2429,25 +2429,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99809, -985, 0.00, 0, NULL, -9808);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9915, -9988, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9915, -9988, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9914, -9988, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9914, -9988, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9913, -9988, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9913, -9988, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9912, -9988, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9912, -9988, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9911, -9988, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9911, -9988, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9910, -9988, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9910, -9988, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9909, -9988, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9909, -9988, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9807, 0.00, -100, -9988, false, false, false, false);
@@ -2546,25 +2546,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99793, -985, 0.00, 0, NULL, -9792);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9908, -9987, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9908, -9987, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9907, -9987, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9907, -9987, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9906, -9987, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9906, -9987, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9905, -9987, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9905, -9987, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9904, -9987, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9904, -9987, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9903, -9987, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9903, -9987, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9902, -9987, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9902, -9987, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9791, 0.00, -100, -9987, false, false, false, false);
@@ -2663,25 +2663,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99777, -985, 0.00, 0, NULL, -9776);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9901, -9986, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9901, -9986, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9900, -9986, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9900, -9986, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9899, -9986, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9899, -9986, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9898, -9986, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9898, -9986, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9897, -9986, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9897, -9986, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9896, -9986, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9896, -9986, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9895, -9986, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9895, -9986, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9775, 0.00, -100, -9986, false, false, false, false);
@@ -2780,25 +2780,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99761, -985, 0.00, 0, NULL, -9760);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9894, -9985, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9894, -9985, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9893, -9985, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9893, -9985, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9892, -9985, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9892, -9985, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9891, -9985, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9891, -9985, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9890, -9985, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9890, -9985, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9889, -9985, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9889, -9985, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9888, -9985, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9888, -9985, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9759, 0.00, -100, -9985, false, false, false, false);
@@ -2897,25 +2897,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99745, -985, 0.00, 0, NULL, -9744);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9887, -9984, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9887, -9984, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9886, -9984, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9886, -9984, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9885, -9984, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9885, -9984, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9884, -9984, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9884, -9984, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9883, -9984, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9883, -9984, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9882, -9984, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9882, -9984, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9881, -9984, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9881, -9984, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9743, 0.00, -100, -9984, false, false, false, false);
@@ -3014,25 +3014,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99729, -985, 0.00, 0, NULL, -9728);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9880, -9983, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9880, -9983, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9879, -9983, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9879, -9983, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9878, -9983, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9878, -9983, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9877, -9983, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9877, -9983, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9876, -9983, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9876, -9983, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9875, -9983, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9875, -9983, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9874, -9983, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9874, -9983, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9727, 0.00, -100, -9983, false, false, false, false);
@@ -3131,25 +3131,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99713, -985, 0.00, 0, NULL, -9712);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9873, -9982, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9873, -9982, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9872, -9982, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9872, -9982, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9871, -9982, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9871, -9982, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9870, -9982, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9870, -9982, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9869, -9982, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9869, -9982, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9868, -9982, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9868, -9982, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9867, -9982, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9867, -9982, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9711, 0.00, -100, -9982, false, false, false, false);
@@ -3248,25 +3248,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99697, -985, 0.00, 0, NULL, -9696);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9866, -9981, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9866, -9981, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9865, -9981, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9865, -9981, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9864, -9981, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9864, -9981, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9863, -9981, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9863, -9981, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9862, -9981, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9862, -9981, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9861, -9981, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9861, -9981, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9860, -9981, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9860, -9981, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9695, 0.00, -100, -9981, false, false, false, false);
@@ -3365,25 +3365,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99681, -985, 0.00, 0, NULL, -9680);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9859, -9980, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9859, -9980, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9858, -9980, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9858, -9980, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9857, -9980, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9857, -9980, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9856, -9980, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9856, -9980, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9855, -9980, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9855, -9980, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9854, -9980, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9854, -9980, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9853, -9980, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9853, -9980, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9679, 0.00, -100, -9980, false, false, false, false);
@@ -3482,25 +3482,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99665, -985, 0.00, 0, NULL, -9664);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9852, -9979, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9852, -9979, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9851, -9979, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9851, -9979, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9850, -9979, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9850, -9979, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9849, -9979, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9849, -9979, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9848, -9979, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9848, -9979, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9847, -9979, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9847, -9979, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9846, -9979, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9846, -9979, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9663, 0.00, -100, -9979, false, false, false, false);
@@ -3599,25 +3599,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99649, -985, 0.00, 0, NULL, -9648);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9845, -9978, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9845, -9978, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9844, -9978, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9844, -9978, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9843, -9978, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9843, -9978, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9842, -9978, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9842, -9978, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9841, -9978, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9841, -9978, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9840, -9978, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9840, -9978, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9839, -9978, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9839, -9978, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9647, 0.00, -100, -9978, false, false, false, false);
@@ -3716,25 +3716,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99633, -985, 0.00, 0, NULL, -9632);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9838, -9977, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9838, -9977, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9837, -9977, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9837, -9977, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9836, -9977, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9836, -9977, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9835, -9977, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9835, -9977, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9834, -9977, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9834, -9977, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9833, -9977, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9833, -9977, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9832, -9977, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9832, -9977, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9631, 0.00, -100, -9977, false, false, false, false);
@@ -3833,25 +3833,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99617, -985, 0.00, 0, NULL, -9616);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9831, -9976, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9831, -9976, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9830, -9976, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9830, -9976, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9829, -9976, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9829, -9976, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9828, -9976, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9828, -9976, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9827, -9976, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9827, -9976, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9826, -9976, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9826, -9976, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9825, -9976, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9825, -9976, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9615, 0.00, -100, -9976, false, false, false, false);
@@ -3950,25 +3950,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99601, -985, 0.00, 0, NULL, -9600);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9824, -9975, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9824, -9975, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9823, -9975, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9823, -9975, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9822, -9975, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9822, -9975, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9821, -9975, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9821, -9975, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9820, -9975, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9820, -9975, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9819, -9975, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9819, -9975, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9818, -9975, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9818, -9975, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9599, 0.00, -100, -9975, false, false, false, false);
@@ -4067,25 +4067,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99585, -985, 0.00, 0, NULL, -9584);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9817, -9974, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9817, -9974, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9816, -9974, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9816, -9974, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9815, -9974, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9815, -9974, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9814, -9974, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9814, -9974, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9813, -9974, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9813, -9974, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9812, -9974, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9812, -9974, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9811, -9974, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9811, -9974, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9583, 0.00, -100, -9974, false, false, false, false);
@@ -4184,25 +4184,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99569, -985, 0.00, 0, NULL, -9568);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9810, -9973, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9810, -9973, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9809, -9973, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9809, -9973, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9808, -9973, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9808, -9973, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9807, -9973, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9807, -9973, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9806, -9973, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9806, -9973, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9805, -9973, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9805, -9973, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9804, -9973, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9804, -9973, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9567, 0.00, -100, -9973, false, false, false, false);
@@ -4301,25 +4301,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99553, -985, 0.00, 0, NULL, -9552);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9803, -9972, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9803, -9972, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9802, -9972, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9802, -9972, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9801, -9972, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9801, -9972, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9800, -9972, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9800, -9972, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9799, -9972, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9799, -9972, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9798, -9972, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9798, -9972, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9797, -9972, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9797, -9972, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9551, 0.00, -100, -9972, false, false, false, false);
@@ -4418,25 +4418,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99537, -985, 0.00, 0, NULL, -9536);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9796, -9971, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9796, -9971, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9795, -9971, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9795, -9971, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9794, -9971, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9794, -9971, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9793, -9971, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9793, -9971, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9792, -9971, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9792, -9971, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9791, -9971, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9791, -9971, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9790, -9971, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9790, -9971, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9535, 0.00, -100, -9971, false, false, false, false);
@@ -4535,25 +4535,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99521, -985, 0.00, 0, NULL, -9520);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9789, -9970, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9789, -9970, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9788, -9970, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9788, -9970, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9787, -9970, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9787, -9970, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9786, -9970, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9786, -9970, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9785, -9970, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9785, -9970, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9784, -9970, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9784, -9970, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9783, -9970, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9783, -9970, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9519, 0.00, -100, -9970, false, false, false, false);
@@ -4652,25 +4652,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99505, -985, 0.00, 0, NULL, -9504);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9782, -9969, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9782, -9969, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9781, -9969, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9781, -9969, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9780, -9969, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9780, -9969, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9779, -9969, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9779, -9969, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9778, -9969, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9778, -9969, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9777, -9969, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9777, -9969, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9776, -9969, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9776, -9969, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9503, 0.00, -100, -9969, false, false, false, false);
@@ -4769,25 +4769,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99489, -985, 0.00, 0, NULL, -9488);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9775, -9968, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9775, -9968, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9774, -9968, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9774, -9968, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9773, -9968, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9773, -9968, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9772, -9968, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9772, -9968, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9771, -9968, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9771, -9968, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9770, -9968, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9770, -9968, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9769, -9968, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9769, -9968, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9487, 0.00, -100, -9968, false, false, false, false);
@@ -4886,25 +4886,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99473, -985, 0.00, 0, NULL, -9472);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9768, -9967, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9768, -9967, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9767, -9967, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9767, -9967, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9766, -9967, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9766, -9967, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9765, -9967, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9765, -9967, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9764, -9967, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9764, -9967, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9763, -9967, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9763, -9967, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9762, -9967, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9762, -9967, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9471, 0.00, -100, -9967, false, false, false, false);
@@ -5003,25 +5003,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99457, -985, 0.00, 0, NULL, -9456);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9761, -9966, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9761, -9966, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9760, -9966, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9760, -9966, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9759, -9966, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9759, -9966, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9758, -9966, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9758, -9966, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9757, -9966, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9757, -9966, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9756, -9966, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9756, -9966, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9755, -9966, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9755, -9966, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9455, 0.00, -100, -9966, false, false, false, false);
@@ -5120,25 +5120,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99441, -985, 0.00, 0, NULL, -9440);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9754, -9965, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9754, -9965, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9753, -9965, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9753, -9965, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9752, -9965, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9752, -9965, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9751, -9965, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9751, -9965, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9750, -9965, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9750, -9965, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9749, -9965, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9749, -9965, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9748, -9965, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9748, -9965, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9439, 0.00, -100, -9965, false, false, false, false);
@@ -5237,25 +5237,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99425, -985, 0.00, 0, NULL, -9424);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9747, -9964, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9747, -9964, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9746, -9964, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9746, -9964, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9745, -9964, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9745, -9964, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9744, -9964, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9744, -9964, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9743, -9964, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9743, -9964, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9742, -9964, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9742, -9964, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9741, -9964, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9741, -9964, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9423, 0.00, -100, -9964, false, false, false, false);
@@ -5354,25 +5354,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99409, -985, 0.00, 0, NULL, -9408);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9740, -9963, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9740, -9963, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9739, -9963, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9739, -9963, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9738, -9963, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9738, -9963, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9737, -9963, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9737, -9963, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9736, -9963, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9736, -9963, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9735, -9963, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9735, -9963, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9734, -9963, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9734, -9963, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9407, 0.00, -100, -9963, false, false, false, false);
@@ -5471,25 +5471,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99393, -985, 0.00, 0, NULL, -9392);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9733, -9962, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9733, -9962, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9732, -9962, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9732, -9962, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9731, -9962, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9731, -9962, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9730, -9962, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9730, -9962, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9729, -9962, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9729, -9962, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9728, -9962, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9728, -9962, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9727, -9962, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9727, -9962, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9391, 0.00, -100, -9962, false, false, false, false);
@@ -5588,25 +5588,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99377, -985, 0.00, 0, NULL, -9376);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9726, -9961, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9726, -9961, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9725, -9961, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9725, -9961, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9724, -9961, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9724, -9961, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9723, -9961, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9723, -9961, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9722, -9961, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9722, -9961, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9721, -9961, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9721, -9961, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9720, -9961, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9720, -9961, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9375, 0.00, -100, -9961, false, false, false, false);
@@ -5705,25 +5705,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99361, -985, 0.00, 0, NULL, -9360);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9719, -9960, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9719, -9960, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9718, -9960, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9718, -9960, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9717, -9960, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9717, -9960, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9716, -9960, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9716, -9960, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9715, -9960, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9715, -9960, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9714, -9960, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9714, -9960, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9713, -9960, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9713, -9960, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9359, 0.00, -100, -9960, false, false, false, false);
@@ -5822,25 +5822,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99345, -985, 0.00, 0, NULL, -9344);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9712, -9959, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9712, -9959, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9711, -9959, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9711, -9959, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9710, -9959, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9710, -9959, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9709, -9959, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9709, -9959, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9708, -9959, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9708, -9959, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9707, -9959, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9707, -9959, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9706, -9959, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9706, -9959, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9343, 0.00, -100, -9959, false, false, false, false);
@@ -5939,25 +5939,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99329, -985, 0.00, 0, NULL, -9328);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9705, -9958, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9705, -9958, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9704, -9958, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9704, -9958, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9703, -9958, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9703, -9958, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9702, -9958, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9702, -9958, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9701, -9958, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9701, -9958, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9700, -9958, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9700, -9958, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9699, -9958, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9699, -9958, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9327, 0.00, -100, -9958, false, false, false, false);
@@ -6056,25 +6056,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99313, -985, 0.00, 0, NULL, -9312);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9698, -9957, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9698, -9957, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9697, -9957, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9697, -9957, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9696, -9957, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9696, -9957, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9695, -9957, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9695, -9957, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9694, -9957, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9694, -9957, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9693, -9957, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9693, -9957, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9692, -9957, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9692, -9957, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9311, 0.00, -100, -9957, false, false, false, false);
@@ -6173,25 +6173,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99297, -985, 0.00, 0, NULL, -9296);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9691, -9956, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9691, -9956, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9690, -9956, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9690, -9956, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9689, -9956, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9689, -9956, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9688, -9956, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9688, -9956, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9687, -9956, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9687, -9956, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9686, -9956, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9686, -9956, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9685, -9956, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9685, -9956, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9295, 0.00, -100, -9956, false, false, false, false);
@@ -6290,25 +6290,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99281, -985, 0.00, 0, NULL, -9280);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9684, -9955, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9684, -9955, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9683, -9955, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9683, -9955, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9682, -9955, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9682, -9955, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9681, -9955, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9681, -9955, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9680, -9955, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9680, -9955, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9679, -9955, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9679, -9955, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9678, -9955, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9678, -9955, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9279, 0.00, -100, -9955, false, false, false, false);
@@ -6407,25 +6407,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99265, -985, 0.00, 0, NULL, -9264);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9677, -9954, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9677, -9954, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9676, -9954, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9676, -9954, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9675, -9954, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9675, -9954, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9674, -9954, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9674, -9954, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9673, -9954, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9673, -9954, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9672, -9954, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9672, -9954, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9671, -9954, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9671, -9954, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9263, 0.00, -100, -9954, false, false, false, false);
@@ -6524,25 +6524,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99249, -985, 0.00, 0, NULL, -9248);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9670, -9953, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9670, -9953, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9669, -9953, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9669, -9953, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9668, -9953, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9668, -9953, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9667, -9953, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9667, -9953, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9666, -9953, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9666, -9953, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9665, -9953, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9665, -9953, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9664, -9953, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9664, -9953, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9247, 0.00, -100, -9953, false, false, false, false);
@@ -6641,25 +6641,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99233, -985, 0.00, 0, NULL, -9232);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9663, -9952, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9663, -9952, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9662, -9952, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9662, -9952, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9661, -9952, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9661, -9952, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9660, -9952, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9660, -9952, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9659, -9952, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9659, -9952, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9658, -9952, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9658, -9952, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9657, -9952, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9657, -9952, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9231, 0.00, -100, -9952, false, false, false, false);
@@ -6758,25 +6758,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99217, -985, 0.00, 0, NULL, -9216);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9656, -9951, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9656, -9951, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9655, -9951, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9655, -9951, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9654, -9951, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9654, -9951, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9653, -9951, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9653, -9951, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9652, -9951, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9652, -9951, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9651, -9951, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9651, -9951, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9650, -9951, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9650, -9951, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9215, 0.00, -100, -9951, false, false, false, false);
@@ -6875,25 +6875,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99201, -985, 0.00, 0, NULL, -9200);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9649, -9950, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9649, -9950, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9648, -9950, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9648, -9950, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9647, -9950, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9647, -9950, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9646, -9950, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9646, -9950, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9645, -9950, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9645, -9950, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9644, -9950, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9644, -9950, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9643, -9950, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9643, -9950, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9199, 0.00, -100, -9950, false, false, false, false);
@@ -6992,25 +6992,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99185, -985, 0.00, 0, NULL, -9184);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9642, -9949, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9642, -9949, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9641, -9949, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9641, -9949, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9640, -9949, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9640, -9949, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9639, -9949, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9639, -9949, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9638, -9949, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9638, -9949, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9637, -9949, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9637, -9949, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9636, -9949, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9636, -9949, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9183, 0.00, -100, -9949, false, false, false, false);
@@ -7109,25 +7109,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99169, -985, 0.00, 0, NULL, -9168);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9635, -9948, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9635, -9948, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9634, -9948, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9634, -9948, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9633, -9948, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9633, -9948, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9632, -9948, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9632, -9948, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9631, -9948, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9631, -9948, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9630, -9948, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9630, -9948, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9629, -9948, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9629, -9948, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9167, 0.00, -100, -9948, false, false, false, false);
@@ -7226,25 +7226,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99153, -985, 0.00, 0, NULL, -9152);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9628, -9947, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9628, -9947, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9627, -9947, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9627, -9947, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9626, -9947, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9626, -9947, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9625, -9947, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9625, -9947, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9624, -9947, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9624, -9947, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9623, -9947, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9623, -9947, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9622, -9947, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9622, -9947, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9151, 0.00, -100, -9947, false, false, false, false);
@@ -7343,25 +7343,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99137, -985, 0.00, 0, NULL, -9136);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9621, -9946, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9621, -9946, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9620, -9946, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9620, -9946, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9619, -9946, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9619, -9946, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9618, -9946, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9618, -9946, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9617, -9946, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9617, -9946, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9616, -9946, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9616, -9946, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9615, -9946, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9615, -9946, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9135, 0.00, -100, -9946, false, false, false, false);
@@ -7460,25 +7460,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99121, -985, 0.00, 0, NULL, -9120);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9614, -9945, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9614, -9945, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9613, -9945, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9613, -9945, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9612, -9945, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9612, -9945, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9611, -9945, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9611, -9945, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9610, -9945, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9610, -9945, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9609, -9945, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9609, -9945, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9608, -9945, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9608, -9945, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9119, 0.00, -100, -9945, false, false, false, false);
@@ -7577,25 +7577,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99105, -985, 0.00, 0, NULL, -9104);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9607, -9944, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9607, -9944, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9606, -9944, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9606, -9944, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9605, -9944, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9605, -9944, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9604, -9944, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9604, -9944, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9603, -9944, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9603, -9944, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9602, -9944, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9602, -9944, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9601, -9944, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9601, -9944, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9103, 0.00, -100, -9944, false, false, false, false);
@@ -7694,25 +7694,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99089, -985, 0.00, 0, NULL, -9088);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9600, -9943, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9600, -9943, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9599, -9943, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9599, -9943, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9598, -9943, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9598, -9943, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9597, -9943, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9597, -9943, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9596, -9943, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9596, -9943, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9595, -9943, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9595, -9943, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9594, -9943, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9594, -9943, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9087, 0.00, -100, -9943, false, false, false, false);
@@ -7811,25 +7811,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99073, -985, 0.00, 0, NULL, -9072);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9593, -9942, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9593, -9942, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9592, -9942, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9592, -9942, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9591, -9942, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9591, -9942, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9590, -9942, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9590, -9942, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9589, -9942, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9589, -9942, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9588, -9942, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9588, -9942, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9587, -9942, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9587, -9942, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9071, 0.00, -100, -9942, false, false, false, false);
@@ -7928,25 +7928,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99057, -985, 0.00, 0, NULL, -9056);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9586, -9941, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9586, -9941, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9585, -9941, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9585, -9941, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9584, -9941, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9584, -9941, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9583, -9941, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9583, -9941, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9582, -9941, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9582, -9941, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9581, -9941, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9581, -9941, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9580, -9941, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9580, -9941, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9055, 0.00, -100, -9941, false, false, false, false);
@@ -8045,25 +8045,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99041, -985, 0.00, 0, NULL, -9040);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9579, -9940, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9579, -9940, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9578, -9940, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9578, -9940, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9577, -9940, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9577, -9940, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9576, -9940, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9576, -9940, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9575, -9940, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9575, -9940, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9574, -9940, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9574, -9940, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9573, -9940, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9573, -9940, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9039, 0.00, -100, -9940, false, false, false, false);
@@ -8162,25 +8162,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99025, -985, 0.00, 0, NULL, -9024);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9572, -9939, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9572, -9939, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9571, -9939, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9571, -9939, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9570, -9939, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9570, -9939, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9569, -9939, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9569, -9939, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9568, -9939, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9568, -9939, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9567, -9939, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9567, -9939, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9566, -9939, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9566, -9939, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9023, 0.00, -100, -9939, false, false, false, false);
@@ -8279,25 +8279,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99009, -985, 0.00, 0, NULL, -9008);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9565, -9938, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9565, -9938, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9564, -9938, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9564, -9938, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9563, -9938, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9563, -9938, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9562, -9938, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9562, -9938, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9561, -9938, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9561, -9938, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9560, -9938, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9560, -9938, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9559, -9938, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9559, -9938, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9007, 0.00, -100, -9938, false, false, false, false);
@@ -8396,25 +8396,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98993, -985, 0.00, 0, NULL, -8992);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9558, -9937, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9558, -9937, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9557, -9937, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9557, -9937, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9556, -9937, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9556, -9937, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9555, -9937, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9555, -9937, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9554, -9937, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9554, -9937, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9553, -9937, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9553, -9937, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9552, -9937, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9552, -9937, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8991, 0.00, -100, -9937, false, false, false, false);
@@ -8513,25 +8513,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98977, -985, 0.00, 0, NULL, -8976);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9551, -9936, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9551, -9936, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9550, -9936, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9550, -9936, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9549, -9936, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9549, -9936, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9548, -9936, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9548, -9936, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9547, -9936, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9547, -9936, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9546, -9936, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9546, -9936, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9545, -9936, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9545, -9936, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8975, 0.00, -100, -9936, false, false, false, false);
@@ -8630,25 +8630,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98961, -985, 0.00, 0, NULL, -8960);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9544, -9935, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9544, -9935, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9543, -9935, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9543, -9935, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9542, -9935, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9542, -9935, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9541, -9935, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9541, -9935, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9540, -9935, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9540, -9935, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9539, -9935, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9539, -9935, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9538, -9935, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9538, -9935, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8959, 0.00, -100, -9935, false, false, false, false);
@@ -8747,25 +8747,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98945, -985, 0.00, 0, NULL, -8944);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9537, -9934, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9537, -9934, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9536, -9934, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9536, -9934, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9535, -9934, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9535, -9934, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9534, -9934, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9534, -9934, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9533, -9934, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9533, -9934, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9532, -9934, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9532, -9934, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9531, -9934, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9531, -9934, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8943, 0.00, -100, -9934, false, false, false, false);
@@ -8864,25 +8864,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98929, -985, 0.00, 0, NULL, -8928);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9530, -9933, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9530, -9933, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9529, -9933, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9529, -9933, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9528, -9933, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9528, -9933, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9527, -9933, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9527, -9933, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9526, -9933, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9526, -9933, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9525, -9933, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9525, -9933, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9524, -9933, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9524, -9933, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8927, 0.00, -100, -9933, false, false, false, false);
@@ -8981,25 +8981,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98913, -985, 0.00, 0, NULL, -8912);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9523, -9932, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9523, -9932, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9522, -9932, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9522, -9932, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9521, -9932, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9521, -9932, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9520, -9932, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9520, -9932, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9519, -9932, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9519, -9932, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9518, -9932, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9518, -9932, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9517, -9932, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9517, -9932, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8911, 0.00, -100, -9932, false, false, false, false);
@@ -9098,25 +9098,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98897, -985, 0.00, 0, NULL, -8896);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9516, -9931, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9516, -9931, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9515, -9931, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9515, -9931, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9514, -9931, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9514, -9931, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9513, -9931, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9513, -9931, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9512, -9931, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9512, -9931, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9511, -9931, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9511, -9931, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9510, -9931, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9510, -9931, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8895, 0.00, -100, -9931, false, false, false, false);
@@ -9215,25 +9215,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98881, -985, 0.00, 0, NULL, -8880);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9509, -9930, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9509, -9930, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9508, -9930, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9508, -9930, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9507, -9930, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9507, -9930, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9506, -9930, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9506, -9930, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9505, -9930, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9505, -9930, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9504, -9930, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9504, -9930, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9503, -9930, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9503, -9930, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8879, 0.00, -100, -9930, false, false, false, false);
@@ -9332,25 +9332,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98865, -985, 0.00, 0, NULL, -8864);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9502, -9929, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9502, -9929, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9501, -9929, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9501, -9929, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9500, -9929, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9500, -9929, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9499, -9929, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9499, -9929, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9498, -9929, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9498, -9929, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9497, -9929, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9497, -9929, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9496, -9929, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9496, -9929, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8863, 0.00, -100, -9929, false, false, false, false);
@@ -9449,25 +9449,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98849, -985, 0.00, 0, NULL, -8848);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9495, -9928, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9495, -9928, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9494, -9928, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9494, -9928, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9493, -9928, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9493, -9928, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9492, -9928, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9492, -9928, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9491, -9928, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9491, -9928, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9490, -9928, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9490, -9928, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9489, -9928, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9489, -9928, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8847, 0.00, -100, -9928, false, false, false, false);
@@ -9566,25 +9566,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98833, -985, 0.00, 0, NULL, -8832);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9488, -9927, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9488, -9927, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9487, -9927, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9487, -9927, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9486, -9927, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9486, -9927, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9485, -9927, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9485, -9927, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9484, -9927, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9484, -9927, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9483, -9927, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9483, -9927, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9482, -9927, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9482, -9927, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8831, 0.00, -100, -9927, false, false, false, false);
@@ -9683,25 +9683,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98817, -985, 0.00, 0, NULL, -8816);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9481, -9926, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9481, -9926, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9480, -9926, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9480, -9926, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9479, -9926, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9479, -9926, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9478, -9926, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9478, -9926, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9477, -9926, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9477, -9926, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9476, -9926, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9476, -9926, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9475, -9926, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9475, -9926, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8815, 0.00, -100, -9926, false, false, false, false);
@@ -9800,25 +9800,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98801, -985, 0.00, 0, NULL, -8800);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9474, -9925, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9474, -9925, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9473, -9925, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9473, -9925, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9472, -9925, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9472, -9925, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9471, -9925, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9471, -9925, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9470, -9925, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9470, -9925, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9469, -9925, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9469, -9925, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9468, -9925, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9468, -9925, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8799, 0.00, -100, -9925, false, false, false, false);
@@ -9917,25 +9917,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98785, -985, 0.00, 0, NULL, -8784);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9467, -9924, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9467, -9924, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9466, -9924, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9466, -9924, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9465, -9924, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9465, -9924, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9464, -9924, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9464, -9924, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9463, -9924, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9463, -9924, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9462, -9924, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9462, -9924, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9461, -9924, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9461, -9924, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8783, 0.00, -100, -9924, false, false, false, false);
@@ -10034,25 +10034,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98769, -985, 0.00, 0, NULL, -8768);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9460, -9923, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9460, -9923, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9459, -9923, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9459, -9923, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9458, -9923, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9458, -9923, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9457, -9923, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9457, -9923, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9456, -9923, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9456, -9923, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9455, -9923, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9455, -9923, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9454, -9923, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9454, -9923, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8767, 0.00, -100, -9923, false, false, false, false);
@@ -10151,25 +10151,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98753, -985, 0.00, 0, NULL, -8752);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9453, -9922, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9453, -9922, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9452, -9922, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9452, -9922, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9451, -9922, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9451, -9922, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9450, -9922, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9450, -9922, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9449, -9922, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9449, -9922, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9448, -9922, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9448, -9922, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9447, -9922, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9447, -9922, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8751, 0.00, -100, -9922, false, false, false, false);
@@ -10268,25 +10268,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98737, -985, 0.00, 0, NULL, -8736);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9446, -9921, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9446, -9921, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9445, -9921, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9445, -9921, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9444, -9921, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9444, -9921, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9443, -9921, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9443, -9921, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9442, -9921, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9442, -9921, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9441, -9921, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9441, -9921, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9440, -9921, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9440, -9921, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8735, 0.00, -100, -9921, false, false, false, false);
@@ -10385,25 +10385,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98721, -985, 0.00, 0, NULL, -8720);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9439, -9920, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9439, -9920, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9438, -9920, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9438, -9920, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9437, -9920, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9437, -9920, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9436, -9920, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9436, -9920, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9435, -9920, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9435, -9920, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9434, -9920, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9434, -9920, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9433, -9920, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9433, -9920, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8719, 0.00, -100, -9920, false, false, false, false);
@@ -10502,25 +10502,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98705, -985, 0.00, 0, NULL, -8704);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9432, -9919, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9432, -9919, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9431, -9919, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9431, -9919, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9430, -9919, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9430, -9919, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9429, -9919, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9429, -9919, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9428, -9919, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9428, -9919, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9427, -9919, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9427, -9919, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9426, -9919, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9426, -9919, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8703, 0.00, -100, -9919, false, false, false, false);
@@ -10619,25 +10619,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98689, -985, 0.00, 0, NULL, -8688);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9425, -9918, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9425, -9918, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9424, -9918, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9424, -9918, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9423, -9918, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9423, -9918, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9422, -9918, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9422, -9918, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9421, -9918, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9421, -9918, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9420, -9918, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9420, -9918, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9419, -9918, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9419, -9918, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8687, 0.00, -100, -9918, false, false, false, false);
@@ -10736,25 +10736,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98673, -985, 0.00, 0, NULL, -8672);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9418, -9917, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9418, -9917, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9417, -9917, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9417, -9917, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9416, -9917, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9416, -9917, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9415, -9917, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9415, -9917, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9414, -9917, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9414, -9917, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9413, -9917, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9413, -9917, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9412, -9917, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9412, -9917, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8671, 0.00, -100, -9917, false, false, false, false);
@@ -10853,25 +10853,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98657, -985, 0.00, 0, NULL, -8656);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9411, -9916, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9411, -9916, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9410, -9916, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9410, -9916, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9409, -9916, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9409, -9916, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9408, -9916, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9408, -9916, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9407, -9916, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9407, -9916, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9406, -9916, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9406, -9916, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9405, -9916, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9405, -9916, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8655, 0.00, -100, -9916, false, false, false, false);
@@ -10970,25 +10970,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98641, -985, 0.00, 0, NULL, -8640);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9404, -9915, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9404, -9915, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9403, -9915, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9403, -9915, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9402, -9915, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9402, -9915, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9401, -9915, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9401, -9915, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9400, -9915, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9400, -9915, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9399, -9915, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9399, -9915, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9398, -9915, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9398, -9915, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8639, 0.00, -100, -9915, false, false, false, false);
@@ -11087,25 +11087,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98625, -985, 0.00, 0, NULL, -8624);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9397, -9914, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9397, -9914, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9396, -9914, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9396, -9914, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9395, -9914, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9395, -9914, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9394, -9914, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9394, -9914, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9393, -9914, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9393, -9914, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9392, -9914, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9392, -9914, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9391, -9914, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9391, -9914, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8623, 0.00, -100, -9914, false, false, false, false);
@@ -11204,25 +11204,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98609, -985, 0.00, 0, NULL, -8608);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9390, -9913, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9390, -9913, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9389, -9913, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9389, -9913, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9388, -9913, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9388, -9913, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9387, -9913, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9387, -9913, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9386, -9913, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9386, -9913, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9385, -9913, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9385, -9913, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9384, -9913, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9384, -9913, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8607, 0.00, -100, -9913, false, false, false, false);
@@ -11321,25 +11321,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98593, -985, 0.00, 0, NULL, -8592);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9383, -9912, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9383, -9912, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9382, -9912, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9382, -9912, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9381, -9912, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9381, -9912, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9380, -9912, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9380, -9912, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9379, -9912, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9379, -9912, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9378, -9912, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9378, -9912, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9377, -9912, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9377, -9912, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8591, 0.00, -100, -9912, false, false, false, false);
@@ -11438,25 +11438,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98577, -985, 0.00, 0, NULL, -8576);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9376, -9911, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9376, -9911, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9375, -9911, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9375, -9911, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9374, -9911, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9374, -9911, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9373, -9911, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9373, -9911, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9372, -9911, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9372, -9911, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9371, -9911, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9371, -9911, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9370, -9911, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9370, -9911, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8575, 0.00, -100, -9911, false, false, false, false);
@@ -11555,25 +11555,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98561, -985, 0.00, 0, NULL, -8560);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9369, -9910, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9369, -9910, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9368, -9910, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9368, -9910, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9367, -9910, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9367, -9910, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9366, -9910, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9366, -9910, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9365, -9910, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9365, -9910, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9364, -9910, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9364, -9910, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9363, -9910, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9363, -9910, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8559, 0.00, -100, -9910, false, false, false, false);
@@ -11672,25 +11672,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98545, -985, 0.00, 0, NULL, -8544);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9362, -9909, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9362, -9909, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9361, -9909, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9361, -9909, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9360, -9909, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9360, -9909, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9359, -9909, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9359, -9909, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9358, -9909, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9358, -9909, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9357, -9909, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9357, -9909, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9356, -9909, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9356, -9909, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8543, 0.00, -100, -9909, false, false, false, false);
@@ -11789,25 +11789,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98529, -985, 0.00, 0, NULL, -8528);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9355, -9908, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9355, -9908, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9354, -9908, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9354, -9908, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9353, -9908, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9353, -9908, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9352, -9908, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9352, -9908, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9351, -9908, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9351, -9908, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9350, -9908, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9350, -9908, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9349, -9908, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9349, -9908, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8527, 0.00, -100, -9908, false, false, false, false);
@@ -11906,25 +11906,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98513, -985, 0.00, 0, NULL, -8512);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9348, -9907, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9348, -9907, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9347, -9907, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9347, -9907, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9346, -9907, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9346, -9907, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9345, -9907, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9345, -9907, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9344, -9907, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9344, -9907, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9343, -9907, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9343, -9907, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9342, -9907, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9342, -9907, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8511, 0.00, -100, -9907, false, false, false, false);
@@ -12023,25 +12023,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98497, -985, 0.00, 0, NULL, -8496);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9341, -9906, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9341, -9906, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9340, -9906, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9340, -9906, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9339, -9906, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9339, -9906, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9338, -9906, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9338, -9906, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9337, -9906, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9337, -9906, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9336, -9906, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9336, -9906, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9335, -9906, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9335, -9906, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8495, 0.00, -100, -9906, false, false, false, false);
@@ -12140,25 +12140,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98481, -985, 0.00, 0, NULL, -8480);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9334, -9905, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9334, -9905, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9333, -9905, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9333, -9905, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9332, -9905, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9332, -9905, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9331, -9905, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9331, -9905, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9330, -9905, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9330, -9905, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9329, -9905, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9329, -9905, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9328, -9905, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9328, -9905, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8479, 0.00, -100, -9905, false, false, false, false);
@@ -12257,25 +12257,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98465, -985, 0.00, 0, NULL, -8464);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9327, -9904, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9327, -9904, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9326, -9904, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9326, -9904, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9325, -9904, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9325, -9904, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9324, -9904, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9324, -9904, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9323, -9904, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9323, -9904, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9322, -9904, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9322, -9904, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9321, -9904, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9321, -9904, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8463, 0.00, -100, -9904, false, false, false, false);
@@ -12374,25 +12374,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98449, -985, 0.00, 0, NULL, -8448);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9320, -9903, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9320, -9903, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9319, -9903, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9319, -9903, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9318, -9903, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9318, -9903, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9317, -9903, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9317, -9903, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9316, -9903, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9316, -9903, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9315, -9903, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9315, -9903, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9314, -9903, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9314, -9903, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8447, 0.00, -100, -9903, false, false, false, false);
@@ -12491,25 +12491,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98433, -985, 0.00, 0, NULL, -8432);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9313, -9902, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9313, -9902, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9312, -9902, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9312, -9902, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9311, -9902, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9311, -9902, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9310, -9902, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9310, -9902, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9309, -9902, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9309, -9902, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9308, -9902, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9308, -9902, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9307, -9902, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9307, -9902, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8431, 0.00, -100, -9902, false, false, false, false);
@@ -12608,25 +12608,25 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-98417, -985, 0.00, 0, NULL, -8416);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9306, -9901, -100, '9/27/2022 9:43:30 AM', 0);
+	(-9306, -9901, -100, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9305, -9901, -99, '9/27/2022 9:43:30 AM', 0);
+	(-9305, -9901, -99, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9304, -9901, -98, '9/27/2022 9:43:30 AM', 0);
+	(-9304, -9901, -98, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9303, -9901, -97, '9/27/2022 9:43:30 AM', 0);
+	(-9303, -9901, -97, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9302, -9901, -96, '9/27/2022 9:43:30 AM', 0);
+	(-9302, -9901, -96, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9301, -9901, -95, '9/27/2022 9:43:30 AM', 0);
+	(-9301, -9901, -95, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9300, -9901, -94, '9/27/2022 9:43:30 AM', 0);
+	(-9300, -9901, -94, '9/27/2022 10:03:00 AM', 0);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-8415, 0.00, -100, -9901, false, false, false, false);
