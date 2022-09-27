@@ -16,7 +16,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.EnrollmentModel
     
     public enum Role
     {
-        Instructor,
-        Learner
+        Learner,
+        Instructor
     }
 }
