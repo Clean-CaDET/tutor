@@ -10,6 +10,7 @@ namespace Tutor.Core.DomainModel.KnowledgeComponents
         public string Code { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
+        public int? ExpectedDurationInMinutes { get; private set; }
 
         public int? KnowledgeUnitId { get; private set; }
         public int? ParentId { get; private set; }

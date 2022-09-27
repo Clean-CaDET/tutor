@@ -14,6 +14,6 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.EnrollmentModel
 
     public enum EnrollmentStatus
     {
-        Active, Completed, Passed, Concluded
+        Hidden, Active, Passed
     }
 }
