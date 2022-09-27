@@ -7,7 +7,7 @@ using Tutor.Infrastructure.Security.Authentication.Users;
 
 namespace Tutor.Infrastructure.Database.DataImport.Enrollment
 {
-    internal class ExcelToEnrollmentTransformer
+    internal static class ExcelToEnrollmentTransformer
     {
         public static EnrollmentExcelContent Transform(List<ExcelWorksheet> sheets)
         {

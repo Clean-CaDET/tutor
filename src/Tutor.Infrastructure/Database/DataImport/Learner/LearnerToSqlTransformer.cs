@@ -22,7 +22,6 @@ namespace Tutor.Infrastructure.Database.DataImport.Learner
                 sqlBuilder.Append("\t(" + learner.Id + ", " + learner.Id + ", '" + learner.Index + "', '"
                                   + learner.Name + "', '" + learner.Surname + "');");
                 sqlBuilder.AppendLine().AppendLine();
-
             }
             return sqlBuilder.ToString();
         }

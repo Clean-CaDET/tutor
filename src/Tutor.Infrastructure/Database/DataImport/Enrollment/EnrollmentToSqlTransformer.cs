@@ -8,7 +8,7 @@ using Tutor.Infrastructure.Database.DataImport.Learner;
 
 namespace Tutor.Infrastructure.Database.DataImport.Enrollment
 {
-    internal class EnrollmentToSqlTransformer
+    internal static class EnrollmentToSqlTransformer
     {
         public static string Transform(EnrollmentExcelContent enrollmentContent, DomainExcelContent domainContent, List<UserLearnerColumns> learners)
         {
@@ -37,7 +37,6 @@ namespace Tutor.Infrastructure.Database.DataImport.Enrollment
                 sqlBuilder.Append("\t(" + instructor.Id + ", " + instructor.Id + ", '"
                                   + instructor.Name + "', '" + instructor.Surname + "');");
                 sqlBuilder.AppendLine().AppendLine();
-
             }
             return sqlBuilder.ToString();
         }
