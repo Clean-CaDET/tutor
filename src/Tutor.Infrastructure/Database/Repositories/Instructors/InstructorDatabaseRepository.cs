@@ -31,8 +31,8 @@ public class InstructorDatabaseRepository : IInstructorRepository
 
     public List<LearnerGroup> GetAssignedGroups(int instructorId, int courseId)
     {
-        return _dbContext.Instructors.Include(i => i.Groups)
-            .FirstOrDefault(i => i.Id.Equals(instructorId))?.Groups
-            .Where(g => g.CourseId.Equals(courseId)).ToList();
+        return _dbContext.LearnerGroups.Include(lg => lg.Membership)
+            .Where(lg => lg.CourseId.Equals(courseId) && lg.Membership.Any(m => m.Instructor.Id.Equals(instructorId)))
+            .ToList();
     }
 }
