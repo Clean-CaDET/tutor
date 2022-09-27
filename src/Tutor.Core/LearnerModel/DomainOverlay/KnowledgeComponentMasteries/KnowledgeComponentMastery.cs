@@ -85,8 +85,8 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         var result = aim.RecordInteraction(interaction);
         if (result.IsSuccess)
         {
-            if (interaction is PassCausing) TryPass();
-            if (interaction is CompletionCausing) TryComplete();
+            if (interaction is IPassCausing) TryPass();
+            if (interaction is ICompletionCausing) TryComplete();
         }
         return result;
     }
