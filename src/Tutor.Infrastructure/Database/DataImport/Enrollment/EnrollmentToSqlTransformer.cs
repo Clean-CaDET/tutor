@@ -78,7 +78,6 @@ namespace Tutor.Infrastructure.Database.DataImport.Enrollment
                 sqlBuilder.Append("\t(" + group.Id + ", '" + group.Name + "', " + course.Id + ");");
                 sqlBuilder.AppendLine().AppendLine();
 
-
                 foreach (var username in group.InstructorUsernames)
                 {
                     var instructor = enrollmentContent.Instructors.Find(i => i.Username.Equals(username));
@@ -117,16 +116,17 @@ namespace Tutor.Infrastructure.Database.DataImport.Enrollment
             foreach (var learner in learners)
             {
                 var enrolledUnitIds = GetEnrolledUnitIds(enrollmentContent, domainContent, learner.Index);
-                foreach (var unit in domainContent.Units.Where(unit => enrolledUnitIds.Contains(unit.Id)))
+                var unitIds = domainContent.Units.Where(unit => enrolledUnitIds.Contains(unit.Id)).Select(unit => unit.Id);
+                foreach (var unitId in unitIds)
                 {
                     sqlBuilder.Append(
                         "INSERT INTO public.\"UnitEnrollments\"(\"Id\", \"LearnerId\", \"KnowledgeUnitId\", \"Start\", \"Status\") VALUES");
                     sqlBuilder.AppendLine();
                     sqlBuilder.Append("\t(" + ++enrollmentId + ", " + learner.Id + ", "
-                                      + unit.Id + ", '" + DateTime.Now + "', " + 0 + ");");
+                                      + unitId + ", '" + DateTime.Now + "', " + 0 + ");");
                     sqlBuilder.AppendLine().AppendLine();
 
-                    foreach (var kcId in domainContent.KnowledgeComponents.Where(kc => kc.UnitId == unit.Id).Select(kc => kc.Id))
+                    foreach (var kcId in domainContent.KnowledgeComponents.Where(kc => kc.UnitId == unitId).Select(kc => kc.Id))
                     {
                         sqlBuilder.Append(
                             "INSERT INTO public.\"KcMasteries\"(\"Id\", \"Mastery\", \"KnowledgeComponentId\", \"LearnerId\", \"IsStarted\", \"IsPassed\", \"IsSatisfied\", \"IsCompleted\") VALUES");
