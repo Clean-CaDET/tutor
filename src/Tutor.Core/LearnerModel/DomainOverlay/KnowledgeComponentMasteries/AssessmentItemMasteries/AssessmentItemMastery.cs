@@ -3,7 +3,7 @@ using System;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
 
-namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
+namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.AssessmentItemMasteries
 {
     public class AssessmentItemMastery : EventSourcedEntity
     {
@@ -16,9 +16,9 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         public bool IsCompleted { get => SubmissionCount > 0; }
         public bool IsPassed { get => Mastery > PassThreshold; }
 
-        public Result RecordInteraction(AssessmentItemEvent interaction)
+        public Result RecordInteraction(AssessmentItemInteraction interaction)
         {
-            Causes(interaction);
+            Causes(interaction.CreateEvent());
             return Result.Ok();
         }
 

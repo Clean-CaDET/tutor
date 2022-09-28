@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.DomainModel.KnowledgeComponents;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.AssessmentItemMasteries;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.KnowledgeComponentEvents;
@@ -75,7 +76,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         return Result.Ok();
     }
 
-    public Result RecordAssessmentItemInteraction(AssessmentItemEvent interaction)
+    public Result RecordAssessmentItemInteraction(AssessmentItemInteraction interaction)
     {
         var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == interaction.AssessmentItemId);
         if (aim == null) return Result.Fail("No mastery for assessment item with id " + interaction.AssessmentItemId +

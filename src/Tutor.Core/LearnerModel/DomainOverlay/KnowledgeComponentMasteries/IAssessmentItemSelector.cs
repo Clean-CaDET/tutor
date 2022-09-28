@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using FluentResults;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.AssessmentItemMasteries;
 
 namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 {

@@ -13,6 +13,7 @@ using Tutor.Core.InstructorModel;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.DomainOverlay.EnrollmentModel;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.AssessmentItemMasteries;
 using Tutor.Core.LearnerModel.Feedback;
 using Tutor.Core.LearnerModel.Notes;
 using Tutor.Infrastructure.Security.Authentication.Users;

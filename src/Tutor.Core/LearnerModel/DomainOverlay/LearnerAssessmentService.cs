@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using System;
 using Tutor.Core.DomainModel.AssessmentItems;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.AssessmentItemMasteries;
 
 namespace Tutor.Core.LearnerModel.DomainOverlay
 {
@@ -31,12 +31,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
                 return Result.Fail(ex.Message);
             }
 
-            var result = kcm.RecordAssessmentItemInteraction(new AssessmentItemAnswered()
-            {
-                AssessmentItemId = assessmentItemId,
-                Submission = submission,
-                Evaluation = evaluation
-            });
+            var result = kcm.RecordAssessmentItemInteraction(new AnswerSubmission(assessmentItemId, submission, evaluation));
             if (result.IsFailed) return result;
 
             _kcMasteryRepository.UpdateKcMastery(kcm);
@@ -56,10 +51,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             var kcm = _kcMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
             if (kcm == null) return Result.Fail("Cannot seek hints for assessment item with ID: " + assessmentItemId);
 
-            var result = kcm.RecordAssessmentItemInteraction(new SoughtHints()
-            {
-                AssessmentItemId = assessmentItemId
-            });
+            var result = kcm.RecordAssessmentItemInteraction(new HintRequest(assessmentItemId));
 
             _kcMasteryRepository.UpdateKcMastery(kcm);
 
@@ -71,10 +63,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             var kcm = _kcMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
             if (kcm == null) return Result.Fail("Cannot seek solution for assessment item with ID: " + assessmentItemId);
 
-            var result = kcm.RecordAssessmentItemInteraction(new SoughtSolution()
-            {
-                AssessmentItemId = assessmentItemId
-            });
+            var result = kcm.RecordAssessmentItemInteraction(new SolutionRequest(assessmentItemId));
 
             _kcMasteryRepository.UpdateKcMastery(kcm);
 

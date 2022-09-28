@@ -5,6 +5,7 @@ using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
+using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.AssessmentItemMasteries;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
 
 namespace Tutor.Core.LearnerModel.DomainOverlay
@@ -67,10 +68,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             var selectionResult = _assessmentItemSelector.SelectSuitableAssessmentItemId(kcMastery.AssessmentItemMasteries, kcMastery.IsPassed);
             if (selectionResult.IsFailed) return selectionResult.ToResult<AssessmentItem>();
 
-            var masteryResult = kcMastery.RecordAssessmentItemInteraction(new AssessmentItemSelected()
-            {
-                AssessmentItemId = selectionResult.Value
-            });
+            var masteryResult = kcMastery.RecordAssessmentItemInteraction(new Selection(selectionResult.Value));
             if (masteryResult.IsFailed) return masteryResult.ToResult<AssessmentItem>();
 
             _kcMasteryRepository.UpdateKcMastery(kcMastery);
