@@ -1,15 +1,15 @@
 ﻿DELETE FROM public."EmotionsFeedbacks";
 DELETE FROM public."TutorImprovementFeedbacks";
+DELETE FROM public."Notes";
 
+DELETE FROM public."CourseOwnerships";
 DELETE FROM public."AssessmentItemMasteries";
 DELETE FROM public."KcMasteries";
 DELETE FROM public."UnitEnrollments";
-DELETE FROM public."Notes";
 DELETE FROM public."GroupMemberships";
 DELETE FROM public."LearnerGroups";
 DELETE FROM public."Learners";
 
-DELETE FROM public."Users";
 
 DELETE FROM public."Texts";
 DELETE FROM public."Images";
@@ -31,7 +31,7 @@ DELETE FROM public."AssessmentItems";
 DELETE FROM public."InstructionalItems";
 DELETE FROM public."KnowledgeComponents";
 DELETE FROM public."KnowledgeUnits";
-
-DELETE FROM public."CourseOwnerships";
 DELETE FROM public."Courses";
+
 DELETE FROM public."Instructors";
+DELETE FROM public."Users";

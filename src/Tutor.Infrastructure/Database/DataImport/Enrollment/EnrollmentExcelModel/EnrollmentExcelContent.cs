@@ -5,7 +5,7 @@ namespace Tutor.Infrastructure.Database.DataImport.Enrollment.EnrollmentExcelMod
     internal class EnrollmentExcelContent
     {
         public List<InstructorColumns> Instructors { get; internal set; }
-        public List<CourseOwnershipColumns> CourseOwnerships { get; internal set; }
+        public List<CourseOwnershipColumns> CourseOwnership { get; internal set; }
         public List<InstructorGroupColumns> CourseGroups { get; internal set; }
         public List<LearnerGroupColumns> LearnerGroups { get; internal set; }
     }

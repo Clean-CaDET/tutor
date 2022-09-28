@@ -19,7 +19,7 @@ namespace Tutor.Infrastructure.Database.DataImport.Enrollment
             return new EnrollmentExcelContent
             {
                 Instructors = instructors,
-                CourseOwnerships = courseOwnerships,
+                CourseOwnership = courseOwnerships,
                 CourseGroups = instructorGroups,
                 LearnerGroups = learnerGroups,
             };
@@ -121,17 +121,25 @@ namespace Tutor.Infrastructure.Database.DataImport.Enrollment
                         {
                             Id = startingId++,
                             Name = groupName,
-                            LearnerIndexes = new HashSet<string> { sheet.Cells["B" + row].Text }
+                            LearnerIndexes = new HashSet<string> { ExtractIndex(sheet.Cells["B" + row].Text) }
                         });
                     }
                     else
                     {
-                        existingGroup.LearnerIndexes.Add(sheet.Cells["B" + row].Text);
+                        existingGroup.LearnerIndexes.Add(ExtractIndex(sheet.Cells["B" + row].Text));
                     }
                 }
             }
 
             return groupColumns;
+        }
+
+        private static string ExtractIndex(string text)
+        {
+            var program = text.Split()[0];
+            var parts = text.Split()[1].Split('/');
+
+            return program + "-" + parts[0] + "-" + parts[1];
         }
     }
 }

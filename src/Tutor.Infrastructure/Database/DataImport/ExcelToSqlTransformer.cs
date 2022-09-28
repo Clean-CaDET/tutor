@@ -26,16 +26,16 @@ public static class ExcelToSqlTransformer
     }
 
     private const string DeleteCommands = @"
-DELETE FROM public.""CourseOwnerships"";
-DELETE FROM public.""InstructorLearnerGroup"";
-DELETE FROM public.""Instructors"";
+DELETE FROM public.""EmotionsFeedbacks"";
+DELETE FROM public.""TutorImprovementFeedbacks"";
+DELETE FROM public.""Notes"";
 
 DELETE FROM public.""AssessmentItemMasteries"";
 DELETE FROM public.""KcMasteries"";
 DELETE FROM public.""UnitEnrollments"";
 DELETE FROM public.""GroupMemberships"";
 DELETE FROM public.""LearnerGroups"";
-DELETE FROM public.""Learners"";
+DELETE FROM public.""CourseOwnerships"";
 DELETE FROM public.""Events"";
 
 DELETE FROM public.""Texts"";
@@ -60,7 +60,10 @@ DELETE FROM public.""KnowledgeComponents"";
 DELETE FROM public.""KnowledgeUnits"";
 DELETE FROM public.""Courses"";
 
+DELETE FROM public.""Learners"";
+DELETE FROM public.""Instructors"";
 DELETE FROM public.""Users"";
+
 ";
 
     private static void Save(string sqlScript, string destination)
