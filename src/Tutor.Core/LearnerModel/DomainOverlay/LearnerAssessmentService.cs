@@ -77,7 +77,9 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             if (kcm == null) return Result.Fail("Learner not enrolled in KC: " + kcId);
 
             var result = kcm.RecordInstructorMessage(message);
+
             _kcMasteryRepository.UpdateKcMastery(kcm);
+
             return result;
         }
     }

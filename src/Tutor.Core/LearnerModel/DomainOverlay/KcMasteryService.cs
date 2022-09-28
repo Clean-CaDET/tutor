@@ -1,12 +1,10 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
-using System.Linq;
 using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.AssessmentItemMasteries;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
 
 namespace Tutor.Core.LearnerModel.DomainOverlay
 {
@@ -51,13 +49,14 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
         {
             var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
             if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
+            var knowledgeComponent = kcMastery.KnowledgeComponent;
 
             var result = kcMastery.RecordInstructionalItemSelection();
             if (result.IsFailed) return result.ToResult<List<InstructionalItem>>();
 
             _kcMasteryRepository.UpdateKcMastery(kcMastery);
 
-            return Result.Ok(kcMastery.KnowledgeComponent.InstructionalItems.OrderBy(i => i.Order).ToList());
+            return Result.Ok(knowledgeComponent.OrderedInstructionalItems);
         }
 
         public Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId)
@@ -90,7 +89,9 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
 
             var result = kcMastery.LaunchSession();
+
             _kcMasteryRepository.UpdateKcMastery(kcMastery);
+
             return result;
         }
 
@@ -100,7 +101,9 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
 
             var result = kcMastery.TerminateSession();
+
             _kcMasteryRepository.UpdateKcMastery(kcMastery);
+
             return result;
         }
     }
