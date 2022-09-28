@@ -25,7 +25,7 @@ public class InstructorDatabaseRepository : IInstructorRepository
     {
         return _dbContext.CourseOwnerships
             .Where(m => m.Instructor.Id.Equals(instructorId))
-            .Include(m => m.Course)
+            .Include(m => m.Course.KnowledgeUnits)
             .Select(m => m.Course).ToList();
     }
 

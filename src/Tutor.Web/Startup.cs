@@ -108,6 +108,8 @@ namespace Tutor.Web
             services.AddScoped<IInstructorRepository, InstructorDatabaseRepository>();
             services.AddScoped<IInstructorService, InstructorService>();
 
+            services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
+
             services.AddSingleton<IEventSerializer>(new DefaultEventSerializer(EventSerializationConfiguration.EventRelatedTypes));
 
             SetupAuth(services);
