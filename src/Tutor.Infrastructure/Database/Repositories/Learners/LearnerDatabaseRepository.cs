@@ -42,11 +42,11 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
             return learner;
         }
 
-        public async Task<PagedResult<Learner>> GetLearnersWithMasteriesAsync(int page, int pageSize, int groupId)
+        public async Task<PagedResult<Learner>> GetLearnersWithMasteriesAsync(int page, int pageSize, int groupId, int courseId)
         {
             if (groupId == 0)
             {
-                return await GetAllLearnersAsync(page, pageSize);
+                return await GetAllLearnersAsync(page, pageSize, courseId);
             }
             return await GetLearnersByGroupAsync(page, pageSize, groupId);
         }
@@ -68,15 +68,22 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
                 .GetPaged(page, pageSize);
         }
 
-        private async Task<PagedResult<Learner>> GetAllLearnersAsync(int page, int pageSize)
+        private Task<PagedResult<Learner>> GetAllLearnersAsync(int page, int pageSize, int courseId)
         {
-            return await _dbContext.Learners
-                .Include(l => l.KnowledgeComponentMasteries)
+            return _dbContext.LearnerGroups.Where(lg => lg.CourseId.Equals(courseId))
+                .Include(lg => lg.Membership)
+                .ThenInclude(m => m.Learner)
+                .ThenInclude(l => l.KnowledgeComponentMasteries)
                 .ThenInclude(kcm => kcm.AssessmentItemMasteries)
-                .Include(l => l.KnowledgeComponentMasteries)
+                .Include(lg => lg.Membership)
+                .ThenInclude(m => m.Learner)
+                .ThenInclude(l => l.KnowledgeComponentMasteries)
                 .ThenInclude(kcm => kcm.KnowledgeComponent)
-                .Include(l => l.KnowledgeComponentMasteries)
+                .Include(lg => lg.Membership)
+                .ThenInclude(m => m.Learner)
+                .ThenInclude(l => l.KnowledgeComponentMasteries)
                 .ThenInclude(kcm => kcm.SessionTracker)
+                .SelectMany(lg => lg.Membership.Select(m => m.Learner)).Where(l => l != null).Distinct()
                 .GetPaged(page, pageSize);
         }
 

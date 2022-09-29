@@ -51,6 +51,15 @@ namespace Tutor.Web.Tests.Integration
                 ControllerContext = BuildContext(id, "instructor")
             };
         }
+        
+        protected UnitController SetupUnitController(IServiceScope scope, string id)
+        {
+            return new UnitController(scope.ServiceProvider.GetRequiredService<IKnowledgeUnitRepository>(),
+                Factory.Services.GetRequiredService<IMapper>())
+            {
+                ControllerContext = BuildContext(id, "instructor")
+            };
+        }
 
         protected LearnerAssessmentController SetupAssessmentsController(IServiceScope scope, string id)
         {

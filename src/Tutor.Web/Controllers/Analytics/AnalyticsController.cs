@@ -34,9 +34,10 @@ public class AnalyticsController : ControllerBase
     }
 
     [HttpGet("learner-progress")]
-    public ActionResult<PagedResult<LearnerProgressDto>> GetProgress([FromQuery] int page, [FromQuery] int pageSize, [FromQuery] int groupId)
+    public ActionResult<PagedResult<LearnerProgressDto>> GetProgress([FromQuery] int page, [FromQuery] int pageSize, [FromQuery] int groupId
+    ,  [FromQuery] int courseId)
     {
-        var task = _learnerRepository.GetLearnersWithMasteriesAsync(page, pageSize, groupId);
+        var task = _learnerRepository.GetLearnersWithMasteriesAsync(page, pageSize, groupId, courseId);
         task.Wait();
         var results = task.Result.Results.Select(progress => _mapper.Map<LearnerProgressDto>(progress)).ToList();
         return Ok(new PagedResult<LearnerProgressDto>(results, task.Result.TotalCount));
