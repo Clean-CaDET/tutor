@@ -14,7 +14,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         public double Mastery { get; private set; }
         public int SubmissionCount { get; private set; }
         public DateTime? LastSubmissionTime { get; set; }
-        public bool IsCompleted { get => SubmissionCount > 0; }
+        public bool IsAttempted { get => SubmissionCount > 0; }
         public bool IsPassed { get => Mastery > PassThreshold; }
 
         public void Select()

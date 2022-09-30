@@ -34,8 +34,8 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         get
         {
             var countPassed = AssessmentItemMasteries.Count(ae => ae.IsPassed);
-            var countCompleted = AssessmentItemMasteries.Count(ae => ae.IsCompleted);
-            return new KcMasteryStatistics(Mastery, AssessmentItemMasteries.Count, countPassed, countCompleted, IsSatisfied);
+            var countAttempted = AssessmentItemMasteries.Count(ae => ae.IsAttempted);
+            return new KcMasteryStatistics(Mastery, AssessmentItemMasteries.Count, countPassed, countAttempted, IsSatisfied);
         }
     }
 
@@ -114,7 +114,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     private void TryComplete()
     {
-        if (IsCompleted || AssessmentItemMasteries.Any(am => !am.IsCompleted)) return;
+        if (IsCompleted || AssessmentItemMasteries.Any(am => !am.IsAttempted)) return;
 
         Causes(new KnowledgeComponentCompleted());
         TrySatisfy();

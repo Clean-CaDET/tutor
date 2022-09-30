@@ -295,7 +295,7 @@ namespace Tutor.Web.Tests.Integration.Learners
             kcMasteryStatistics.IsSatisfied.ShouldBe(false);
             kcMasteryStatistics.Mastery.ShouldBe(0.5);
             kcMasteryStatistics.TotalCount.ShouldBe(4);
-            kcMasteryStatistics.CompletedCount.ShouldBe(4);
+            kcMasteryStatistics.AttemptedCount.ShouldBe(4);
             kcMasteryStatistics.PassedCount.ShouldBe(0);
         }
     }
