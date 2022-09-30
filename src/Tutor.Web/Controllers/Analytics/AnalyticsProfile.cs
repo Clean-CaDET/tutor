@@ -19,7 +19,9 @@ namespace Tutor.Web.Controllers.Analytics
                 .ForMember(dest => dest.KcName, opt => opt.MapFrom(src => src.KnowledgeComponent.Name))
                 .ForMember(dest => dest.KcUnitId, opt => opt.MapFrom(src => src.KnowledgeComponent.KnowledgeUnitId))
                 .ForMember(dest => dest.AssessmentItemMasteries, opt => opt.MapFrom(src => src.AssessmentItemMasteries))
-                .ForMember(dest => dest.Statistics, opt => opt.MapFrom(src => src.Statistics));
+                .ForMember(dest => dest.Statistics, opt => opt.MapFrom(src => src.Statistics))
+                .ForMember(dest => dest.DurationOfFinishedSessionsInMinutes, opt => opt.MapFrom(src => src.SessionTracker.DurationOfFinishedSessions.Minutes))
+                .ForMember(dest => dest.ExpectedDurationInMinutes, opt => opt.MapFrom(src => src.KnowledgeComponent.ExpectedDurationInMinutes));
         }
     }
 }

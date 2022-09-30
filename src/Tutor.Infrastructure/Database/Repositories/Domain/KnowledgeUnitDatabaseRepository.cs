@@ -25,5 +25,12 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
         {
             return _dbContext.KnowledgeUnits.ToList();
         }
+
+        public List<KnowledgeUnit> GetByCourse(int courseId)
+        {
+            return _dbContext.Courses.Include(c => c.KnowledgeUnits)
+                .FirstOrDefault(c => c.Id.Equals(courseId))
+                ?.KnowledgeUnits.ToList();
+        }
     }
 }

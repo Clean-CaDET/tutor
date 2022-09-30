@@ -28,5 +28,12 @@ namespace Tutor.Web.Controllers.Domain
             var result = _knowledgeUnitRepository.GetAll();
             return Ok(result.Select(u => _mapper.Map<UnitDto>(u)).ToList());
         }
+        
+        [HttpGet("units/{courseId}")]
+        public ActionResult<List<UnitDto>> GetByCourse(int courseId)
+        {
+            var result = _knowledgeUnitRepository.GetByCourse(courseId);
+            return Ok(result.Select(u => _mapper.Map<UnitDto>(u)).ToList());
+        }
     }
 }
