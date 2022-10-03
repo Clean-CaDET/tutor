@@ -29,10 +29,10 @@ using Tutor.Infrastructure.Database.Repositories.Learners;
 using Tutor.Infrastructure.EventConfiguration;
 using Tutor.Infrastructure.Security;
 using Tutor.Infrastructure.Security.Authentication;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
-using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ArrangeTasks;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
+using Tutor.Web.Mappings.Domain.DTOs.InstructionalItems;
 
 namespace Tutor.Web
 {

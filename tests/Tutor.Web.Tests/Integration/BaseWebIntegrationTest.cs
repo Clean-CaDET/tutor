@@ -8,8 +8,6 @@ using Tutor.Core.EnrollmentModel;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Infrastructure.Database.EventStore;
-using Tutor.Web.Controllers.Analytics;
-using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Instructors;
 using Tutor.Web.Controllers.Learners.DomainOverlay;
 using Xunit;

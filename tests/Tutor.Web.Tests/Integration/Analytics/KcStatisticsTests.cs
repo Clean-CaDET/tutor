@@ -1,13 +1,9 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.DomainModel;
-using Tutor.Core.LearnerModel;
-using Tutor.Infrastructure.Database.EventStore;
-using Tutor.Web.Controllers.Analytics;
+using Tutor.Web.Mappings.Analytics;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Analytics;

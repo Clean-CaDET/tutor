@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.EnrollmentModel;
 using Tutor.Infrastructure.Security.Authentication.Users;
-using Tutor.Web.Controllers.Domain.DTOs;
+using Tutor.Web.Mappings.Domain.DTOs;
+using Tutor.Web.Mappings.Enrollments;
 
 namespace Tutor.Web.Controllers.Instructors;
 

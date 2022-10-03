@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using Tutor.Web.Controllers.Domain.DTOs;
-using Tutor.Web.Controllers.Learners.DomainOverlay.DTOs;
+using System.Collections.Generic;
+using System.Linq;
+using Tutor.Web.Mappings.Domain.DTOs;
+using Tutor.Web.Mappings.Mastery;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Learners
