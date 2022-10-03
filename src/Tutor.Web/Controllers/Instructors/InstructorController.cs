@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tutor.Core.InstructorModel;
+using System.Collections.Generic;
+using System.Linq;
+using Tutor.Core.EnrollmentModel;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Controllers.Domain.DTOs;
-using Tutor.Web.Controllers.Domain.DTOs.Enrollment;
 
 namespace Tutor.Web.Controllers.Instructors;
 
@@ -16,18 +15,18 @@ namespace Tutor.Web.Controllers.Instructors;
 public class InstructorController : ControllerBase
 {
     private readonly IMapper _mapper;
-    private readonly IInstructorService _instructorService;
+    private readonly IEnrollmentService _enrollmentService;
     
-    public InstructorController(IMapper mapper, IInstructorService instructorService)
+    public InstructorController(IMapper mapper, IEnrollmentService enrollmentService)
     {
         _mapper = mapper;
-        _instructorService = instructorService;
+        _enrollmentService = enrollmentService;
     }
 
     [HttpGet("courses")]
     public ActionResult<List<CourseDto>> GetOwnedCourses()
     {
-        var result = _instructorService.GetOwnedCourses(User.InstructorId());
+        var result = _enrollmentService.GetOwnedCourses(User.InstructorId());
         if (result.IsFailed) return BadRequest(result.Errors);
         return Ok(result.Value.Select(c => _mapper.Map<CourseDto>(c)).ToList());
     }
@@ -35,7 +34,7 @@ public class InstructorController : ControllerBase
     [HttpGet("groups/{courseId:int}")]
     public ActionResult<GroupDto> GetAssignedGroups(int courseId)
     {
-        var result = _instructorService.GetAssignedGroups(User.InstructorId(), courseId);
+        var result = _enrollmentService.GetAssignedGroups(User.InstructorId(), courseId);
         if (result.IsFailed) return BadRequest(result.Errors);
         return Ok(result.Value.Select(g => _mapper.Map<GroupDto>(g)).ToList());
     }

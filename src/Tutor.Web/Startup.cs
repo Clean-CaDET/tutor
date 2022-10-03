@@ -12,7 +12,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Tutor.Core.DomainModel;
-using Tutor.Core.InstructorModel;
+using Tutor.Core.EnrollmentModel;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
@@ -105,8 +105,8 @@ namespace Tutor.Web
             services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<INoteService, NoteService>();
 
-            services.AddScoped<IInstructorRepository, InstructorDatabaseRepository>();
-            services.AddScoped<IInstructorService, InstructorService>();
+            services.AddScoped<IEnrollmentRepository, EnrollmentDatabaseRepository>();
+            services.AddScoped<IEnrollmentService, EnrollmentService>();
 
             services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
 

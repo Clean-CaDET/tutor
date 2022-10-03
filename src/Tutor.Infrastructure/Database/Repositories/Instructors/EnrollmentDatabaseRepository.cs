@@ -1,17 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Core.InstructorModel;
-using Tutor.Core.LearnerModel.DomainOverlay.EnrollmentModel;
+using Tutor.Core.EnrollmentModel;
 
 namespace Tutor.Infrastructure.Database.Repositories.Instructors;
 
-public class InstructorDatabaseRepository : IInstructorRepository
+public class EnrollmentDatabaseRepository : IEnrollmentRepository
 {
     private readonly TutorContext _dbContext;
 
-    public InstructorDatabaseRepository(TutorContext dbContext)
+    public EnrollmentDatabaseRepository(TutorContext dbContext)
     {
         _dbContext = dbContext;
     }

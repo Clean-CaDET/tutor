@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using FluentResults;
+﻿using FluentResults;
+using System.Collections.Generic;
 using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Core.LearnerModel.DomainOverlay.EnrollmentModel;
 
-namespace Tutor.Core.InstructorModel;
+namespace Tutor.Core.EnrollmentModel;
 
-public interface IInstructorService
+public interface IEnrollmentService
 {
     Result<List<Course>> GetOwnedCourses(int instructorId);
 

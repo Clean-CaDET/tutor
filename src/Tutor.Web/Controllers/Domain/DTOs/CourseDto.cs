@@ -6,5 +6,5 @@ public class CourseDto
 {
     public int Id { get; set; }
     public string Name { get; set; }
-    public List<UnitDto> KnowledgeUnits { get; set; }
+    public List<KnowledgeUnitDto> KnowledgeUnits { get; set; }
 }

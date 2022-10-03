@@ -19,7 +19,7 @@ public class UnitTests : BaseWebIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupUnitController(scope, "-51");
-        var result = ((OkObjectResult)controller.GetByCourse(courseId).Result)?.Value as List<UnitDto>;
+        var result = ((OkObjectResult)controller.GetByCourse(courseId).Result)?.Value as List<KnowledgeUnitDto>;
 
         result.Count.ShouldBe(expectedResult);
     }

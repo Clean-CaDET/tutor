@@ -28,25 +28,25 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         }
 
         [HttpGet]
-        public ActionResult<List<UnitDto>> GetUnits()
+        public ActionResult<List<KnowledgeUnitDto>> GetUnits()
         {
             var result = _kcMasteryService.GetUnits(User.LearnerId());
-            return Ok(result.Value.Select(u => _mapper.Map<UnitDto>(u)).ToList());
+            return Ok(result.Value.Select(u => _mapper.Map<KnowledgeUnitDto>(u)).ToList());
         }
 
         [HttpGet("{unitId:int}")]
-        public ActionResult<UnitDto> GetUnit(int unitId)
+        public ActionResult<KnowledgeUnitDto> GetUnit(int unitId)
         {
             var result = _kcMasteryService.GetUnit(unitId, User.LearnerId());
             if (result.IsFailed) return NotFound(result.Errors);
 
-            var unitDto = _mapper.Map<UnitDto>(result.Value);
+            var unitDto = _mapper.Map<KnowledgeUnitDto>(result.Value);
             AppendMasteriesToResponse(unitDto, User.LearnerId());
 
             return Ok(unitDto);
         }
 
-        private void AppendMasteriesToResponse(UnitDto unitDto, int learnerId)
+        private void AppendMasteriesToResponse(KnowledgeUnitDto unitDto, int learnerId)
         {
             var kcIds = GetKcIds(unitDto.KnowledgeComponents);
             var masteries = _kcMasteryService.GetKnowledgeComponentMasteries(kcIds, learnerId).Value;

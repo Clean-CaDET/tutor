@@ -23,17 +23,17 @@ namespace Tutor.Web.Controllers.Domain
         }
 
         [HttpGet("units")]
-        public ActionResult<List<UnitDto>> GetAll()
+        public ActionResult<List<KnowledgeUnitDto>> GetAll()
         {
             var result = _knowledgeUnitRepository.GetAll();
-            return Ok(result.Select(u => _mapper.Map<UnitDto>(u)).ToList());
+            return Ok(result.Select(u => _mapper.Map<KnowledgeUnitDto>(u)).ToList());
         }
         
         [HttpGet("units/{courseId}")]
-        public ActionResult<List<UnitDto>> GetByCourse(int courseId)
+        public ActionResult<List<KnowledgeUnitDto>> GetByCourse(int courseId)
         {
             var result = _knowledgeUnitRepository.GetByCourse(courseId);
-            return Ok(result.Select(u => _mapper.Map<UnitDto>(u)).ToList());
+            return Ok(result.Select(u => _mapper.Map<KnowledgeUnitDto>(u)).ToList());
         }
     }
 }

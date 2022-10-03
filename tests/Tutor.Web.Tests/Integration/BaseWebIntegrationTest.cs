@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
 using Tutor.Core.DomainModel;
-using Tutor.Core.InstructorModel;
+using Tutor.Core.EnrollmentModel;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Infrastructure.Database.EventStore;
@@ -37,7 +37,7 @@ namespace Tutor.Web.Tests.Integration
         protected InstructorController SetupInstructorController(IServiceScope scope, string id)
         {
             return new InstructorController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IInstructorService>())
+                scope.ServiceProvider.GetRequiredService<IEnrollmentService>())
             {
                 ControllerContext = BuildContext(id, "instructor")
             };

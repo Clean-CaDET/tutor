@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using FluentResults;
-using Tutor.Core.LearnerModel.DomainOverlay.EnrollmentModel;
+using System.Collections.Generic;
+using Tutor.Core.EnrollmentModel;
 
 namespace Tutor.Core.LearnerModel
 {

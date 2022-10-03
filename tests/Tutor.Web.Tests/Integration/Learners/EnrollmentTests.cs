@@ -22,7 +22,7 @@ namespace Tutor.Web.Tests.Integration.Learners
             using var scope = Factory.Services.CreateScope();
             var controller = SetupKcmController(scope, learnerId.ToString());
 
-            var units = ((OkObjectResult) controller.GetUnits().Result).Value as List<UnitDto>;
+            var units = ((OkObjectResult) controller.GetUnits().Result).Value as List<KnowledgeUnitDto>;
 
             units.Count.ShouldBe(expectedUnitCount);
         }
@@ -34,7 +34,7 @@ namespace Tutor.Web.Tests.Integration.Learners
             using var scope = Factory.Services.CreateScope();
             var controller = SetupKcmController(scope, "-2");
 
-            var unit = ((OkObjectResult)controller.GetUnit(unitId).Result).Value as UnitDto;
+            var unit = ((OkObjectResult)controller.GetUnit(unitId).Result).Value as KnowledgeUnitDto;
 
             expectedKCs.All(expectedKc => unit.KnowledgeComponents.Any(
                     kc => expectedKc.Id == kc.Id && expectedKc.Mastery.Mastery == kc.Mastery.Mastery))

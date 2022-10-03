@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks;
+using Tutor.Core.EnrollmentModel;
 using Tutor.Core.LearnerModel;
-using Tutor.Core.LearnerModel.DomainOverlay.EnrollmentModel;
 
 namespace Tutor.Infrastructure.Database.Repositories.Learners
 {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Tutor.Web.Controllers.Learners;
 
-namespace Tutor.Web.Controllers.Domain.DTOs.Enrollment;
+namespace Tutor.Web.Controllers.Instructors;
 
 public class GroupDto
 {

@@ -1,5 +1,5 @@
 ﻿using FluentResults;
-using Tutor.Core.InstructorModel;
+using Tutor.Core.EnrollmentModel;
 using Tutor.Core.LearnerModel;
 using Tutor.Infrastructure.Security.Authentication.Users;
 
@@ -10,15 +10,15 @@ namespace Tutor.Infrastructure.Security.Authentication
         private readonly JwtGenerator _tokenGenerator;
         private readonly IUserRepository _userRepository;
         private readonly ILearnerRepository _learnerRepository;
-        private readonly IInstructorRepository _instructorRepository;
+        private readonly IEnrollmentRepository _enrollmentRepository;
 
         public AuthService(IUserRepository userRepository, ILearnerRepository learnerRepository,
-            IInstructorRepository instructorRepository)
+            IEnrollmentRepository enrollmentRepository)
         {
             _tokenGenerator = new JwtGenerator();
             _userRepository = userRepository;
             _learnerRepository = learnerRepository;
-            _instructorRepository = instructorRepository;
+            _enrollmentRepository = enrollmentRepository;
         }
 
         public Result<AuthenticationTokens> Login(string username, string password)
@@ -44,7 +44,7 @@ namespace Tutor.Infrastructure.Security.Authentication
             }
             else if (user.GetPrimaryRoleName().Equals("instructor"))
             {
-                id = _instructorRepository.GetByUserId(user.Id).Id;
+                id = _enrollmentRepository.GetByUserId(user.Id).Id;
             }
             return id;
         }
