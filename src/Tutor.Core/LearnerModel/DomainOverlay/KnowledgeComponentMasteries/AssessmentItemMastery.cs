@@ -37,13 +37,13 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
 
         public Result RecordHintRequest()
         {
-            Causes(new SoughtHints());
+            Causes(new HintsRequested());
             return Result.Ok();
         }
 
         public Result RecordSolutionRequest()
         {
-            Causes(new SoughtSolution());
+            Causes(new SolutionRequested());
             return Result.Ok();
         }
 

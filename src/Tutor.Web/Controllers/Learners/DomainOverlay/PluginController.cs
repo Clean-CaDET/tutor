@@ -42,15 +42,15 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         }
 
         [HttpPost("challenge/hints")]
-        public void SeekHints([FromBody] ChallengeSubmissionDto submission)
+        public void RequestHints([FromBody] ChallengeSubmissionDto submission)
         {
-            _learnerAssessmentService.SeekChallengeHints(submission.LearnerId, submission.AssessmentItemId);
+            _learnerAssessmentService.RecordHintRequest(submission.LearnerId, submission.AssessmentItemId);
         }
 
         [HttpPost("challenge/solution")]
-        public void SeekSolution([FromBody] ChallengeSubmissionDto submission)
+        public void RequestSolution([FromBody] ChallengeSubmissionDto submission)
         {
-            _learnerAssessmentService.SeekChallengeSolution(submission.LearnerId, submission.AssessmentItemId);
+            _learnerAssessmentService.RecordSolutionRequest(submission.LearnerId, submission.AssessmentItemId);
         }
     }
 }

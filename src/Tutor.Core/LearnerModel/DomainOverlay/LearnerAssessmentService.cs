@@ -45,7 +45,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             return Result.Ok(itemMastery?.Mastery ?? 0.0);
         }
 
-        public Result SeekChallengeHints(int learnerId, int assessmentItemId)
+        public Result RecordHintRequest(int learnerId, int assessmentItemId)
         {
             var kcm = _kcMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
             if (kcm == null) return Result.Fail("Cannot seek hints for assessment item with ID: " + assessmentItemId);
@@ -57,7 +57,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             return result;
         }
 
-        public Result SeekChallengeSolution(int learnerId, int assessmentItemId)
+        public Result RecordSolutionRequest(int learnerId, int assessmentItemId)
         {
             var kcm = _kcMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
             if (kcm == null) return Result.Fail("Cannot seek solution for assessment item with ID: " + assessmentItemId);
