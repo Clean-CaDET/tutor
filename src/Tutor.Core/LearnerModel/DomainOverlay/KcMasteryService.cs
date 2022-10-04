@@ -63,12 +63,16 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
             if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
 
-            var result = kcMastery.SelectAssessmentItem(_assessmentItemSelector);
+            var selectionResult = 
+                _assessmentItemSelector.SelectSuitableAssessmentItemId(kcMastery.AssessmentItemMasteries, kcMastery.IsPassed);
+            if (selectionResult.IsFailed) return selectionResult.ToResult<AssessmentItem>();
+
+            var masteryResult = kcMastery.RecordAssessmentItemSelection(selectionResult.Value);
+            if (masteryResult.IsFailed) return masteryResult.ToResult<AssessmentItem>();
+
             _kcMasteryRepository.UpdateKcMastery(kcMastery);
 
-            return result.IsFailed ?
-                Result.Fail("No assessment item found for knowledge component with ID " + knowledgeComponentId) :
-                Result.Ok(_kcMasteryRepository.GetDerivedAssessmentItem(result.Value));
+            return Result.Ok(_kcMasteryRepository.GetDerivedAssessmentItem(selectionResult.Value));
         }
 
         public Result<KcMasteryStatistics> GetKcMasteryStatistics(int knowledgeComponentId, int learnerId)

@@ -77,17 +77,15 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         return Result.Ok();
     }
 
-    public Result<int> SelectAssessmentItem(IAssessmentItemSelector assessmentItemSelector)
+    public Result RecordAssessmentItemSelection(int assessmentItemId)
     {
-        var result = assessmentItemSelector.SelectSuitableAssessmentItemId(AssessmentItemMasteries, IsPassed);
-        if (result.IsFailed) return result;
-
-        var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == result.Value);
-        if (aim == null) return NoAssessmentItemWithId(result.Value);
+        var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
+        if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
 
         JoinOrLaunchSession();
-        aim.Select();
-        return result;
+        aim.RecordSelection();
+
+        return Result.Ok();
     }
 
     public Result SubmitAssessmentItemAnswer(int assessmentItemId, Submission submission, Evaluation evaluation)
