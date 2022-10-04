@@ -134,6 +134,7 @@ namespace Tutor.Web
                 options.AddPolicy("administratorPolicy", policy => policy.RequireRole("administrator"));
                 options.AddPolicy("instructorPolicy", policy => policy.RequireRole("instructor"));
                 options.AddPolicy("learnerPolicy", policy => policy.RequireRole("learner"));
+                options.AddPolicy("coursePolicy", policy => policy.RequireRole("learner", "instructor"));
             });
 
             var key = EnvironmentConnection.GetSecret("JWT_KEY") ?? "tutor_secret_key";

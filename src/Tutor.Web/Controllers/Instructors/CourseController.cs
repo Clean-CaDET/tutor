@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using Tutor.Core.DomainModel;
 using Tutor.Web.Mappings.Domain.DTOs;
 
 namespace Tutor.Web.Controllers.Instructors;
 
-[Authorize(Policy = "instructorPolicy")]
+[Authorize(Policy = "coursePolicy")]
 [Route("api/course/")]
 [ApiController]
 public class CourseController : ControllerBase
@@ -22,7 +21,7 @@ public class CourseController : ControllerBase
     }
 
     [HttpGet("{courseId:int}")]
-    public ActionResult<List<CourseDto>> GetCourse(int courseId)
+    public ActionResult<CourseDto> GetCourse(int courseId)
     {
         var result = _courseRepository.GetCourse(courseId);
         return Ok(_mapper.Map<CourseDto>(result));

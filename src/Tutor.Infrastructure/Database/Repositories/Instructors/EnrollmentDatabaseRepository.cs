@@ -30,8 +30,9 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
 
     public List<LearnerGroup> GetAssignedGroups(int instructorId, int courseId)
     {
-        return _dbContext.LearnerGroups.Include(lg => lg.Membership)
-            .Where(lg => lg.CourseId.Equals(courseId) && lg.Membership.Any(m => m.Instructor.Id.Equals(instructorId)))
-            .ToList();
+        return _dbContext.LearnerGroups
+            .Where(lg => lg.Course.Id.Equals(courseId))
+            .Include(lg => lg.Membership
+            .Where(m => m.Instructor.Id.Equals(instructorId))).ToList();
     }
 }
