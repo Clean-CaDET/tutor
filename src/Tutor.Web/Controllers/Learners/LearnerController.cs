@@ -18,12 +18,15 @@ namespace Tutor.Web.Controllers.Learners
         private readonly IMapper _mapper;
         private readonly ILearnerService _learnerService;
         private readonly ICourseRepository _courseRepository;
+        private readonly IKnowledgeUnitRepository _knowledgeUnitRepository;
 
-        public LearnerController(ILearnerService learnerService, IMapper mapper, ICourseRepository courseRepository)
+        public LearnerController(ILearnerService learnerService, IMapper mapper,
+            ICourseRepository courseRepository, IKnowledgeUnitRepository knowledgeUnitRepository)
         {
             _learnerService = learnerService;
             _mapper = mapper;
             _courseRepository = courseRepository;
+            _knowledgeUnitRepository = knowledgeUnitRepository;
         }
 
         [HttpGet("profile")]
@@ -47,6 +50,13 @@ namespace Tutor.Web.Controllers.Learners
         {
             var result = _courseRepository.GetCoursesByLearner(User.LearnerId());
             return Ok(result.Select(c => _mapper.Map<CourseDto>(c)).ToList());
+        }
+        
+        [HttpGet("units/{courseId}")]
+        public ActionResult<List<KnowledgeUnitDto>> GetUnitsByEnrollmentStatus(int courseId)
+        {
+            var result = _knowledgeUnitRepository.GetByEnrollmentStatus(courseId, User.Id());
+            return Ok(result.Select(u => _mapper.Map<KnowledgeUnitDto>(u)).ToList());
         }
     }
 }

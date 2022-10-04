@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Tutor.Core.DomainModel;
 using Tutor.Core.DomainModel.KnowledgeComponents;
+using Tutor.Core.EnrollmentModel;
 
 namespace Tutor.Infrastructure.Database.Repositories.Domain
 {
@@ -31,6 +32,16 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
             return _dbContext.Courses.Include(c => c.KnowledgeUnits)
                 .FirstOrDefault(c => c.Id.Equals(courseId))
                 ?.KnowledgeUnits.ToList();
+        }
+
+        public List<KnowledgeUnit> GetByEnrollmentStatus(int courseId, int learnerId)
+        {
+            return _dbContext.UnitEnrollments
+                .Where(ue => ue.LearnerId.Equals(learnerId)
+                             && ue.KnowledgeUnit.Course.Id.Equals(courseId)
+                             && ue.Status.Equals(EnrollmentStatus.Active))
+                .Include(ue => ue.KnowledgeUnit)
+                .Select(ue => ue.KnowledgeUnit).ToList();
         }
     }
 }

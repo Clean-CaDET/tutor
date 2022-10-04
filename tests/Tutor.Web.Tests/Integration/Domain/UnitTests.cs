@@ -23,4 +23,15 @@ public class UnitTests : BaseWebIntegrationTest
 
         result.Count.ShouldBe(expectedResult);
     }
+
+    [Theory]
+    [InlineData(-1, 1)]
+    public void Get_units_by_enrollment_status(int courseId, int expectedResult)
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope, "-2");
+        var result = ((OkObjectResult)controller.GetUnitsByEnrollmentStatus(courseId).Result)?.Value as List<KnowledgeUnitDto>;
+
+        result.Count.ShouldBe(expectedResult);
+    }
 }
