@@ -70,12 +70,11 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         if (!SessionTracker.HasUnfinishedSession) LaunchSession();
     }
 
-    public Result<List<InstructionalItem>> SelectInstructionalItems()
+    public Result RecordInstructionalItemSelection()
     {
         JoinOrLaunchSession();
-
         Causes(new InstructionalItemsSelected());
-        return Result.Ok(KnowledgeComponent.InstructionalItems.OrderBy(i => i.Order).ToList());
+        return Result.Ok();
     }
 
     public Result<int> SelectAssessmentItem(IAssessmentItemSelector assessmentItemSelector)

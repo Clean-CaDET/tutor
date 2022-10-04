@@ -26,7 +26,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
         public Result<KnowledgeUnit> GetUnit(int unitId, int learnerId)
         {
             var unit = _kcMasteryRepository.GetUnitWithKcs(unitId, learnerId);
-            if(unit == null) return Result.Fail("Learner not enrolled in KC: " + unitId);
+            if (unit == null) return Result.Fail("Learner not enrolled in KC: " + unitId);
 
             return Result.Ok(unit);
         }
@@ -48,11 +48,14 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
         {
             var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
             if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
+            var knowledgeComponent = kcMastery.KnowledgeComponent;
 
-            var result = kcMastery.SelectInstructionalItems();
+            var result = kcMastery.RecordInstructionalItemSelection();
+            if (result.IsFailed) return result.ToResult<List<InstructionalItem>>();
+
             _kcMasteryRepository.UpdateKcMastery(kcMastery);
 
-            return result;
+            return Result.Ok(knowledgeComponent.GetOrderedInstructionalItems());
         }
 
         public Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId)
