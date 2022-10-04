@@ -7,6 +7,7 @@ using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain;
 
+[Collection("Sequential")]
 public class UnitTests : BaseWebIntegrationTest
 {
     public UnitTests(TutorApplicationTestFactory<Startup> factory) : base(factory)
