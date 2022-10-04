@@ -88,13 +88,13 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         return Result.Ok();
     }
 
-    public Result SubmitAssessmentItemAnswer(int assessmentItemId, Submission submission, Evaluation evaluation)
+    public Result RecordAssessmentItemAnswerSubmission(int assessmentItemId, Submission submission, Evaluation evaluation)
     {
         var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
         if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
 
         JoinOrLaunchSession();
-        aim.SubmitAnswer(submission, evaluation);
+        aim.RecordAnswerSubmission(submission, evaluation);
         TryPass();
         TryComplete();
 
@@ -124,22 +124,22 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         Causes(new KnowledgeComponentSatisfied());
     }
 
-    public Result SeekHintsForAssessmentItem(int assessmentItemId)
+    public Result RecordAssessmentItemHintRequest(int assessmentItemId)
     {
         var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
         if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
 
         JoinOrLaunchSession();
-        return aim.SeekHints();
+        return aim.RecordHintRequest();
     }
 
-    public Result SeekSolutionForAssessmentItem(int assessmentItemId)
+    public Result RecordAssessmentItemSolutionRequest(int assessmentItemId)
     {
         var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
         if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
 
         JoinOrLaunchSession();
-        return aim.SeekSolution();
+        return aim.RecordSolutionRequest();
     }
 
     private Result NoAssessmentItemWithId(int assessmentItemId)

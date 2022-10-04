@@ -36,7 +36,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         public ActionResult<ChallengeEvaluationDto> SubmitChallenge(
             [FromBody] ChallengeSubmissionDto submission)
         {
-            var result = _learnerAssessmentService.EvaluateAndSaveSubmission(submission.LearnerId, submission.AssessmentItemId, _mapper.Map<ChallengeSubmission>(submission));
+            var result = _learnerAssessmentService.SubmitAssessmentItemAnswer(submission.LearnerId, submission.AssessmentItemId, _mapper.Map<ChallengeSubmission>(submission));
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<ChallengeEvaluationDto>(result.Value));
         }
@@ -45,7 +45,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         public ActionResult<List<MrqItemEvaluationDto>> SubmitMultipleResponseQuestion(
             [FromBody] MrqSubmissionDto submission)
         {
-            var result = _learnerAssessmentService.EvaluateAndSaveSubmission(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<MrqSubmission>(submission));
+            var result = _learnerAssessmentService.SubmitAssessmentItemAnswer(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<MrqSubmission>(submission));
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<MrqEvaluationDto>(result.Value));
         }
@@ -54,7 +54,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         public ActionResult<McqEvaluationDto> SubmitMultiChoiceQuestion(
             [FromBody] McqSubmissionDto submission)
         {
-            var result = _learnerAssessmentService.EvaluateAndSaveSubmission(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<McqSubmission>(submission));
+            var result = _learnerAssessmentService.SubmitAssessmentItemAnswer(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<McqSubmission>(submission));
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<McqEvaluationDto>(result.Value));
         }
@@ -63,7 +63,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         public ActionResult<List<AtContainerEvaluationDto>> SubmitArrangeTask(
             [FromBody] AtSubmissionDto submission)
         {
-            var result = _learnerAssessmentService.EvaluateAndSaveSubmission(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<ArrangeTaskSubmission>(submission));
+            var result = _learnerAssessmentService.SubmitAssessmentItemAnswer(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<ArrangeTaskSubmission>(submission));
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<AtEvaluationDto>(result.Value));
         }
@@ -72,7 +72,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         public ActionResult<List<SaqEvaluationDto>> SubmitShortAnswerQuestion(
             [FromBody] SaqSubmissionDto submission)
         {
-            var result = _learnerAssessmentService.EvaluateAndSaveSubmission(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<SaqSubmission>(submission));
+            var result = _learnerAssessmentService.SubmitAssessmentItemAnswer(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<SaqSubmission>(submission));
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<SaqEvaluationDto>(result.Value));
         }
@@ -91,7 +91,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         public ActionResult SaveInstructorMessage([FromBody] InstructorMessageDto instructorMessageDto)
         {
             var result = _learnerAssessmentService
-                .SaveInstructorMessage(User.LearnerId(), instructorMessageDto.KcId, instructorMessageDto.Message);
+                .RecordInstructorMessage(User.LearnerId(), instructorMessageDto.KcId, instructorMessageDto.Message);
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok();
         }

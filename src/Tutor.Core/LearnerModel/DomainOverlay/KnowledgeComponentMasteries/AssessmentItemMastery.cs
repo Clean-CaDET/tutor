@@ -25,7 +25,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             });
         }
 
-        public void SubmitAnswer(Submission submission, Evaluation evaluation)
+        public void RecordAnswerSubmission(Submission submission, Evaluation evaluation)
         {
             Causes(new AssessmentItemAnswered
             {
@@ -35,13 +35,13 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             });
         }
 
-        public Result SeekHints()
+        public Result RecordHintRequest()
         {
             Causes(new SoughtHints());
             return Result.Ok();
         }
 
-        public Result SeekSolution()
+        public Result RecordSolutionRequest()
         {
             Causes(new SoughtSolution());
             return Result.Ok();
