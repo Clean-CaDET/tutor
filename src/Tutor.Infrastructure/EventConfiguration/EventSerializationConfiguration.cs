@@ -17,8 +17,8 @@ namespace Tutor.Infrastructure.EventConfiguration
         public static readonly IImmutableDictionary<Type, string> EventRelatedTypes = new Dictionary<Type, string>
         {
             { typeof(AssessmentItemAnswered), "AssessmentItemAnswered" },
-            { typeof(SoughtHints), "SoughtChallengeHints" },
-            { typeof(SoughtSolution), "SoughtChallengeSolution" },
+            { typeof(HintsRequested), "HintsRequested" },
+            { typeof(SolutionRequested), "SolutionRequested" },
             { typeof(KnowledgeComponentStarted), "KnowledgeComponentStarted" },
             { typeof(KnowledgeComponentPassed), "KnowledgeComponentPassed" },
             { typeof(KnowledgeComponentCompleted), "KnowledgeComponentCompleted" },

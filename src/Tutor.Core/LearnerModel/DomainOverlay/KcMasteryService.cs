@@ -26,7 +26,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
         public Result<KnowledgeUnit> GetUnit(int unitId, int learnerId)
         {
             var unit = _kcMasteryRepository.GetUnitWithKcs(unitId, learnerId);
-            if(unit == null) return Result.Fail("Learner not enrolled in KC: " + unitId);
+            if (unit == null) return Result.Fail("Learner not enrolled in KC: " + unitId);
 
             return Result.Ok(unit);
         }
@@ -49,10 +49,12 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
             if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
 
-            var result = kcMastery.SelectInstructionalItems();
+            var result = kcMastery.RecordInstructionalItemSelection();
+            if (result.IsFailed) return result.ToResult<List<InstructionalItem>>();
+
             _kcMasteryRepository.UpdateKcMastery(kcMastery);
 
-            return result;
+            return Result.Ok(kcMastery.KnowledgeComponent.GetOrderedInstructionalItems());
         }
 
         public Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId)
@@ -60,12 +62,16 @@ namespace Tutor.Core.LearnerModel.DomainOverlay
             var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
             if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
 
-            var result = kcMastery.SelectAssessmentItem(_assessmentItemSelector);
+            var selectionResult = 
+                _assessmentItemSelector.SelectSuitableAssessmentItemId(kcMastery.AssessmentItemMasteries, kcMastery.IsPassed);
+            if (selectionResult.IsFailed) return selectionResult.ToResult<AssessmentItem>();
+
+            var masteryResult = kcMastery.RecordAssessmentItemSelection(selectionResult.Value);
+            if (masteryResult.IsFailed) return masteryResult.ToResult<AssessmentItem>();
+
             _kcMasteryRepository.UpdateKcMastery(kcMastery);
 
-            return result.IsFailed ?
-                Result.Fail("No assessment item found for knowledge component with ID " + knowledgeComponentId) :
-                Result.Ok(_kcMasteryRepository.GetDerivedAssessmentItem(result.Value));
+            return Result.Ok(_kcMasteryRepository.GetDerivedAssessmentItem(selectionResult.Value));
         }
 
         public Result<KcMasteryStatistics> GetKcMasteryStatistics(int knowledgeComponentId, int learnerId)

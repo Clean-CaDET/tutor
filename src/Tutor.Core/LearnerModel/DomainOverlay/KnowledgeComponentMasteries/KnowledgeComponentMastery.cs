@@ -70,34 +70,31 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         if (!SessionTracker.HasUnfinishedSession) LaunchSession();
     }
 
-    public Result<List<InstructionalItem>> SelectInstructionalItems()
+    public Result RecordInstructionalItemSelection()
     {
         JoinOrLaunchSession();
-
         Causes(new InstructionalItemsSelected());
-        return Result.Ok(KnowledgeComponent.InstructionalItems.OrderBy(i => i.Order).ToList());
+        return Result.Ok();
     }
 
-    public Result<int> SelectAssessmentItem(IAssessmentItemSelector assessmentItemSelector)
-    {
-        var result = assessmentItemSelector.SelectSuitableAssessmentItemId(AssessmentItemMasteries, IsPassed);
-        if (result.IsFailed) return result;
-
-        var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == result.Value);
-        if (aim == null) return NoAssessmentItemWithId(result.Value);
-
-        JoinOrLaunchSession();
-        aim.Select();
-        return result;
-    }
-
-    public Result SubmitAssessmentItemAnswer(int assessmentItemId, Submission submission, Evaluation evaluation)
+    public Result RecordAssessmentItemSelection(int assessmentItemId)
     {
         var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
         if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
 
         JoinOrLaunchSession();
-        aim.SubmitAnswer(submission, evaluation);
+        aim.RecordSelection();
+
+        return Result.Ok();
+    }
+
+    public Result RecordAssessmentItemAnswerSubmission(int assessmentItemId, Submission submission, Evaluation evaluation)
+    {
+        var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
+        if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
+
+        JoinOrLaunchSession();
+        aim.RecordAnswerSubmission(submission, evaluation);
         TryPass();
         TryComplete();
 
@@ -127,22 +124,22 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         Causes(new KnowledgeComponentSatisfied());
     }
 
-    public Result SeekHintsForAssessmentItem(int assessmentItemId)
+    public Result RecordAssessmentItemHintRequest(int assessmentItemId)
     {
         var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
         if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
 
         JoinOrLaunchSession();
-        return aim.SeekHints();
+        return aim.RecordHintRequest();
     }
 
-    public Result SeekSolutionForAssessmentItem(int assessmentItemId)
+    public Result RecordAssessmentItemSolutionRequest(int assessmentItemId)
     {
         var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
         if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
 
         JoinOrLaunchSession();
-        return aim.SeekSolution();
+        return aim.RecordSolutionRequest();
     }
 
     private Result NoAssessmentItemWithId(int assessmentItemId)

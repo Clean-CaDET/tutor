@@ -17,7 +17,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
         public bool IsAttempted { get => SubmissionCount > 0; }
         public bool IsPassed { get => Mastery > PassThreshold; }
 
-        public void Select()
+        public void RecordSelection()
         {
             Causes(new AssessmentItemSelected()
             {
@@ -25,7 +25,7 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             });
         }
 
-        public void SubmitAnswer(Submission submission, Evaluation evaluation)
+        public void RecordAnswerSubmission(Submission submission, Evaluation evaluation)
         {
             Causes(new AssessmentItemAnswered
             {
@@ -35,15 +35,15 @@ namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries
             });
         }
 
-        public Result SeekHints()
+        public Result RecordHintRequest()
         {
-            Causes(new SoughtHints());
+            Causes(new HintsRequested());
             return Result.Ok();
         }
 
-        public Result SeekSolution()
+        public Result RecordSolutionRequest()
         {
-            Causes(new SoughtSolution());
+            Causes(new SolutionRequested());
             return Result.Ok();
         }
 
