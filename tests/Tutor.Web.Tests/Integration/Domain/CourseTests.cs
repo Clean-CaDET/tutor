@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using Tutor.Web.Controllers.Domain.DTOs;
+using Tutor.Web.Mappings.Domain.DTOs;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain;

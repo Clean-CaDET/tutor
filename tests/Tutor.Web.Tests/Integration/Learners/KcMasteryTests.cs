@@ -4,10 +4,10 @@ using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Infrastructure.Database;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
-using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
-using Tutor.Web.Controllers.Learners.DomainOverlay.DTOs;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
+using Tutor.Web.Mappings.Domain.DTOs.InstructionalItems;
+using Tutor.Web.Mappings.Mastery;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Learners

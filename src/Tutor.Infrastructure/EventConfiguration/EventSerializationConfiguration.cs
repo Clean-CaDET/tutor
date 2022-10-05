@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentItems.Challenges;
+using Tutor.Core.DomainModel.AssessmentItems.MultiChoiceQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
@@ -33,12 +34,14 @@ namespace Tutor.Infrastructure.EventConfiguration
             { typeof(ChallengeSubmission), "ChallengeSubmission" },
             { typeof(MrqSubmission), "MrqSubmission" },
             { typeof(SaqSubmission), "SaqSubmission" },
+            { typeof(McqSubmission), "McqSubmission"},
             #endregion
             #region Evaluations
             { typeof(ArrangeTaskEvaluation), "ArrangeTaskEvaluation" },
             { typeof(ChallengeEvaluation), "ChallengeEvaluation" },
             { typeof(MrqEvaluation), "MrqEvaluation" },
-            { typeof(SaqEvaluation), "SaqEvaluation" }
+            { typeof(SaqEvaluation), "SaqEvaluation" },
+            { typeof(McqEvaluation), "McqEvaluation"}
             #endregion
         }.ToImmutableDictionary();
     }

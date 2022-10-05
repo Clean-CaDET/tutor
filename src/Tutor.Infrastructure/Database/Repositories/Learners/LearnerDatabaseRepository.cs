@@ -70,7 +70,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
 
         private Task<PagedResult<Learner>> GetAllLearnersAsync(int page, int pageSize, int courseId)
         {
-            return _dbContext.LearnerGroups.Where(lg => lg.CourseId.Equals(courseId))
+            return _dbContext.LearnerGroups.Where(lg => lg.Course.Id.Equals(courseId))
                 .Include(lg => lg.Membership)
                 .ThenInclude(m => m.Learner)
                 .ThenInclude(l => l.KnowledgeComponentMasteries)

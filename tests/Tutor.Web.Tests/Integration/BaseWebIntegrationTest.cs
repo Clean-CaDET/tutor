@@ -8,9 +8,8 @@ using Tutor.Core.EnrollmentModel;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Infrastructure.Database.EventStore;
-using Tutor.Web.Controllers.Analytics;
-using Tutor.Web.Controllers.Domain;
 using Tutor.Web.Controllers.Instructors;
+using Tutor.Web.Controllers.Learners;
 using Tutor.Web.Controllers.Learners.DomainOverlay;
 using Xunit;
 
@@ -40,6 +39,17 @@ namespace Tutor.Web.Tests.Integration
                 scope.ServiceProvider.GetRequiredService<IEnrollmentService>())
             {
                 ControllerContext = BuildContext(id, "instructor")
+            };
+        }
+        
+        protected LearnerController SetupLearnerController(IServiceScope scope, string id)
+        {
+            return new LearnerController(scope.ServiceProvider.GetRequiredService<ILearnerService>(),
+                Factory.Services.GetRequiredService<IMapper>(),
+                scope.ServiceProvider.GetRequiredService<ICourseRepository>(),
+                scope.ServiceProvider.GetRequiredService<IKnowledgeUnitRepository>())
+            {
+                ControllerContext = BuildContext(id, "learner")
             };
         }
 
