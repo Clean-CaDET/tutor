@@ -88,7 +88,7 @@ VALUES (-18, -5, null, -3, 0);
 
 INSERT INTO public."UnitEnrollments"(
 	"Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
-	VALUES (-1, -2, -1, '2021-12-19 21:29:50.379749+01', 0);
+	VALUES (-1, -2, -1, '2021-12-19 21:29:50.379749+01', 1);
 INSERT INTO public."UnitEnrollments"(
 	"Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
 	VALUES (-2, -2, -2, '2021-12-19 21:29:50.379749+01', 0);

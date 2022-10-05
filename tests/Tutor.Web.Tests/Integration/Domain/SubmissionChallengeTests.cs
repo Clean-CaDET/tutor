@@ -5,8 +5,8 @@ using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.LearnerModel.DomainOverlay;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Controllers.Learners.DomainOverlay;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Tests.TestData;
 using Xunit;
 

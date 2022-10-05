@@ -6,10 +6,10 @@ using System.Linq;
 using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
 using Tutor.Infrastructure.Security.Authentication.Users;
-using Tutor.Web.Controllers.Domain.DTOs;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems;
-using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
-using Tutor.Web.Controllers.Learners.DomainOverlay.DTOs;
+using Tutor.Web.Mappings.Domain.DTOs;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems;
+using Tutor.Web.Mappings.Domain.DTOs.InstructionalItems;
+using Tutor.Web.Mappings.Mastery;
 
 namespace Tutor.Web.Controllers.Learners.DomainOverlay
 {

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ArrangeTasks;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain

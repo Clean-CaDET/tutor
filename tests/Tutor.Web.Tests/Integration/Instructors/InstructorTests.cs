@@ -2,8 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
-using Tutor.Web.Controllers.Domain.DTOs;
-using Tutor.Web.Controllers.Instructors;
+using Tutor.Web.Mappings.Domain.DTOs;
+using Tutor.Web.Mappings.Enrollments;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Instructors;

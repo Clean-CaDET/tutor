@@ -9,12 +9,12 @@ using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Infrastructure.Security.Authentication.Users;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiChoiceQuestions;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ShortAnswerQuestions;
-using Tutor.Web.Controllers.Learners.DomainOverlay.DTOs;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ArrangeTasks;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiChoiceQuestions;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ShortAnswerQuestions;
+using Tutor.Web.Mappings.Mastery;
 
 namespace Tutor.Web.Controllers.Learners.DomainOverlay
 {

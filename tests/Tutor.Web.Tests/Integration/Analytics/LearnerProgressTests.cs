@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
-using Tutor.Web.Controllers.Analytics;
+using Tutor.Web.Mappings.Analytics;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Analytics;
