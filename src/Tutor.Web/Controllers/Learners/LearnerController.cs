@@ -55,7 +55,7 @@ namespace Tutor.Web.Controllers.Learners
         [HttpGet("units/{courseId}")]
         public ActionResult<List<KnowledgeUnitDto>> GetUnitsByEnrollmentStatus(int courseId)
         {
-            var result = _knowledgeUnitRepository.GetByEnrollmentStatus(courseId, User.Id());
+            var result = _knowledgeUnitRepository.GetActiveUnits(courseId, User.Id());
             return Ok(result.Select(u => _mapper.Map<KnowledgeUnitDto>(u)).ToList());
         }
     }

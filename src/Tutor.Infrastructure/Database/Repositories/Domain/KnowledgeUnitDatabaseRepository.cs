@@ -34,7 +34,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Domain
                 ?.KnowledgeUnits.ToList();
         }
 
-        public List<KnowledgeUnit> GetByEnrollmentStatus(int courseId, int learnerId)
+        public List<KnowledgeUnit> GetActiveUnits(int courseId, int learnerId)
         {
             return _dbContext.UnitEnrollments
                 .Where(ue => ue.LearnerId.Equals(learnerId)

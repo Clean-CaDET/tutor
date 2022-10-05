@@ -10,6 +10,6 @@ namespace Tutor.Core.DomainModel
 
         List<KnowledgeUnit> GetByCourse(int courseId);
 
-        List<KnowledgeUnit> GetByEnrollmentStatus(int courseId, int learnerId);
+        List<KnowledgeUnit> GetActiveUnits(int courseId, int learnerId);
     }
 }
