@@ -71,6 +71,8 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
                 .Include(kcm => kcm.KnowledgeComponent)
                 .ThenInclude(kc => kc.InstructionalItems)
                 .FirstOrDefault(kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponent.Id == knowledgeComponentId);
+            if (kcm == null) return null;
+
             kcm.MoveOnCriteria = _moveOnCriteria;
             kcm.Initialize();
             return kcm;
