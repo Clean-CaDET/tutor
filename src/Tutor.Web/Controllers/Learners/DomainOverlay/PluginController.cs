@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Tutor.Core.DomainModel.AssessmentItems.Challenges;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.DomainOverlay;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Controllers.Users;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
+using Tutor.Web.Mappings.Enrollments;
 
 namespace Tutor.Web.Controllers.Learners.DomainOverlay
 {
@@ -36,21 +37,21 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         public ActionResult<ChallengeEvaluationDto> SubmitChallenge(
             [FromBody] ChallengeSubmissionDto submission)
         {
-            var result = _learnerAssessmentService.EvaluateAndSaveSubmission(submission.LearnerId, submission.AssessmentItemId, _mapper.Map<ChallengeSubmission>(submission));
+            var result = _learnerAssessmentService.SubmitAssessmentItemAnswer(submission.LearnerId, submission.AssessmentItemId, _mapper.Map<ChallengeSubmission>(submission));
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<ChallengeEvaluationDto>(result.Value));
         }
 
         [HttpPost("challenge/hints")]
-        public void SeekHints([FromBody] ChallengeSubmissionDto submission)
+        public void RequestHints([FromBody] ChallengeSubmissionDto submission)
         {
-            _learnerAssessmentService.SeekChallengeHints(submission.LearnerId, submission.AssessmentItemId);
+            _learnerAssessmentService.RecordHintRequest(submission.LearnerId, submission.AssessmentItemId);
         }
 
         [HttpPost("challenge/solution")]
-        public void SeekSolution([FromBody] ChallengeSubmissionDto submission)
+        public void RequestSolution([FromBody] ChallengeSubmissionDto submission)
         {
-            _learnerAssessmentService.SeekChallengeSolution(submission.LearnerId, submission.AssessmentItemId);
+            _learnerAssessmentService.RecordSolutionRequest(submission.LearnerId, submission.AssessmentItemId);
         }
     }
 }

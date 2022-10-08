@@ -1,7 +1,6 @@
 ﻿namespace Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents
 {
-    public class AssessmentItemSelected : KnowledgeComponentEvent
+    public class AssessmentItemSelected : AssessmentItemEvent
     {
-        public int AssessmentItemId { get; set; }
     }
 }

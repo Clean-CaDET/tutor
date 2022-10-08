@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
 using Tutor.Core.DomainModel;
+using Tutor.Core.EnrollmentModel;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Infrastructure.Database.EventStore;
-using Tutor.Web.Controllers.Analytics;
+using Tutor.Web.Controllers.Instructors;
+using Tutor.Web.Controllers.Learners;
 using Tutor.Web.Controllers.Learners.DomainOverlay;
 using Xunit;
 
@@ -22,25 +24,63 @@ namespace Tutor.Web.Tests.Integration
             Factory = factory;
         }
 
-        protected KcMasteryController SetupKcmController(IServiceScope scope, string userAndLearnerId)
+        protected KcMasteryController SetupKcmController(IServiceScope scope, string id)
         {
             return new KcMasteryController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IKcMasteryService>())
             {
-                ControllerContext = BuildContext(userAndLearnerId)
+                ControllerContext = BuildContext(id, "learner")
             };
         }
 
-        protected LearnerAssessmentController SetupAssessmentsController(IServiceScope scope, string userAndLearnerId)
+        protected InstructorController SetupInstructorController(IServiceScope scope, string id)
+        {
+            return new InstructorController(Factory.Services.GetRequiredService<IMapper>(),
+                scope.ServiceProvider.GetRequiredService<IEnrollmentService>())
+            {
+                ControllerContext = BuildContext(id, "instructor")
+            };
+        }
+        
+        protected LearnerController SetupLearnerController(IServiceScope scope, string id)
+        {
+            return new LearnerController(scope.ServiceProvider.GetRequiredService<ILearnerService>(),
+                Factory.Services.GetRequiredService<IMapper>(),
+                scope.ServiceProvider.GetRequiredService<ICourseRepository>(),
+                scope.ServiceProvider.GetRequiredService<IKnowledgeUnitRepository>())
+            {
+                ControllerContext = BuildContext(id, "learner")
+            };
+        }
+
+        protected CourseController SetupCourseController(IServiceScope scope, string id)
+        {
+            return new CourseController(scope.ServiceProvider.GetRequiredService<ICourseRepository>(),
+                Factory.Services.GetRequiredService<IMapper>())
+            {
+                ControllerContext = BuildContext(id, "instructor")
+            };
+        }
+        
+        protected UnitController SetupUnitController(IServiceScope scope, string id)
+        {
+            return new UnitController(scope.ServiceProvider.GetRequiredService<IKnowledgeUnitRepository>(),
+                Factory.Services.GetRequiredService<IMapper>())
+            {
+                ControllerContext = BuildContext(id, "instructor")
+            };
+        }
+
+        protected LearnerAssessmentController SetupAssessmentsController(IServiceScope scope, string id)
         {
             return new LearnerAssessmentController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<ILearnerAssessmentService>())
             {
-                ControllerContext = BuildContext(userAndLearnerId)
+                ControllerContext = BuildContext(id, "learner")
             };
         }
 
-        protected AnalyticsController CreateAnalyticsController(IServiceScope scope, string userId)
+        protected AnalyticsController CreateAnalyticsController(IServiceScope scope, string id)
         {
             return new AnalyticsController(
                 scope.ServiceProvider.GetRequiredService<ILearnerRepository>(),
@@ -48,11 +88,11 @@ namespace Tutor.Web.Tests.Integration
                 scope.ServiceProvider.GetRequiredService<IEventStore>(),
                 Factory.Services.GetRequiredService<IMapper>())
             {
-                ControllerContext = BuildContext(userId)
+                ControllerContext = BuildContext(id, "instructor")
             };
         }
 
-        protected static ControllerContext BuildContext(string userAndLearnerId)
+        protected static ControllerContext BuildContext(string id, string role)
         {
             return new ControllerContext()
             {
@@ -60,8 +100,8 @@ namespace Tutor.Web.Tests.Integration
                 {
                     User = new ClaimsPrincipal(new ClaimsIdentity(new[]
                     {
-                        new Claim("id", userAndLearnerId),
-                        new Claim("learnerId", userAndLearnerId),
+                        new Claim("id", id),
+                        new Claim(role + "Id", id),
                     }))
                 }
             };

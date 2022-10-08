@@ -12,6 +12,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Tutor.Core.DomainModel;
+using Tutor.Core.EnrollmentModel;
 using Tutor.Core.LearnerModel;
 using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
@@ -20,16 +21,18 @@ using Tutor.Core.LearnerModel.Feedback;
 using Tutor.Core.LearnerModel.Notes;
 using Tutor.Infrastructure;
 using Tutor.Infrastructure.Database.EventStore;
+using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.Infrastructure.Database.Repositories;
 using Tutor.Infrastructure.Database.Repositories.Domain;
+using Tutor.Infrastructure.Database.Repositories.Instructors;
 using Tutor.Infrastructure.Database.Repositories.Learners;
+using Tutor.Infrastructure.EventConfiguration;
 using Tutor.Infrastructure.Security;
 using Tutor.Infrastructure.Security.Authentication;
-using Tutor.Infrastructure.Serialization;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.ArrangeTasks;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.Challenges;
-using Tutor.Web.Controllers.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
-using Tutor.Web.Controllers.Domain.DTOs.InstructionalItems;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ArrangeTasks;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
+using Tutor.Web.Mappings.Domain.DTOs.InstructionalItems;
 
 namespace Tutor.Web
 {
@@ -67,7 +70,12 @@ namespace Tutor.Web
                 registry.RegisterType<TextDto>();
                 registry.RegisterType<VideoDto>();
 
-                serializerOptions.SetupEvents();
+                registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(
+                    serializerOptions, EventSerializationConfiguration.EventRelatedTypes, "$discriminator"));
+                foreach (var type in EventSerializationConfiguration.EventRelatedTypes.Keys)
+                {
+                    registry.RegisterType(type);
+                }
             });
 
             services.AddCors(options =>
@@ -93,11 +101,16 @@ namespace Tutor.Web
 
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
-            
+
             services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<INoteService, NoteService>();
 
-            services.AddScoped<IEventSerializer, EventSerializer>();
+            services.AddScoped<IEnrollmentRepository, EnrollmentDatabaseRepository>();
+            services.AddScoped<IEnrollmentService, EnrollmentService>();
+
+            services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
+
+            services.AddSingleton<IEventSerializer>(new DefaultEventSerializer(EventSerializationConfiguration.EventRelatedTypes));
 
             SetupAuth(services);
 
@@ -121,6 +134,7 @@ namespace Tutor.Web
                 options.AddPolicy("administratorPolicy", policy => policy.RequireRole("administrator"));
                 options.AddPolicy("instructorPolicy", policy => policy.RequireRole("instructor"));
                 options.AddPolicy("learnerPolicy", policy => policy.RequireRole("learner"));
+                options.AddPolicy("coursePolicy", policy => policy.RequireRole("learner", "instructor"));
             });
 
             var key = EnvironmentConnection.GetSecret("JWT_KEY") ?? "tutor_secret_key";

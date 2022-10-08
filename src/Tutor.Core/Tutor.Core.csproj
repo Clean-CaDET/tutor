@@ -6,7 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="CleanCaDET.CodeModel" Version="1.0.1" />
-    <PackageReference Include="FluentResults" Version="3.1.0" />
+    <PackageReference Include="FluentResults" Version="3.13.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="docs\" />
   </ItemGroup>
 
 </Project>

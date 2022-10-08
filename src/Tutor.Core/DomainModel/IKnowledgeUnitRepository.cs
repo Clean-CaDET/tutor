@@ -7,5 +7,9 @@ namespace Tutor.Core.DomainModel
     {
         KnowledgeUnit Get(int id);
         List<KnowledgeUnit> GetAll();
+
+        List<KnowledgeUnit> GetByCourse(int courseId);
+
+        List<KnowledgeUnit> GetActiveUnits(int courseId, int learnerId);
     }
 }

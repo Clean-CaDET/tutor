@@ -2,5 +2,6 @@
 {
     public class KnowledgeComponentSatisfied : KnowledgeComponentEvent
     {
+        public double MinutesToSatisfaction { get; set; }
     }
 }

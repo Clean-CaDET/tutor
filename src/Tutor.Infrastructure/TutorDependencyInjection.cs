@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Tutor.Infrastructure.Database;
 using Tutor.Infrastructure.Database.EventStore;
+using Tutor.Infrastructure.Database.EventStore.Postgres;
 using Tutor.Infrastructure.Security;
 
 namespace Tutor.Infrastructure

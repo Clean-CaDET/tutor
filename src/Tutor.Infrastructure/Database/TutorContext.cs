@@ -1,14 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using Tutor.Core.DomainModel.AssessmentItems;
 using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
 using Tutor.Core.DomainModel.AssessmentItems.Challenges;
 using Tutor.Core.DomainModel.AssessmentItems.Challenges.FulfillmentStrategies;
+using Tutor.Core.DomainModel.AssessmentItems.MultiChoiceQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Core.DomainModel.InstructionalItems;
 using Tutor.Core.DomainModel.KnowledgeComponents;
+using Tutor.Core.EnrollmentModel;
 using Tutor.Core.LearnerModel;
-using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
 using Tutor.Core.LearnerModel.Feedback;
 using Tutor.Core.LearnerModel.Notes;
@@ -19,6 +21,7 @@ namespace Tutor.Infrastructure.Database
     public class TutorContext : DbContext
     {
         #region Domain Model
+        public DbSet<Course> Courses { get; set; }
         public DbSet<KnowledgeUnit> KnowledgeUnits { get; set; }
         public DbSet<KnowledgeComponent> KnowledgeComponents { get; set; }
         public DbSet<AssessmentItem> AssessmentItems { get; set; }
@@ -27,6 +30,7 @@ namespace Tutor.Infrastructure.Database
         public DbSet<Markdown> Texts { get; set; }
         public DbSet<Video> Videos { get; set; }
         public DbSet<Mrq> MultiResponseQuestions { get; set; }
+        public DbSet<Mcq> MultiChoiceQuestions { get; set; }
         public DbSet<MrqItem> MrqItems { get; set; }
         public DbSet<Saq> ShortAnswerQuestions { get; set; }
         public DbSet<ArrangeTask> ArrangeTasks { get; set; }
@@ -59,6 +63,11 @@ namespace Tutor.Infrastructure.Database
 
         public DbSet<User> Users { get; set; }
 
+        #region Instructors
+        public DbSet<Instructor> Instructors { get; set; }
+        public DbSet<CourseOwnership> CourseOwnerships { get; set; }
+        #endregion
+
         public TutorContext(DbContextOptions<TutorContext> options) : base(options)
         {
         }
@@ -69,8 +78,9 @@ namespace Tutor.Infrastructure.Database
             modelBuilder.Entity<Image>().ToTable("Images");
             modelBuilder.Entity<Video>().ToTable("Videos");
             modelBuilder.Entity<Mrq>().ToTable("MultiResponseQuestions");
+            modelBuilder.Entity<Mcq>().ToTable("MultiChoiceQuestions");
             modelBuilder.Entity<Saq>().ToTable("ShortAnswerQuestions");
-            
+
             ConfigureArrangeTask(modelBuilder);
             ConfigureChallenge(modelBuilder);
             ConfigureKnowledgeComponent(modelBuilder);
@@ -106,13 +116,22 @@ namespace Tutor.Infrastructure.Database
 
         private static void ConfigureKcMastery(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<KnowledgeComponentMastery>().Ignore(kcm => kcm.MoveOnCriteria);
-            modelBuilder.Entity<KnowledgeComponentMastery>()
-                .HasOne(kcm => kcm.KnowledgeComponent)
-                .WithMany();
-            modelBuilder.Entity<KnowledgeComponentMastery>()
-                .HasMany(kcm => kcm.AssessmentMasteries)
-                .WithOne();
+            var kcmBuilder = modelBuilder.Entity<KnowledgeComponentMastery>();
+            kcmBuilder.Ignore(kcm => kcm.MoveOnCriteria);
+            kcmBuilder.HasOne(kcm => kcm.KnowledgeComponent).WithMany().IsRequired();
+            kcmBuilder.Property(kcm => kcm.Mastery).HasDefaultValue(0);
+            kcmBuilder.Property(kcm => kcm.IsStarted).HasDefaultValue(false);
+            kcmBuilder.Property(kcm => kcm.IsSatisfied).HasDefaultValue(false);
+            kcmBuilder.Property(kcm => kcm.IsCompleted).HasDefaultValue(false);
+            kcmBuilder.Property(kcm => kcm.IsPassed).HasDefaultValue(false);
+            kcmBuilder.HasMany(kcm => kcm.AssessmentItemMasteries).WithOne().IsRequired();
+            kcmBuilder.OwnsOne(kcm => kcm.SessionTracker, trackerBuilder =>
+                {
+                    trackerBuilder.Property(tracker => tracker.CountOfSessions).IsRequired().HasDefaultValue(0);
+                    trackerBuilder.Property(tracker => tracker.DurationOfFinishedSessions).IsRequired().HasDefaultValue(TimeSpan.Zero);
+                    trackerBuilder.Ignore(tracker => tracker.Id);
+                });
+            kcmBuilder.Navigation(kcm => kcm.SessionTracker).IsRequired();
         }
     }
 }

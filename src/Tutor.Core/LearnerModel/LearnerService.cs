@@ -1,5 +1,6 @@
-using System.Collections.Generic;
 using FluentResults;
+using System.Collections.Generic;
+using Tutor.Core.EnrollmentModel;
 
 namespace Tutor.Core.LearnerModel
 {
