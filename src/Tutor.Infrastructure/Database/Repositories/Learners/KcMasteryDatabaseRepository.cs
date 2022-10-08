@@ -52,7 +52,7 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
                 .Include(kcm => kcm.KnowledgeComponent)
                 .Include(kcm => kcm.SessionTracker)
                 .FirstOrDefault(kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponent.Id == knowledgeComponentId);
-            kcm.Initialize();
+            kcm?.Initialize();
             return kcm;
         }
         public List<KnowledgeComponentMastery> GetBasicKcMasteries(List<int> kcIds, int learnerId)
