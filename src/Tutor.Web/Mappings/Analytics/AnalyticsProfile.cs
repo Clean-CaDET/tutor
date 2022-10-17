@@ -21,7 +21,7 @@ namespace Tutor.Web.Mappings.Analytics
                 .ForMember(dest => dest.AssessmentItemMasteries, opt => opt.MapFrom(src => src.AssessmentItemMasteries))
                 .ForMember(dest => dest.Statistics, opt => opt.MapFrom(src => src.Statistics))
                 .ForMember(dest => dest.DurationOfFinishedSessionsInMinutes, opt => opt.MapFrom(src =>
-                    src.SessionTracker.DurationOfFinishedSessions.Hours * 60 + src.SessionTracker.DurationOfFinishedSessions.Minutes))
+                    (src.SessionTracker.DurationOfFinishedSessions.Hours * 60) + src.SessionTracker.DurationOfFinishedSessions.Minutes))
                 .ForMember(dest => dest.ExpectedDurationInMinutes, opt => opt.MapFrom(src => src.KnowledgeComponent.ExpectedDurationInMinutes));
         }
     }
