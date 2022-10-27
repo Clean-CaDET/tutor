@@ -6,9 +6,24 @@ using static System.Int32;
 
 namespace Tutor.Infrastructure.Database.DataImport.Domain
 {
-    public static class ExcelToDomainTransformer
+    public class ExcelToDomainTransformer
     {
-        public static DomainExcelContent Transform(List<ExcelWorksheet> sheets)
+        private int _courseId;
+        private int _unitId;
+        private int _kcId;
+        private int _ieId;
+        private int _aeId;
+
+        public ExcelToDomainTransformer()
+        {
+            _courseId = -100;
+            _unitId = -100;
+            _kcId = -100;
+            _ieId = -1000;
+            _aeId = -1000;
+        }
+
+        public DomainExcelContent Transform(List<ExcelWorksheet> sheets)
         {
             var courses = CreateCourses(sheets.Where(s => s.Name == "Courses"));
             var units = CreateUnits(sheets.Where(s => s.Name == "Units"), courses);
@@ -19,10 +34,9 @@ namespace Tutor.Infrastructure.Database.DataImport.Domain
             return new DomainExcelContent(courses, units, kcs, ies, aes);
         }
 
-        private static List<CourseColumns> CreateCourses(IEnumerable<ExcelWorksheet> courseSheets)
+        private List<CourseColumns> CreateCourses(IEnumerable<ExcelWorksheet> courseSheets)
         {
             var courses = new List<CourseColumns>();
-            var startingId = -100;
 
             foreach (var sheet in courseSheets)
             {
@@ -31,7 +45,7 @@ namespace Tutor.Infrastructure.Database.DataImport.Domain
                     if (string.IsNullOrEmpty(sheet.Cells["A" + row].Text)) break;
                     courses.Add(new CourseColumns
                     {
-                        Id = startingId++,
+                        Id = _courseId++,
                         Code = sheet.Cells["A" + row].Text,
                         Name = sheet.Cells["B" + row].Text,
                         Description = sheet.Cells["C" + row].Text
@@ -42,10 +56,9 @@ namespace Tutor.Infrastructure.Database.DataImport.Domain
             return courses;
         }
 
-        private static List<UnitColumns> CreateUnits(IEnumerable<ExcelWorksheet> unitSheets, List<CourseColumns> courses)
+        private List<UnitColumns> CreateUnits(IEnumerable<ExcelWorksheet> unitSheets, List<CourseColumns> courses)
         {
             var units = new List<UnitColumns>();
-            var startingId = -100;
 
             foreach (var sheet in unitSheets)
             {
@@ -54,7 +67,7 @@ namespace Tutor.Infrastructure.Database.DataImport.Domain
                     if (string.IsNullOrEmpty(sheet.Cells["A" + row].Text)) break;
                     units.Add(new UnitColumns
                     {
-                        Id = startingId++,
+                        Id = _unitId++,
                         Code = sheet.Cells["A" + row].Text,
                         Name = sheet.Cells["B" + row].Text,
                         Description = sheet.Cells["C" + row].Text,
@@ -66,10 +79,9 @@ namespace Tutor.Infrastructure.Database.DataImport.Domain
             return units;
         }
 
-        private static List<KCColumns> CreateKCs(IEnumerable<ExcelWorksheet> kcSheets, List<UnitColumns> units)
+        private List<KCColumns> CreateKCs(IEnumerable<ExcelWorksheet> kcSheets, List<UnitColumns> units)
         {
             var kcs = new List<KCColumns>();
-            var startingId = -100;
 
             foreach (var sheet in kcSheets)
             {
@@ -78,7 +90,7 @@ namespace Tutor.Infrastructure.Database.DataImport.Domain
                     if (string.IsNullOrEmpty(sheet.Cells["A" + row].Text)) break;
                     var kc = new KCColumns
                     {
-                        Id = startingId++,
+                        Id = _kcId++,
                         Code = sheet.Cells["A" + row].Text,
                         Name = sheet.Cells["B" + row].Text,
                         Description = sheet.Cells["C" + row].Text,
@@ -102,10 +114,9 @@ namespace Tutor.Infrastructure.Database.DataImport.Domain
             return kcs;
         }
 
-        private static List<IEColumns> CreateIEs(IEnumerable<ExcelWorksheet> ieSheets, List<KCColumns> kcs)
+        private List<IEColumns> CreateIEs(IEnumerable<ExcelWorksheet> ieSheets, List<KCColumns> kcs)
         {
             var ies = new List<IEColumns>();
-            var startingId = -1000;
 
             foreach (var sheet in ieSheets)
             {
@@ -115,7 +126,7 @@ namespace Tutor.Infrastructure.Database.DataImport.Domain
 
                     ies.Add(new IEColumns
                     {
-                        Id = startingId++,
+                        Id = _ieId++,
                         KnowledgeComponentId = kcs.First(k => k.Code.Equals(sheet.Cells["B" + row].Text)).Id,
                         Type = sheet.Cells["C" + row].Text,
                         Text = sheet.Cells["D" + row].Text,
@@ -129,10 +140,9 @@ namespace Tutor.Infrastructure.Database.DataImport.Domain
             return ies;
         }
 
-        private static List<AEColumns> CreateAEs(IEnumerable<ExcelWorksheet> aeSheets, List<KCColumns> kcs)
+        private List<AEColumns> CreateAEs(IEnumerable<ExcelWorksheet> aeSheets, List<KCColumns> kcs)
         {
             var aes = new List<AEColumns>();
-            var startingId = -1000;
 
             foreach (var sheet in aeSheets)
             {
@@ -142,7 +152,7 @@ namespace Tutor.Infrastructure.Database.DataImport.Domain
 
                     aes.Add(new AEColumns
                     {
-                        Id = startingId++,
+                        Id = _aeId++,
                         KnowledgeComponentId = kcs.First(k => k.Code.Equals(sheet.Cells["B" + row].Text)).Id,
                         Type = sheet.Cells["C" + row].Text,
                         Text = sheet.Cells["D" + row].Text,

@@ -7,14 +7,27 @@ using Tutor.Infrastructure.Security.Authentication.Users;
 
 namespace Tutor.Infrastructure.Database.DataImport.Enrollment
 {
-    internal static class ExcelToEnrollmentTransformer
+    internal class ExcelToEnrollmentTransformer
     {
-        public static EnrollmentExcelContent Transform(List<ExcelWorksheet> sheets)
+        private int _instructorId;
+        private int _courseOwnershipId;
+        private int _instructorGroupId;
+        private int _learningGroupId;
+
+        public ExcelToEnrollmentTransformer()
         {
-            var instructors = CreateInstructors(sheets.Where(s => s.Name == "Instructors"));
-            var courseOwnerships = CreateCourseOwnerships(sheets.Where(s => s.Name == "CourseOwnership"));
-            var instructorGroups = CreateInstructorGroups(sheets.Where(s => s.Name == "InstructorGroups"));
-            var learnerGroups = CreateLearnerGroups(sheets.Where(s => s.Name == "LearnerGroups"));
+            _instructorId = -30000;
+            _courseOwnershipId = -10000;
+            _instructorGroupId = -10000;
+            _learningGroupId = -10000;
+        }
+
+        public EnrollmentExcelContent Transform(List<ExcelWorksheet> sheets)
+        {
+            var instructors = CreateInstructors(sheets.Where(s => s.Name == "Instructors").ToList());
+            var courseOwnerships = CreateCourseOwnerships(sheets.Where(s => s.Name == "CourseOwnership").ToList());
+            var instructorGroups = CreateInstructorGroups(sheets.Where(s => s.Name == "InstructorGroups").ToList());
+            var learnerGroups = CreateLearnerGroups(sheets.Where(s => s.Name == "LearnerGroups").ToList());
 
             return new EnrollmentExcelContent
             {
@@ -25,9 +38,10 @@ namespace Tutor.Infrastructure.Database.DataImport.Enrollment
             };
         }
 
-        private static List<InstructorColumns> CreateInstructors(IEnumerable<ExcelWorksheet> sheets)
+        private List<InstructorColumns> CreateInstructors(List<ExcelWorksheet> sheets)
         {
-            var startingId = -30000;
+            if (sheets.Count == 0) return new List<InstructorColumns>();
+
             var instructors = new List<InstructorColumns>();
             foreach (var sheet in sheets)
             {
@@ -37,7 +51,7 @@ namespace Tutor.Infrastructure.Database.DataImport.Enrollment
                     var salt = PasswordUtilities.GenerateSalt();
                     instructors.Add(new InstructorColumns()
                     {
-                        Id = startingId++,
+                        Id = _instructorId++,
                         Name = sheet.Cells["A" + row].Text,
                         Surname = sheet.Cells["B" + row].Text,
                         Username = sheet.Cells["C" + row].Text,
@@ -50,9 +64,10 @@ namespace Tutor.Infrastructure.Database.DataImport.Enrollment
             return instructors;
         }
 
-        private static List<CourseOwnershipColumns> CreateCourseOwnerships(IEnumerable<ExcelWorksheet> sheets)
+        private List<CourseOwnershipColumns> CreateCourseOwnerships(List<ExcelWorksheet> sheets)
         {
-            var startingId = -10000;
+            if (sheets.Count == 0) return new List<CourseOwnershipColumns>();
+
             var ownerships = new List<CourseOwnershipColumns>();
             foreach (var sheet in sheets)
             {
@@ -61,7 +76,7 @@ namespace Tutor.Infrastructure.Database.DataImport.Enrollment
                     if (string.IsNullOrEmpty(sheet.Cells["A" + row].Text)) break;
                     ownerships.Add(new CourseOwnershipColumns()
                     {
-                        Id = startingId++,
+                        Id = _courseOwnershipId++,
                         InstructorUsername = sheet.Cells["A" + row].Text,
                         CourseCode = sheet.Cells["B" + row].Text
                     });
@@ -71,9 +86,10 @@ namespace Tutor.Infrastructure.Database.DataImport.Enrollment
             return ownerships;
         }
 
-        private static List<InstructorGroupColumns> CreateInstructorGroups(IEnumerable<ExcelWorksheet> sheets)
+        private List<InstructorGroupColumns> CreateInstructorGroups(List<ExcelWorksheet> sheets)
         {
-            var startingId = -10000;
+            if (sheets.Count == 0) return new List<InstructorGroupColumns>();
+
             var groupColumns = new List<InstructorGroupColumns>();
             foreach (var sheet in sheets)
             {
@@ -87,7 +103,7 @@ namespace Tutor.Infrastructure.Database.DataImport.Enrollment
                     {
                         groupColumns.Add(new InstructorGroupColumns()
                         {
-                            Id = startingId++,
+                            Id = _instructorGroupId++,
                             Name = groupName,
                             CourseCode = sheet.Cells["B" + row].Text,
                             InstructorUsernames = new HashSet<string> { sheet.Cells["C" + row].Text }
@@ -103,9 +119,10 @@ namespace Tutor.Infrastructure.Database.DataImport.Enrollment
             return groupColumns;
         }
 
-        private static List<LearnerGroupColumns> CreateLearnerGroups(IEnumerable<ExcelWorksheet> sheets)
+        private List<LearnerGroupColumns> CreateLearnerGroups(List<ExcelWorksheet> sheets)
         {
-            var startingId = -10000;
+            if (sheets.Count == 0) return new List<LearnerGroupColumns>();
+
             var groupColumns = new List<LearnerGroupColumns>();
             foreach (var sheet in sheets)
             {
@@ -119,7 +136,7 @@ namespace Tutor.Infrastructure.Database.DataImport.Enrollment
                     {
                         groupColumns.Add(new LearnerGroupColumns()
                         {
-                            Id = startingId++,
+                            Id = _learningGroupId++,
                             Name = groupName,
                             LearnerIndexes = new HashSet<string> { ExtractIndex(sheet.Cells["B" + row].Text) }
                         });

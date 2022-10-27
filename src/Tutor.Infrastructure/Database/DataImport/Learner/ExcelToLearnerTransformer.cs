@@ -5,11 +5,17 @@ using Tutor.Infrastructure.Security.Authentication.Users;
 
 namespace Tutor.Infrastructure.Database.DataImport.Learner
 {
-    internal static class ExcelToLearnerTransformer
+    internal class ExcelToLearnerTransformer
     {
-        public static List<UserLearnerColumns> Transform(List<ExcelWorksheet> sheets)
+        private int _learnerId;
+
+        public ExcelToLearnerTransformer()
         {
-            var startingId = -10000;
+            _learnerId = -10000;
+        }
+
+        public List<UserLearnerColumns> Transform(List<ExcelWorksheet> sheets)
+        {
             var learners = new List<UserLearnerColumns>();
             foreach (var sheet in sheets)
             {
@@ -20,7 +26,7 @@ namespace Tutor.Infrastructure.Database.DataImport.Learner
                     var salt = PasswordUtilities.GenerateSalt();
                     learners.Add(new UserLearnerColumns
                     {
-                        Id = startingId++,
+                        Id = _learnerId++,
                         Index = index,
                         Surname = sheet.Cells["D" + row].Text,
                         Name = sheet.Cells["E" + row].Text,

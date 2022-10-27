@@ -7,24 +7,6 @@ namespace Tutor.Infrastructure.Database.DataImport;
 
 public static class ExcelToSqlTransformer
 {
-    public static void Transform(string domainSource, string learnerSource, string enrollmentSource, string destination)
-    {
-        var domainSheets = ExcelImporter.ImportWorkSheets(domainSource);
-        var learnerSheets = ExcelImporter.ImportWorkSheets(learnerSource);
-        var enrollmentSheets = ExcelImporter.ImportWorkSheets(enrollmentSource);
-
-        var domainContent = ExcelToDomainTransformer.Transform(domainSheets);
-        var domainSql = DomainToSqlTransformer.Transform(domainContent);
-
-        var learners = ExcelToLearnerTransformer.Transform(learnerSheets);
-        var learnerSql = LearnerToSqlTransformer.Transform(learners);
-
-        var enrollmentContent = ExcelToEnrollmentTransformer.Transform(enrollmentSheets);
-        var enrollmentSql = EnrollmentToSqlTransformer.Transform(enrollmentContent, domainContent, learners);
-
-        Save(DeleteCommands + domainSql + learnerSql + enrollmentSql, destination);
-    }
-
     private const string DeleteCommands = @"
 DELETE FROM public.""EmotionsFeedbacks"";
 DELETE FROM public.""TutorImprovementFeedbacks"";
@@ -65,9 +47,44 @@ DELETE FROM public.""Instructors"";
 DELETE FROM public.""Users"";
 
 ";
+    public static void TransformFull(string domainSource, string learnerSource, string enrollmentSource, string destination)
+    {
+        var domainSheets = ExcelImporter.ImportWorkSheets(domainSource);
+        var learnerSheets = ExcelImporter.ImportWorkSheets(learnerSource);
+        var enrollmentSheets = ExcelImporter.ImportWorkSheets(enrollmentSource);
+
+        var domainContent = new ExcelToDomainTransformer().Transform(domainSheets);
+        var domainSql = DomainToSqlTransformer.TransformFull(domainContent);
+
+        var learners = new ExcelToLearnerTransformer().Transform(learnerSheets);
+        var learnerSql = LearnerToSqlTransformer.Transform(learners);
+
+        var enrollmentContent = new ExcelToEnrollmentTransformer().Transform(enrollmentSheets);
+        var enrollmentSql = EnrollmentToSqlTransformer.Transform(enrollmentContent, domainContent, learners);
+
+        var masterySql = MasterySqlGenerator.BuildMasteries(enrollmentContent, domainContent, learners);
+
+        Save(DeleteCommands + domainSql + learnerSql + enrollmentSql + masterySql, destination);
+    }
 
     private static void Save(string sqlScript, string destination)
     {
         File.WriteAllText(destination, sqlScript);
+    }
+
+    public static void TransformUnitIncrement(string domainSource, string learnerSource, string enrollmentSource, string destination)
+    {
+        var domainSheets = ExcelImporter.ImportWorkSheets(domainSource);
+        var learnerSheets = ExcelImporter.ImportWorkSheets(learnerSource);
+        var enrollmentSheets = ExcelImporter.ImportWorkSheets(enrollmentSource);
+
+        var domainContent = new ExcelToDomainTransformer().Transform(domainSheets);
+        var learners = new ExcelToLearnerTransformer().Transform(learnerSheets);
+        var enrollmentContent = new ExcelToEnrollmentTransformer().Transform(enrollmentSheets);
+
+        var domainSql = DomainToSqlTransformer.TransformFull(domainContent);
+        var masterySql = MasterySqlGenerator.BuildMasteries(enrollmentContent, domainContent, learners);
+
+        Save(domainSql + masterySql, destination);
     }
 }

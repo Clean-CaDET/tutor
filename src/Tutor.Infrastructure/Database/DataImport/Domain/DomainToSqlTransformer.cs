@@ -7,7 +7,7 @@ namespace Tutor.Infrastructure.Database.DataImport.Domain;
 
 public static class DomainToSqlTransformer
 {
-    public static string Transform(DomainExcelContent content)
+    public static string TransformFull(DomainExcelContent content)
     {
         var sqlBuilder = new StringBuilder();
         sqlBuilder.Append(BuildCoursesSql(content.Courses));
