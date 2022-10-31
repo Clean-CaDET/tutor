@@ -194,7 +194,7 @@ public static class DomainToSqlTransformer
 
     private static string FindMcqCorrectAnswerAndFeedback(List<string> aeItems)
     {
-        return aeItems.First(item => item.Split('\n')[1] == "true");
+        return aeItems.First(item => item.Split('\n')[1].ToLower() == "true");
     }
 
     private static string BuildMcqAnswers(List<string> aeItems)
