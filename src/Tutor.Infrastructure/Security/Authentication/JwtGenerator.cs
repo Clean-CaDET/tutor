@@ -27,7 +27,7 @@ namespace Tutor.Infrastructure.Security.Authentication
                 new(ClaimTypes.Role, role)
             };
             
-            var jwt = CreateToken(claims, 60);
+            var jwt = CreateToken(claims, 1);
             authenticationResponse.Id = userId;
             authenticationResponse.AccessToken = jwt;
             authenticationResponse.RefreshToken = GenerateRefreshToken();
@@ -52,16 +52,19 @@ namespace Tutor.Infrastructure.Security.Authentication
 
         private string GenerateRefreshToken()
         {
-            return CreateToken(new List<Claim>(), 1440);
+            return CreateToken(new List<Claim>(), 10);
         }
 
         public Result<AuthenticationTokens> RefreshToken(AuthenticationTokens authenticationTokens)
         {
             var token = new JwtSecurityTokenHandler().ReadJwtToken(authenticationTokens.AccessToken);
             var userId = int.Parse(token.Claims.First(c => c.Type == "id").Value);
-            var learnerId = int.Parse(token.Claims.First(c => c.Type == "learnerId").Value);
+            
+            var id = int.Parse(token.Claims.FirstOrDefault(c => c.Type == "learnerId")?.Value ?? 
+                               token.Claims.First(c => c.Type == "instructorId").Value);
+            
             var role = token.Claims.First(c => c.Type.Equals(ClaimTypes.Role)).Value;
-            return ValidateRefreshToken(authenticationTokens.RefreshToken) ? GenerateAccessToken(userId, role, learnerId) : Result.Fail("Refresh token is not valid!");
+            return ValidateRefreshToken(authenticationTokens.RefreshToken) ? GenerateAccessToken(userId, role, id) : Result.Fail("Refresh token is not valid!");
         }
 
         private bool ValidateRefreshToken(string refreshToken)
