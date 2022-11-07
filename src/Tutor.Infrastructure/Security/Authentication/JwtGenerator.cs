@@ -27,7 +27,7 @@ namespace Tutor.Infrastructure.Security.Authentication
                 new(ClaimTypes.Role, role)
             };
             
-            var jwt = CreateToken(claims, 1);
+            var jwt = CreateToken(claims, 60);
             authenticationResponse.Id = userId;
             authenticationResponse.AccessToken = jwt;
             authenticationResponse.RefreshToken = GenerateRefreshToken();
@@ -52,7 +52,7 @@ namespace Tutor.Infrastructure.Security.Authentication
 
         private string GenerateRefreshToken()
         {
-            return CreateToken(new List<Claim>(), 10);
+            return CreateToken(new List<Claim>(), 1440);
         }
 
         public Result<AuthenticationTokens> RefreshToken(AuthenticationTokens authenticationTokens)
