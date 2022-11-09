@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.Core.DomainModel;
 using Tutor.Core.EnrollmentModel;
@@ -11,6 +12,7 @@ using Tutor.Web.Mappings.Enrollments;
 
 namespace Tutor.Web.Controllers.Learners
 {
+    [Authorize(Policy = "learnerPolicy")]
     [Route("api/learners/")]
     [ApiController]
     public class LearnerController : ControllerBase
