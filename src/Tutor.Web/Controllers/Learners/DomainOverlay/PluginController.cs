@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Tutor.Core.DomainModel.AssessmentItems.Challenges;
-using Tutor.Core.LearnerModel;
-using Tutor.Core.LearnerModel.DomainOverlay;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
 using Tutor.Web.Controllers.Users;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Mappings.Enrollments;
+using Tutor.Core.UseCases.Learning;
+using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Web.Controllers.Learners.DomainOverlay
 {

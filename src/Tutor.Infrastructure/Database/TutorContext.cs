@@ -1,20 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using Tutor.Core.DomainModel.AssessmentItems;
-using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
-using Tutor.Core.DomainModel.AssessmentItems.Challenges;
-using Tutor.Core.DomainModel.AssessmentItems.Challenges.FulfillmentStrategies;
-using Tutor.Core.DomainModel.AssessmentItems.MultiChoiceQuestions;
-using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
-using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
-using Tutor.Core.DomainModel.InstructionalItems;
-using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Core.EnrollmentModel;
-using Tutor.Core.LearnerModel;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
-using Tutor.Core.LearnerModel.Feedback;
-using Tutor.Core.LearnerModel.Notes;
 using Tutor.Infrastructure.Security.Authentication.Users;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges.FulfillmentStrategies;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiChoiceQuestions;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.ShortAnswerQuestions;
+using Tutor.Core.Domain.Knowledge.AssessmentItems;
+using Tutor.Core.Domain.Knowledge.InstructionalItems;
+using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.Domain.KnowledgeMastery;
+using Tutor.Core.Domain.LearningUtilities.Feedback;
+using Tutor.Core.Domain.LearningUtilities.Notes;
+using Tutor.Core.Domain.CourseIteration;
+using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Infrastructure.Database
 {

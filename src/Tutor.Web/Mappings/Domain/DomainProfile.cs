@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using System.Linq;
-using Tutor.Core.DomainModel.InstructionalItems;
-using Tutor.Core.DomainModel.KnowledgeComponents;
+using Tutor.Core.Domain.Knowledge.InstructionalItems;
+using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Web.Mappings.Domain.DTOs;
 using Tutor.Web.Mappings.Domain.DTOs.InstructionalItems;
 

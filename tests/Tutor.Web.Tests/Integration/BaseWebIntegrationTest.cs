@@ -3,15 +3,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
-using Tutor.Core.DomainModel;
-using Tutor.Core.EnrollmentModel;
-using Tutor.Core.LearnerModel;
-using Tutor.Core.LearnerModel.DomainOverlay;
 using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Web.Controllers.Instructors;
 using Tutor.Web.Controllers.Learners;
 using Tutor.Web.Controllers.Learners.DomainOverlay;
 using Xunit;
+using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.UseCases.Learning;
+using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Web.Tests.Integration
 {

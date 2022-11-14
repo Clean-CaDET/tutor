@@ -6,13 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Core.DomainModel;
-using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Core.LearnerModel;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.KnowledgeComponentEvents;
+using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Web.Mappings.Analytics;
+using Tutor.Core.Domain.KnowledgeMastery.Events.KnowledgeComponentEvents;
+using Tutor.Core.Domain.KnowledgeMastery.Events;
+using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Web.Controllers.Instructors;
 

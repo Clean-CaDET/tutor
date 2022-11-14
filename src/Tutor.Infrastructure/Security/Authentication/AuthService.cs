@@ -1,6 +1,5 @@
 ﻿using FluentResults;
-using Tutor.Core.EnrollmentModel;
-using Tutor.Core.LearnerModel;
+using Tutor.Core.Domain.Stakeholders;
 using Tutor.Infrastructure.Security.Authentication.Users;
 
 namespace Tutor.Infrastructure.Security.Authentication

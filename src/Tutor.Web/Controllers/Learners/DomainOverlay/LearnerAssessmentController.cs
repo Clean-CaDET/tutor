@@ -2,12 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
-using Tutor.Core.DomainModel.AssessmentItems.Challenges;
-using Tutor.Core.DomainModel.AssessmentItems.MultiChoiceQuestions;
-using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
-using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
-using Tutor.Core.LearnerModel.DomainOverlay;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiChoiceQuestions;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ArrangeTasks;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
@@ -15,6 +14,7 @@ using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiChoiceQuestions;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Web.Mappings.Mastery;
+using Tutor.Core.UseCases.Learning;
 
 namespace Tutor.Web.Controllers.Learners.DomainOverlay
 {

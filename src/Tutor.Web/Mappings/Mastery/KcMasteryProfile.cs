@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
+using Tutor.Core.Domain.KnowledgeMastery;
 
 namespace Tutor.Web.Mappings.Mastery
 {

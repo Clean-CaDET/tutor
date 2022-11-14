@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Tutor.Core.LearnerModel;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
+using Tutor.Core.Domain.KnowledgeMastery;
+using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Web.Mappings.Analytics
 {

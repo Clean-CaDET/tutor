@@ -1,5 +1,5 @@
 using AutoMapper;
-using Tutor.Core.LearnerModel;
+using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Web.Mappings.Enrollments
 {

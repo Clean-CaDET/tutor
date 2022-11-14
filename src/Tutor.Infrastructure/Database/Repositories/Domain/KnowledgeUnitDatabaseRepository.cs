@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Tutor.Core.DomainModel;
-using Tutor.Core.DomainModel.KnowledgeComponents;
-using Tutor.Core.EnrollmentModel;
+using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Infrastructure.Database.Repositories.Domain
 {

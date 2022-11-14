@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using Tutor.Core.LearnerModel.Notes;
+using Tutor.Core.Domain.LearningUtilities.Notes;
 using Tutor.Web.Controllers.Learners.Notes;
 using Xunit;
 

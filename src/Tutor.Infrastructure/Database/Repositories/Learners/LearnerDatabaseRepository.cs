@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks;
-using Tutor.Core.EnrollmentModel;
-using Tutor.Core.LearnerModel;
+using Tutor.Core.Domain.CourseIteration;
+using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Infrastructure.Database.Repositories.Learners
 {

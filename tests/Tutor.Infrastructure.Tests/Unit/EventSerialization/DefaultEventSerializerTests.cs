@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
+using Tutor.Core.Domain.KnowledgeMastery.Events.AssessmentItemEvents;
 using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.Infrastructure.EventConfiguration;
 using Tutor.Infrastructure.Tests.TestData.EventStore;

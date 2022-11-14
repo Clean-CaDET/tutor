@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
-using Tutor.Core.DomainModel.AssessmentItems.Challenges;
-using Tutor.Core.DomainModel.AssessmentItems.MultiChoiceQuestions;
-using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
-using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.KnowledgeComponentEvents;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.SessionLifecycleEvents;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiChoiceQuestions;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.ShortAnswerQuestions;
+using Tutor.Core.Domain.KnowledgeMastery.Events.AssessmentItemEvents;
+using Tutor.Core.Domain.KnowledgeMastery.Events.KnowledgeComponentEvents;
+using Tutor.Core.Domain.KnowledgeMastery.Events.SessionLifecycleEvents;
 
 namespace Tutor.Infrastructure.EventConfiguration
 {

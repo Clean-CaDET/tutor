@@ -11,6 +11,8 @@
 
   <ItemGroup>
     <Folder Include="docs\" />
+    <Folder Include="UseCases\GroupMonitoring\" />
+    <Folder Include="UseCases\KnowledgeAnalysis\" />
   </ItemGroup>
 
 </Project>

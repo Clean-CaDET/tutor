@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tutor.Core.DomainModel;
+using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Web.Mappings.Domain.DTOs;
 
 namespace Tutor.Web.Controllers.Instructors;

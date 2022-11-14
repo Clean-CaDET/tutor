@@ -2,8 +2,8 @@
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.DomainModel.AssessmentItems.Challenges;
-using Tutor.Core.DomainModel.AssessmentItems.Challenges.FulfillmentStrategies;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges.FulfillmentStrategies;
 using Tutor.Core.Tests.TestData;
 using Xunit;
 

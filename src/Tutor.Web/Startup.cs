@@ -11,14 +11,6 @@ using Microsoft.Net.Http.Headers;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Tutor.Core.DomainModel;
-using Tutor.Core.EnrollmentModel;
-using Tutor.Core.LearnerModel;
-using Tutor.Core.LearnerModel.DomainOverlay;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.MoveOn;
-using Tutor.Core.LearnerModel.Feedback;
-using Tutor.Core.LearnerModel.Notes;
 using Tutor.Infrastructure;
 using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
@@ -33,6 +25,13 @@ using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ArrangeTasks;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Tutor.Web.Mappings.Domain.DTOs.InstructionalItems;
+using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.Domain.KnowledgeMastery;
+using Tutor.Core.UseCases.Learning;
+using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
+using Tutor.Core.Domain.LearningUtilities.Feedback;
+using Tutor.Core.Domain.LearningUtilities.Notes;
+using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Web
 {

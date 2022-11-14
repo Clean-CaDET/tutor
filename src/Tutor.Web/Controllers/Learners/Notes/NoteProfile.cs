@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Tutor.Core.LearnerModel.Notes;
+using Tutor.Core.Domain.LearningUtilities.Notes;
 
 namespace Tutor.Web.Controllers.Learners.Notes
 {

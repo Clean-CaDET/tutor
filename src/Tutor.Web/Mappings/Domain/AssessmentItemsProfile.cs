@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using System.Linq;
-using Tutor.Core.DomainModel.AssessmentItems;
-using Tutor.Core.DomainModel.AssessmentItems.ArrangeTasks;
-using Tutor.Core.DomainModel.AssessmentItems.Challenges;
-using Tutor.Core.DomainModel.AssessmentItems.MultiChoiceQuestions;
-using Tutor.Core.DomainModel.AssessmentItems.MultiResponseQuestions;
-using Tutor.Core.DomainModel.AssessmentItems.ShortAnswerQuestions;
+using Tutor.Core.Domain.Knowledge.AssessmentItems;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiChoiceQuestions;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ArrangeTasks;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
