@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.UseCases.Learning;
+using Tutor.Core.UseCases.Learning.Statistics;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Mappings.Domain.DTOs;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems;
@@ -20,11 +21,13 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
     {
         private readonly IMapper _mapper;
         private readonly IKcMasteryService _kcMasteryService;
+        private readonly IStatisticsService _learningStatisticsService;
 
-        public KcMasteryController(IMapper mapper, IKcMasteryService kcMasteryService)
+        public KcMasteryController(IMapper mapper, IKcMasteryService kcMasteryService, IStatisticsService learningStatisticsService)
         {
             _mapper = mapper;
             _kcMasteryService = kcMasteryService;
+            _learningStatisticsService = learningStatisticsService;
         }
 
         [HttpGet]
@@ -101,7 +104,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         [HttpGet("knowledge-components/statistics/{knowledgeComponentId:int}")]
         public ActionResult<KcMasteryStatisticsDto> GetKcMasteryStatistics(int knowledgeComponentId)
         {
-            var result = _kcMasteryService.GetKcMasteryStatistics(knowledgeComponentId, User.LearnerId());
+            var result = _learningStatisticsService.GetKcMasteryStatistics(knowledgeComponentId, User.LearnerId());
             if (result.IsSuccess) return Ok(_mapper.Map<KcMasteryStatisticsDto>(result.Value));
             return NotFound(result.Errors);
         }

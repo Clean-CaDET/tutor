@@ -12,6 +12,7 @@ using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.UseCases.Learning.Assessment;
+using Tutor.Core.UseCases.Learning.Statistics;
 
 namespace Tutor.Web.Tests.Integration
 {
@@ -27,7 +28,8 @@ namespace Tutor.Web.Tests.Integration
         protected KcMasteryController SetupKcmController(IServiceScope scope, string id)
         {
             return new KcMasteryController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKcMasteryService>())
+                scope.ServiceProvider.GetRequiredService<IKcMasteryService>(),
+                scope.ServiceProvider.GetRequiredService<IStatisticsService>())
             {
                 ControllerContext = BuildContext(id, "learner")
             };
@@ -75,7 +77,8 @@ namespace Tutor.Web.Tests.Integration
         {
             return new AssessmentEvaluationController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IEvaluationService>(),
-                scope.ServiceProvider.GetRequiredService<IHelpService>())
+                scope.ServiceProvider.GetRequiredService<IHelpService>(),
+                scope.ServiceProvider.GetRequiredService<IStatisticsService>())
             {
                 ControllerContext = BuildContext(id, "learner")
             };

@@ -19,6 +19,7 @@ using Tutor.Core.Domain.LearningUtilities.Notes;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Core.UseCases.Learning.Assessment;
+using Tutor.Core.UseCases.Learning.Statistics;
 using Tutor.Infrastructure;
 using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
@@ -91,11 +92,8 @@ namespace Tutor.Web
 
             services.AddScoped<IKnowledgeUnitRepository, KnowledgeUnitDatabaseRepository>();
 
-            services.AddScoped<IKcMasteryService, KcMasteryService>();
             services.AddScoped<IKcMasteryRepository, KcMasteryDatabaseRepository>();
-            services.AddScoped<IEvaluationService, EvaluationService>();
-            services.AddScoped<IHelpService, HelpService>();
-            services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
+            SetupLearningServices(services);
 
             services.AddScoped<ILearnerService, LearnerService>();
             services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
@@ -116,6 +114,15 @@ namespace Tutor.Web
             SetupAuth(services);
 
             SetupMoveOn(services);
+        }
+
+        private static void SetupLearningServices(IServiceCollection services)
+        {
+            services.AddScoped<IKcMasteryService, KcMasteryService>();
+            services.AddScoped<IEvaluationService, EvaluationService>();
+            services.AddScoped<IHelpService, HelpService>();
+            services.AddScoped<IStatisticsService, StatisticsService>();
+            services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
         }
 
         private void SetupMoveOn(IServiceCollection services)

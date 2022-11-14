@@ -74,14 +74,6 @@ namespace Tutor.Core.UseCases.Learning
             return Result.Ok(_kcMasteryRepository.GetDerivedAssessmentItem(selectionResult.Value));
         }
 
-        public Result<KcMasteryStatistics> GetKcMasteryStatistics(int knowledgeComponentId, int learnerId)
-        {
-            var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
-            if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
-
-            return Result.Ok(kcMastery.Statistics);
-        }
-
         public Result LaunchSession(int knowledgeComponentId, int learnerId)
         {
             var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);

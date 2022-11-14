@@ -15,6 +15,7 @@ using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Web.Mappings.Mastery;
 using Tutor.Core.UseCases.Learning.Assessment;
+using Tutor.Core.UseCases.Learning.Statistics;
 
 namespace Tutor.Web.Controllers.Learners.DomainOverlay
 {
@@ -26,12 +27,14 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         private readonly IMapper _mapper;
         private readonly IEvaluationService _assessmentEvaluationService;
         private readonly IHelpService _assessmentHelpService;
+        private readonly IStatisticsService _learningStatisticsService;
 
-        public AssessmentEvaluationController(IMapper mapper, IEvaluationService service, IHelpService assessmentHelpService)
+        public AssessmentEvaluationController(IMapper mapper, IEvaluationService service, IHelpService assessmentHelpService, IStatisticsService learningStatisticsService)
         {
             _mapper = mapper;
             _assessmentEvaluationService = service;
             _assessmentHelpService = assessmentHelpService;
+            _learningStatisticsService = learningStatisticsService;
         }
         
         [HttpPost("challenge")]
@@ -83,7 +86,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         [HttpPost("max-correctness")]
         public ActionResult<double> GetMaxCorrectness([FromBody] ChallengeSubmissionDto submission)
         {
-            var result = _assessmentEvaluationService.GetMaxCorrectness(User.LearnerId(), submission.AssessmentItemId);
+            var result = _learningStatisticsService.GetMaxAssessmentCorrectness(User.LearnerId(), submission.AssessmentItemId);
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(result.Value);
         }

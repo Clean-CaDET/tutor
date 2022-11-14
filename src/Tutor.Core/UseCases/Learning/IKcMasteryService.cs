@@ -21,8 +21,6 @@ namespace Tutor.Core.UseCases.Learning
 
         Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId);
 
-        Result<KcMasteryStatistics> GetKcMasteryStatistics(int knowledgeComponentId, int learnerId);
-
         Result LaunchSession(int knowledgeComponentId, int learnerId);
 
         Result TerminateSession(int knowledgeComponentId, int learnerId);

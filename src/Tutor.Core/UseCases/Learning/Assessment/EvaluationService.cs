@@ -38,12 +38,5 @@ namespace Tutor.Core.UseCases.Learning.Assessment
 
             return Result.Ok(evaluation);
         }
-
-        public Result<double> GetMaxCorrectness(int learnerId, int assessmentItemId)
-        {
-            var kcm = _kcMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
-            var itemMastery = kcm.AssessmentItemMasteries.Find(am => am.AssessmentItemId == assessmentItemId);
-            return Result.Ok(itemMastery?.Mastery ?? 0.0);
-        }
     }
 }
