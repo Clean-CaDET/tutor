@@ -6,7 +6,6 @@ using System.Linq;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Core.UseCases.Learning.Assessment;
-using Tutor.Core.UseCases.Learning.Statistics;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Mappings.Domain.DTOs;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems;
@@ -22,28 +21,30 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
     {
         private readonly IMapper _mapper;
         private readonly IKcMasteryService _kcMasteryService;
+        private readonly IStructureService _learningStructureService;
         private readonly IStatisticsService _learningStatisticsService;
         private readonly ISelectionService _assessmentSelectionService;
 
-        public KcMasteryController(IMapper mapper, IKcMasteryService kcMasteryService, IStatisticsService learningStatisticsService, ISelectionService assessmentSelectionService)
+        public KcMasteryController(IMapper mapper, IKcMasteryService kcMasteryService, IStatisticsService learningStatisticsService, ISelectionService assessmentSelectionService, IStructureService learningStructureService)
         {
             _mapper = mapper;
             _kcMasteryService = kcMasteryService;
             _learningStatisticsService = learningStatisticsService;
             _assessmentSelectionService = assessmentSelectionService;
+            _learningStructureService = learningStructureService;
         }
 
         [HttpGet]
         public ActionResult<List<KnowledgeUnitDto>> GetUnits()
         {
-            var result = _kcMasteryService.GetUnits(User.LearnerId());
+            var result = _learningStructureService.GetUnits(User.LearnerId());
             return Ok(result.Value.Select(u => _mapper.Map<KnowledgeUnitDto>(u)).ToList());
         }
 
         [HttpGet("{unitId:int}")]
         public ActionResult<KnowledgeUnitDto> GetUnit(int unitId)
         {
-            var result = _kcMasteryService.GetUnit(unitId, User.LearnerId());
+            var result = _learningStructureService.GetUnit(unitId, User.LearnerId());
             if (result.IsFailed) return NotFound(result.Errors);
 
             var unitDto = _mapper.Map<KnowledgeUnitDto>(result.Value);
@@ -51,11 +52,11 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
 
             return Ok(unitDto);
         }
-
+        // Should create some form of unit statistics or another endpoint for retriving KCM statistics for the given ID
         private void AppendMasteriesToResponse(KnowledgeUnitDto unitDto, int learnerId)
         {
             var kcIds = GetKcIds(unitDto.KnowledgeComponents);
-            var masteries = _kcMasteryService.GetKnowledgeComponentMasteries(kcIds, learnerId).Value;
+            var masteries = _learningStructureService.GetKnowledgeComponentMasteries(kcIds, learnerId).Value;
             PopulateMasteries(unitDto.KnowledgeComponents, masteries);
         }
 
@@ -81,6 +82,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
             }
         }
 
+        // Should be removed as we do not benefit from this endpoint much.
         [HttpGet("knowledge-components/{knowledgeComponentId:int}")]
         public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
         {

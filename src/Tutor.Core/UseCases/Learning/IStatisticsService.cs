@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using Tutor.Core.Domain.KnowledgeMastery;
 
-namespace Tutor.Core.UseCases.Learning.Statistics;
+namespace Tutor.Core.UseCases.Learning;
 
 public interface IStatisticsService
 {

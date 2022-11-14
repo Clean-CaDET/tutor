@@ -15,7 +15,7 @@ using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Web.Mappings.Mastery;
 using Tutor.Core.UseCases.Learning.Assessment;
-using Tutor.Core.UseCases.Learning.Statistics;
+using Tutor.Core.UseCases.Learning;
 
 namespace Tutor.Web.Controllers.Learners.DomainOverlay
 {
