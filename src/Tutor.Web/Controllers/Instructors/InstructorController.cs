@@ -17,20 +17,20 @@ namespace Tutor.Web.Controllers.Instructors;
 public class InstructorController : ControllerBase
 {
     private readonly IMapper _mapper;
-    private readonly IInstructorService _instructorService;
-    private readonly IGroupService _groupMonitoringService;
+    private readonly ICourseOwnershipService _courseOwnershipService;
+    private readonly IGroupMonitoringService _groupMonitoringMonitoringService;
     
-    public InstructorController(IMapper mapper, IInstructorService instructorService, IGroupService groupMonitoringService)
+    public InstructorController(IMapper mapper, ICourseOwnershipService courseOwnershipService, IGroupMonitoringService groupMonitoringMonitoringService)
     {
         _mapper = mapper;
-        _instructorService = instructorService;
-        _groupMonitoringService = groupMonitoringService;
+        _courseOwnershipService = courseOwnershipService;
+        _groupMonitoringMonitoringService = groupMonitoringMonitoringService;
     }
 
     [HttpGet("courses")]
     public ActionResult<List<CourseDto>> GetOwnedCourses()
     {
-        var result = _instructorService.GetOwnedCourses(User.InstructorId());
+        var result = _courseOwnershipService.GetOwnedCourses(User.InstructorId());
         if (result.IsFailed) return BadRequest(result.Errors);
         return Ok(result.Value.Select(c => _mapper.Map<CourseDto>(c)).ToList());
     }
@@ -38,7 +38,7 @@ public class InstructorController : ControllerBase
     [HttpGet("groups/{courseId:int}")]
     public ActionResult<GroupDto> GetAssignedGroups(int courseId)
     {
-        var result = _groupMonitoringService.GetAssignedGroups(User.InstructorId(), courseId);
+        var result = _groupMonitoringMonitoringService.GetAssignedGroups(User.InstructorId(), courseId);
         if (result.IsFailed) return BadRequest(result.Errors);
         return Ok(result.Value.Select(g => _mapper.Map<GroupDto>(g)).ToList());
     }

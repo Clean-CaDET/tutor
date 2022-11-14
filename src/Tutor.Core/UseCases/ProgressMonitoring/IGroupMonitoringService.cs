@@ -4,7 +4,7 @@ using Tutor.Core.Domain.CourseIteration;
 
 namespace Tutor.Core.UseCases.ProgressMonitoring;
 
-public interface IGroupService
+public interface IGroupMonitoringService
 {
     Result<List<LearnerGroup>> GetAssignedGroups(int instructorId, int courseId);
 }

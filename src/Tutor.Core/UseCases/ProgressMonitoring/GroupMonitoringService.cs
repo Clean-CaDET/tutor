@@ -5,11 +5,11 @@ using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Core.UseCases.ProgressMonitoring;
 
-public class GroupService : IGroupService
+public class GroupMonitoringService : IGroupMonitoringService
 {
     private readonly IEnrollmentRepository _enrollmentRepository;
 
-    public GroupService(IEnrollmentRepository enrollmentRepository)
+    public GroupMonitoringService(IEnrollmentRepository enrollmentRepository)
     {
         _enrollmentRepository = enrollmentRepository;
     }

@@ -41,8 +41,8 @@ namespace Tutor.Web.Tests.Integration
         protected InstructorController SetupInstructorController(IServiceScope scope, string id)
         {
             return new InstructorController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IInstructorService>(),
-                scope.ServiceProvider.GetRequiredService<IGroupService>())
+                scope.ServiceProvider.GetRequiredService<ICourseOwnershipService>(),
+                scope.ServiceProvider.GetRequiredService<IGroupMonitoringService>())
             {
                 ControllerContext = BuildContext(id, "instructor")
             };

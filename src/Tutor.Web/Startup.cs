@@ -3,6 +3,7 @@ using Dahomey.Json.Serialization.Conventions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -55,30 +56,17 @@ namespace Tutor.Web
         {
             services.AddInfrastructure(Configuration);
 
+            SetupControllers(services);
+            SetupServices(services);
+            SetupRepositories(services);
+        }
+
+        #region Controller Setup
+        private static void SetupControllers(IServiceCollection services)
+        {
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddControllers().AddJsonOptions(options =>
-            {
-                var serializerOptions = options.JsonSerializerOptions;
-                serializerOptions.SetupExtensions();
-                var registry = serializerOptions.GetDiscriminatorConventionRegistry();
-                registry.ClearConventions();
-                registry.RegisterConvention(
-                    new DefaultDiscriminatorConvention<string>(serializerOptions, "typeDiscriminator"));
-                registry.RegisterType<AtDto>();
-                registry.RegisterType<ChallengeDto>();
-                registry.RegisterType<ImageDto>();
-                registry.RegisterType<MrqDto>();
-                registry.RegisterType<TextDto>();
-                registry.RegisterType<VideoDto>();
-
-                registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(
-                    serializerOptions, EventSerializationConfiguration.EventRelatedTypes, "$discriminator"));
-                foreach (var type in EventSerializationConfiguration.EventRelatedTypes.Keys)
-                {
-                    registry.RegisterType(type);
-                }
-            });
+            services.AddControllers().AddJsonOptions(SetupJsonOptions);
 
             services.AddCors(options =>
             {
@@ -90,52 +78,31 @@ namespace Tutor.Web
                             .WithMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
                     });
             });
-
-            services.AddScoped<IKnowledgeUnitRepository, KnowledgeUnitDatabaseRepository>();
-
-            services.AddScoped<IKcMasteryRepository, KcMasteryDatabaseRepository>();
-            SetupLearningServices(services);
-
-            services.AddScoped<ILearnerService, LearnerService>();
-            services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
-
-            services.AddScoped<IFeedbackService, FeedbackService>();
-            services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
-
-            services.AddScoped<INoteRepository, NoteRepository>();
-            services.AddScoped<INoteService, NoteService>();
-
-            services.AddScoped<IEnrollmentRepository, EnrollmentDatabaseRepository>();
-            services.AddScoped<IInstructorService, InstructorService>();
-            services.AddScoped<IGroupService, GroupService>();
-
-            services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
-
-            services.AddSingleton<IEventSerializer>(new DefaultEventSerializer(EventSerializationConfiguration.EventRelatedTypes));
-
             SetupAuth(services);
-
-            SetupMoveOn(services);
         }
 
-        private static void SetupLearningServices(IServiceCollection services)
+        private static void SetupJsonOptions(JsonOptions options)
         {
-            services.AddScoped<ISessionService, SessionService>();
-            services.AddScoped<IStructureService, StructureService>();
-            services.AddScoped<IStatisticsService, StatisticsService>();
-            services.AddScoped<ISelectionService, SelectionService>();
-            services.AddScoped<IEvaluationService, EvaluationService>();
-            services.AddScoped<IHelpService, HelpService>();
-            services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
-        }
+            var serializerOptions = options.JsonSerializerOptions;
+            serializerOptions.SetupExtensions();
+            var registry = serializerOptions.GetDiscriminatorConventionRegistry();
+            registry.ClearConventions();
+            registry.RegisterConvention(
+                new DefaultDiscriminatorConvention<string>(serializerOptions, "typeDiscriminator"));
+            registry.RegisterType<AtDto>();
+            registry.RegisterType<ChallengeDto>();
+            registry.RegisterType<ImageDto>();
+            registry.RegisterType<MrqDto>();
+            registry.RegisterType<TextDto>();
+            registry.RegisterType<VideoDto>();
 
-        private void SetupMoveOn(IServiceCollection services)
-        {
-            var moveOnCriteria = Configuration.GetValue<string>("MoveOn");
-            var moveOnType = MoveOnResolver.ResolveOrDefault(moveOnCriteria);
-            services.AddScoped(typeof(IMoveOnCriteria), moveOnType);
+            registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(
+                serializerOptions, EventSerializationConfiguration.EventRelatedTypes, "$discriminator"));
+            foreach (var type in EventSerializationConfiguration.EventRelatedTypes.Keys)
+            {
+                registry.RegisterType(type);
+            }
         }
-
         private static void SetupAuth(IServiceCollection services)
         {
             services.AddScoped<IAuthService, AuthService>();
@@ -182,26 +149,6 @@ namespace Tutor.Web
                 });
         }
 
-        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseCors(CorsPolicy);
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthentication();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-        }
-
         private static string[] ParseCorsOrigins()
         {
             var corsOrigins = new[] { "http://localhost:4200" };
@@ -212,6 +159,77 @@ namespace Tutor.Web
             }
 
             return corsOrigins;
+        }
+        #endregion
+
+        #region Service Setup
+        private void SetupServices(IServiceCollection services)
+        {
+            SetupCoreLearningServices(services);
+            SetupSupportingLearningServices(services);
+
+            SetupSupportingStakeholderServices(services);
+        }
+
+        private void SetupCoreLearningServices(IServiceCollection services)
+        {
+            services.AddScoped<ISessionService, SessionService>();
+            services.AddScoped<IStructureService, StructureService>();
+            services.AddScoped<IStatisticsService, StatisticsService>();
+            services.AddScoped<ISelectionService, SelectionService>();
+            services.AddScoped<IEvaluationService, EvaluationService>();
+            services.AddScoped<IHelpService, HelpService>();
+            
+            services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
+            SetupMoveOn(services);
+        }
+
+        private static void SetupSupportingLearningServices(IServiceCollection services)
+        {
+            services.AddScoped<IFeedbackService, FeedbackService>();
+            services.AddScoped<INoteService, NoteService>();
+        }
+
+        private static void SetupSupportingStakeholderServices(IServiceCollection services)
+        {
+            services.AddScoped<ILearnerService, LearnerService>();
+            services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
+            services.AddScoped<IGroupMonitoringService, GroupMonitoringService>();
+        }
+
+        private void SetupMoveOn(IServiceCollection services)
+        {
+            var moveOnCriteria = Configuration.GetValue<string>("MoveOn");
+            var moveOnType = MoveOnResolver.ResolveOrDefault(moveOnCriteria);
+            services.AddScoped(typeof(IMoveOnCriteria), moveOnType);
+        }
+        #endregion
+        private static void SetupRepositories(IServiceCollection services)
+        {
+            services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
+            services.AddScoped<INoteRepository, NoteRepository>();
+            services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
+            services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
+            services.AddScoped<IKnowledgeUnitRepository, KnowledgeUnitDatabaseRepository>();
+            services.AddScoped<IKcMasteryRepository, KcMasteryDatabaseRepository>();
+            services.AddScoped<IEnrollmentRepository, EnrollmentDatabaseRepository>();
+            services.AddSingleton<IEventSerializer>(
+                new DefaultEventSerializer(EventSerializationConfiguration.EventRelatedTypes));
+        }
+
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseCors(CorsPolicy);
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

@@ -5,11 +5,11 @@ using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Core.UseCases.StakeholderManagement;
 
-public class InstructorService : IInstructorService
+public class CourseOwnershipService : ICourseOwnershipService
 {
     private readonly IEnrollmentRepository _enrollmentRepository;
 
-    public InstructorService(IEnrollmentRepository enrollmentRepository)
+    public CourseOwnershipService(IEnrollmentRepository enrollmentRepository)
     {
         _enrollmentRepository = enrollmentRepository;
     }

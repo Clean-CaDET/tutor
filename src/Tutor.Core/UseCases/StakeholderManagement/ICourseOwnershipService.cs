@@ -4,7 +4,7 @@ using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 
 namespace Tutor.Core.UseCases.StakeholderManagement;
 
-public interface IInstructorService
+public interface ICourseOwnershipService
 {
     Result<List<Course>> GetOwnedCourses(int instructorId);
 }
