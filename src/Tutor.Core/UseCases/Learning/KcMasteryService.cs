@@ -1,6 +1,5 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
-using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.InstructionalItems;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Core.Domain.KnowledgeMastery;
@@ -10,12 +9,10 @@ namespace Tutor.Core.UseCases.Learning
     public class KcMasteryService : IKcMasteryService
     {
         private readonly IKcMasteryRepository _kcMasteryRepository;
-        private readonly IAssessmentItemSelector _assessmentItemSelector;
 
-        public KcMasteryService(IKcMasteryRepository ikcMasteryRepository, IAssessmentItemSelector assessmentItemSelector)
+        public KcMasteryService(IKcMasteryRepository ikcMasteryRepository)
         {
             _kcMasteryRepository = ikcMasteryRepository;
-            _assessmentItemSelector = assessmentItemSelector;
         }
 
         public Result<List<KnowledgeUnit>> GetUnits(int learnerId)
@@ -55,23 +52,6 @@ namespace Tutor.Core.UseCases.Learning
             _kcMasteryRepository.UpdateKcMastery(kcMastery);
 
             return Result.Ok(kcMastery.KnowledgeComponent.GetOrderedInstructionalItems());
-        }
-
-        public Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId)
-        {
-            var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
-            if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
-
-            var selectionResult =
-                _assessmentItemSelector.SelectSuitableAssessmentItemId(kcMastery.AssessmentItemMasteries, kcMastery.IsPassed);
-            if (selectionResult.IsFailed) return selectionResult.ToResult<AssessmentItem>();
-
-            var masteryResult = kcMastery.RecordAssessmentItemSelection(selectionResult.Value);
-            if (masteryResult.IsFailed) return masteryResult.ToResult<AssessmentItem>();
-
-            _kcMasteryRepository.UpdateKcMastery(kcMastery);
-
-            return Result.Ok(_kcMasteryRepository.GetDerivedAssessmentItem(selectionResult.Value));
         }
 
         public Result LaunchSession(int knowledgeComponentId, int learnerId)

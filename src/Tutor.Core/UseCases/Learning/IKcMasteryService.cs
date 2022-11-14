@@ -1,6 +1,5 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
-using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.InstructionalItems;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Core.Domain.KnowledgeMastery;
@@ -18,8 +17,6 @@ namespace Tutor.Core.UseCases.Learning
         Result<KnowledgeComponent> GetKnowledgeComponent(int knowledgeComponentId, int learnerId);
 
         Result<List<InstructionalItem>> GetInstructionalItems(int knowledgeComponentId, int learnerId);
-
-        Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId);
 
         Result LaunchSession(int knowledgeComponentId, int learnerId);
 

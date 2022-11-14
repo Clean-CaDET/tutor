@@ -119,9 +119,10 @@ namespace Tutor.Web
         private static void SetupLearningServices(IServiceCollection services)
         {
             services.AddScoped<IKcMasteryService, KcMasteryService>();
+            services.AddScoped<IStatisticsService, StatisticsService>();
+            services.AddScoped<ISelectionService, SelectionService>();
             services.AddScoped<IEvaluationService, EvaluationService>();
             services.AddScoped<IHelpService, HelpService>();
-            services.AddScoped<IStatisticsService, StatisticsService>();
             services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
         }
 

@@ -29,7 +29,8 @@ namespace Tutor.Web.Tests.Integration
         {
             return new KcMasteryController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IKcMasteryService>(),
-                scope.ServiceProvider.GetRequiredService<IStatisticsService>())
+                scope.ServiceProvider.GetRequiredService<IStatisticsService>(),
+                scope.ServiceProvider.GetRequiredService<ISelectionService>())
             {
                 ControllerContext = BuildContext(id, "learner")
             };

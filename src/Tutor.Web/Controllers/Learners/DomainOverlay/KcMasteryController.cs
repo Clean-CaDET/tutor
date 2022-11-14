@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.UseCases.Learning;
+using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Core.UseCases.Learning.Statistics;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Mappings.Domain.DTOs;
@@ -22,12 +23,14 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         private readonly IMapper _mapper;
         private readonly IKcMasteryService _kcMasteryService;
         private readonly IStatisticsService _learningStatisticsService;
+        private readonly ISelectionService _assessmentSelectionService;
 
-        public KcMasteryController(IMapper mapper, IKcMasteryService kcMasteryService, IStatisticsService learningStatisticsService)
+        public KcMasteryController(IMapper mapper, IKcMasteryService kcMasteryService, IStatisticsService learningStatisticsService, ISelectionService assessmentSelectionService)
         {
             _mapper = mapper;
             _kcMasteryService = kcMasteryService;
             _learningStatisticsService = learningStatisticsService;
+            _assessmentSelectionService = assessmentSelectionService;
         }
 
         [HttpGet]
@@ -96,7 +99,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         [HttpGet("knowledge-component/{knowledgeComponentId:int}/assessment-item/")]
         public ActionResult<AssessmentItemDto> GetSuitableAssessmentItem(int knowledgeComponentId)
         {
-            var result = _kcMasteryService.SelectSuitableAssessmentItem(knowledgeComponentId, User.LearnerId());
+            var result = _assessmentSelectionService.SelectSuitableAssessmentItem(knowledgeComponentId, User.LearnerId());
             if (result.IsSuccess) return Ok(_mapper.Map<AssessmentItemDto>(result.Value));
             return NotFound(result.Errors);
         }
