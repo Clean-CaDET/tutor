@@ -1,7 +1,8 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
+using Tutor.Core.Domain.LearningUtilities;
 
-namespace Tutor.Core.Domain.LearningUtilities.Notes
+namespace Tutor.Core.UseCases.Learning.Utilities
 {
     public class NoteService : INoteService
     {

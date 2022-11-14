@@ -3,15 +3,17 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
+using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.Domain.Stakeholders;
+using Tutor.Core.UseCases.Learning;
+using Tutor.Core.UseCases.Learning.Assessment;
+using Tutor.Core.UseCases.ProgressMonitoring;
+using Tutor.Core.UseCases.StakeholderManagement;
 using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Web.Controllers.Instructors;
 using Tutor.Web.Controllers.Learners;
 using Tutor.Web.Controllers.Learners.DomainOverlay;
 using Xunit;
-using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
-using Tutor.Core.UseCases.Learning;
-using Tutor.Core.Domain.Stakeholders;
-using Tutor.Core.UseCases.Learning.Assessment;
 
 namespace Tutor.Web.Tests.Integration
 {
@@ -39,7 +41,8 @@ namespace Tutor.Web.Tests.Integration
         protected InstructorController SetupInstructorController(IServiceScope scope, string id)
         {
             return new InstructorController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IEnrollmentService>())
+                scope.ServiceProvider.GetRequiredService<IInstructorService>(),
+                scope.ServiceProvider.GetRequiredService<IGroupService>())
             {
                 ControllerContext = BuildContext(id, "instructor")
             };

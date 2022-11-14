@@ -1,4 +1,4 @@
-﻿namespace Tutor.Core.Domain.LearningUtilities.Feedback
+﻿namespace Tutor.Core.Domain.LearningUtilities
 {
     public interface IFeedbackRepository
     {

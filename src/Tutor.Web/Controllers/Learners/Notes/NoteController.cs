@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.Domain.LearningUtilities.Notes;
+using Tutor.Core.Domain.LearningUtilities;
+using Tutor.Core.UseCases.Learning.Utilities;
 using Tutor.Infrastructure.Security.Authentication.Users;
 
 namespace Tutor.Web.Controllers.Learners.Notes

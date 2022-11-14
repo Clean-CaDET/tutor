@@ -11,10 +11,9 @@ using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.InstructionalItems;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Core.Domain.KnowledgeMastery;
-using Tutor.Core.Domain.LearningUtilities.Feedback;
-using Tutor.Core.Domain.LearningUtilities.Notes;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Stakeholders;
+using Tutor.Core.Domain.LearningUtilities;
 
 namespace Tutor.Infrastructure.Database
 {

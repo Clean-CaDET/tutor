@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.Domain.LearningUtilities.Notes;
+using Tutor.Core.Domain.LearningUtilities;
 
 namespace Tutor.Infrastructure.Database.Repositories.Learners
 {

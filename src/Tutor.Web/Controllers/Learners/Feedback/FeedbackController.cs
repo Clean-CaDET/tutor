@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tutor.Core.Domain.LearningUtilities.Feedback;
+using Tutor.Core.Domain.LearningUtilities;
+using Tutor.Core.UseCases.Learning.Utilities;
 using Tutor.Infrastructure.Security.Authentication.Users;
 
 namespace Tutor.Web.Controllers.Learners.Feedback

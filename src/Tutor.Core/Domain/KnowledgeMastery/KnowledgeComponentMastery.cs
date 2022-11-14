@@ -5,9 +5,9 @@ using System.Linq;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.Domain.KnowledgeMastery.Events;
 using Tutor.Core.Domain.KnowledgeMastery.Events.AssessmentItemEvents;
 using Tutor.Core.Domain.KnowledgeMastery.Events.KnowledgeComponentEvents;
-using Tutor.Core.Domain.KnowledgeMastery.Events;
 using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
 
 namespace Tutor.Core.Domain.KnowledgeMastery;
@@ -141,7 +141,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         return aim.RecordSolutionRequest();
     }
 
-    private Result NoAssessmentItemWithId(int assessmentItemId)
+    private static Result NoAssessmentItemWithId(int assessmentItemId)
     {
         return Result.Fail("No mastery for assessment item with id " + assessmentItemId + ". Were masteries created and loaded correctly?");
     }

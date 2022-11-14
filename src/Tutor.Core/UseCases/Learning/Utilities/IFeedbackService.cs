@@ -1,6 +1,7 @@
 ﻿using FluentResults;
+using Tutor.Core.Domain.LearningUtilities;
 
-namespace Tutor.Core.Domain.LearningUtilities.Feedback
+namespace Tutor.Core.UseCases.Learning.Utilities
 {
     public interface IFeedbackService
     {

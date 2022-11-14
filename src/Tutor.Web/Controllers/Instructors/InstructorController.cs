@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.Domain.Stakeholders;
+using Tutor.Core.UseCases.ProgressMonitoring;
+using Tutor.Core.UseCases.StakeholderManagement;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Mappings.Domain.DTOs;
 using Tutor.Web.Mappings.Enrollments;
@@ -16,18 +17,20 @@ namespace Tutor.Web.Controllers.Instructors;
 public class InstructorController : ControllerBase
 {
     private readonly IMapper _mapper;
-    private readonly IEnrollmentService _enrollmentService;
+    private readonly IInstructorService _instructorService;
+    private readonly IGroupService _groupMonitoringService;
     
-    public InstructorController(IMapper mapper, IEnrollmentService enrollmentService)
+    public InstructorController(IMapper mapper, IInstructorService instructorService, IGroupService groupMonitoringService)
     {
         _mapper = mapper;
-        _enrollmentService = enrollmentService;
+        _instructorService = instructorService;
+        _groupMonitoringService = groupMonitoringService;
     }
 
     [HttpGet("courses")]
     public ActionResult<List<CourseDto>> GetOwnedCourses()
     {
-        var result = _enrollmentService.GetOwnedCourses(User.InstructorId());
+        var result = _instructorService.GetOwnedCourses(User.InstructorId());
         if (result.IsFailed) return BadRequest(result.Errors);
         return Ok(result.Value.Select(c => _mapper.Map<CourseDto>(c)).ToList());
     }
@@ -35,7 +38,7 @@ public class InstructorController : ControllerBase
     [HttpGet("groups/{courseId:int}")]
     public ActionResult<GroupDto> GetAssignedGroups(int courseId)
     {
-        var result = _enrollmentService.GetAssignedGroups(User.InstructorId(), courseId);
+        var result = _groupMonitoringService.GetAssignedGroups(User.InstructorId(), courseId);
         if (result.IsFailed) return BadRequest(result.Errors);
         return Ok(result.Value.Select(g => _mapper.Map<GroupDto>(g)).ToList());
     }

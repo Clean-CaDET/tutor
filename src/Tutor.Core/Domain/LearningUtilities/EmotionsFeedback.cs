@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tutor.Core.Domain.LearningUtilities.Feedback
+namespace Tutor.Core.Domain.LearningUtilities
 {
     public class EmotionsFeedback
     {

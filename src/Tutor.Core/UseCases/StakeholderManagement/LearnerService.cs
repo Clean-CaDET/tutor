@@ -1,8 +1,9 @@
 using FluentResults;
 using System.Collections.Generic;
 using Tutor.Core.Domain.CourseIteration;
+using Tutor.Core.Domain.Stakeholders;
 
-namespace Tutor.Core.Domain.Stakeholders
+namespace Tutor.Core.UseCases.StakeholderManagement
 {
     public class LearnerService : ILearnerService
     {

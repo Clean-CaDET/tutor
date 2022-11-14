@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.Domain.LearningUtilities.Feedback;
+using Tutor.Core.UseCases.Learning.Utilities;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Learners.Feedback;
 using Xunit;

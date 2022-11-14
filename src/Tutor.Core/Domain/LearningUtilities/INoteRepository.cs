@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Tutor.Core.Domain.LearningUtilities.Notes
+namespace Tutor.Core.Domain.LearningUtilities
 {
     public interface INoteRepository
     {

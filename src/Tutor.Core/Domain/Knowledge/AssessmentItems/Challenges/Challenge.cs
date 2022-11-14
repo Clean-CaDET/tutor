@@ -45,7 +45,7 @@ namespace Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges
             return solutionAttempt;
         }
 
-        private ChallengeEvaluation CheckSyntaxErrors(IReadOnlyCollection<string> syntaxErrors)
+        private static ChallengeEvaluation CheckSyntaxErrors(IReadOnlyCollection<string> syntaxErrors)
         {
             if (syntaxErrors.Count == 0) return null;
 

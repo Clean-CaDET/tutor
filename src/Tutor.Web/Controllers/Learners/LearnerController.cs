@@ -7,7 +7,7 @@ using Tutor.Web.Mappings.Domain.DTOs;
 using Tutor.Web.Mappings.Enrollments;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Core.Domain.CourseIteration;
-using Tutor.Core.Domain.Stakeholders;
+using Tutor.Core.UseCases.StakeholderManagement;
 
 namespace Tutor.Web.Controllers.Learners
 {

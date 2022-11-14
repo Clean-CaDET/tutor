@@ -14,11 +14,13 @@ using System.Threading.Tasks;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
-using Tutor.Core.Domain.LearningUtilities.Feedback;
-using Tutor.Core.Domain.LearningUtilities.Notes;
+using Tutor.Core.Domain.LearningUtilities;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Core.UseCases.Learning.Assessment;
+using Tutor.Core.UseCases.Learning.Utilities;
+using Tutor.Core.UseCases.ProgressMonitoring;
+using Tutor.Core.UseCases.StakeholderManagement;
 using Tutor.Infrastructure;
 using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
@@ -104,7 +106,8 @@ namespace Tutor.Web
             services.AddScoped<INoteService, NoteService>();
 
             services.AddScoped<IEnrollmentRepository, EnrollmentDatabaseRepository>();
-            services.AddScoped<IEnrollmentService, EnrollmentService>();
+            services.AddScoped<IInstructorService, InstructorService>();
+            services.AddScoped<IGroupService, GroupService>();
 
             services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
 
