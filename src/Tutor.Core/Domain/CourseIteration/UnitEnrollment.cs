@@ -1,7 +1,7 @@
 ﻿using System;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 
-namespace Tutor.Core.Domain.Stakeholders
+namespace Tutor.Core.Domain.CourseIteration
 {
     public class UnitEnrollment
     {

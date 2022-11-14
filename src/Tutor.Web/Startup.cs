@@ -11,6 +11,14 @@ using Microsoft.Net.Http.Headers;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.Domain.KnowledgeMastery;
+using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
+using Tutor.Core.Domain.LearningUtilities.Feedback;
+using Tutor.Core.Domain.LearningUtilities.Notes;
+using Tutor.Core.Domain.Stakeholders;
+using Tutor.Core.UseCases.Learning;
+using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Infrastructure;
 using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
@@ -25,13 +33,6 @@ using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ArrangeTasks;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Tutor.Web.Mappings.Domain.DTOs.InstructionalItems;
-using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
-using Tutor.Core.Domain.KnowledgeMastery;
-using Tutor.Core.UseCases.Learning;
-using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
-using Tutor.Core.Domain.LearningUtilities.Feedback;
-using Tutor.Core.Domain.LearningUtilities.Notes;
-using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Web
 {
@@ -92,7 +93,8 @@ namespace Tutor.Web
 
             services.AddScoped<IKcMasteryService, KcMasteryService>();
             services.AddScoped<IKcMasteryRepository, KcMasteryDatabaseRepository>();
-            services.AddScoped<ILearnerAssessmentService, LearnerAssessmentService>();
+            services.AddScoped<IEvaluationService, EvaluationService>();
+            services.AddScoped<IHelpService, HelpService>();
             services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
 
             services.AddScoped<ILearnerService, LearnerService>();

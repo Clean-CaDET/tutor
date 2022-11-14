@@ -14,29 +14,31 @@ using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiChoiceQuestions;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Web.Mappings.Mastery;
-using Tutor.Core.UseCases.Learning;
+using Tutor.Core.UseCases.Learning.Assessment;
 
 namespace Tutor.Web.Controllers.Learners.DomainOverlay
 {
     [Authorize(Policy = "learnerPolicy")]
     [Route("api/submissions/")]
     [ApiController]
-    public class LearnerAssessmentController : ControllerBase
+    public class AssessmentEvaluationController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly ILearnerAssessmentService _learnerAssessmentService;
+        private readonly IEvaluationService _assessmentEvaluationService;
+        private readonly IHelpService _assessmentHelpService;
 
-        public LearnerAssessmentController(IMapper mapper, ILearnerAssessmentService service)
+        public AssessmentEvaluationController(IMapper mapper, IEvaluationService service, IHelpService assessmentHelpService)
         {
             _mapper = mapper;
-            _learnerAssessmentService = service;
+            _assessmentEvaluationService = service;
+            _assessmentHelpService = assessmentHelpService;
         }
         
         [HttpPost("challenge")]
         public ActionResult<ChallengeEvaluationDto> SubmitChallenge(
             [FromBody] ChallengeSubmissionDto submission)
         {
-            var result = _learnerAssessmentService.SubmitAssessmentItemAnswer(submission.LearnerId, submission.AssessmentItemId, _mapper.Map<ChallengeSubmission>(submission));
+            var result = _assessmentEvaluationService.EvaluateAssessmentItemSubmission(submission.LearnerId, submission.AssessmentItemId, _mapper.Map<ChallengeSubmission>(submission));
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<ChallengeEvaluationDto>(result.Value));
         }
@@ -45,7 +47,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         public ActionResult<List<MrqItemEvaluationDto>> SubmitMultipleResponseQuestion(
             [FromBody] MrqSubmissionDto submission)
         {
-            var result = _learnerAssessmentService.SubmitAssessmentItemAnswer(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<MrqSubmission>(submission));
+            var result = _assessmentEvaluationService.EvaluateAssessmentItemSubmission(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<MrqSubmission>(submission));
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<MrqEvaluationDto>(result.Value));
         }
@@ -54,7 +56,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         public ActionResult<McqEvaluationDto> SubmitMultiChoiceQuestion(
             [FromBody] McqSubmissionDto submission)
         {
-            var result = _learnerAssessmentService.SubmitAssessmentItemAnswer(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<McqSubmission>(submission));
+            var result = _assessmentEvaluationService.EvaluateAssessmentItemSubmission(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<McqSubmission>(submission));
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<McqEvaluationDto>(result.Value));
         }
@@ -63,7 +65,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         public ActionResult<List<AtContainerEvaluationDto>> SubmitArrangeTask(
             [FromBody] AtSubmissionDto submission)
         {
-            var result = _learnerAssessmentService.SubmitAssessmentItemAnswer(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<ArrangeTaskSubmission>(submission));
+            var result = _assessmentEvaluationService.EvaluateAssessmentItemSubmission(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<ArrangeTaskSubmission>(submission));
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<AtEvaluationDto>(result.Value));
         }
@@ -72,7 +74,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         public ActionResult<List<SaqEvaluationDto>> SubmitShortAnswerQuestion(
             [FromBody] SaqSubmissionDto submission)
         {
-            var result = _learnerAssessmentService.SubmitAssessmentItemAnswer(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<SaqSubmission>(submission));
+            var result = _assessmentEvaluationService.EvaluateAssessmentItemSubmission(User.LearnerId(), submission.AssessmentItemId, _mapper.Map<SaqSubmission>(submission));
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<SaqEvaluationDto>(result.Value));
         }
@@ -81,7 +83,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         [HttpPost("max-correctness")]
         public ActionResult<double> GetMaxCorrectness([FromBody] ChallengeSubmissionDto submission)
         {
-            var result = _learnerAssessmentService.GetMaxCorrectness(User.LearnerId(), submission.AssessmentItemId);
+            var result = _assessmentEvaluationService.GetMaxCorrectness(User.LearnerId(), submission.AssessmentItemId);
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(result.Value);
         }
@@ -90,7 +92,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         [HttpPost("tutor-message")]
         public ActionResult SaveInstructorMessage([FromBody] InstructorMessageDto instructorMessageDto)
         {
-            var result = _learnerAssessmentService
+            var result = _assessmentHelpService
                 .RecordInstructorMessage(User.LearnerId(), instructorMessageDto.KcId, instructorMessageDto.Message);
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok();

@@ -17,7 +17,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Submits_multiple_response_questions(MrqSubmissionDto submission, MrqEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupAssessmentsController(scope, "-3");
+            var controller = SetupAssessmentEvaluationController(scope, "-3");
 
             var actualEvaluation = ((OkObjectResult)controller.SubmitMultipleResponseQuestion(submission).Result).Value as MrqEvaluationDto;
 

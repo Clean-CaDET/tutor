@@ -17,7 +17,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Submits_multi_choice_questions(McqSubmissionDto submission, McqEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupAssessmentsController(scope, "-3");
+            var controller = SetupAssessmentEvaluationController(scope, "-3");
 
             var actualEvaluation = ((OkObjectResult)controller.SubmitMultiChoiceQuestion(submission).Result).Value
                 as McqEvaluationDto;

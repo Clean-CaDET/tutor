@@ -4,8 +4,8 @@ using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
 using Tutor.Web.Controllers.Users;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Mappings.Enrollments;
-using Tutor.Core.UseCases.Learning;
 using Tutor.Core.Domain.Stakeholders;
+using Tutor.Core.UseCases.Learning.Assessment;
 
 namespace Tutor.Web.Controllers.Learners.DomainOverlay
 {
@@ -16,13 +16,15 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         // Should be enhanced after 4.2022.
         private readonly ILearnerRepository _learnerRepository;
         private readonly IMapper _mapper;
-        private readonly ILearnerAssessmentService _learnerAssessmentService;
+        private readonly IEvaluationService _assessmentEvaluationService;
+        private readonly IHelpService _assessmentHelpService;
 
-        public PluginController(ILearnerRepository learnerRepository, IMapper mapper, ILearnerAssessmentService learnerAssessmentService)
+        public PluginController(ILearnerRepository learnerRepository, IMapper mapper, IEvaluationService assessmentEvaluationService, IHelpService assessmentHelpService)
         {
             _learnerRepository = learnerRepository;
             _mapper = mapper;
-            _learnerAssessmentService = learnerAssessmentService;
+            _assessmentEvaluationService = assessmentEvaluationService;
+            _assessmentHelpService = assessmentHelpService;
         }
 
         [HttpPost("login")]
@@ -37,7 +39,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         public ActionResult<ChallengeEvaluationDto> SubmitChallenge(
             [FromBody] ChallengeSubmissionDto submission)
         {
-            var result = _learnerAssessmentService.SubmitAssessmentItemAnswer(submission.LearnerId, submission.AssessmentItemId, _mapper.Map<ChallengeSubmission>(submission));
+            var result = _assessmentEvaluationService.EvaluateAssessmentItemSubmission(submission.LearnerId, submission.AssessmentItemId, _mapper.Map<ChallengeSubmission>(submission));
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<ChallengeEvaluationDto>(result.Value));
         }
@@ -45,13 +47,13 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         [HttpPost("challenge/hints")]
         public void RequestHints([FromBody] ChallengeSubmissionDto submission)
         {
-            _learnerAssessmentService.RecordHintRequest(submission.LearnerId, submission.AssessmentItemId);
+            _assessmentHelpService.RecordHintRequest(submission.LearnerId, submission.AssessmentItemId);
         }
 
         [HttpPost("challenge/solution")]
         public void RequestSolution([FromBody] ChallengeSubmissionDto submission)
         {
-            _learnerAssessmentService.RecordSolutionRequest(submission.LearnerId, submission.AssessmentItemId);
+            _assessmentHelpService.RecordSolutionRequest(submission.LearnerId, submission.AssessmentItemId);
         }
     }
 }

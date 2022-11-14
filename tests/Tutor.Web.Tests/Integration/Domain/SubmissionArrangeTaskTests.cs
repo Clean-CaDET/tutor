@@ -17,7 +17,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Submits_arrange_task(AtSubmissionDto submission, AtEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupAssessmentsController(scope, "-3");
+            var controller = SetupAssessmentEvaluationController(scope, "-3");
 
             var actualEvaluation = ((OkObjectResult)controller.SubmitArrangeTask(submission).Result).Value as AtEvaluationDto;
 
@@ -31,7 +31,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Submits_invalid_arrange_task(AtSubmissionDto submission)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupAssessmentsController(scope, "-3");
+            var controller = SetupAssessmentEvaluationController(scope, "-3");
 
             var actualEvaluation = ((BadRequestObjectResult)controller.SubmitArrangeTask(submission).Result).Value;
 

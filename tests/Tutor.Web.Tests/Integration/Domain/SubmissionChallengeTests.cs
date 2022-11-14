@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.UseCases.Learning;
+using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Web.Controllers.Learners.DomainOverlay;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Tests.TestData;
@@ -22,7 +22,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Accepts_challenge_submission_and_produces_correct_evaluation(ChallengeSubmissionDto submission, ChallengeEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new LearnerAssessmentController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ILearnerAssessmentService>());
+            var controller = SetupAssessmentEvaluationController(scope, submission.LearnerId.ToString());
 
             var actualEvaluation = ((OkObjectResult)controller.SubmitChallenge(submission).Result).Value as ChallengeEvaluationDto;
 
@@ -102,7 +102,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Rejects_bad_challenge_submission()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new LearnerAssessmentController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ILearnerAssessmentService>());
+            var controller = SetupAssessmentEvaluationController(scope, "-2");
             var submission = new ChallengeSubmissionDto
             {
                 AssessmentItemId = -211,
@@ -118,7 +118,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Gets_syntax_error_hint()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new LearnerAssessmentController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<ILearnerAssessmentService>());
+            var controller = SetupAssessmentEvaluationController(scope, "-3");
             var submission = new ChallengeSubmissionDto
             {
                 AssessmentItemId = -211,

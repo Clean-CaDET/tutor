@@ -90,7 +90,7 @@ namespace Tutor.Web.Tests.Integration.Learners
         public void Updates_Kc_Mastery(int learnerId, MrqSubmissionDto submission, double expectedKcMastery)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupAssessmentsController(scope, learnerId.ToString());
+            var controller = SetupAssessmentEvaluationController(scope, learnerId.ToString());
             var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
             var assessmentItem = dbContext.AssessmentItems.FirstOrDefault(ae => ae.Id == submission.AssessmentItemId);
             var knowledgeComponent =

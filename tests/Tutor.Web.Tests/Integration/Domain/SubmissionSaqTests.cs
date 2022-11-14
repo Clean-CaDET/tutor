@@ -17,7 +17,7 @@ namespace Tutor.Web.Tests.Integration.Domain
         public void Submits_short_answer_questions(SaqSubmissionDto submission, SaqEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupAssessmentsController(scope, "-3");
+            var controller = SetupAssessmentEvaluationController(scope, "-3");
 
             var actualEvaluation = ((OkObjectResult)controller.SubmitShortAnswerQuestion(submission).Result).Value as SaqEvaluationDto;
 

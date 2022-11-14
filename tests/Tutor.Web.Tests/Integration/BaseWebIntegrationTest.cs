@@ -11,6 +11,7 @@ using Xunit;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Core.Domain.Stakeholders;
+using Tutor.Core.UseCases.Learning.Assessment;
 
 namespace Tutor.Web.Tests.Integration
 {
@@ -70,10 +71,11 @@ namespace Tutor.Web.Tests.Integration
             };
         }
 
-        protected LearnerAssessmentController SetupAssessmentsController(IServiceScope scope, string id)
+        protected AssessmentEvaluationController SetupAssessmentEvaluationController(IServiceScope scope, string id)
         {
-            return new LearnerAssessmentController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<ILearnerAssessmentService>())
+            return new AssessmentEvaluationController(Factory.Services.GetRequiredService<IMapper>(),
+                scope.ServiceProvider.GetRequiredService<IEvaluationService>(),
+                scope.ServiceProvider.GetRequiredService<IHelpService>())
             {
                 ControllerContext = BuildContext(id, "learner")
             };

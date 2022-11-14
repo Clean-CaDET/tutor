@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
-using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Infrastructure.Database.Repositories.Domain
 {
