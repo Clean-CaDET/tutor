@@ -17,10 +17,10 @@ namespace Tutor.Infrastructure.Database.DataImport.Domain
         public ExcelToDomainTransformer()
         {
             _courseId = -100;
-            _unitId = -100;
-            _kcId = -100;
-            _ieId = -1000;
-            _aeId = -1000;
+            _unitId = -97;
+            _kcId = -82;
+            _ieId = -900;
+            _aeId = -900;
         }
 
         public DomainExcelContent Transform(List<ExcelWorksheet> sheets)

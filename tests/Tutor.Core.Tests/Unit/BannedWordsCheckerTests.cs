@@ -12,22 +12,28 @@ namespace Tutor.Core.Tests.Unit
     {
         [Theory]
         [MemberData(nameof(ChallengeTest))]
-        public void Evaluates_solution_submission(string[] submissionAttempt, List<ChallengeHint> expectedHints, bool expectedCompletion)
+        public void Evaluates_challenge_submission(string[] submissionAttempt,
+            List<ChallengeHint> expectedHints, bool expectedCorrectness)
         {
-            var challenge = new Challenge(1, 1, new List<ChallengeFulfillmentStrategy>
+            var challenge = SetupChallenge();
+
+            var challengeEvaluation = challenge.EvaluateChallenge(submissionAttempt, null);
+            
+            var actualHints = challengeEvaluation.ApplicableHints.GetHints();
+            actualHints.Count.ShouldBe(expectedHints.Count);
+            actualHints.All(expectedHints.Contains).ShouldBeTrue();
+            challengeEvaluation.Correct.ShouldBe(expectedCorrectness);
+        }
+
+        private static Challenge SetupChallenge()
+        {
+            return new Challenge(1, 1, new List<ChallengeFulfillmentStrategy>
             {
                 new BannedWordsChecker(new List<string>
                 {
                     "Class", "Method", "List"
                 }, new ChallengeHint(21), null)
             });
-
-            var challengeEvaluation = challenge.EvaluateChallenge(submissionAttempt, null);
-            var actualHints = challengeEvaluation.ApplicableHints.GetHints();
-
-            actualHints.Count.ShouldBe(expectedHints.Count);
-            actualHints.All(expectedHints.Contains).ShouldBeTrue();
-            challengeEvaluation.Correct.ShouldBe(expectedCompletion);
         }
 
         public static IEnumerable<object[]> ChallengeTest =>

@@ -11,7 +11,7 @@ namespace Tutor.Infrastructure.Database.DataImport.Learner
 
         public ExcelToLearnerTransformer()
         {
-            _learnerId = -10000;
+            _learnerId = -100000;
         }
 
         public List<UserLearnerColumns> Transform(List<ExcelWorksheet> sheets)

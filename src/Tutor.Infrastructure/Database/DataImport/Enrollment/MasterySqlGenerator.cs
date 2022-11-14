@@ -12,10 +12,11 @@ internal static class MasterySqlGenerator
 {
     public static string BuildMasteries(EnrollmentExcelContent enrollmentContent, DomainExcelContent domainContent, List<UserLearnerColumns> learners)
     {
+        var enrollmentId = -9473;
+        var kcMasteryId = -7557;
+        var aiMasteryId = -86850;
+
         var sqlBuilder = new StringBuilder();
-        var enrollmentId = -10000;
-        var kcMasteryId = -10000;
-        var aiMasteryId = -100000;
         foreach (var learner in learners)
         {
             var enrolledUnitIds = GetEnrolledUnitIds(enrollmentContent, domainContent, learner.Index);

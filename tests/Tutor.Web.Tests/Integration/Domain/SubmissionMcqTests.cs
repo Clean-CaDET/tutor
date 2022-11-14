@@ -19,7 +19,8 @@ namespace Tutor.Web.Tests.Integration.Domain
             using var scope = Factory.Services.CreateScope();
             var controller = SetupAssessmentsController(scope, "-3");
 
-            var actualEvaluation = ((OkObjectResult)controller.SubmitMultiChoiceQuestion(submission).Result).Value as McqEvaluationDto;
+            var actualEvaluation = ((OkObjectResult)controller.SubmitMultiChoiceQuestion(submission).Result).Value
+                as McqEvaluationDto;
 
             actualEvaluation.ShouldNotBeNull();
             actualEvaluation.CorrectnessLevel.ShouldBe(expectedEvaluation.CorrectnessLevel);

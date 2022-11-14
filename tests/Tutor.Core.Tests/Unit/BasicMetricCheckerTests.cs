@@ -41,7 +41,6 @@ namespace Tutor.Core.Tests.Unit
             }
 
             var actualHints = hints.GetHints();
-
             actualHints.Count.ShouldBe(expectedHints.Count);
             actualHints.All(expectedHints.Contains).ShouldBeTrue();
         }
