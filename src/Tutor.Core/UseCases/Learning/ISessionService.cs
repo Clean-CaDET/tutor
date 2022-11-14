@@ -5,14 +5,11 @@ using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 
 namespace Tutor.Core.UseCases.Learning
 {
-    public interface IKcMasteryService
+    public interface ISessionService
     {
-        Result<KnowledgeComponent> GetKnowledgeComponent(int knowledgeComponentId, int learnerId);
-
-        Result<List<InstructionalItem>> GetInstructionalItems(int knowledgeComponentId, int learnerId);
-
         Result LaunchSession(int knowledgeComponentId, int learnerId);
-
+        Result<KnowledgeComponent> GetKnowledgeComponent(int knowledgeComponentId, int learnerId);
+        Result<List<InstructionalItem>> GetInstructionalItems(int knowledgeComponentId, int learnerId);
         Result TerminateSession(int knowledgeComponentId, int learnerId);
     }
 }

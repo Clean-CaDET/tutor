@@ -20,15 +20,15 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
     public class KcMasteryController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IKcMasteryService _kcMasteryService;
+        private readonly ISessionService _sessionService;
         private readonly IStructureService _learningStructureService;
         private readonly IStatisticsService _learningStatisticsService;
         private readonly ISelectionService _assessmentSelectionService;
 
-        public KcMasteryController(IMapper mapper, IKcMasteryService kcMasteryService, IStatisticsService learningStatisticsService, ISelectionService assessmentSelectionService, IStructureService learningStructureService)
+        public KcMasteryController(IMapper mapper, ISessionService sessionService, IStatisticsService learningStatisticsService, ISelectionService assessmentSelectionService, IStructureService learningStructureService)
         {
             _mapper = mapper;
-            _kcMasteryService = kcMasteryService;
+            _sessionService = sessionService;
             _learningStatisticsService = learningStatisticsService;
             _assessmentSelectionService = assessmentSelectionService;
             _learningStructureService = learningStructureService;
@@ -82,11 +82,11 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
             }
         }
 
-        // Should be removed as we do not benefit from this endpoint much.
+        // Should check if KC is unlocked.
         [HttpGet("knowledge-components/{knowledgeComponentId:int}")]
         public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
         {
-            var result = _kcMasteryService.GetKnowledgeComponent(knowledgeComponentId, User.LearnerId());
+            var result = _sessionService.GetKnowledgeComponent(knowledgeComponentId, User.LearnerId());
             if (result.IsSuccess) return Ok(_mapper.Map<KnowledgeComponentDto>(result.Value));
             return NotFound(result.Errors);
         }
@@ -94,7 +94,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         [HttpGet("knowledge-components/{knowledgeComponentId:int}/instructional-items/")]
         public ActionResult<List<InstructionalItemDto>> GetInstructionalItems(int knowledgeComponentId)
         {
-            var result = _kcMasteryService.GetInstructionalItems(knowledgeComponentId, User.LearnerId());
+            var result = _sessionService.GetInstructionalItems(knowledgeComponentId, User.LearnerId());
             return Ok(result.Value.Select(ie => _mapper.Map<InstructionalItemDto>(ie)).ToList());
         }
 
@@ -117,7 +117,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         [HttpPost("knowledge-components/{knowledgeComponentId:int}/session/launch")]
         public ActionResult LaunchSession(int knowledgeComponentId)
         {
-            var result = _kcMasteryService.LaunchSession(knowledgeComponentId, User.LearnerId());
+            var result = _sessionService.LaunchSession(knowledgeComponentId, User.LearnerId());
             if (result.IsSuccess) return Ok();
             return BadRequest(result.Errors);
         }
@@ -125,7 +125,7 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         [HttpPost("knowledge-components/{knowledgeComponentId:int}/session/terminate")]
         public ActionResult TerminateSession(int knowledgeComponentId)
         {
-            var result = _kcMasteryService.TerminateSession(knowledgeComponentId, User.LearnerId());
+            var result = _sessionService.TerminateSession(knowledgeComponentId, User.LearnerId());
             if (result.IsSuccess) return Ok();
             return BadRequest(result.Errors);
         }

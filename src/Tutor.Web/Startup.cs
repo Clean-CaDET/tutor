@@ -117,7 +117,7 @@ namespace Tutor.Web
 
         private static void SetupLearningServices(IServiceCollection services)
         {
-            services.AddScoped<IKcMasteryService, KcMasteryService>();
+            services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IStructureService, StructureService>();
             services.AddScoped<IStatisticsService, StatisticsService>();
             services.AddScoped<ISelectionService, SelectionService>();

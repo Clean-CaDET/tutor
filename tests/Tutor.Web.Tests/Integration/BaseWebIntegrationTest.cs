@@ -27,7 +27,7 @@ namespace Tutor.Web.Tests.Integration
         protected KcMasteryController SetupKcmController(IServiceScope scope, string id)
         {
             return new KcMasteryController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IKcMasteryService>(),
+                scope.ServiceProvider.GetRequiredService<ISessionService>(),
                 scope.ServiceProvider.GetRequiredService<IStatisticsService>(),
                 scope.ServiceProvider.GetRequiredService<ISelectionService>(),
                 scope.ServiceProvider.GetRequiredService<IStructureService>())

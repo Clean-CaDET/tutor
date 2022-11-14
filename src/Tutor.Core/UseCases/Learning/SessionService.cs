@@ -6,11 +6,11 @@ using Tutor.Core.Domain.KnowledgeMastery;
 
 namespace Tutor.Core.UseCases.Learning
 {
-    public class KcMasteryService : IKcMasteryService
+    public class SessionService : ISessionService
     {
         private readonly IKcMasteryRepository _kcMasteryRepository;
 
-        public KcMasteryService(IKcMasteryRepository ikcMasteryRepository)
+        public SessionService(IKcMasteryRepository ikcMasteryRepository)
         {
             _kcMasteryRepository = ikcMasteryRepository;
         }
