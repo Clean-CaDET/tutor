@@ -30,7 +30,7 @@ namespace Tutor.Web.Controllers.Learners.Learning
         public ActionResult<List<KnowledgeUnitDto>> GetUnits(int courseId)
         {
             var result = _learningStructureService.GetUnits(courseId, User.LearnerId());
-            return Ok(result.Value.Select(u => _mapper.Map<KnowledgeUnitDto>(u)).ToList());
+            return Ok(result.Value.Select(_mapper.Map<KnowledgeUnitDto>).ToList());
         }
 
         [HttpGet("units/{unitId:int}/")]
@@ -86,7 +86,7 @@ namespace Tutor.Web.Controllers.Learners.Learning
         public ActionResult<List<InstructionalItemDto>> GetInstructionalItems(int knowledgeComponentId)
         {
             var result = _learningStructureService.GetInstructionalItems(knowledgeComponentId, User.LearnerId());
-            return Ok(result.Value.Select(ie => _mapper.Map<InstructionalItemDto>(ie)).ToList());
+            return Ok(result.Value.Select(_mapper.Map<InstructionalItemDto>).ToList());
         }
     }
 }

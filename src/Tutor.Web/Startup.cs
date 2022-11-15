@@ -196,7 +196,7 @@ namespace Tutor.Web
         {
             services.AddScoped<ILearnerService, LearnerService>();
             services.AddScoped<IAvailableCourseService, AvailableCourseService>();
-            services.AddScoped<IGroupMonitoringService, GroupMonitoringService>();
+            services.AddScoped<ICourseIterationMonitoringService, CourseIterationMonitoringService>();
         }
 
         private void SetupMoveOn(IServiceCollection services)

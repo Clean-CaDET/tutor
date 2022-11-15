@@ -28,7 +28,7 @@ public class InstructorController : ControllerBase
     {
         var result = _availableCourseService.GetOwnedCourses(User.InstructorId());
         if (result.IsFailed) return BadRequest(result.Errors);
-        return Ok(result.Value.Select(c => _mapper.Map<CourseDto>(c)).ToList());
+        return Ok(result.Value.Select(_mapper.Map<CourseDto>).ToList());
     }
 
     [HttpGet("{courseId:int}")]

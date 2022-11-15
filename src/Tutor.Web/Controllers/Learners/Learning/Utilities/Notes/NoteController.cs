@@ -52,7 +52,7 @@ namespace Tutor.Web.Controllers.Learners.Learning.Utilities.Notes
         public ActionResult<List<NoteDto>> GetAppropriateNotes(int unitId)
         {
             var result = _noteService.GetAppropriateNotes(User.LearnerId(), unitId);
-            return Ok(result.Value.Select(note => _mapper.Map<NoteDto>(note)).ToList());
+            return Ok(result.Value.Select(_mapper.Map<NoteDto>).ToList());
         }
     }
 }

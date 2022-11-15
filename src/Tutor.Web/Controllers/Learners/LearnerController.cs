@@ -38,7 +38,7 @@ namespace Tutor.Web.Controllers.Learners
         {
             var result = _availableCourseService.GetEnrolledCourses(User.LearnerId());
             if (result.IsFailed) return BadRequest(result.Errors);
-            return Ok(result.Value.Select(c => _mapper.Map<CourseDto>(c)).ToList());
+            return Ok(result.Value.Select(_mapper.Map<CourseDto>).ToList());
         }
     }
 }
