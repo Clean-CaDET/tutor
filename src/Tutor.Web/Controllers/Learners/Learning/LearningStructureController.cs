@@ -13,13 +13,13 @@ using Tutor.Web.Mappings.KnowledgeMastery;
 namespace Tutor.Web.Controllers.Learners.Learning
 {
     [Authorize(Policy = "learnerPolicy")]
-    [Route("api/course/{courseId:int}/")]
+    [Route("api/learners/courses/{courseId:int}/")]
     [ApiController]
     public class LearningStructureController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IStructureService _learningStructureService;
-
+        // Discuss how to structure Course-Unit-KC endpoints and services
         public LearningStructureController(IMapper mapper, IStructureService learningStructureService)
         {
             _mapper = mapper;

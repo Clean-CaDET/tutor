@@ -211,7 +211,6 @@ namespace Tutor.Web
             services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
             services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
-            services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
             services.AddScoped<IKnowledgeUnitRepository, KnowledgeUnitDatabaseRepository>();
             services.AddScoped<IKcMasteryRepository, KcMasteryDatabaseRepository>();
             services.AddScoped<IAvailableCourseRepository, AvailableCourseDatabaseRepository>();

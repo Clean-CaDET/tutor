@@ -7,5 +7,6 @@ namespace Tutor.Core.UseCases.StakeholderManagement;
 public interface IAvailableCourseService
 {
     Result<List<Course>> GetOwnedCourses(int instructorId);
+    Result<Course> GetOwnedCourseWithUnits(int courseId, int instructorId);
     Result<List<Course>> GetEnrolledCourses(int learnerId);
 }

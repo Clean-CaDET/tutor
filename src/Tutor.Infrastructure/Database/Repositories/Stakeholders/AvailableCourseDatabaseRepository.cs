@@ -14,19 +14,22 @@ public class AvailableCourseDatabaseRepository : IAvailableCourseRepository
     {
         _dbContext = dbContext;
     }
-
-    public Instructor GetByUserId(int userId)
-    {
-        return _dbContext.Instructors.FirstOrDefault(i => i.UserId.Equals(userId));
-    }
-
+    
     public List<Course> GetOwnedCourses(int instructorId)
     {
         return _dbContext.CourseOwnerships
             .Where(m => m.Instructor.Id.Equals(instructorId))
-            .Include(m => m.Course.KnowledgeUnits)
             .Select(m => m.Course).ToList();
     }
+
+    public Course GetOwnedCourseWithUnits(int courseId, int instructorId)
+    {
+        return _dbContext.CourseOwnerships
+            .Where(m => m.Instructor.Id.Equals(instructorId) && m.Course.Id.Equals(courseId))
+            .Include(m => m.Course.KnowledgeUnits)
+            .Select(m => m.Course).FirstOrDefault();
+    }
+
     public List<Course> GetEnrolledCourses(int learnerId)
     {
         return _dbContext.LearnerGroups

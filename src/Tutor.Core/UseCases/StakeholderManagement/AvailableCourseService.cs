@@ -19,6 +19,11 @@ public class AvailableCourseService : IAvailableCourseService
         return _availableCourseRepository.GetOwnedCourses(instructorId).ToResult();
     }
 
+    public Result<Course> GetOwnedCourseWithUnits(int courseId, int instructorId)
+    {
+        return _availableCourseRepository.GetOwnedCourseWithUnits(courseId, instructorId).ToResult();
+    }
+
     public Result<List<Course>> GetEnrolledCourses(int learnerId)
     {
         return _availableCourseRepository.GetEnrolledCourses(learnerId).ToResult();

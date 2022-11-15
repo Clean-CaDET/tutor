@@ -34,7 +34,7 @@ namespace Tutor.Web.Controllers.Learners
         }
 
         [HttpGet("courses")]
-        public ActionResult<List<CourseDto>> GetCoursesByLearner()
+        public ActionResult<List<CourseDto>> GetEnrolledCourses()
         {
             var result = _availableCourseService.GetEnrolledCourses(User.LearnerId());
             if (result.IsFailed) return BadRequest(result.Errors);
