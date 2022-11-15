@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Domain
+namespace Tutor.Web.Tests.Integration.Learning.Assessment
 {
     [Collection("Sequential")]
     public class SubmissionMrqTests : BaseWebIntegrationTest
     {
-        public SubmissionMrqTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
+        public SubmissionMrqTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
 
         [Theory]
         [MemberData(nameof(MrqSubmissions))]

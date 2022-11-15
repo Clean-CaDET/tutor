@@ -6,15 +6,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.UseCases.Learning.Utilities;
 using Tutor.Infrastructure.Database;
-using Tutor.Web.Controllers.Learners.Feedback;
+using Tutor.Web.Controllers.Learners.Learning.Utilities.Feedback;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Learners
+namespace Tutor.Web.Tests.Integration.Learning.Utilities
 {
     [Collection("Sequential")]
     public class FeedbackTests : BaseWebIntegrationTest
     {
-        public FeedbackTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
+        public FeedbackTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
 
         [Theory]
         [MemberData(nameof(EmotionsFeedbackSubmission))]
@@ -80,14 +80,14 @@ namespace Tutor.Web.Tests.Integration.Learners
         {
             new object[]
             {
-                new TutorImprovementFeedbackDto 
+                new TutorImprovementFeedbackDto
                 {
-                    LearnerId = -1, 
-                    UnitId = -1, 
+                    LearnerId = -1,
+                    UnitId = -1,
                     SoftwareComment = "There's a bug in rating mechanism",
                     ContentComment = "I would like to see more images"
                 },
-                new TutorImprovementFeedbackDto 
+                new TutorImprovementFeedbackDto
                 {
                     LearnerId = -1,
                     UnitId = -1,
@@ -97,11 +97,11 @@ namespace Tutor.Web.Tests.Integration.Learners
             },
             new object[]
             {
-                new TutorImprovementFeedbackDto 
+                new TutorImprovementFeedbackDto
                 {
-                    LearnerId = -1, 
+                    LearnerId = -1,
                     UnitId = -2,
-                    SoftwareComment = "I would like to have a highlighting tool", 
+                    SoftwareComment = "I would like to have a highlighting tool",
                     ContentComment = "There should be less videos"
                 },
                 new TutorImprovementFeedbackDto

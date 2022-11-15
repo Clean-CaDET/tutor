@@ -193,7 +193,7 @@ namespace Tutor.Web
         private static void SetupSupportingStakeholderServices(IServiceCollection services)
         {
             services.AddScoped<ILearnerService, LearnerService>();
-            services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
+            services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<IGroupMonitoringService, GroupMonitoringService>();
         }
 

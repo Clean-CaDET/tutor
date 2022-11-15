@@ -7,6 +7,7 @@ using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiChoiceQuestions;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.ShortAnswerQuestions;
+using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ArrangeTasks;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
@@ -14,10 +15,8 @@ using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiChoiceQuestions;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Web.Mappings.Mastery;
-using Tutor.Core.UseCases.Learning.Assessment;
-using Tutor.Core.UseCases.Learning;
 
-namespace Tutor.Web.Controllers.Learners.DomainOverlay
+namespace Tutor.Web.Controllers.Learners.Learning.Assessment
 {
     [Authorize(Policy = "learnerPolicy")]
     [Route("api/submissions/")]
@@ -27,16 +26,14 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
         private readonly IMapper _mapper;
         private readonly IEvaluationService _assessmentEvaluationService;
         private readonly IHelpService _assessmentHelpService;
-        private readonly IStatisticsService _learningStatisticsService;
 
-        public AssessmentEvaluationController(IMapper mapper, IEvaluationService service, IHelpService assessmentHelpService, IStatisticsService learningStatisticsService)
+        public AssessmentEvaluationController(IMapper mapper, IEvaluationService service, IHelpService assessmentHelpService)
         {
             _mapper = mapper;
             _assessmentEvaluationService = service;
             _assessmentHelpService = assessmentHelpService;
-            _learningStatisticsService = learningStatisticsService;
         }
-        
+
         [HttpPost("challenge")]
         public ActionResult<ChallengeEvaluationDto> SubmitChallenge(
             [FromBody] ChallengeSubmissionDto submission)
@@ -82,15 +79,6 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
             return Ok(_mapper.Map<SaqEvaluationDto>(result.Value));
         }
 
-        // Rework when we separate the controllers and AEMastery.
-        [HttpPost("max-correctness")]
-        public ActionResult<double> GetMaxCorrectness([FromBody] ChallengeSubmissionDto submission)
-        {
-            var result = _learningStatisticsService.GetMaxAssessmentCorrectness(User.LearnerId(), submission.AssessmentItemId);
-            if (result.IsFailed) return BadRequest(result.Errors);
-            return Ok(result.Value);
-        }
-        
         // Should be moved into a standalone module
         [HttpPost("tutor-message")]
         public ActionResult SaveInstructorMessage([FromBody] InstructorMessageDto instructorMessageDto)

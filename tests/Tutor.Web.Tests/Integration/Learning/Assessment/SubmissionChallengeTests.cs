@@ -1,21 +1,18 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.UseCases.Learning.Assessment;
-using Tutor.Web.Controllers.Learners.DomainOverlay;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Tests.TestData;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Domain
+namespace Tutor.Web.Tests.Integration.Learning.Assessment
 {
     [Collection("Sequential")]
     public class SubmissionChallengeTests : BaseWebIntegrationTest
     {
-        public SubmissionChallengeTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
+        public SubmissionChallengeTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
 
         [Theory]
         [MemberData(nameof(ChallengeSubmissions))]
@@ -110,7 +107,7 @@ namespace Tutor.Web.Tests.Integration.Domain
             };
 
             var result = controller.SubmitChallenge(submission).Result;
-            
+
             result.ShouldBeOfType<BadRequestObjectResult>();
         }
 

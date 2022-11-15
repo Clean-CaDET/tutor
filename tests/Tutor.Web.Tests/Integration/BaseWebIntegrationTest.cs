@@ -12,7 +12,8 @@ using Tutor.Core.UseCases.StakeholderManagement;
 using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Web.Controllers.Instructors;
 using Tutor.Web.Controllers.Learners;
-using Tutor.Web.Controllers.Learners.DomainOverlay;
+using Tutor.Web.Controllers.Learners.Learning;
+using Tutor.Web.Controllers.Learners.Learning.Assessment;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration
@@ -26,22 +27,10 @@ namespace Tutor.Web.Tests.Integration
             Factory = factory;
         }
 
-        protected KcMasteryController SetupKcmController(IServiceScope scope, string id)
-        {
-            return new KcMasteryController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<ISessionService>(),
-                scope.ServiceProvider.GetRequiredService<IStatisticsService>(),
-                scope.ServiceProvider.GetRequiredService<ISelectionService>(),
-                scope.ServiceProvider.GetRequiredService<IStructureService>())
-            {
-                ControllerContext = BuildContext(id, "learner")
-            };
-        }
-
         protected InstructorController SetupInstructorController(IServiceScope scope, string id)
         {
             return new InstructorController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<ICourseOwnershipService>(),
+                scope.ServiceProvider.GetRequiredService<ICourseService>(),
                 scope.ServiceProvider.GetRequiredService<IGroupMonitoringService>())
             {
                 ControllerContext = BuildContext(id, "instructor")
@@ -52,7 +41,7 @@ namespace Tutor.Web.Tests.Integration
         {
             return new LearnerController(scope.ServiceProvider.GetRequiredService<ILearnerService>(),
                 Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<ICourseRepository>(),
+                scope.ServiceProvider.GetRequiredService<ICourseService>(),
                 scope.ServiceProvider.GetRequiredService<IKnowledgeUnitRepository>())
             {
                 ControllerContext = BuildContext(id, "learner")
@@ -81,8 +70,7 @@ namespace Tutor.Web.Tests.Integration
         {
             return new AssessmentEvaluationController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IEvaluationService>(),
-                scope.ServiceProvider.GetRequiredService<IHelpService>(),
-                scope.ServiceProvider.GetRequiredService<IStatisticsService>())
+                scope.ServiceProvider.GetRequiredService<IHelpService>())
             {
                 ControllerContext = BuildContext(id, "learner")
             };

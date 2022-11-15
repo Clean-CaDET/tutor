@@ -5,7 +5,7 @@ using Tutor.Core.Domain.LearningUtilities;
 using Tutor.Core.UseCases.Learning.Utilities;
 using Tutor.Infrastructure.Security.Authentication.Users;
 
-namespace Tutor.Web.Controllers.Learners.Feedback
+namespace Tutor.Web.Controllers.Learners.Learning.Utilities.Feedback
 {
     [Authorize(Policy = "learnerPolicy")]
     [Route("api/feedback/")]

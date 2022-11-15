@@ -5,32 +5,24 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.UseCases.Learning;
-using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Mappings.Domain.DTOs;
-using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems;
 using Tutor.Web.Mappings.Domain.DTOs.InstructionalItems;
 using Tutor.Web.Mappings.Mastery;
 
-namespace Tutor.Web.Controllers.Learners.DomainOverlay
+namespace Tutor.Web.Controllers.Learners.Learning
 {
     [Authorize(Policy = "learnerPolicy")]
     [Route("api/units/")]
     [ApiController]
-    public class KcMasteryController : ControllerBase
+    public class LearningStructureController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly ISessionService _sessionService;
         private readonly IStructureService _learningStructureService;
-        private readonly IStatisticsService _learningStatisticsService;
-        private readonly ISelectionService _assessmentSelectionService;
 
-        public KcMasteryController(IMapper mapper, ISessionService sessionService, IStatisticsService learningStatisticsService, ISelectionService assessmentSelectionService, IStructureService learningStructureService)
+        public LearningStructureController(IMapper mapper, IStructureService learningStructureService)
         {
             _mapper = mapper;
-            _sessionService = sessionService;
-            _learningStatisticsService = learningStatisticsService;
-            _assessmentSelectionService = assessmentSelectionService;
             _learningStructureService = learningStructureService;
         }
 
@@ -81,53 +73,20 @@ namespace Tutor.Web.Controllers.Learners.DomainOverlay
                 PopulateMasteries(kc.KnowledgeComponents, masteries);
             }
         }
-
-        // Should check if KC is unlocked.
-        [HttpGet("knowledge-components/{knowledgeComponentId:int}")]
+        
+        [HttpGet]
         public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
         {
-            var result = _sessionService.GetKnowledgeComponent(knowledgeComponentId, User.LearnerId());
+            var result = _learningStructureService.GetKnowledgeComponent(knowledgeComponentId, User.LearnerId());
             if (result.IsSuccess) return Ok(_mapper.Map<KnowledgeComponentDto>(result.Value));
             return NotFound(result.Errors);
         }
 
-        [HttpGet("knowledge-components/{knowledgeComponentId:int}/instructional-items/")]
+        [HttpGet("instructional-items/")]
         public ActionResult<List<InstructionalItemDto>> GetInstructionalItems(int knowledgeComponentId)
         {
-            var result = _sessionService.GetInstructionalItems(knowledgeComponentId, User.LearnerId());
+            var result = _learningStructureService.GetInstructionalItems(knowledgeComponentId, User.LearnerId());
             return Ok(result.Value.Select(ie => _mapper.Map<InstructionalItemDto>(ie)).ToList());
-        }
-
-        [HttpGet("knowledge-component/{knowledgeComponentId:int}/assessment-item/")]
-        public ActionResult<AssessmentItemDto> GetSuitableAssessmentItem(int knowledgeComponentId)
-        {
-            var result = _assessmentSelectionService.SelectSuitableAssessmentItem(knowledgeComponentId, User.LearnerId());
-            if (result.IsSuccess) return Ok(_mapper.Map<AssessmentItemDto>(result.Value));
-            return NotFound(result.Errors);
-        }
-
-        [HttpGet("knowledge-components/statistics/{knowledgeComponentId:int}")]
-        public ActionResult<KcMasteryStatisticsDto> GetKcMasteryStatistics(int knowledgeComponentId)
-        {
-            var result = _learningStatisticsService.GetKcMasteryStatistics(knowledgeComponentId, User.LearnerId());
-            if (result.IsSuccess) return Ok(_mapper.Map<KcMasteryStatisticsDto>(result.Value));
-            return NotFound(result.Errors);
-        }
-
-        [HttpPost("knowledge-components/{knowledgeComponentId:int}/session/launch")]
-        public ActionResult LaunchSession(int knowledgeComponentId)
-        {
-            var result = _sessionService.LaunchSession(knowledgeComponentId, User.LearnerId());
-            if (result.IsSuccess) return Ok();
-            return BadRequest(result.Errors);
-        }
-
-        [HttpPost("knowledge-components/{knowledgeComponentId:int}/session/terminate")]
-        public ActionResult TerminateSession(int knowledgeComponentId)
-        {
-            var result = _sessionService.TerminateSession(knowledgeComponentId, User.LearnerId());
-            if (result.IsSuccess) return Ok();
-            return BadRequest(result.Errors);
         }
     }
 }

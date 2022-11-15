@@ -3,20 +3,69 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
+using Tutor.Core.UseCases.Learning;
 using Tutor.Infrastructure.Database;
-using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems;
+using Tutor.Web.Controllers.Learners.Learning;
+using Tutor.Web.Mappings.Domain.DTOs;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Tutor.Web.Mappings.Domain.DTOs.InstructionalItems;
 using Tutor.Web.Mappings.Mastery;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Learners
+namespace Tutor.Web.Tests.Integration.Learning
 {
     [Collection("Sequential")]
-    public class KcMasteryTests : BaseWebIntegrationTest
+    public class StructureTests : BaseWebIntegrationTest
     {
-        public KcMasteryTests(TutorApplicationTestFactory<Startup> factory) : base(factory)
+        public StructureTests(TutorApplicationTestFactory<Startup> factory) : base(factory)
         {
+        }
+
+        [Theory]
+        [InlineData(-2, 2)]
+        [InlineData(-1, 0)]
+        public void Retrieves_enrolled_units(int learnerId, int expectedUnitCount)
+        {
+            using var scope = Factory.Services.CreateScope();
+            var controller = SetupStructureController(scope, learnerId.ToString());
+
+            var units = ((OkObjectResult)controller.GetUnits().Result).Value as List<KnowledgeUnitDto>;
+
+            units.Count.ShouldBe(expectedUnitCount);
+        }
+
+        [Theory]
+        [MemberData(nameof(KnowledgeComponentMasteries))]
+        public void Retrieves_kc_mastery_for_unit(int unitId, List<KnowledgeComponentDto> expectedKCs)
+        {
+            using var scope = Factory.Services.CreateScope();
+            var controller = SetupStructureController(scope, "-2");
+
+            var unit = ((OkObjectResult)controller.GetUnit(unitId).Result).Value as KnowledgeUnitDto;
+
+            expectedKCs.All(expectedKc => unit.KnowledgeComponents.Any(
+                    kc => expectedKc.Id == kc.Id && expectedKc.Mastery.Mastery == kc.Mastery.Mastery))
+                .ShouldBe(true);
+        }
+
+        public static IEnumerable<object[]> KnowledgeComponentMasteries()
+        {
+            return new List<object[]>
+            {
+                new object[]
+                {
+                    -1,
+                    new List<KnowledgeComponentDto>
+                    {
+                        new() {Id = -11, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.1 }},
+                        new() {Id = -12, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.2 }},
+                        new() {Id = -13, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.3 }},
+                        new() {Id = -14, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.4 }},
+                        new() {Id = -15, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.5 }}
+                    }
+                }
+            };
         }
 
         [Theory]
@@ -24,7 +73,7 @@ namespace Tutor.Web.Tests.Integration.Learners
         public void Retrieves_instructional_events(int knowledgeComponentId, int expectedIEsCount)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupKcmController(scope, "-2");
+            var controller = SetupStructureController(scope, "-2");
 
             var items = ((OkObjectResult)controller.GetInstructionalItems(knowledgeComponentId).Result).Value as List<InstructionalItemDto>;
 
@@ -45,42 +94,6 @@ namespace Tutor.Web.Tests.Integration.Learners
                 {
                     -15,
                     2
-                }
-            };
-        }
-
-        [Theory]
-        [MemberData(nameof(AssessmentItemRequest))]
-        public void Gets_suitable_assessment_event(int knowledgeComponentId, int expectedSuitableAssessmentItemId)
-        {
-            using var scope = Factory.Services.CreateScope();
-            var controller = SetupKcmController(scope, "-2");
-
-            var actualSuitableAssessmentItem =
-                ((OkObjectResult) controller.GetSuitableAssessmentItem(knowledgeComponentId).Result)?.Value as AssessmentItemDto;
-            actualSuitableAssessmentItem.ShouldNotBeNull();
-            
-            actualSuitableAssessmentItem.Id.ShouldBe(expectedSuitableAssessmentItemId);
-        }
-
-        public static IEnumerable<object[]> AssessmentItemRequest()
-        {
-            return new List<object[]>
-            {
-                new object[]
-                {
-                    -14,
-                    -144
-                },
-                new object[]
-                {
-                    -15,
-                    -153
-                },
-                new object[]
-                {
-                    -13,
-                    -134
                 }
             };
         }
@@ -283,20 +296,13 @@ namespace Tutor.Web.Tests.Integration.Learners
             };
         }
 
-        [Fact]
-        public void Retrieves_kcm_statistics()
+        private LearningStructureController SetupStructureController(IServiceScope scope, string id)
         {
-            using var scope = Factory.Services.CreateScope();
-            var controller = SetupKcmController(scope, "-2");
-
-            var kcMasteryStatistics = ((OkObjectResult)controller.GetKcMasteryStatistics(-15).Result).Value as KcMasteryStatisticsDto;
-
-            kcMasteryStatistics.ShouldNotBeNull();
-            kcMasteryStatistics.IsSatisfied.ShouldBe(false);
-            kcMasteryStatistics.Mastery.ShouldBe(0.5);
-            kcMasteryStatistics.TotalCount.ShouldBe(4);
-            kcMasteryStatistics.AttemptedCount.ShouldBe(4);
-            kcMasteryStatistics.PassedCount.ShouldBe(0);
+            return new LearningStructureController(Factory.Services.GetRequiredService<IMapper>(),
+                scope.ServiceProvider.GetRequiredService<IStructureService>())
+            {
+                ControllerContext = BuildContext(id, "learner")
+            };
         }
     }
 }

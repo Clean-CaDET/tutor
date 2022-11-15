@@ -17,20 +17,20 @@ namespace Tutor.Web.Controllers.Instructors;
 public class InstructorController : ControllerBase
 {
     private readonly IMapper _mapper;
-    private readonly ICourseOwnershipService _courseOwnershipService;
+    private readonly ICourseService _courseService;
     private readonly IGroupMonitoringService _groupMonitoringMonitoringService;
     
-    public InstructorController(IMapper mapper, ICourseOwnershipService courseOwnershipService, IGroupMonitoringService groupMonitoringMonitoringService)
+    public InstructorController(IMapper mapper, ICourseService courseService, IGroupMonitoringService groupMonitoringMonitoringService)
     {
         _mapper = mapper;
-        _courseOwnershipService = courseOwnershipService;
+        _courseService = courseService;
         _groupMonitoringMonitoringService = groupMonitoringMonitoringService;
     }
 
     [HttpGet("courses")]
     public ActionResult<List<CourseDto>> GetOwnedCourses()
     {
-        var result = _courseOwnershipService.GetOwnedCourses(User.InstructorId());
+        var result = _courseService.GetOwnedCourses(User.InstructorId());
         if (result.IsFailed) return BadRequest(result.Errors);
         return Ok(result.Value.Select(c => _mapper.Map<CourseDto>(c)).ToList());
     }

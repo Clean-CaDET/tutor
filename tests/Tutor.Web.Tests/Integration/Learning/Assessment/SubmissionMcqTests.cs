@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiChoiceQuestions;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Domain
+namespace Tutor.Web.Tests.Integration.Learning.Assessment
 {
     [Collection("Sequential")]
     public class SubmissionMcqTests : BaseWebIntegrationTest

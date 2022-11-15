@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Tutor.Core.Domain.LearningUtilities;
 
-namespace Tutor.Web.Controllers.Learners.Feedback
+namespace Tutor.Web.Controllers.Learners.Learning.Utilities.Feedback
 {
     public class FeedbackProfile : Profile
     {

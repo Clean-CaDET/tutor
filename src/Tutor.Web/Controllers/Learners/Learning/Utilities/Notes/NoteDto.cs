@@ -1,4 +1,4 @@
-﻿namespace Tutor.Web.Controllers.Learners.Notes
+﻿namespace Tutor.Web.Controllers.Learners.Learning.Utilities.Notes
 {
     public class NoteDto
     {

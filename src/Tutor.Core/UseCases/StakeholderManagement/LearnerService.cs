@@ -1,6 +1,4 @@
 using FluentResults;
-using System.Collections.Generic;
-using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Core.UseCases.StakeholderManagement
@@ -18,11 +16,6 @@ namespace Tutor.Core.UseCases.StakeholderManagement
         {
             var learner = _learnerRepository.GetByUserId(id);
             return learner == null ? Result.Fail("Learner tied to user id " + id + " does not exist.") : Result.Ok(learner);
-        }
-
-        public Result<List<LearnerGroup>> GetGroups()
-        {
-            return Result.Ok(_learnerRepository.GetGroups());
         }
     }
 }

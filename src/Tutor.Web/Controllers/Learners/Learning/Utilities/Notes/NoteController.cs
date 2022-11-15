@@ -7,7 +7,7 @@ using Tutor.Core.Domain.LearningUtilities;
 using Tutor.Core.UseCases.Learning.Utilities;
 using Tutor.Infrastructure.Security.Authentication.Users;
 
-namespace Tutor.Web.Controllers.Learners.Notes
+namespace Tutor.Web.Controllers.Learners.Learning.Utilities.Notes
 {
     [Authorize(Policy = "learnerPolicy")]
     [Route("api/notes/")]

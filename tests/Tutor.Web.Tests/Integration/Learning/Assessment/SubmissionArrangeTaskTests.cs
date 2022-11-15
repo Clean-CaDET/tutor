@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ArrangeTasks;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Domain
+namespace Tutor.Web.Tests.Integration.Learning.Assessment
 {
     [Collection("Sequential")]
     public class SubmissionArrangeTaskTests : BaseWebIntegrationTest
     {
-        public SubmissionArrangeTaskTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
+        public SubmissionArrangeTaskTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
 
         [Theory]
         [MemberData(nameof(AtSubmissions))]

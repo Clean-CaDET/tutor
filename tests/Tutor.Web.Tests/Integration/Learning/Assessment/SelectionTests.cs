@@ -1,0 +1,72 @@
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
+using System.Collections.Generic;
+using System.Linq;
+using Tutor.Core.UseCases.Learning;
+using Tutor.Core.UseCases.Learning.Assessment;
+using Tutor.Infrastructure.Database;
+using Tutor.Web.Controllers.Learners.Learning;
+using Tutor.Web.Controllers.Learners.Learning.Assessment;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems;
+using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
+using Tutor.Web.Mappings.Domain.DTOs.InstructionalItems;
+using Tutor.Web.Mappings.Mastery;
+using Xunit;
+
+namespace Tutor.Web.Tests.Integration.Learning.Assessment
+{
+    [Collection("Sequential")]
+    public class SelectionTests : BaseWebIntegrationTest
+    {
+        public SelectionTests(TutorApplicationTestFactory<Startup> factory) : base(factory)
+        {
+        }
+
+        [Theory]
+        [MemberData(nameof(AssessmentItemRequest))]
+        public void Gets_suitable_assessment_event(int knowledgeComponentId, int expectedSuitableAssessmentItemId)
+        {
+            using var scope = Factory.Services.CreateScope();
+            var controller = SetupAssessmentSelectionController(scope, "-2");
+
+            var actualSuitableAssessmentItem =
+                ((OkObjectResult) controller.GetSuitableAssessmentItem(knowledgeComponentId).Result)?.Value as AssessmentItemDto;
+            actualSuitableAssessmentItem.ShouldNotBeNull();
+            
+            actualSuitableAssessmentItem.Id.ShouldBe(expectedSuitableAssessmentItemId);
+        }
+
+        private AssessmentSelectionController SetupAssessmentSelectionController(IServiceScope scope, string id)
+        {
+            return new AssessmentSelectionController(Factory.Services.GetRequiredService<IMapper>(),
+                scope.ServiceProvider.GetRequiredService<ISelectionService>())
+            {
+                ControllerContext = BuildContext(id, "learner")
+            };
+        }
+
+        public static IEnumerable<object[]> AssessmentItemRequest()
+        {
+            return new List<object[]>
+            {
+                new object[]
+                {
+                    -14,
+                    -144
+                },
+                new object[]
+                {
+                    -15,
+                    -153
+                },
+                new object[]
+                {
+                    -13,
+                    -134
+                }
+            };
+        }
+    }
+}

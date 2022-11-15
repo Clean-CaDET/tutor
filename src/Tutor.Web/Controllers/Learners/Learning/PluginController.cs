@@ -7,13 +7,12 @@ using Tutor.Web.Mappings.Enrollments;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.UseCases.Learning.Assessment;
 
-namespace Tutor.Web.Controllers.Learners.DomainOverlay
+namespace Tutor.Web.Controllers.Learners.Learning
 {
     [Route("api/plugin")]
     [ApiController]
     public class PluginController : ControllerBase
     {
-        // Should be enhanced after 4.2022.
         private readonly ILearnerRepository _learnerRepository;
         private readonly IMapper _mapper;
         private readonly IEvaluationService _assessmentEvaluationService;
