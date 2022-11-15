@@ -7,13 +7,13 @@ using AutoMapper;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Learners.Learning;
-using Tutor.Web.Mappings.Domain.DTOs;
-using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
-using Tutor.Web.Mappings.Domain.DTOs.InstructionalItems;
-using Tutor.Web.Mappings.Mastery;
+using Tutor.Web.Mappings.KnowledgeMastery;
 using Xunit;
 using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Web.Controllers.Learners.Learning.Assessment;
+using Tutor.Web.Mappings.Knowledge.DTOs;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiResponseQuestions;
+using Tutor.Web.Mappings.Knowledge.DTOs.InstructionalItems;
 
 namespace Tutor.Web.Tests.Integration.Learning
 {

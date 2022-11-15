@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
 using Tutor.Web.Controllers.Users;
-using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Mappings.Enrollments;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.UseCases.Learning.Assessment;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.Challenges;
 
 namespace Tutor.Web.Controllers.Learners.Learning
 {

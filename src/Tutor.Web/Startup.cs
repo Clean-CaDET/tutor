@@ -12,6 +12,7 @@ using Microsoft.Net.Http.Headers;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
@@ -26,16 +27,17 @@ using Tutor.Infrastructure;
 using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.Infrastructure.Database.Repositories;
-using Tutor.Infrastructure.Database.Repositories.Domain;
-using Tutor.Infrastructure.Database.Repositories.Instructors;
+using Tutor.Infrastructure.Database.Repositories.CourseIteration;
+using Tutor.Infrastructure.Database.Repositories.Knowledge;
 using Tutor.Infrastructure.Database.Repositories.Learners;
+using Tutor.Infrastructure.Database.Repositories.Stakeholders;
 using Tutor.Infrastructure.EventConfiguration;
 using Tutor.Infrastructure.Security;
 using Tutor.Infrastructure.Security.Authentication;
-using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ArrangeTasks;
-using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
-using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
-using Tutor.Web.Mappings.Domain.DTOs.InstructionalItems;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ArrangeTasks;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.Challenges;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiResponseQuestions;
+using Tutor.Web.Mappings.Knowledge.DTOs.InstructionalItems;
 
 namespace Tutor.Web
 {
@@ -193,7 +195,7 @@ namespace Tutor.Web
         private static void SetupSupportingStakeholderServices(IServiceCollection services)
         {
             services.AddScoped<ILearnerService, LearnerService>();
-            services.AddScoped<ICourseService, CourseService>();
+            services.AddScoped<IAvailableCourseService, AvailableCourseService>();
             services.AddScoped<IGroupMonitoringService, GroupMonitoringService>();
         }
 
@@ -212,7 +214,9 @@ namespace Tutor.Web
             services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
             services.AddScoped<IKnowledgeUnitRepository, KnowledgeUnitDatabaseRepository>();
             services.AddScoped<IKcMasteryRepository, KcMasteryDatabaseRepository>();
-            services.AddScoped<IEnrollmentRepository, EnrollmentDatabaseRepository>();
+            services.AddScoped<IAvailableCourseRepository, AvailableCourseDatabaseRepository>();
+            services.AddScoped<IGroupRepository, GroupDatabaseRepository>();
+            services.AddScoped<IInstructorRepository, InstructorDatabaseRepository>();
             services.AddSingleton<IEventSerializer>(
                 new DefaultEventSerializer(EventSerializationConfiguration.EventRelatedTypes));
         }

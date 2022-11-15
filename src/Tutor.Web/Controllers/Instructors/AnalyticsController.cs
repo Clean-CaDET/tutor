@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
+using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Web.Mappings.Analytics;
@@ -21,16 +22,18 @@ namespace Tutor.Web.Controllers.Instructors;
 public class AnalyticsController : ControllerBase
 {
     private readonly ILearnerRepository _learnerRepository;
+    private readonly IGroupRepository _groupRepository;
     private readonly IKnowledgeUnitRepository _knowledgeUnitRepository;
     private readonly IEventStore _eventStore;
     private readonly IMapper _mapper;
 
-    public AnalyticsController(ILearnerRepository learnerRepository, IKnowledgeUnitRepository knowledgeUnitRepository, IEventStore eventStore, IMapper mapper)
+    public AnalyticsController(ILearnerRepository learnerRepository, IKnowledgeUnitRepository knowledgeUnitRepository, IEventStore eventStore, IMapper mapper, IGroupRepository groupRepository)
     {
         _learnerRepository = learnerRepository;
         _knowledgeUnitRepository = knowledgeUnitRepository;
         _eventStore = eventStore;
         _mapper = mapper;
+        _groupRepository = groupRepository;
     }
 
     [HttpGet("learner-progress")]
@@ -57,7 +60,7 @@ public class AnalyticsController : ControllerBase
             eventQuery = eventQuery.Where(e => learnerIds.Contains(e.RootElement.GetProperty("LearnerId").GetInt32()));
         var events = eventQuery.ToList<KnowledgeComponentEvent>();
 
-        var enrolledLearnersCount = _learnerRepository.CountEnrolledInUnit(unit.Id, learnerIds);
+        var enrolledLearnersCount = _groupRepository.CountLearnersEnrolledInUnit(unit.Id, learnerIds);
 
         return Ok(CalculateKcStatistics(unit, events, enrolledLearnersCount));
     }

@@ -6,9 +6,9 @@ using System.Linq;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Infrastructure.Security.Authentication.Users;
-using Tutor.Web.Mappings.Domain.DTOs;
-using Tutor.Web.Mappings.Domain.DTOs.InstructionalItems;
-using Tutor.Web.Mappings.Mastery;
+using Tutor.Web.Mappings.Knowledge.DTOs;
+using Tutor.Web.Mappings.Knowledge.DTOs.InstructionalItems;
+using Tutor.Web.Mappings.KnowledgeMastery;
 
 namespace Tutor.Web.Controllers.Learners.Learning
 {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
-using Tutor.Web.Mappings.Domain.DTOs;
+using Tutor.Web.Mappings.Knowledge.DTOs;
 
 namespace Tutor.Web.Controllers.Instructors
 {

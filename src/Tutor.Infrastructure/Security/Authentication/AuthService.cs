@@ -9,15 +9,15 @@ namespace Tutor.Infrastructure.Security.Authentication
         private readonly JwtGenerator _tokenGenerator;
         private readonly IUserRepository _userRepository;
         private readonly ILearnerRepository _learnerRepository;
-        private readonly IEnrollmentRepository _enrollmentRepository;
+        private readonly IInstructorRepository _instructorRepository;
 
         public AuthService(IUserRepository userRepository, ILearnerRepository learnerRepository,
-            IEnrollmentRepository enrollmentRepository)
+            IInstructorRepository instructorRepository)
         {
             _tokenGenerator = new JwtGenerator();
             _userRepository = userRepository;
             _learnerRepository = learnerRepository;
-            _enrollmentRepository = enrollmentRepository;
+            _instructorRepository = instructorRepository;
         }
 
         public Result<AuthenticationTokens> Login(string username, string password)
@@ -43,7 +43,7 @@ namespace Tutor.Infrastructure.Security.Authentication
             }
             else if (user.GetPrimaryRoleName().Equals("instructor"))
             {
-                id = _enrollmentRepository.GetByUserId(user.Id).Id;
+                id = _instructorRepository.GetByUserId(user.Id).Id;
             }
             return id;
         }

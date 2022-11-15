@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Infrastructure.Security.Authentication.Users;
-using Tutor.Web.Mappings.Mastery;
+using Tutor.Web.Mappings.KnowledgeMastery;
 
 namespace Tutor.Web.Controllers.Learners.Learning
 {

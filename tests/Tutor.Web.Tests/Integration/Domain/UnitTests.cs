@@ -7,7 +7,7 @@ using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Core.UseCases.StakeholderManagement;
 using Tutor.Web.Controllers.Instructors;
 using Tutor.Web.Controllers.Learners;
-using Tutor.Web.Mappings.Domain.DTOs;
+using Tutor.Web.Mappings.Knowledge.DTOs;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain;
@@ -43,7 +43,7 @@ public class UnitTests : BaseWebIntegrationTest
     {
         return new LearnerController(scope.ServiceProvider.GetRequiredService<ILearnerService>(),
             Factory.Services.GetRequiredService<IMapper>(),
-            scope.ServiceProvider.GetRequiredService<ICourseService>(),
+            scope.ServiceProvider.GetRequiredService<IAvailableCourseService>(),
             scope.ServiceProvider.GetRequiredService<IKnowledgeUnitRepository>())
         {
             ControllerContext = BuildContext(id, "learner")

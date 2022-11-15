@@ -9,12 +9,12 @@ using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Infrastructure.Security.Authentication.Users;
-using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ArrangeTasks;
-using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
-using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiChoiceQuestions;
-using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
-using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.ShortAnswerQuestions;
-using Tutor.Web.Mappings.Mastery;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ArrangeTasks;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.Challenges;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiChoiceQuestions;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiResponseQuestions;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ShortAnswerQuestions;
+using Tutor.Web.Mappings.KnowledgeMastery;
 
 namespace Tutor.Web.Controllers.Learners.Learning.Assessment
 {

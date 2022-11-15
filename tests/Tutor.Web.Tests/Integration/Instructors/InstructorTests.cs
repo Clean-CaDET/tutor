@@ -6,8 +6,8 @@ using AutoMapper;
 using Tutor.Core.UseCases.ProgressMonitoring;
 using Tutor.Core.UseCases.StakeholderManagement;
 using Tutor.Web.Controllers.Instructors;
-using Tutor.Web.Mappings.Domain.DTOs;
 using Tutor.Web.Mappings.Enrollments;
+using Tutor.Web.Mappings.Knowledge.DTOs;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Instructors;
@@ -44,7 +44,7 @@ public class InstructorTests : BaseWebIntegrationTest
     private InstructorController SetupInstructorController(IServiceScope scope, string id)
     {
         return new InstructorController(Factory.Services.GetRequiredService<IMapper>(),
-            scope.ServiceProvider.GetRequiredService<ICourseService>(),
+            scope.ServiceProvider.GetRequiredService<IAvailableCourseService>(),
             scope.ServiceProvider.GetRequiredService<IGroupMonitoringService>())
         {
             ControllerContext = BuildContext(id, "instructor")

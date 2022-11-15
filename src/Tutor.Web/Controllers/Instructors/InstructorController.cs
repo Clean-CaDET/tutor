@@ -6,8 +6,8 @@ using System.Linq;
 using Tutor.Core.UseCases.ProgressMonitoring;
 using Tutor.Core.UseCases.StakeholderManagement;
 using Tutor.Infrastructure.Security.Authentication.Users;
-using Tutor.Web.Mappings.Domain.DTOs;
 using Tutor.Web.Mappings.Enrollments;
+using Tutor.Web.Mappings.Knowledge.DTOs;
 
 namespace Tutor.Web.Controllers.Instructors;
 
@@ -17,20 +17,20 @@ namespace Tutor.Web.Controllers.Instructors;
 public class InstructorController : ControllerBase
 {
     private readonly IMapper _mapper;
-    private readonly ICourseService _courseService;
+    private readonly IAvailableCourseService _availableCourseService;
     private readonly IGroupMonitoringService _groupMonitoringMonitoringService;
     
-    public InstructorController(IMapper mapper, ICourseService courseService, IGroupMonitoringService groupMonitoringMonitoringService)
+    public InstructorController(IMapper mapper, IAvailableCourseService availableCourseService, IGroupMonitoringService groupMonitoringMonitoringService)
     {
         _mapper = mapper;
-        _courseService = courseService;
+        _availableCourseService = availableCourseService;
         _groupMonitoringMonitoringService = groupMonitoringMonitoringService;
     }
 
     [HttpGet("courses")]
     public ActionResult<List<CourseDto>> GetOwnedCourses()
     {
-        var result = _courseService.GetOwnedCourses(User.InstructorId());
+        var result = _availableCourseService.GetOwnedCourses(User.InstructorId());
         if (result.IsFailed) return BadRequest(result.Errors);
         return Ok(result.Value.Select(c => _mapper.Map<CourseDto>(c)).ToList());
     }

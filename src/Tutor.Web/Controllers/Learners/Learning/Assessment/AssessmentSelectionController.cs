@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Infrastructure.Security.Authentication.Users;
-using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems;
 
 namespace Tutor.Web.Controllers.Learners.Learning.Assessment
 {

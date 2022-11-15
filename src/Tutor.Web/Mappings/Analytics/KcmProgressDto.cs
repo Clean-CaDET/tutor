@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Tutor.Web.Mappings.Mastery;
+using Tutor.Web.Mappings.KnowledgeMastery;
 
 namespace Tutor.Web.Mappings.Analytics
 {

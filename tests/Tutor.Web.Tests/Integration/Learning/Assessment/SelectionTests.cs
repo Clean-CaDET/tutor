@@ -5,7 +5,7 @@ using Shouldly;
 using System.Collections.Generic;
 using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Web.Controllers.Learners.Learning.Assessment;
-using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Learning.Assessment

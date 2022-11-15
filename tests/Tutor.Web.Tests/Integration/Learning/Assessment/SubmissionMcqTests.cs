@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
-using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiChoiceQuestions;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiChoiceQuestions;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Learning.Assessment

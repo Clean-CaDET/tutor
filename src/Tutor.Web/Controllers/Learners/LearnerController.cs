@@ -5,8 +5,8 @@ using System.Linq;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Core.UseCases.StakeholderManagement;
 using Tutor.Infrastructure.Security.Authentication.Users;
-using Tutor.Web.Mappings.Domain.DTOs;
 using Tutor.Web.Mappings.Enrollments;
+using Tutor.Web.Mappings.Knowledge.DTOs;
 
 namespace Tutor.Web.Controllers.Learners
 {
@@ -16,15 +16,15 @@ namespace Tutor.Web.Controllers.Learners
     {
         private readonly IMapper _mapper;
         private readonly ILearnerService _learnerService;
-        private readonly ICourseService _courseService;
+        private readonly IAvailableCourseService _availableCourseService;
         private readonly IKnowledgeUnitRepository _knowledgeUnitRepository;
 
         public LearnerController(ILearnerService learnerService, IMapper mapper,
-            ICourseService courseService, IKnowledgeUnitRepository knowledgeUnitRepository)
+            IAvailableCourseService availableCourseService, IKnowledgeUnitRepository knowledgeUnitRepository)
         {
             _learnerService = learnerService;
             _mapper = mapper;
-            _courseService = courseService;
+            _availableCourseService = availableCourseService;
             _knowledgeUnitRepository = knowledgeUnitRepository;
         }
 
@@ -39,7 +39,7 @@ namespace Tutor.Web.Controllers.Learners
         [HttpGet("courses")]
         public ActionResult<List<CourseDto>> GetCoursesByLearner()
         {
-            var result = _courseService.GetEnrolledCourses(User.LearnerId());
+            var result = _availableCourseService.GetEnrolledCourses(User.LearnerId());
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(result.Value.Select(c => _mapper.Map<CourseDto>(c)).ToList());
         }

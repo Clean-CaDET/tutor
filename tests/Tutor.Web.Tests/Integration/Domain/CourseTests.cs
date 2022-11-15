@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Web.Controllers.Instructors;
-using Tutor.Web.Mappings.Domain.DTOs;
+using Tutor.Web.Mappings.Knowledge.DTOs;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Domain;

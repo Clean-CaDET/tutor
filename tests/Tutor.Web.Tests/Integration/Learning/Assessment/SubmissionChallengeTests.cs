@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.Challenges;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Tests.TestData;
 using Xunit;
 

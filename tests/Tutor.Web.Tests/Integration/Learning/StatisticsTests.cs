@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Web.Controllers.Learners.Learning;
-using Tutor.Web.Mappings.Mastery;
+using Tutor.Web.Mappings.KnowledgeMastery;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Learning
