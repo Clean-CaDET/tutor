@@ -2,6 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
+using AutoMapper;
+using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.UseCases.StakeholderManagement;
+using Tutor.Web.Controllers.Instructors;
+using Tutor.Web.Controllers.Learners;
 using Tutor.Web.Mappings.Domain.DTOs;
 using Xunit;
 
@@ -10,9 +15,7 @@ namespace Tutor.Web.Tests.Integration.Domain;
 [Collection("Sequential")]
 public class UnitTests : BaseWebIntegrationTest
 {
-    public UnitTests(TutorApplicationTestFactory<Startup> factory) : base(factory)
-    {
-    }
+    public UnitTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
     
     [Theory]
     [InlineData(-1, 2)]
@@ -34,5 +37,25 @@ public class UnitTests : BaseWebIntegrationTest
         var result = ((OkObjectResult)controller.GetUnitsByEnrollmentStatus(courseId).Result)?.Value as List<KnowledgeUnitDto>;
 
         result.Count.ShouldBe(expectedResult);
+    }
+
+    private LearnerController SetupLearnerController(IServiceScope scope, string id)
+    {
+        return new LearnerController(scope.ServiceProvider.GetRequiredService<ILearnerService>(),
+            Factory.Services.GetRequiredService<IMapper>(),
+            scope.ServiceProvider.GetRequiredService<ICourseService>(),
+            scope.ServiceProvider.GetRequiredService<IKnowledgeUnitRepository>())
+        {
+            ControllerContext = BuildContext(id, "learner")
+        };
+    }
+
+    private UnitController SetupUnitController(IServiceScope scope, string id)
+    {
+        return new UnitController(scope.ServiceProvider.GetRequiredService<IKnowledgeUnitRepository>(),
+            Factory.Services.GetRequiredService<IMapper>())
+        {
+            ControllerContext = BuildContext(id, "instructor")
+        };
     }
 }

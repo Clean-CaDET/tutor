@@ -12,6 +12,8 @@ using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
 using Tutor.Web.Mappings.Domain.DTOs.InstructionalItems;
 using Tutor.Web.Mappings.Mastery;
 using Xunit;
+using Tutor.Core.UseCases.Learning.Assessment;
+using Tutor.Web.Controllers.Learners.Learning.Assessment;
 
 namespace Tutor.Web.Tests.Integration.Learning
 {
@@ -115,6 +117,16 @@ namespace Tutor.Web.Tests.Integration.Learning
             && kcm.KnowledgeComponent.Id == knowledgeComponent.Id);
             
             actualKcMastery.Mastery.ShouldBe(expectedKcMastery);
+        }
+        //Rethink this test
+        private AssessmentEvaluationController SetupAssessmentEvaluationController(IServiceScope scope, string id)
+        {
+            return new AssessmentEvaluationController(Factory.Services.GetRequiredService<IMapper>(),
+                scope.ServiceProvider.GetRequiredService<IEvaluationService>(),
+                scope.ServiceProvider.GetRequiredService<IHelpService>())
+            {
+                ControllerContext = BuildContext(id, "learner")
+            };
         }
 
         public static IEnumerable<object[]> MrqSubmission()

@@ -3,16 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
-using System.Linq;
-using Tutor.Core.UseCases.Learning;
 using Tutor.Core.UseCases.Learning.Assessment;
-using Tutor.Infrastructure.Database;
-using Tutor.Web.Controllers.Learners.Learning;
 using Tutor.Web.Controllers.Learners.Learning.Assessment;
 using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems;
-using Tutor.Web.Mappings.Domain.DTOs.AssessmentItems.MultiResponseQuestions;
-using Tutor.Web.Mappings.Domain.DTOs.InstructionalItems;
-using Tutor.Web.Mappings.Mastery;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Learning.Assessment

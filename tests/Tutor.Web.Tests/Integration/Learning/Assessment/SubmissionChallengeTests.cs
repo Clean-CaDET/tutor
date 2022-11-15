@@ -10,7 +10,7 @@ using Xunit;
 namespace Tutor.Web.Tests.Integration.Learning.Assessment
 {
     [Collection("Sequential")]
-    public class SubmissionChallengeTests : BaseWebIntegrationTest
+    public class SubmissionChallengeTests : BaseAssessmentEvaluationIntegrationTest
     {
         public SubmissionChallengeTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
 

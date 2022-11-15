@@ -1,8 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
+using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.Domain.Stakeholders;
+using Tutor.Infrastructure.Database.EventStore;
+using Tutor.Web.Controllers.Instructors;
 using Tutor.Web.Mappings.Analytics;
 using Xunit;
 
@@ -24,6 +29,18 @@ public class LearnerProgressTests : BaseWebIntegrationTest
 
         result.ShouldNotBeNull();
         result.TotalCount.ShouldBe(expectedProgress.TotalCount);
+    }
+
+    private AnalyticsController CreateAnalyticsController(IServiceScope scope, string id)
+    {
+        return new AnalyticsController(
+            scope.ServiceProvider.GetRequiredService<ILearnerRepository>(),
+            scope.ServiceProvider.GetRequiredService<IKnowledgeUnitRepository>(),
+            scope.ServiceProvider.GetRequiredService<IEventStore>(),
+            Factory.Services.GetRequiredService<IMapper>())
+        {
+            ControllerContext = BuildContext(id, "instructor")
+        };
     }
 
     public static IEnumerable<object[]> TestData()

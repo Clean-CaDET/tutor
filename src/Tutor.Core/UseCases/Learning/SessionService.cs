@@ -1,7 +1,4 @@
 ﻿using FluentResults;
-using System.Collections.Generic;
-using Tutor.Core.Domain.Knowledge.InstructionalItems;
-using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Core.Domain.KnowledgeMastery;
 
 namespace Tutor.Core.UseCases.Learning
