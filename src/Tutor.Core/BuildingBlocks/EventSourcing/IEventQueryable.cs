@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text.Json;
-using Tutor.Core.BuildingBlocks.EventSourcing;
 
-namespace Tutor.Infrastructure.Database.EventStore
+namespace Tutor.Core.BuildingBlocks.EventSourcing
 {
     public interface IEventQueryable
     {

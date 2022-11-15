@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.Domain.KnowledgeMastery;
+using Tutor.Core.BuildingBlocks.EventSourcing;
+using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges.FulfillmentStrategies;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
-using Tutor.Infrastructure.Database.EventStore;
+using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
-using Tutor.Core.Domain.CourseIteration;
 
 namespace Tutor.Infrastructure.Database.Repositories.Learners
 {

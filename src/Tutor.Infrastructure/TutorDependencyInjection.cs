@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Infrastructure.Database;
-using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.EventStore.Postgres;
 using Tutor.Infrastructure.Security;
 

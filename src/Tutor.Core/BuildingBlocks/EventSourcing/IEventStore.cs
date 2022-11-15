@@ -1,8 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Tutor.Core.BuildingBlocks;
-using Tutor.Core.BuildingBlocks.EventSourcing;
 
-namespace Tutor.Infrastructure.Database.EventStore
+namespace Tutor.Core.BuildingBlocks.EventSourcing
 {
     public interface IEventStore
     {

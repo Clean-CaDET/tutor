@@ -12,19 +12,20 @@ using Microsoft.Net.Http.Headers;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
 using Tutor.Core.Domain.LearningUtilities;
 using Tutor.Core.Domain.Stakeholders;
+using Tutor.Core.UseCases.KnowledgeAnalysis;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Core.UseCases.Learning.Utilities;
 using Tutor.Core.UseCases.ProgressMonitoring;
 using Tutor.Core.UseCases.StakeholderManagement;
 using Tutor.Infrastructure;
-using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.Infrastructure.Database.Repositories;
 using Tutor.Infrastructure.Database.Repositories.CourseIteration;
@@ -115,7 +116,6 @@ namespace Tutor.Web
                 options.AddPolicy("administratorPolicy", policy => policy.RequireRole("administrator"));
                 options.AddPolicy("instructorPolicy", policy => policy.RequireRole("instructor"));
                 options.AddPolicy("learnerPolicy", policy => policy.RequireRole("learner"));
-                options.AddPolicy("coursePolicy", policy => policy.RequireRole("learner", "instructor"));
             });
 
             var key = EnvironmentConnection.GetSecret("JWT_KEY") ?? "tutor_secret_key";
@@ -171,6 +171,7 @@ namespace Tutor.Web
             SetupSupportingLearningServices(services);
 
             SetupSupportingStakeholderServices(services);
+            services.AddScoped<IUnitAnalysisService, UnitAnalysisService>();
         }
 
         private void SetupCoreLearningServices(IServiceCollection services)
@@ -208,10 +209,10 @@ namespace Tutor.Web
         #endregion
         private static void SetupRepositories(IServiceCollection services)
         {
+            services.AddScoped<IKnowledgeComponentRepository, KnowledgeComponentDatabaseRepository>();
             services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
             services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
-            services.AddScoped<IKnowledgeUnitRepository, KnowledgeUnitDatabaseRepository>();
             services.AddScoped<IKcMasteryRepository, KcMasteryDatabaseRepository>();
             services.AddScoped<IAvailableCourseRepository, AvailableCourseDatabaseRepository>();
             services.AddScoped<IGroupRepository, GroupDatabaseRepository>();

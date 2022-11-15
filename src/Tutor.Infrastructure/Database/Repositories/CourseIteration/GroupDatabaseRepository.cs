@@ -24,15 +24,7 @@ public class GroupDatabaseRepository : IGroupRepository
             .Include(lg => lg.Membership
                 .Where(m => m.Instructor.Id.Equals(instructorId))).ToList();
     }
-
-    public int CountLearnersEnrolledInUnit(int unitId, List<int> learnerIds)
-    {
-        if (learnerIds == null)
-            return _dbContext.UnitEnrollments.Count(enrollment => enrollment.KnowledgeUnit.Id == unitId);
-        return _dbContext.UnitEnrollments.Count(enrollment =>
-            enrollment.KnowledgeUnit.Id == unitId && learnerIds.Contains(enrollment.LearnerId));
-    }
-
+    
     public async Task<PagedResult<Learner>> GetLearnersWithProgressAsync(int courseId, int groupId, int page, int pageSize)
     {
         if (groupId == 0)
@@ -76,5 +68,18 @@ public class GroupDatabaseRepository : IGroupRepository
             .ThenInclude(kcm => kcm.SessionTracker)
             .SelectMany(lg => lg.Membership.Select(m => m.Learner)).Where(l => l != null).Distinct()
             .GetPaged(page, pageSize);
+    }
+
+    public int CountAllEnrollmentsInUnit(int unitId)
+    {
+        return _dbContext.UnitEnrollments.Count(enrollment => enrollment.KnowledgeUnit.Id == unitId);
+    }
+
+    public List<Learner> GetLearnersInGroup(int groupId)
+    {
+        return _dbContext.GroupMemberships
+            .Where(m => m.Role.Equals(Role.Learner) && m.LearnerGroupId == groupId)
+            .Include(m => m.Learner)
+            .Select(m => m.Learner).ToList();
     }
 }

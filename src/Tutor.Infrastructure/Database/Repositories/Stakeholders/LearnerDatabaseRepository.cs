@@ -24,13 +24,5 @@ namespace Tutor.Infrastructure.Database.Repositories.Stakeholders
         {
             return _dbContext.Learners.FirstOrDefault(learner => learner.Index.Equals(index));
         }
-
-        public List<Learner> GetByGroupId(int groupId)
-        {
-            return _dbContext.GroupMemberships
-                .Where(m => m.Role.Equals(Role.Learner) && m.LearnerGroupId == groupId)
-                .Include(m => m.Learner)
-                .Select(m => m.Learner).ToList();
-        }
     }
 }

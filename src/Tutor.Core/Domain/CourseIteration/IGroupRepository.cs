@@ -9,5 +9,6 @@ public interface IGroupRepository
 {
     List<LearnerGroup> GetAssignedGroups(int instructorId, int courseId);
     Task<PagedResult<Learner>> GetLearnersWithProgressAsync(int courseId, int groupId, int page, int pageSize);
-    int CountLearnersEnrolledInUnit(int unitId, List<int> learnerIds);
+    int CountAllEnrollmentsInUnit(int unitId);
+    List<Learner> GetLearnersInGroup(int groupId);
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using Tutor.Infrastructure.Database.EventStore;
+using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.Infrastructure.Database.EventStore.Postgres;
 using static Tutor.Infrastructure.Tests.TestData.EventStore.TestEvents;

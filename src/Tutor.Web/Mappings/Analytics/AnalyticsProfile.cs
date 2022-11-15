@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.Stakeholders;
 
@@ -8,6 +9,8 @@ namespace Tutor.Web.Mappings.Analytics
     {
         public AnalyticsProfile()
         {
+            CreateMap<KcStatistics, KcStatisticsDto>();
+
             CreateMap<Learner, LearnerProgressDto>()
                 .ForMember(dest => dest.Learner, opt => opt.MapFrom(src => src))
                 .ForMember(dest => dest.KnowledgeComponentProgress,

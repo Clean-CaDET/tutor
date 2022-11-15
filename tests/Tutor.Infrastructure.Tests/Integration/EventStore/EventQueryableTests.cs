@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Infrastructure.Database.EventStore;
+using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Infrastructure.Tests.TestData.EventStore;
 using Tutor.Infrastructure.Tests.TestData.EventStore.EventQueryable;
 using Xunit;
