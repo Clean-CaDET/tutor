@@ -8,7 +8,7 @@ namespace Tutor.Core.UseCases.Learning
 {
     public interface IStructureService
     {
-        Result<List<KnowledgeUnit>> GetUnits(int learnerId);
+        Result<List<KnowledgeUnit>> GetUnits(int courseId, int learnerId);
 
         Result<KnowledgeUnit> GetUnit(int unitId, int learnerId);
 

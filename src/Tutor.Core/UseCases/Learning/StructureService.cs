@@ -15,9 +15,9 @@ public class StructureService : IStructureService
         _kcMasteryRepository = kcMasteryRepository;
     }
 
-    public Result<List<KnowledgeUnit>> GetUnits(int learnerId)
+    public Result<List<KnowledgeUnit>> GetUnits(int courseId, int learnerId)
     {
-        return Result.Ok(_kcMasteryRepository.GetEnrolledUnits(learnerId));
+        return Result.Ok(_kcMasteryRepository.GetEnrolledAndActiveUnits(courseId, learnerId));
     }
 
     public Result<KnowledgeUnit> GetUnit(int unitId, int learnerId)

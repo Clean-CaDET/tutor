@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+﻿namespace Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 
 public interface ICourseRepository
 {

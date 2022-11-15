@@ -10,6 +10,7 @@ using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
+using Tutor.Core.Domain.CourseIteration;
 
 namespace Tutor.Infrastructure.Database.Repositories.Learners
 {
@@ -25,13 +26,15 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
             _eventStore = eventStore;
             _moveOnCriteria = moveOnCriteria;
         }
-
-        public List<KnowledgeUnit> GetEnrolledUnits(int learnerId)
+        
+        public List<KnowledgeUnit> GetEnrolledAndActiveUnits(int courseId, int learnerId)
         {
             return _dbContext.UnitEnrollments
-                .Where(e => e.LearnerId == learnerId)
-                .Include(e => e.KnowledgeUnit)
-                .Select(e => e.KnowledgeUnit).ToList();
+                .Where(ue => ue.LearnerId.Equals(learnerId)
+                             && ue.KnowledgeUnit.Course.Id.Equals(courseId)
+                             && ue.Status.Equals(EnrollmentStatus.Active))
+                .Include(ue => ue.KnowledgeUnit)
+                .Select(ue => ue.KnowledgeUnit).ToList();
         }
 
         public KnowledgeUnit GetUnitWithKcs(int unitId, int learnerId)

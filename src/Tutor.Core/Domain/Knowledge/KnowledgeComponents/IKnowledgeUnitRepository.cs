@@ -8,7 +8,5 @@ namespace Tutor.Core.Domain.Knowledge.KnowledgeComponents
         List<KnowledgeUnit> GetAll();
 
         List<KnowledgeUnit> GetByCourse(int courseId);
-
-        List<KnowledgeUnit> GetActiveUnits(int courseId, int learnerId);
     }
 }

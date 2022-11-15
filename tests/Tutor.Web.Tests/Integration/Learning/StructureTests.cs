@@ -20,19 +20,17 @@ namespace Tutor.Web.Tests.Integration.Learning
     [Collection("Sequential")]
     public class StructureTests : BaseWebIntegrationTest
     {
-        public StructureTests(TutorApplicationTestFactory<Startup> factory) : base(factory)
-        {
-        }
+        public StructureTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
         [Theory]
-        [InlineData(-2, 2)]
-        [InlineData(-1, 0)]
-        public void Retrieves_enrolled_units(int learnerId, int expectedUnitCount)
+        [InlineData(-2, -1, 1)]
+        [InlineData(-1, -1, 0)]
+        public void Retrieves_enrolled_units(int learnerId, int courseId, int expectedUnitCount)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = SetupStructureController(scope, learnerId.ToString());
 
-            var units = ((OkObjectResult)controller.GetUnits().Result).Value as List<KnowledgeUnitDto>;
+            var units = ((OkObjectResult)controller.GetUnits(courseId).Result).Value as List<KnowledgeUnitDto>;
 
             units.Count.ShouldBe(expectedUnitCount);
         }

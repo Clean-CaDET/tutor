@@ -8,12 +8,10 @@ namespace Tutor.Core.UseCases.StakeholderManagement;
 public class AvailableCourseService : IAvailableCourseService
 {
     private readonly IAvailableCourseRepository _availableCourseRepository;
-    private readonly ICourseRepository _courseRepository;
 
-    public AvailableCourseService(IAvailableCourseRepository availableCourseRepository, ICourseRepository courseRepository)
+    public AvailableCourseService(IAvailableCourseRepository availableCourseRepository)
     {
         _availableCourseRepository = availableCourseRepository;
-        _courseRepository = courseRepository;
     }
 
     public Result<List<Course>> GetOwnedCourses(int instructorId)

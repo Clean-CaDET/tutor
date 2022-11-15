@@ -6,7 +6,7 @@ namespace Tutor.Core.Domain.KnowledgeMastery
 {
     public interface IKcMasteryRepository
     {
-        List<KnowledgeUnit> GetEnrolledUnits(int learnerId);
+        List<KnowledgeUnit> GetEnrolledAndActiveUnits(int courseId, int learnerId);
         KnowledgeUnit GetUnitWithKcs(int unitId, int learnerId);
 
         KnowledgeComponentMastery GetBasicKcMastery(int knowledgeComponentId, int learnerId);

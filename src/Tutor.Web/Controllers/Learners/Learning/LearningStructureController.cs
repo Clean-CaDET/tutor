@@ -13,7 +13,7 @@ using Tutor.Web.Mappings.KnowledgeMastery;
 namespace Tutor.Web.Controllers.Learners.Learning
 {
     [Authorize(Policy = "learnerPolicy")]
-    [Route("api/units/")]
+    [Route("api/course/{courseId:int}/")]
     [ApiController]
     public class LearningStructureController : ControllerBase
     {
@@ -27,13 +27,13 @@ namespace Tutor.Web.Controllers.Learners.Learning
         }
 
         [HttpGet]
-        public ActionResult<List<KnowledgeUnitDto>> GetUnits()
+        public ActionResult<List<KnowledgeUnitDto>> GetUnits(int courseId)
         {
-            var result = _learningStructureService.GetUnits(User.LearnerId());
+            var result = _learningStructureService.GetUnits(courseId, User.LearnerId());
             return Ok(result.Value.Select(u => _mapper.Map<KnowledgeUnitDto>(u)).ToList());
         }
 
-        [HttpGet("{unitId:int}")]
+        [HttpGet("units/{unitId:int}/")]
         public ActionResult<KnowledgeUnitDto> GetUnit(int unitId)
         {
             var result = _learningStructureService.GetUnit(unitId, User.LearnerId());
@@ -74,7 +74,7 @@ namespace Tutor.Web.Controllers.Learners.Learning
             }
         }
         
-        [HttpGet]
+        [HttpGet("knowledge-component/{knowledgeComponentId}/")]
         public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
         {
             var result = _learningStructureService.GetKnowledgeComponent(knowledgeComponentId, User.LearnerId());
@@ -82,7 +82,7 @@ namespace Tutor.Web.Controllers.Learners.Learning
             return NotFound(result.Errors);
         }
 
-        [HttpGet("instructional-items/")]
+        [HttpGet("knowledge-component/{knowledgeComponentId}/instructional-items/")]
         public ActionResult<List<InstructionalItemDto>> GetInstructionalItems(int knowledgeComponentId)
         {
             var result = _learningStructureService.GetInstructionalItems(knowledgeComponentId, User.LearnerId());

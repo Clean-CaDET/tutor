@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 
 namespace Tutor.Infrastructure.Database.Repositories.Knowledge
@@ -31,16 +30,6 @@ namespace Tutor.Infrastructure.Database.Repositories.Knowledge
             return _dbContext.Courses.Include(c => c.KnowledgeUnits)
                 .FirstOrDefault(c => c.Id.Equals(courseId))
                 ?.KnowledgeUnits.ToList();
-        }
-
-        public List<KnowledgeUnit> GetActiveUnits(int courseId, int learnerId)
-        {
-            return _dbContext.UnitEnrollments
-                .Where(ue => ue.LearnerId.Equals(learnerId)
-                             && ue.KnowledgeUnit.Course.Id.Equals(courseId)
-                             && ue.Status.Equals(EnrollmentStatus.Active))
-                .Include(ue => ue.KnowledgeUnit)
-                .Select(ue => ue.KnowledgeUnit).ToList();
         }
     }
 }
