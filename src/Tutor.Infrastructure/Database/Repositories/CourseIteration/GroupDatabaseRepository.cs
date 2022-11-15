@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
+using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Infrastructure.Database.Repositories.CourseIteration;
@@ -70,16 +71,33 @@ public class GroupDatabaseRepository : IGroupRepository
             .GetPaged(page, pageSize);
     }
 
-    public int CountAllEnrollmentsInUnit(int unitId)
-    {
-        return _dbContext.UnitEnrollments.Count(enrollment => enrollment.KnowledgeUnit.Id == unitId);
-    }
-
     public List<Learner> GetLearnersInGroup(int groupId)
     {
         return _dbContext.GroupMemberships
             .Where(m => m.Role.Equals(Role.Learner) && m.LearnerGroupId == groupId)
             .Include(m => m.Learner)
             .Select(m => m.Learner).ToList();
+    }
+
+    public int CountAllEnrollmentsInUnit(int unitId)
+    {
+        return _dbContext.UnitEnrollments.Count(enrollment => enrollment.KnowledgeUnit.Id == unitId);
+    }
+
+    public List<KnowledgeUnit> GetEnrolledAndActiveUnits(int courseId, int learnerId)
+    {
+        return _dbContext.UnitEnrollments
+            .Where(ue => ue.LearnerId.Equals(learnerId)
+                         && ue.KnowledgeUnit.Course.Id.Equals(courseId)
+                         && ue.Status.Equals(EnrollmentStatus.Active))
+            .Include(ue => ue.KnowledgeUnit)
+            .Select(ue => ue.KnowledgeUnit).ToList();
+    }
+
+    public bool LearnerHasActiveEnrollment(int unitId, int learnerId)
+    {
+        return _dbContext.UnitEnrollments
+            .Count(u => u.Status == EnrollmentStatus.Active &&
+                        u.KnowledgeUnit.Id == unitId && u.LearnerId == learnerId) > 0;
     }
 }

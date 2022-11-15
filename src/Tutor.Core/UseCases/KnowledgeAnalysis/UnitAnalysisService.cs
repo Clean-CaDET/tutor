@@ -12,13 +12,13 @@ namespace Tutor.Core.UseCases.KnowledgeAnalysis
 {
     public class UnitAnalysisService : IUnitAnalysisService
     {
-        private readonly IKnowledgeComponentRepository _knowledgeComponentRepository;
+        private readonly IKnowledgeRepository _knowledgeRepository;
         private readonly IGroupRepository _groupRepository;
         private readonly IEventStore _eventStore;
 
-        public UnitAnalysisService(IKnowledgeComponentRepository kcRepository, IGroupRepository groupRepository, IEventStore eventStore)
+        public UnitAnalysisService(IKnowledgeRepository kcRepository, IGroupRepository groupRepository, IEventStore eventStore)
         {
-            _knowledgeComponentRepository = kcRepository;
+            _knowledgeRepository = kcRepository;
             _groupRepository = groupRepository;
             _eventStore = eventStore;
         }
@@ -27,7 +27,7 @@ namespace Tutor.Core.UseCases.KnowledgeAnalysis
         {
             //Check if instructor owns the course
 
-            var kcs = _knowledgeComponentRepository.GetKnowledgeComponentsForUnit(unitId);
+            var kcs = _knowledgeRepository.GetKnowledgeComponentsForUnit(unitId);
             var kcIds = kcs.Select(kc => kc.Id).ToList();
 
             var eventQuery =
@@ -43,7 +43,7 @@ namespace Tutor.Core.UseCases.KnowledgeAnalysis
         {
             var learnerIds = _groupRepository.GetLearnersInGroup(groupId).Select(l => l.Id).ToList();
 
-            var kcs = _knowledgeComponentRepository.GetKnowledgeComponentsForUnit(unitId);
+            var kcs = _knowledgeRepository.GetKnowledgeComponentsForUnit(unitId);
             var kcIds = kcs.Select(kc => kc.Id).ToList();
 
             var events = _eventStore.Events

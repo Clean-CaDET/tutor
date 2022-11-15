@@ -209,7 +209,7 @@ namespace Tutor.Web
         #endregion
         private static void SetupRepositories(IServiceCollection services)
         {
-            services.AddScoped<IKnowledgeComponentRepository, KnowledgeComponentDatabaseRepository>();
+            services.AddScoped<IKnowledgeRepository, KnowledgeDatabaseRepository>();
             services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
             services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();

@@ -1,14 +1,10 @@
 using System.Collections.Generic;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
-using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 
 namespace Tutor.Core.Domain.KnowledgeMastery
 {
     public interface IKcMasteryRepository
     {
-        List<KnowledgeUnit> GetEnrolledAndActiveUnits(int courseId, int learnerId);
-        KnowledgeUnit GetUnitWithKcs(int unitId, int learnerId);
-
         KnowledgeComponentMastery GetBasicKcMastery(int knowledgeComponentId, int learnerId);
         List<KnowledgeComponentMastery> GetBasicKcMasteries(List<int> kcIds, int learnerId);
         KnowledgeComponentMastery GetFullKcMastery(int knowledgeComponentId, int learnerId);

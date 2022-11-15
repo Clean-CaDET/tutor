@@ -2,8 +2,9 @@
 
 namespace Tutor.Core.Domain.Knowledge.KnowledgeComponents
 {
-    public interface IKnowledgeComponentRepository
+    public interface IKnowledgeRepository
     {
+        KnowledgeUnit GetUnitWithKcs(int unitId);
         List<KnowledgeComponent> GetKnowledgeComponentsForUnit(int unitId);
     }
 }

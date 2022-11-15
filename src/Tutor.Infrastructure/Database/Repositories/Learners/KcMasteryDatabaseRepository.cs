@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges.FulfillmentStrategies;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
-using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
 
@@ -27,27 +25,6 @@ namespace Tutor.Infrastructure.Database.Repositories.Learners
             _moveOnCriteria = moveOnCriteria;
         }
         
-        public List<KnowledgeUnit> GetEnrolledAndActiveUnits(int courseId, int learnerId)
-        {
-            return _dbContext.UnitEnrollments
-                .Where(ue => ue.LearnerId.Equals(learnerId)
-                             && ue.KnowledgeUnit.Course.Id.Equals(courseId)
-                             && ue.Status.Equals(EnrollmentStatus.Active))
-                .Include(ue => ue.KnowledgeUnit)
-                .Select(ue => ue.KnowledgeUnit).ToList();
-        }
-
-        public KnowledgeUnit GetUnitWithKcs(int unitId, int learnerId)
-        {
-            var unit = _dbContext.UnitEnrollments
-                .Where(e => e.LearnerId == learnerId && e.KnowledgeUnit.Id == unitId)
-                .Include(e => e.KnowledgeUnit)
-                .ThenInclude(u => u.KnowledgeComponents)
-                .Select(e => e.KnowledgeUnit).FirstOrDefault();
-
-            return unit;
-        }
-
         public KnowledgeComponentMastery GetBasicKcMastery(int knowledgeComponentId, int learnerId)
         {
             var kcm = _dbContext.KcMasteries
