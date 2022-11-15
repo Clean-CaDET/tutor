@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Tutor.Web.Mappings.KnowledgeMastery;
 
-namespace Tutor.Web.Mappings.Analytics
+namespace Tutor.Web.Mappings.CourseIteration
 {
     public class KcmProgressDto
     {
@@ -11,9 +11,9 @@ namespace Tutor.Web.Mappings.Analytics
         public string KcName { get; set; }
         public KcMasteryStatisticsDto Statistics { get; set; }
         public List<AssessmentItemMasteryDto> AssessmentItemMasteries { get; set; }
-        
+
         public int DurationOfFinishedSessionsInMinutes { get; set; }
-        
+
         public int ExpectedDurationInMinutes { get; set; }
     }
 }

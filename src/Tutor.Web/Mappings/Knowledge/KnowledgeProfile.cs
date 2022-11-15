@@ -16,6 +16,8 @@ namespace Tutor.Web.Mappings.Knowledge
                 .ForMember(dest => dest.KnowledgeComponents, opt => opt.MapFrom(src => src.KnowledgeComponents.Where(kc => kc.ParentId == null || kc.ParentId == 0)));
             CreateMap<KnowledgeComponent, KnowledgeComponentDto>();
 
+            CreateMap<KcStatistics, KcStatisticsDto>();
+
             CreateMap<InstructionalItem, InstructionalItemDto>().IncludeAllDerived();
             CreateMap<Markdown, TextDto>();
             CreateMap<Image, ImageDto>();

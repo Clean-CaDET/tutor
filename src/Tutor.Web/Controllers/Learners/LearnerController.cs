@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.UseCases.StakeholderManagement;
 using Tutor.Infrastructure.Security.Authentication.Users;
-using Tutor.Web.Mappings.Enrollments;
+using Tutor.Web.Mappings.CourseIteration;
 using Tutor.Web.Mappings.Knowledge.DTOs;
 
 namespace Tutor.Web.Controllers.Learners

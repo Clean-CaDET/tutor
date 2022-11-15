@@ -15,12 +15,12 @@ namespace Tutor.Web.Controllers.Learners.Learning
     [Authorize(Policy = "learnerPolicy")]
     [Route("api/learners/courses/{courseId:int}/")]
     [ApiController]
-    public class LearningStructureController : ControllerBase
+    public class StructureController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IStructureService _learningStructureService;
         // Discuss how to structure Course-Unit-KC endpoints and services
-        public LearningStructureController(IMapper mapper, IStructureService learningStructureService)
+        public StructureController(IMapper mapper, IStructureService learningStructureService)
         {
             _mapper = mapper;
             _learningStructureService = learningStructureService;

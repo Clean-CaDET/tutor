@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Tutor.Web.Mappings.Enrollments
+namespace Tutor.Web.Mappings.CourseIteration
 {
     public class LearnerDto
     {

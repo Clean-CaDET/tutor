@@ -8,11 +8,11 @@ namespace Tutor.Web.Controllers.Learners.Learning
     [Authorize(Policy = "learnerPolicy")]
     [Route("api/knowledge-components/{knowledgeComponentId:int}/session")]
     [ApiController]
-    public class LearningSessionController : ControllerBase
+    public class SessionController : ControllerBase
     {
         private readonly ISessionService _sessionService;
 
-        public LearningSessionController(ISessionService sessionService)
+        public SessionController(ISessionService sessionService)
         {
             _sessionService = sessionService;
         }

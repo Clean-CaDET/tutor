@@ -6,8 +6,7 @@ using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.UseCases.ProgressMonitoring;
 using Tutor.Infrastructure.Security.Authentication.Users;
-using Tutor.Web.Mappings.Analytics;
-using Tutor.Web.Mappings.Enrollments;
+using Tutor.Web.Mappings.CourseIteration;
 
 namespace Tutor.Web.Controllers.Instructors;
 

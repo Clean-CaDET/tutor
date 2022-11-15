@@ -10,12 +10,12 @@ namespace Tutor.Web.Controllers.Learners.Learning.Assessment
     [Authorize(Policy = "learnerPolicy")]
     [Route("api/knowledge-component/{knowledgeComponentId:int}/assessment-item/")]
     [ApiController]
-    public class AssessmentSelectionController : ControllerBase
+    public class SelectionController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly ISelectionService _assessmentSelectionService;
 
-        public AssessmentSelectionController(IMapper mapper, ISelectionService assessmentSelectionService)
+        public SelectionController(IMapper mapper, ISelectionService assessmentSelectionService)
         {
             _mapper = mapper;
             _assessmentSelectionService = assessmentSelectionService;

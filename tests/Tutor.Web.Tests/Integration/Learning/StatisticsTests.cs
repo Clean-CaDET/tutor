@@ -30,9 +30,9 @@ namespace Tutor.Web.Tests.Integration.Learning
             kcMasteryStatistics.PassedCount.ShouldBe(0);
         }
 
-        private LearningStatisticsController SetupStatisticsController(IServiceScope scope, string id)
+        private StatisticsController SetupStatisticsController(IServiceScope scope, string id)
         {
-            return new LearningStatisticsController(Factory.Services.GetRequiredService<IMapper>(),
+            return new StatisticsController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IStatisticsService>())
             {
                 ControllerContext = BuildContext(id, "learner")

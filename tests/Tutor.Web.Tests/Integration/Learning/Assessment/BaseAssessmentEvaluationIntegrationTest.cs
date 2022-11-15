@@ -9,9 +9,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
     {
         public BaseAssessmentEvaluationIntegrationTest(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
 
-        protected AssessmentEvaluationController SetupAssessmentEvaluationController(IServiceScope scope, string id)
+        protected EvaluationController SetupAssessmentEvaluationController(IServiceScope scope, string id)
         {
-            return new AssessmentEvaluationController(Factory.Services.GetRequiredService<IMapper>(),
+            return new EvaluationController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IEvaluationService>(),
                 scope.ServiceProvider.GetRequiredService<IHelpService>())
             {

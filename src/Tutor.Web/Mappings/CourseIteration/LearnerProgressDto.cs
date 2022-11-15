@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Tutor.Web.Mappings.Enrollments;
 
-namespace Tutor.Web.Mappings.Analytics
+namespace Tutor.Web.Mappings.CourseIteration
 {
     public class LearnerProgressDto
     {

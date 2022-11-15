@@ -36,9 +36,9 @@ namespace Tutor.Web.Tests.Integration.Learning
             terminationResult.ShouldBeOfType<BadRequestObjectResult>();
         }
 
-        private static LearningSessionController SetupSessionController(IServiceScope scope, string id)
+        private static SessionController SetupSessionController(IServiceScope scope, string id)
         {
-            return new LearningSessionController(scope.ServiceProvider.GetRequiredService<ISessionService>())
+            return new SessionController(scope.ServiceProvider.GetRequiredService<ISessionService>())
             {
                 ControllerContext = BuildContext(id, "learner")
             };

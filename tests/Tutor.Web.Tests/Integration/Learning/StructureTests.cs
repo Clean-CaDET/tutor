@@ -117,9 +117,9 @@ namespace Tutor.Web.Tests.Integration.Learning
             actualKcMastery.Mastery.ShouldBe(expectedKcMastery);
         }
         //Rethink this test
-        private AssessmentEvaluationController SetupAssessmentEvaluationController(IServiceScope scope, string id)
+        private EvaluationController SetupAssessmentEvaluationController(IServiceScope scope, string id)
         {
-            return new AssessmentEvaluationController(Factory.Services.GetRequiredService<IMapper>(),
+            return new EvaluationController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IEvaluationService>(),
                 scope.ServiceProvider.GetRequiredService<IHelpService>())
             {
@@ -306,9 +306,9 @@ namespace Tutor.Web.Tests.Integration.Learning
             };
         }
 
-        private LearningStructureController SetupStructureController(IServiceScope scope, string id)
+        private StructureController SetupStructureController(IServiceScope scope, string id)
         {
-            return new LearningStructureController(Factory.Services.GetRequiredService<IMapper>(),
+            return new StructureController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<IStructureService>())
             {
                 ControllerContext = BuildContext(id, "learner")

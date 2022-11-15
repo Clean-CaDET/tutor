@@ -6,8 +6,7 @@ using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.UseCases.ProgressMonitoring;
 using Tutor.Web.Controllers.Instructors;
-using Tutor.Web.Mappings.Analytics;
-using Tutor.Web.Mappings.Enrollments;
+using Tutor.Web.Mappings.CourseIteration;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Instructors;

@@ -10,12 +10,12 @@ namespace Tutor.Web.Controllers.Learners.Learning
     [Authorize(Policy = "learnerPolicy")]
     [Route("api/knowledge-components/")]
     [ApiController]
-    public class LearningStatisticsController : ControllerBase
+    public class StatisticsController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IStatisticsService _learningStatisticsService;
 
-        public LearningStatisticsController(IMapper mapper, IStatisticsService learningStatisticsService)
+        public StatisticsController(IMapper mapper, IStatisticsService learningStatisticsService)
         {
             _mapper = mapper;
             _learningStatisticsService = learningStatisticsService;

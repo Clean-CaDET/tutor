@@ -3,9 +3,9 @@ using Tutor.Core.Domain.KnowledgeMastery;
 
 namespace Tutor.Web.Mappings.KnowledgeMastery
 {
-    public class KnowledgeMasteryProfile : Profile
+    public class MasteryProfile : Profile
     {
-        public KnowledgeMasteryProfile()
+        public MasteryProfile()
         {
             CreateMap<KnowledgeComponentMastery, KnowledgeComponentMasteryDto>();
             CreateMap<AssessmentItemMastery, AssessmentItemMasteryDto>();

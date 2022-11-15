@@ -21,13 +21,13 @@ namespace Tutor.Web.Controllers.Learners.Learning.Assessment
     [Authorize(Policy = "learnerPolicy")]
     [Route("api/submissions/")]
     [ApiController]
-    public class AssessmentEvaluationController : ControllerBase
+    public class EvaluationController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IEvaluationService _assessmentEvaluationService;
         private readonly IHelpService _assessmentHelpService;
 
-        public AssessmentEvaluationController(IMapper mapper, IEvaluationService service, IHelpService assessmentHelpService)
+        public EvaluationController(IMapper mapper, IEvaluationService service, IHelpService assessmentHelpService)
         {
             _mapper = mapper;
             _assessmentEvaluationService = service;

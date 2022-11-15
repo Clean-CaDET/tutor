@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.UseCases.KnowledgeAnalysis;
 using Tutor.Web.Controllers.Instructors;
-using Tutor.Web.Mappings.Analytics;
+using Tutor.Web.Mappings.Knowledge.DTOs;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Instructors;

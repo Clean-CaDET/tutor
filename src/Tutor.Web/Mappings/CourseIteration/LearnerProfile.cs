@@ -1,7 +1,7 @@
 using AutoMapper;
 using Tutor.Core.Domain.Stakeholders;
 
-namespace Tutor.Web.Mappings.Enrollments
+namespace Tutor.Web.Mappings.CourseIteration
 {
     public class LearnerProfile : Profile
     {

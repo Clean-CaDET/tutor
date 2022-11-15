@@ -31,9 +31,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
             actualSuitableAssessmentItem.Id.ShouldBe(expectedSuitableAssessmentItemId);
         }
 
-        private AssessmentSelectionController SetupAssessmentSelectionController(IServiceScope scope, string id)
+        private SelectionController SetupAssessmentSelectionController(IServiceScope scope, string id)
         {
-            return new AssessmentSelectionController(Factory.Services.GetRequiredService<IMapper>(),
+            return new SelectionController(Factory.Services.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<ISelectionService>())
             {
                 ControllerContext = BuildContext(id, "learner")

@@ -62,7 +62,7 @@ namespace Tutor.Web.Mappings.Knowledge
             CreateMap<Challenge, ChallengeDto>();
             CreateMap<ChallengeEvaluation, ChallengeEvaluationDto>()
                 .ForMember(dest => dest.ApplicableHints, opt => opt.MapFrom(src => src.ApplicableHints.GetHints()))
-                .AfterMap((src, dest, context) =>
+                .AfterMap((src, dest, _) =>
                 {
                     var hintDirectory = src.ApplicableHints.GetDirectory();
                     var directoryKeys = src.ApplicableHints.GetHints();
