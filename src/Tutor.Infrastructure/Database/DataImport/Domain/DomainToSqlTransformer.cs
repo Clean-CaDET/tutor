@@ -50,7 +50,7 @@ public static class DomainToSqlTransformer
         return sqlBuilder.ToString();
     }
 
-    private static string BuildKCsSql(List<KCColumns> kcs)
+    private static string BuildKCsSql(List<KcColumns> kcs)
     {
         var sqlBuilder = new StringBuilder();
 
@@ -69,7 +69,7 @@ public static class DomainToSqlTransformer
         return sqlBuilder.ToString();
     }
 
-    private static string BuildIEsSql(List<IEColumns> ies)
+    private static string BuildIEsSql(List<IeColumns> ies)
     {
         var sqlBuilder = new StringBuilder();
 
@@ -93,7 +93,7 @@ public static class DomainToSqlTransformer
         return sqlBuilder.ToString();
     }
 
-    private static string BuildTextSql(IEColumns ie)
+    private static string BuildTextSql(IeColumns ie)
     {
         var sqlBuilder = new StringBuilder();
         sqlBuilder.Append("INSERT INTO public.\"Texts\"(\"Id\", \"Content\") VALUES");
@@ -103,7 +103,7 @@ public static class DomainToSqlTransformer
         return sqlBuilder.ToString();
     }
 
-    private static string BuildImageSql(IEColumns ie)
+    private static string BuildImageSql(IeColumns ie)
     {
         var sqlBuilder = new StringBuilder();
         sqlBuilder.Append("INSERT INTO public.\"Images\"(\"Id\", \"Url\", \"Caption\") VALUES");
@@ -113,7 +113,7 @@ public static class DomainToSqlTransformer
         return sqlBuilder.ToString();
     }
 
-    private static string BuildVideoSql(IEColumns ie)
+    private static string BuildVideoSql(IeColumns ie)
     {
         var sqlBuilder = new StringBuilder();
         sqlBuilder.Append("INSERT INTO public.\"Videos\"(\"Id\", \"Url\", \"Caption\") VALUES");
@@ -123,7 +123,7 @@ public static class DomainToSqlTransformer
         return sqlBuilder.ToString();
     }
 
-    private static string BuildAEsSql(List<AEColumns> aes)
+    private static string BuildAEsSql(List<AeColumns> aes)
     {
         var sqlBuilder = new StringBuilder();
 
@@ -157,7 +157,7 @@ public static class DomainToSqlTransformer
         return sqlBuilder.ToString();
     }
 
-    private static string BuildMrqSql(AEColumns ae)
+    private static string BuildMrqSql(AeColumns ae)
     {
         var sqlBuilder = new StringBuilder();
         var startingItemId = ae.Id * 10; //There won't be more than 10 items per AE
@@ -180,7 +180,7 @@ public static class DomainToSqlTransformer
         return sqlBuilder.ToString();
     }
 
-    private static string BuildMcqSql(AEColumns ae)
+    private static string BuildMcqSql(AeColumns ae)
     {
         var sqlBuilder = new StringBuilder();
         sqlBuilder.Append("INSERT INTO public.\"MultiChoiceQuestions\"(\"Id\", \"Text\", \"PossibleAnswers\", \"CorrectAnswer\", \"Feedback\") VALUES");
@@ -203,7 +203,7 @@ public static class DomainToSqlTransformer
         return string.Join(',', answers);
     }
 
-    private static string BuildAtSql(AEColumns ae)
+    private static string BuildAtSql(AeColumns ae)
     {
         var sqlBuilder = new StringBuilder();
         var startingContainerId = ae.Id * 10; //There won't be more than 10 containers per AT
@@ -242,7 +242,7 @@ public static class DomainToSqlTransformer
         return sqlBuilder.ToString();
     }
 
-    private static string BuildSaqSql(AEColumns ae)
+    private static string BuildSaqSql(AeColumns ae)
     {
         var sqlBuilder = new StringBuilder();
         sqlBuilder.Append("INSERT INTO public.\"ShortAnswerQuestions\"(\"Id\", \"Text\", \"AcceptableAnswers\") VALUES");
@@ -259,7 +259,7 @@ public static class DomainToSqlTransformer
         return string.Join(", ", items);
     }
 
-    private static string BuildChSql(AEColumns ae)
+    private static string BuildChSql(AeColumns ae)
     {
         var sqlBuilder = new StringBuilder();
         sqlBuilder.Append("INSERT INTO public.\"Challenges\"(\"Id\", \"Description\", \"Url\", \"TestSuiteLocation\", \"SolutionUrl\") VALUES");

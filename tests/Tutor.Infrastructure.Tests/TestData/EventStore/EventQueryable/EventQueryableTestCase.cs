@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text.Json;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Infrastructure.Database.EventStore;
 
 namespace Tutor.Infrastructure.Tests.TestData.EventStore.EventQueryable
 {
@@ -39,7 +38,7 @@ namespace Tutor.Infrastructure.Tests.TestData.EventStore.EventQueryable
 
         public class AfterParameter : IQueryParameter
         {
-            public DateTime Moment { get; private set; }
+            public DateTime Moment { get; }
 
             public AfterParameter(DateTime moment)
             {
@@ -59,7 +58,7 @@ namespace Tutor.Infrastructure.Tests.TestData.EventStore.EventQueryable
 
         public class BeforeParameter : IQueryParameter
         {
-            public DateTime Moment { get; private set; }
+            public DateTime Moment { get; }
 
             public BeforeParameter(DateTime moment)
             {
@@ -79,8 +78,8 @@ namespace Tutor.Infrastructure.Tests.TestData.EventStore.EventQueryable
 
         public class ConditionParameter : IQueryParameter
         {
-            public Expression<Func<JsonDocument, bool>> JsonCondition { get; private set; }
-            public Func<dynamic, bool> DynamicCondition { get; private set; }
+            public Expression<Func<JsonDocument, bool>> JsonCondition { get; }
+            public Func<dynamic, bool> DynamicCondition { get; }
 
             public ConditionParameter(Expression<Func<JsonDocument, bool>> jsonCondition, Func<dynamic, bool> dynamicCondition)
             {

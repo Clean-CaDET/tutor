@@ -33,7 +33,6 @@ public class StructureService : IStructureService
         return Result.Ok(_kcMasteryRepository.GetBasicKcMasteries(kcIds, learnerId));
     }
 
-
     public Result<KnowledgeComponent> GetKnowledgeComponent(int knowledgeComponentId, int learnerId)
     {
         var kcMastery = _kcMasteryRepository.GetBasicKcMastery(knowledgeComponentId, learnerId);

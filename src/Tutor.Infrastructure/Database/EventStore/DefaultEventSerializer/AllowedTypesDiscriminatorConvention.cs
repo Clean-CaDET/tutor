@@ -67,7 +67,7 @@ namespace Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer
 
             if (discriminator == null)
             {
-                throw new JsonException($"Null discriminator");
+                throw new JsonException("Null discriminator");
             }
 
             if (!_typesByDiscriminator.TryGetValue(discriminator, out Type type))

@@ -9,7 +9,7 @@ namespace Tutor.Infrastructure.Tests.TestData.EventStore.EventQueryable
     {
         public static IEnumerable<EventQueryableTestCase> GenerateTestCases(IEnumerable<IQueryParameter> parameters, int amountPerParameter)
         {
-            var testCases = new List<EventQueryableTestCase> { new EventQueryableTestCase() };
+            var testCases = new List<EventQueryableTestCase> { new() };
             foreach (var parameter in parameters)
                 testCases.AddRange(GenerateTestCasesWithParameter(testCases, parameter, amountPerParameter));
             return testCases;

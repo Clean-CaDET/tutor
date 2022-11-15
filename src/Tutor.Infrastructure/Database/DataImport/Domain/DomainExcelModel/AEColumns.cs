@@ -2,7 +2,7 @@
 
 namespace Tutor.Infrastructure.Database.DataImport.Domain.DomainExcelModel
 {
-    public class AEColumns
+    public class AeColumns
     {
         public int Id { get; internal set; }
         public int KnowledgeComponentId { get; internal set; }

@@ -79,16 +79,16 @@ namespace Tutor.Infrastructure.Database.DataImport.Domain
             return units;
         }
 
-        private List<KCColumns> CreateKCs(IEnumerable<ExcelWorksheet> kcSheets, List<UnitColumns> units)
+        private List<KcColumns> CreateKCs(IEnumerable<ExcelWorksheet> kcSheets, List<UnitColumns> units)
         {
-            var kcs = new List<KCColumns>();
+            var kcs = new List<KcColumns>();
 
             foreach (var sheet in kcSheets)
             {
                 for (var row = 2; row <= sheet.Dimension.End.Row; row++)
                 {
                     if (string.IsNullOrEmpty(sheet.Cells["A" + row].Text)) break;
-                    var kc = new KCColumns
+                    var kc = new KcColumns
                     {
                         Id = _kcId++,
                         Code = sheet.Cells["A" + row].Text,
@@ -114,9 +114,9 @@ namespace Tutor.Infrastructure.Database.DataImport.Domain
             return kcs;
         }
 
-        private List<IEColumns> CreateIEs(IEnumerable<ExcelWorksheet> ieSheets, List<KCColumns> kcs)
+        private List<IeColumns> CreateIEs(IEnumerable<ExcelWorksheet> ieSheets, List<KcColumns> kcs)
         {
-            var ies = new List<IEColumns>();
+            var ies = new List<IeColumns>();
 
             foreach (var sheet in ieSheets)
             {
@@ -124,7 +124,7 @@ namespace Tutor.Infrastructure.Database.DataImport.Domain
                 {
                     if (string.IsNullOrEmpty(sheet.Cells["B" + row].Text)) break;
 
-                    ies.Add(new IEColumns
+                    ies.Add(new IeColumns
                     {
                         Id = _ieId++,
                         KnowledgeComponentId = kcs.First(k => k.Code.Equals(sheet.Cells["B" + row].Text)).Id,
@@ -140,9 +140,9 @@ namespace Tutor.Infrastructure.Database.DataImport.Domain
             return ies;
         }
 
-        private List<AEColumns> CreateAEs(IEnumerable<ExcelWorksheet> aeSheets, List<KCColumns> kcs)
+        private List<AeColumns> CreateAEs(IEnumerable<ExcelWorksheet> aeSheets, List<KcColumns> kcs)
         {
-            var aes = new List<AEColumns>();
+            var aes = new List<AeColumns>();
 
             foreach (var sheet in aeSheets)
             {
@@ -150,7 +150,7 @@ namespace Tutor.Infrastructure.Database.DataImport.Domain
                 {
                     if (string.IsNullOrEmpty(sheet.Cells["B" + row].Text)) break;
 
-                    aes.Add(new AEColumns
+                    aes.Add(new AeColumns
                     {
                         Id = _aeId++,
                         KnowledgeComponentId = kcs.First(k => k.Code.Equals(sheet.Cells["B" + row].Text)).Id,

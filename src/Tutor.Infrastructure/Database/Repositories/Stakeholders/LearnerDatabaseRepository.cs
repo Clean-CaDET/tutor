@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using Tutor.Core.Domain.CourseIteration;
+﻿using System.Linq;
 using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Infrastructure.Database.Repositories.Stakeholders

@@ -45,14 +45,14 @@ namespace Tutor.Infrastructure.Tests.Integration.EventStore
         public static IEnumerable<object[]> TestCases()
         {
             if (_testCases.Any()) return _testCases;
-            _testCases = EventQueryableTestCaseGenerator.GenerateTestCases(_queryParameters, 65)
+            _testCases = EventQueryableTestCaseGenerator.GenerateTestCases(QueryParameters, 65)
                 .Select(testCase => new object[] { testCase });
             return _testCases;
         }
 
         private static IEnumerable<object[]> _testCases = new List<object[]>();
 
-        private static IEnumerable<IQueryParameter> _queryParameters = new List<IQueryParameter>
+        private static readonly IEnumerable<IQueryParameter> QueryParameters = new List<IQueryParameter>
         {
             new ConditionParameter(jsonEvent => jsonEvent.RootElement.GetProperty("PropertyA").GetString().Contains("test"),
                                    @event => @event.PropertyA.Contains("test")),

@@ -28,8 +28,8 @@ namespace Tutor.Infrastructure.Tests.TestData
         {
             new ClassB() { FieldA = 2, FieldB = 3 },
             new ClassC() { FieldA = 2, FieldC = 3 },
-            new ClassD() { FieldA = 2, FieldDE = 3 },
-            new ClassE() { FieldA = 2, FieldDE = 3 }
+            new ClassD() { FieldA = 2, FieldDe = 3 },
+            new ClassE() { FieldA = 2, FieldDe = 3 }
         };
 
         private abstract class ClassBase
@@ -49,12 +49,12 @@ namespace Tutor.Infrastructure.Tests.TestData
 
         private sealed class ClassD : ClassB
         {
-            internal int FieldDE { get; set; }
+            internal int FieldDe { get; set; }
         }
 
         private sealed class ClassE : ClassB
         {
-            internal int FieldDE { get; set; }
+            internal int FieldDe { get; set; }
         }
     }
 }

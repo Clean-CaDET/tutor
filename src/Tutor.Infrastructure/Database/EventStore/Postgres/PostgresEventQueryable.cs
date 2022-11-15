@@ -11,8 +11,8 @@ namespace Tutor.Infrastructure.Database.EventStore.Postgres
     {
         private readonly IEventSerializer _serializer;
 
-        private IQueryable<StoredDomainEvent> EventSource { get; set; }
-        private IEnumerable<Expression<Func<JsonDocument, bool>>> Conditions { get; set; }
+        private IQueryable<StoredDomainEvent> EventSource { get; init; }
+        private IEnumerable<Expression<Func<JsonDocument, bool>>> Conditions { get; init; }
 
         public PostgresEventQueryable(IQueryable<StoredDomainEvent> eventSource, IEventSerializer serializer)
         {

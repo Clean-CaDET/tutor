@@ -14,8 +14,8 @@ namespace Tutor.Core.Domain.KnowledgeMastery
         public double Mastery { get; private set; }
         public int SubmissionCount { get; private set; }
         public DateTime? LastSubmissionTime { get; set; }
-        public bool IsAttempted { get => SubmissionCount > 0; }
-        public bool IsPassed { get => Mastery > PassThreshold; }
+        public bool IsAttempted => SubmissionCount > 0;
+        public bool IsPassed => Mastery > PassThreshold;
 
         public void RecordSelection()
         {

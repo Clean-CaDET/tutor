@@ -9,12 +9,12 @@ namespace Tutor.Core.Domain.KnowledgeMastery
 {
     public class SessionTracker : EventSourcedEntity
     {
-        public int CountOfSessions { get; private set; } = 0;
-        public TimeSpan DurationOfAllSessions { get => DurationOfFinishedSessions + DurationOfUnfinishedSession.GetValueOrDefault(); }
-        public TimeSpan DurationOfFinishedSessions { get; private set; } = new TimeSpan(0);
-        public bool HasUnfinishedSession { get => StartOfUnfinishedSession.HasValue; }
-        public TimeSpan? DurationOfUnfinishedSession
-        { get => HasUnfinishedSession ? LastActivity.Value - StartOfUnfinishedSession.Value : null; }
+        public int CountOfSessions { get; private set; }
+        public TimeSpan DurationOfAllSessions => DurationOfFinishedSessions + DurationOfUnfinishedSession.GetValueOrDefault();
+        public TimeSpan DurationOfFinishedSessions { get; private set; } = new(0);
+        public bool HasUnfinishedSession => StartOfUnfinishedSession.HasValue;
+
+        public TimeSpan? DurationOfUnfinishedSession => HasUnfinishedSession ? LastActivity.Value - StartOfUnfinishedSession.Value : null;
         public DateTime? StartOfUnfinishedSession { get; private set; }
         public DateTime? LastActivity { get; private set; }
 

@@ -9,14 +9,14 @@ namespace Tutor.Infrastructure.Tests.Integration.EventStore
 {
     public class EventStoreManager : IDisposable
     {
-        private readonly string _connectionString = $"Server=localhost;Port=5432;Database=event-store-test;User ID=postgres;Password=super;Integrated Security=false;Pooling=true;";
-        private EventContext _eventContext;
+        private const string ConnectionString = "Server=localhost;Port=5432;Database=event-store-test;User ID=postgres;Password=super;Integrated Security=false;Pooling=true;";
+        private readonly EventContext _eventContext;
 
-        public IEventStore EventStore { get; private set; }
+        public IEventStore EventStore { get; }
 
         public EventStoreManager()
         {
-            var options = new DbContextOptionsBuilder<EventContext>().UseNpgsql(_connectionString).Options;
+            var options = new DbContextOptionsBuilder<EventContext>().UseNpgsql(ConnectionString).Options;
             _eventContext = new EventContext(options);
             _eventContext.Database.EnsureCreated();
             EventStore = new PostgresStore(_eventContext, new DefaultEventSerializer(Types));

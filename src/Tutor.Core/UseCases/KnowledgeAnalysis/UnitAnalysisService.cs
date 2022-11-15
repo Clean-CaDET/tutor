@@ -25,7 +25,8 @@ namespace Tutor.Core.UseCases.KnowledgeAnalysis
 
         public Result<List<KcStatistics>> GetKnowledgeComponentsStats(int unitId, int instructorId)
         {
-            //TODO: Check if instructor owns the course
+            //Check if instructor owns the course
+
             var kcs = _knowledgeComponentRepository.GetKnowledgeComponentsForUnit(unitId);
             var kcIds = kcs.Select(kc => kc.Id).ToList();
 

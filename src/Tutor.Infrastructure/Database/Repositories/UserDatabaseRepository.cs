@@ -18,12 +18,5 @@ namespace Tutor.Infrastructure.Database.Repositories
             return _dbContext.Users
                 .FirstOrDefault(user => user.Username == username);
         }
-
-        public User Save(User user)
-        {
-            _dbContext.Users.Attach(user);
-            _dbContext.SaveChanges();
-            return user;
-        }
     }
 }

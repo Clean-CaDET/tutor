@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
-using System.Security.Claims;
 using Tutor.Core.UseCases.Learning.Utilities;
 using Tutor.Web.Controllers.Learners.Learning.Utilities.Notes;
 using Xunit;

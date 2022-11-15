@@ -5,6 +5,7 @@ using CodeModel.CaDETModel.CodeItems;
 
 namespace Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges.FulfillmentStrategies
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("GeneratedRegex", "SYSLIB1045:Convert to 'GeneratedRegexAttribute'.", Justification = "Not relevant given simplicity of regex.")]
     internal static class WordExtractor
     {
         internal static string[] GetWordsFromName(string name)

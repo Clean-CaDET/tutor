@@ -71,7 +71,7 @@ namespace Tutor.Infrastructure.Tests.Unit.EventSerialization
                 registry.RegisterType(type);
             }
 
-            return SerializationTestClasses.ObjectsOfConcrete().Select(o => new object[] { o, options });
+            return SerializationTestClasses.ObjectsOfConcrete().Select(o => new[] { o, options });
         }
     }
 }
