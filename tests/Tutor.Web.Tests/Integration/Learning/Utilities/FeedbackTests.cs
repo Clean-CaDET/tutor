@@ -14,17 +14,14 @@ namespace Tutor.Web.Tests.Integration.Learning.Utilities
     [Collection("Sequential")]
     public class FeedbackTests : BaseWebIntegrationTest
     {
-        public FeedbackTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
+        public FeedbackTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
         [Theory]
         [MemberData(nameof(EmotionsFeedbackSubmission))]
         public void Stores_emotions_feedback(EmotionsFeedbackDto postedFeedback, EmotionsFeedbackDto expectedFeedback)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new FeedbackController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<IFeedbackService>())
-            {
-                ControllerContext = BuildContext("-1", "learner")
-            };
+            var controller = SetupFeedbackController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
 
             var actualFeedback = ((OkObjectResult)controller.PostEmotionsFeedback(postedFeedback).Result).Value as EmotionsFeedbackDto;
@@ -43,10 +40,7 @@ namespace Tutor.Web.Tests.Integration.Learning.Utilities
         public void Stores_tutor_improvement_feedback(TutorImprovementFeedbackDto postedFeedback, TutorImprovementFeedbackDto expectedFeedback)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new FeedbackController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<IFeedbackService>())
-            {
-                ControllerContext = BuildContext("-1", "learner")
-            };
+            var controller = SetupFeedbackController(scope);
             var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
 
             var actualFeedback = ((OkObjectResult)controller.PostTutorImprovementFeedback(postedFeedback).Result).Value as TutorImprovementFeedbackDto;
@@ -60,6 +54,14 @@ namespace Tutor.Web.Tests.Integration.Learning.Utilities
             var feedback = dbContext.TutorImprovementFeedbacks.OrderBy(s => s.TimeStamp).Last(c => c.SoftwareComment == postedFeedback.SoftwareComment && c.ContentComment == postedFeedback.ContentComment);
             feedback.SoftwareComment.ShouldBe(expectedFeedback.SoftwareComment);
             feedback.ContentComment.ShouldBe(expectedFeedback.ContentComment);
+        }
+
+        private FeedbackController SetupFeedbackController(IServiceScope scope)
+        {
+            return new FeedbackController(Factory.Services.GetRequiredService<IMapper>(), scope.ServiceProvider.GetRequiredService<IFeedbackService>())
+            {
+                ControllerContext = BuildContext("-1", "learner")
+            };
         }
 
         public static IEnumerable<object[]> EmotionsFeedbackSubmission() => new List<object[]>

@@ -14,9 +14,7 @@ namespace Tutor.Web.Tests.Integration.Learning.Utilities
     [Collection("Sequential")]
     public class NotesTests : BaseWebIntegrationTest
     {
-        public NotesTests(TutorApplicationTestFactory<Startup> factory) : base(factory)
-        {
-        }
+        public NotesTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
         [Fact]
         public void Creates_new_note()
@@ -62,22 +60,12 @@ namespace Tutor.Web.Tests.Integration.Learning.Utilities
             notes.Count.ShouldBe(2);
         }
 
-        private static NoteController SetupNotesController(IServiceScope scope, string userId)
+        private static NoteController SetupNotesController(IServiceScope scope, string id)
         {
             return new NoteController(scope.ServiceProvider.GetRequiredService<IMapper>(),
                 scope.ServiceProvider.GetRequiredService<INoteService>())
             {
-                ControllerContext = new ControllerContext()
-                {
-                    HttpContext = new DefaultHttpContext()
-                    {
-                        User = new ClaimsPrincipal(new ClaimsIdentity(new[]
-                        {
-                            new Claim("id", userId),
-                            new Claim("learnerId", userId)
-                        }))
-                    }
-                }
+                ControllerContext = BuildContext(id, "learner")
             };
         }
     }
