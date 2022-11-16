@@ -11,7 +11,7 @@ using Tutor.Web.Mappings.CourseIteration;
 namespace Tutor.Web.Controllers.Instructors;
 
 [Authorize(Policy = "instructorPolicy")]
-[Route("api/instructors/monitoring/{courseId:int}/")]
+[Route("api/monitoring/{courseId:int}/groups")]
 [ApiController]
 public class CourseIterationMonitoringController : ControllerBase
 {
@@ -24,7 +24,7 @@ public class CourseIterationMonitoringController : ControllerBase
         _courseIterationMonitoringService = courseIterationMonitoringService;
     }
 
-    [HttpGet]
+    [HttpGet("")]
     public ActionResult<List<GroupDto>> GetAssignedGroups(int courseId)
     {
         var result = _courseIterationMonitoringService.GetAssignedGroups(User.InstructorId(), courseId);
@@ -32,7 +32,7 @@ public class CourseIterationMonitoringController : ControllerBase
         return Ok(result.Value.Select(_mapper.Map<GroupDto>).ToList());
     }
 
-    [HttpGet("groups/")]
+    [HttpGet("all")]
     public ActionResult<PagedResult<LearnerProgressDto>> GetProgressForAll(int courseId, [FromQuery] int page, [FromQuery] int pageSize)
     {
         var result = _courseIterationMonitoringService.GetLearnersWithProgress(courseId, page, pageSize);
@@ -40,7 +40,7 @@ public class CourseIterationMonitoringController : ControllerBase
         return Ok(new PagedResult<LearnerProgressDto>(progress, result.TotalCount));
     }
 
-    [HttpGet("groups/{groupId:int}")]
+    [HttpGet("{groupId:int}")]
     public ActionResult<PagedResult<LearnerProgressDto>> GetProgressForGroup(int courseId, int groupId, [FromQuery] int page, [FromQuery] int pageSize)
     {
         var result = _courseIterationMonitoringService.GetLearnersWithProgressForGroup(courseId, groupId, page, pageSize);

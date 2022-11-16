@@ -10,7 +10,7 @@ using Tutor.Web.Mappings.Knowledge.DTOs;
 namespace Tutor.Web.Controllers.Learners
 {
     [Authorize(Policy = "learnerPolicy")]
-    [Route("api/learners/courses")]
+    [Route("api/enrolled-courses")]
     [ApiController]
     public class EnrollmentController : ControllerBase
     {
@@ -32,7 +32,7 @@ namespace Tutor.Web.Controllers.Learners
             return Ok(result.Value.Select(_mapper.Map<CourseDto>).ToList());
         }
 
-        [HttpGet("{courseId:int}/")]
+        [HttpGet("{courseId:int}")]
         public ActionResult<List<KnowledgeUnitDto>> GetActiveUnits(int courseId)
         {
             var result = _enrollmentService.GetActiveUnits(courseId, User.LearnerId());

@@ -10,7 +10,7 @@ using Tutor.Infrastructure.Security.Authentication.Users;
 namespace Tutor.Web.Controllers.Learners.Learning.Utilities.Notes
 {
     [Authorize(Policy = "learnerPolicy")]
-    [Route("api/notes/")]
+    [Route("api/learning/unit/{unitId:int}/notes")]
     [ApiController]
     public class NoteController : ControllerBase
     {
@@ -48,7 +48,7 @@ namespace Tutor.Web.Controllers.Learners.Learning.Utilities.Notes
             return Ok(result.Value);
         }
 
-        [HttpGet("{unitId:int}")]
+        [HttpGet("")]
         public ActionResult<List<NoteDto>> GetAppropriateNotes(int unitId)
         {
             var result = _noteService.GetAppropriateNotes(User.LearnerId(), unitId);

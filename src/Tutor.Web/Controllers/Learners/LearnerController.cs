@@ -8,7 +8,7 @@ using Tutor.Web.Mappings.CourseIteration;
 namespace Tutor.Web.Controllers.Learners
 {
     [Authorize(Policy = "learnerPolicy")]
-    [Route("api/learners/")]
+    [Route("api/learner/")]
     [ApiController]
     public class LearnerController : ControllerBase
     {

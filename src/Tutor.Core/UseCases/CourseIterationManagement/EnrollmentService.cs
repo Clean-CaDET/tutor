@@ -21,6 +21,7 @@ public class EnrollmentService : IEnrollmentService
 
     public Result<List<KnowledgeUnit>> GetActiveUnits(int courseId, int learnerId)
     {
+        // Should change when course iteration is introduced
         return Result.Ok(_enrollmentRepository.GetEnrolledAndActiveUnits(courseId, learnerId));
     }
 }

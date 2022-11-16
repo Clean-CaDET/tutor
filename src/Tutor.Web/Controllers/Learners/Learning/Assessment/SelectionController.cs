@@ -8,7 +8,7 @@ using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems;
 namespace Tutor.Web.Controllers.Learners.Learning.Assessment
 {
     [Authorize(Policy = "learnerPolicy")]
-    [Route("api/knowledge-component/{knowledgeComponentId:int}/assessment-item/")]
+    [Route("api/learning/unit/{unitId:int}/knowledge-component/{knowledgeComponentId:int}/assessment-item/")]
     [ApiController]
     public class SelectionController : ControllerBase
     {

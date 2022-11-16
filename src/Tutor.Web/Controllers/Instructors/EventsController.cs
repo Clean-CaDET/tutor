@@ -7,7 +7,7 @@ using Tutor.Core.BuildingBlocks.EventSourcing;
 namespace Tutor.Web.Controllers.Instructors;
 
 [Authorize(Policy = "instructorPolicy")]
-[Route("api/instructors/events/")]
+[Route("api/events")]
 [ApiController]
 public class EventsController : ControllerBase
 {
@@ -18,7 +18,7 @@ public class EventsController : ControllerBase
         _eventStore = eventStore;
     }
     
-    [HttpGet("events")]
+    [HttpGet("")]
     public ActionResult<PagedResult<DomainEvent>> GetEvents([FromQuery] int page, [FromQuery] int pageSize)
     {
         var task = _eventStore.GetEventsAsync(page, pageSize);
@@ -26,7 +26,7 @@ public class EventsController : ControllerBase
         return Ok(task.Result);
     }
     
-    [HttpGet("all-events")]
+    [HttpGet("all/")]
     public ActionResult<List<DomainEvent>> GetAllEvents()
     {
         var result = _eventStore.Events.ToList();

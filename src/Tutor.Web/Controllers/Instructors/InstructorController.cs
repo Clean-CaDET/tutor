@@ -10,7 +10,7 @@ using Tutor.Web.Mappings.Knowledge.DTOs;
 namespace Tutor.Web.Controllers.Instructors;
 
 [Authorize(Policy = "instructorPolicy")]
-[Route("api/instructors/courses/")]
+[Route("api/owned-courses")]
 [ApiController]
 public class InstructorController : ControllerBase
 {

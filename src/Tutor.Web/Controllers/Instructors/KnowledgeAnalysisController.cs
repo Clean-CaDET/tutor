@@ -10,7 +10,7 @@ using Tutor.Web.Mappings.Knowledge.DTOs;
 namespace Tutor.Web.Controllers.Instructors;
 
 [Authorize(Policy = "instructorPolicy")]
-[Route("api/instructors/knowledge-analysis/")]
+[Route("api/knowledge-analysis/{unitId:int}")]
 [ApiController]
 public class KnowledgeAnalysisController : ControllerBase
 {
@@ -23,7 +23,7 @@ public class KnowledgeAnalysisController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet("{unitId:int}/groups/")]
+    [HttpGet("")]
     public ActionResult<List<KcStatisticsDto>> GetKcStatistics(int unitId)
     {
         var result = _unitAnalysisService.GetKnowledgeComponentsStats(unitId, User.InstructorId());
@@ -31,7 +31,7 @@ public class KnowledgeAnalysisController : ControllerBase
         return Ok(result.Value.Select(_mapper.Map<KcStatisticsDto>).ToList());
     }
 
-    [HttpGet("{unitId:int}/groups/{groupId:int}/")]
+    [HttpGet("groups/{groupId:int}/")]
     public ActionResult<List<KcStatisticsDto>> GetKcStatisticsForGroup(int unitId, int groupId)
     {
         var result = _unitAnalysisService.GetKnowledgeComponentsStatsForGroup(unitId, groupId, User.InstructorId());

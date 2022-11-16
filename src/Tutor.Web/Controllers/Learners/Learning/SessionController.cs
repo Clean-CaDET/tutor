@@ -6,7 +6,7 @@ using Tutor.Infrastructure.Security.Authentication.Users;
 namespace Tutor.Web.Controllers.Learners.Learning
 {
     [Authorize(Policy = "learnerPolicy")]
-    [Route("api/knowledge-components/{knowledgeComponentId:int}/session")]
+    [Route("api/learning/unit/{unitId:int}/session/{knowledgeComponentId:int}")]
     [ApiController]
     public class SessionController : ControllerBase
     {

@@ -13,7 +13,7 @@ using Tutor.Web.Mappings.KnowledgeMastery;
 namespace Tutor.Web.Controllers.Learners.Learning
 {
     [Authorize(Policy = "learnerPolicy")]
-    [Route("api/learners/units/{unitId:int}/")]
+    [Route("api/learning/units/{unitId:int}")]
     [ApiController]
     public class StructureController : ControllerBase
     {
@@ -67,7 +67,7 @@ namespace Tutor.Web.Controllers.Learners.Learning
             }
         }
         
-        [HttpGet("knowledge-component/{knowledgeComponentId}/")]
+        [HttpGet("knowledge-component/{knowledgeComponentId:int}/")]
         public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
         {
             var result = _learningStructureService.GetKnowledgeComponent(knowledgeComponentId, User.LearnerId());
@@ -75,7 +75,7 @@ namespace Tutor.Web.Controllers.Learners.Learning
             return NotFound(result.Errors);
         }
 
-        [HttpGet("knowledge-component/{knowledgeComponentId}/instructional-items/")]
+        [HttpGet("knowledge-component/{knowledgeComponentId:int}/instructional-items/")]
         public ActionResult<List<InstructionalItemDto>> GetInstructionalItems(int knowledgeComponentId)
         {
             var result = _learningStructureService.GetInstructionalItems(knowledgeComponentId, User.LearnerId());

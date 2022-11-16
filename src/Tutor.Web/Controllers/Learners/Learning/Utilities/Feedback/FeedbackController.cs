@@ -8,7 +8,7 @@ using Tutor.Infrastructure.Security.Authentication.Users;
 namespace Tutor.Web.Controllers.Learners.Learning.Utilities.Feedback
 {
     [Authorize(Policy = "learnerPolicy")]
-    [Route("api/feedback/")]
+    [Route("api/learning/unit/{unitId:int}/feedback")]
     [ApiController]
     public class FeedbackController : ControllerBase
     {

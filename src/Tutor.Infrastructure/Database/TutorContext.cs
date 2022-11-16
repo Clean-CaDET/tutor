@@ -1,25 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using Tutor.Infrastructure.Security.Authentication.Users;
+using Tutor.Core.Domain.CourseIteration;
+using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
-using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges.FulfillmentStrategies;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
+using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges.FulfillmentStrategies;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiChoiceQuestions;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.ShortAnswerQuestions;
-using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.InstructionalItems;
 using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.Domain.KnowledgeMastery;
-using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.Domain.LearningUtilities;
-using Tutor.Core.Domain.CourseIteration;
+using Tutor.Core.Domain.Stakeholders;
+using Tutor.Infrastructure.Security.Authentication.Users;
 
 namespace Tutor.Infrastructure.Database
 {
     public class TutorContext : DbContext
     {
-        #region Domain Model
+        #region Knowledge
         public DbSet<Course> Courses { get; set; }
         public DbSet<KnowledgeUnit> KnowledgeUnits { get; set; }
         public DbSet<KnowledgeComponent> KnowledgeComponents { get; set; }
@@ -43,35 +43,38 @@ namespace Tutor.Infrastructure.Database
         public DbSet<ChallengeHint> ChallengeHints { get; set; }
 
         #endregion
-
-        #region Feedback & Notes
+        #region Knowledge Mastery
+        public DbSet<KnowledgeComponentMastery> KcMasteries { get; set; }
+        public DbSet<AssessmentItemMastery> AssessmentItemMasteries { get; set; }
+        #endregion
+        #region Learning Utilities
         public DbSet<EmotionsFeedback> EmotionsFeedbacks { get; set; }
         public DbSet<TutorImprovementFeedback> TutorImprovementFeedbacks { get; set; }
         public DbSet<Note> Notes { get; set; }
 
         #endregion
-
-        #region Learners
-        public DbSet<Learner> Learners { get; set; }
+        #region Course Iteration
         public DbSet<LearnerGroup> LearnerGroups { get; set; }
         public DbSet<GroupMembership> GroupMemberships { get; set; }
         public DbSet<UnitEnrollment> UnitEnrollments { get; set; }
-        public DbSet<KnowledgeComponentMastery> KcMasteries { get; set; }
-        public DbSet<AssessmentItemMastery> AssessmentItemMasteries { get; set; }
         #endregion
-
+        #region Stakeholders
         public DbSet<User> Users { get; set; }
-
-        #region Instructors
+        public DbSet<Learner> Learners { get; set; }
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<CourseOwnership> CourseOwnerships { get; set; }
         #endregion
 
-        public TutorContext(DbContextOptions<TutorContext> options) : base(options)
-        {
-        }
+        public TutorContext(DbContextOptions<TutorContext> options) : base(options) {}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            ConfigureKnowledge(modelBuilder);
+            ConfigureKnowledgeMastery(modelBuilder);
+            ConfigureCourseIteration(modelBuilder);
+        }
+
+        private static void ConfigureKnowledge(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Markdown>().ToTable("Texts");
             modelBuilder.Entity<Image>().ToTable("Images");
@@ -79,15 +82,9 @@ namespace Tutor.Infrastructure.Database
             modelBuilder.Entity<Mrq>().ToTable("MultiResponseQuestions");
             modelBuilder.Entity<Mcq>().ToTable("MultiChoiceQuestions");
             modelBuilder.Entity<Saq>().ToTable("ShortAnswerQuestions");
-
             ConfigureArrangeTask(modelBuilder);
             ConfigureChallenge(modelBuilder);
             ConfigureKnowledgeComponent(modelBuilder);
-            ConfigureKcMastery(modelBuilder);
-
-            modelBuilder.Entity<GroupMembership>()
-                .HasOne(g => g.Learner)
-                .WithMany();
         }
 
         private static void ConfigureArrangeTask(ModelBuilder modelBuilder)
@@ -113,7 +110,7 @@ namespace Tutor.Infrastructure.Database
                 .IsRequired(false);
         }
 
-        private static void ConfigureKcMastery(ModelBuilder modelBuilder)
+        private static void ConfigureKnowledgeMastery(ModelBuilder modelBuilder)
         {
             var kcmBuilder = modelBuilder.Entity<KnowledgeComponentMastery>();
             kcmBuilder.Ignore(kcm => kcm.MoveOnCriteria);
@@ -131,6 +128,13 @@ namespace Tutor.Infrastructure.Database
                     trackerBuilder.Ignore(tracker => tracker.Id);
                 });
             kcmBuilder.Navigation(kcm => kcm.SessionTracker).IsRequired();
+        }
+
+        private static void ConfigureCourseIteration(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<GroupMembership>()
+                .HasOne(g => g.Learner)
+                .WithMany();
         }
     }
 }

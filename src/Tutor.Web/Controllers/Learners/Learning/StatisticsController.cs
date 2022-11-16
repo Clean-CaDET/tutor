@@ -8,7 +8,7 @@ using Tutor.Web.Mappings.KnowledgeMastery;
 namespace Tutor.Web.Controllers.Learners.Learning
 {
     [Authorize(Policy = "learnerPolicy")]
-    [Route("api/knowledge-components/")]
+    [Route("api/learning/unit/{unitId:int}/statistics/")]
     [ApiController]
     public class StatisticsController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace Tutor.Web.Controllers.Learners.Learning
             _learningStatisticsService = learningStatisticsService;
         }
 
-        [HttpGet("kcm-statistics/{knowledgeComponentId:int}")]
+        [HttpGet("kcm/{knowledgeComponentId:int}")]
         public ActionResult<KcMasteryStatisticsDto> GetKcMasteryStatistics(int knowledgeComponentId)
         {
             var result = _learningStatisticsService.GetKcMasteryStatistics(knowledgeComponentId, User.LearnerId());
@@ -29,7 +29,7 @@ namespace Tutor.Web.Controllers.Learners.Learning
             return NotFound(result.Errors);
         }
 
-        [HttpGet("aim-correctness/{assessmentItemId:int}")]
+        [HttpGet("aim/{assessmentItemId:int}")]
         public ActionResult<double> GetMaxCorrectness(int assessmentItemId)
         {
             var result = _learningStatisticsService.GetMaxAssessmentCorrectness(User.LearnerId(), assessmentItemId);
