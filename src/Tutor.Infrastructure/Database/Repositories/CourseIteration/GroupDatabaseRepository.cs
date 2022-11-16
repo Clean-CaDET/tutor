@@ -96,8 +96,7 @@ public class GroupDatabaseRepository : IGroupRepository
 
     public bool LearnerHasActiveEnrollment(int unitId, int learnerId)
     {
-        return _dbContext.UnitEnrollments
-            .Count(u => u.Status == EnrollmentStatus.Active &&
-                        u.KnowledgeUnit.Id == unitId && u.LearnerId == learnerId) > 0;
+        return _dbContext.UnitEnrollments.Any(u => u.Status == EnrollmentStatus.Active &&
+                        u.KnowledgeUnit.Id == unitId && u.LearnerId == learnerId);
     }
 }
