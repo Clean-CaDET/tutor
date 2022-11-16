@@ -9,7 +9,7 @@ using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.InstructionalItems;
-using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.Domain.LearningUtilities;

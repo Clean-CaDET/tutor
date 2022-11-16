@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+namespace Tutor.Core.Domain.Knowledge.Structure;
 
 public class Course
 {

@@ -5,33 +5,33 @@ namespace Tutor.Core.UseCases.Learning.Assessment;
 
 public class HelpService : IHelpService
 {
-    private readonly IKcMasteryRepository _kcMasteryRepository;
+    private readonly IKnowledgeMasteryRepository _knowledgeMasteryRepository;
 
-    public HelpService(IKcMasteryRepository kcMasteryRepository)
+    public HelpService(IKnowledgeMasteryRepository knowledgeMasteryRepository)
     {
-        _kcMasteryRepository = kcMasteryRepository;
+        _knowledgeMasteryRepository = knowledgeMasteryRepository;
     }
 
     public Result RecordHintRequest(int learnerId, int assessmentItemId)
     {
-        var kcm = _kcMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
+        var kcm = _knowledgeMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
         if (kcm == null) return Result.Fail("Cannot seek hints for assessment item with ID: " + assessmentItemId);
 
         var result = kcm.RecordAssessmentItemHintRequest(assessmentItemId);
 
-        if (result.IsSuccess) _kcMasteryRepository.UpdateKcMastery(kcm);
+        if (result.IsSuccess) _knowledgeMasteryRepository.UpdateKcMastery(kcm);
 
         return result;
     }
 
     public Result RecordSolutionRequest(int learnerId, int assessmentItemId)
     {
-        var kcm = _kcMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
+        var kcm = _knowledgeMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
         if (kcm == null) return Result.Fail("Cannot seek solution for assessment item with ID: " + assessmentItemId);
 
         var result = kcm.RecordAssessmentItemSolutionRequest(assessmentItemId);
 
-        if (result.IsSuccess) _kcMasteryRepository.UpdateKcMastery(kcm);
+        if (result.IsSuccess) _knowledgeMasteryRepository.UpdateKcMastery(kcm);
 
         return result;
     }
@@ -39,12 +39,12 @@ public class HelpService : IHelpService
     //Should be moved to an instructor service or whatever will be used to interact with the chatbot
     public Result RecordInstructorMessage(int learnerId, int kcId, string message)
     {
-        var kcm = _kcMasteryRepository.GetBasicKcMastery(kcId, learnerId);
+        var kcm = _knowledgeMasteryRepository.GetBasicKcMastery(kcId, learnerId);
         if (kcm == null) return Result.Fail("Learner not enrolled in KC: " + kcId);
 
         var result = kcm.RecordInstructorMessage(message);
 
-        if (result.IsSuccess) _kcMasteryRepository.UpdateKcMastery(kcm);
+        if (result.IsSuccess) _knowledgeMasteryRepository.UpdateKcMastery(kcm);
 
         return result;
     }

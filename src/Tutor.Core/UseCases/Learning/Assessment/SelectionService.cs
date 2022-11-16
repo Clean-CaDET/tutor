@@ -6,18 +6,20 @@ namespace Tutor.Core.UseCases.Learning.Assessment;
 
 public class SelectionService : ISelectionService
 {
-    private readonly IKcMasteryRepository _kcMasteryRepository;
+    private readonly IKnowledgeMasteryRepository _knowledgeMasteryRepository;
     private readonly IAssessmentItemSelector _assessmentItemSelector;
+    private readonly IAssessmentItemRepository _assessmentItemRepository;
 
-    public SelectionService(IKcMasteryRepository kcMasteryRepository, IAssessmentItemSelector assessmentItemSelector)
+    public SelectionService(IKnowledgeMasteryRepository knowledgeMasteryRepository, IAssessmentItemSelector assessmentItemSelector, IAssessmentItemRepository assessmentItemRepository)
     {
-        _kcMasteryRepository = kcMasteryRepository;
+        _knowledgeMasteryRepository = knowledgeMasteryRepository;
         _assessmentItemSelector = assessmentItemSelector;
+        _assessmentItemRepository = assessmentItemRepository;
     }
 
     public Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId)
     {
-        var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
+        var kcMastery = _knowledgeMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
         if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
         var selectionResult =
             _assessmentItemSelector.SelectSuitableAssessmentItemId(kcMastery.AssessmentItemMasteries, kcMastery.IsPassed);
@@ -26,8 +28,8 @@ public class SelectionService : ISelectionService
         var masteryResult = kcMastery.RecordAssessmentItemSelection(selectionResult.Value);
         if (masteryResult.IsFailed) return masteryResult.ToResult<AssessmentItem>();
 
-        _kcMasteryRepository.UpdateKcMastery(kcMastery);
+        _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
 
-        return Result.Ok(_kcMasteryRepository.GetDerivedAssessmentItem(selectionResult.Value));
+        return Result.Ok(_assessmentItemRepository.GetDerivedAssessmentItem(selectionResult.Value));
     }
 }

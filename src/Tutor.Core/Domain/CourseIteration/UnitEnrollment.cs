@@ -1,5 +1,5 @@
 ﻿using System;
-using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.Domain.Knowledge.Structure;
 
 namespace Tutor.Core.Domain.CourseIteration
 {

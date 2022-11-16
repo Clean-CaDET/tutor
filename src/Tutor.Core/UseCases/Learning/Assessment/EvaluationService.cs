@@ -7,18 +7,20 @@ namespace Tutor.Core.UseCases.Learning.Assessment
 {
     public class EvaluationService : IEvaluationService
     {
-        private readonly IKcMasteryRepository _kcMasteryRepository;
+        private readonly IKnowledgeMasteryRepository _knowledgeMasteryRepository;
+        private readonly IAssessmentItemRepository _assessmentItemRepository;
 
-        public EvaluationService(IKcMasteryRepository kcMasteryRepository)
+        public EvaluationService(IKnowledgeMasteryRepository knowledgeMasteryRepository, IAssessmentItemRepository assessmentItemRepository)
         {
-            _kcMasteryRepository = kcMasteryRepository;
+            _knowledgeMasteryRepository = knowledgeMasteryRepository;
+            _assessmentItemRepository = assessmentItemRepository;
         }
 
         public Result<Evaluation> EvaluateAssessmentItemSubmission(int learnerId, int assessmentItemId, Submission submission)
         {
-            var assessmentItem = _kcMasteryRepository.GetDerivedAssessmentItem(assessmentItemId);
+            var assessmentItem = _assessmentItemRepository.GetDerivedAssessmentItem(assessmentItemId);
             if (assessmentItem == null) return Result.Fail("No assessment item with ID: " + assessmentItemId);
-            var kcMastery = _kcMasteryRepository.GetFullKcMastery(assessmentItem.KnowledgeComponentId, learnerId);
+            var kcMastery = _knowledgeMasteryRepository.GetFullKcMastery(assessmentItem.KnowledgeComponentId, learnerId);
             if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + assessmentItem.KnowledgeComponentId);
 
             Evaluation evaluation;
@@ -34,7 +36,7 @@ namespace Tutor.Core.UseCases.Learning.Assessment
             var result = kcMastery.RecordAssessmentItemAnswerSubmission(assessmentItemId, submission, evaluation);
             if (result.IsFailed) return result.ToResult<Evaluation>();
 
-            _kcMasteryRepository.UpdateKcMastery(kcMastery);
+            _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
 
             return Result.Ok(evaluation);
         }

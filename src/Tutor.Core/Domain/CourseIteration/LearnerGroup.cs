@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
-using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.Domain.Knowledge.Structure;
 
 namespace Tutor.Core.Domain.CourseIteration
 {

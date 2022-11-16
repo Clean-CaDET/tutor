@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Tutor.Core.Domain.Knowledge.KnowledgeComponents
+namespace Tutor.Core.Domain.Knowledge.Structure
 {
-    public interface IKnowledgeRepository
+    public interface IKnowledgeStructureRepository
     {
         KnowledgeUnit GetUnitWithKcs(int unitId);
         List<KnowledgeComponent> GetKnowledgeComponentsForUnit(int unitId);

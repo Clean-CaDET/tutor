@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
 using Tutor.Core.Domain.CourseIteration;
-using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.Domain.Knowledge.Structure;
 
 namespace Tutor.Core.UseCases.CourseIterationManagement;
 

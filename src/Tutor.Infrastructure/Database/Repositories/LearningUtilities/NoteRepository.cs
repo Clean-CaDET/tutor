@@ -2,7 +2,7 @@
 using System.Linq;
 using Tutor.Core.Domain.LearningUtilities;
 
-namespace Tutor.Infrastructure.Database.Repositories.Learners
+namespace Tutor.Infrastructure.Database.Repositories.LearningUtilities
 {
     public class NoteRepository : INoteRepository
     {

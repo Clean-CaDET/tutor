@@ -5,16 +5,16 @@ namespace Tutor.Core.UseCases.Learning
 {
     public class StatisticsService : IStatisticsService
     {
-        private readonly IKcMasteryRepository _kcMasteryRepository;
+        private readonly IKnowledgeMasteryRepository _knowledgeMasteryRepository;
 
-        public StatisticsService(IKcMasteryRepository kcMasteryRepository)
+        public StatisticsService(IKnowledgeMasteryRepository knowledgeMasteryRepository)
         {
-            _kcMasteryRepository = kcMasteryRepository;
+            _knowledgeMasteryRepository = knowledgeMasteryRepository;
         }
 
         public Result<KcMasteryStatistics> GetKcMasteryStatistics(int knowledgeComponentId, int learnerId)
         {
-            var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
+            var kcMastery = _knowledgeMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
             if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
 
             return Result.Ok(kcMastery.Statistics);
@@ -22,7 +22,7 @@ namespace Tutor.Core.UseCases.Learning
 
         public Result<double> GetMaxAssessmentCorrectness(int learnerId, int assessmentItemId)
         {
-            var kcm = _kcMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
+            var kcm = _knowledgeMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
             var itemMastery = kcm.AssessmentItemMasteries.Find(am => am.AssessmentItemId == assessmentItemId);
             return Result.Ok(itemMastery?.Mastery ?? 0.0);
         }

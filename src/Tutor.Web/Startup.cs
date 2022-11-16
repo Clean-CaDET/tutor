@@ -14,7 +14,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.Domain.CourseIteration;
-using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.Domain.Knowledge.AssessmentItems;
+using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
 using Tutor.Core.Domain.LearningUtilities;
@@ -31,7 +32,7 @@ using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.Infrastructure.Database.Repositories;
 using Tutor.Infrastructure.Database.Repositories.CourseIteration;
 using Tutor.Infrastructure.Database.Repositories.Knowledge;
-using Tutor.Infrastructure.Database.Repositories.Learners;
+using Tutor.Infrastructure.Database.Repositories.LearningUtilities;
 using Tutor.Infrastructure.Database.Repositories.Stakeholders;
 using Tutor.Infrastructure.EventConfiguration;
 using Tutor.Infrastructure.Security;
@@ -209,8 +210,9 @@ namespace Tutor.Web
         #endregion
         private static void SetupRepositories(IServiceCollection services)
         {
-            services.AddScoped<IKnowledgeRepository, KnowledgeDatabaseRepository>();
-            services.AddScoped<IKcMasteryRepository, KcMasteryDatabaseRepository>();
+            services.AddScoped<IKnowledgeStructureRepository, KnowledgeStructureDatabaseRepository>();
+            services.AddScoped<IAssessmentItemRepository, AssessmentItemDatabaseRepository>();
+            services.AddScoped<IKnowledgeMasteryRepository, KnowledgeMasteryDatabaseRepository>();
             services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
             services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<IInstructorRepository, InstructorDatabaseRepository>();

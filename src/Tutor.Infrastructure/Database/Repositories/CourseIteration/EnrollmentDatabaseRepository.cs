@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.Domain.CourseIteration;
-using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.Domain.Knowledge.Structure;
 
 namespace Tutor.Infrastructure.Database.Repositories.CourseIteration
 {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Tutor.Core.Domain.Knowledge.KnowledgeComponents
+namespace Tutor.Core.Domain.Knowledge.Structure
 {
     public class KcStatistics
     {

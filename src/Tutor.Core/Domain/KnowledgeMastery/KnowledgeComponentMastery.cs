@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
-using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.Domain.KnowledgeMastery.Events;
 using Tutor.Core.Domain.KnowledgeMastery.Events.AssessmentItemEvents;
 using Tutor.Core.Domain.KnowledgeMastery.Events.KnowledgeComponentEvents;

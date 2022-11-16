@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.Domain.Knowledge.Structure;
 
 namespace Tutor.Infrastructure.Database.Repositories.Knowledge
 {
-    public class KnowledgeDatabaseRepository : IKnowledgeRepository
+    public class KnowledgeStructureDatabaseRepository : IKnowledgeStructureRepository
     {
         private readonly TutorContext _dbContext;
 
-        public KnowledgeDatabaseRepository(TutorContext dbContext)
+        public KnowledgeStructureDatabaseRepository(TutorContext dbContext)
         {
             _dbContext = dbContext;
         }

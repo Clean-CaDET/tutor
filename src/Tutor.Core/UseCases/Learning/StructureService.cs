@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.InstructionalItems;
-using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
+using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.Domain.KnowledgeMastery;
 
 namespace Tutor.Core.UseCases.Learning;
 
 public class StructureService : IStructureService
 {
-    private readonly IKcMasteryRepository _kcMasteryRepository;
+    private readonly IKnowledgeMasteryRepository _knowledgeMasteryRepository;
     private readonly IEnrollmentRepository _enrollmentRepository;
-    private readonly IKnowledgeRepository _knowledgeRepository;
+    private readonly IKnowledgeStructureRepository _knowledgeStructureRepository;
 
-    public StructureService(IKcMasteryRepository kcMasteryRepository, IEnrollmentRepository enrollmentRepository, IKnowledgeRepository knowledgeRepository)
+    public StructureService(IKnowledgeMasteryRepository knowledgeMasteryRepository, IEnrollmentRepository enrollmentRepository, IKnowledgeStructureRepository knowledgeStructureRepository)
     {
-        _kcMasteryRepository = kcMasteryRepository;
+        _knowledgeMasteryRepository = knowledgeMasteryRepository;
         _enrollmentRepository = enrollmentRepository;
-        _knowledgeRepository = knowledgeRepository;
+        _knowledgeStructureRepository = knowledgeStructureRepository;
     }
 
     private bool HasActiveEnrollment(int unitId, int learnerId)
@@ -28,17 +28,17 @@ public class StructureService : IStructureService
     public Result<KnowledgeUnit> GetUnit(int unitId, int learnerId)
     {
         if(!HasActiveEnrollment(unitId, learnerId)) return Result.Fail("Learner not enrolled in Unit: " + unitId);
-        return Result.Ok(_knowledgeRepository.GetUnitWithKcs(unitId));
+        return Result.Ok(_knowledgeStructureRepository.GetUnitWithKcs(unitId));
     }
 
     public Result<List<KnowledgeComponentMastery>> GetKnowledgeComponentMasteries(List<int> kcIds, int learnerId)
     {
-        return Result.Ok(_kcMasteryRepository.GetBasicKcMasteries(kcIds, learnerId));
+        return Result.Ok(_knowledgeMasteryRepository.GetBasicKcMasteries(kcIds, learnerId));
     }
 
     public Result<KnowledgeComponent> GetKnowledgeComponent(int knowledgeComponentId, int learnerId)
     {
-        var kcMastery = _kcMasteryRepository.GetBasicKcMastery(knowledgeComponentId, learnerId);
+        var kcMastery = _knowledgeMasteryRepository.GetBasicKcMastery(knowledgeComponentId, learnerId);
         if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
 
         return Result.Ok(kcMastery.KnowledgeComponent);
@@ -46,13 +46,13 @@ public class StructureService : IStructureService
 
     public Result<List<InstructionalItem>> GetInstructionalItems(int knowledgeComponentId, int learnerId)
     {
-        var kcMastery = _kcMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
+        var kcMastery = _knowledgeMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
         if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
 
         var result = kcMastery.RecordInstructionalItemSelection();
         if (result.IsFailed) return result.ToResult<List<InstructionalItem>>();
 
-        _kcMasteryRepository.UpdateKcMastery(kcMastery);
+        _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
 
         return Result.Ok(kcMastery.KnowledgeComponent.GetOrderedInstructionalItems());
     }

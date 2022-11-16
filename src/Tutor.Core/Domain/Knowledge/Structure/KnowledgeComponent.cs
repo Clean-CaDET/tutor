@@ -3,7 +3,7 @@ using System.Linq;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.InstructionalItems;
 
-namespace Tutor.Core.Domain.Knowledge.KnowledgeComponents
+namespace Tutor.Core.Domain.Knowledge.Structure
 {
     public class KnowledgeComponent
     {
