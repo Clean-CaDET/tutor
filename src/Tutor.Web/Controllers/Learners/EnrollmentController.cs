@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using Tutor.Web.Mappings.Knowledge.DTOs;
 
 namespace Tutor.Web.Controllers.Learners
 {
+    [Authorize(Policy = "learnerPolicy")]
     [Route("api/learners/courses")]
     [ApiController]
     public class EnrollmentController : ControllerBase

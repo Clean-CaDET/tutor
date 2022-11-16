@@ -1,14 +1,10 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
-using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Core.UseCases.KnowledgeAnalysis;
 using Tutor.Web.Controllers.Instructors;
-using Tutor.Web.Mappings.Knowledge.DTOs;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.KnowledgeAnalysis;
@@ -51,5 +47,4 @@ public class EventsTests : BaseWebIntegrationTest
             ControllerContext = BuildContext(id, "instructor")
         };
     }
-    
 }

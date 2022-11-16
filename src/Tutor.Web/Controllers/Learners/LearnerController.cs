@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.Core.UseCases.StakeholderManagement;
 using Tutor.Infrastructure.Security.Authentication.Users;
@@ -6,7 +7,8 @@ using Tutor.Web.Mappings.CourseIteration;
 
 namespace Tutor.Web.Controllers.Learners
 {
-    [Route("api/learners/profile/")]
+    [Authorize(Policy = "learnerPolicy")]
+    [Route("api/learners/")]
     [ApiController]
     public class LearnerController : ControllerBase
     {

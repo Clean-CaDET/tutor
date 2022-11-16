@@ -59,9 +59,12 @@ namespace Tutor.Infrastructure.Security.Authentication
         {
             var token = new JwtSecurityTokenHandler().ReadJwtToken(authenticationTokens.AccessToken);
             var userId = int.Parse(token.Claims.First(c => c.Type == "id").Value);
-            var learnerId = int.Parse(token.Claims.First(c => c.Type == "learnerId").Value);
+            
+            var id = int.Parse(token.Claims.FirstOrDefault(c => c.Type == "learnerId")?.Value ?? 
+                               token.Claims.First(c => c.Type == "instructorId").Value);
+            
             var role = token.Claims.First(c => c.Type.Equals(ClaimTypes.Role)).Value;
-            return ValidateRefreshToken(authenticationTokens.RefreshToken) ? GenerateAccessToken(userId, role, learnerId) : Result.Fail("Refresh token is not valid!");
+            return ValidateRefreshToken(authenticationTokens.RefreshToken) ? GenerateAccessToken(userId, role, id) : Result.Fail("Refresh token is not valid!");
         }
 
         private bool ValidateRefreshToken(string refreshToken)
