@@ -10,24 +10,19 @@ namespace Tutor.Core.UseCases.Learning;
 public class StructureService : IStructureService
 {
     private readonly IKcMasteryRepository _kcMasteryRepository;
-    private readonly IGroupRepository _groupRepository;
+    private readonly IEnrollmentRepository _enrollmentRepository;
     private readonly IKnowledgeRepository _knowledgeRepository;
 
-    public StructureService(IKcMasteryRepository kcMasteryRepository, IGroupRepository groupRepository, IKnowledgeRepository knowledgeRepository)
+    public StructureService(IKcMasteryRepository kcMasteryRepository, IEnrollmentRepository enrollmentRepository, IKnowledgeRepository knowledgeRepository)
     {
         _kcMasteryRepository = kcMasteryRepository;
-        _groupRepository = groupRepository;
+        _enrollmentRepository = enrollmentRepository;
         _knowledgeRepository = knowledgeRepository;
     }
 
     private bool HasActiveEnrollment(int unitId, int learnerId)
     {
-        return _groupRepository.LearnerHasActiveEnrollment(unitId, learnerId);
-    }
-
-    public Result<List<KnowledgeUnit>> GetUnits(int courseId, int learnerId)
-    {
-        return Result.Ok(_groupRepository.GetEnrolledAndActiveUnits(courseId, learnerId));
+        return _enrollmentRepository.LearnerHasActiveEnrollment(unitId, learnerId);
     }
 
     public Result<KnowledgeUnit> GetUnit(int unitId, int learnerId)

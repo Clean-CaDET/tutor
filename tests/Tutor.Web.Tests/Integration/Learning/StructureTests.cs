@@ -23,19 +23,6 @@ namespace Tutor.Web.Tests.Integration.Learning
         public StructureTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
         [Theory]
-        [InlineData(-2, -1, 1)]
-        [InlineData(-1, -1, 0)]
-        public void Retrieves_enrolled_units(int learnerId, int courseId, int expectedUnitCount)
-        {
-            using var scope = Factory.Services.CreateScope();
-            var controller = SetupStructureController(scope, learnerId.ToString());
-
-            var units = ((OkObjectResult)controller.GetUnits(courseId).Result).Value as List<KnowledgeUnitDto>;
-
-            units.Count.ShouldBe(expectedUnitCount);
-        }
-
-        [Theory]
         [MemberData(nameof(KnowledgeComponentMasteries))]
         public void Retrieves_kc_mastery_for_unit(int unitId, List<KnowledgeComponentDto> expectedKCs)
         {

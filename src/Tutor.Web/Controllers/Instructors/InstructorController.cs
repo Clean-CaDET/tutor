@@ -15,18 +15,18 @@ namespace Tutor.Web.Controllers.Instructors;
 public class InstructorController : ControllerBase
 {
     private readonly IMapper _mapper;
-    private readonly IAvailableCourseService _availableCourseService;
+    private readonly ICourseOwnershipService _courseOwnershipService;
     
-    public InstructorController(IMapper mapper, IAvailableCourseService availableCourseService)
+    public InstructorController(IMapper mapper, ICourseOwnershipService courseOwnershipService)
     {
         _mapper = mapper;
-        _availableCourseService = availableCourseService;
+        _courseOwnershipService = courseOwnershipService;
     }
 
     [HttpGet]
     public ActionResult<List<CourseDto>> GetOwnedCourses()
     {
-        var result = _availableCourseService.GetOwnedCourses(User.InstructorId());
+        var result = _courseOwnershipService.GetOwnedCourses(User.InstructorId());
         if (result.IsFailed) return BadRequest(result.Errors);
         return Ok(result.Value.Select(_mapper.Map<CourseDto>).ToList());
     }
@@ -34,7 +34,7 @@ public class InstructorController : ControllerBase
     [HttpGet("{courseId:int}")]
     public ActionResult<CourseDto> GetCourseWithUnits(int courseId)
     {
-        var result = _availableCourseService.GetOwnedCourseWithUnits(courseId, User.InstructorId());
+        var result = _courseOwnershipService.GetOwnedCourseWithUnits(courseId, User.InstructorId());
         if (result.IsFailed) return BadRequest(result.Errors);
         return Ok(_mapper.Map<CourseDto>(result.Value));
     }

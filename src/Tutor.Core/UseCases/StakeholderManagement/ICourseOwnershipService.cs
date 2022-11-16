@@ -4,9 +4,8 @@ using Tutor.Core.Domain.Knowledge.KnowledgeComponents;
 
 namespace Tutor.Core.UseCases.StakeholderManagement;
 
-public interface IAvailableCourseService
+public interface ICourseOwnershipService
 {
     Result<List<Course>> GetOwnedCourses(int instructorId);
     Result<Course> GetOwnedCourseWithUnits(int courseId, int instructorId);
-    Result<List<Course>> GetEnrolledCourses(int learnerId);
 }

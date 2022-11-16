@@ -30,7 +30,7 @@ public class InstructorTests : BaseWebIntegrationTest
     private InstructorController SetupInstructorController(IServiceScope scope, string id)
     {
         return new InstructorController(Factory.Services.GetRequiredService<IMapper>(),
-            scope.ServiceProvider.GetRequiredService<IAvailableCourseService>())
+            scope.ServiceProvider.GetRequiredService<ICourseOwnershipService>())
         {
             ControllerContext = BuildContext(id, "instructor")
         };

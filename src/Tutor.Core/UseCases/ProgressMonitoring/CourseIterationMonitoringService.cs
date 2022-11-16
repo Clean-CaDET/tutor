@@ -27,7 +27,7 @@ public class CourseIterationMonitoringService : ICourseIterationMonitoringServic
 
     public PagedResult<Learner> GetLearnersWithProgressForGroup(int courseId, int groupId, int page, int pageSize)
     {
-        var task = _groupRepository.GetLearnersWithProgressAsync(courseId, groupId, page, pageSize);
+        var task = _groupRepository.GetGroupProgressAsync(courseId, groupId, page, pageSize);
         task.Wait();
         return task.Result;
     }

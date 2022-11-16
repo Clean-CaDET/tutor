@@ -13,7 +13,7 @@ using Tutor.Web.Mappings.KnowledgeMastery;
 namespace Tutor.Web.Controllers.Learners.Learning
 {
     [Authorize(Policy = "learnerPolicy")]
-    [Route("api/learners/courses/{courseId:int}/")]
+    [Route("api/learners/units/{unitId:int}/")]
     [ApiController]
     public class StructureController : ControllerBase
     {
@@ -27,13 +27,6 @@ namespace Tutor.Web.Controllers.Learners.Learning
         }
 
         [HttpGet]
-        public ActionResult<List<KnowledgeUnitDto>> GetUnits(int courseId)
-        {
-            var result = _learningStructureService.GetUnits(courseId, User.LearnerId());
-            return Ok(result.Value.Select(_mapper.Map<KnowledgeUnitDto>).ToList());
-        }
-
-        [HttpGet("units/{unitId:int}/")]
         public ActionResult<KnowledgeUnitDto> GetUnit(int unitId)
         {
             var result = _learningStructureService.GetUnit(unitId, User.LearnerId());

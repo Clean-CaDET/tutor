@@ -14,12 +14,14 @@ namespace Tutor.Core.UseCases.KnowledgeAnalysis
     {
         private readonly IKnowledgeRepository _knowledgeRepository;
         private readonly IGroupRepository _groupRepository;
+        private readonly IEnrollmentRepository _enrollmentRepository;
         private readonly IEventStore _eventStore;
 
-        public UnitAnalysisService(IKnowledgeRepository kcRepository, IGroupRepository groupRepository, IEventStore eventStore)
+        public UnitAnalysisService(IKnowledgeRepository kcRepository, IGroupRepository groupRepository, IEnrollmentRepository enrollmentRepository, IEventStore eventStore)
         {
             _knowledgeRepository = kcRepository;
             _groupRepository = groupRepository;
+            _enrollmentRepository = enrollmentRepository;
             _eventStore = eventStore;
         }
 
@@ -34,7 +36,7 @@ namespace Tutor.Core.UseCases.KnowledgeAnalysis
                 _eventStore.Events.Where(e => kcIds.Contains(e.RootElement.GetProperty("KnowledgeComponentId").GetInt32()));
             var events = eventQuery.ToList<KnowledgeComponentEvent>();
 
-            var enrolledLearnersCount = _groupRepository.CountAllEnrollmentsInUnit(unitId);
+            var enrolledLearnersCount = _enrollmentRepository.CountAllEnrollmentsInUnit(unitId);
             
             return CalculateKcStatistics(kcs, events, enrolledLearnersCount);
         }

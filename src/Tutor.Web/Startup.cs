@@ -19,6 +19,7 @@ using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
 using Tutor.Core.Domain.LearningUtilities;
 using Tutor.Core.Domain.Stakeholders;
+using Tutor.Core.UseCases.CourseIterationManagement;
 using Tutor.Core.UseCases.KnowledgeAnalysis;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Core.UseCases.Learning.Assessment;
@@ -193,9 +194,10 @@ namespace Tutor.Web
 
         private static void SetupSupportingStakeholderServices(IServiceCollection services)
         {
-            services.AddScoped<ILearnerService, LearnerService>();
-            services.AddScoped<IAvailableCourseService, AvailableCourseService>();
+            services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
             services.AddScoped<ICourseIterationMonitoringService, CourseIterationMonitoringService>();
+            services.AddScoped<ILearnerService, LearnerService>();
+            services.AddScoped<IEnrollmentService, EnrollmentService>();
         }
 
         private void SetupMoveOn(IServiceCollection services)
@@ -208,13 +210,14 @@ namespace Tutor.Web
         private static void SetupRepositories(IServiceCollection services)
         {
             services.AddScoped<IKnowledgeRepository, KnowledgeDatabaseRepository>();
+            services.AddScoped<IKcMasteryRepository, KcMasteryDatabaseRepository>();
             services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
             services.AddScoped<INoteRepository, NoteRepository>();
-            services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
-            services.AddScoped<IKcMasteryRepository, KcMasteryDatabaseRepository>();
-            services.AddScoped<IAvailableCourseRepository, AvailableCourseDatabaseRepository>();
-            services.AddScoped<IGroupRepository, GroupDatabaseRepository>();
             services.AddScoped<IInstructorRepository, InstructorDatabaseRepository>();
+            services.AddScoped<IOwnedCourseRepository, OwnedCourseDatabaseRepository>();
+            services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
+            services.AddScoped<IGroupRepository, GroupDatabaseRepository>();
+            services.AddScoped<IEnrollmentRepository, EnrollmentDatabaseRepository>();
             services.AddSingleton<IEventSerializer>(
                 new DefaultEventSerializer(EventSerializationConfiguration.EventRelatedTypes));
         }
