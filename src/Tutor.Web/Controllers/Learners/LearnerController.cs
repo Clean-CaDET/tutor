@@ -17,7 +17,8 @@ namespace Tutor.Web.Controllers.Learners
         private readonly ILearnerService _learnerService;
         private readonly IAvailableCourseService _availableCourseService;
 
-        public LearnerController(ILearnerService learnerService, IMapper mapper,
+        public LearnerController(IMapper mapper,
+            ILearnerService learnerService,
             IAvailableCourseService availableCourseService)
         {
             _learnerService = learnerService;

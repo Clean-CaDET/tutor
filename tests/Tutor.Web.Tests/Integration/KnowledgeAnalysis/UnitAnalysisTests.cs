@@ -9,16 +9,16 @@ using Tutor.Web.Controllers.Instructors;
 using Tutor.Web.Mappings.Knowledge.DTOs;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Instructors;
+namespace Tutor.Web.Tests.Integration.KnowledgeAnalysis;
 
 [Collection("Sequential")]
-public class KcStatisticsTests : BaseWebIntegrationTest
+public class UnitAnalysisTests : BaseWebIntegrationTest
 {
-    public KcStatisticsTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
+    public UnitAnalysisTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
 
     [Theory]
     [MemberData(nameof(TestData))]
-    public void Retrieves_knowledge_component_statistics(string userId, int unitId, int groupId, List<KcStatisticsDto> expectedStatistics)
+    public void Retrieves_kc_statistics_for_group(string userId, int unitId, int groupId, List<KcStatisticsDto> expectedStatistics)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupAnalysisController(scope, userId);

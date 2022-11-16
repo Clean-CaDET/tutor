@@ -5,7 +5,7 @@ using Tutor.Infrastructure.Security.Authentication;
 using Tutor.Web.Controllers.Users;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Users
+namespace Tutor.Web.Tests.Integration.StakeholderManagement
 {
     [Collection("Sequential")]
     public class LoginTests : BaseWebIntegrationTest

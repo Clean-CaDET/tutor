@@ -26,4 +26,8 @@
     <ProjectReference Include="..\..\src\Tutor.Web\Tutor.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Integration\Users\" />
+  </ItemGroup>
+
 </Project>

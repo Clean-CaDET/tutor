@@ -44,14 +44,12 @@ namespace Tutor.Web
 {
     public class Startup
     {
-        public Startup(IWebHostEnvironment env, IConfiguration configuration)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            Env = env;
         }
 
         private IConfiguration Configuration { get; }
-        private IWebHostEnvironment Env { get; }
 
         private const string CorsPolicy = "_corsPolicy";
 

@@ -9,7 +9,7 @@ using Tutor.Web.Controllers.Instructors;
 using Tutor.Web.Mappings.CourseIteration;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Instructors;
+namespace Tutor.Web.Tests.Integration.ProgressMonitoring;
 
 [Collection("Sequential")]
 public class CourseIterationMonitoringTests : BaseWebIntegrationTest

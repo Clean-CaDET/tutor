@@ -8,7 +8,7 @@ using Tutor.Web.Controllers.Instructors;
 using Tutor.Web.Mappings.Knowledge.DTOs;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Instructors;
+namespace Tutor.Web.Tests.Integration.StakeholderManagement;
 
 [Collection("Sequential")]
 public class InstructorTests : BaseWebIntegrationTest
