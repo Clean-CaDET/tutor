@@ -18,7 +18,7 @@ public class EventsTests : BaseWebIntegrationTest
     public void Retrieves_all_events()
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupEventsController(scope, "-50");
+        var controller = SetupEventsController(scope, "-51");
 
         var result = ((OkObjectResult)controller.GetAllEvents().Result).Value as List<DomainEvent>;
 
@@ -32,7 +32,7 @@ public class EventsTests : BaseWebIntegrationTest
     public void Retrieves_subset_of_events(int page, int pageSize, int expectedEventCount)
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupEventsController(scope, "-50");
+        var controller = SetupEventsController(scope, "-51");
 
         var result = ((OkObjectResult)controller.GetEvents(page, pageSize).Result).Value as PagedResult<DomainEvent>;
 

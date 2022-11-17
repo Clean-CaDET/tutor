@@ -55,6 +55,18 @@ namespace Tutor.Web.Tests.Integration.Learning
             };
         }
 
+        [Fact]
+        public void Retrieves_knowledge_component()
+        {
+            using var scope = Factory.Services.CreateScope();
+            var controller = SetupStructureController(scope, "-2");
+
+            var kc = ((OkObjectResult)controller.GetKnowledgeComponent(-11).Result).Value as KnowledgeComponentDto;
+
+            kc.ShouldNotBeNull();
+            kc.Id.ShouldBe(-11);
+        }
+
         [Theory]
         [MemberData(nameof(InstructionalItems))]
         public void Retrieves_instructional_events(int knowledgeComponentId, int expectedIEsCount)

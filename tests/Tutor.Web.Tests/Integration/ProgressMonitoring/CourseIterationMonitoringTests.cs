@@ -17,7 +17,7 @@ public class CourseIterationMonitoringTests : BaseWebIntegrationTest
     public CourseIterationMonitoringTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
     
     [Theory]
-    [InlineData("-51", -1, 1)]
+    [InlineData("-51", -1, 2)]
     [InlineData("-52", -2, 2)]
     public void Retrieves_owned_groups(string instructorId, int courseId, int expectedResult)
     {
@@ -30,7 +30,7 @@ public class CourseIterationMonitoringTests : BaseWebIntegrationTest
 
     [Theory]
     [MemberData(nameof(TestData))]
-    public void Retrieves_knowledge_component_statistics(string userId, int courseId, int groupId, PagedResult<LearnerProgressDto> expectedProgress)
+    public void Retrieves_group_progress(string userId, int courseId, int groupId, PagedResult<LearnerProgressDto> expectedProgress)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupCourseIterationMonitoringController(scope, userId);
@@ -47,10 +47,22 @@ public class CourseIterationMonitoringTests : BaseWebIntegrationTest
         {
             new object[]
             {
-                "-50", -1, -1,
-                new PagedResult<LearnerProgressDto>(new List<LearnerProgressDto>(), 5)
+                "-51", -1, -1,
+                new PagedResult<LearnerProgressDto>(new List<LearnerProgressDto>(), 4)
             }
         };
+    }
+
+    [Fact]
+    public void Retrieves_progress_of_all_learners()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupCourseIterationMonitoringController(scope, "-51");
+
+        var result = ((OkObjectResult)controller.GetProgressForAll(-1, 1, 10).Result).Value as PagedResult<LearnerProgressDto>;
+
+        result.ShouldNotBeNull();
+        result.TotalCount.ShouldBe(5);
     }
 
     private CourseIterationMonitoringController SetupCourseIterationMonitoringController(IServiceScope scope, string id)

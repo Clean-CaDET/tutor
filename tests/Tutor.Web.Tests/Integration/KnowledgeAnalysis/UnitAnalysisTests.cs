@@ -30,6 +30,17 @@ public class UnitAnalysisTests : BaseWebIntegrationTest
         result.All(expectedStatistics.Contains).ShouldBeTrue();
     }
 
+    [Fact]
+    public void Retrieves_kc_statistics()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupAnalysisController(scope, "-51");
+
+        var result = ((OkObjectResult)controller.GetKcStatistics(-1).Result).Value as List<KcStatisticsDto>;
+
+        result.ShouldNotBeNull();
+    }
+
     private KnowledgeAnalysisController SetupAnalysisController(IServiceScope scope, string id)
     {
         return new KnowledgeAnalysisController(
@@ -46,7 +57,7 @@ public class UnitAnalysisTests : BaseWebIntegrationTest
         {
             new object[]
             {
-                "-50", -1, -1,
+                "-51", -1, -1,
                 new List<KcStatisticsDto>
                 {
                     new()
@@ -54,7 +65,7 @@ public class UnitAnalysisTests : BaseWebIntegrationTest
                         KcCode = "N00",
                         MinutesToCompletion = new List<int> {0,0,0,1},
                         MinutesToPass = new List<int> {0,1},
-                        TotalRegistered = 5,
+                        TotalRegistered = 4,
                         TotalStarted = 4,
                         TotalCompleted = 4,
                         TotalPassed = 2
@@ -64,7 +75,7 @@ public class UnitAnalysisTests : BaseWebIntegrationTest
                         KcCode = "N01",
                         MinutesToCompletion = new List<int> {0,0,0,0},
                         MinutesToPass = new List<int> {0,0},
-                        TotalRegistered = 5,
+                        TotalRegistered = 4,
                         TotalStarted = 4,
                         TotalCompleted = 4,
                         TotalPassed = 2
@@ -74,7 +85,7 @@ public class UnitAnalysisTests : BaseWebIntegrationTest
                         KcCode = "N02",
                         MinutesToCompletion = new List<int>(),
                         MinutesToPass = new List<int>(),
-                        TotalRegistered = 5,
+                        TotalRegistered = 4,
                         TotalStarted = 1,
                         TotalCompleted = 0,
                         TotalPassed = 0
@@ -84,7 +95,7 @@ public class UnitAnalysisTests : BaseWebIntegrationTest
                         KcCode = "N03",
                         MinutesToCompletion = new List<int>(),
                         MinutesToPass = new List<int>(),
-                        TotalRegistered = 5,
+                        TotalRegistered = 4,
                         TotalStarted = 1,
                         TotalCompleted = 0,
                         TotalPassed = 0
@@ -94,7 +105,7 @@ public class UnitAnalysisTests : BaseWebIntegrationTest
                         KcCode = "N04",
                         MinutesToCompletion = new List<int>(),
                         MinutesToPass = new List<int>(),
-                        TotalRegistered = 5,
+                        TotalRegistered = 4,
                         TotalStarted = 0,
                         TotalCompleted = 0,
                         TotalPassed = 0
@@ -104,7 +115,7 @@ public class UnitAnalysisTests : BaseWebIntegrationTest
                         KcCode = "N05",
                         MinutesToCompletion = new List<int>(),
                         MinutesToPass = new List<int>(),
-                        TotalRegistered = 5,
+                        TotalRegistered = 4,
                         TotalStarted = 0,
                         TotalCompleted = 0,
                         TotalPassed = 0

@@ -30,6 +30,17 @@ namespace Tutor.Web.Tests.Integration.Learning
             kcMasteryStatistics.PassedCount.ShouldBe(0);
         }
 
+        [Fact]
+        public void Retrieves_assessment_max_correctness()
+        {
+            using var scope = Factory.Services.CreateScope();
+            var controller = SetupStatisticsController(scope, "-2");
+
+            var correctness = (double)((OkObjectResult)controller.GetMaxCorrectness(-134).Result).Value;
+
+            correctness.ShouldBe(0.75);
+        }
+
         private StatisticsController SetupStatisticsController(IServiceScope scope, string id)
         {
             return new StatisticsController(Factory.Services.GetRequiredService<IMapper>(),
