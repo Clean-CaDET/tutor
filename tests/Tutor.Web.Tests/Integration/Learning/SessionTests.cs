@@ -31,9 +31,10 @@ namespace Tutor.Web.Tests.Integration.Learning
             using var scope = Factory.Services.CreateScope();
             var controller = SetupSessionController(scope, "-2");
 
-            var terminationResult = controller.TerminateSession(-15);
+            var terminationResult = (ObjectResult)controller.TerminateSession(-15);
 
-            terminationResult.ShouldBeOfType<BadRequestObjectResult>();
+            terminationResult.ShouldNotBeNull();
+            terminationResult.StatusCode.ShouldBe(500);
         }
 
         private static SessionController SetupSessionController(IServiceScope scope, string id)

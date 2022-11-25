@@ -12,8 +12,7 @@ namespace Tutor.Web.Controllers.Instructors;
 
 [Authorize(Policy = "instructorPolicy")]
 [Route("api/monitoring/{courseId:int}/groups")]
-[ApiController]
-public class CourseIterationMonitoringController : ControllerBase
+public class CourseIterationMonitoringController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly ICourseIterationMonitoringService _courseIterationMonitoringService;
@@ -28,7 +27,7 @@ public class CourseIterationMonitoringController : ControllerBase
     public ActionResult<List<GroupDto>> GetAssignedGroups(int courseId)
     {
         var result = _courseIterationMonitoringService.GetAssignedGroups(User.InstructorId(), courseId);
-        if (result.IsFailed) return BadRequest(result.Errors);
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok(result.Value.Select(_mapper.Map<GroupDto>).ToList());
     }
 

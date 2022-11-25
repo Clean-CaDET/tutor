@@ -24,13 +24,12 @@ namespace Tutor.Core.UseCases.Learning.Assessment
             int learnerId)
         {
             var assessmentItem = _assessmentItemRepository.GetDerivedAssessmentItem(assessmentItemId);
-            if (assessmentItem == null) return Result.Fail(FailureCode.NoAssessmentItem);
+            if (assessmentItem == null) return Result.Fail(FailureCode.NotFound);
 
             if (!_enrollmentRepository.HasActiveEnrollmentForKc(assessmentItem.KnowledgeComponentId, learnerId))
-                return Result.Fail(FailureCode.NoActiveEnrollment);
+                return Result.Fail(FailureCode.NotEnrolledInUnit);
             
             var kcMastery = _knowledgeMasteryRepository.GetFullKcMastery(assessmentItem.KnowledgeComponentId, learnerId);
-            if (kcMastery == null) return Result.Fail(FailureCode.NoKnowledgeComponent);
 
             Evaluation evaluation;
             try

@@ -24,7 +24,7 @@ public class StructureService : IStructureService
     public Result<KnowledgeUnit> GetUnit(int unitId, int learnerId)
     {
         if(!_enrollmentRepository.HasActiveEnrollmentForUnit(unitId, learnerId))
-            return Result.Fail(FailureCode.NoActiveEnrollment);
+            return Result.Fail(FailureCode.NotEnrolledInUnit);
         return Result.Ok(_knowledgeStructureRepository.GetUnitWithKcs(unitId));
     }
 
@@ -36,10 +36,10 @@ public class StructureService : IStructureService
     public Result<KnowledgeComponent> GetKnowledgeComponent(int knowledgeComponentId, int learnerId)
     {
         if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId))
-            return Result.Fail(FailureCode.NoActiveEnrollment);
+            return Result.Fail(FailureCode.NotEnrolledInUnit);
         
         var kcMastery = _knowledgeMasteryRepository.GetBasicKcMastery(knowledgeComponentId, learnerId);
-        if (kcMastery == null) return Result.Fail(FailureCode.NoKnowledgeComponent);
+        if (kcMastery == null) return Result.Fail(FailureCode.NotFound);
 
         return Result.Ok(kcMastery.KnowledgeComponent);
     }
@@ -47,10 +47,10 @@ public class StructureService : IStructureService
     public Result<List<InstructionalItem>> GetInstructionalItems(int knowledgeComponentId, int learnerId)
     {
         if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId))
-            return Result.Fail(FailureCode.NoActiveEnrollment);
+            return Result.Fail(FailureCode.NotEnrolledInUnit);
 
         var kcMastery = _knowledgeMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
-        if (kcMastery == null) return Result.Fail(FailureCode.NoKnowledgeComponent);
+        if (kcMastery == null) return Result.Fail(FailureCode.NotFound);
 
         kcMastery.RecordInstructionalItemSelection();
         _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);

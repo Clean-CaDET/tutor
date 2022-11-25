@@ -31,9 +31,9 @@ namespace Tutor.Web.Tests.Integration.StakeholderManagement
             var controller = new UserController(scope.ServiceProvider.GetRequiredService<IAuthService>());
             var loginSubmission = new CredentialsDto { Username = "SA-1-2021", Password = "123" };
 
-            var code = ((NotFoundObjectResult)controller.Login(loginSubmission).Result)?.StatusCode;
+            var result = (ObjectResult)controller.Login(loginSubmission).Result;
 
-            code.ShouldBe(404);
+            result.StatusCode.ShouldBe(404);
         }
     }
 }

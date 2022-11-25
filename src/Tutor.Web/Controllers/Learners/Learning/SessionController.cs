@@ -7,8 +7,7 @@ namespace Tutor.Web.Controllers.Learners.Learning
 {
     [Authorize(Policy = "learnerPolicy")]
     [Route("api/learning/session/{knowledgeComponentId:int}")]
-    [ApiController]
-    public class SessionController : ControllerBase
+    public class SessionController : BaseApiController
     {
         private readonly ISessionService _sessionService;
 
@@ -21,16 +20,16 @@ namespace Tutor.Web.Controllers.Learners.Learning
         public ActionResult LaunchSession(int knowledgeComponentId)
         {
             var result = _sessionService.LaunchSession(knowledgeComponentId, User.LearnerId());
-            if (result.IsSuccess) return Ok();
-            return BadRequest(result.Errors);
+            if (result.IsFailed) return CreateErrorResponse(result.Errors);
+            return Ok();
         }
 
         [HttpPost("terminate")]
         public ActionResult TerminateSession(int knowledgeComponentId)
         {
             var result = _sessionService.TerminateSession(knowledgeComponentId, User.LearnerId());
-            if (result.IsSuccess) return Ok();
-            return BadRequest(result.Errors);
+            if (result.IsFailed) return CreateErrorResponse(result.Errors);
+            return Ok();
         }
     }
 }

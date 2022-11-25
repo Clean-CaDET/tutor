@@ -24,10 +24,10 @@ public class SelectionService : ISelectionService
     public Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId)
     {
         if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId))
-            return Result.Fail(FailureCode.NoActiveEnrollment);
+            return Result.Fail(FailureCode.NotEnrolledInUnit);
 
         var kcMastery = _knowledgeMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
-        if(kcMastery == null) return Result.Fail(FailureCode.NoKnowledgeComponent);
+        if(kcMastery == null) return Result.Fail(FailureCode.NotFound);
 
         var assessmentItemId = _assessmentItemSelector.SelectSuitableAssessmentItemId(kcMastery.AssessmentItemMasteries, kcMastery.IsPassed);
 

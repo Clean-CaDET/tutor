@@ -8,8 +8,7 @@ namespace Tutor.Web.Controllers.Instructors;
 
 [Authorize(Policy = "instructorPolicy")]
 [Route("api/events")]
-[ApiController]
-public class EventsController : ControllerBase
+public class EventsController : BaseApiController
 {
     private readonly IEventStore _eventStore;
 

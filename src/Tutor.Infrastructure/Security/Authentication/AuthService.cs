@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Infrastructure.Security.Authentication.Users;
 
@@ -24,7 +25,7 @@ namespace Tutor.Infrastructure.Security.Authentication
         {
             var user = _userRepository.GetByName(username);
             if (user == null || user.IsPasswordIncorrect(password))
-                return Result.Fail("The username or password is incorrect.");
+                return Result.Fail(FailureCode.NotFound);
             
             return _tokenGenerator.GenerateAccessToken(user.Id, user.GetPrimaryRoleName(), AppendDomainDataToJwt(user));
         }

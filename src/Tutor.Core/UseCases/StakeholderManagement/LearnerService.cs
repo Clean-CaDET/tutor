@@ -1,4 +1,5 @@
 using FluentResults;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Core.UseCases.StakeholderManagement
@@ -15,7 +16,7 @@ namespace Tutor.Core.UseCases.StakeholderManagement
         public Result<Learner> GetLearnerProfile(int id)
         {
             var learner = _learnerRepository.GetByUserId(id);
-            return learner == null ? Result.Fail("Learner tied to user id " + id + " does not exist.") : Result.Ok(learner);
+            return learner == null ? Result.Fail(FailureCode.NotFound) : learner;
         }
     }
 }

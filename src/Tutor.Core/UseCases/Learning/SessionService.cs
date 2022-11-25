@@ -19,10 +19,10 @@ namespace Tutor.Core.UseCases.Learning
         public Result LaunchSession(int knowledgeComponentId, int learnerId)
         {
             if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId))
-                return Result.Fail(FailureCode.NoActiveEnrollment);
+                return Result.Fail(FailureCode.NotEnrolledInUnit);
 
             var kcMastery = _knowledgeMasteryRepository.GetBasicKcMastery(knowledgeComponentId, learnerId);
-            if (kcMastery == null) return Result.Fail(FailureCode.NoKnowledgeComponent);
+            if (kcMastery == null) return Result.Fail(FailureCode.NotFound);
 
             var result = kcMastery.LaunchSession();
             _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
@@ -33,10 +33,10 @@ namespace Tutor.Core.UseCases.Learning
         public Result TerminateSession(int knowledgeComponentId, int learnerId)
         {
             if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId))
-                return Result.Fail(FailureCode.NoActiveEnrollment);
+                return Result.Fail(FailureCode.NotEnrolledInUnit);
 
             var kcMastery = _knowledgeMasteryRepository.GetBasicKcMastery(knowledgeComponentId, learnerId);
-            if (kcMastery == null) return Result.Fail(FailureCode.NoKnowledgeComponent);
+            if (kcMastery == null) return Result.Fail(FailureCode.NotFound);
 
             var result = kcMastery.TerminateSession();
             _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);

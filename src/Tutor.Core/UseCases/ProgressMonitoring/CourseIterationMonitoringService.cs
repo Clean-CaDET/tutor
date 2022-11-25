@@ -17,7 +17,7 @@ public class CourseIterationMonitoringService : ICourseIterationMonitoringServic
 
     public Result<List<LearnerGroup>> GetAssignedGroups(int instructorId, int courseId)
     {
-        return _groupRepository.GetAssignedGroups(instructorId, courseId).ToResult();
+        return _groupRepository.GetAssignedGroups(instructorId, courseId);
     }
 
     public PagedResult<Learner> GetLearnersWithProgress(int courseId, int page, int pageSize)

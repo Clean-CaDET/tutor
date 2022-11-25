@@ -16,11 +16,11 @@ public class CourseOwnershipService : ICourseOwnershipService
 
     public Result<List<Course>> GetOwnedCourses(int instructorId)
     {
-        return _ownedCourseRepository.GetOwnedCourses(instructorId).ToResult();
+        return _ownedCourseRepository.GetOwnedCourses(instructorId);
     }
 
     public Result<Course> GetOwnedCourseWithUnits(int courseId, int instructorId)
     {
-        return _ownedCourseRepository.GetOwnedCourseWithUnits(courseId, instructorId).ToResult();
+        return _ownedCourseRepository.GetOwnedCourseWithUnits(courseId, instructorId);
     }
 }

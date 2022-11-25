@@ -11,8 +11,7 @@ namespace Tutor.Web.Controllers.Instructors;
 
 [Authorize(Policy = "instructorPolicy")]
 [Route("api/owned-courses")]
-[ApiController]
-public class InstructorController : ControllerBase
+public class InstructorController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly ICourseOwnershipService _courseOwnershipService;
@@ -27,7 +26,7 @@ public class InstructorController : ControllerBase
     public ActionResult<List<CourseDto>> GetOwnedCourses()
     {
         var result = _courseOwnershipService.GetOwnedCourses(User.InstructorId());
-        if (result.IsFailed) return BadRequest(result.Errors);
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok(result.Value.Select(_mapper.Map<CourseDto>).ToList());
     }
 
@@ -35,7 +34,7 @@ public class InstructorController : ControllerBase
     public ActionResult<CourseDto> GetCourseWithUnits(int courseId)
     {
         var result = _courseOwnershipService.GetOwnedCourseWithUnits(courseId, User.InstructorId());
-        if (result.IsFailed) return BadRequest(result.Errors);
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok(_mapper.Map<CourseDto>(result.Value));
     }
 }
