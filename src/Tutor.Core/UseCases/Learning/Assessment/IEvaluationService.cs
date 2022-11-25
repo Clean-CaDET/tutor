@@ -5,6 +5,6 @@ namespace Tutor.Core.UseCases.Learning.Assessment
 {
     public interface IEvaluationService
     {
-        Result<Evaluation> EvaluateAssessmentItemSubmission(int learnerId, int assessmentItemId, Submission submission);
+        Result<Evaluation> EvaluateAssessmentItemSubmission(int assessmentItemId, Submission submission, int learnerId);
     }
 }

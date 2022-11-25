@@ -9,8 +9,7 @@ namespace Tutor.Web.Controllers.Learners
 {
     [Authorize(Policy = "learnerPolicy")]
     [Route("api/learner/")]
-    [ApiController]
-    public class LearnerController : ControllerBase
+    public class LearnerController : BaseApiController
     {
         private readonly IMapper _mapper;
         private readonly ILearnerService _learnerService;
@@ -26,7 +25,7 @@ namespace Tutor.Web.Controllers.Learners
         public ActionResult<LearnerDto> GetLearnerProfile()
         {
             var result = _learnerService.GetLearnerProfile(User.Id());
-            if (result.IsFailed) return BadRequest(result.Errors);
+            if (result.IsFailed) return CreateErrorResponse(result.Errors);
             return Ok(_mapper.Map<LearnerDto>(result.Value));
         }
     }

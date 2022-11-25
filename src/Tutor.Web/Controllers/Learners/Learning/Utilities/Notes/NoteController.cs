@@ -11,8 +11,7 @@ namespace Tutor.Web.Controllers.Learners.Learning.Utilities.Notes
 {
     [Authorize(Policy = "learnerPolicy")]
     [Route("api/learning/unit/{unitId:int}/notes")]
-    [ApiController]
-    public class NoteController : ControllerBase
+    public class NoteController : BaseApiController
     {
         private readonly IMapper _mapper;
         private readonly INoteService _noteService;

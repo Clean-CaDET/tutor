@@ -1,5 +1,6 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.InstructionalItems;
 using Tutor.Core.Domain.Knowledge.Structure;
@@ -20,14 +21,10 @@ public class StructureService : IStructureService
         _knowledgeStructureRepository = knowledgeStructureRepository;
     }
 
-    private bool HasActiveEnrollment(int unitId, int learnerId)
-    {
-        return _enrollmentRepository.LearnerHasActiveEnrollment(unitId, learnerId);
-    }
-
     public Result<KnowledgeUnit> GetUnit(int unitId, int learnerId)
     {
-        if(!HasActiveEnrollment(unitId, learnerId)) return Result.Fail("Learner not enrolled in Unit: " + unitId);
+        if(!_enrollmentRepository.HasActiveEnrollmentForUnit(unitId, learnerId))
+            return Result.Fail(FailureCode.NoActiveEnrollment);
         return Result.Ok(_knowledgeStructureRepository.GetUnitWithKcs(unitId));
     }
 
@@ -38,20 +35,24 @@ public class StructureService : IStructureService
 
     public Result<KnowledgeComponent> GetKnowledgeComponent(int knowledgeComponentId, int learnerId)
     {
+        if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId))
+            return Result.Fail(FailureCode.NoActiveEnrollment);
+        
         var kcMastery = _knowledgeMasteryRepository.GetBasicKcMastery(knowledgeComponentId, learnerId);
-        if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
+        if (kcMastery == null) return Result.Fail(FailureCode.NoKnowledgeComponent);
 
         return Result.Ok(kcMastery.KnowledgeComponent);
     }
 
     public Result<List<InstructionalItem>> GetInstructionalItems(int knowledgeComponentId, int learnerId)
     {
+        if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId))
+            return Result.Fail(FailureCode.NoActiveEnrollment);
+
         var kcMastery = _knowledgeMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
-        if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
+        if (kcMastery == null) return Result.Fail(FailureCode.NoKnowledgeComponent);
 
-        var result = kcMastery.RecordInstructionalItemSelection();
-        if (result.IsFailed) return result.ToResult<List<InstructionalItem>>();
-
+        kcMastery.RecordInstructionalItemSelection();
         _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
 
         return Result.Ok(kcMastery.KnowledgeComponent.GetOrderedInstructionalItems());

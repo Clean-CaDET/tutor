@@ -13,9 +13,8 @@ using Tutor.Web.Mappings.KnowledgeMastery;
 namespace Tutor.Web.Controllers.Learners.Learning
 {
     [Authorize(Policy = "learnerPolicy")]
-    [Route("api/learning/units/{unitId:int}")]
-    [ApiController]
-    public class StructureController : ControllerBase
+    [Route("api/learning")]
+    public class StructureController : BaseApiController
     {
         private readonly IMapper _mapper;
         private readonly IStructureService _learningStructureService;
@@ -26,11 +25,11 @@ namespace Tutor.Web.Controllers.Learners.Learning
             _learningStructureService = learningStructureService;
         }
 
-        [HttpGet]
+        [HttpGet("units/{unitId:int}")]
         public ActionResult<KnowledgeUnitDto> GetUnit(int unitId)
         {
             var result = _learningStructureService.GetUnit(unitId, User.LearnerId());
-            if (result.IsFailed) return NotFound(result.Errors);
+            if (result.IsFailed) return CreateErrorResponse(result.Errors);
 
             var unitDto = _mapper.Map<KnowledgeUnitDto>(result.Value);
             AppendMasteriesToResponse(unitDto, User.LearnerId());
@@ -71,14 +70,15 @@ namespace Tutor.Web.Controllers.Learners.Learning
         public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
         {
             var result = _learningStructureService.GetKnowledgeComponent(knowledgeComponentId, User.LearnerId());
-            if (result.IsSuccess) return Ok(_mapper.Map<KnowledgeComponentDto>(result.Value));
-            return NotFound(result.Errors);
+            if(result.IsFailed) return CreateErrorResponse(result.Errors);
+            return Ok(_mapper.Map<KnowledgeComponentDto>(result.Value));
         }
 
         [HttpGet("knowledge-component/{knowledgeComponentId:int}/instructional-items/")]
         public ActionResult<List<InstructionalItemDto>> GetInstructionalItems(int knowledgeComponentId)
         {
             var result = _learningStructureService.GetInstructionalItems(knowledgeComponentId, User.LearnerId());
+            if (result.IsFailed) return CreateErrorResponse(result.Errors);
             return Ok(result.Value.Select(_mapper.Map<InstructionalItemDto>).ToList());
         }
     }

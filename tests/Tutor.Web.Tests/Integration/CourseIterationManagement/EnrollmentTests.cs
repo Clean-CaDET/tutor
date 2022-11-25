@@ -28,7 +28,7 @@ namespace Tutor.Web.Tests.Integration.CourseIterationManagement
         }
 
         [Theory]
-        [InlineData(-2, -1, 1)]
+        [InlineData(-2, -1, 2)]
         [InlineData(-1, -1, 0)]
         public void Retrieves_enrolled_units(int learnerId, int courseId, int expectedUnitCount)
         {

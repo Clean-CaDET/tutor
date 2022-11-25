@@ -6,5 +6,5 @@ namespace Tutor.Core.UseCases.Learning;
 public interface IStatisticsService
 {
     Result<KcMasteryStatistics> GetKcMasteryStatistics(int knowledgeComponentId, int learnerId);
-    Result<double> GetMaxAssessmentCorrectness(int learnerId, int assessmentItemId);
+    Result<double> GetMaxAssessmentCorrectness(int assessmentItemId, int learnerId);
 }

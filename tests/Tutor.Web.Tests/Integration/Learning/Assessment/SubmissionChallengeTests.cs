@@ -4,8 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
+using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.UseCases.Learning.Assessment;
-using Tutor.Web.Controllers.Learners.Learning.Assessment;
+using Tutor.Web.Controllers.Learners.Learning;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Tests.TestData;
 using Xunit;
@@ -13,7 +14,7 @@ using Xunit;
 namespace Tutor.Web.Tests.Integration.Learning.Assessment
 {
     [Collection("Sequential")]
-    public class SubmissionChallengeTests : BaseAssessmentEvaluationIntegrationTest
+    public class SubmissionChallengeTests : BaseWebIntegrationTest
     {
         public SubmissionChallengeTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
 
@@ -141,10 +142,12 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
             errors.Split("\n").Length.ShouldBe(1);
         }
 
-        private ChallengeEvaluationController SetupChallengeEvaluationController(IServiceScope scope, string id)
+        private PluginController SetupChallengeEvaluationController(IServiceScope scope, string id)
         {
-            return new ChallengeEvaluationController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IEvaluationService>())
+            return new PluginController(scope.ServiceProvider.GetRequiredService<ILearnerRepository>(),
+                Factory.Services.GetRequiredService<IMapper>(),
+                scope.ServiceProvider.GetRequiredService<IEvaluationService>(),
+                scope.ServiceProvider.GetRequiredService<IHelpService>())
             {
                 ControllerContext = BuildContext(id, "learner")
             };

@@ -38,7 +38,7 @@ namespace Tutor.Web.Controllers.Learners.Learning
         public ActionResult<ChallengeEvaluationDto> SubmitChallenge(
             [FromBody] ChallengeSubmissionDto submission)
         {
-            var result = _assessmentEvaluationService.EvaluateAssessmentItemSubmission(submission.LearnerId, submission.AssessmentItemId, _mapper.Map<ChallengeSubmission>(submission));
+            var result = _assessmentEvaluationService.EvaluateAssessmentItemSubmission(submission.AssessmentItemId, _mapper.Map<ChallengeSubmission>(submission), submission.LearnerId);
             if (result.IsFailed) return BadRequest(result.Errors);
             return Ok(_mapper.Map<ChallengeEvaluationDto>(result.Value));
         }

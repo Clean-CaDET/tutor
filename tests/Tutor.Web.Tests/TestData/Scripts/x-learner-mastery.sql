@@ -98,19 +98,19 @@ INSERT INTO public."UnitEnrollments"(
 	VALUES (-1, -2, -1, '2021-12-19 21:29:50.379749+01', 1);
 INSERT INTO public."UnitEnrollments"(
 	"Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
-	VALUES (-2, -2, -2, '2021-12-19 21:29:50.379749+01', 0);
+	VALUES (-2, -2, -2, '2021-12-19 21:29:50.379749+01', 1);
 INSERT INTO public."UnitEnrollments"(
     "Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
-VALUES (-3, -3, -1, '2021-12-19 21:29:50.379749+01', 0);
+VALUES (-3, -3, -1, '2021-12-19 21:29:50.379749+01', 1);
 INSERT INTO public."UnitEnrollments"(
     "Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
-VALUES (-4, -3, -2, '2021-12-19 21:29:50.379749+01', 0);
+VALUES (-4, -3, -2, '2021-12-19 21:29:50.379749+01', 1);
 INSERT INTO public."UnitEnrollments"(
     "Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
-VALUES (-5, -4, -1, '2021-12-19 21:29:50.379749+01', 0);
+VALUES (-5, -4, -1, '2021-12-19 21:29:50.379749+01', 1);
 INSERT INTO public."UnitEnrollments"(
     "Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
-VALUES (-6, -5, -1, '2021-12-19 21:29:50.379749+01', 0);
+VALUES (-6, -5, -1, '2021-12-19 21:29:50.379749+01', 1);
 
 INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "IsCompleted", "IsStarted")

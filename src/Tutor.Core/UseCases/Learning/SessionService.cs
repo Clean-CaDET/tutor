@@ -1,4 +1,6 @@
 ﻿using FluentResults;
+using Tutor.Core.BuildingBlocks;
+using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.KnowledgeMastery;
 
 namespace Tutor.Core.UseCases.Learning
@@ -6,29 +8,39 @@ namespace Tutor.Core.UseCases.Learning
     public class SessionService : ISessionService
     {
         private readonly IKnowledgeMasteryRepository _knowledgeMasteryRepository;
+        private readonly IEnrollmentRepository _enrollmentRepository;
 
-        public SessionService(IKnowledgeMasteryRepository ikcMasteryRepository)
+        public SessionService(IKnowledgeMasteryRepository ikcMasteryRepository, IEnrollmentRepository enrollmentRepository)
         {
             _knowledgeMasteryRepository = ikcMasteryRepository;
+            _enrollmentRepository = enrollmentRepository;
         }
 
         public Result LaunchSession(int knowledgeComponentId, int learnerId)
         {
-            var kcMastery = _knowledgeMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
-            if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
+            if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId))
+                return Result.Fail(FailureCode.NoActiveEnrollment);
+
+            var kcMastery = _knowledgeMasteryRepository.GetBasicKcMastery(knowledgeComponentId, learnerId);
+            if (kcMastery == null) return Result.Fail(FailureCode.NoKnowledgeComponent);
 
             var result = kcMastery.LaunchSession();
             _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
+
             return result;
         }
 
         public Result TerminateSession(int knowledgeComponentId, int learnerId)
         {
-            var kcMastery = _knowledgeMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
-            if (kcMastery == null) return Result.Fail("Learner not enrolled in KC: " + knowledgeComponentId);
+            if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId))
+                return Result.Fail(FailureCode.NoActiveEnrollment);
+
+            var kcMastery = _knowledgeMasteryRepository.GetBasicKcMastery(knowledgeComponentId, learnerId);
+            if (kcMastery == null) return Result.Fail(FailureCode.NoKnowledgeComponent);
 
             var result = kcMastery.TerminateSession();
             _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
+
             return result;
         }
     }

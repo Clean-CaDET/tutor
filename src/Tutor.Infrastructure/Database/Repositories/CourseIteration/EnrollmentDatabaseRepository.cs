@@ -38,10 +38,22 @@ namespace Tutor.Infrastructure.Database.Repositories.CourseIteration
                 .Select(ue => ue.KnowledgeUnit).ToList();
         }
 
-        public bool LearnerHasActiveEnrollment(int unitId, int learnerId)
+        public bool HasActiveEnrollmentForUnit(int unitId, int learnerId)
         {
             return _dbContext.UnitEnrollments.Any(u => u.Status == EnrollmentStatus.Active &&
                                                        u.KnowledgeUnit.Id == unitId && u.LearnerId == learnerId);
+        }
+
+        public bool HasActiveEnrollmentForKc(int knowledgeComponentId, int learnerId)
+        {
+            var unitId = _dbContext.KnowledgeComponents
+                .Where(kc => kc.Id == knowledgeComponentId)
+                .Select(kc => kc.KnowledgeUnitId)
+                .FirstOrDefault();
+
+            return _dbContext.UnitEnrollments
+                .Any(u => u.Status == EnrollmentStatus.Active &&
+                          u.KnowledgeUnit.Id == unitId && u.LearnerId == learnerId);
         }
     }
 }

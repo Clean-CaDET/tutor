@@ -8,6 +8,7 @@ namespace Tutor.Core.Domain.CourseIteration
         int CountAllEnrollmentsInUnit(int unitId);
         List<Course> GetEnrolledCourses(int learnerId);
         List<KnowledgeUnit> GetEnrolledAndActiveUnits(int courseId, int learnerId);
-        bool LearnerHasActiveEnrollment(int unitId, int learnerId);
+        bool HasActiveEnrollmentForUnit(int unitId, int learnerId);
+        bool HasActiveEnrollmentForKc(int knowledgeComponent, int learnerId);
     }
 }
