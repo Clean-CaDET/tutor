@@ -28,14 +28,15 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
 
         [Theory]
         [MemberData(nameof(InvalidAtSubmissions))]
-        public void Submits_invalid_arrange_task(AtSubmissionDto submission)
+        public void Submits_invalid_arrange_task(AtSubmissionDto submission, int expectedStatusCode)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = SetupAssessmentEvaluationController(scope, "-3");
 
-            var actualEvaluation = ((BadRequestObjectResult)controller.SubmitArrangeTask(submission).Result).Value;
+            var response = ((ObjectResult)controller.SubmitArrangeTask(submission).Result);
 
-            actualEvaluation.ShouldNotBeNull();
+            response.ShouldNotBeNull();
+            response.StatusCode.ShouldBe(expectedStatusCode);
         }
 
         public static IEnumerable<object[]> AtSubmissions()
@@ -143,7 +144,8 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
                             new() {ArrangeTaskContainerId = -4},
                             new() {ArrangeTaskContainerId = -5}
                         }
-                    }
+                    },
+                    400
                 },
                 new object[]
                 {
@@ -155,7 +157,8 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
                             new() {ArrangeTaskContainerId = -1},
                             new() {ArrangeTaskContainerId = -2}
                         }
-                    }
+                    },
+                    400
                 },
                 new object[]
                 {
@@ -170,7 +173,8 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
                             new() {ArrangeTaskContainerId = -4},
                             new() {ArrangeTaskContainerId = -5}
                         }
-                    }
+                    },
+                    404
                 }
             };
         }
