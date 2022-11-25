@@ -1,4 +1,4 @@
-using FluentResults;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,17 +6,16 @@ namespace Tutor.Core.Domain.KnowledgeMastery
 {
     public class LeastCorrectAssessmentItemSelector : IAssessmentItemSelector
     {
-        public Result<int> SelectSuitableAssessmentItemId(List<AssessmentItemMastery> assessmentMasteries, bool isPassed)
+        public int SelectSuitableAssessmentItemId(List<AssessmentItemMastery> assessmentMasteries, bool isPassed)
         {
-            if (assessmentMasteries == null || assessmentMasteries.Count == 0)
-                return Result.Fail("No assessment item masteries available for selection.");
+            if (assessmentMasteries == null || assessmentMasteries.Count == 0) throw new ArgumentException("Empty AI mastery list.");
 
             if (assessmentMasteries.Count > 1) assessmentMasteries = RemoveLastSubmitted(assessmentMasteries);
 
-            if (isPassed) return Result.Ok(FindItemWithOldestAttempt(assessmentMasteries));
+            if (isPassed) return FindItemWithOldestAttempt(assessmentMasteries);
 
             var itemWithoutSubmission = FindItemWithoutSubmissions(assessmentMasteries);
-            return Result.Ok(itemWithoutSubmission != 0 ? itemWithoutSubmission : FindMinCorrectnessItem(assessmentMasteries));
+            return itemWithoutSubmission != 0 ? itemWithoutSubmission : FindMinCorrectnessItem(assessmentMasteries);
         }
 
         private static List<AssessmentItemMastery> RemoveLastSubmitted(List<AssessmentItemMastery> assessmentMasteries)

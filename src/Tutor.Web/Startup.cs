@@ -42,201 +42,207 @@ using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiResponseQuestions;
 using Tutor.Web.Mappings.Knowledge.DTOs.InstructionalItems;
 
-namespace Tutor.Web
+namespace Tutor.Web;
+
+public class Startup
 {
-    public class Startup
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
+        Configuration = configuration;
+    }
+
+    private IConfiguration Configuration { get; }
+
+    private const string CorsPolicy = "_corsPolicy";
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddInfrastructure(Configuration);
+
+        SetupControllers(services);
+        SetupServices(services);
+        SetupRepositories(services);
+    }
+
+    #region Controller Setup
+    private static void SetupControllers(IServiceCollection services)
+    {
+        services.AddAutoMapper(typeof(Startup));
+
+        services.AddControllers().AddJsonOptions(SetupJsonOptions);
+
+        services.AddCors(options =>
         {
-            Configuration = configuration;
-        }
-
-        private IConfiguration Configuration { get; }
-
-        private const string CorsPolicy = "_corsPolicy";
-
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddInfrastructure(Configuration);
-
-            SetupControllers(services);
-            SetupServices(services);
-            SetupRepositories(services);
-        }
-
-        #region Controller Setup
-        private static void SetupControllers(IServiceCollection services)
-        {
-            services.AddAutoMapper(typeof(Startup));
-
-            services.AddControllers().AddJsonOptions(SetupJsonOptions);
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: CorsPolicy,
-                    builder =>
-                    {
-                        builder.WithOrigins(ParseCorsOrigins())
-                            .WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization, "access_token")
-                            .WithMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
-                    });
-            });
-            SetupAuth(services);
-        }
-
-        private static void SetupJsonOptions(JsonOptions options)
-        {
-            var serializerOptions = options.JsonSerializerOptions;
-            serializerOptions.SetupExtensions();
-            var registry = serializerOptions.GetDiscriminatorConventionRegistry();
-            registry.ClearConventions();
-            registry.RegisterConvention(
-                new DefaultDiscriminatorConvention<string>(serializerOptions, "typeDiscriminator"));
-            registry.RegisterType<AtDto>();
-            registry.RegisterType<ChallengeDto>();
-            registry.RegisterType<ImageDto>();
-            registry.RegisterType<MrqDto>();
-            registry.RegisterType<TextDto>();
-            registry.RegisterType<VideoDto>();
-
-            registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(
-                serializerOptions, EventSerializationConfiguration.EventRelatedTypes, "$discriminator"));
-            foreach (var type in EventSerializationConfiguration.EventRelatedTypes.Keys)
-            {
-                registry.RegisterType(type);
-            }
-        }
-        private static void SetupAuth(IServiceCollection services)
-        {
-            services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IUserRepository, UserDatabaseRepository>();
-
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("administratorPolicy", policy => policy.RequireRole("administrator"));
-                options.AddPolicy("instructorPolicy", policy => policy.RequireRole("instructor"));
-                options.AddPolicy("learnerPolicy", policy => policy.RequireRole("learner"));
-            });
-
-            var key = EnvironmentConnection.GetSecret("JWT_KEY") ?? "tutor_secret_key";
-            var issuer = EnvironmentConnection.GetSecret("JWT_ISSUER") ?? "tutor";
-            var audience = EnvironmentConnection.GetSecret("JWT_AUDIENCE") ?? "tutor-front.com";
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+            options.AddPolicy(name: CorsPolicy,
+                builder =>
                 {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidateLifetime = true,
-                        ValidIssuer = issuer,
-                        ValidAudience = audience,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
-                    };
-
-                    options.Events = new JwtBearerEvents
-                    {
-                        OnAuthenticationFailed = context =>
-                        {
-                            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-                            {
-                                context.Response.Headers.Add("AuthenticationTokens-Expired", "true");
-                            }
-
-                            return Task.CompletedTask;
-                        }
-                    };
+                    builder.WithOrigins(ParseCorsOrigins())
+                        .WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization, "access_token")
+                        .WithMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
                 });
-        }
+        });
+        SetupAuth(services);
+    }
 
-        private static string[] ParseCorsOrigins()
+    private static void SetupJsonOptions(JsonOptions options)
+    {
+        var serializerOptions = options.JsonSerializerOptions;
+        serializerOptions.SetupExtensions();
+        var registry = serializerOptions.GetDiscriminatorConventionRegistry();
+        registry.ClearConventions();
+        registry.RegisterConvention(
+            new DefaultDiscriminatorConvention<string>(serializerOptions, "typeDiscriminator"));
+        registry.RegisterType<AtDto>();
+        registry.RegisterType<ChallengeDto>();
+        registry.RegisterType<ImageDto>();
+        registry.RegisterType<MrqDto>();
+        registry.RegisterType<TextDto>();
+        registry.RegisterType<VideoDto>();
+
+        registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(
+            serializerOptions, EventSerializationConfiguration.EventRelatedTypes, "$discriminator"));
+        foreach (var type in EventSerializationConfiguration.EventRelatedTypes.Keys)
         {
-            var corsOrigins = new[] { "http://localhost:4200" };
-            var corsOriginsPath = EnvironmentConnection.GetSecret("SMART_TUTOR_CORS_ORIGINS");
-            if (File.Exists(corsOriginsPath))
+            registry.RegisterType(type);
+        }
+    }
+    private static void SetupAuth(IServiceCollection services)
+    {
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUserRepository, UserDatabaseRepository>();
+
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("administratorPolicy", policy => policy.RequireRole("administrator"));
+            options.AddPolicy("instructorPolicy", policy => policy.RequireRole("instructor"));
+            options.AddPolicy("learnerPolicy", policy => policy.RequireRole("learner"));
+        });
+
+        var key = EnvironmentConnection.GetSecret("JWT_KEY") ?? "tutor_secret_key";
+        var issuer = EnvironmentConnection.GetSecret("JWT_ISSUER") ?? "tutor";
+        var audience = EnvironmentConnection.GetSecret("JWT_AUDIENCE") ?? "tutor-front.com";
+
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
             {
-                corsOrigins = File.ReadAllLines(corsOriginsPath);
-            }
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = issuer,
+                    ValidAudience = audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+                };
 
-            return corsOrigins;
-        }
-        #endregion
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("AuthenticationTokens-Expired", "true");
+                        }
 
-        #region Service Setup
-        private void SetupServices(IServiceCollection services)
+                        return Task.CompletedTask;
+                    }
+                };
+            });
+    }
+
+    private static string[] ParseCorsOrigins()
+    {
+        var corsOrigins = new[] { "http://localhost:4200" };
+        var corsOriginsPath = EnvironmentConnection.GetSecret("SMART_TUTOR_CORS_ORIGINS");
+        if (File.Exists(corsOriginsPath))
         {
-            SetupCoreLearningServices(services);
-            SetupSupportingLearningServices(services);
-
-            SetupSupportingStakeholderServices(services);
-            services.AddScoped<IUnitAnalysisService, UnitAnalysisService>();
+            corsOrigins = File.ReadAllLines(corsOriginsPath);
         }
 
-        private void SetupCoreLearningServices(IServiceCollection services)
-        {
-            services.AddScoped<ISessionService, SessionService>();
-            services.AddScoped<IStructureService, StructureService>();
-            services.AddScoped<IStatisticsService, StatisticsService>();
-            services.AddScoped<ISelectionService, SelectionService>();
-            services.AddScoped<IEvaluationService, EvaluationService>();
-            services.AddScoped<IHelpService, HelpService>();
+        return corsOrigins;
+    }
+    #endregion
+
+    #region Service Setup
+    private void SetupServices(IServiceCollection services)
+    {
+        SetupCoreLearningServices(services);
+        SetupSupportingLearningServices(services);
+
+        SetupSupportingStakeholderServices(services);
+        services.AddScoped<IUnitAnalysisService, UnitAnalysisService>();
+    }
+
+    private void SetupCoreLearningServices(IServiceCollection services)
+    {
+        services.AddScoped<ISessionService, SessionService>();
+        services.AddScoped<IStructureService, StructureService>();
+        services.AddScoped<IStatisticsService, StatisticsService>();
+        services.AddScoped<ISelectionService, SelectionService>();
+        services.AddScoped<IEvaluationService, EvaluationService>();
+        services.AddScoped<IHelpService, HelpService>();
             
-            services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
-            SetupMoveOn(services);
-        }
+        services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
+        SetupMoveOn(services);
+    }
 
-        private static void SetupSupportingLearningServices(IServiceCollection services)
-        {
-            services.AddScoped<IFeedbackService, FeedbackService>();
-            services.AddScoped<INoteService, NoteService>();
-        }
+    private static void SetupSupportingLearningServices(IServiceCollection services)
+    {
+        services.AddScoped<IFeedbackService, FeedbackService>();
+        services.AddScoped<INoteService, NoteService>();
+    }
 
-        private static void SetupSupportingStakeholderServices(IServiceCollection services)
-        {
-            services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
-            services.AddScoped<ICourseIterationMonitoringService, CourseIterationMonitoringService>();
-            services.AddScoped<ILearnerService, LearnerService>();
-            services.AddScoped<IEnrollmentService, EnrollmentService>();
-        }
+    private static void SetupSupportingStakeholderServices(IServiceCollection services)
+    {
+        services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
+        services.AddScoped<ICourseIterationMonitoringService, CourseIterationMonitoringService>();
+        services.AddScoped<ILearnerService, LearnerService>();
+        services.AddScoped<IEnrollmentService, EnrollmentService>();
+    }
 
-        private void SetupMoveOn(IServiceCollection services)
-        {
-            var moveOnCriteria = Configuration.GetValue<string>("MoveOn");
-            var moveOnType = MoveOnResolver.ResolveOrDefault(moveOnCriteria);
-            services.AddScoped(typeof(IMoveOnCriteria), moveOnType);
-        }
-        #endregion
-        private static void SetupRepositories(IServiceCollection services)
-        {
-            services.AddScoped<IKnowledgeStructureRepository, KnowledgeStructureDatabaseRepository>();
-            services.AddScoped<IAssessmentItemRepository, AssessmentItemDatabaseRepository>();
-            services.AddScoped<IKnowledgeMasteryRepository, KnowledgeMasteryDatabaseRepository>();
-            services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
-            services.AddScoped<INoteRepository, NoteRepository>();
-            services.AddScoped<IInstructorRepository, InstructorDatabaseRepository>();
-            services.AddScoped<IOwnedCourseRepository, OwnedCourseDatabaseRepository>();
-            services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
-            services.AddScoped<IGroupRepository, GroupDatabaseRepository>();
-            services.AddScoped<IEnrollmentRepository, EnrollmentDatabaseRepository>();
-            services.AddSingleton<IEventSerializer>(
-                new DefaultEventSerializer(EventSerializationConfiguration.EventRelatedTypes));
-        }
+    private void SetupMoveOn(IServiceCollection services)
+    {
+        var moveOnCriteria = Configuration.GetValue<string>("MoveOn");
+        var moveOnType = MoveOnResolver.ResolveOrDefault(moveOnCriteria);
+        services.AddScoped(typeof(IMoveOnCriteria), moveOnType);
+    }
+    #endregion
 
-        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+    #region Repository Setup
+    private static void SetupRepositories(IServiceCollection services)
+    {
+        services.AddScoped<IKnowledgeStructureRepository, KnowledgeStructureDatabaseRepository>();
+        services.AddScoped<IAssessmentItemRepository, AssessmentItemDatabaseRepository>();
+        services.AddScoped<IKnowledgeMasteryRepository, KnowledgeMasteryDatabaseRepository>();
+        services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
+        services.AddScoped<INoteRepository, NoteRepository>();
+        services.AddScoped<IInstructorRepository, InstructorDatabaseRepository>();
+        services.AddScoped<IOwnedCourseRepository, OwnedCourseDatabaseRepository>();
+        services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
+        services.AddScoped<IGroupRepository, GroupDatabaseRepository>();
+        services.AddScoped<IEnrollmentRepository, EnrollmentDatabaseRepository>();
+        services.AddSingleton<IEventSerializer>(
+            new DefaultEventSerializer(EventSerializationConfiguration.EventRelatedTypes));
+    }
+    #endregion
 
-            app.UseCors(CorsPolicy);
-            app.UseHttpsRedirection();
-            app.UseAuthentication();
-            app.UseRouting();
-            app.UseAuthorization();
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+    public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
         }
+        else
+        {
+            app.UseExceptionHandler("/error");
+        }
+        
+        app.UseCors(CorsPolicy);
+        app.UseHttpsRedirection();
+        app.UseAuthentication();
+        app.UseRouting();
+        app.UseAuthorization();
+        app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
     }
 }

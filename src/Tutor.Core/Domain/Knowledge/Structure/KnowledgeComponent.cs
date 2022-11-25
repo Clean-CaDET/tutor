@@ -13,7 +13,7 @@ namespace Tutor.Core.Domain.Knowledge.Structure
         public string Description { get; private set; }
         public int? ExpectedDurationInMinutes { get; private set; }
 
-        public int? KnowledgeUnitId { get; private set; }
+        public int KnowledgeUnitId { get; private set; }
         public int? ParentId { get; private set; }
         public List<KnowledgeComponent> KnowledgeComponents { get; private set; }
         public List<AssessmentItem> AssessmentItems { get; private set; }

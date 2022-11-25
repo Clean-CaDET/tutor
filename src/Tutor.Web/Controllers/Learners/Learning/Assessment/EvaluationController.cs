@@ -3,14 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
-using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiChoiceQuestions;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ArrangeTasks;
-using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiChoiceQuestions;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiResponseQuestions;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ShortAnswerQuestions;
@@ -19,9 +17,8 @@ using Tutor.Web.Mappings.KnowledgeMastery;
 namespace Tutor.Web.Controllers.Learners.Learning.Assessment
 {
     [Authorize(Policy = "learnerPolicy")]
-    [Route("api/submissions/")]
-    [ApiController]
-    public class EvaluationController : ControllerBase
+    [Route("api/learning/assessment-item/{assessmentItemId:int}/submissions")]
+    public class EvaluationController : BaseApiController
     {
         private readonly IMapper _mapper;
         private readonly IEvaluationService _assessmentEvaluationService;
@@ -32,15 +29,6 @@ namespace Tutor.Web.Controllers.Learners.Learning.Assessment
             _mapper = mapper;
             _assessmentEvaluationService = service;
             _assessmentHelpService = assessmentHelpService;
-        }
-
-        [HttpPost("challenge")]
-        public ActionResult<ChallengeEvaluationDto> SubmitChallenge(
-            [FromBody] ChallengeSubmissionDto submission)
-        {
-            var result = _assessmentEvaluationService.EvaluateAssessmentItemSubmission(submission.LearnerId, submission.AssessmentItemId, _mapper.Map<ChallengeSubmission>(submission));
-            if (result.IsFailed) return BadRequest(result.Errors);
-            return Ok(_mapper.Map<ChallengeEvaluationDto>(result.Value));
         }
 
         [HttpPost("question")]

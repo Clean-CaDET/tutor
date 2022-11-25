@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
+using Tutor.Core.UseCases.Learning.Assessment;
+using Tutor.Web.Controllers.Learners.Learning.Assessment;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Tests.TestData;
 using Xunit;
@@ -19,7 +22,7 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
         public void Accepts_challenge_submission_and_produces_correct_evaluation(ChallengeSubmissionDto submission, ChallengeEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupAssessmentEvaluationController(scope, submission.LearnerId.ToString());
+            var controller = SetupChallengeEvaluationController(scope, submission.LearnerId.ToString());
 
             var actualEvaluation = ((OkObjectResult)controller.SubmitChallenge(submission).Result).Value as ChallengeEvaluationDto;
 
@@ -99,7 +102,7 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
         public void Rejects_bad_challenge_submission()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupAssessmentEvaluationController(scope, "-2");
+            var controller = SetupChallengeEvaluationController(scope, "-2");
             var submission = new ChallengeSubmissionDto
             {
                 AssessmentItemId = -211,
@@ -115,7 +118,7 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
         public void Gets_syntax_error_hint()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = SetupAssessmentEvaluationController(scope, "-3");
+            var controller = SetupChallengeEvaluationController(scope, "-3");
             var submission = new ChallengeSubmissionDto
             {
                 AssessmentItemId = -211,
@@ -136,6 +139,15 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
             actualEvaluation.ApplicableHints.Count.ShouldBe(1);
             var errors = actualEvaluation.ApplicableHints[0].Content;
             errors.Split("\n").Length.ShouldBe(1);
+        }
+
+        private ChallengeEvaluationController SetupChallengeEvaluationController(IServiceScope scope, string id)
+        {
+            return new ChallengeEvaluationController(Factory.Services.GetRequiredService<IMapper>(),
+                scope.ServiceProvider.GetRequiredService<IEvaluationService>())
+            {
+                ControllerContext = BuildContext(id, "learner")
+            };
         }
     }
 }

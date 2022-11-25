@@ -8,9 +8,8 @@ using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems;
 namespace Tutor.Web.Controllers.Learners.Learning.Assessment
 {
     [Authorize(Policy = "learnerPolicy")]
-    [Route("api/learning/unit/{unitId:int}/knowledge-component/{knowledgeComponentId:int}/assessment-item/")]
-    [ApiController]
-    public class SelectionController : ControllerBase
+    [Route("api/learning/knowledge-component/{knowledgeComponentId:int}/assessment-item/")]
+    public class SelectionController : BaseApiController
     {
         private readonly IMapper _mapper;
         private readonly ISelectionService _assessmentSelectionService;
@@ -25,8 +24,8 @@ namespace Tutor.Web.Controllers.Learners.Learning.Assessment
         public ActionResult<AssessmentItemDto> GetSuitableAssessmentItem(int knowledgeComponentId)
         {
             var result = _assessmentSelectionService.SelectSuitableAssessmentItem(knowledgeComponentId, User.LearnerId());
-            if (result.IsSuccess) return Ok(_mapper.Map<AssessmentItemDto>(result.Value));
-            return NotFound(result.Errors);
+            if (result.IsFailed) return CreateErrorResponse(result.Errors);
+            return Ok(_mapper.Map<AssessmentItemDto>(result.Value));
         }
     }
 }
