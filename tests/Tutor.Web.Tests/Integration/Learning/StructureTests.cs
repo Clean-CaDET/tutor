@@ -111,7 +111,7 @@ namespace Tutor.Web.Tests.Integration.Learning
             controller.SubmitAssessmentAnswer(assessmentItemId, submission);
             
             var actualKcMastery = dbContext.KcMasteries.FirstOrDefault(kcm => kcm.LearnerId == learnerId
-            && kcm.KnowledgeComponent.Id == knowledgeComponent.Id);
+            && kcm.KnowledgeComponentId == knowledgeComponent.Id);
             
             actualKcMastery.Mastery.ShouldBe(expectedKcMastery);
         }

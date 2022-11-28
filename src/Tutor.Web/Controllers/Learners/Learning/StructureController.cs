@@ -60,7 +60,7 @@ namespace Tutor.Web.Controllers.Learners.Learning
         {
             foreach (var kc in kcs)
             {
-                var mastery = masteries.Find(m => m.KnowledgeComponent.Id == kc.Id);
+                var mastery = masteries.Find(m => m.KnowledgeComponentId == kc.Id);
                 kc.Mastery = new KnowledgeComponentMasteryDto { Mastery = mastery.Mastery, IsSatisfied = mastery.IsSatisfied };
                 PopulateMasteries(kc.KnowledgeComponents, masteries);
             }

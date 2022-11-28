@@ -20,19 +20,19 @@ namespace Tutor.Infrastructure.Database.Repositories
             _moveOnCriteria = moveOnCriteria;
         }
 
-        public KnowledgeComponentMastery GetBasicKcMastery(int knowledgeComponentId, int learnerId)
+        public KnowledgeComponentMastery GetBareKcMastery(int knowledgeComponentId, int learnerId)
         {
             var kcm = _dbContext.KcMasteries
-                .Include(kcm => kcm.KnowledgeComponent)
                 .Include(kcm => kcm.SessionTracker)
-                .FirstOrDefault(kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponent.Id == knowledgeComponentId);
+                .FirstOrDefault(kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponentId == knowledgeComponentId);
             kcm?.Initialize();
             return kcm;
         }
         public List<KnowledgeComponentMastery> GetBasicKcMasteries(List<int> kcIds, int learnerId)
         {
-            var kcms = _dbContext.KcMasteries.Include(kcm => kcm.SessionTracker)
-                .Where(kcm => kcm.LearnerId == learnerId && kcIds.Contains(kcm.KnowledgeComponent.Id)).ToList();
+            var kcms = _dbContext.KcMasteries
+                .Include(kcm => kcm.SessionTracker)
+                .Where(kcm => kcm.LearnerId == learnerId && kcIds.Contains(kcm.KnowledgeComponentId)).ToList();
             foreach (var kcm in kcms) kcm.Initialize();
             return kcms;
         }
@@ -42,9 +42,7 @@ namespace Tutor.Infrastructure.Database.Repositories
             var kcm = _dbContext.KcMasteries
                 .Include(kcm => kcm.SessionTracker)
                 .Include(kcm => kcm.AssessmentItemMasteries)
-                .Include(kcm => kcm.KnowledgeComponent)
-                .ThenInclude(kc => kc.InstructionalItems)
-                .FirstOrDefault(kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponent.Id == knowledgeComponentId);
+                .FirstOrDefault(kcm => kcm.LearnerId == learnerId && kcm.KnowledgeComponentId == knowledgeComponentId);
             if (kcm == null) return null;
 
             kcm.MoveOnCriteria = _moveOnCriteria;

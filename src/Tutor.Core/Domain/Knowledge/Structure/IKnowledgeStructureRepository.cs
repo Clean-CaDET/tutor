@@ -6,5 +6,6 @@ namespace Tutor.Core.Domain.Knowledge.Structure
     {
         KnowledgeUnit GetUnitWithKcs(int unitId);
         List<KnowledgeComponent> GetKnowledgeComponentsForUnit(int unitId);
+        KnowledgeComponent GetKnowledgeComponentWithInstruction(int knowledgeComponentId);
     }
 }

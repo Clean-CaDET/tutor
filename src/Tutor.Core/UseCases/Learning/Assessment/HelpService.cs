@@ -39,7 +39,7 @@ public class HelpService : IHelpService
     //Should be moved to an instructor service or whatever will be used to interact with the chatbot
     public Result RecordInstructorMessage(int learnerId, int kcId, string message)
     {
-        var kcm = _knowledgeMasteryRepository.GetBasicKcMastery(kcId, learnerId);
+        var kcm = _knowledgeMasteryRepository.GetBareKcMastery(kcId, learnerId);
         if (kcm == null) return Result.Fail("Learner not enrolled in KC: " + kcId);
 
         var result = kcm.RecordInstructorMessage(message);

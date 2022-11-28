@@ -26,5 +26,12 @@ namespace Tutor.Infrastructure.Database.Repositories.Knowledge
         {
             return _dbContext.KnowledgeComponents.Where(kc => kc.KnowledgeUnitId == unitId).ToList();
         }
+
+        public KnowledgeComponent GetKnowledgeComponentWithInstruction(int knowledgeComponentId)
+        {
+            return _dbContext.KnowledgeComponents
+                .Include(kc => kc.InstructionalItems)
+                .FirstOrDefault(kc => kc.Id == knowledgeComponentId);
+        }
     }
 }

@@ -114,7 +114,6 @@ namespace Tutor.Infrastructure.Database
         {
             var kcmBuilder = modelBuilder.Entity<KnowledgeComponentMastery>();
             kcmBuilder.Ignore(kcm => kcm.MoveOnCriteria);
-            kcmBuilder.HasOne(kcm => kcm.KnowledgeComponent).WithMany().IsRequired();
             kcmBuilder.Property(kcm => kcm.Mastery).HasDefaultValue(0);
             kcmBuilder.Property(kcm => kcm.IsStarted).HasDefaultValue(false);
             kcmBuilder.Property(kcm => kcm.IsSatisfied).HasDefaultValue(false);

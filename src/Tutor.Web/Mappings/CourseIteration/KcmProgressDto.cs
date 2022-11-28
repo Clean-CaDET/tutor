@@ -5,15 +5,9 @@ namespace Tutor.Web.Mappings.CourseIteration
 {
     public class KcmProgressDto
     {
-        public int KcId { get; set; }
-        public int KcUnitId { get; set; }
-        public string KcCode { get; set; }
-        public string KcName { get; set; }
+        public int KnowledgeComponentId { get; set; }
         public KcMasteryStatisticsDto Statistics { get; set; }
         public List<AssessmentItemMasteryDto> AssessmentItemMasteries { get; set; }
-
         public int DurationOfFinishedSessionsInMinutes { get; set; }
-
-        public int ExpectedDurationInMinutes { get; set; }
     }
 }

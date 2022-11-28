@@ -38,10 +38,10 @@ public class StructureService : IStructureService
         if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId))
             return Result.Fail(FailureCode.NotEnrolledInUnit);
         
-        var kcMastery = _knowledgeMasteryRepository.GetBasicKcMastery(knowledgeComponentId, learnerId);
-        if (kcMastery == null) return Result.Fail(FailureCode.NotFound);
+        var kc = _knowledgeStructureRepository.GetKnowledgeComponentWithInstruction(knowledgeComponentId);
+        if (kc == null) return Result.Fail(FailureCode.NotFound);
 
-        return Result.Ok(kcMastery.KnowledgeComponent);
+        return Result.Ok(kc);
     }
 
     public Result<List<InstructionalItem>> GetInstructionalItems(int knowledgeComponentId, int learnerId)
@@ -49,12 +49,18 @@ public class StructureService : IStructureService
         if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId))
             return Result.Fail(FailureCode.NotEnrolledInUnit);
 
-        var kcMastery = _knowledgeMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
-        if (kcMastery == null) return Result.Fail(FailureCode.NotFound);
+        var kc = _knowledgeStructureRepository.GetKnowledgeComponentWithInstruction(knowledgeComponentId);
+        if (kc == null) return Result.Fail(FailureCode.NotFound);
 
+        RecordInstructionalItemSelection(knowledgeComponentId, learnerId);
+
+        return Result.Ok(kc.GetOrderedInstructionalItems());
+    }
+
+    private void RecordInstructionalItemSelection(int knowledgeComponentId, int learnerId)
+    {
+        var kcMastery = _knowledgeMasteryRepository.GetBareKcMastery(knowledgeComponentId, learnerId);
         kcMastery.RecordInstructionalItemSelection();
         _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
-
-        return Result.Ok(kcMastery.KnowledgeComponent.GetOrderedInstructionalItems());
     }
 }

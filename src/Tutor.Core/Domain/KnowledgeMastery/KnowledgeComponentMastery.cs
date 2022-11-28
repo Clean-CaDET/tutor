@@ -17,7 +17,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
     private const double PassThreshold = 0.9;
 
     public int LearnerId { get; private set; }
-    public KnowledgeComponent KnowledgeComponent { get; private set; }
+    public int KnowledgeComponentId { get; private set; }
     public List<AssessmentItemMastery> AssessmentItemMasteries { get; private set; }
     public double Mastery { get; private set; }
     public bool IsStarted { get; private set; }
@@ -40,11 +40,10 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     public override void Initialize()
     {
-        if (SessionTracker != null)
-            SessionTracker.Initialize(this);
-        if (AssessmentItemMasteries != null)
-            foreach (var aim in AssessmentItemMasteries)
-                aim.Initialize(this);
+        SessionTracker?.Initialize(this);
+        if (AssessmentItemMasteries == null) return;
+        foreach (var aim in AssessmentItemMasteries)
+            aim.Initialize(this);
     }
 
     public Result LaunchSession()
@@ -158,10 +157,9 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     protected override void Apply(DomainEvent @event)
     {
-        var kcEvent = @event as KnowledgeComponentEvent;
-        if (kcEvent == null) throw new EventSourcingException("Unexpected event type: " + @event.GetType());
+        if (@event is not KnowledgeComponentEvent kcEvent) throw new EventSourcingException("Unexpected event type: " + @event.GetType());
 
-        kcEvent.KnowledgeComponentId = KnowledgeComponent.Id;
+        kcEvent.KnowledgeComponentId = KnowledgeComponentId;
         kcEvent.LearnerId = LearnerId;
 
         SessionTracker.Apply(kcEvent);
