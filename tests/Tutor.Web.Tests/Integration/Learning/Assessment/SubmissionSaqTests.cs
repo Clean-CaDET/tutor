@@ -14,12 +14,12 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
 
         [Theory]
         [MemberData(nameof(SaqSubmissions))]
-        public void Submits_short_answer_questions(SaqSubmissionDto submission, SaqEvaluationDto expectedEvaluation)
+        public void Submits_short_answer_questions(int assessmentItemId, SaqSubmissionDto submission, SaqEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = SetupAssessmentEvaluationController(scope, "-3");
 
-            var actualEvaluation = ((OkObjectResult)controller.SubmitShortAnswerQuestion(submission).Result).Value as SaqEvaluationDto;
+            var actualEvaluation = ((ObjectResult)controller.SubmitAssessmentAnswer(assessmentItemId, submission).Result).Value as SaqEvaluationDto;
 
             actualEvaluation.ShouldNotBeNull();
             actualEvaluation.CorrectnessLevel.ShouldBe(expectedEvaluation.CorrectnessLevel);
@@ -31,9 +31,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
             {
                 new object[]
                 {
+                    -212,
                     new SaqSubmissionDto
                     {
-                        AssessmentItemId = -212,
                         Answer = "Words, word_parts, idx, abc"
                     },
                     new SaqEvaluationDto
@@ -43,9 +43,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
                 },
                 new object[]
                 {
+                    -212,
                     new SaqSubmissionDto
                     {
-                        AssessmentItemId = -212,
                         Answer = "Words, word_parts, idx"
                     },
                     new SaqEvaluationDto
@@ -55,9 +55,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
                 },
                 new object[]
                 {
+                    -212,
                     new SaqSubmissionDto
                     {
-                        AssessmentItemId = -212,
                         Answer = "Words, word_parts, idx, abc, cba"
                     },
                     new SaqEvaluationDto
@@ -67,9 +67,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
                 },
                 new object[]
                 {
+                    -212,
                     new SaqSubmissionDto
                     {
-                        AssessmentItemId = -212,
                         Answer = ""
                     },
                     new SaqEvaluationDto
@@ -79,9 +79,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
                 },
                 new object[]
                 {
+                    -212,
                     new SaqSubmissionDto
                     {
-                        AssessmentItemId = -212,
                         Answer = "cba"
                     },
                     new SaqEvaluationDto
@@ -91,9 +91,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
                 },
                 new object[]
                 {
+                    -212,
                     new SaqSubmissionDto
                     {
-                        AssessmentItemId = -212,
                         Answer = "abc, cba"
                     },
                     new SaqEvaluationDto
@@ -103,9 +103,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
                 },
                 new object[]
                 {
+                    -995,
                     new SaqSubmissionDto
                     {
-                        AssessmentItemId = -995,
                         Answer = "MedicalRecordService"
                     },
                     new SaqEvaluationDto
@@ -114,11 +114,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
                     }
                 },
                 new object[]
-                {
-                    new SaqSubmissionDto
-                    {
-                        AssessmentItemId = -995
-                    },
+                { 
+                    -995,
+                    new SaqSubmissionDto(),
                     new SaqEvaluationDto
                     {
                         CorrectnessLevel = 0
@@ -126,9 +124,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
                 },
                 new object[]
                 {
+                    -995,
                     new SaqSubmissionDto
                     {
-                        AssessmentItemId = -995,
                         Answer = " "
                     },
                     new SaqEvaluationDto

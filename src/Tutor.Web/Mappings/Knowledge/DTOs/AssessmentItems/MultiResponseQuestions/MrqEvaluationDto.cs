@@ -2,10 +2,8 @@
 
 namespace Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiResponseQuestions
 {
-    public class MrqEvaluationDto
+    public class MrqEvaluationDto : EvaluationDto
     {
         public List<MrqItemEvaluationDto> ItemEvaluations { get; set; }
-        
-        public double CorrectnessLevel { get; set; }
     }
 }

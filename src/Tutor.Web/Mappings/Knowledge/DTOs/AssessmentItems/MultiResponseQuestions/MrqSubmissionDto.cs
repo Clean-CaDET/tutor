@@ -2,9 +2,8 @@
 
 namespace Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiResponseQuestions
 {
-    public class MrqSubmissionDto
+    public class MrqSubmissionDto : SubmissionDto
     {
         public List<MrqItemDto> Answers { get; set; }
-        public int AssessmentItemId { get; set; }
     }
 }

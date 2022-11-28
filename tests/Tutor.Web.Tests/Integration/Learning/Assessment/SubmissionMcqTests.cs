@@ -14,12 +14,12 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
 
         [Theory]
         [MemberData(nameof(McqSubmissions))]
-        public void Submits_multi_choice_questions(McqSubmissionDto submission, McqEvaluationDto expectedEvaluation)
+        public void Submits_multi_choice_questions(int assessmentItemId, McqSubmissionDto submission, McqEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = SetupAssessmentEvaluationController(scope, "-3");
 
-            var actualEvaluation = ((OkObjectResult)controller.SubmitMultiChoiceQuestion(submission).Result).Value
+            var actualEvaluation = ((ObjectResult)controller.SubmitAssessmentAnswer(assessmentItemId, submission).Result).Value
                 as McqEvaluationDto;
 
             actualEvaluation.ShouldNotBeNull();
@@ -32,9 +32,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
             {
                 new object[]
                 {
+                    -10001,
                     new McqSubmissionDto
                     {
-                        AssessmentItemId = -10001,
                         Answer = "3"
                     },
                     new McqEvaluationDto
@@ -45,9 +45,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
                 },
                 new object[]
                 {
+                    -10001,
                     new McqSubmissionDto
                     {
-                        AssessmentItemId = -10001,
                         Answer = "4"
                     },
                     new McqEvaluationDto
@@ -58,9 +58,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
                 },
                 new object[]
                 {
+                    -10001,
                     new McqSubmissionDto
                     {
-                        AssessmentItemId = -10001,
                         Answer = "5"
                     },
                     new McqEvaluationDto

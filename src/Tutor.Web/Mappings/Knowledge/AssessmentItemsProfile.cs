@@ -20,6 +20,8 @@ namespace Tutor.Web.Mappings.Knowledge
         public AssessmentItemsProfile()
         {
             CreateMap<AssessmentItem, AssessmentItemDto>().IncludeAllDerived();
+            CreateMap<SubmissionDto, Submission>().IncludeAllDerived();
+            CreateMap<Evaluation, EvaluationDto>().IncludeAllDerived();
 
             #region Short answer question
             CreateMap<Saq, SaqDto>();

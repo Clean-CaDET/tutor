@@ -2,10 +2,8 @@
 
 namespace Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ArrangeTasks
 {
-    public class AtEvaluationDto
+    public class AtEvaluationDto : EvaluationDto
     {
         public List<AtContainerEvaluationDto> ContainerEvaluations { get; set; }
-        
-        public double CorrectnessLevel { get; set; }
     }
 }

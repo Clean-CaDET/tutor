@@ -14,12 +14,12 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
 
         [Theory]
         [MemberData(nameof(AtSubmissions))]
-        public void Submits_arrange_task(AtSubmissionDto submission, AtEvaluationDto expectedEvaluation)
+        public void Submits_arrange_task(int assessmentItemId, AtSubmissionDto submission, AtEvaluationDto expectedEvaluation)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = SetupAssessmentEvaluationController(scope, "-3");
 
-            var actualEvaluation = ((OkObjectResult)controller.SubmitArrangeTask(submission).Result).Value as AtEvaluationDto;
+            var actualEvaluation = ((ObjectResult)controller.SubmitAssessmentAnswer(assessmentItemId, submission).Result).Value as AtEvaluationDto;
 
             actualEvaluation.ShouldNotBeNull();
             actualEvaluation.CorrectnessLevel.ShouldBe(expectedEvaluation.CorrectnessLevel);
@@ -28,12 +28,12 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
 
         [Theory]
         [MemberData(nameof(InvalidAtSubmissions))]
-        public void Submits_invalid_arrange_task(AtSubmissionDto submission, int expectedStatusCode)
+        public void Submits_invalid_arrange_task(int assessmentItemId, AtSubmissionDto submission, int expectedStatusCode)
         {
             using var scope = Factory.Services.CreateScope();
             var controller = SetupAssessmentEvaluationController(scope, "-3");
 
-            var response = ((ObjectResult)controller.SubmitArrangeTask(submission).Result);
+            var response = (ObjectResult)controller.SubmitAssessmentAnswer(assessmentItemId, submission).Result;
 
             response.ShouldNotBeNull();
             response.StatusCode.ShouldBe(expectedStatusCode);
@@ -45,9 +45,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
             {
                 new object[]
                 {
+                    -2111,
                     new AtSubmissionDto
                     {
-                        AssessmentItemId = -2111,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1, -2, -3}},
@@ -72,9 +72,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
                 },
                 new object[]
                 {
+                    -2111,
                     new AtSubmissionDto
                     {
-                        AssessmentItemId = -2111,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1}},
@@ -99,9 +99,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
                 },
                 new object[]
                 {
+                    -2111,
                     new AtSubmissionDto
                     {
-                        AssessmentItemId = -2111,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1, -2, -3, -4, -5}},
@@ -133,9 +133,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
             {
                 new object[]
                 {
+                    -2111,
                     new AtSubmissionDto
                     {
-                        AssessmentItemId = -2111,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1},
@@ -149,9 +149,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
                 },
                 new object[]
                 {
+                    -2111,
                     new AtSubmissionDto
                     {
-                        AssessmentItemId = -2111,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1},
@@ -162,9 +162,9 @@ namespace Tutor.Web.Tests.Integration.Learning.Assessment
                 },
                 new object[]
                 {
+                    -2112,
                     new AtSubmissionDto
                     {
-                        AssessmentItemId = -2112,
                         Containers= new List<AtContainerSubmissionDto>
                         {
                             new() {ArrangeTaskContainerId = -1, ElementIds = new List<int> {-1, -2, -3, -4, -5}},
