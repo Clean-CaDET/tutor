@@ -8,45 +8,44 @@ using Tutor.Web.Controllers.Learners;
 using Tutor.Web.Mappings.Knowledge.DTOs;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.CourseIterationManagement
+namespace Tutor.Web.Tests.Integration.CourseIterationManagement;
+
+public class EnrollmentTests : BaseWebIntegrationTest
 {
-    public class EnrollmentTests : BaseWebIntegrationTest
+    public EnrollmentTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
+
+    [Theory]
+    [InlineData("-1", 2)]
+    [InlineData("-2", 2)]
+    public void Retrieves_enrolled_courses(string learnerId, int expectedCourseCount)
     {
-        public EnrollmentTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupEnrollmentController(scope, learnerId);
+        var result = ((OkObjectResult)controller.GetEnrolledCourses().Result)?.Value as List<CourseDto>;
 
-        [Theory]
-        [InlineData("-1", 2)]
-        [InlineData("-2", 2)]
-        public void Retrieves_enrolled_courses(string learnerId, int expectedCourseCount)
+        result.ShouldNotBeNull();
+        result.Count.ShouldBe(expectedCourseCount);
+    }
+
+    [Theory]
+    [InlineData(-2, -1, 2)]
+    [InlineData(-1, -1, 0)]
+    public void Retrieves_enrolled_units(int learnerId, int courseId, int expectedUnitCount)
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupEnrollmentController(scope, learnerId.ToString());
+
+        var units = ((OkObjectResult)controller.GetActiveUnits(courseId).Result).Value as List<KnowledgeUnitDto>;
+
+        units.Count.ShouldBe(expectedUnitCount);
+    }
+
+    private EnrollmentController SetupEnrollmentController(IServiceScope scope, string id)
+    {
+        return new EnrollmentController(Factory.Services.GetRequiredService<IMapper>(),
+            scope.ServiceProvider.GetRequiredService<IEnrollmentService>())
         {
-            using var scope = Factory.Services.CreateScope();
-            var controller = SetupEnrollmentController(scope, learnerId);
-            var result = ((OkObjectResult)controller.GetEnrolledCourses().Result)?.Value as List<CourseDto>;
-
-            result.ShouldNotBeNull();
-            result.Count.ShouldBe(expectedCourseCount);
-        }
-
-        [Theory]
-        [InlineData(-2, -1, 2)]
-        [InlineData(-1, -1, 0)]
-        public void Retrieves_enrolled_units(int learnerId, int courseId, int expectedUnitCount)
-        {
-            using var scope = Factory.Services.CreateScope();
-            var controller = SetupEnrollmentController(scope, learnerId.ToString());
-
-            var units = ((OkObjectResult)controller.GetActiveUnits(courseId).Result).Value as List<KnowledgeUnitDto>;
-
-            units.Count.ShouldBe(expectedUnitCount);
-        }
-
-        private EnrollmentController SetupEnrollmentController(IServiceScope scope, string id)
-        {
-            return new EnrollmentController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<IEnrollmentService>())
-            {
-                ControllerContext = BuildContext(id, "learner")
-            };
-        }
+            ControllerContext = BuildContext(id, "learner")
+        };
     }
 }

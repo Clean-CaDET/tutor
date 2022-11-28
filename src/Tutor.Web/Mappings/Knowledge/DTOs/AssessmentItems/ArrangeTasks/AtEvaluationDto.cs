@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ArrangeTasks
+namespace Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ArrangeTasks;
+
+public class AtEvaluationDto : EvaluationDto
 {
-    public class AtEvaluationDto : EvaluationDto
-    {
-        public List<AtContainerEvaluationDto> ContainerEvaluations { get; set; }
-    }
+    public List<AtContainerEvaluationDto> ContainerEvaluations { get; set; }
 }

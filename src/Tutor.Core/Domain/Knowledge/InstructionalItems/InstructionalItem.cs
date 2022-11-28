@@ -1,16 +1,15 @@
-﻿namespace Tutor.Core.Domain.Knowledge.InstructionalItems
-{
-    public class InstructionalItem
-    {
-        public int Id { get; private set; }
-        public int KnowledgeComponentId { get; private set; }
-        public int Order { get; private set; }
-        protected InstructionalItem() { }
+﻿namespace Tutor.Core.Domain.Knowledge.InstructionalItems;
 
-        protected InstructionalItem(int id, int knowledgeComponentId)
-        {
-            Id = id;
-            KnowledgeComponentId = knowledgeComponentId;
-        }
+public class InstructionalItem
+{
+    public int Id { get; private set; }
+    public int KnowledgeComponentId { get; private set; }
+    public int Order { get; private set; }
+    protected InstructionalItem() { }
+
+    protected InstructionalItem(int id, int knowledgeComponentId)
+    {
+        Id = id;
+        KnowledgeComponentId = knowledgeComponentId;
     }
 }

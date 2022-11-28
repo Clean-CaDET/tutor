@@ -1,13 +1,12 @@
 ﻿using System;
 
-namespace Tutor.Core.Domain.LearningUtilities
+namespace Tutor.Core.Domain.LearningUtilities;
+
+public class EmotionsFeedback
 {
-    public class EmotionsFeedback
-    {
-        public int Id { get; private set; }
-        public int LearnerId { get; private set; }
-        public int KnowledgeComponentId { get; private set; }
-        public string Comment { get; private set; }
-        public DateTime TimeStamp { get; private set; } = DateTime.Now.ToUniversalTime();
-    }
+    public int Id { get; private set; }
+    public int LearnerId { get; private set; }
+    public int KnowledgeComponentId { get; private set; }
+    public string Comment { get; private set; }
+    public DateTime TimeStamp { get; private set; } = DateTime.Now.ToUniversalTime();
 }

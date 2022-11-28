@@ -1,11 +1,11 @@
-﻿namespace Tutor.Core.Tests.TestData
+﻿namespace Tutor.Core.Tests.TestData;
+
+internal static class ChallengeTestData
 {
-    internal static class ChallengeTestData
+    internal static string[] GetTwoPassingClasses()
     {
-        internal static string[] GetTwoPassingClasses()
-        {
-            return new[] {
-@"using System;
+        return new[] {
+            @"using System;
 namespace Methods.Small
 {
    class Payment
@@ -14,7 +14,7 @@ namespace Methods.Small
        public bool IsExtra { get; set; }
    }
 }",
-@"using System;
+            @"using System;
 namespace Methods.Small
 {
     class PaymentService{
@@ -34,14 +34,14 @@ namespace Methods.Small
         }
     }
 }"
-            };
-        }
+        };
+    }
 
-        internal static string[] GetTwoViolatingClasses()
+    internal static string[] GetTwoViolatingClasses()
+    {
+        return new[]
         {
-            return new[]
-            {
-@"using System;
+            @"using System;
 namespace Methods.Small
 {
    class Payment
@@ -50,7 +50,7 @@ namespace Methods.Small
        public bool IsExtra { get; set; }
    }
 }",
-@"using System;
+            @"using System;
 namespace Methods.Small
 {
     class PaymentService{
@@ -88,7 +88,6 @@ namespace Methods.Small
         }
     }
 }"
-            };
-        }
+        };
     }
 }

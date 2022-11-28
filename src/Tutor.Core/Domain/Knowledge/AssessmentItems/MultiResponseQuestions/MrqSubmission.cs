@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Tutor.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions
+namespace Tutor.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
+
+public class MrqSubmission : Submission
 {
-    public class MrqSubmission : Submission
-    {
-        public List<int> SubmittedAnswerIds { get; private set; }
-    }
+    public List<int> SubmittedAnswerIds { get; private set; }
 }

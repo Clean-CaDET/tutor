@@ -3,30 +3,29 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration
+namespace Tutor.Web.Tests.Integration;
+
+public class BaseWebIntegrationTest : IClassFixture<TutorApplicationTestFactory<Startup>>
 {
-    public class BaseWebIntegrationTest : IClassFixture<TutorApplicationTestFactory<Startup>>
+    protected TutorApplicationTestFactory<Startup> Factory { get; }
+
+    public BaseWebIntegrationTest(TutorApplicationTestFactory<Startup> factory)
     {
-        protected TutorApplicationTestFactory<Startup> Factory { get; }
+        Factory = factory;
+    }
 
-        public BaseWebIntegrationTest(TutorApplicationTestFactory<Startup> factory)
+    protected static ControllerContext BuildContext(string id, string role)
+    {
+        return new ControllerContext()
         {
-            Factory = factory;
-        }
-
-        protected static ControllerContext BuildContext(string id, string role)
-        {
-            return new ControllerContext()
+            HttpContext = new DefaultHttpContext()
             {
-                HttpContext = new DefaultHttpContext()
+                User = new ClaimsPrincipal(new ClaimsIdentity(new[]
                 {
-                    User = new ClaimsPrincipal(new ClaimsIdentity(new[]
-                    {
-                        new Claim("id", id),
-                        new Claim(role + "Id", id),
-                    }))
-                }
-            };
-        }
+                    new Claim("id", id),
+                    new Claim(role + "Id", id),
+                }))
+            }
+        };
     }
 }

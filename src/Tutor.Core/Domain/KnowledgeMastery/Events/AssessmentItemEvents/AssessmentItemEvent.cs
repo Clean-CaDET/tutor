@@ -1,7 +1,6 @@
-﻿namespace Tutor.Core.Domain.KnowledgeMastery.Events.AssessmentItemEvents
+﻿namespace Tutor.Core.Domain.KnowledgeMastery.Events.AssessmentItemEvents;
+
+public class AssessmentItemEvent : KnowledgeComponentEvent
 {
-    public class AssessmentItemEvent : KnowledgeComponentEvent
-    {
-        public int AssessmentItemId { get; set; }
-    }
+    public int AssessmentItemId { get; set; }
 }

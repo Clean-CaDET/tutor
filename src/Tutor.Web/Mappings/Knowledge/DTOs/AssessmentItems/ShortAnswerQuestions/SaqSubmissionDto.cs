@@ -1,7 +1,6 @@
-﻿namespace Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ShortAnswerQuestions
+﻿namespace Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ShortAnswerQuestions;
+
+public class SaqSubmissionDto : SubmissionDto
 {
-    public class SaqSubmissionDto : SubmissionDto
-    {
-        public string Answer { get; set; }
-    }
+    public string Answer { get; set; }
 }

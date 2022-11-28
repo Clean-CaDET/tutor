@@ -1,14 +1,13 @@
 using AutoMapper;
 using Tutor.Core.Domain.Stakeholders;
 
-namespace Tutor.Web.Mappings.CourseIteration
+namespace Tutor.Web.Mappings.CourseIteration;
+
+public class LearnerProfile : Profile
 {
-    public class LearnerProfile : Profile
+    public LearnerProfile()
     {
-        public LearnerProfile()
-        {
-            CreateMap<LearnerDto, Learner>();
-            CreateMap<Learner, LearnerDto>();
-        }
+        CreateMap<LearnerDto, Learner>();
+        CreateMap<Learner, LearnerDto>();
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems
+﻿namespace Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems;
+
+public class EvaluationDto
 {
-    public class EvaluationDto
-    {
-        public double CorrectnessLevel { get; set; }
-    }
+    public double CorrectnessLevel { get; set; }
 }

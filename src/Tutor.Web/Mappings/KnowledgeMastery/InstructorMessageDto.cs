@@ -1,8 +1,7 @@
-﻿namespace Tutor.Web.Mappings.KnowledgeMastery
+﻿namespace Tutor.Web.Mappings.KnowledgeMastery;
+
+public class InstructorMessageDto
 {
-    public class InstructorMessageDto
-    {
-        public int KcId { get; set; }
-        public string Message { get; set; }
-    }
+    public int KcId { get; set; }
+    public string Message { get; set; }
 }

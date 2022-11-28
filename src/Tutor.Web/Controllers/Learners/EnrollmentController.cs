@@ -7,35 +7,34 @@ using Tutor.Core.UseCases.CourseIterationManagement;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Mappings.Knowledge.DTOs;
 
-namespace Tutor.Web.Controllers.Learners
+namespace Tutor.Web.Controllers.Learners;
+
+[Authorize(Policy = "learnerPolicy")]
+[Route("api/enrolled-courses")]
+public class EnrollmentController : BaseApiController
 {
-    [Authorize(Policy = "learnerPolicy")]
-    [Route("api/enrolled-courses")]
-    public class EnrollmentController : BaseApiController
+    private readonly IMapper _mapper;
+    private readonly IEnrollmentService _enrollmentService;
+
+    public EnrollmentController(IMapper mapper,
+        IEnrollmentService enrollmentService)
     {
-        private readonly IMapper _mapper;
-        private readonly IEnrollmentService _enrollmentService;
-
-        public EnrollmentController(IMapper mapper,
-            IEnrollmentService enrollmentService)
-        {
-            _mapper = mapper;
-            _enrollmentService = enrollmentService;
-        }
+        _mapper = mapper;
+        _enrollmentService = enrollmentService;
+    }
         
-        [HttpGet]
-        public ActionResult<List<CourseDto>> GetEnrolledCourses()
-        {
-            var result = _enrollmentService.GetEnrolledCourses(User.LearnerId());
-            if (result.IsFailed) return CreateErrorResponse(result.Errors);
-            return Ok(result.Value.Select(_mapper.Map<CourseDto>).ToList());
-        }
+    [HttpGet]
+    public ActionResult<List<CourseDto>> GetEnrolledCourses()
+    {
+        var result = _enrollmentService.GetEnrolledCourses(User.LearnerId());
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        return Ok(result.Value.Select(_mapper.Map<CourseDto>).ToList());
+    }
 
-        [HttpGet("{courseId:int}")]
-        public ActionResult<List<KnowledgeUnitDto>> GetActiveUnits(int courseId)
-        {
-            var result = _enrollmentService.GetActiveUnits(courseId, User.LearnerId());
-            return Ok(result.Value.Select(_mapper.Map<KnowledgeUnitDto>).ToList());
-        }
+    [HttpGet("{courseId:int}")]
+    public ActionResult<List<KnowledgeUnitDto>> GetActiveUnits(int courseId)
+    {
+        var result = _enrollmentService.GetActiveUnits(courseId, User.LearnerId());
+        return Ok(result.Value.Select(_mapper.Map<KnowledgeUnitDto>).ToList());
     }
 }

@@ -1,12 +1,11 @@
-﻿namespace Tutor.Core.Domain.Knowledge.InstructionalItems
-{
-    public class Markdown : InstructionalItem
-    {
-        public string Content { get; private set; }
+﻿namespace Tutor.Core.Domain.Knowledge.InstructionalItems;
 
-        public Markdown(int id, int knowledgeComponentId, string content) : base(id, knowledgeComponentId)
-        {
-            Content = content;
-        }
+public class Markdown : InstructionalItem
+{
+    public string Content { get; private set; }
+
+    public Markdown(int id, int knowledgeComponentId, string content) : base(id, knowledgeComponentId)
+    {
+        Content = content;
     }
 }

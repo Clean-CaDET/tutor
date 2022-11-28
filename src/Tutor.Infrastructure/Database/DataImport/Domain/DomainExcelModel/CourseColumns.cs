@@ -1,10 +1,9 @@
-﻿namespace Tutor.Infrastructure.Database.DataImport.Domain.DomainExcelModel
+﻿namespace Tutor.Infrastructure.Database.DataImport.Domain.DomainExcelModel;
+
+public class CourseColumns
 {
-    public class CourseColumns
-    {
-        public int Id { get; internal set; }
-        public string Code { get; set; }
-        public string Name { get; internal set; }
-        public string Description { get; set; }
-    }
+    public int Id { get; internal set; }
+    public string Code { get; set; }
+    public string Name { get; internal set; }
+    public string Description { get; set; }
 }

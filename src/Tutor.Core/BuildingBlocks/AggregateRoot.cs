@@ -1,6 +1,5 @@
-﻿namespace Tutor.Core.BuildingBlocks
+﻿namespace Tutor.Core.BuildingBlocks;
+
+public abstract class AggregateRoot : Entity
 {
-    public abstract class AggregateRoot : Entity
-    {
-    }
 }

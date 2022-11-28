@@ -1,8 +1,7 @@
-﻿namespace Tutor.Web.Mappings.Knowledge.DTOs.InstructionalItems
+﻿namespace Tutor.Web.Mappings.Knowledge.DTOs.InstructionalItems;
+
+public class InstructionalItemDto
 {
-    public class InstructionalItemDto
-    {
-        public int Id { get; set; }
-        public int KnowledgeComponentId { get; set; }
-    }
+    public int Id { get; set; }
+    public int KnowledgeComponentId { get; set; }
 }

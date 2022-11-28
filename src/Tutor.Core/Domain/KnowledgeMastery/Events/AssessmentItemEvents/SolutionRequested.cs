@@ -1,6 +1,5 @@
-﻿namespace Tutor.Core.Domain.KnowledgeMastery.Events.AssessmentItemEvents
+﻿namespace Tutor.Core.Domain.KnowledgeMastery.Events.AssessmentItemEvents;
+
+public class SolutionRequested : HelpRequested
 {
-    public class SolutionRequested : HelpRequested
-    {
-    }
 }

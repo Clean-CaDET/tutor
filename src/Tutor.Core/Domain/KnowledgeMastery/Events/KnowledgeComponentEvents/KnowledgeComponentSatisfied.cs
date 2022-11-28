@@ -1,7 +1,6 @@
-﻿namespace Tutor.Core.Domain.KnowledgeMastery.Events.KnowledgeComponentEvents
+﻿namespace Tutor.Core.Domain.KnowledgeMastery.Events.KnowledgeComponentEvents;
+
+public class KnowledgeComponentSatisfied : KnowledgeComponentEvent
 {
-    public class KnowledgeComponentSatisfied : KnowledgeComponentEvent
-    {
-        public double MinutesToSatisfaction { get; set; }
-    }
+    public double MinutesToSatisfaction { get; set; }
 }

@@ -1,10 +1,9 @@
 using FluentResults;
 using Tutor.Core.Domain.Stakeholders;
 
-namespace Tutor.Core.UseCases.StakeholderManagement
+namespace Tutor.Core.UseCases.StakeholderManagement;
+
+public interface ILearnerService
 {
-    public interface ILearnerService
-    {
-        Result<Learner> GetLearnerProfile(int id);
-    }
+    Result<Learner> GetLearnerProfile(int id);
 }

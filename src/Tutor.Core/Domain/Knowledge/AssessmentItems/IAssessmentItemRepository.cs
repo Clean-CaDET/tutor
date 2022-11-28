@@ -1,7 +1,6 @@
-namespace Tutor.Core.Domain.Knowledge.AssessmentItems
+namespace Tutor.Core.Domain.Knowledge.AssessmentItems;
+
+public interface IAssessmentItemRepository
 {
-    public interface IAssessmentItemRepository
-    {
-        AssessmentItem GetDerivedAssessmentItem(int assessmentItemId);
-    }
+    AssessmentItem GetDerivedAssessmentItem(int assessmentItemId);
 }

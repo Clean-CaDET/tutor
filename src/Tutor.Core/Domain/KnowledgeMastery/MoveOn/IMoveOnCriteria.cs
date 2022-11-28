@@ -1,7 +1,6 @@
-﻿namespace Tutor.Core.Domain.KnowledgeMastery.MoveOn
+﻿namespace Tutor.Core.Domain.KnowledgeMastery.MoveOn;
+
+public interface IMoveOnCriteria
 {
-    public interface IMoveOnCriteria
-    {
-        bool IsSatisfied(bool isCompleted, bool isPassed);
-    }
+    bool IsSatisfied(bool isCompleted, bool isPassed);
 }

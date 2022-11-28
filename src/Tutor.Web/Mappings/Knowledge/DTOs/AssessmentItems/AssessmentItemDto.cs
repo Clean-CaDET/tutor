@@ -1,8 +1,7 @@
-﻿namespace Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems
+﻿namespace Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems;
+
+public class AssessmentItemDto
 {
-    public class AssessmentItemDto
-    {
-        public int Id { get; set; }
-        public int KnowledgeComponentId { get; set; }
-    }
+    public int Id { get; set; }
+    public int KnowledgeComponentId { get; set; }
 }

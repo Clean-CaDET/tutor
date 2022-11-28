@@ -2,65 +2,64 @@
 using System.Collections.Generic;
 using CodeModel.CaDETModel.CodeItems;
 
-namespace Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges.FulfillmentStrategies
+namespace Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges.FulfillmentStrategies;
+
+public class BasicMetricChecker : ChallengeFulfillmentStrategy
 {
-    public class BasicMetricChecker : ChallengeFulfillmentStrategy
+    public string MetricName { get; private set; }
+    public double FromValue { get; private set; }
+    public double ToValue { get; private set; }
+    public ChallengeHint Hint { get; private set; }
+
+    private BasicMetricChecker() { }
+    public BasicMetricChecker(int id, string metricName, int fromValue, int toValue, ChallengeHint challengeHint, string codeSnippetId) : base(id, codeSnippetId)
     {
-        public string MetricName { get; private set; }
-        public double FromValue { get; private set; }
-        public double ToValue { get; private set; }
-        public ChallengeHint Hint { get; private set; }
+        MetricName = metricName;
+        FromValue = fromValue;
+        ToValue = toValue;
+        Hint = challengeHint;
+    }
 
-        private BasicMetricChecker() { }
-        public BasicMetricChecker(int id, string metricName, int fromValue, int toValue, ChallengeHint challengeHint, string codeSnippetId) : base(id, codeSnippetId)
+    private HintDirectory EvaluateClass(CaDETClass solutionAttempt)
+    {
+        var hints = new HintDirectory();
+        hints.MergeHints(CheckMetricRanges(solutionAttempt.Metrics, solutionAttempt.FullName));
+        return hints;
+    }
+
+    protected override HintDirectory EvaluateMember(CaDETMember solutionAttempt)
+    {
+        return CheckMetricRanges(solutionAttempt.Metrics, solutionAttempt.Signature());
+    }
+
+    private HintDirectory CheckMetricRanges(Dictionary<CaDETMetric, double> metrics, string codeSnippetId)
+    {
+        var challengeHints = new HintDirectory();
+
+        var result = Evaluate(metrics);
+        if (result != null) challengeHints.AddHint(codeSnippetId, result);
+        return challengeHints;
+    }
+
+    private ChallengeHint Evaluate(Dictionary<CaDETMetric, double> metrics)
+    {
+        var metric = (CaDETMetric)Enum.Parse(typeof(CaDETMetric), MetricName, true);
+        if (!metrics.ContainsKey(metric)) return null;
+
+        var metricValue = metrics[metric];
+        var isFulfilled = FromValue <= metricValue && metricValue <= ToValue;
+        return isFulfilled ? null : Hint;
+    }
+
+    protected override HintDirectory EvaluateClassesAndMembers(List<CaDETClass> solutionAttempt)
+    {
+        var hints = new HintDirectory();
+        foreach (var c in solutionAttempt)
         {
-            MetricName = metricName;
-            FromValue = fromValue;
-            ToValue = toValue;
-            Hint = challengeHint;
+            hints.MergeHints(EvaluateClass(c));
+            c.Members.ForEach(m => hints.MergeHints(EvaluateMember(m)));
         }
 
-        private HintDirectory EvaluateClass(CaDETClass solutionAttempt)
-        {
-            var hints = new HintDirectory();
-            hints.MergeHints(CheckMetricRanges(solutionAttempt.Metrics, solutionAttempt.FullName));
-            return hints;
-        }
-
-        protected override HintDirectory EvaluateMember(CaDETMember solutionAttempt)
-        {
-            return CheckMetricRanges(solutionAttempt.Metrics, solutionAttempt.Signature());
-        }
-
-        private HintDirectory CheckMetricRanges(Dictionary<CaDETMetric, double> metrics, string codeSnippetId)
-        {
-            var challengeHints = new HintDirectory();
-
-            var result = Evaluate(metrics);
-            if (result != null) challengeHints.AddHint(codeSnippetId, result);
-            return challengeHints;
-        }
-
-        private ChallengeHint Evaluate(Dictionary<CaDETMetric, double> metrics)
-        {
-            var metric = (CaDETMetric)Enum.Parse(typeof(CaDETMetric), MetricName, true);
-            if (!metrics.ContainsKey(metric)) return null;
-
-            var metricValue = metrics[metric];
-            var isFulfilled = FromValue <= metricValue && metricValue <= ToValue;
-            return isFulfilled ? null : Hint;
-        }
-
-        protected override HintDirectory EvaluateClassesAndMembers(List<CaDETClass> solutionAttempt)
-        {
-            var hints = new HintDirectory();
-            foreach (var c in solutionAttempt)
-            {
-                hints.MergeHints(EvaluateClass(c));
-                c.Members.ForEach(m => hints.MergeHints(EvaluateMember(m)));
-            }
-
-            return hints;
-        }
+        return hints;
     }
 }

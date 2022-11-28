@@ -1,14 +1,13 @@
-﻿namespace Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks
-{
-    public class ArrangeTaskContainerEvaluation
-    {
-        public ArrangeTaskContainer FullAnswer { get; }
-        public int IncorrectElementsCount { get; }
+﻿namespace Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
 
-        public ArrangeTaskContainerEvaluation(ArrangeTaskContainer fullAnswer, int incorrectElementsCount)
-        {
-            FullAnswer = fullAnswer;
-            IncorrectElementsCount = incorrectElementsCount;
-        }
+public class ArrangeTaskContainerEvaluation
+{
+    public ArrangeTaskContainer FullAnswer { get; }
+    public int IncorrectElementsCount { get; }
+
+    public ArrangeTaskContainerEvaluation(ArrangeTaskContainer fullAnswer, int incorrectElementsCount)
+    {
+        FullAnswer = fullAnswer;
+        IncorrectElementsCount = incorrectElementsCount;
     }
 }

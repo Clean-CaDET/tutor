@@ -1,6 +1,5 @@
-﻿namespace Tutor.Core.Domain.Knowledge.AssessmentItems
+﻿namespace Tutor.Core.Domain.Knowledge.AssessmentItems;
+
+public abstract class Submission
 {
-    public abstract class Submission
-    {
-    }
 }

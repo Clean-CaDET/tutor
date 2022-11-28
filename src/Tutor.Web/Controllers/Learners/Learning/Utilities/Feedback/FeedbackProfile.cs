@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
 using Tutor.Core.Domain.LearningUtilities;
 
-namespace Tutor.Web.Controllers.Learners.Learning.Utilities.Feedback
+namespace Tutor.Web.Controllers.Learners.Learning.Utilities.Feedback;
+
+public class FeedbackProfile : Profile
 {
-    public class FeedbackProfile : Profile
+    public FeedbackProfile()
     {
-        public FeedbackProfile()
-        {
-            CreateMap<EmotionsFeedbackDto, EmotionsFeedback>();
-            CreateMap<TutorImprovementFeedbackDto, TutorImprovementFeedback>();
-        }
+        CreateMap<EmotionsFeedbackDto, EmotionsFeedback>();
+        CreateMap<TutorImprovementFeedbackDto, TutorImprovementFeedback>();
     }
 }

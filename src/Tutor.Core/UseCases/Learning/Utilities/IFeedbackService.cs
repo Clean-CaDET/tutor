@@ -1,12 +1,11 @@
 ﻿using FluentResults;
 using Tutor.Core.Domain.LearningUtilities;
 
-namespace Tutor.Core.UseCases.Learning.Utilities
-{
-    public interface IFeedbackService
-    {
-        Result<EmotionsFeedback> SaveEmotionsFeedback(EmotionsFeedback emotionsFeedback);
+namespace Tutor.Core.UseCases.Learning.Utilities;
 
-        Result<TutorImprovementFeedback> SaveTutorImprovementFeedback(TutorImprovementFeedback tutorImprovementFeedback);
-    }
+public interface IFeedbackService
+{
+    Result<EmotionsFeedback> SaveEmotionsFeedback(EmotionsFeedback emotionsFeedback);
+
+    Result<TutorImprovementFeedback> SaveTutorImprovementFeedback(TutorImprovementFeedback tutorImprovementFeedback);
 }

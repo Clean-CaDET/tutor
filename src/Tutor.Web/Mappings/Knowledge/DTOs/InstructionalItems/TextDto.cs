@@ -1,10 +1,9 @@
 ﻿using Dahomey.Json.Attributes;
 
-namespace Tutor.Web.Mappings.Knowledge.DTOs.InstructionalItems
+namespace Tutor.Web.Mappings.Knowledge.DTOs.InstructionalItems;
+
+[JsonDiscriminator("text")]
+public class TextDto : InstructionalItemDto
 {
-    [JsonDiscriminator("text")]
-    public class TextDto : InstructionalItemDto
-    {
-        public string Content { get; set; }
-    }
+    public string Content { get; set; }
 }

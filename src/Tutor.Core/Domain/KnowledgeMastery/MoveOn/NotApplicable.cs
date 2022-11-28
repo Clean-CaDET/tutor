@@ -1,10 +1,9 @@
-﻿namespace Tutor.Core.Domain.KnowledgeMastery.MoveOn
+﻿namespace Tutor.Core.Domain.KnowledgeMastery.MoveOn;
+
+public class NotApplicable : IMoveOnCriteria
 {
-    public class NotApplicable : IMoveOnCriteria
+    public bool IsSatisfied(bool isCompleted, bool isPassed)
     {
-        public bool IsSatisfied(bool isCompleted, bool isPassed)
-        {
-            return true;
-        }
+        return true;
     }
 }

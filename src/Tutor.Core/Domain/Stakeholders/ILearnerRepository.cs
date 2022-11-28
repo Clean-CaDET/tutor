@@ -1,8 +1,7 @@
-﻿namespace Tutor.Core.Domain.Stakeholders
+﻿namespace Tutor.Core.Domain.Stakeholders;
+
+public interface ILearnerRepository
 {
-    public interface ILearnerRepository
-    {
-        Learner GetByUserId(int userId);
-        Learner GetByIndex(string index);
-    }
+    Learner GetByUserId(int userId);
+    Learner GetByIndex(string index);
 }

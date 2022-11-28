@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace Tutor.Core.Domain.LearningUtilities
+namespace Tutor.Core.Domain.LearningUtilities;
+
+public interface INoteRepository
 {
-    public interface INoteRepository
-    {
-        Note Save(Note note);
+    Note Save(Note note);
 
-        int? Delete(int id);
+    int? Delete(int id);
 
-        Note Update(Note note);
+    Note Update(Note note);
 
-        List<Note> GetNotesByLearnerAndUnit(int learnerId, int unitId);
-    }
+    List<Note> GetNotesByLearnerAndUnit(int learnerId, int unitId);
 }

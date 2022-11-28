@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Tutor.Core.Domain.KnowledgeMastery
+namespace Tutor.Core.Domain.KnowledgeMastery;
+
+public interface IAssessmentItemSelector
 {
-    public interface IAssessmentItemSelector
-    {
-        int SelectSuitableAssessmentItemId(List<AssessmentItemMastery> assessmentMasteries, bool isPassed);
-    }
+    int SelectSuitableAssessmentItemId(List<AssessmentItemMastery> assessmentMasteries, bool isPassed);
 }

@@ -1,7 +1,6 @@
-﻿namespace Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiChoiceQuestions
+﻿namespace Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiChoiceQuestions;
+
+public class McqSubmissionDto : SubmissionDto
 {
-    public class McqSubmissionDto : SubmissionDto
-    {
-        public string Answer { get; set; }
-    }
+    public string Answer { get; set; }
 }

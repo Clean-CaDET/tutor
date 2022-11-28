@@ -1,9 +1,8 @@
 ﻿using Tutor.Infrastructure.Security.Authentication.Users;
 
-namespace Tutor.Infrastructure.Security.Authentication
+namespace Tutor.Infrastructure.Security.Authentication;
+
+public interface IUserRepository
 {
-    public interface IUserRepository
-    {
-        public User GetByName(string username);
-    }
+    public User GetByName(string username);
 }

@@ -8,58 +8,57 @@ using Tutor.Web.Controllers.Learners.Learning.Assessment;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Learning.Assessment
+namespace Tutor.Web.Tests.Integration.Learning.Assessment;
+
+[Collection("Sequential")]
+public class SelectionTests : BaseWebIntegrationTest
 {
-    [Collection("Sequential")]
-    public class SelectionTests : BaseWebIntegrationTest
+    public SelectionTests(TutorApplicationTestFactory<Startup> factory) : base(factory)
     {
-        public SelectionTests(TutorApplicationTestFactory<Startup> factory) : base(factory)
-        {
-        }
+    }
 
-        [Theory]
-        [MemberData(nameof(AssessmentItemRequest))]
-        public void Gets_suitable_assessment_event(int knowledgeComponentId, int expectedSuitableAssessmentItemId)
-        {
-            using var scope = Factory.Services.CreateScope();
-            var controller = SetupAssessmentSelectionController(scope, "-2");
+    [Theory]
+    [MemberData(nameof(AssessmentItemRequest))]
+    public void Gets_suitable_assessment_event(int knowledgeComponentId, int expectedSuitableAssessmentItemId)
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupAssessmentSelectionController(scope, "-2");
 
-            var actualSuitableAssessmentItem =
-                ((OkObjectResult) controller.GetSuitableAssessmentItem(knowledgeComponentId).Result)?.Value as AssessmentItemDto;
-            actualSuitableAssessmentItem.ShouldNotBeNull();
+        var actualSuitableAssessmentItem =
+            ((OkObjectResult) controller.GetSuitableAssessmentItem(knowledgeComponentId).Result)?.Value as AssessmentItemDto;
+        actualSuitableAssessmentItem.ShouldNotBeNull();
             
-            actualSuitableAssessmentItem.Id.ShouldBe(expectedSuitableAssessmentItemId);
-        }
+        actualSuitableAssessmentItem.Id.ShouldBe(expectedSuitableAssessmentItemId);
+    }
 
-        private SelectionController SetupAssessmentSelectionController(IServiceScope scope, string id)
+    private SelectionController SetupAssessmentSelectionController(IServiceScope scope, string id)
+    {
+        return new SelectionController(Factory.Services.GetRequiredService<IMapper>(),
+            scope.ServiceProvider.GetRequiredService<ISelectionService>())
         {
-            return new SelectionController(Factory.Services.GetRequiredService<IMapper>(),
-                scope.ServiceProvider.GetRequiredService<ISelectionService>())
-            {
-                ControllerContext = BuildContext(id, "learner")
-            };
-        }
+            ControllerContext = BuildContext(id, "learner")
+        };
+    }
 
-        public static IEnumerable<object[]> AssessmentItemRequest()
+    public static IEnumerable<object[]> AssessmentItemRequest()
+    {
+        return new List<object[]>
         {
-            return new List<object[]>
+            new object[]
             {
-                new object[]
-                {
-                    -14,
-                    -144
-                },
-                new object[]
-                {
-                    -15,
-                    -153
-                },
-                new object[]
-                {
-                    -13,
-                    -134
-                }
-            };
-        }
+                -14,
+                -144
+            },
+            new object[]
+            {
+                -15,
+                -153
+            },
+            new object[]
+            {
+                -13,
+                -134
+            }
+        };
     }
 }

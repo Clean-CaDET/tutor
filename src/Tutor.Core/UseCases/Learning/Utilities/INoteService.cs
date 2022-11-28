@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using Tutor.Core.Domain.LearningUtilities;
 
-namespace Tutor.Core.UseCases.Learning.Utilities
+namespace Tutor.Core.UseCases.Learning.Utilities;
+
+public interface INoteService
 {
-    public interface INoteService
-    {
-        Result<Note> Save(Note note);
+    Result<Note> Save(Note note);
 
-        Result<int?> Delete(int id);
+    Result<int?> Delete(int id);
 
-        Result<Note> Update(Note note);
+    Result<Note> Update(Note note);
 
-        Result<List<Note>> GetAppropriateNotes(int learnerId, int unitId);
-    }
+    Result<List<Note>> GetAppropriateNotes(int learnerId, int unitId);
 }
