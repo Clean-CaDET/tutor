@@ -25,6 +25,7 @@ using Tutor.Core.UseCases.Learning;
 using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Core.UseCases.Learning.Utilities;
 using Tutor.Core.UseCases.Management.CourseIteration;
+using Tutor.Core.UseCases.Management.Knowledge;
 using Tutor.Core.UseCases.Management.Stakeholder;
 using Tutor.Core.UseCases.ProgressMonitoring;
 using Tutor.Infrastructure;
@@ -167,14 +168,13 @@ public class Startup
     #region Service Setup
     private void SetupServices(IServiceCollection services)
     {
-        SetupCoreLearningServices(services);
-        SetupSupportingLearningServices(services);
+        SetupLearningServices(services);
+        SetupManagementServices(services);
 
-        SetupSupportingStakeholderServices(services);
         services.AddScoped<IUnitAnalysisService, UnitAnalysisService>();
     }
 
-    private void SetupCoreLearningServices(IServiceCollection services)
+    private void SetupLearningServices(IServiceCollection services)
     {
         services.AddScoped<ISessionService, SessionService>();
         services.AddScoped<IStructureService, StructureService>();
@@ -182,23 +182,13 @@ public class Startup
         services.AddScoped<ISelectionService, SelectionService>();
         services.AddScoped<IEvaluationService, EvaluationService>();
         services.AddScoped<IHelpService, HelpService>();
-            
-        services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
-        SetupMoveOn(services);
-    }
 
-    private static void SetupSupportingLearningServices(IServiceCollection services)
-    {
         services.AddScoped<IFeedbackService, FeedbackService>();
         services.AddScoped<INoteService, NoteService>();
-    }
 
-    private static void SetupSupportingStakeholderServices(IServiceCollection services)
-    {
-        services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
         services.AddScoped<ICourseIterationMonitoringService, CourseIterationMonitoringService>();
-        services.AddScoped<ILearnerService, LearnerService>();
-        services.AddScoped<IEnrollmentService, EnrollmentService>();
+        services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
+        SetupMoveOn(services);
     }
 
     private void SetupMoveOn(IServiceCollection services)
@@ -206,6 +196,17 @@ public class Startup
         var moveOnCriteria = Configuration.GetValue<string>("MoveOn");
         var moveOnType = MoveOnResolver.ResolveOrDefault(moveOnCriteria);
         services.AddScoped(typeof(IMoveOnCriteria), moveOnType);
+    }
+
+    private static void SetupManagementServices(IServiceCollection services)
+    {
+        services.AddScoped<ICourseService, CourseService>();
+        services.AddScoped<IUnitService, UnitService>();
+
+        services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
+        
+        services.AddScoped<ILearnerService, LearnerService>();
+        services.AddScoped<IEnrollmentService, EnrollmentService>();
     }
     #endregion
 
@@ -217,6 +218,9 @@ public class Startup
         services.AddScoped<IKnowledgeMasteryRepository, KnowledgeMasteryDatabaseRepository>();
         services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
         services.AddScoped<INoteRepository, NoteRepository>();
+
+        services.AddScoped<ICrudCourseRepository, CrudCourseDatabaseRepository>();
+        services.AddScoped<ICrudUnitRepository, CrudUnitDatabaseRepository>();
         services.AddScoped<IInstructorRepository, InstructorDatabaseRepository>();
         services.AddScoped<IOwnedCourseRepository, OwnedCourseDatabaseRepository>();
         services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();

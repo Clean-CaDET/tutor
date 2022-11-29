@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Tutor.Core.BuildingBlocks;
+namespace Tutor.Core.BuildingBlocks.Generics;
 
 public interface ICrudRepository<TEntity> where TEntity : Entity
 {

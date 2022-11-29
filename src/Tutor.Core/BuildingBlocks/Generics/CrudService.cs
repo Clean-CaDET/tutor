@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 
-namespace Tutor.Core.BuildingBlocks;
+namespace Tutor.Core.BuildingBlocks.Generics;
 
 public class CrudService<T> where T : Entity
 {

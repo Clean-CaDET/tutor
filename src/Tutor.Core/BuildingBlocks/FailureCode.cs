@@ -8,4 +8,5 @@ public static class FailureCode
     public static readonly IError InvalidAssessmentSubmission = new Error("Invalid assessment submission.");
 
     public static readonly IError NotFound = new Error("Accessed resource not found.");
+    public static readonly IError Forbidden = new Error("Access to resource is restricted.");
 }

@@ -32,7 +32,7 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
     {
         return _dbContext.UnitEnrollments
             .Where(ue => ue.LearnerId.Equals(learnerId)
-                         && ue.KnowledgeUnit.Course.Id.Equals(courseId)
+                         && ue.KnowledgeUnit.CourseId.Equals(courseId)
                          && ue.Status.Equals(EnrollmentStatus.Active))
             .Include(ue => ue.KnowledgeUnit)
             .Select(ue => ue.KnowledgeUnit).ToList();

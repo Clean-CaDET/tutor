@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Tutor.Core.BuildingBlocks;
+using Tutor.Core.BuildingBlocks.Generics;
 
 namespace Tutor.Core.Domain.LearningUtilities;
 

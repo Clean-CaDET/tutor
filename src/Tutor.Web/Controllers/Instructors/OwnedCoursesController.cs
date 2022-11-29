@@ -11,12 +11,12 @@ namespace Tutor.Web.Controllers.Instructors;
 
 [Authorize(Policy = "instructorPolicy")]
 [Route("api/owned-courses")]
-public class InstructorController : BaseApiController
+public class OwnedCoursesController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly ICourseOwnershipService _courseOwnershipService;
     
-    public InstructorController(IMapper mapper, ICourseOwnershipService courseOwnershipService)
+    public OwnedCoursesController(IMapper mapper, ICourseOwnershipService courseOwnershipService)
     {
         _mapper = mapper;
         _courseOwnershipService = courseOwnershipService;

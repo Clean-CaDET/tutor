@@ -43,7 +43,8 @@ public class NoteController : BaseApiController
     [HttpDelete("{noteId:int}")]
     public ActionResult DeleteNote(int noteId)
     {
-        _noteService.Delete(noteId);
+        var result = _noteService.Delete(noteId, User.LearnerId());
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok();
     }
 

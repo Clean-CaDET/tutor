@@ -40,9 +40,9 @@ public class InstructorTests : BaseWebIntegrationTest
         result.KnowledgeUnits.Count.ShouldBe(2);
     }
 
-    private InstructorController SetupInstructorController(IServiceScope scope, string id)
+    private OwnedCoursesController SetupInstructorController(IServiceScope scope, string id)
     {
-        return new InstructorController(Factory.Services.GetRequiredService<IMapper>(),
+        return new OwnedCoursesController(Factory.Services.GetRequiredService<IMapper>(),
             scope.ServiceProvider.GetRequiredService<ICourseOwnershipService>())
         {
             ControllerContext = BuildContext(id, "instructor")
