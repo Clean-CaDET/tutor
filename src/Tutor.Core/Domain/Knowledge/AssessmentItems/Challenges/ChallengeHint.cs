@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
 
 namespace Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;

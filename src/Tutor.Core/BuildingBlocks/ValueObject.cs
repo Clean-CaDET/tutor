@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Tutor.Core.BuildingBlocks;
 
-public abstract class ValueObject : IEquatable<ValueObject>
+public abstract class ValueObject
 {
     protected abstract IEnumerable<object> GetEqualityComponents();
 
@@ -35,10 +34,5 @@ public abstract class ValueObject : IEquatable<ValueObject>
         return GetEqualityComponents()
             .Select(x => x != null ? x.GetHashCode() : 0)
             .Aggregate((x, y) => x ^ y);
-    }
-
-    public bool Equals(ValueObject other)
-    {
-        return Equals((object)other);
     }
 }

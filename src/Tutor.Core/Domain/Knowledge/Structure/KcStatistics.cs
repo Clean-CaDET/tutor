@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Tutor.Core.BuildingBlocks;
 
 namespace Tutor.Core.Domain.Knowledge.Structure;
