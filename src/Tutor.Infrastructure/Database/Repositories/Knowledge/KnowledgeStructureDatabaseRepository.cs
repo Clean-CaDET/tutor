@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.Core.Domain.Knowledge.Structure;
 
 namespace Tutor.Infrastructure.Database.Repositories.Knowledge;

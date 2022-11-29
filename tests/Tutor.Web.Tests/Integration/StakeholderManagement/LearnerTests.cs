@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using Tutor.Core.UseCases.StakeholderManagement;
+using Tutor.Core.UseCases.Management.Stakeholder;
 using Tutor.Web.Controllers.Learners;
 using Tutor.Web.Mappings.CourseIteration;
 using Xunit;

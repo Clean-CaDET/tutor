@@ -1,7 +1,7 @@
 using FluentResults;
 using Tutor.Core.Domain.Stakeholders;
 
-namespace Tutor.Core.UseCases.StakeholderManagement;
+namespace Tutor.Core.UseCases.Management.Stakeholder;
 
 public interface ILearnerService
 {

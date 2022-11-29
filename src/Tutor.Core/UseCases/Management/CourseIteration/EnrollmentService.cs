@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.Structure;
 
-namespace Tutor.Core.UseCases.CourseIterationManagement;
+namespace Tutor.Core.UseCases.Management.CourseIteration;
 
 public class EnrollmentService : IEnrollmentService
 {
@@ -13,7 +13,7 @@ public class EnrollmentService : IEnrollmentService
     {
         _enrollmentRepository = enrollmentRepository;
     }
-    
+
     public Result<List<Course>> GetEnrolledCourses(int learnerId)
     {
         return _enrollmentRepository.GetEnrolledCourses(learnerId);

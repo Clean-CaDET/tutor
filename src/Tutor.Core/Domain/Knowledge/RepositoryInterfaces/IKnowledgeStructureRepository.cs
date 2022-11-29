@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Tutor.Core.Domain.Knowledge.Structure;
 
-namespace Tutor.Core.Domain.Knowledge.Structure;
+namespace Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 
 public interface IKnowledgeStructureRepository
 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.InstructionalItems;
+using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.Domain.KnowledgeMastery;
 

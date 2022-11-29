@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Tutor.Core.Domain.Knowledge.Structure;
 
-namespace Tutor.Core.UseCases.CourseIterationManagement;
+namespace Tutor.Core.UseCases.Management.CourseIteration;
 
 public interface IEnrollmentService
 {

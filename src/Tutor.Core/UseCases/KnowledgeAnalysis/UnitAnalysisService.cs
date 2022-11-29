@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.Domain.CourseIteration;
+using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.Domain.KnowledgeMastery.Events;
 using Tutor.Core.Domain.KnowledgeMastery.Events.KnowledgeComponentEvents;
