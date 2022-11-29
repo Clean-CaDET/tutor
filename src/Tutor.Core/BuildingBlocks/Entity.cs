@@ -9,16 +9,6 @@ public abstract class Entity
         return obj is Entity entity && Id.Equals(entity.Id);
     }
 
-    public static bool operator ==(Entity left, Entity right)
-    {
-        return Equals(left, right);
-    }
-
-    public static bool operator !=(Entity left, Entity right)
-    {
-        return !Equals(left, right);
-    }
-
     public override int GetHashCode()
     {
         return Id.GetHashCode();
