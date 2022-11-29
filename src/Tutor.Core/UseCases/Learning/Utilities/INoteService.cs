@@ -6,11 +6,11 @@ namespace Tutor.Core.UseCases.Learning.Utilities;
 
 public interface INoteService
 {
-    Result<Note> Save(Note note);
+    Result<Note> Create(Note note);
 
-    Result<int?> Delete(int id);
+    Result Delete(int id);
 
-    Result<Note> Update(Note note);
+    Result Update(Note note);
 
     Result<List<Note>> GetAppropriateNotes(int learnerId, int unitId);
 }

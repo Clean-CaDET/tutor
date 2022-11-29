@@ -1,14 +1,9 @@
 ﻿using System.Collections.Generic;
+using Tutor.Core.BuildingBlocks;
 
 namespace Tutor.Core.Domain.LearningUtilities;
 
-public interface INoteRepository
+public interface INoteRepository : ICrudRepository<Note>
 {
-    Note Save(Note note);
-
-    int? Delete(int id);
-
-    Note Update(Note note);
-
     List<Note> GetNotesByLearnerAndUnit(int learnerId, int unitId);
 }

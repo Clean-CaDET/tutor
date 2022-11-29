@@ -27,27 +27,27 @@ public class NoteController : BaseApiController
     {
         var note = _mapper.Map<Note>(noteDto);
         note.LearnerId = User.LearnerId();
-        var result = _noteService.Save(note);
+        var result = _noteService.Create(note);
         return Ok(_mapper.Map<NoteDto>(result.Value));
     }
 
     [HttpPut]
-    public ActionResult<NoteDto> UpdateNote([FromBody] NoteDto noteDto)
+    public ActionResult UpdateNote([FromBody] NoteDto noteDto)
     {
         var note = _mapper.Map<Note>(noteDto);
         note.LearnerId = User.LearnerId();
-        var result = _noteService.Update(note);
-        return Ok(_mapper.Map<NoteDto>(result.Value));
+        _noteService.Update(note);
+        return Ok();
     }
 
     [HttpDelete("{noteId:int}")]
-    public ActionResult<int> DeleteNote(int noteId)
+    public ActionResult DeleteNote(int noteId)
     {
-        var result = _noteService.Delete(noteId);
-        return Ok(result.Value);
+        _noteService.Delete(noteId);
+        return Ok();
     }
 
-    [HttpGet("")]
+    [HttpGet]
     public ActionResult<List<NoteDto>> GetAppropriateNotes(int unitId)
     {
         var result = _noteService.GetAppropriateNotes(User.LearnerId(), unitId);

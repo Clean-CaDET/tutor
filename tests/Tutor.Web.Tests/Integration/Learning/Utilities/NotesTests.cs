@@ -32,8 +32,9 @@ public class NotesTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupNotesController(scope, "-2");
 
-        var id = ((OkObjectResult)controller.DeleteNote(-1).Result)?.Value;
-        id.ShouldBe(-1);
+        var result = (OkResult)controller.DeleteNote(-1);
+
+        result.StatusCode.ShouldBe(200);
     }
 
     [Fact]
@@ -43,9 +44,9 @@ public class NotesTests : BaseWebIntegrationTest
         var controller = SetupNotesController(scope, "-1");
 
         var noteDto = new NoteDto() { Text = "Test update", Id = -2, UnitId = -1 };
-        var note = ((OkObjectResult)controller.UpdateNote(noteDto).Result)?.Value as NoteDto;
+        var result = (OkResult)controller.UpdateNote(noteDto);
 
-        note.Text.ShouldBe("Test update");
+        result.StatusCode.ShouldBe(200);
     }
 
     [Fact]
