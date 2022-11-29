@@ -8,8 +8,8 @@ namespace Tutor.Core.UseCases.Management.Knowledge;
 
 public class UnitService : CrudService<KnowledgeUnit>, IUnitService
 {
-    private readonly ICrudUnitRepository _unitRepository;
-    public UnitService(ICrudUnitRepository unitRepository): base(unitRepository)
+    private readonly IUnitRepository _unitRepository;
+    public UnitService(IUnitRepository unitRepository): base(unitRepository)
     {
         _unitRepository = unitRepository;
     }

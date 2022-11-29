@@ -1,4 +1,6 @@
-namespace Tutor.Core.Domain.Knowledge.AssessmentItems;
+using Tutor.Core.Domain.Knowledge.AssessmentItems;
+
+namespace Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 
 public interface IAssessmentItemRepository
 {

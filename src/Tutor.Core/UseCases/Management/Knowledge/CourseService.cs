@@ -8,8 +8,8 @@ namespace Tutor.Core.UseCases.Management.Knowledge;
 
 public class CourseService : CrudService<Course>, ICourseService
 {
-    private readonly ICrudCourseRepository _courseRepository;
-    public CourseService (ICrudCourseRepository courseRepository) : base (courseRepository)
+    private readonly ICourseRepository _courseRepository;
+    public CourseService (ICourseRepository courseRepository) : base (courseRepository)
     {
         _courseRepository = courseRepository;
     }

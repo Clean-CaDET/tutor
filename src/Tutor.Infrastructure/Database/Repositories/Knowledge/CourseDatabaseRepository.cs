@@ -5,9 +5,9 @@ using Tutor.Core.Domain.Knowledge.Structure;
 
 namespace Tutor.Infrastructure.Database.Repositories.Knowledge;
 
-public class CrudCourseDatabaseRepository : CrudDatabaseRepository<Course>, ICrudCourseRepository
+public class CourseDatabaseRepository : CrudDatabaseRepository<Course>, ICourseRepository
 {
-    public CrudCourseDatabaseRepository(TutorContext dbContext) : base(dbContext) {}
+    public CourseDatabaseRepository(TutorContext dbContext) : base(dbContext) {}
 
     public List<Course> GetActive()
     {
