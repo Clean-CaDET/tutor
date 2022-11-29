@@ -1,13 +1,15 @@
-﻿namespace Tutor.Core.Domain.Knowledge.InstructionalItems;
+﻿using System.Collections.Generic;
+
+namespace Tutor.Core.Domain.Knowledge.InstructionalItems;
 
 public class Image : InstructionalItem
 {
     public string Url { get; private set; }
     public string Caption { get; private set; }
-
-    public Image(int id, int knowledgeComponentId, string url, string caption) : base(id, knowledgeComponentId)
+    protected override IEnumerable<object> GetEqualityComponents()
     {
-        Url = url;
-        Caption = caption;
+        yield return KnowledgeComponentId;
+        yield return Url;
+        yield return Caption;
     }
 }

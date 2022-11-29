@@ -1,4 +1,6 @@
-﻿namespace Tutor.Core.Domain.Knowledge.AssessmentItems.MultiChoiceQuestions;
+﻿using System.Collections.Generic;
+
+namespace Tutor.Core.Domain.Knowledge.AssessmentItems.MultiChoiceQuestions;
 
 public class McqEvaluation : Evaluation
 {
@@ -8,5 +10,11 @@ public class McqEvaluation : Evaluation
     {
         CorrectAnswer = correctAnswer;
         Feedback = feedback;
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return CorrectAnswer;
+        yield return Feedback;
     }
 }

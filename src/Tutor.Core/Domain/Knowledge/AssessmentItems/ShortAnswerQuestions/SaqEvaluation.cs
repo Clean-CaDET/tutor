@@ -9,4 +9,9 @@ public class SaqEvaluation : Evaluation
     {
         AcceptableAnswers = acceptableAnswers;
     }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        return AcceptableAnswers;
+    }
 }

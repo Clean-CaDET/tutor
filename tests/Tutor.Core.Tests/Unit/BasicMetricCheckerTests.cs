@@ -17,14 +17,14 @@ public class BasicMetricsCheckerTests
     {
         _basicMetricCheckers = new List<BasicMetricChecker>
         {
-            new(33701, "CLOC", 3, 30, new ChallengeHint(337001),"Methods.Small.PaymentService"),
-            new(33702, "NMD", 0, 2, new ChallengeHint(5),"Methods.Small.PaymentService"),
-            new(33701, "CLOC", 3, 30, new ChallengeHint(337001), "Methods.Small.Payment"),
-            new(33702, "NMD", 0, 2, new ChallengeHint(5), "Methods.Small.Payment"),
-            new(33703, "MELOC", 2, 5, new ChallengeHint(337002), "Methods.Small.PaymentService.CreatePayment(int, int)"),
-            new(33704, "NOP", 2, 4, new ChallengeHint(6), "Methods.Small.PaymentService.CreatePayment(int, int)"),
-            new(33703, "MELOC", 2, 5, new ChallengeHint(337002), "Methods.Small.PaymentService"),
-            new(33704, "NOP", 2, 4, new ChallengeHint(6), "Methods.Small.PaymentService")
+            new(33701, "CLOC", 3, 30, new ChallengeHint(337001, "337001"),"Methods.Small.PaymentService"),
+            new(33702, "NMD", 0, 2, new ChallengeHint(5, "5"),"Methods.Small.PaymentService"),
+            new(33701, "CLOC", 3, 30, new ChallengeHint(337001, "337001"), "Methods.Small.Payment"),
+            new(33702, "NMD", 0, 2, new ChallengeHint(5, "5"), "Methods.Small.Payment"),
+            new(33703, "MELOC", 2, 5, new ChallengeHint(337002, "337002"), "Methods.Small.PaymentService.CreatePayment(int, int)"),
+            new(33704, "NOP", 2, 4, new ChallengeHint(6, "6"), "Methods.Small.PaymentService.CreatePayment(int, int)"),
+            new(33703, "MELOC", 2, 5, new ChallengeHint(337002, "337002"), "Methods.Small.PaymentService"),
+            new(33704, "NOP", 2, 4, new ChallengeHint(6, "6"), "Methods.Small.PaymentService")
         };
     }
 
@@ -58,9 +58,9 @@ public class BasicMetricsCheckerTests
                 ChallengeTestData.GetTwoViolatingClasses(),
                 new List<ChallengeHint>
                 {
-                    new(6),
-                    new(337002),
-                    new(337001)
+                    new(6, "6"),
+                    new(337002, "337002"),
+                    new(337001, "337001")
                 }
             }
         };

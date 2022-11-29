@@ -1,6 +1,10 @@
-﻿namespace Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
+﻿using System;
+using System.Collections.Generic;
+using Tutor.Core.BuildingBlocks;
 
-public class ArrangeTaskContainerEvaluation
+namespace Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
+
+public class ArrangeTaskContainerEvaluation : ValueObject
 {
     public ArrangeTaskContainer FullAnswer { get; }
     public int IncorrectElementsCount { get; }
@@ -9,5 +13,11 @@ public class ArrangeTaskContainerEvaluation
     {
         FullAnswer = fullAnswer;
         IncorrectElementsCount = incorrectElementsCount;
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return FullAnswer;
+        yield return IncorrectElementsCount;
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System;
+using Tutor.Core.BuildingBlocks;
 
 namespace Tutor.Core.Domain.Knowledge.AssessmentItems;
 
-public abstract class Evaluation
+public abstract class Evaluation : ValueObject
 {
     public double CorrectnessLevel { get; }
     public bool Correct => CorrectnessLevel >= 0.9;

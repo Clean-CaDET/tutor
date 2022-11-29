@@ -1,15 +1,10 @@
-﻿namespace Tutor.Core.Domain.Knowledge.InstructionalItems;
+﻿using Tutor.Core.BuildingBlocks;
 
-public class InstructionalItem
+namespace Tutor.Core.Domain.Knowledge.InstructionalItems;
+
+public abstract class InstructionalItem : ValueObject
 {
     public int Id { get; private set; }
     public int KnowledgeComponentId { get; private set; }
     public int Order { get; private set; }
-    protected InstructionalItem() { }
-
-    protected InstructionalItem(int id, int knowledgeComponentId)
-    {
-        Id = id;
-        KnowledgeComponentId = knowledgeComponentId;
-    }
 }

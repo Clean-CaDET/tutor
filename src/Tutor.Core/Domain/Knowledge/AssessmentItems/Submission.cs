@@ -1,5 +1,5 @@
-﻿namespace Tutor.Core.Domain.Knowledge.AssessmentItems;
+﻿using Tutor.Core.BuildingBlocks;
 
-public abstract class Submission
-{
-}
+namespace Tutor.Core.Domain.Knowledge.AssessmentItems;
+
+public abstract class Submission : ValueObject {}

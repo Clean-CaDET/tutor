@@ -1,6 +1,9 @@
-﻿namespace Tutor.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
+﻿using System.Collections.Generic;
+using Tutor.Core.BuildingBlocks;
 
-public class MrqItemEvaluation
+namespace Tutor.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
+
+public class MrqItemEvaluation : ValueObject
 {
     public MrqItem FullItem { get; }
     public bool SubmissionWasCorrect { get; }
@@ -9,5 +12,11 @@ public class MrqItemEvaluation
     {
         FullItem = item;
         SubmissionWasCorrect = isCorrect;
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return FullItem;
+        yield return SubmissionWasCorrect;
     }
 }

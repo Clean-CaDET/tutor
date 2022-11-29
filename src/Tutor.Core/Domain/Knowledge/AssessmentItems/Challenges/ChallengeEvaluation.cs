@@ -1,4 +1,6 @@
-﻿namespace Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
+﻿using System.Collections.Generic;
+
+namespace Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
 
 public class ChallengeEvaluation : Evaluation
 {
@@ -9,5 +11,11 @@ public class ChallengeEvaluation : Evaluation
     {
         ApplicableHints = hints ?? new HintDirectory();
         SolutionUrl = solutionUrl;
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return ApplicableHints;
+        yield return SolutionUrl;
     }
 }

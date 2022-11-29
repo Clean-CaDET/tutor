@@ -9,4 +9,9 @@ public class MrqEvaluation : Evaluation
     {
         ItemEvaluations = evaluations;
     }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        return ItemEvaluations;
+    }
 }

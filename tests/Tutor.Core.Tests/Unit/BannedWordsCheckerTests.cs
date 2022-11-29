@@ -32,7 +32,7 @@ public class BannedWordsCheckerTests
             new BannedWordsChecker(new List<string>
             {
                 "Class", "Method", "List"
-            }, new ChallengeHint(21), null)
+            }, new ChallengeHint(21, "21"), null)
         });
     }
 
@@ -50,7 +50,7 @@ public class BannedWordsCheckerTests
                 ChallengeTestData.GetTwoViolatingClasses(),
                 new List<ChallengeHint>
                 {
-                    new(21)
+                    new(21, "21")
                 },
                 false
             }

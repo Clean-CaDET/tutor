@@ -11,4 +11,9 @@ public class ArrangeTaskEvaluation : Evaluation
     {
         ContainerEvaluations = containerEvaluations;
     }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        return ContainerEvaluations;
+    }
 }

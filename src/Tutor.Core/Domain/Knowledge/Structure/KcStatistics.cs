@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Tutor.Core.BuildingBlocks;
 
 namespace Tutor.Core.Domain.Knowledge.Structure;
 
-public class KcStatistics
+public class KcStatistics : ValueObject
 {
     public string KcCode { get; init; }
     public string KcName { get; init; }
@@ -14,22 +15,20 @@ public class KcStatistics
     public List<int> MinutesToCompletion { get; init; }
     public List<int> MinutesToPass { get; init; }
 
-    public override int GetHashCode()
+    protected override IEnumerable<object> GetEqualityComponents()
     {
-        return KcCode.GetHashCode();
-    }
-
-    public override bool Equals(object obj)
-    {
-        if (obj is not KcStatistics other) return false;
-        return KcCode == other.KcCode
-               && TotalCompleted == other.TotalCompleted
-               && TotalPassed == other.TotalPassed
-               && TotalStarted == other.TotalStarted
-               && TotalRegistered == other.TotalRegistered
-               && MinutesToCompletion.Count == other.MinutesToCompletion.Count
-               && MinutesToPass.Count == other.MinutesToPass.Count
-               && MinutesToCompletion.All(other.MinutesToCompletion.Contains)
-               && MinutesToPass.All(other.MinutesToPass.Contains);
+        yield return KcCode;
+        yield return TotalCompleted;
+        yield return TotalPassed;
+        yield return TotalStarted;
+        yield return TotalRegistered;
+        foreach (var minutes in MinutesToCompletion)
+        {
+            yield return minutes;
+        }
+        foreach (var minutes in MinutesToPass)
+        {
+            yield return minutes;
+        }
     }
 }

@@ -1,35 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
+using Tutor.Core.BuildingBlocks;
 
 namespace Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
 
-public sealed class ChallengeHint : IEquatable<ChallengeHint>
+public sealed class ChallengeHint : ValueObject
 {
     public int Id { get; private set; }
     public string Content { get; private set; }
 
-    private ChallengeHint() { }
-    public ChallengeHint(int id) : this()
+    public ChallengeHint(int id, string content)
     {
         Id = id;
-    }
-
-    public ChallengeHint(int id, string content) : this(id)
-    {
         Content = content;
     }
-
-    public override int GetHashCode()
+    protected override IEnumerable<object> GetEqualityComponents()
     {
-        return Id;
-    }
-
-    public override bool Equals(object obj)
-    {
-        return Equals(obj as ChallengeHint);
-    }
-
-    public bool Equals(ChallengeHint hint)
-    {
-        return Id.Equals(hint.Id);
+        yield return Content;
     }
 }

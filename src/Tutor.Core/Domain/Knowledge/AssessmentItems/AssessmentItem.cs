@@ -1,8 +1,9 @@
-﻿namespace Tutor.Core.Domain.Knowledge.AssessmentItems;
+﻿using Tutor.Core.BuildingBlocks;
 
-public abstract class AssessmentItem
+namespace Tutor.Core.Domain.Knowledge.AssessmentItems;
+
+public abstract class AssessmentItem : Entity
 {
-    public int Id { get; private set; }
     public int KnowledgeComponentId { get; private set; }
     public int Order { get; private set; }
 

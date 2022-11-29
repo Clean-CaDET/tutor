@@ -1,11 +1,11 @@
 ﻿using System;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Knowledge.Structure;
 
 namespace Tutor.Core.Domain.CourseIteration;
 
-public class UnitEnrollment
+public class UnitEnrollment : Entity
 {
-    public int Id { get; private set; }
     public int LearnerId { get; private set; }
     public KnowledgeUnit KnowledgeUnit { get; private set; }
     public DateTime Start { get; private set; }
