@@ -46,7 +46,7 @@ public class CourseController : BaseApiController
         return Ok();
     }
 
-    [HttpPut("{courseId:int}")]
+    [HttpDelete("{courseId:int}")]
     public ActionResult Delete(int courseId)
     {
         var result = _courseService.Delete(courseId);

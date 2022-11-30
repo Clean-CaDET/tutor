@@ -1,4 +1,5 @@
-﻿using FluentResults;
+﻿using System.Collections.Generic;
+using FluentResults;
 
 namespace Tutor.Core.BuildingBlocks.Generics;
 
@@ -8,6 +9,18 @@ public class CrudService<T> where T : Entity
     public CrudService(ICrudRepository<T> crudRepository)
     {
         _crudRepository = crudRepository;
+    }
+
+    public Result<List<T>> GetAll()
+    {
+        var result = _crudRepository.GetAll();
+        return Result.Ok(result);
+    }
+
+    public Result<T> Get(int id)
+    {
+        var result = _crudRepository.Get(id);
+        return Result.Ok(result);
     }
 
     public Result<T> Create(T entity)
