@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
-using Tutor.Core.Domain.Stakeholders;
+using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Web.Controllers.Users;
 using Tutor.Web.Mappings.CourseIteration;

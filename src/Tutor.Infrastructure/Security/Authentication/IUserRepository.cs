@@ -4,5 +4,5 @@ namespace Tutor.Infrastructure.Security.Authentication;
 
 public interface IUserRepository
 {
-    public User GetByName(string username);
+    public User GetActiveByName(string username);
 }

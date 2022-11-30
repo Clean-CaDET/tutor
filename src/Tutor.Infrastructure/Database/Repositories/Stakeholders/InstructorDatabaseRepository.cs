@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Tutor.Core.Domain.Stakeholders;
+using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 
 namespace Tutor.Infrastructure.Database.Repositories.Stakeholders;
 

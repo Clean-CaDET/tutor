@@ -1,10 +1,10 @@
 ﻿INSERT INTO public."Courses"(
-    "Id", "Name")
-VALUES (-1, 'TestCourse');
+    "Id", "Name", "IsArchived")
+VALUES (-1, 'TestCourse', false);
 
 INSERT INTO public."Courses"(
-    "Id", "Name")
-VALUES (-2, 'TestCourse');
+    "Id", "Name", "IsArchived")
+VALUES (-2, 'TestCourse', false);
 
 INSERT INTO public."KnowledgeUnits"(
 	"Id", "Name", "Description", "CourseId")

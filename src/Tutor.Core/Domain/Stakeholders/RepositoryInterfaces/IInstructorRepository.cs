@@ -1,4 +1,4 @@
-﻿namespace Tutor.Core.Domain.Stakeholders;
+﻿namespace Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 
 public interface IInstructorRepository
 {

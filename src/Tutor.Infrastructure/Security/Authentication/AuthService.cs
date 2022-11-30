@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 using Tutor.Core.BuildingBlocks;
-using Tutor.Core.Domain.Stakeholders;
+using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 using Tutor.Infrastructure.Security.Authentication.Users;
 
 namespace Tutor.Infrastructure.Security.Authentication;
@@ -23,7 +23,7 @@ public class AuthService : IAuthService
 
     public Result<AuthenticationTokens> Login(string username, string password)
     {
-        var user = _userRepository.GetByName(username);
+        var user = _userRepository.GetActiveByName(username);
         if (user == null || user.IsPasswordIncorrect(password))
             return Result.Fail(FailureCode.NotFound);
             

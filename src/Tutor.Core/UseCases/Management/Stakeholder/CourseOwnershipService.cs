@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
 using Tutor.Core.Domain.Knowledge.Structure;
-using Tutor.Core.Domain.Stakeholders;
+using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 
 namespace Tutor.Core.UseCases.Management.Stakeholder;
 

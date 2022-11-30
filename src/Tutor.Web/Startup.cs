@@ -18,7 +18,7 @@ using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
 using Tutor.Core.Domain.LearningUtilities;
-using Tutor.Core.Domain.Stakeholders;
+using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 using Tutor.Core.UseCases.KnowledgeAnalysis;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Core.UseCases.Learning.Assessment;

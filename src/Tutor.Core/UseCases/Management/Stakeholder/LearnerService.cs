@@ -1,6 +1,7 @@
 using FluentResults;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Stakeholders;
+using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 
 namespace Tutor.Core.UseCases.Management.Stakeholder;
 

@@ -24,10 +24,10 @@ internal static class EnrollmentToSqlTransformer
         sqlBuilder.AppendLine().AppendLine();
         foreach (var instructor in instructors)
         {
-            sqlBuilder.Append("INSERT INTO public.\"Users\"(\"Id\", \"Username\", \"Password\", \"Salt\", \"Role\") VALUES");
+            sqlBuilder.Append("INSERT INTO public.\"Users\"(\"Id\", \"Username\", \"Password\", \"Salt\", \"Role\", \"IsActive\") VALUES");
             sqlBuilder.AppendLine();
             sqlBuilder.Append("\t(" + instructor.Id + ", '" + instructor.Username + "', '"
-                              + instructor.Password + "', '" + instructor.Salt + "', 1);");
+                              + instructor.Password + "', '" + instructor.Salt + "', 1, true);");
             sqlBuilder.AppendLine().AppendLine();
 
             sqlBuilder.Append("INSERT INTO public.\"Instructors\"(\"Id\", \"UserId\", \"Name\", \"Surname\") VALUES");
