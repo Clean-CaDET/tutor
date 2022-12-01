@@ -11,9 +11,9 @@ using Xunit;
 namespace Tutor.Web.Tests.Integration.StakeholderManagement;
 
 [Collection("Sequential")]
-public class InstructorTests : BaseWebIntegrationTest
+public class OwnedCoursesTests : BaseWebIntegrationTest
 {
-    public InstructorTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
+    public OwnedCoursesTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
     [Theory]
     [InlineData("-51", 1)]

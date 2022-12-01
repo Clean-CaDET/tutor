@@ -9,7 +9,7 @@ using Tutor.Web.Mappings.Knowledge.DTOs;
 namespace Tutor.Web.Controllers.Administrators;
 
 [Authorize(Policy = "administratorPolicy")]
-[Route("api/management/stakeholders/{personId:int}/ownerships")]
+[Route("api/management/instructors/{instructorId:int}/ownerships")]
 public class CourseOwnershipController : BaseApiController
 {
     private readonly IMapper _mapper;
@@ -22,25 +22,25 @@ public class CourseOwnershipController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<CourseDto>> GetAll(int personId)
+    public ActionResult<List<CourseDto>> GetAll(int instructorId)
     {
-        var result = _ownershipService.GetOwnedCourses(personId);
+        var result = _ownershipService.GetOwnedCourses(instructorId);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok(result.Value.Select(_mapper.Map<CourseDto>).ToList());
     }
 
     [HttpPost]
-    public ActionResult Create(int personId, int courseId)
+    public ActionResult Create(int instructorId, int courseId)
     {
-        var result = _ownershipService.AssignOwnership(courseId, personId);
+        var result = _ownershipService.AssignOwnership(courseId, instructorId);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok();
     }
 
     [HttpDelete("{courseId:int}")]
-    public ActionResult Delete(int personId, int courseId)
+    public ActionResult Delete(int instructorId, int courseId)
     {
-        var result = _ownershipService.RemoveOwnership(courseId, personId);
+        var result = _ownershipService.RemoveOwnership(courseId, instructorId);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok();
     }

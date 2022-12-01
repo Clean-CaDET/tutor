@@ -144,7 +144,7 @@ public class SubmissionChallengeTests : BaseWebIntegrationTest
 
     private PluginController SetupChallengeEvaluationController(IServiceScope scope, string id)
     {
-        return new PluginController(scope.ServiceProvider.GetRequiredService<ILearnerRepository>(),
+        return new PluginController(
             Factory.Services.GetRequiredService<IMapper>(),
             scope.ServiceProvider.GetRequiredService<IEvaluationService>(),
             scope.ServiceProvider.GetRequiredService<IHelpService>())

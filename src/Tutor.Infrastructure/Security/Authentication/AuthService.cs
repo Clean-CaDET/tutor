@@ -1,6 +1,5 @@
 ﻿using FluentResults;
 using Tutor.Core.BuildingBlocks;
-using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 using Tutor.Infrastructure.Security.Authentication.Users;
 
 namespace Tutor.Infrastructure.Security.Authentication;
@@ -9,16 +8,11 @@ public class AuthService : IAuthService
 {
     private readonly JwtGenerator _tokenGenerator;
     private readonly IUserRepository _userRepository;
-    private readonly ILearnerRepository _learnerRepository;
-    private readonly IInstructorRepository _instructorRepository;
 
-    public AuthService(IUserRepository userRepository, ILearnerRepository learnerRepository,
-        IInstructorRepository instructorRepository)
+    public AuthService(IUserRepository userRepository)
     {
         _tokenGenerator = new JwtGenerator();
         _userRepository = userRepository;
-        _learnerRepository = learnerRepository;
-        _instructorRepository = instructorRepository;
     }
 
     public Result<AuthenticationTokens> Login(string username, string password)
@@ -27,7 +21,7 @@ public class AuthService : IAuthService
         if (user == null || user.IsPasswordIncorrect(password))
             return Result.Fail(FailureCode.NotFound);
             
-        return _tokenGenerator.GenerateAccessToken(user.Id, user.GetPrimaryRoleName(), AppendDomainDataToJwt(user));
+        return _tokenGenerator.GenerateAccessToken(user.Id, username, user.GetPrimaryRoleName(), AppendDomainDataToJwt(user));
     }
 
     public Result<AuthenticationTokens> RefreshToken(AuthenticationTokens authenticationTokens)
@@ -40,11 +34,11 @@ public class AuthService : IAuthService
         var id = 0;
         if (user.GetPrimaryRoleName().Equals("learner"))
         {
-            id = _learnerRepository.GetByUserId(user.Id).Id;
+            id = _userRepository.GetLearnerId(user.Id);
         }
         else if (user.GetPrimaryRoleName().Equals("instructor"))
         {
-            id = _instructorRepository.GetByUserId(user.Id).Id;
+            id = _userRepository.GetInstructorId(user.Id);
         }
         return id;
     }

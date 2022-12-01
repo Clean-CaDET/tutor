@@ -13,6 +13,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
+using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.Core.Domain.KnowledgeMastery;
@@ -211,6 +212,8 @@ public class Startup
     #region Repository Setup
     private static void SetupRepositories(IServiceCollection services)
     {
+        services.AddScoped(typeof(ICrudRepository<>), typeof(CrudDatabaseRepository<>));
+
         services.AddScoped<IKnowledgeComponentRepository, KnowledgeComponentDatabaseRepository>();
         services.AddScoped<IAssessmentItemRepository, AssessmentItemDatabaseRepository>();
         services.AddScoped<IKnowledgeMasteryRepository, KnowledgeMasteryDatabaseRepository>();
@@ -219,9 +222,7 @@ public class Startup
 
         services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
         services.AddScoped<IUnitRepository, UnitDatabaseRepository>();
-        services.AddScoped<IInstructorRepository, InstructorDatabaseRepository>();
         services.AddScoped<IOwnedCourseRepository, OwnedCourseDatabaseRepository>();
-        services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
         services.AddScoped<IGroupRepository, GroupDatabaseRepository>();
         services.AddScoped<IEnrollmentRepository, EnrollmentDatabaseRepository>();
         services.AddSingleton<IEventSerializer>(

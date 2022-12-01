@@ -1,10 +1,10 @@
-﻿namespace Tutor.Core.Domain.Stakeholders;
+﻿using Tutor.Core.BuildingBlocks;
 
-public class Instructor
+namespace Tutor.Core.Domain.Stakeholders;
+
+public class Instructor : Entity
 {
-    //Should be moved to a better place
-    public int Id { get; private set; }
-    public int UserId { get; private set; }
-    public string Name { get; private set; }
-    public string Surname { get; private set; }
+    public int UserId { get; protected set; }
+    public string Name { get; protected set; }
+    public string Surname { get; protected set; }
 }

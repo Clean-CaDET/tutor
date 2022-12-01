@@ -1,22 +1,9 @@
-using FluentResults;
-using Tutor.Core.BuildingBlocks;
+﻿using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.Stakeholders;
-using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 
 namespace Tutor.Core.UseCases.Management.Stakeholder;
 
-public class LearnerService : ILearnerService
+public class LearnerService : CrudService<Learner>, ILearnerService
 {
-    private readonly ILearnerRepository _learnerRepository;
-
-    public LearnerService(ILearnerRepository learnerRepository)
-    {
-        _learnerRepository = learnerRepository;
-    }
-
-    public Result<Learner> GetLearnerProfile(int id)
-    {
-        var learner = _learnerRepository.GetByUserId(id);
-        return learner == null ? Result.Fail(FailureCode.NotFound) : learner;
-    }
+    public LearnerService(ICrudRepository<Learner> crudRepository) : base(crudRepository) {}
 }
