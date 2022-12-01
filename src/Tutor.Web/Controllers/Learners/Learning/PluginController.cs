@@ -29,8 +29,9 @@ public class PluginController : ControllerBase
     [HttpPost("login")]
     public ActionResult<LearnerDto> LoginPlugin([FromBody] CredentialsDto credentials)
     {
-        var learner = _learnerRepository.GetByIndex(credentials.Username);
-        if (learner != null) return Ok(learner);
+        //var learner = _learnerRepository.GetByIndex(credentials.Username);
+        //if (learner != null) return Ok(learner);
+        // Need to fix this if we plan to support it further.
         return NotFound("Invalid index.");
     }
 

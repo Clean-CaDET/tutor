@@ -68,9 +68,8 @@ public class Startup
     private static void SetupControllers(IServiceCollection services)
     {
         services.AddAutoMapper(typeof(Startup));
-
         services.AddControllers().AddJsonOptions(SetupJsonOptions);
-
+        services.AddSwaggerGen();
         services.AddCors(options =>
         {
             options.AddPolicy(name: CorsPolicy,
@@ -235,6 +234,8 @@ public class Startup
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
         else
         {
