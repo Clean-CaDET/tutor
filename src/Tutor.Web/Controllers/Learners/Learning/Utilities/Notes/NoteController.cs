@@ -22,8 +22,15 @@ public class NoteController : BaseApiController
         _mapper = mapper;
     }
 
+    [HttpGet]
+    public ActionResult<List<NoteDto>> GetLearnersNotes(int unitId)
+    {
+        var result = _noteService.GetAppropriateNotes(User.LearnerId(), unitId);
+        return Ok(result.Value.Select(_mapper.Map<NoteDto>).ToList());
+    }
+
     [HttpPost]
-    public ActionResult<NoteDto> SaveNote([FromBody] NoteDto noteDto)
+    public ActionResult<NoteDto> Create([FromBody] NoteDto noteDto)
     {
         var note = _mapper.Map<Note>(noteDto);
         note.LearnerId = User.LearnerId();
@@ -31,8 +38,8 @@ public class NoteController : BaseApiController
         return Ok(_mapper.Map<NoteDto>(result.Value));
     }
 
-    [HttpPut]
-    public ActionResult UpdateNote([FromBody] NoteDto noteDto)
+    [HttpPut("{noteId:int}")]
+    public ActionResult Update([FromBody] NoteDto noteDto)
     {
         var note = _mapper.Map<Note>(noteDto);
         note.LearnerId = User.LearnerId();
@@ -41,17 +48,10 @@ public class NoteController : BaseApiController
     }
 
     [HttpDelete("{noteId:int}")]
-    public ActionResult DeleteNote(int noteId)
+    public ActionResult Delete(int noteId)
     {
         var result = _noteService.Delete(noteId, User.LearnerId());
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok();
-    }
-
-    [HttpGet]
-    public ActionResult<List<NoteDto>> GetAppropriateNotes(int unitId)
-    {
-        var result = _noteService.GetAppropriateNotes(User.LearnerId(), unitId);
-        return Ok(result.Value.Select(_mapper.Map<NoteDto>).ToList());
     }
 }

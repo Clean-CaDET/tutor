@@ -23,7 +23,7 @@ public class CourseIterationMonitoringController : BaseApiController
         _courseIterationMonitoringService = courseIterationMonitoringService;
     }
 
-    [HttpGet("")]
+    [HttpGet]
     public ActionResult<List<GroupDto>> GetAssignedGroups(int courseId)
     {
         var result = _courseIterationMonitoringService.GetAssignedGroups(User.InstructorId(), courseId);
@@ -31,7 +31,7 @@ public class CourseIterationMonitoringController : BaseApiController
         return Ok(result.Value.Select(_mapper.Map<GroupDto>).ToList());
     }
 
-    [HttpGet("all")]
+    [HttpGet("progress")]
     public ActionResult<PagedResult<LearnerProgressDto>> GetProgressForAll(int courseId, [FromQuery] int page, [FromQuery] int pageSize)
     {
         var result = _courseIterationMonitoringService.GetLearnersWithProgress(courseId, page, pageSize);
@@ -39,7 +39,7 @@ public class CourseIterationMonitoringController : BaseApiController
         return Ok(new PagedResult<LearnerProgressDto>(progress, result.TotalCount));
     }
 
-    [HttpGet("{groupId:int}")]
+    [HttpGet("progress/{groupId:int}")]
     public ActionResult<PagedResult<LearnerProgressDto>> GetProgressForGroup(int courseId, int groupId, [FromQuery] int page, [FromQuery] int pageSize)
     {
         var result = _courseIterationMonitoringService.GetLearnersWithProgressForGroup(courseId, groupId, page, pageSize);

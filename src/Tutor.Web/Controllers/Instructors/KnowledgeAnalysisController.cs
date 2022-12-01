@@ -22,7 +22,7 @@ public class KnowledgeAnalysisController : BaseApiController
         _mapper = mapper;
     }
 
-    [HttpGet("")]
+    [HttpGet]
     public ActionResult<List<KcStatisticsDto>> GetKcStatistics(int unitId)
     {
         var result = _unitAnalysisService.GetKnowledgeComponentsStats(unitId, User.InstructorId());
