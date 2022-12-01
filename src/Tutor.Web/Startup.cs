@@ -203,8 +203,9 @@ public class Startup
         services.AddScoped<IUnitService, UnitService>();
 
         services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
-        
         services.AddScoped<ILearnerService, LearnerService>();
+        services.AddScoped<IInstructorService, InstructorService>();
+        
         services.AddScoped<IEnrollmentService, EnrollmentService>();
     }
     #endregion

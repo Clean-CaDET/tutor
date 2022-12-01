@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using Tutor.Web.Mappings.Stakeholders;
 
 namespace Tutor.Web.Controllers.Administrators;
 
+[Authorize(Policy = "administratorPolicy")]
 [Route("api/management/instructors")]
 public class InstructorController : BaseApiController
 {
