@@ -10,25 +10,27 @@ namespace Tutor.Infrastructure.Database.Repositories;
 public class CrudDatabaseRepository<T> : ICrudRepository<T> where T : Entity
 {
     protected readonly TutorContext DbContext;
+    private readonly DbSet<T> _dbSet;
 
     public CrudDatabaseRepository(TutorContext dbContext)
     {
         DbContext = dbContext;
+        _dbSet = DbContext.Set<T>();
     }
 
     public T Get(int id)
     {
-        return DbContext.Set<T>().Find(id);
+        return _dbSet.Find(id);
     }
 
     public List<T> GetAll()
     {
-        return DbContext.Set<T>().ToList();
+        return _dbSet.ToList();
     }
 
     public T Create(T entity)
     {
-        DbContext.Set<T>().Add(entity);
+        _dbSet.Add(entity);
         DbContext.SaveChanges();
         return entity;
     }
@@ -41,8 +43,8 @@ public class CrudDatabaseRepository<T> : ICrudRepository<T> where T : Entity
 
     public void Delete(int id)
     {
-        var entity = DbContext.Set<T>().Find(id);
+        var entity = _dbSet.Find(id);
         if (entity == null) throw new ArgumentException("Entity not found: " + id);
-        DbContext.Set<T>().Remove(entity);
+        _dbSet.Remove(entity);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
-using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.Domain.Stakeholders;
