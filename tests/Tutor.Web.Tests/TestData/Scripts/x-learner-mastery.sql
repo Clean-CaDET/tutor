@@ -24,74 +24,74 @@ INSERT INTO public."LearnerGroups"(
 	"Id", "Name", "CourseId")
 VALUES (-1, 'Test Group', -1);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-    VALUES (-1, null, -51, -1, 1);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+    VALUES (-1, -51, -1, 1);
 INSERT INTO public."LearnerGroups"(
 	"Id", "Name", "CourseId")
 VALUES (-11, 'Test Group', -1);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-    VALUES (-101, null, -51, -11, 1);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+    VALUES (-101, -51, -11, 1);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-    VALUES (-102, -1, null, -11, 0);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+    VALUES (-102, -1, -11, 0);
 
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-	VALUES (-3, -2, null, -1, 0);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+	VALUES (-3, -2, -1, 0);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-	VALUES (-4, -3, null, -1, 0);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+	VALUES (-4, -3, -1, 0);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-	VALUES (-5, -4, null, -1, 0);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+	VALUES (-5, -4, -1, 0);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-	VALUES (-6, -5, null, -1, 0);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+	VALUES (-6, -5, -1, 0);
 
 INSERT INTO public."LearnerGroups"(
     "Id", "Name", "CourseId")
 VALUES (-2, 'Test Group', -2);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-7, null, -52, -2, 1);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+VALUES (-7, -52, -2, 1);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-8, -1, null, -2, 0);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+VALUES (-8, -1, -2, 0);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-9, -2, null, -2, 0);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+VALUES (-9, -2, -2, 0);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-10, -3, null, -2, 0);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+VALUES (-10, -3, -2, 0);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-11, -4, null, -2, 0);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+VALUES (-11, -4, -2, 0);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-12, -5, null, -2, 0);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+VALUES (-12, -5, -2, 0);
 
 INSERT INTO public."LearnerGroups"(
     "Id", "Name", "CourseId")
 VALUES (-3, 'Test Group', -2);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-13, null, -52, -3, 1);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+VALUES (-13, -52, -3, 1);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-14, -1, null, -3, 0);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+VALUES (-14, -1, -3, 0);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-15, -2, null, -3, 0);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+VALUES (-15, -2, -3, 0);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-16, -3, null, -3, 0);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+VALUES (-16, -3, -3, 0);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-17, -4, null, -3, 0);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+VALUES (-17, -4, -3, 0);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-18, -5, null, -3, 0);
+    "Id", "MemberId", "LearnerGroupId", "Role")
+VALUES (-18, -5, -3, 0);
 
 INSERT INTO public."UnitEnrollments"(
 	"Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")

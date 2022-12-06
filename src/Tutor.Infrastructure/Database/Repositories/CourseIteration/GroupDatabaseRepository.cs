@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,9 +21,9 @@ public class GroupDatabaseRepository : IGroupRepository
     public List<LearnerGroup> GetAssignedGroups(int instructorId, int courseId)
     {
         return _dbContext.LearnerGroups
-            .Where(lg => lg.Course.Id.Equals(courseId))
+            .Where(lg => lg.CourseId.Equals(courseId))
             .Include(lg => lg.Membership
-                .Where(m => m.Instructor.Id.Equals(instructorId))).ToList();
+                .Where(m => m.Member.Id.Equals(instructorId))).ToList();
     }
     
     public async Task<PagedResult<Learner>> GetGroupProgressAsync(int courseId, int groupId, int page, int pageSize)
@@ -38,41 +39,39 @@ public class GroupDatabaseRepository : IGroupRepository
     {
         return _dbContext.GroupMemberships
             .Where(g => g.LearnerGroupId == groupId && g.Role.Equals(Role.Learner))
-            .Include(g => g.Learner)
-            .ThenInclude(l => l.KnowledgeComponentMasteries)
+            .Include(g => g.Member)
+            .ThenInclude(l => ((Learner)l).KnowledgeComponentMasteries)
             .ThenInclude(kcm => kcm.AssessmentItemMasteries)
-            .Include(g => g.Learner)
-            .ThenInclude(l => l.KnowledgeComponentMasteries)
-            .Include(g => g.Learner)
-            .ThenInclude(l => l.KnowledgeComponentMasteries)
+            .Include(g => g.Member)
+            .ThenInclude(l => ((Learner)l).KnowledgeComponentMasteries)
+            .Include(g => g.Member)
+            .ThenInclude(l => ((Learner)l).KnowledgeComponentMasteries)
             .ThenInclude(kcm => kcm.SessionTracker)
-            .Select(g => g.Learner)
+            .Select(g => (Learner)g.Member)
             .GetPaged(page, pageSize);
     }
 
     private Task<PagedResult<Learner>> GetAllLearnersAsync(int page, int pageSize, int courseId)
     {
-        return _dbContext.LearnerGroups.Where(lg => lg.Course.Id.Equals(courseId))
-            .Include(lg => lg.Membership)
-            .ThenInclude(m => m.Learner)
-            .ThenInclude(l => l.KnowledgeComponentMasteries)
+        var learnerIds = _dbContext.LearnerGroups.Where(lg => lg.CourseId.Equals(courseId))
+            .Include(lg => lg.Membership.Where(m => m.Role == Role.Learner))
+            .SelectMany(m => m.Membership)
+            .Select(m => m.Member.Id);
+
+        var query = _dbContext.Learners.Where(learner => learnerIds.Contains(learner.Id))
+            .Include(l => l.KnowledgeComponentMasteries)
             .ThenInclude(kcm => kcm.AssessmentItemMasteries)
-            .Include(lg => lg.Membership)
-            .ThenInclude(m => m.Learner)
-            .ThenInclude(l => l.KnowledgeComponentMasteries)
-            .Include(lg => lg.Membership)
-            .ThenInclude(m => m.Learner)
-            .ThenInclude(l => l.KnowledgeComponentMasteries)
-            .ThenInclude(kcm => kcm.SessionTracker)
-            .SelectMany(lg => lg.Membership.Select(m => m.Learner)).Where(l => l != null).Distinct()
-            .GetPaged(page, pageSize);
+            .Include(l => l.KnowledgeComponentMasteries)
+            .ThenInclude(kcm => kcm.SessionTracker);
+       
+        return query.GetPaged(page, pageSize);
     }
 
     public List<Learner> GetLearnersInGroup(int groupId)
     {
         return _dbContext.GroupMemberships
             .Where(m => m.Role.Equals(Role.Learner) && m.LearnerGroupId == groupId)
-            .Include(m => m.Learner)
-            .Select(m => m.Learner).ToList();
+            .Include(m => m.Member)
+            .Select(m => (Learner)m.Member).ToList();
     }
 }

@@ -24,7 +24,7 @@ public class PluginController : ControllerBase
     }
 
     [HttpPost("login")]
-    public ActionResult<LearnerDto> LoginPlugin([FromBody] CredentialsDto credentials)
+    public ActionResult<StakeholderAccountDto> LoginPlugin([FromBody] CredentialsDto credentials)
     {
         //var learner = _learnerRepository.GetByIndex(credentials.Username);
         //if (learner != null) return Ok(learner);

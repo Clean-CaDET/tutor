@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.Domain.Stakeholders;
-using Tutor.Core.UseCases.Management.Stakeholder;
+using Tutor.Core.UseCases.Management.Stakeholders;
 using Tutor.Web.Mappings.Stakeholders;
 
 namespace Tutor.Web.Controllers.Administrators;
@@ -23,33 +23,33 @@ public class LearnerController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<LearnerDto>> GetAll()
+    public ActionResult<List<StakeholderAccountDto>> GetAll()
     {
         var result = _learnerService.GetAll();
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(result.Value.Select(_mapper.Map<LearnerDto>).ToList());
+        return Ok(result.Value.Select(_mapper.Map<StakeholderAccountDto>).ToList());
     }
 
     [HttpPost]
-    public ActionResult<LearnerDto> Create([FromBody] LearnerDto learner)
+    public ActionResult<StakeholderAccountDto> Register([FromBody] StakeholderAccountDto stakeholderAccount)
     {
-        var result = _learnerService.Create(_mapper.Map<Learner>(learner));
+        var result = _learnerService.Register(_mapper.Map<Learner>(stakeholderAccount), stakeholderAccount.Email, stakeholderAccount.Password);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<LearnerDto>(result.Value));
+        return Ok(_mapper.Map<StakeholderAccountDto>(result.Value));
     }
 
-    [HttpPut("{learnerId:int}")]
-    public ActionResult Update([FromBody] LearnerDto learner)
+    [HttpPut("{stakeholderId:int}")]
+    public ActionResult Update([FromBody] StakeholderAccountDto stakeholderAccount)
     {
-        var result = _learnerService.Update(_mapper.Map<Learner>(learner));
+        var result = _learnerService.Update(_mapper.Map<Learner>(stakeholderAccount));
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok();
     }
 
-    [HttpDelete("{learnerId:int}")]
-    public ActionResult Delete(int learnerId)
+    [HttpDelete("{stakeholderId:int}")]
+    public ActionResult Delete(int stakeholderId)
     {
-        var result = _learnerService.Delete(learnerId);
+        var result = _learnerService.Delete(stakeholderId);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok();
     }

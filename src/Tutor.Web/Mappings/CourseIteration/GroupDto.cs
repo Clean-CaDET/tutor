@@ -7,5 +7,5 @@ public class GroupDto
 {
     public int Id { get; set; }
     public string Name { get; set; }
-    public List<LearnerDto> Learners { get; set; }
+    public List<StakeholderAccountDto> Learners { get; set; }
 }

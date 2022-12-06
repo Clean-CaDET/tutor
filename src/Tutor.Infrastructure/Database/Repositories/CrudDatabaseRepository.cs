@@ -30,7 +30,7 @@ public class CrudDatabaseRepository<T> : ICrudRepository<T> where T : Entity
 
     public T Create(T entity)
     {
-        _dbSet.Add(entity);
+        _dbSet.Attach(entity);
         DbContext.SaveChanges();
         return entity;
     }
@@ -46,5 +46,6 @@ public class CrudDatabaseRepository<T> : ICrudRepository<T> where T : Entity
         var entity = _dbSet.Find(id);
         if (entity == null) throw new ArgumentException("Entity not found: " + id);
         _dbSet.Remove(entity);
+        DbContext.SaveChanges();
     }
 }

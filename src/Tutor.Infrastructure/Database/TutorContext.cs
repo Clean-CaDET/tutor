@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Reflection.Metadata;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
@@ -69,6 +70,7 @@ public class TutorContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Stakeholder>().UseTpcMappingStrategy();
         ConfigureKnowledge(modelBuilder);
         ConfigureKnowledgeMastery(modelBuilder);
         ConfigureCourseIteration(modelBuilder);
@@ -132,7 +134,7 @@ public class TutorContext : DbContext
     private static void ConfigureCourseIteration(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<GroupMembership>()
-            .HasOne(g => g.Learner)
+            .HasOne(g => g.Member)
             .WithMany();
     }
 }

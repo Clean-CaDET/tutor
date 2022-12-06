@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Tutor.Infrastructure.Security.Authentication.Users;
+﻿namespace Tutor.Core.Domain.Stakeholders;
 
 public class User
 {
@@ -11,9 +9,14 @@ public class User
     public UserRole Role { get; private set; }
     public bool IsActive { get; private set; }
 
-    public bool IsPasswordIncorrect(string password)
+    private User() {}
+    public User(string username, string password, string salt, UserRole role)
     {
-        return !Password.Equals(PasswordUtilities.HashPassword(password, Convert.FromBase64String(Salt)));
+        Username = username;
+        Password = password;
+        Salt = salt;
+        Role = role;
+        IsActive = true;
     }
 
     public string GetPrimaryRoleName()

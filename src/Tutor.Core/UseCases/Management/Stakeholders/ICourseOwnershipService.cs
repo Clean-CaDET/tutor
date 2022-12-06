@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Tutor.Core.Domain.Knowledge.Structure;
 
-namespace Tutor.Core.UseCases.Management.Stakeholder;
+namespace Tutor.Core.UseCases.Management.Stakeholders;
 
 public interface ICourseOwnershipService
 {

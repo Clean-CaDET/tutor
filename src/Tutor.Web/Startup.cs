@@ -26,7 +26,7 @@ using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Core.UseCases.Learning.Utilities;
 using Tutor.Core.UseCases.Management.CourseIteration;
 using Tutor.Core.UseCases.Management.Knowledge;
-using Tutor.Core.UseCases.Management.Stakeholder;
+using Tutor.Core.UseCases.Management.Stakeholders;
 using Tutor.Core.UseCases.ProgressMonitoring;
 using Tutor.Infrastructure;
 using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
@@ -108,7 +108,7 @@ public class Startup
     }
     private static void SetupAuth(IServiceCollection services)
     {
-        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IUserRepository, UserDatabaseRepository>();
 
         services.AddAuthorization(options =>

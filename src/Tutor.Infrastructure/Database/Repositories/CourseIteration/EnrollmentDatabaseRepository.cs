@@ -24,7 +24,7 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
     public List<Course> GetEnrolledCourses(int learnerId)
     {
         return _dbContext.LearnerGroups
-            .Where(lg => lg.Membership.Any(m => m.Learner.Id.Equals(learnerId)))
+            .Where(lg => lg.Membership.Any(m => m.Member.Id.Equals(learnerId)))
             .Select(lg => lg.Course).Distinct().ToList();
     }
 

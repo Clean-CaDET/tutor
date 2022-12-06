@@ -7,10 +7,10 @@ public class StakeholderProfile : Profile
 {
     public StakeholderProfile()
     {
-        CreateMap<LearnerDto, Learner>();
-        CreateMap<Learner, LearnerDto>();
+        CreateMap<StakeholderAccountDto, Learner>();
+        CreateMap<Learner, StakeholderAccountDto>();
 
-        CreateMap<InstructorDto, Instructor>();
-        CreateMap<Instructor, InstructorDto>();
+        CreateMap<StakeholderAccountDto, Instructor>();
+        CreateMap<Instructor, StakeholderAccountDto>();
     }
 }

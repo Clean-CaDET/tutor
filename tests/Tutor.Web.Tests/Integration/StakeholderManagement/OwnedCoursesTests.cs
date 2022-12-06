@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
-using Tutor.Core.UseCases.Management.Stakeholder;
+using Tutor.Core.UseCases.Management.Stakeholders;
 using Tutor.Web.Controllers.Instructors;
 using Tutor.Web.Mappings.Knowledge.DTOs;
 using Xunit;
