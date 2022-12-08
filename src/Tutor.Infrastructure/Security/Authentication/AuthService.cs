@@ -27,7 +27,7 @@ namespace Tutor.Infrastructure.Security.Authentication
             if (user == null || user.IsPasswordIncorrect(password))
                 return Result.Fail("The username or password is incorrect.");
             
-            return _tokenGenerator.GenerateAccessToken(user.Id, user.GetPrimaryRoleName(), AppendDomainDataToJwt(user));
+            return _tokenGenerator.GenerateAccessToken(user.Id, user.Username, user.GetPrimaryRoleName(), AppendDomainDataToJwt(user));
         }
 
         public Result<AuthenticationTokens> RefreshToken(AuthenticationTokens authenticationTokens)

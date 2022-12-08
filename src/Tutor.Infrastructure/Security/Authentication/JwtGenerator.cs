@@ -15,7 +15,7 @@ namespace Tutor.Infrastructure.Security.Authentication
         private readonly string _issuer = EnvironmentConnection.GetSecret("JWT_ISSUER") ?? "tutor";
         private readonly string _audience = EnvironmentConnection.GetSecret("JWT_AUDIENCE") ?? "tutor-front.com";
 
-        public Result<AuthenticationTokens> GenerateAccessToken(int userId, string role, int id)
+        public Result<AuthenticationTokens> GenerateAccessToken(int userId, string username, string role, int id)
         {
             var authenticationResponse = new AuthenticationTokens();
 
@@ -24,6 +24,7 @@ namespace Tutor.Infrastructure.Security.Authentication
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new("id", userId.ToString()),
                 new(role + "Id", id.ToString()),
+                new("username", username),
                 new(ClaimTypes.Role, role)
             };
             
@@ -64,7 +65,9 @@ namespace Tutor.Infrastructure.Security.Authentication
                                token.Claims.First(c => c.Type == "instructorId").Value);
             
             var role = token.Claims.First(c => c.Type.Equals(ClaimTypes.Role)).Value;
-            return ValidateRefreshToken(authenticationTokens.RefreshToken) ? GenerateAccessToken(userId, role, id) : Result.Fail("Refresh token is not valid!");
+            var username = token.Claims.First(c => c.Type == "username").Value;
+            
+            return ValidateRefreshToken(authenticationTokens.RefreshToken) ? GenerateAccessToken(userId, username, role, id) : Result.Fail("Refresh token is not valid!");
         }
 
         private bool ValidateRefreshToken(string refreshToken)
