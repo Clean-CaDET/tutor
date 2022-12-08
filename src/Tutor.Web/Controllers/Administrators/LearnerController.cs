@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Linq;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.UseCases.Management.Stakeholders;
 using Tutor.Web.Mappings.Stakeholders;
@@ -23,11 +23,13 @@ public class LearnerController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<StakeholderAccountDto>> GetAll()
+    public ActionResult<PagedResult<StakeholderAccountDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
     {
-        var result = _learnerService.GetAll();
+        var result = _learnerService.GetPaged(page, pageSize);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(result.Value.Select(_mapper.Map<StakeholderAccountDto>).ToList());
+
+        var items = result.Value.Results.Select(_mapper.Map<StakeholderAccountDto>).ToList();
+        return Ok(new PagedResult<StakeholderAccountDto>(items, result.Value.TotalCount));
     }
 
     [HttpPost]

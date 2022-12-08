@@ -26,7 +26,7 @@ public static class TutorDependencyInjection
     {
         var server = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "localhost";
         var port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "5432";
-        var database = EnvironmentConnection.GetSecret("DATABASE_SCHEMA") ?? "smart-tutor-db";
+        var database = EnvironmentConnection.GetSecret("DATABASE_SCHEMA") ?? "tutor-v2";
         var user = EnvironmentConnection.GetSecret("DATABASE_USERNAME") ?? "postgres";
         var password = EnvironmentConnection.GetSecret("DATABASE_PASSWORD") ?? "super";
         var integratedSecurity = Environment.GetEnvironmentVariable("DATABASE_INTEGRATED_SECURITY") ?? "false";

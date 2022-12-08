@@ -18,14 +18,21 @@ public class CrudDatabaseRepository<T> : ICrudRepository<T> where T : Entity
         _dbSet = DbContext.Set<T>();
     }
 
-    public T Get(int id)
+    public PagedResult<T> GetPaged(int page, int pageSize)
     {
-        return _dbSet.Find(id);
+        var task = _dbSet.GetPaged(page, pageSize);
+        task.Wait();
+        return task.Result;
     }
 
     public List<T> GetAll()
     {
         return _dbSet.ToList();
+    }
+
+    public T Get(int id)
+    {
+        return _dbSet.Find(id);
     }
 
     public T Create(T entity)
