@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Tutor.Infrastructure.Database.DataImport.Domain.DomainExcelModel;
-using Tutor.Infrastructure.Database.DataImport.Enrollment.EnrollmentExcelModel;
-using Tutor.Infrastructure.Database.DataImport.Learner;
+using Tutor.Infrastructure.DataImport.Domain.DomainExcelModel;
+using Tutor.Infrastructure.DataImport.Enrollment.EnrollmentExcelModel;
+using Tutor.Infrastructure.DataImport.Learner;
 
-namespace Tutor.Infrastructure.Database.DataImport.Enrollment;
+namespace Tutor.Infrastructure.DataImport.Enrollment;
 
 internal static class MasterySqlGenerator
 {

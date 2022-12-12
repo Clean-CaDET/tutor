@@ -1,4 +1,4 @@
-﻿namespace Tutor.Infrastructure.Database.DataImport.Enrollment.EnrollmentExcelModel;
+﻿namespace Tutor.Infrastructure.DataImport.Enrollment.EnrollmentExcelModel;
 
 internal class InstructorColumns
 {

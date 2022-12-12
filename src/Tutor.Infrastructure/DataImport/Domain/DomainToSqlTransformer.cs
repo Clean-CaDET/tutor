@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Tutor.Infrastructure.Database.DataImport.Domain.DomainExcelModel;
+using Tutor.Infrastructure.DataImport.Domain.DomainExcelModel;
 
-namespace Tutor.Infrastructure.Database.DataImport.Domain;
+namespace Tutor.Infrastructure.DataImport.Domain;
 
 public static class DomainToSqlTransformer
 {
@@ -81,11 +81,14 @@ public static class DomainToSqlTransformer
             sqlBuilder.AppendLine();
             switch (ie.Type)
             {
-                case "text": sqlBuilder.Append(BuildTextSql(ie));
+                case "text":
+                    sqlBuilder.Append(BuildTextSql(ie));
                     break;
-                case "image": sqlBuilder.Append(BuildImageSql(ie));
+                case "image":
+                    sqlBuilder.Append(BuildImageSql(ie));
                     break;
-                case "video": sqlBuilder.Append(BuildVideoSql(ie));
+                case "video":
+                    sqlBuilder.Append(BuildVideoSql(ie));
                     break;
             }
         }
@@ -187,7 +190,7 @@ public static class DomainToSqlTransformer
         sqlBuilder.AppendLine();
         var correctAnswer = FindMcqCorrectAnswerAndFeedback(ae.Items).Split("\n");
         sqlBuilder.Append("\t(" + ae.Id + ", '" + ae.Text + "', '{" + BuildMcqAnswers(ae.Items) + "}', '" +
-                          correctAnswer[0] + "', ' " + correctAnswer[2] +"');");
+                          correctAnswer[0] + "', ' " + correctAnswer[2] + "');");
         sqlBuilder.AppendLine().AppendLine();
         return sqlBuilder.ToString();
     }
@@ -219,7 +222,7 @@ public static class DomainToSqlTransformer
             sqlBuilder.AppendLine();
             sqlBuilder.Append("\t(" + startingContainerId-- + ", " + ae.Id + ", '" + itemParts[0] + "');");
             sqlBuilder.AppendLine();
-            sqlBuilder.Append(BuildAtElementSql(itemParts, startingContainerId+1));
+            sqlBuilder.Append(BuildAtElementSql(itemParts, startingContainerId + 1));
         }
 
         sqlBuilder.AppendLine().AppendLine();
@@ -230,12 +233,12 @@ public static class DomainToSqlTransformer
     {
         var startingElementId = startingContainerId * 10; //There won't be more than 10 items per container
         var sqlBuilder = new StringBuilder();
-        for (var i = 1; i < itemParts.Length; i+=2)
+        for (var i = 1; i < itemParts.Length; i += 2)
         {
             sqlBuilder.Append("INSERT INTO public.\"ArrangeTaskElements\"(\"Id\", \"ArrangeTaskContainerId\", \"Text\", \"Feedback\") VALUES");
             sqlBuilder.AppendLine();
             sqlBuilder.Append("\t(" + startingElementId-- + "," + startingContainerId + ", '"
-                              + itemParts[i] + "', '" + itemParts[i+1] + "');");
+                              + itemParts[i] + "', '" + itemParts[i + 1] + "');");
             sqlBuilder.AppendLine();
         }
 

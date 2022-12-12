@@ -10,7 +10,7 @@ using Tutor.Core.Domain.KnowledgeMastery.Events.AssessmentItemEvents;
 using Tutor.Core.Domain.KnowledgeMastery.Events.KnowledgeComponentEvents;
 using Tutor.Core.Domain.KnowledgeMastery.Events.SessionLifecycleEvents;
 
-namespace Tutor.Infrastructure.EventConfiguration;
+namespace Tutor.Infrastructure.Database.EventStore;
 
 public static class EventSerializationConfiguration
 {

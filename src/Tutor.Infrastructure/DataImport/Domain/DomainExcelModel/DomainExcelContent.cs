@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Tutor.Infrastructure.Database.DataImport.Domain.DomainExcelModel;
+namespace Tutor.Infrastructure.DataImport.Domain.DomainExcelModel;
 
 public class DomainExcelContent
 {

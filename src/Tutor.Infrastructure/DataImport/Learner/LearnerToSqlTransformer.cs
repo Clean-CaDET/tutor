@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 
-namespace Tutor.Infrastructure.Database.DataImport.Learner;
+namespace Tutor.Infrastructure.DataImport.Learner;
 
 internal static class LearnerToSqlTransformer
 {

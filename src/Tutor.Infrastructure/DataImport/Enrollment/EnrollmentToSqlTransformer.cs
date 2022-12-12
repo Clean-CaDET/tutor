@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using Tutor.Infrastructure.Database.DataImport.Domain.DomainExcelModel;
-using Tutor.Infrastructure.Database.DataImport.Enrollment.EnrollmentExcelModel;
-using Tutor.Infrastructure.Database.DataImport.Learner;
+using Tutor.Infrastructure.DataImport.Domain.DomainExcelModel;
+using Tutor.Infrastructure.DataImport.Enrollment.EnrollmentExcelModel;
+using Tutor.Infrastructure.DataImport.Learner;
 
-namespace Tutor.Infrastructure.Database.DataImport.Enrollment;
+namespace Tutor.Infrastructure.DataImport.Enrollment;
 
 internal static class EnrollmentToSqlTransformer
 {
@@ -17,7 +17,7 @@ internal static class EnrollmentToSqlTransformer
 
         return sqlBuilder.ToString();
     }
-        
+
     private static string BuildInstructorsSql(List<InstructorColumns> instructors)
     {
         var sqlBuilder = new StringBuilder();
@@ -68,7 +68,7 @@ internal static class EnrollmentToSqlTransformer
         foreach (var group in enrollmentContent.CourseGroups)
         {
             var course = courses.Find(c => c.Code.Equals(group.CourseCode));
-            if(course == null) continue;
+            if (course == null) continue;
 
             sqlBuilder.Append("INSERT INTO public.\"LearnerGroups\"(\"Id\", \"Name\", \"CourseId\") VALUES");
             sqlBuilder.AppendLine();

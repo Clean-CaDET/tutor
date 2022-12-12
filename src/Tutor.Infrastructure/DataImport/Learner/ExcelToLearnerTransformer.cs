@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Tutor.Infrastructure.Security.Authentication.Users;
 
-namespace Tutor.Infrastructure.Database.DataImport.Learner;
+namespace Tutor.Infrastructure.DataImport.Learner;
 
 internal class ExcelToLearnerTransformer
 {

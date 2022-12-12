@@ -1,9 +1,9 @@
 ﻿using System.IO;
-using Tutor.Infrastructure.Database.DataImport.Domain;
-using Tutor.Infrastructure.Database.DataImport.Enrollment;
-using Tutor.Infrastructure.Database.DataImport.Learner;
+using Tutor.Infrastructure.DataImport.Domain;
+using Tutor.Infrastructure.DataImport.Enrollment;
+using Tutor.Infrastructure.DataImport.Learner;
 
-namespace Tutor.Infrastructure.Database.DataImport;
+namespace Tutor.Infrastructure.DataImport;
 
 public static class ExcelToSqlTransformer
 {

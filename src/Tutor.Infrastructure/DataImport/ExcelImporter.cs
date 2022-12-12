@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Tutor.Infrastructure.Database.DataImport;
+namespace Tutor.Infrastructure.DataImport;
 
 public static class ExcelImporter
 {

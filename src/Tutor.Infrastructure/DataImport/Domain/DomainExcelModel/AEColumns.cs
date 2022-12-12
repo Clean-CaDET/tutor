@@ -1,12 +1,15 @@
-﻿namespace Tutor.Infrastructure.Database.DataImport.Domain.DomainExcelModel;
+﻿using System.Collections.Generic;
 
-public class IeColumns
+namespace Tutor.Infrastructure.DataImport.Domain.DomainExcelModel;
+
+public class AeColumns
 {
     public int Id { get; internal set; }
     public int KnowledgeComponentId { get; internal set; }
+
     public string Type { get; internal set; }
+
     public string Text { get; internal set; }
-    public string Url { get; internal set; }
-    public string Caption { get; internal set; }
+    public List<string> Items { get; internal set; }
     public int Order { get; set; }
 }

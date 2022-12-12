@@ -1,10 +1,10 @@
 ﻿using OfficeOpenXml;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Infrastructure.Database.DataImport.Domain.DomainExcelModel;
+using Tutor.Infrastructure.DataImport.Domain.DomainExcelModel;
 using static System.Int32;
 
-namespace Tutor.Infrastructure.Database.DataImport.Domain;
+namespace Tutor.Infrastructure.DataImport.Domain;
 
 public class ExcelToDomainTransformer
 {
@@ -168,7 +168,7 @@ public class ExcelToDomainTransformer
     private static List<string> GetAeItems(ExcelWorksheet sheet, int row)
     {
         var items = new List<string>();
-        var columns = new []{ "E", "F", "G", "H", "I", "J" };
+        var columns = new[] { "E", "F", "G", "H", "I", "J" };
 
         foreach (var column in columns)
         {

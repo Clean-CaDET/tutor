@@ -2,10 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Infrastructure.Database.DataImport.Enrollment.EnrollmentExcelModel;
+using Tutor.Infrastructure.DataImport.Enrollment.EnrollmentExcelModel;
 using Tutor.Infrastructure.Security.Authentication.Users;
 
-namespace Tutor.Infrastructure.Database.DataImport.Enrollment;
+namespace Tutor.Infrastructure.DataImport.Enrollment;
 
 internal class ExcelToEnrollmentTransformer
 {
