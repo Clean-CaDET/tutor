@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
 
@@ -23,11 +21,6 @@ public class CrudDatabaseRepository<T> : ICrudRepository<T> where T : Entity
         var task = _dbSet.GetPaged(page, pageSize);
         task.Wait();
         return task.Result;
-    }
-
-    public List<T> GetAll()
-    {
-        return _dbSet.ToList();
     }
 
     public T Get(int id)

@@ -1,5 +1,4 @@
 ﻿using FluentResults;
-using System.Collections.Generic;
 
 namespace Tutor.Core.BuildingBlocks.Generics;
 
@@ -14,12 +13,6 @@ public class CrudService<T> where T : Entity
     public Result<PagedResult<T>> GetPaged(int page, int pageSize)
     {
         var result = _crudRepository.GetPaged(page, pageSize);
-        return result;
-    }
-
-    public Result<List<T>> GetAll()
-    {
-        var result = _crudRepository.GetAll();
         return result;
     }
 

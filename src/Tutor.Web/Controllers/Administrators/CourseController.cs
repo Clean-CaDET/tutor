@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.UseCases.Management.Knowledge;
 using Tutor.Web.Mappings.Knowledge.DTOs;
@@ -23,11 +24,13 @@ public class CourseController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<CourseDto>> GetAll()
+    public ActionResult<List<CourseDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
     {
-        var result = _courseService.GetAll(true);
+        var result = _courseService.GetAll(true, page, pageSize);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(result.Value.Select(_mapper.Map<CourseDto>).ToList());
+
+        var items = result.Value.Results.Select(_mapper.Map<CourseDto>).ToList();
+        return Ok(new PagedResult<CourseDto>(items, result.Value.TotalCount));
     }
 
     [HttpPost]
