@@ -40,7 +40,7 @@ public class InstructorController : BaseApiController
         return Ok(_mapper.Map<StakeholderAccountDto>(result.Value));
     }
 
-    [HttpPut("{stakeholderId:int}")]
+    [HttpPut("{id:int}")]
     public ActionResult Update([FromBody] StakeholderAccountDto stakeholderAccount)
     {
         var result = _instructorService.Update(_mapper.Map<Instructor>(stakeholderAccount));
@@ -48,10 +48,18 @@ public class InstructorController : BaseApiController
         return Ok();
     }
 
-    [HttpDelete("{stakeholderId:int}")]
-    public ActionResult Delete(int stakeholderId)
+    [HttpPut("{id:int}/archive")]
+    public ActionResult Archive(int id, [FromBody] bool archive)
     {
-        var result = _instructorService.Delete(stakeholderId);
+        var result = _instructorService.Archive(id, archive);
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        return Ok();
+    }
+
+    [HttpDelete("{id:int}")]
+    public ActionResult Delete(int id)
+    {
+        var result = _instructorService.Delete(id);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok();
     }

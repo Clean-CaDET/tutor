@@ -10,4 +10,5 @@ public interface ILearnerService
     Result<Learner> Register(Learner learner, string username, string password);
     Result Update(Learner entity);
     Result Delete(int id);
+    Result Archive(int id, bool archive);
 }

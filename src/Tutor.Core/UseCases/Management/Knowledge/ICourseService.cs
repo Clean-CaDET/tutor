@@ -10,4 +10,5 @@ public interface ICourseService
     Result<Course> Create(Course course);
     Result Update(Course course);
     Result Delete(int id);
+    Result Archive(int id, bool archive);
 }

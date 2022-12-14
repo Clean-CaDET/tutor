@@ -8,4 +8,5 @@ public abstract class Stakeholder : Entity
     public string Name { get; protected set; }
     public string Surname { get; protected set; }
     public string Email { get; protected set; }
+    public bool IsArchived { get; set; }
 }

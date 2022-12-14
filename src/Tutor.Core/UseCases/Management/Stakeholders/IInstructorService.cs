@@ -10,4 +10,5 @@ public interface IInstructorService
     Result<Instructor> Register(Instructor instructor, string username, string password);
     Result Update(Instructor entity);
     Result Delete(int id);
+    Result Archive(int id, bool archive);
 }

@@ -1,24 +1,24 @@
 ﻿INSERT INTO public."Learners"(
-    "Id", "UserId", "Name", "Index")
-VALUES (-1, -1, 'Unenrolled Student', 'SU-1-2021');
+    "Id", "UserId", "Name", "Index", "Email")
+VALUES (-1, -1, 'Unenrolled Student', 'SU-1-2021', NULL);
 INSERT INTO public."Learners"(
-    "Id", "UserId", "Name", "Index")
-VALUES (-2, -2, 'Enrolled Student for KCM', 'SU-2-2021');
+    "Id", "UserId", "Name", "Index", "Email")
+VALUES (-2, -2, 'Enrolled Student for KCM', 'SU-2-2021', NULL);
 INSERT INTO public."Learners"(
-    "Id", "UserId", "Name", "Index")
-VALUES (-3, -3, 'Enrolled Student for Submissions', 'SU-3-2021');
+    "Id", "UserId", "Name", "Index", "Email")
+VALUES (-3, -3, 'Enrolled Student for Submissions', 'SU-3-2021', NULL);
 INSERT INTO public."Learners"(
-    "Id", "UserId", "Name", "Index")
-VALUES (-4, -4, 'Enrolled Student for Events', 'SU-4-2021');
+    "Id", "UserId", "Name", "Index", "Email")
+VALUES (-4, -4, 'Enrolled Student for Events', 'SU-4-2021', NULL);
 INSERT INTO public."Learners"(
-    "Id", "UserId", "Name", "Index")
-VALUES (-5, -5, 'Enrolled Student for Events', 'SU-5-2021');
+    "Id", "UserId", "Name", "Index", "Email")
+VALUES (-5, -5, 'Enrolled Student for Events', 'SU-5-2021', NULL);
 
-INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname") VALUES
-    (-51, -51, 'TestInstructor', 'TestInstructor');
+INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname", "Email") VALUES
+    (-51, -51, 'TestInstructor', 'TestInstructor', NULL);
 
-INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname") VALUES
-    (-52, -52, 'TestInstructor', 'TestInstructor');
+INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname", "Email") VALUES
+    (-52, -52, 'TestInstructor', 'TestInstructor', NULL);
 
 INSERT INTO public."LearnerGroups"(
 	"Id", "Name", "CourseId")

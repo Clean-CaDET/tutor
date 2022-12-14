@@ -69,6 +69,8 @@ public class TutorContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Stakeholder>().UseTpcMappingStrategy();
+        modelBuilder.Entity<Stakeholder>().Property(s => s.IsArchived).HasDefaultValue(false);
+
         ConfigureKnowledge(modelBuilder);
         ConfigureKnowledgeMastery(modelBuilder);
         ConfigureCourseIteration(modelBuilder);

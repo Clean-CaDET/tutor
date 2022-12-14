@@ -49,6 +49,14 @@ public class CourseController : BaseApiController
         return Ok();
     }
 
+    [HttpPut("{id:int}/archive")]
+    public ActionResult Archive(int id, [FromBody] bool archive)
+    {
+        var result = _courseService.Archive(id, archive);
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        return Ok();
+    }
+
     [HttpDelete("{courseId:int}")]
     public ActionResult Delete(int courseId)
     {
