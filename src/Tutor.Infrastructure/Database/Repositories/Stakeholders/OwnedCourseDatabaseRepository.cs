@@ -44,5 +44,6 @@ public class OwnedCourseDatabaseRepository : IOwnedCourseRepository
             .FirstOrDefault(o => o.Course.Id == courseId && o.InstructorId == instructorId);
         if (entity == null) throw new ArgumentException("Entity not found");
         _dbContext.CourseOwnerships.Remove(entity);
+        _dbContext.SaveChanges();
     }
 }

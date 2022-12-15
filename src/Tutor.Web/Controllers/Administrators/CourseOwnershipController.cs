@@ -30,7 +30,7 @@ public class CourseOwnershipController : BaseApiController
     }
 
     [HttpPost]
-    public ActionResult Create(int instructorId, int courseId)
+    public ActionResult Create(int instructorId, [FromBody] int courseId)
     {
         var result = _ownershipService.AssignOwnership(courseId, instructorId);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
