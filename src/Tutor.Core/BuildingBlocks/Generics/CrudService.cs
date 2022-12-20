@@ -28,10 +28,10 @@ public class CrudService<T> where T : Entity
         return createdEntity;
     }
 
-    public Result Update(T entity)
+    public Result<T> Update(T entity)
     {
-        _crudRepository.Update(entity);
-        return Result.Ok();
+        var updatedEntity = _crudRepository.Update(entity);
+        return Result.Ok(updatedEntity);
     }
 
     public Result Delete(int id)

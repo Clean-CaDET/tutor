@@ -23,13 +23,13 @@ public class InstructorService : CrudService<Instructor>, IInstructorService
         return Create(instructor);
     }
 
-    public Result Archive(int id, bool archive)
+    public Result<Instructor> Archive(int id, bool archive)
     {
         var instructor = _instructorRepository.Get(id);
         if (instructor == null) return Result.Fail(FailureCode.NotFound);
         // Warning: Explicit account (User) deactivation is missing.
         instructor.IsArchived = archive;
         _instructorRepository.Update(instructor);
-        return Result.Ok();
+        return Result.Ok(instructor);
     }
 }

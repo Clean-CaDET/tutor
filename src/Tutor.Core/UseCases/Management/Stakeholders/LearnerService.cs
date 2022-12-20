@@ -23,13 +23,13 @@ public class LearnerService : CrudService<Learner>, ILearnerService
         return Create(learner);
     }
 
-    public Result Archive(int id, bool archive)
+    public Result<Learner> Archive(int id, bool archive)
     {
         var learner = _learnerRepository.Get(id);
         if (learner == null) return Result.Fail(FailureCode.NotFound);
         // Warning: Explicit account (User) deactivation is missing.
         learner.IsArchived = archive;
         _learnerRepository.Update(learner);
-        return Result.Ok();
+        return Result.Ok(learner);
     }
 }

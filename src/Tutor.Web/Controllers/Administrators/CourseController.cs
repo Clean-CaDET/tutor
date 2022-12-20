@@ -42,19 +42,19 @@ public class CourseController : BaseApiController
     }
 
     [HttpPut("{courseId:int}")]
-    public ActionResult Update([FromBody] CourseDto course)
+    public ActionResult<CourseDto> Update([FromBody] CourseDto course)
     {
         var result = _courseService.Update(_mapper.Map<Course>(course));
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return Ok(_mapper.Map<CourseDto>(result.Value));
     }
 
     [HttpPut("{id:int}/archive")]
-    public ActionResult Archive(int id, [FromBody] bool archive)
+    public ActionResult<CourseDto> Archive(int id, [FromBody] bool archive)
     {
         var result = _courseService.Archive(id, archive);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return Ok(_mapper.Map<CourseDto>(result.Value));
     }
 
     [HttpDelete("{courseId:int}")]

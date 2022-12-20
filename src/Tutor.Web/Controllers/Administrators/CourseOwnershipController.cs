@@ -34,7 +34,7 @@ public class CourseOwnershipController : BaseApiController
     {
         var result = _ownershipService.AssignOwnership(courseId, instructorId);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return Ok(_mapper.Map<CourseDto>(result.Value));
     }
 
     [HttpDelete("{courseId:int}")]

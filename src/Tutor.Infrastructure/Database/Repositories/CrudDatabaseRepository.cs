@@ -35,10 +35,11 @@ public class CrudDatabaseRepository<T> : ICrudRepository<T> where T : Entity
         return entity;
     }
 
-    public void Update(T entity)
+    public T Update(T entity)
     {
         DbContext.Entry(entity).State = EntityState.Modified;
         DbContext.SaveChanges();
+        return entity;
     }
 
     public void Delete(int id)

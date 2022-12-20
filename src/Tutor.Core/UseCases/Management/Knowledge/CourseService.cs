@@ -18,13 +18,13 @@ public class CourseService : CrudService<Course>, ICourseService
         return includeArchived ? _courseRepository.GetPaged(page, pageSize) : _courseRepository.GetActive(page, pageSize);
     }
 
-    public Result Archive(int id, bool archive)
+    public Result<Course> Archive(int id, bool archive)
     {
         var course = _courseRepository.Get(id);
         if (course == null) return Result.Fail(FailureCode.NotFound);
 
         course.IsArchived = archive;
         _courseRepository.Update(course);
-        return Result.Ok();
+        return Result.Ok(course);
     }
 }

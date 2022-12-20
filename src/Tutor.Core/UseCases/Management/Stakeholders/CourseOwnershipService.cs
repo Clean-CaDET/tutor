@@ -29,14 +29,14 @@ public class CourseOwnershipService : ICourseOwnershipService
         return _ownedCourseRepository.GetOwnedCourseWithUnits(courseId, instructorId);
     }
 
-    public Result AssignOwnership(int courseId, int instructorId)
+    public Result<Course> AssignOwnership(int courseId, int instructorId)
     {
         var course = _courseRepository.Get(courseId);
         if(course == null) return Result.Fail(FailureCode.NotFound);
 
         var ownership = new CourseOwnership(course, instructorId);
         _ownedCourseRepository.CreateCourseOwnership(ownership);
-        return Result.Ok();
+        return Result.Ok(course);
     }
 
     public Result RemoveOwnership(int courseId, int instructorId)

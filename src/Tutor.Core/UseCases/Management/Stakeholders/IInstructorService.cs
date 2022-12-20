@@ -8,7 +8,7 @@ public interface IInstructorService
 {
     Result<PagedResult<Instructor>> GetPaged(int page, int pageSize);
     Result<Instructor> Register(Instructor instructor, string username, string password);
-    Result Update(Instructor entity);
+    Result<Instructor> Update(Instructor entity);
+    Result<Instructor> Archive(int id, bool archive);
     Result Delete(int id);
-    Result Archive(int id, bool archive);
 }

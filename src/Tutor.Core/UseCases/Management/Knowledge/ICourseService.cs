@@ -8,7 +8,7 @@ public interface ICourseService
 {
     Result<PagedResult<Course>> GetAll(bool includeArchived, int page, int pageSize);
     Result<Course> Create(Course course);
-    Result Update(Course course);
+    Result<Course> Update(Course course);
+    Result<Course> Archive(int id, bool archive);
     Result Delete(int id);
-    Result Archive(int id, bool archive);
 }
