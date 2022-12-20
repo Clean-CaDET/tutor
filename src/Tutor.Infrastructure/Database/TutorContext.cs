@@ -13,7 +13,6 @@ using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.LearningUtilities;
 using Tutor.Core.Domain.Stakeholders;
-using Tutor.Infrastructure.Security.Authentication.Users;
 
 namespace Tutor.Infrastructure.Database;
 
@@ -69,6 +68,9 @@ public class TutorContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Stakeholder>().UseTpcMappingStrategy();
+        modelBuilder.Entity<Stakeholder>().Property(s => s.IsArchived).HasDefaultValue(false);
+
         ConfigureKnowledge(modelBuilder);
         ConfigureKnowledgeMastery(modelBuilder);
         ConfigureCourseIteration(modelBuilder);
@@ -132,7 +134,7 @@ public class TutorContext : DbContext
     private static void ConfigureCourseIteration(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<GroupMembership>()
-            .HasOne(g => g.Learner)
+            .HasOne(g => g.Member)
             .WithMany();
     }
 }

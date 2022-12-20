@@ -5,8 +5,8 @@ using System.Collections.Immutable;
 using System.Linq;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.Domain.KnowledgeMastery.Events.AssessmentItemEvents;
+using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
-using Tutor.Infrastructure.EventConfiguration;
 using Tutor.Infrastructure.Tests.TestData.EventStore;
 using Xunit;
 

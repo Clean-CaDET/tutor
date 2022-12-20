@@ -13,28 +13,29 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
+using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.CourseIteration;
-using Tutor.Core.Domain.Knowledge.AssessmentItems;
-using Tutor.Core.Domain.Knowledge.Structure;
+using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
 using Tutor.Core.Domain.LearningUtilities;
-using Tutor.Core.Domain.Stakeholders;
-using Tutor.Core.UseCases.CourseIterationManagement;
+using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 using Tutor.Core.UseCases.KnowledgeAnalysis;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Core.UseCases.Learning.Utilities;
+using Tutor.Core.UseCases.Management.CourseIteration;
+using Tutor.Core.UseCases.Management.Knowledge;
+using Tutor.Core.UseCases.Management.Stakeholders;
 using Tutor.Core.UseCases.ProgressMonitoring;
-using Tutor.Core.UseCases.StakeholderManagement;
 using Tutor.Infrastructure;
+using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.Infrastructure.Database.Repositories;
 using Tutor.Infrastructure.Database.Repositories.CourseIteration;
 using Tutor.Infrastructure.Database.Repositories.Knowledge;
 using Tutor.Infrastructure.Database.Repositories.LearningUtilities;
 using Tutor.Infrastructure.Database.Repositories.Stakeholders;
-using Tutor.Infrastructure.EventConfiguration;
 using Tutor.Infrastructure.Security;
 using Tutor.Infrastructure.Security.Authentication;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ArrangeTasks;
@@ -68,9 +69,8 @@ public class Startup
     private static void SetupControllers(IServiceCollection services)
     {
         services.AddAutoMapper(typeof(Startup));
-
         services.AddControllers().AddJsonOptions(SetupJsonOptions);
-
+        services.AddSwaggerGen();
         services.AddCors(options =>
         {
             options.AddPolicy(name: CorsPolicy,
@@ -108,7 +108,7 @@ public class Startup
     }
     private static void SetupAuth(IServiceCollection services)
     {
-        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IUserRepository, UserDatabaseRepository>();
 
         services.AddAuthorization(options =>
@@ -167,14 +167,13 @@ public class Startup
     #region Service Setup
     private void SetupServices(IServiceCollection services)
     {
-        SetupCoreLearningServices(services);
-        SetupSupportingLearningServices(services);
+        SetupLearningServices(services);
+        SetupManagementServices(services);
 
-        SetupSupportingStakeholderServices(services);
         services.AddScoped<IUnitAnalysisService, UnitAnalysisService>();
     }
 
-    private void SetupCoreLearningServices(IServiceCollection services)
+    private void SetupLearningServices(IServiceCollection services)
     {
         services.AddScoped<ISessionService, SessionService>();
         services.AddScoped<IStructureService, StructureService>();
@@ -182,23 +181,13 @@ public class Startup
         services.AddScoped<ISelectionService, SelectionService>();
         services.AddScoped<IEvaluationService, EvaluationService>();
         services.AddScoped<IHelpService, HelpService>();
-            
-        services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
-        SetupMoveOn(services);
-    }
 
-    private static void SetupSupportingLearningServices(IServiceCollection services)
-    {
         services.AddScoped<IFeedbackService, FeedbackService>();
         services.AddScoped<INoteService, NoteService>();
-    }
 
-    private static void SetupSupportingStakeholderServices(IServiceCollection services)
-    {
-        services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
         services.AddScoped<ICourseIterationMonitoringService, CourseIterationMonitoringService>();
-        services.AddScoped<ILearnerService, LearnerService>();
-        services.AddScoped<IEnrollmentService, EnrollmentService>();
+        services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
+        SetupMoveOn(services);
     }
 
     private void SetupMoveOn(IServiceCollection services)
@@ -207,19 +196,35 @@ public class Startup
         var moveOnType = MoveOnResolver.ResolveOrDefault(moveOnCriteria);
         services.AddScoped(typeof(IMoveOnCriteria), moveOnType);
     }
+
+    private static void SetupManagementServices(IServiceCollection services)
+    {
+        services.AddScoped<ICourseService, CourseService>();
+        services.AddScoped<IUnitService, UnitService>();
+
+        services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
+        services.AddScoped<ILearnerService, LearnerService>();
+        services.AddScoped<IInstructorService, InstructorService>();
+        
+        services.AddScoped<ILearnerGroupService, LearnerGroupService>();
+        services.AddScoped<IEnrollmentService, EnrollmentService>();
+    }
     #endregion
 
     #region Repository Setup
     private static void SetupRepositories(IServiceCollection services)
     {
-        services.AddScoped<IKnowledgeStructureRepository, KnowledgeStructureDatabaseRepository>();
+        services.AddScoped(typeof(ICrudRepository<>), typeof(CrudDatabaseRepository<>));
+
+        services.AddScoped<IKnowledgeComponentRepository, KnowledgeComponentDatabaseRepository>();
         services.AddScoped<IAssessmentItemRepository, AssessmentItemDatabaseRepository>();
         services.AddScoped<IKnowledgeMasteryRepository, KnowledgeMasteryDatabaseRepository>();
         services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
         services.AddScoped<INoteRepository, NoteRepository>();
-        services.AddScoped<IInstructorRepository, InstructorDatabaseRepository>();
+
+        services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
+        services.AddScoped<IUnitRepository, UnitDatabaseRepository>();
         services.AddScoped<IOwnedCourseRepository, OwnedCourseDatabaseRepository>();
-        services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
         services.AddScoped<IGroupRepository, GroupDatabaseRepository>();
         services.AddScoped<IEnrollmentRepository, EnrollmentDatabaseRepository>();
         services.AddSingleton<IEventSerializer>(
@@ -232,6 +237,8 @@ public class Startup
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
         else
         {

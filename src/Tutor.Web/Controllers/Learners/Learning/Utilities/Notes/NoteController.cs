@@ -22,35 +22,36 @@ public class NoteController : BaseApiController
         _mapper = mapper;
     }
 
-    [HttpPost]
-    public ActionResult<NoteDto> SaveNote([FromBody] NoteDto noteDto)
-    {
-        var note = _mapper.Map<Note>(noteDto);
-        note.LearnerId = User.LearnerId();
-        var result = _noteService.Save(note);
-        return Ok(_mapper.Map<NoteDto>(result.Value));
-    }
-
-    [HttpPut]
-    public ActionResult<NoteDto> UpdateNote([FromBody] NoteDto noteDto)
-    {
-        var note = _mapper.Map<Note>(noteDto);
-        note.LearnerId = User.LearnerId();
-        var result = _noteService.Update(note);
-        return Ok(_mapper.Map<NoteDto>(result.Value));
-    }
-
-    [HttpDelete("{noteId:int}")]
-    public ActionResult<int> DeleteNote(int noteId)
-    {
-        var result = _noteService.Delete(noteId);
-        return Ok(result.Value);
-    }
-
-    [HttpGet("")]
-    public ActionResult<List<NoteDto>> GetAppropriateNotes(int unitId)
+    [HttpGet]
+    public ActionResult<List<NoteDto>> GetLearnersNotes(int unitId)
     {
         var result = _noteService.GetAppropriateNotes(User.LearnerId(), unitId);
         return Ok(result.Value.Select(_mapper.Map<NoteDto>).ToList());
+    }
+
+    [HttpPost]
+    public ActionResult<NoteDto> Create([FromBody] NoteDto noteDto)
+    {
+        var note = _mapper.Map<Note>(noteDto);
+        note.LearnerId = User.LearnerId();
+        var result = _noteService.Create(note);
+        return Ok(_mapper.Map<NoteDto>(result.Value));
+    }
+
+    [HttpPut("{noteId:int}")]
+    public ActionResult Update([FromBody] NoteDto noteDto)
+    {
+        var note = _mapper.Map<Note>(noteDto);
+        note.LearnerId = User.LearnerId();
+        _noteService.Update(note);
+        return Ok();
+    }
+
+    [HttpDelete("{noteId:int}")]
+    public ActionResult Delete(int noteId)
+    {
+        var result = _noteService.Delete(noteId, User.LearnerId());
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        return Ok();
     }
 }

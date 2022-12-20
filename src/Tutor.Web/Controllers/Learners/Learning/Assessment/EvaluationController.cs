@@ -32,7 +32,6 @@ public class EvaluationController : BaseApiController
         return Ok(_mapper.Map<EvaluationDto>(result.Value));
     }
 
-
     // Should be moved into a standalone module
     [HttpPost("tutor-message")]
     public ActionResult SaveInstructorMessage([FromBody] InstructorMessageDto instructorMessageDto)

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.Domain.CourseIteration;
+using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.Domain.KnowledgeMastery.Events;
 using Tutor.Core.Domain.KnowledgeMastery.Events.KnowledgeComponentEvents;
@@ -12,14 +13,14 @@ namespace Tutor.Core.UseCases.KnowledgeAnalysis;
 
 public class UnitAnalysisService : IUnitAnalysisService
 {
-    private readonly IKnowledgeStructureRepository _knowledgeStructureRepository;
+    private readonly IKnowledgeComponentRepository _knowledgeComponentRepository;
     private readonly IGroupRepository _groupRepository;
     private readonly IEnrollmentRepository _enrollmentRepository;
     private readonly IEventStore _eventStore;
 
-    public UnitAnalysisService(IKnowledgeStructureRepository kcStructureRepository, IGroupRepository groupRepository, IEnrollmentRepository enrollmentRepository, IEventStore eventStore)
+    public UnitAnalysisService(IKnowledgeComponentRepository kcComponentRepository, IGroupRepository groupRepository, IEnrollmentRepository enrollmentRepository, IEventStore eventStore)
     {
-        _knowledgeStructureRepository = kcStructureRepository;
+        _knowledgeComponentRepository = kcComponentRepository;
         _groupRepository = groupRepository;
         _enrollmentRepository = enrollmentRepository;
         _eventStore = eventStore;
@@ -29,7 +30,7 @@ public class UnitAnalysisService : IUnitAnalysisService
     {
         //Check if instructor owns the course
 
-        var kcs = _knowledgeStructureRepository.GetKnowledgeComponentsForUnit(unitId);
+        var kcs = _knowledgeComponentRepository.GetKnowledgeComponentsForUnit(unitId);
         var kcIds = kcs.Select(kc => kc.Id).ToList();
 
         var eventQuery =
@@ -45,7 +46,7 @@ public class UnitAnalysisService : IUnitAnalysisService
     {
         var learnerIds = _groupRepository.GetLearnersInGroup(groupId).Select(l => l.Id).ToList();
 
-        var kcs = _knowledgeStructureRepository.GetKnowledgeComponentsForUnit(unitId);
+        var kcs = _knowledgeComponentRepository.GetKnowledgeComponentsForUnit(unitId);
         var kcIds = kcs.Select(kc => kc.Id).ToList();
 
         var events = _eventStore.Events

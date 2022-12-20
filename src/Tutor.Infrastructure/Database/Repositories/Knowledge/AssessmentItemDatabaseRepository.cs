@@ -5,6 +5,7 @@ using Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges.FulfillmentStrategies;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
+using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 
 namespace Tutor.Infrastructure.Database.Repositories.Knowledge;
 

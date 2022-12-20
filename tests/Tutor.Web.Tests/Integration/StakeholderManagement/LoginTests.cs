@@ -16,7 +16,7 @@ public class LoginTests : BaseWebIntegrationTest
     public void Successfully_login()
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = new UserController(scope.ServiceProvider.GetRequiredService<IAuthService>());
+        var controller = new UserController(scope.ServiceProvider.GetRequiredService<IAuthenticationService>());
         var loginSubmission = new CredentialsDto { Username = "SU-1-2021", Password = "123" };
 
         var authenticationResponse = ((OkObjectResult)controller.Login(loginSubmission).Result)?.Value as AuthenticationTokens;
@@ -28,7 +28,7 @@ public class LoginTests : BaseWebIntegrationTest
     public void Nonexisting_user_login()
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = new UserController(scope.ServiceProvider.GetRequiredService<IAuthService>());
+        var controller = new UserController(scope.ServiceProvider.GetRequiredService<IAuthenticationService>());
         var loginSubmission = new CredentialsDto { Username = "SA-1-2021", Password = "123" };
 
         var result = (ObjectResult)controller.Login(loginSubmission).Result;

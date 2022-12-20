@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Web.Controllers.Learners.Learning;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.Challenges;
@@ -144,7 +143,7 @@ public class SubmissionChallengeTests : BaseWebIntegrationTest
 
     private PluginController SetupChallengeEvaluationController(IServiceScope scope, string id)
     {
-        return new PluginController(scope.ServiceProvider.GetRequiredService<ILearnerRepository>(),
+        return new PluginController(
             Factory.Services.GetRequiredService<IMapper>(),
             scope.ServiceProvider.GetRequiredService<IEvaluationService>(),
             scope.ServiceProvider.GetRequiredService<IHelpService>())

@@ -11,6 +11,7 @@ public class KnowledgeProfile : Profile
 {
     public KnowledgeProfile()
     {
+        CreateMap<CourseDto, Course>();
         CreateMap<Course, CourseDto>();
         CreateMap<KnowledgeUnit, KnowledgeUnitDto>()
             .ForMember(dest => dest.KnowledgeComponents, opt => opt.MapFrom(src => src.KnowledgeComponents.Where(kc => kc.ParentId == null || kc.ParentId == 0)));

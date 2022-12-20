@@ -17,7 +17,7 @@ public class EventsController : BaseApiController
         _eventStore = eventStore;
     }
     
-    [HttpGet("")]
+    [HttpGet]
     public ActionResult<PagedResult<DomainEvent>> GetEvents([FromQuery] int page, [FromQuery] int pageSize)
     {
         var task = _eventStore.GetEventsAsync(page, pageSize);
@@ -25,7 +25,7 @@ public class EventsController : BaseApiController
         return Ok(task.Result);
     }
     
-    [HttpGet("all/")]
+    [HttpGet("all")]
     public ActionResult<List<DomainEvent>> GetAllEvents()
     {
         var result = _eventStore.Events.ToList();
