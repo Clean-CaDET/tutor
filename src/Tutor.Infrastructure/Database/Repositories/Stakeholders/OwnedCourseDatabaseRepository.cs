@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentResults;
 using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
@@ -22,6 +23,13 @@ public class OwnedCourseDatabaseRepository : IOwnedCourseRepository
         return _dbContext.CourseOwnerships
             .Where(m => m.InstructorId.Equals(instructorId))
             .Select(m => m.Course).ToList();
+    }
+
+    public Result<List<Instructor>> GetOwners(int courseId)
+    {
+        return _dbContext.CourseOwnerships
+            .Where(m => m.Course.Id.Equals(courseId))
+            .Select(m => m.Instructor).ToList();
     }
 
     public Course GetOwnedCourseWithUnits(int courseId, int instructorId)

@@ -24,6 +24,11 @@ public class CourseOwnershipService : ICourseOwnershipService
         return _ownedCourseRepository.GetOwnedCourses(instructorId);
     }
 
+    public Result<List<Instructor>> GetOwners(int courseId)
+    {
+        return _ownedCourseRepository.GetOwners(courseId);
+    }
+
     public Result<Course> GetOwnedCourseWithUnits(int courseId, int instructorId)
     {
         return _ownedCourseRepository.GetOwnedCourseWithUnits(courseId, instructorId);

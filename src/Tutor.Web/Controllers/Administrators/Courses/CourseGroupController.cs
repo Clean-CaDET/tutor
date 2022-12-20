@@ -7,7 +7,6 @@ using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.UseCases.Management.CourseIteration;
 using Tutor.Web.Mappings.CourseIteration;
-using Tutor.Web.Mappings.Knowledge.DTOs;
 
 namespace Tutor.Web.Controllers.Administrators.Courses;
 

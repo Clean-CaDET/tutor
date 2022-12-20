@@ -6,16 +6,16 @@ using System.Linq;
 using Tutor.Core.UseCases.Management.Stakeholders;
 using Tutor.Web.Mappings.Knowledge.DTOs;
 
-namespace Tutor.Web.Controllers.Administrators;
+namespace Tutor.Web.Controllers.Administrators.Stakeholders;
 
 [Authorize(Policy = "administratorPolicy")]
 [Route("api/management/instructors/{instructorId:int}/ownerships")]
-public class CourseOwnershipController : BaseApiController
+public class InstructorOwnershipController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly ICourseOwnershipService _ownershipService;
-    
-    public CourseOwnershipController(IMapper mapper, ICourseOwnershipService ownershipService)
+
+    public InstructorOwnershipController(IMapper mapper, ICourseOwnershipService ownershipService)
     {
         _mapper = mapper;
         _ownershipService = ownershipService;
