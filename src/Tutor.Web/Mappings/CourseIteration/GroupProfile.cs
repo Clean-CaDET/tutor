@@ -10,6 +10,7 @@ public class GroupProfile : Profile
     public GroupProfile()
     {
         CreateMap<LearnerGroup, GroupDto>();
+        CreateMap<GroupDto, LearnerGroup>();
 
         CreateMap<Learner, LearnerProgressDto>()
             .ForMember(dest => dest.Learner, opt => opt.MapFrom(src => src))

@@ -206,6 +206,7 @@ public class Startup
         services.AddScoped<ILearnerService, LearnerService>();
         services.AddScoped<IInstructorService, InstructorService>();
         
+        services.AddScoped<ILearnerGroupService, LearnerGroupService>();
         services.AddScoped<IEnrollmentService, EnrollmentService>();
     }
     #endregion

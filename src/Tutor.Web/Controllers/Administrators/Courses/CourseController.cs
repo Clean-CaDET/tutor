@@ -8,7 +8,7 @@ using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.UseCases.Management.Knowledge;
 using Tutor.Web.Mappings.Knowledge.DTOs;
 
-namespace Tutor.Web.Controllers.Administrators;
+namespace Tutor.Web.Controllers.Administrators.Courses;
 
 [Authorize(Policy = "administratorPolicy")]
 [Route("api/management/courses")]
@@ -16,7 +16,7 @@ public class CourseController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly ICourseService _courseService;
-    
+
     public CourseController(IMapper mapper, ICourseService courseService)
     {
         _mapper = mapper;
@@ -41,7 +41,7 @@ public class CourseController : BaseApiController
         return Ok(_mapper.Map<CourseDto>(result.Value));
     }
 
-    [HttpPut("{courseId:int}")]
+    [HttpPut("{id:int}")]
     public ActionResult<CourseDto> Update([FromBody] CourseDto course)
     {
         var result = _courseService.Update(_mapper.Map<Course>(course));
@@ -57,10 +57,10 @@ public class CourseController : BaseApiController
         return Ok(_mapper.Map<CourseDto>(result.Value));
     }
 
-    [HttpDelete("{courseId:int}")]
-    public ActionResult Delete(int courseId)
+    [HttpDelete("{id:int}")]
+    public ActionResult Delete(int id)
     {
-        var result = _courseService.Delete(courseId);
+        var result = _courseService.Delete(id);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok();
     }

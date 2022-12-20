@@ -8,13 +8,18 @@ using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Infrastructure.Database.Repositories.CourseIteration;
 
-public class GroupDatabaseRepository : IGroupRepository
+public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGroupRepository
 {
     private readonly TutorContext _dbContext;
 
-    public GroupDatabaseRepository(TutorContext dbContext)
+    public GroupDatabaseRepository(TutorContext dbContext) : base(dbContext)
     {
         _dbContext = dbContext;
+    }
+
+    public List<LearnerGroup> GetCourseGroups(int courseId)
+    {
+        return _dbContext.LearnerGroups.Where(g => g.CourseId == courseId).ToList();
     }
 
     public List<LearnerGroup> GetAssignedGroups(int instructorId, int courseId)
