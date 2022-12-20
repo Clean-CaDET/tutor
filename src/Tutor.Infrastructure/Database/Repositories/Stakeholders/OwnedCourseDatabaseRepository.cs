@@ -37,6 +37,7 @@ public class OwnedCourseDatabaseRepository : IOwnedCourseRepository
         return _dbContext.CourseOwnerships
             .Where(m => m.InstructorId.Equals(instructorId) && m.Course.Id.Equals(courseId))
             .Include(m => m.Course.KnowledgeUnits)
+            .ThenInclude(ku => ku.KnowledgeComponents)
             .Select(m => m.Course).FirstOrDefault();
     }
 
