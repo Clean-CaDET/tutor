@@ -22,14 +22,6 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
         return _dbContext.LearnerGroups.Where(g => g.CourseId == courseId).ToList();
     }
 
-    public List<LearnerGroup> GetAssignedGroups(int instructorId, int courseId)
-    {
-        return _dbContext.LearnerGroups
-            .Where(lg => lg.CourseId.Equals(courseId))
-            .Where(lg => lg.Membership.Any(m => m.Member.Id.Equals(instructorId)))
-            .Include(lg => lg.Membership).ToList();
-    }
-    
     public async Task<PagedResult<Learner>> GetGroupProgressAsync(int courseId, int groupId, int page, int pageSize)
     {
         if (groupId == 0)

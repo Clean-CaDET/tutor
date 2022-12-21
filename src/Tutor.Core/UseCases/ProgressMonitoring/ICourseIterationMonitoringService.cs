@@ -8,7 +8,7 @@ namespace Tutor.Core.UseCases.ProgressMonitoring;
 
 public interface ICourseIterationMonitoringService
 {
-    Result<List<LearnerGroup>> GetAssignedGroups(int instructorId, int courseId);
+    Result<List<LearnerGroup>> GetCourseGroups(int instructorId, int courseId);
     PagedResult<Learner> GetLearnersWithProgress(int courseId, int page, int pageSize);
     PagedResult<Learner> GetLearnersWithProgressForGroup(int courseId, int groupId, int page, int pageSize);
 }

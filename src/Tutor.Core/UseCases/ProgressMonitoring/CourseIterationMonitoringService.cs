@@ -3,21 +3,27 @@ using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Stakeholders;
+using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 
 namespace Tutor.Core.UseCases.ProgressMonitoring;
 
 public class CourseIterationMonitoringService : ICourseIterationMonitoringService
 {
     private readonly IGroupRepository _groupRepository;
+    private readonly IOwnedCourseRepository _ownedCourseRepository;
 
-    public CourseIterationMonitoringService(IGroupRepository groupRepository)
+    public CourseIterationMonitoringService(IGroupRepository groupRepository, 
+        IOwnedCourseRepository ownedCourseRepository)
     {
         _groupRepository = groupRepository;
+        _ownedCourseRepository = ownedCourseRepository;
     }
 
-    public Result<List<LearnerGroup>> GetAssignedGroups(int instructorId, int courseId)
+    public Result<List<LearnerGroup>> GetCourseGroups(int instructorId, int courseId)
     {
-        return _groupRepository.GetAssignedGroups(instructorId, courseId);
+        var ownership = _ownedCourseRepository.CheckOwnership(courseId, instructorId);
+        if (ownership is null) return Result.Fail(FailureCode.Forbidden);
+        return _groupRepository.GetCourseGroups(courseId);
     }
 
     public PagedResult<Learner> GetLearnersWithProgress(int courseId, int page, int pageSize)

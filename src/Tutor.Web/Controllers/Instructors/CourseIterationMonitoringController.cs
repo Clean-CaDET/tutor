@@ -24,9 +24,9 @@ public class CourseIterationMonitoringController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<GroupDto>> GetAssignedGroups(int courseId)
+    public ActionResult<List<GroupDto>> GetCourseGroups(int courseId)
     {
-        var result = _courseIterationMonitoringService.GetAssignedGroups(User.InstructorId(), courseId);
+        var result = _courseIterationMonitoringService.GetCourseGroups(User.InstructorId(), courseId);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok(result.Value.Select(_mapper.Map<GroupDto>).ToList());
     }

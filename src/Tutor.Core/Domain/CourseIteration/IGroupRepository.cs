@@ -9,7 +9,6 @@ namespace Tutor.Core.Domain.CourseIteration;
 public interface IGroupRepository : ICrudRepository<LearnerGroup>
 {
     List<LearnerGroup> GetCourseGroups(int courseId);
-    List<LearnerGroup> GetAssignedGroups(int instructorId, int courseId);
     Task<PagedResult<Learner>> GetGroupProgressAsync(int courseId, int groupId, int page, int pageSize);
     List<Learner> GetLearnersInGroup(int groupId);
 }
