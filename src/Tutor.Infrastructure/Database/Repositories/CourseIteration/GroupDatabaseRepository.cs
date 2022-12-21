@@ -26,8 +26,8 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
     {
         return _dbContext.LearnerGroups
             .Where(lg => lg.CourseId.Equals(courseId))
-            .Include(lg => lg.Membership
-                .Where(m => m.Member.Id.Equals(instructorId))).ToList();
+            .Where(lg => lg.Membership.Any(m => m.Member.Id.Equals(instructorId)))
+            .Include(lg => lg.Membership).ToList();
     }
     
     public async Task<PagedResult<Learner>> GetGroupProgressAsync(int courseId, int groupId, int page, int pageSize)
@@ -44,14 +44,14 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
         return _dbContext.GroupMemberships
             .Where(g => g.LearnerGroupId == groupId)
             .Include(g => g.Member)
-            .ThenInclude(l => ((Learner)l).KnowledgeComponentMasteries)
+            .ThenInclude(l => l.KnowledgeComponentMasteries)
             .ThenInclude(kcm => kcm.AssessmentItemMasteries)
             .Include(g => g.Member)
-            .ThenInclude(l => ((Learner)l).KnowledgeComponentMasteries)
+            .ThenInclude(l => l.KnowledgeComponentMasteries)
             .Include(g => g.Member)
-            .ThenInclude(l => ((Learner)l).KnowledgeComponentMasteries)
+            .ThenInclude(l => l.KnowledgeComponentMasteries)
             .ThenInclude(kcm => kcm.SessionTracker)
-            .Select(g => (Learner)g.Member)
+            .Select(g => g.Member)
             .GetPaged(page, pageSize);
     }
 
