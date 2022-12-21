@@ -37,11 +37,11 @@ DELETE FROM public."Learners";
 DELETE FROM public."Instructors";
 DELETE FROM public."Users";
 
-INSERT INTO public."Courses"("Id", "Code", "Name", "Description") VALUES
-	(-100, 'RA-PSW', 'Projektovanje softvera', '');
+INSERT INTO public."Courses"("Id", "Code", "Name", "Description", "IsArchived") VALUES
+	(-100, 'RA-PSW', 'Projektovanje softvera', 'Test description used for visiualisation on the front-end side. Similar in length to real course descriptions to truthfully simulate views. We would like to see how every component handles and presents larger text in this field.', false);
 
-INSERT INTO public."Courses"("Id", "Code", "Name", "Description") VALUES
-	(-99, 'GEO-RP', 'Računarski praktikum', '');
+INSERT INTO public."Courses"("Id", "Code", "Name", "Description", "IsArchived") VALUES
+	(-99, 'GEO-RP', 'Računarski praktikum', '', false);
 
 INSERT INTO public."KnowledgeUnits"("Id", "Code", "Name", "Description", "CourseId") VALUES
 	(-100, 'PSW01', 'PSW Unit 1', '', -100);
@@ -372,628 +372,628 @@ INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VAL
 
 
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-10000, 'RA-1-2021', 'n/JSzTe+EY+vdzOi0BTLtAJIa6M8zu6Qe9Vv5MwXjyY=', 'KjlW65AHqKaimBsYYaCLnQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-10000, 'RA-1-2021', 'n/JSzTe+EY+vdzOi0BTLtAJIa6M8zu6Qe9Vv5MwXjyY=', 'KjlW65AHqKaimBsYYaCLnQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-10000, -10000, 'RA-1-2021', 'Pera', 'Perić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9999, 'RA-2-2021', 'JHZ0LudxytNx78QQe/y46TUCq6wfMD8Lpkwu3prN1u8=', 'cm+3fN1e/f6bwyfziADnGg==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9999, 'RA-2-2021', 'JHZ0LudxytNx78QQe/y46TUCq6wfMD8Lpkwu3prN1u8=', 'cm+3fN1e/f6bwyfziADnGg==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9999, -9999, 'RA-2-2021', 'Marko', 'Mikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9998, 'RA-3-2021', 'dK+sFgx9xaT/W/H9v+TomauzsZvHMmwILTQc0oiWVJ8=', 'NNvejZZ0H86MBT1PCDY3HA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9998, 'RA-3-2021', 'dK+sFgx9xaT/W/H9v+TomauzsZvHMmwILTQc0oiWVJ8=', 'NNvejZZ0H86MBT1PCDY3HA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9998, -9998, 'RA-3-2021', 'Mika', 'Fikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9997, 'RA-4-2021', 'dYkmcEikFt/tCtl/uPROfsaCCbWiBm+Z4YzUJfqhIIs=', 'fhrDu5Y2bqWyPK/SQjYDFQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9997, 'RA-4-2021', 'dYkmcEikFt/tCtl/uPROfsaCCbWiBm+Z4YzUJfqhIIs=', 'fhrDu5Y2bqWyPK/SQjYDFQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9997, -9997, 'RA-4-2021', 'Stefan', 'Tikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9996, 'RA-5-2021', 'Ivnnx/hu6mqt70Y3c+tBNvyet8YY+C60xBv6gmUpq8A=', 'wSCxcUsCuR+MvhD4Gb6WaA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9996, 'RA-5-2021', 'Ivnnx/hu6mqt70Y3c+tBNvyet8YY+C60xBv6gmUpq8A=', 'wSCxcUsCuR+MvhD4Gb6WaA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9996, -9996, 'RA-5-2021', 'Franc', 'Likić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9995, 'RA-6-2021', 'smXLv/cUmezqMn0mLfC9MeUg53vL1WIFdREiXHzkTVE=', '9mCRcV4TYEMpMWLcCOQt9Q==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9995, 'RA-6-2021', 'smXLv/cUmezqMn0mLfC9MeUg53vL1WIFdREiXHzkTVE=', '9mCRcV4TYEMpMWLcCOQt9Q==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9995, -9995, 'RA-6-2021', 'Ranc', 'Kikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9994, 'RA-7-2021', '7QLzRzQOiLZoeUgVnc/MI6tQ5JyuL2VhnXLOejRZfro=', 'ozlLIOURiSQOPSiZVjrbTw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9994, 'RA-7-2021', '7QLzRzQOiLZoeUgVnc/MI6tQ5JyuL2VhnXLOejRZfro=', 'ozlLIOURiSQOPSiZVjrbTw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9994, -9994, 'RA-7-2021', 'Kranc', 'Sinić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9993, 'RA-8-2021', 'B/KM66ul6v3habOz5QbHq88WasbbumJdYLltdRk6aMM=', 't6Paa3Pj7aj0DnCbhKXbew==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9993, 'RA-8-2021', 'B/KM66ul6v3habOz5QbHq88WasbbumJdYLltdRk6aMM=', 't6Paa3Pj7aj0DnCbhKXbew==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9993, -9993, 'RA-8-2021', 'Jelena', 'Simić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9992, 'RA-1-2022', '6AOAkx9HS3d8gvBPhJZva1EsUa6lnQrB6zHg4DXE7Fg=', 'oPCabRUkxDXiMsO05uRyng==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9992, 'RA-1-2022', '6AOAkx9HS3d8gvBPhJZva1EsUa6lnQrB6zHg4DXE7Fg=', 'oPCabRUkxDXiMsO05uRyng==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9992, -9992, 'RA-1-2022', 'Milenko', 'Milić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9991, 'RA-2-2022', 'sZf3FByQZQ7D7uv5/8XMIH7HD5mE8I1cgICvHRO9YOg=', 'jcwi+mFmSbyMDBgWamRZkA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9991, 'RA-2-2022', 'sZf3FByQZQ7D7uv5/8XMIH7HD5mE8I1cgICvHRO9YOg=', 'jcwi+mFmSbyMDBgWamRZkA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9991, -9991, 'RA-2-2022', 'Nikola', 'Mamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9990, 'RA-3-2022', 'QMuuMwPixmHomYeN52k0KDS8Lsd1PRAhU6Tx7BKqhEA=', 'i2RqAEFO9J+qvM5omM9Z3w==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9990, 'RA-3-2022', 'QMuuMwPixmHomYeN52k0KDS8Lsd1PRAhU6Tx7BKqhEA=', 'i2RqAEFO9J+qvM5omM9Z3w==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9990, -9990, 'RA-3-2022', 'Pera', 'Pamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9989, 'RA-4-2022', 'wW3Cr/TIYsr7CxT9X5aQpn41Gvd/mhrW9CpbkPlG8V0=', 'b9WvDt4u+Ql68s9fvBdZMQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9989, 'RA-4-2022', 'wW3Cr/TIYsr7CxT9X5aQpn41Gvd/mhrW9CpbkPlG8V0=', 'b9WvDt4u+Ql68s9fvBdZMQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9989, -9989, 'RA-4-2022', 'Marko', 'Tamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9988, 'RA-5-2022', 'Wrb7JsGH43bLGKw+U8vvcoo691vLpoI2zK7sVgoqNzk=', 'ATc+ld7bZydoBQOMEn7fhg==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9988, 'RA-5-2022', 'Wrb7JsGH43bLGKw+U8vvcoo691vLpoI2zK7sVgoqNzk=', 'ATc+ld7bZydoBQOMEn7fhg==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9988, -9988, 'RA-5-2022', 'Mika', 'Kamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9987, 'RA-6-2022', 'KRGj1A9tCbGOdq9ln6s/8ASvI/xsvqkvrZdYdAfHoPw=', 'WNnRArRkvWnS/W0IgYzXiw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9987, 'RA-6-2022', 'KRGj1A9tCbGOdq9ln6s/8ASvI/xsvqkvrZdYdAfHoPw=', 'WNnRArRkvWnS/W0IgYzXiw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9987, -9987, 'RA-6-2022', 'Stefan', 'Perić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9986, 'RA-7-2022', 'gZPMOBkqFO9/nS3di2syaVYIQCoBG9GVzcvorOe2/oI=', 'GXuXyGIiXr/k9XJ8baHrNw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9986, 'RA-7-2022', 'gZPMOBkqFO9/nS3di2syaVYIQCoBG9GVzcvorOe2/oI=', 'GXuXyGIiXr/k9XJ8baHrNw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9986, -9986, 'RA-7-2022', 'Franc', 'Mikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9985, 'RA-8-2022', 'hr6dleKYHRCQhN/GrYhik6Wg3gnpSK0G5Ryg4NWddHI=', 'IukGksp1oXV9IFuKqr2Fow==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9985, 'RA-8-2022', 'hr6dleKYHRCQhN/GrYhik6Wg3gnpSK0G5Ryg4NWddHI=', 'IukGksp1oXV9IFuKqr2Fow==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9985, -9985, 'RA-8-2022', 'Ranc', 'Fikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9984, 'RA-1-2023', 'h2TL8R1i/+ficYp9IsFGf0pNGdWADdr6ESUZ/YSMywA=', 'QMm1ruL8vDt6qdGNgbe2YQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9984, 'RA-1-2023', 'h2TL8R1i/+ficYp9IsFGf0pNGdWADdr6ESUZ/YSMywA=', 'QMm1ruL8vDt6qdGNgbe2YQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9984, -9984, 'RA-1-2023', 'Kranc', 'Tikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9983, 'RA-2-2023', '+Lo9j76iWDhJeJ+lB8iAPEC4thMWtBRXp2JgvqNo06Y=', 'utqMNY7qYE1rsyNW5o6giA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9983, 'RA-2-2023', '+Lo9j76iWDhJeJ+lB8iAPEC4thMWtBRXp2JgvqNo06Y=', 'utqMNY7qYE1rsyNW5o6giA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9983, -9983, 'RA-2-2023', 'Jelena', 'Likić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9982, 'RA-3-2023', 'vvdCpYVcy04LripHkr2cV8pTPrfX3MwCaPo6ruaHIJ4=', 'j+VGDJz6YPr1WD0Sn/3Lfg==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9982, 'RA-3-2023', 'vvdCpYVcy04LripHkr2cV8pTPrfX3MwCaPo6ruaHIJ4=', 'j+VGDJz6YPr1WD0Sn/3Lfg==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9982, -9982, 'RA-3-2023', 'Milenko', 'Kikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9981, 'RA-4-2023', 'qs220OfjoMsJvoOwu0eM4XP8CmNLd3xUN7yLygQMIVo=', 'APQw7jmuuYZN5hEYSCTf/g==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9981, 'RA-4-2023', 'qs220OfjoMsJvoOwu0eM4XP8CmNLd3xUN7yLygQMIVo=', 'APQw7jmuuYZN5hEYSCTf/g==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9981, -9981, 'RA-4-2023', 'Nikola', 'Sinić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9980, 'RA-5-2023', 'qHEP4W3chp1bMFRg/JhR6pr2LLSlyC5fNpy+B15DVPQ=', 'j6q60451iviHmqHkTFN8Xw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9980, 'RA-5-2023', 'qHEP4W3chp1bMFRg/JhR6pr2LLSlyC5fNpy+B15DVPQ=', 'j6q60451iviHmqHkTFN8Xw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9980, -9980, 'RA-5-2023', 'Pera', 'Simić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9979, 'RA-6-2023', '/Aj8dAB3RFRlpdvMj1JbghqVkAyOWERBfzeItumXz+Y=', 'Uo+saDRTD73apctI8dU+Hw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9979, 'RA-6-2023', '/Aj8dAB3RFRlpdvMj1JbghqVkAyOWERBfzeItumXz+Y=', 'Uo+saDRTD73apctI8dU+Hw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9979, -9979, 'RA-6-2023', 'Marko', 'Milić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9978, 'RA-7-2023', 'fU6MiheRzX0FtoJ1uhza11X7SWoWUNn9Jdj7485E83g=', '7Y6bVWr1h2YFAV6N1kQOEg==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9978, 'RA-7-2023', 'fU6MiheRzX0FtoJ1uhza11X7SWoWUNn9Jdj7485E83g=', '7Y6bVWr1h2YFAV6N1kQOEg==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9978, -9978, 'RA-7-2023', 'Mika', 'Mamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9977, 'RA-8-2023', 'uNsUwYhwgGa0ARQhG6CxvBzbbr9omEONPdQuBmb50V8=', 'SCQRZdbTViviogpkuvsABQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9977, 'RA-8-2023', 'uNsUwYhwgGa0ARQhG6CxvBzbbr9omEONPdQuBmb50V8=', 'SCQRZdbTViviogpkuvsABQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9977, -9977, 'RA-8-2023', 'Stefan', 'Pamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9976, 'RA-1-2024', 'GTAtxkhF3yXkudzSe2RryRkYyS8oyyA9diKW9bf5TP8=', 'YQ0esP69jQn1WhgQGHtZyw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9976, 'RA-1-2024', 'GTAtxkhF3yXkudzSe2RryRkYyS8oyyA9diKW9bf5TP8=', 'YQ0esP69jQn1WhgQGHtZyw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9976, -9976, 'RA-1-2024', 'Franc', 'Tamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9975, 'RA-2-2024', 'yE1Ll4h3qRWH2ekE1W28hHfPYPedg/MqkqBuZ66UNfs=', '5F2B7cbI17bQwwG1zZAh+Q==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9975, 'RA-2-2024', 'yE1Ll4h3qRWH2ekE1W28hHfPYPedg/MqkqBuZ66UNfs=', '5F2B7cbI17bQwwG1zZAh+Q==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9975, -9975, 'RA-2-2024', 'Ranc', 'Kamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9974, 'RA-3-2024', 'lMd96uYQRvzKE+zj2qHT7eMM4mqefDel0lSxoPFFbkk=', 'pvvUpqvX47hgBb7xDglU3Q==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9974, 'RA-3-2024', 'lMd96uYQRvzKE+zj2qHT7eMM4mqefDel0lSxoPFFbkk=', 'pvvUpqvX47hgBb7xDglU3Q==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9974, -9974, 'RA-3-2024', 'Kranc', 'Perić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9973, 'RA-4-2024', 'lOG0h7Mv1JMhz4TXUFsu8A6RndKeiTWosYFp/t6gImQ=', 'i3S9w7hVGoIdmU8mE2eWyQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9973, 'RA-4-2024', 'lOG0h7Mv1JMhz4TXUFsu8A6RndKeiTWosYFp/t6gImQ=', 'i3S9w7hVGoIdmU8mE2eWyQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9973, -9973, 'RA-4-2024', 'Jelena', 'Mikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9972, 'RA-5-2024', 'Iqg3Hnk5vsXZHeKqZTX1sT7f46fPGaICN3xRbPGF3yo=', 'LLAI8H1ppdHZRB7OkKzjuA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9972, 'RA-5-2024', 'Iqg3Hnk5vsXZHeKqZTX1sT7f46fPGaICN3xRbPGF3yo=', 'LLAI8H1ppdHZRB7OkKzjuA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9972, -9972, 'RA-5-2024', 'Milenko', 'Fikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9971, 'RA-6-2024', 'DGNw3EeGtPSXHSvSomHY/nb/UKJ+ZpD2ppXjAtA15aw=', '+vCvZx1ohBs5bwOapFnK2A==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9971, 'RA-6-2024', 'DGNw3EeGtPSXHSvSomHY/nb/UKJ+ZpD2ppXjAtA15aw=', '+vCvZx1ohBs5bwOapFnK2A==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9971, -9971, 'RA-6-2024', 'Nikola', 'Tikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9970, 'RA-7-2024', 'FQrmP4WsrJrkzhaYVtmZToLWvZ3EGOKuAO9bAeWTfbk=', 'btxBkQ2efUR3Hxv6GLveaA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9970, 'RA-7-2024', 'FQrmP4WsrJrkzhaYVtmZToLWvZ3EGOKuAO9bAeWTfbk=', 'btxBkQ2efUR3Hxv6GLveaA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9970, -9970, 'RA-7-2024', 'Pera', 'Likić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9969, 'RA-8-2024', 'fX/EjHYFpEUG6gjekVweAdtZCRnN2nDcLMmJ+rxqt50=', 're43Yr5H7i487cV7gPIdug==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9969, 'RA-8-2024', 'fX/EjHYFpEUG6gjekVweAdtZCRnN2nDcLMmJ+rxqt50=', 're43Yr5H7i487cV7gPIdug==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9969, -9969, 'RA-8-2024', 'Marko', 'Kikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9968, 'RA-1-2025', '4rPseHC0tUllkoLu4LxDKrFkLGK4/L99FMi0pYwOq20=', 'empCJvcUC1uaKW+mRJxcXg==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9968, 'RA-1-2025', '4rPseHC0tUllkoLu4LxDKrFkLGK4/L99FMi0pYwOq20=', 'empCJvcUC1uaKW+mRJxcXg==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9968, -9968, 'RA-1-2025', 'Mika', 'Sinić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9967, 'RA-2-2025', 'dO19WueqAnHVT8EPkVo89RH9mDFhdGjfOjVYtuBAj0E=', 'K2gkokCBblB5bbgNsRwnTw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9967, 'RA-2-2025', 'dO19WueqAnHVT8EPkVo89RH9mDFhdGjfOjVYtuBAj0E=', 'K2gkokCBblB5bbgNsRwnTw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9967, -9967, 'RA-2-2025', 'Stefan', 'Simić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9966, 'RA-3-2025', 'KgsRIMxpK+F7wJGeoE1/4NMf7zhAbIHvHI4vvTRVYfE=', 'fIO9tiiIHFSn0MGlpt1XeA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9966, 'RA-3-2025', 'KgsRIMxpK+F7wJGeoE1/4NMf7zhAbIHvHI4vvTRVYfE=', 'fIO9tiiIHFSn0MGlpt1XeA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9966, -9966, 'RA-3-2025', 'Franc', 'Milić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9965, 'RA-4-2025', 'DDE/+IWV16WBn/Uvav7droSCFZSPfKOeOQ+Ma7q7N0c=', 'WJnwE+RVY0oKanqmdCHNJQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9965, 'RA-4-2025', 'DDE/+IWV16WBn/Uvav7droSCFZSPfKOeOQ+Ma7q7N0c=', 'WJnwE+RVY0oKanqmdCHNJQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9965, -9965, 'RA-4-2025', 'Ranc', 'Mamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9964, 'RA-5-2025', 'IJ/JCcMIopvODBR66/LU7UKLFXdz900EIEI3mMf9iSY=', 'yMMN5uAbib9BGxjTMigyvQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9964, 'RA-5-2025', 'IJ/JCcMIopvODBR66/LU7UKLFXdz900EIEI3mMf9iSY=', 'yMMN5uAbib9BGxjTMigyvQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9964, -9964, 'RA-5-2025', 'Kranc', 'Pamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9963, 'RA-6-2025', 'umzLaNGG2YFYuE1OL9wMW5J+313/FrFPWaiHRh/qK8k=', '34DVwSNKhG+a8YvqUukM7g==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9963, 'RA-6-2025', 'umzLaNGG2YFYuE1OL9wMW5J+313/FrFPWaiHRh/qK8k=', '34DVwSNKhG+a8YvqUukM7g==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9963, -9963, 'RA-6-2025', 'Jelena', 'Tamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9962, 'RA-7-2025', '4SDnR+MVEez6cAvzMI116TXVFrreS3d0etNTHA4JrLg=', 'VXPnD5oqW/3ahhGtWLJPnA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9962, 'RA-7-2025', '4SDnR+MVEez6cAvzMI116TXVFrreS3d0etNTHA4JrLg=', 'VXPnD5oqW/3ahhGtWLJPnA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9962, -9962, 'RA-7-2025', 'Milenko', 'Kamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9961, 'RA-8-2025', 'VaRjN1aS3x4q4q+hD/oRkUJf4pjhTuQDeR4Oh923Xzg=', 'IISbdF0eIFGpp4tpq7XijQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9961, 'RA-8-2025', 'VaRjN1aS3x4q4q+hD/oRkUJf4pjhTuQDeR4Oh923Xzg=', 'IISbdF0eIFGpp4tpq7XijQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9961, -9961, 'RA-8-2025', 'Nikola', 'Perić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9960, 'RA-1-2026', '6ndlyq2721x5BjDO3dgx8NSlFvKAleMON77amMObUPU=', 'NChEmH8MiGxBivypDNstyg==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9960, 'RA-1-2026', '6ndlyq2721x5BjDO3dgx8NSlFvKAleMON77amMObUPU=', 'NChEmH8MiGxBivypDNstyg==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9960, -9960, 'RA-1-2026', 'Pera', 'Mikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9959, 'RA-2-2026', 'WMI9Vmeov2YbjhJbkDIMz2Phie2GzWEX2E2c3wu3Z/Y=', 'bt7D8eUIsw7F7WbVv97xmw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9959, 'RA-2-2026', 'WMI9Vmeov2YbjhJbkDIMz2Phie2GzWEX2E2c3wu3Z/Y=', 'bt7D8eUIsw7F7WbVv97xmw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9959, -9959, 'RA-2-2026', 'Marko', 'Fikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9958, 'RA-3-2026', 'ZLNG9l5BHHPIJPVNSgSnzgFkvkUeu2CuJ8f1JSm7lIg=', '0ygKJ6M3tCgERx5VJvqtSA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9958, 'RA-3-2026', 'ZLNG9l5BHHPIJPVNSgSnzgFkvkUeu2CuJ8f1JSm7lIg=', '0ygKJ6M3tCgERx5VJvqtSA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9958, -9958, 'RA-3-2026', 'Mika', 'Tikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9957, 'RA-4-2026', 'KRx4MSsrnF+CXAc9RUKVZ5EPPiKLp5HBOjJKqk8jr5Q=', '+gycgVDzXUJ3lWwmigkEBA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9957, 'RA-4-2026', 'KRx4MSsrnF+CXAc9RUKVZ5EPPiKLp5HBOjJKqk8jr5Q=', '+gycgVDzXUJ3lWwmigkEBA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9957, -9957, 'RA-4-2026', 'Stefan', 'Likić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9956, 'RA-5-2026', 'vWQu7DOkVF+IagGq/iI/ecZtxsbgl64/H9jIB/5hn9w=', 'ZOy4h7CSBx+X8IabKNellA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9956, 'RA-5-2026', 'vWQu7DOkVF+IagGq/iI/ecZtxsbgl64/H9jIB/5hn9w=', 'ZOy4h7CSBx+X8IabKNellA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9956, -9956, 'RA-5-2026', 'Franc', 'Kikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9955, 'GE-1-2021', 'ZBVfjOLXaDz3afhboXcVoNHXqssPTPyXPoB61+5ulC4=', '4AzWY9XSIZHXwO+qxhjpEQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9955, 'GE-1-2021', 'ZBVfjOLXaDz3afhboXcVoNHXqssPTPyXPoB61+5ulC4=', '4AzWY9XSIZHXwO+qxhjpEQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9955, -9955, 'GE-1-2021', 'Nikola', 'Perić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9954, 'GE-2-2021', 'uz897Hr9t586SO6Aae17IBEuEbnaDdzPZ1RQ1nmt8is=', 'JaoQugp65ri4pbA74b51pw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9954, 'GE-2-2021', 'uz897Hr9t586SO6Aae17IBEuEbnaDdzPZ1RQ1nmt8is=', 'JaoQugp65ri4pbA74b51pw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9954, -9954, 'GE-2-2021', 'Pera', 'Mikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9953, 'GE-3-2021', 'Hct1NyczdOYSQB8LrCdfaYI/5aBPE/vi/5ZHtuBfHXs=', 'ZItfJUcGBxV+db0F5Gd+oQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9953, 'GE-3-2021', 'Hct1NyczdOYSQB8LrCdfaYI/5aBPE/vi/5ZHtuBfHXs=', 'ZItfJUcGBxV+db0F5Gd+oQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9953, -9953, 'GE-3-2021', 'Marko', 'Fikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9952, 'GE-4-2021', 'Pv5OrcskDAlpYH4DcrdDnvvJSVZ83x/9JiW2FLzR+y8=', 'Z9t4a1Pof2IdDWgSa8qT0g==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9952, 'GE-4-2021', 'Pv5OrcskDAlpYH4DcrdDnvvJSVZ83x/9JiW2FLzR+y8=', 'Z9t4a1Pof2IdDWgSa8qT0g==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9952, -9952, 'GE-4-2021', 'Mika', 'Tikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9951, 'GE-5-2021', 'Kxzl95e8zWfdmVYiLMg2OTkGj6GnZuwQQSVw7HMqlLM=', 'ZCLAJI7ZnSrOgR6RGUGA1g==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9951, 'GE-5-2021', 'Kxzl95e8zWfdmVYiLMg2OTkGj6GnZuwQQSVw7HMqlLM=', 'ZCLAJI7ZnSrOgR6RGUGA1g==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9951, -9951, 'GE-5-2021', 'Stefan', 'Likić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9950, 'GE-6-2021', 'T9zIFbleFpWpqte3ePYzgEDCLWR3olwadYXpyhiimSw=', 'LUVgIKqY43ajHE0ZcFvYxQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9950, 'GE-6-2021', 'T9zIFbleFpWpqte3ePYzgEDCLWR3olwadYXpyhiimSw=', 'LUVgIKqY43ajHE0ZcFvYxQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9950, -9950, 'GE-6-2021', 'Franc', 'Kikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9949, 'GE-7-2021', 'aJq2mfFuORhonzwXY+fC15WI4ShKoxeZYu0mqIzZUic=', 'MbMpbEMetm6dIHPDdFkTRw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9949, 'GE-7-2021', 'aJq2mfFuORhonzwXY+fC15WI4ShKoxeZYu0mqIzZUic=', 'MbMpbEMetm6dIHPDdFkTRw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9949, -9949, 'GE-7-2021', 'Ranc', 'Sinić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9948, 'GE-8-2021', 'sBE8vtB1Ps5GGIUvU/cFgMzz32RzRVAtCDyZ0jfjfeY=', 'pD4xBGzbWWBBaSgTXIzWHQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9948, 'GE-8-2021', 'sBE8vtB1Ps5GGIUvU/cFgMzz32RzRVAtCDyZ0jfjfeY=', 'pD4xBGzbWWBBaSgTXIzWHQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9948, -9948, 'GE-8-2021', 'Kranc', 'Simić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9947, 'GE-9-2021', 'Lr+tUfH+oDm5sBVJfZsLxAyIQ1MTY0NF/V4Do1lHS10=', 'f7Nw5oVxWi60SWuKzHoEjA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9947, 'GE-9-2021', 'Lr+tUfH+oDm5sBVJfZsLxAyIQ1MTY0NF/V4Do1lHS10=', 'f7Nw5oVxWi60SWuKzHoEjA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9947, -9947, 'GE-9-2021', 'Jelena', 'Milić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9946, 'GE-10-2021', 'on9dTCBmFiM/9j4ZQ74XlV2MhR3RvYDolUI1g18HAe4=', '8KatAF5AYoVG/ZEYLW/kDg==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9946, 'GE-10-2021', 'on9dTCBmFiM/9j4ZQ74XlV2MhR3RvYDolUI1g18HAe4=', '8KatAF5AYoVG/ZEYLW/kDg==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9946, -9946, 'GE-10-2021', 'Milenko', 'Mamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9945, 'GE-11-2021', 'uKteGT84vWDZYscRSlz1ntUmZm4qx0vhS3F62RjReHM=', 'Fi7/Z+Bpi/FoVWD610Yxyg==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9945, 'GE-11-2021', 'uKteGT84vWDZYscRSlz1ntUmZm4qx0vhS3F62RjReHM=', 'Fi7/Z+Bpi/FoVWD610Yxyg==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9945, -9945, 'GE-11-2021', 'Nikola', 'Pamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9944, 'GE-12-2021', 'hXr3OkylcyfmFAMMwRrki5Ilx+HhSAMCIOT9Wl1i138=', 'X76vYXVt+y3jPDeGcxqpiQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9944, 'GE-12-2021', 'hXr3OkylcyfmFAMMwRrki5Ilx+HhSAMCIOT9Wl1i138=', 'X76vYXVt+y3jPDeGcxqpiQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9944, -9944, 'GE-12-2021', 'Pera', 'Tamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9943, 'GE-13-2021', '5rNAneHFUAc06RWIMRYTVmP+bl9Gd/wLPvKvogB7bvc=', '5GqZLjFJpPIRaaCFL17mRA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9943, 'GE-13-2021', '5rNAneHFUAc06RWIMRYTVmP+bl9Gd/wLPvKvogB7bvc=', '5GqZLjFJpPIRaaCFL17mRA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9943, -9943, 'GE-13-2021', 'Marko', 'Kamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9942, 'GE-14-2021', 'inJZv6JE9BZDqYFcWVcMNlIziCA580aJLRKrrjDMNx4=', 'XMIITlZCXmhMCTD/K4D5vg==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9942, 'GE-14-2021', 'inJZv6JE9BZDqYFcWVcMNlIziCA580aJLRKrrjDMNx4=', 'XMIITlZCXmhMCTD/K4D5vg==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9942, -9942, 'GE-14-2021', 'Mika', 'Perić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9941, 'GE-15-2021', 'YYdJc+l42MjmwClGj77vHBCM+c23xLkTOKE+8lYhpPs=', 'F+U4ZNDqGH5ETeE6Lej/Og==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9941, 'GE-15-2021', 'YYdJc+l42MjmwClGj77vHBCM+c23xLkTOKE+8lYhpPs=', 'F+U4ZNDqGH5ETeE6Lej/Og==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9941, -9941, 'GE-15-2021', 'Stefan', 'Mikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9940, 'GE-16-2021', 'B/PfbPg6cy8NQf7qYaKKbDbjqGFZY+ELZEkw1kFF0AE=', '0q1ZKqoQ3imicZHVScmBig==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9940, 'GE-16-2021', 'B/PfbPg6cy8NQf7qYaKKbDbjqGFZY+ELZEkw1kFF0AE=', '0q1ZKqoQ3imicZHVScmBig==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9940, -9940, 'GE-16-2021', 'Franc', 'Fikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9939, 'GE-17-2021', 'R9Q5jx3WCGr4wpn5tQTPmLMgPTgzyZy+xm5JZTA9ZBg=', 'SiOV4mlo1OD7CSb+dsUh0g==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9939, 'GE-17-2021', 'R9Q5jx3WCGr4wpn5tQTPmLMgPTgzyZy+xm5JZTA9ZBg=', 'SiOV4mlo1OD7CSb+dsUh0g==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9939, -9939, 'GE-17-2021', 'Ranc', 'Tikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9938, 'GE-18-2021', 'MLaLblzO/qstvW06MpqsRURJ9WZzgKI7vWrd+ASpJBU=', 'lmkt9jX5pOVDJIQeykyfNA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9938, 'GE-18-2021', 'MLaLblzO/qstvW06MpqsRURJ9WZzgKI7vWrd+ASpJBU=', 'lmkt9jX5pOVDJIQeykyfNA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9938, -9938, 'GE-18-2021', 'Kranc', 'Likić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9937, 'GE-19-2021', 'jUI1YvrnnquJ9SEZ90yaG0b/bdsbz+dc3pzBqMy34u8=', 'RIvwAXI88+Re4esEG0vdIw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9937, 'GE-19-2021', 'jUI1YvrnnquJ9SEZ90yaG0b/bdsbz+dc3pzBqMy34u8=', 'RIvwAXI88+Re4esEG0vdIw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9937, -9937, 'GE-19-2021', 'Jelena', 'Kikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9936, 'GE-20-2021', 'DONwa3HjU2k1AMfhsWw0i1G06IpmA/Si98W9X5oie9E=', 'sBcXBqCNUNeyohRnitWzIA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9936, 'GE-20-2021', 'DONwa3HjU2k1AMfhsWw0i1G06IpmA/Si98W9X5oie9E=', 'sBcXBqCNUNeyohRnitWzIA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9936, -9936, 'GE-20-2021', 'Milenko', 'Sinić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9935, 'GE-21-2021', '6xVXWoLTK0lfMV5wk0jmkE8nEshNqKKdycpd4FnU8/M=', '7nhXnObNJtRFD/OEF55LHQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9935, 'GE-21-2021', '6xVXWoLTK0lfMV5wk0jmkE8nEshNqKKdycpd4FnU8/M=', '7nhXnObNJtRFD/OEF55LHQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9935, -9935, 'GE-21-2021', 'Nikola', 'Simić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9934, 'GE-22-2021', 'uhNIUFyiPln4S1sB8urJvYNNZZwT18pU9OKMxc4MRgY=', '8xQbQKJcw5rwmsnwMvZ2cA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9934, 'GE-22-2021', 'uhNIUFyiPln4S1sB8urJvYNNZZwT18pU9OKMxc4MRgY=', '8xQbQKJcw5rwmsnwMvZ2cA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9934, -9934, 'GE-22-2021', 'Pera', 'Milić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9933, 'GE-23-2021', 'PLBULeJYa5a6SY/Kn0CT38oi1szOy/hhenEzH9FuAFc=', 'lMPPtVyPTAw8+/6vtV7vPg==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9933, 'GE-23-2021', 'PLBULeJYa5a6SY/Kn0CT38oi1szOy/hhenEzH9FuAFc=', 'lMPPtVyPTAw8+/6vtV7vPg==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9933, -9933, 'GE-23-2021', 'Marko', 'Mamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9932, 'GE-24-2021', 'TEYU/GAtACPhCEmDRYbPXQlrSE16yRJnVlQm8ZHcFsc=', '3m1PRWy3VrFp3swhnPpFAA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9932, 'GE-24-2021', 'TEYU/GAtACPhCEmDRYbPXQlrSE16yRJnVlQm8ZHcFsc=', '3m1PRWy3VrFp3swhnPpFAA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9932, -9932, 'GE-24-2021', 'Mika', 'Pamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9931, 'GE-25-2021', 'KMONqAElb0p+MU8rLGKI4CR1tJ9bL22nD+4QN5Y3LQU=', 'NBL6i7hp90sb5ztpp0p7BA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9931, 'GE-25-2021', 'KMONqAElb0p+MU8rLGKI4CR1tJ9bL22nD+4QN5Y3LQU=', 'NBL6i7hp90sb5ztpp0p7BA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9931, -9931, 'GE-25-2021', 'Stefan', 'Tamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9930, 'GE-26-2021', 'djxRqqtXJDG7DeGGZxv3NdAa0okYF6psJpZbW/74ZLs=', 'nzp+S9A//h1+jnXoYu8wQQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9930, 'GE-26-2021', 'djxRqqtXJDG7DeGGZxv3NdAa0okYF6psJpZbW/74ZLs=', 'nzp+S9A//h1+jnXoYu8wQQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9930, -9930, 'GE-26-2021', 'Franc', 'Kamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9929, 'GE-27-2021', 'nh+n0cK6fUegWyAZEBetVarak3qKbMpHk62S+KmhJoQ=', 'Ra1q/9OzcUZLwcyu9gJ1+g==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9929, 'GE-27-2021', 'nh+n0cK6fUegWyAZEBetVarak3qKbMpHk62S+KmhJoQ=', 'Ra1q/9OzcUZLwcyu9gJ1+g==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9929, -9929, 'GE-27-2021', 'Ranc', 'Perić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9928, 'GE-28-2021', 'bPLhvwwlO0k1GZvtdq6mPtli3rsplMH3tSO+gIxSOlY=', 'qxn2rZDVue5ZuasAdmMTsA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9928, 'GE-28-2021', 'bPLhvwwlO0k1GZvtdq6mPtli3rsplMH3tSO+gIxSOlY=', 'qxn2rZDVue5ZuasAdmMTsA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9928, -9928, 'GE-28-2021', 'Kranc', 'Mikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9927, 'GE-29-2021', '4JkRowCFlY4vhZlyHs0ZAoqr/byskJodyIJFBMQc1uw=', '21DJGIhl0vhyDiihR+dW9g==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9927, 'GE-29-2021', '4JkRowCFlY4vhZlyHs0ZAoqr/byskJodyIJFBMQc1uw=', '21DJGIhl0vhyDiihR+dW9g==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9927, -9927, 'GE-29-2021', 'Jelena', 'Fikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9926, 'GE-30-2021', 'xoo8voWGPXPagZy4AFLzlEQdiw9qUwMkNfMLwCkx5/k=', '1A6dcgYAjv4RlV5m94tuhw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9926, 'GE-30-2021', 'xoo8voWGPXPagZy4AFLzlEQdiw9qUwMkNfMLwCkx5/k=', '1A6dcgYAjv4RlV5m94tuhw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9926, -9926, 'GE-30-2021', 'Milenko', 'Tikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9925, 'GE-31-2021', 'RtvgGhEgYSDL3tQJbhlIqfrSM5kh91C8tPF3EH16VDY=', 'm6snZHY/T932vRrM9v9Vsw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9925, 'GE-31-2021', 'RtvgGhEgYSDL3tQJbhlIqfrSM5kh91C8tPF3EH16VDY=', 'm6snZHY/T932vRrM9v9Vsw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9925, -9925, 'GE-31-2021', 'Nikola', 'Likić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9924, 'GE-32-2021', 'd2DpALjOREHYBSWvOtCcTah/SDUnqeU909cJ+2hqCsM=', 'DIbMIWvMTNp46cbyJXpMBQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9924, 'GE-32-2021', 'd2DpALjOREHYBSWvOtCcTah/SDUnqeU909cJ+2hqCsM=', 'DIbMIWvMTNp46cbyJXpMBQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9924, -9924, 'GE-32-2021', 'Pera', 'Kikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9923, 'GE-33-2021', 'lV0paWRHBf2FZ9AZviUraCA+8PUCip8/iW5pyPBXSoE=', 'qeoUKhOkiLsPEYIdTHLRlQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9923, 'GE-33-2021', 'lV0paWRHBf2FZ9AZviUraCA+8PUCip8/iW5pyPBXSoE=', 'qeoUKhOkiLsPEYIdTHLRlQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9923, -9923, 'GE-33-2021', 'Marko', 'Sinić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9922, 'GE-34-2021', 'FPaEzQ4tCaG5Bffs3IbhiX2yCxf6YecUIXs6iq3eS2Q=', '9L7wBHI3VJf/CGcIrZE63w==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9922, 'GE-34-2021', 'FPaEzQ4tCaG5Bffs3IbhiX2yCxf6YecUIXs6iq3eS2Q=', '9L7wBHI3VJf/CGcIrZE63w==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9922, -9922, 'GE-34-2021', 'Mika', 'Simić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9921, 'GE-35-2021', 'N1FP03PPrrgle7coyy7wy77Soo0l1UdB2L8ervpkOz8=', 'IotfKPW+ZH5Y417aCPTKlg==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9921, 'GE-35-2021', 'N1FP03PPrrgle7coyy7wy77Soo0l1UdB2L8ervpkOz8=', 'IotfKPW+ZH5Y417aCPTKlg==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9921, -9921, 'GE-35-2021', 'Stefan', 'Milić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9920, 'GE-36-2021', 'FGm5qoPf4Z49amMS4CNd+1u0Da11OvYt/BGW3UFiGnc=', 'D6QW20/Cl+D6TxkuVGrg+Q==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9920, 'GE-36-2021', 'FGm5qoPf4Z49amMS4CNd+1u0Da11OvYt/BGW3UFiGnc=', 'D6QW20/Cl+D6TxkuVGrg+Q==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9920, -9920, 'GE-36-2021', 'Franc', 'Mamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9919, 'GE-37-2021', 'rAVjLEY4RZXXWpyWO9s8Vv8u+GHRL4BT6sU4aRNFkrU=', 'ngVcB7nbDExNhH4q6Hd4pw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9919, 'GE-37-2021', 'rAVjLEY4RZXXWpyWO9s8Vv8u+GHRL4BT6sU4aRNFkrU=', 'ngVcB7nbDExNhH4q6Hd4pw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9919, -9919, 'GE-37-2021', 'Ranc', 'Pamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9918, 'GE-38-2021', '8zPGmVbL92G/t8TVp8LYDU3QFCdm3ePdwiktWtTazmU=', '50Wt60mQVdlBWotvqGn9iA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9918, 'GE-38-2021', '8zPGmVbL92G/t8TVp8LYDU3QFCdm3ePdwiktWtTazmU=', '50Wt60mQVdlBWotvqGn9iA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9918, -9918, 'GE-38-2021', 'Kranc', 'Tamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9917, 'GE-39-2021', '4BjVdhncoF/ogixBmVZQI0icWQB7FnolDR1umt7VIH0=', 'w1o702PFzyWFB7JGp7TGrw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9917, 'GE-39-2021', '4BjVdhncoF/ogixBmVZQI0icWQB7FnolDR1umt7VIH0=', 'w1o702PFzyWFB7JGp7TGrw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9917, -9917, 'GE-39-2021', 'Jelena', 'Kamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9916, 'GE-40-2021', 'PUMbupwbGO1k56EA69OP3G0avDPX56nRKbT44aggzcc=', 'o4NTpaeRaRm2GHpaVWGPfw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9916, 'GE-40-2021', 'PUMbupwbGO1k56EA69OP3G0avDPX56nRKbT44aggzcc=', 'o4NTpaeRaRm2GHpaVWGPfw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9916, -9916, 'GE-40-2021', 'Milenko', 'Perić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9915, 'GE-41-2021', 'FlzVXdVw5F1m8PS3tux7RAPKXeKCQZXWAu6PwK7+8vI=', '7nR3AjcW35Lj+ZdrqUQFfg==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9915, 'GE-41-2021', 'FlzVXdVw5F1m8PS3tux7RAPKXeKCQZXWAu6PwK7+8vI=', '7nR3AjcW35Lj+ZdrqUQFfg==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9915, -9915, 'GE-41-2021', 'Nikola', 'Mikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9914, 'GE-42-2021', 'JNu99mPOLfEXWwvhE56hqypAsLIo+Hu3iFJdIfeKFmw=', 'JJzokvYwRELmd+7rOB2pjQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9914, 'GE-42-2021', 'JNu99mPOLfEXWwvhE56hqypAsLIo+Hu3iFJdIfeKFmw=', 'JJzokvYwRELmd+7rOB2pjQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9914, -9914, 'GE-42-2021', 'Pera', 'Fikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9913, 'GE-43-2021', 'XJupiOKM3IWD6P9YzsY7vn0R4cVm5qpmO6TyR4Pg3t4=', 'h0h932zhNcRk42taPtnQPA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9913, 'GE-43-2021', 'XJupiOKM3IWD6P9YzsY7vn0R4cVm5qpmO6TyR4Pg3t4=', 'h0h932zhNcRk42taPtnQPA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9913, -9913, 'GE-43-2021', 'Marko', 'Tikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9912, 'GE-44-2021', 'ZaATS2Ow5sCXPTnEifQKo6HmqEXi/C/y8kPotmezv8A=', '/f+nMrIaQHoiDef5E9gKcA==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9912, 'GE-44-2021', 'ZaATS2Ow5sCXPTnEifQKo6HmqEXi/C/y8kPotmezv8A=', '/f+nMrIaQHoiDef5E9gKcA==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9912, -9912, 'GE-44-2021', 'Mika', 'Likić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9911, 'GE-45-2021', 'jIselurGdYbYgYMb4mjo4Q5tBl1420wWVi0nFeVMfNk=', '7WPtD55j9SbyjnUWmIs40w==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9911, 'GE-45-2021', 'jIselurGdYbYgYMb4mjo4Q5tBl1420wWVi0nFeVMfNk=', '7WPtD55j9SbyjnUWmIs40w==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9911, -9911, 'GE-45-2021', 'Stefan', 'Kikić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9910, 'GE-46-2021', 'Vj5ze+6T67E0J3DnVY6YYKsmiTgLAUnAoHO7IG4+Wsg=', 'UOrZ5bIXe4+g4wdmOB8WPw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9910, 'GE-46-2021', 'Vj5ze+6T67E0J3DnVY6YYKsmiTgLAUnAoHO7IG4+Wsg=', 'UOrZ5bIXe4+g4wdmOB8WPw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9910, -9910, 'GE-46-2021', 'Franc', 'Sinić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9909, 'GE-47-2021', 'KzeI9m2bFGjMhYIL7vVli0r8hDUH5HV9OpHY5ql3myE=', 'dfzYZwjGzDmFWwOj4theqw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9909, 'GE-47-2021', 'KzeI9m2bFGjMhYIL7vVli0r8hDUH5HV9OpHY5ql3myE=', 'dfzYZwjGzDmFWwOj4theqw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9909, -9909, 'GE-47-2021', 'Ranc', 'Simić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9908, 'GE-48-2021', 'M2z1ZwD0JLwB/WbbKDw+FvSrpCVZwXhgBvqRJn+DQjQ=', 'rxW4a9MdeeFBlbhEEEfpCg==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9908, 'GE-48-2021', 'M2z1ZwD0JLwB/WbbKDw+FvSrpCVZwXhgBvqRJn+DQjQ=', 'rxW4a9MdeeFBlbhEEEfpCg==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9908, -9908, 'GE-48-2021', 'Kranc', 'Milić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9907, 'GE-49-2021', 'mC1bYf5NK8uzJpMlSNqjYiq9B+WIXnQwMXRqG7Z07/M=', 'zp4ODkl+bGjv41Ho5CuNWg==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9907, 'GE-49-2021', 'mC1bYf5NK8uzJpMlSNqjYiq9B+WIXnQwMXRqG7Z07/M=', 'zp4ODkl+bGjv41Ho5CuNWg==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9907, -9907, 'GE-49-2021', 'Jelena', 'Mamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9906, 'GE-50-2021', '3mAfT67S1TZcdLFa4ZdzWr5KiHdctA9Ct5uUEUtOxC4=', 'ZSBUsJhpeMddDMOIdRLcIw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9906, 'GE-50-2021', '3mAfT67S1TZcdLFa4ZdzWr5KiHdctA9Ct5uUEUtOxC4=', 'ZSBUsJhpeMddDMOIdRLcIw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9906, -9906, 'GE-50-2021', 'Milenko', 'Pamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9905, 'GE-51-2021', 'eBbQmDI0rlei2URHYQc6Od4+2eOLYSLM8gNQuUKgzDU=', 'FrPkWJLv7Vmqs8DDdyAx5g==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9905, 'GE-51-2021', 'eBbQmDI0rlei2URHYQc6Od4+2eOLYSLM8gNQuUKgzDU=', 'FrPkWJLv7Vmqs8DDdyAx5g==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9905, -9905, 'GE-51-2021', 'Sladislav', 'Tamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9904, 'GE-52-2021', 'sLSMEDOLWRQMQAUtAIsgQH8wrQ+eMmZ7pjx64oKYAzI=', 'w3cpNIxcKHbYGJaLRhcDDQ==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9904, 'GE-52-2021', 'sLSMEDOLWRQMQAUtAIsgQH8wrQ+eMmZ7pjx64oKYAzI=', 'w3cpNIxcKHbYGJaLRhcDDQ==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9904, -9904, 'GE-52-2021', 'Vladislav', 'Kamić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9903, 'GE-53-2021', 'U5gAB/fVzsSky1sV+Bg3v359SrM1muVfK94uEhmqpwE=', '1kLMpIvo/GDUKXHRQmlXvw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9903, 'GE-53-2021', 'U5gAB/fVzsSky1sV+Bg3v359SrM1muVfK94uEhmqpwE=', '1kLMpIvo/GDUKXHRQmlXvw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9903, -9903, 'GE-53-2021', 'Kranc', 'Lalić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9902, 'GE-54-2021', '17W0No9tq+5a7gwUxZBeADJ3sp/2xJFUSPxYABM5aTg=', 'KJE2ydyv9V+OtHRxDrx7yg==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9902, 'GE-54-2021', '17W0No9tq+5a7gwUxZBeADJ3sp/2xJFUSPxYABM5aTg=', 'KJE2ydyv9V+OtHRxDrx7yg==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9902, -9902, 'GE-54-2021', 'Marko', 'Lekić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-9901, 'GE-58-2021', 'V8cA6MxIU8on6wh4Of9Qv8waO74jk+5rEl0jXguIjm8=', 'G6uNseqlDGJyAX+qKSfSQw==', 2);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-9901, 'GE-58-2021', 'V8cA6MxIU8on6wh4Of9Qv8waO74jk+5rEl0jXguIjm8=', 'G6uNseqlDGJyAX+qKSfSQw==', 2, true);
 
 INSERT INTO public."Learners"("Id", "UserId", "Index", "Name", "Surname") VALUES
 	(-9901, -9901, 'GE-58-2021', 'Nikola', 'Kekić');
 
 
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-30000, 'nikola.luburic', 'QcJjNxaNeNcZwxbAoqKzC8rQfACAyBJnkm3RWYoFNpQ=', 'bvTQqhZmj/E+qlwcGQMT9Q==', 1);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-30000, 'nikola.luburic', 'QcJjNxaNeNcZwxbAoqKzC8rQfACAyBJnkm3RWYoFNpQ=', 'bvTQqhZmj/E+qlwcGQMT9Q==', 1, true);
 
 INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname") VALUES
 	(-30000, -30000, 'Nikola', 'Luburić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-29999, 'natasa.rajtarov', 'tjx9dnx5soEe2thzU+pXFxT9sLcuSacghajsyDsWaEI=', 'e1/xt62ZAbuhd1GdIUC32A==', 1);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-29999, 'natasa.rajtarov', 'tjx9dnx5soEe2thzU+pXFxT9sLcuSacghajsyDsWaEI=', 'e1/xt62ZAbuhd1GdIUC32A==', 1, true);
 
 INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname") VALUES
 	(-29999, -29999, 'Nataša', 'Rajtarov');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-29998, 'luka.doric', 'qRSQxwx/UkAYrAS+UXMSG47nCp3VdEhlYysW7zoPQZ8=', '+CxVHF/J94v0F67dQI/WMw==', 1);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-29998, 'luka.doric', 'qRSQxwx/UkAYrAS+UXMSG47nCp3VdEhlYysW7zoPQZ8=', '+CxVHF/J94v0F67dQI/WMw==', 1, true);
 
 INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname") VALUES
 	(-29998, -29998, 'Luka', 'Dorić');
 
-INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role") VALUES
-	(-29997, 'simona.prokic', 'jCAbAo/aYTbQg+vmH9yyYiHyuzLVTiDdJtSGehNQB2E=', 'LSPxW7BoGSsoJx4lX+JeNA==', 1);
+INSERT INTO public."Users"("Id", "Username", "Password", "Salt", "Role", "IsActive") VALUES
+	(-29997, 'simona.prokic', 'jCAbAo/aYTbQg+vmH9yyYiHyuzLVTiDdJtSGehNQB2E=', 'LSPxW7BoGSsoJx4lX+JeNA==', 1, true);
 
 INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname") VALUES
 	(-29997, -29997, 'Simona', 'Prokić');
@@ -1020,664 +1020,676 @@ INSERT INTO public."CourseOwnerships"("Id", "CourseId", "InstructorId") VALUES
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-10000, 'RA-PSW 1', -100);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "InstructorId", "Role") VALUES
+-- should be deleted
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-100000, -10000, -29997, 1);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99999, -10000, -10000, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99998, -10000, -9999, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99997, -10000, -9998, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99996, -10000, -9997, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99995, -10000, -9996, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99994, -10000, -9995, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99993, -10000, -9994, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99992, -10000, -9993, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99991, -10000, -9992, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99990, -10000, -9991, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99989, -10000, -9990, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99988, -10000, -9989, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99987, -10000, -9988, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99986, -10000, -9987, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99985, -10000, -9986, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99984, -10000, -9985, 0);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9999, 'RA-PSW 2', -100);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "InstructorId", "Role") VALUES
+-- should be deleted
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99983, -9999, -29997, 1);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99982, -9999, -9984, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99981, -9999, -9983, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99980, -9999, -9982, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99979, -9999, -9981, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99978, -9999, -9980, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99977, -9999, -9979, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99976, -9999, -9978, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99975, -9999, -9977, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99974, -9999, -9976, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99973, -9999, -9975, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99972, -9999, -9974, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99971, -9999, -9973, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99970, -9999, -9972, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99969, -9999, -9971, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99968, -9999, -9970, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99967, -9999, -9969, 0);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9998, 'RA-PSW 3', -100);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "InstructorId", "Role") VALUES
+-- should be deleted
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99966, -9998, -29998, 1);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99965, -9998, -9968, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99964, -9998, -9967, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99963, -9998, -9966, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99962, -9998, -9965, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99961, -9998, -9964, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99960, -9998, -9963, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99959, -9998, -9962, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99958, -9998, -9961, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99957, -9998, -9960, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99956, -9998, -9959, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99955, -9998, -9958, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99954, -9998, -9957, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99953, -9998, -9956, 0);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9997, 'RA-PSW All', -100);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "InstructorId", "Role") VALUES
+-- should be deleted
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99952, -9997, -30000, 1);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "InstructorId", "Role") VALUES
+-- should be deleted
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99951, -9997, -29998, 1);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "InstructorId", "Role") VALUES
+-- should be deleted
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99950, -9997, -29997, 1);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99949, -9997, -10000, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99948, -9997, -9999, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99947, -9997, -9998, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99946, -9997, -9997, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99945, -9997, -9996, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99944, -9997, -9995, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99943, -9997, -9994, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99942, -9997, -9993, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99941, -9997, -9992, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99940, -9997, -9991, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99939, -9997, -9990, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99938, -9997, -9989, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99937, -9997, -9988, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99936, -9997, -9987, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99935, -9997, -9986, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99934, -9997, -9985, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99933, -9997, -9984, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99932, -9997, -9983, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99931, -9997, -9982, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99930, -9997, -9981, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99929, -9997, -9980, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99928, -9997, -9979, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99927, -9997, -9978, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99926, -9997, -9977, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99925, -9997, -9976, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99924, -9997, -9975, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99923, -9997, -9974, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99922, -9997, -9973, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99921, -9997, -9972, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99920, -9997, -9971, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99919, -9997, -9970, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99918, -9997, -9969, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99917, -9997, -9968, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99916, -9997, -9967, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99915, -9997, -9966, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99914, -9997, -9965, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99913, -9997, -9964, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99912, -9997, -9963, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99911, -9997, -9962, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99910, -9997, -9961, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99909, -9997, -9960, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99908, -9997, -9959, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99907, -9997, -9958, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99906, -9997, -9957, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99905, -9997, -9956, 0);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9996, 'GEO-RP 1', -99);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "InstructorId", "Role") VALUES
+-- should be deleted
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99904, -9996, -29999, 1);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99903, -9996, -9955, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99902, -9996, -9954, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99901, -9996, -9953, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99900, -9996, -9952, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99899, -9996, -9951, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99898, -9996, -9950, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99897, -9996, -9949, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99896, -9996, -9948, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99895, -9996, -9947, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99894, -9996, -9946, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99893, -9996, -9945, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99892, -9996, -9944, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99891, -9996, -9943, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99890, -9996, -9942, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99889, -9996, -9941, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99888, -9996, -9940, 0);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9995, 'GEO-RP 2', -99);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "InstructorId", "Role") VALUES
+-- should be deleted
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99887, -9995, -29999, 1);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99886, -9995, -9939, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99885, -9995, -9938, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99884, -9995, -9937, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99883, -9995, -9936, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99882, -9995, -9935, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99881, -9995, -9934, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99880, -9995, -9933, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99879, -9995, -9932, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99878, -9995, -9931, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99877, -9995, -9930, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99876, -9995, -9929, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99875, -9995, -9928, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99874, -9995, -9927, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99873, -9995, -9926, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99872, -9995, -9925, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99871, -9995, -9924, 0);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9994, 'GEO-RP 3', -99);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "InstructorId", "Role") VALUES
+-- should be deleted
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99870, -9994, -29999, 1);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99869, -9994, -9923, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99868, -9994, -9922, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99867, -9994, -9921, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99866, -9994, -9920, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99865, -9994, -9919, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99864, -9994, -9918, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99863, -9994, -9917, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99862, -9994, -9916, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99861, -9994, -9915, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99860, -9994, -9914, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99859, -9994, -9913, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99858, -9994, -9912, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99857, -9994, -9911, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99856, -9994, -9910, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99855, -9994, -9909, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99854, -9994, -9908, 0);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9993, 'GEO-RP 4', -99);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "InstructorId", "Role") VALUES
+-- should be deleted
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99853, -9993, -29999, 1);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99852, -9993, -9907, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99851, -9993, -9906, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99850, -9993, -9905, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99849, -9993, -9904, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99848, -9993, -9903, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99847, -9993, -9902, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99846, -9993, -9901, 0);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9992, 'GEO-RP All', -99);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "InstructorId", "Role") VALUES
+-- should be deleted
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99845, -9992, -29999, 1);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "InstructorId", "Role") VALUES
+-- should be deleted
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99844, -9992, -30000, 1);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99843, -9992, -9955, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99842, -9992, -9954, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99841, -9992, -9953, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99840, -9992, -9952, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99839, -9992, -9951, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99838, -9992, -9950, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99837, -9992, -9949, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99836, -9992, -9948, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99835, -9992, -9947, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99834, -9992, -9946, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99833, -9992, -9945, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99832, -9992, -9944, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99831, -9992, -9943, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99830, -9992, -9942, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99829, -9992, -9941, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99828, -9992, -9940, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99827, -9992, -9939, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99826, -9992, -9938, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99825, -9992, -9937, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99824, -9992, -9936, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99823, -9992, -9935, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99822, -9992, -9934, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99821, -9992, -9933, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99820, -9992, -9932, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99819, -9992, -9931, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99818, -9992, -9930, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99817, -9992, -9929, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99816, -9992, -9928, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99815, -9992, -9927, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99814, -9992, -9926, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99813, -9992, -9925, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99812, -9992, -9924, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99811, -9992, -9923, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99810, -9992, -9922, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99809, -9992, -9921, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99808, -9992, -9920, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99807, -9992, -9919, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99806, -9992, -9918, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99805, -9992, -9917, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99804, -9992, -9916, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99803, -9992, -9915, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99802, -9992, -9914, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99801, -9992, -9913, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99800, -9992, -9912, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99799, -9992, -9911, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99798, -9992, -9910, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99797, -9992, -9909, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99796, -9992, -9908, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99795, -9992, -9907, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99794, -9992, -9906, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99793, -9992, -9905, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99792, -9992, -9904, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99791, -9992, -9903, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99790, -9992, -9902, 0);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "LearnerId", "Role") VALUES
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
 	(-99789, -9992, -9901, 0);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
@@ -1741,7 +1753,7 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99993, -993, 0.00, 0, NULL, -9992);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9995, -9999, -100, '10/5/2022 7:57:03 AM', 0);
+	(-9995, -9999, -100, '10/5/2022 7:57:03 AM', 1);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9991, 0.00, -100, -9999, false, false, false, false);
@@ -1750,7 +1762,7 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99992, -1000, 0.00, 0, NULL, -9991);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9994, -9999, -99, '10/5/2022 7:57:03 AM', 0);
+	(-9994, -9999, -99, '10/5/2022 7:57:03 AM', 1);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9990, 0.00, -99, -9999, false, false, false, false);
@@ -1771,7 +1783,7 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99989, -997, 0.00, 0, NULL, -9988);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9993, -9999, -98, '10/5/2022 7:57:03 AM', 0);
+	(-9993, -9999, -98, '10/5/2022 7:57:03 AM', 1);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9987, 0.00, -96, -9999, false, false, false, false);
@@ -1786,7 +1798,7 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 	(-99987, -995, 0.00, 0, NULL, -9986);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
-	(-9992, -9999, -97, '10/5/2022 7:57:03 AM', 0);
+	(-9992, -9999, -97, '10/5/2022 7:57:03 AM', 1);
 
 INSERT INTO public."KcMasteries"("Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsStarted", "IsPassed", "IsSatisfied", "IsCompleted") VALUES
 	(-9985, 0.00, -94, -9999, false, false, false, false);
