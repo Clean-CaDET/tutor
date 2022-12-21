@@ -42,7 +42,7 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
     private Task<PagedResult<Learner>> GetLearnersByGroupAsync(int page, int pageSize, int groupId)
     {
         return _dbContext.GroupMemberships
-            .Where(g => g.LearnerGroupId == groupId && g.Role.Equals(Role.Learner))
+            .Where(g => g.LearnerGroupId == groupId)
             .Include(g => g.Member)
             .ThenInclude(l => ((Learner)l).KnowledgeComponentMasteries)
             .ThenInclude(kcm => kcm.AssessmentItemMasteries)
@@ -58,7 +58,7 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
     private Task<PagedResult<Learner>> GetAllLearnersAsync(int page, int pageSize, int courseId)
     {
         var learnerIds = _dbContext.LearnerGroups.Where(lg => lg.CourseId.Equals(courseId))
-            .Include(lg => lg.Membership.Where(m => m.Role == Role.Learner))
+            .Include(lg => lg.Membership)
             .SelectMany(m => m.Membership)
             .Select(m => m.Member.Id);
 
@@ -74,8 +74,8 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
     public List<Learner> GetLearnersInGroup(int groupId)
     {
         return _dbContext.GroupMemberships
-            .Where(m => m.Role.Equals(Role.Learner) && m.LearnerGroupId == groupId)
+            .Where(m => m.LearnerGroupId == groupId)
             .Include(m => m.Member)
-            .Select(m => (Learner)m.Member).ToList();
+            .Select(m => m.Member).ToList();
     }
 }
