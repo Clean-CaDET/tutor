@@ -68,7 +68,7 @@ public class Startup
     }
 
     #region Controller Setup
-    private static void SetupControllers(IServiceCollection services)
+    private void SetupControllers(IServiceCollection services)
     {
         services.AddAutoMapper(typeof(Startup));
         services.AddControllers().AddJsonOptions(SetupJsonOptions);
@@ -111,8 +111,9 @@ public class Startup
         }
     }
 
-    private static void SetupOpenApi(IServiceCollection services)
+    private void SetupOpenApi(IServiceCollection services)
     {
+        var contactAddress = Configuration.GetValue<string>("ContactUrl");
         services.AddSwaggerGen(setup =>
         {
             setup.SwaggerDoc("v1", new OpenApiInfo
@@ -124,7 +125,7 @@ public class Startup
                 Contact = new OpenApiContact
                 {
                     Name = "Clean CaDET Organization",
-                    Url = new Uri("https://github.com/Clean-CaDET")
+                    Url = new Uri(contactAddress)
                 }
             });
             var jwtSecurityScheme = new OpenApiSecurityScheme
