@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
+using Microsoft.OpenApi.Models;
+using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,7 +72,9 @@ public class Startup
     {
         services.AddAutoMapper(typeof(Startup));
         services.AddControllers().AddJsonOptions(SetupJsonOptions);
-        services.AddSwaggerGen();
+
+        SetupOpenApi(services);
+
         services.AddCors(options =>
         {
             options.AddPolicy(name: CorsPolicy,
@@ -106,6 +110,45 @@ public class Startup
             registry.RegisterType(type);
         }
     }
+
+    private static void SetupOpenApi(IServiceCollection services)
+    {
+        services.AddSwaggerGen(setup =>
+        {
+            setup.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Clean CaDET Tutor API",
+                Version = "v1",
+                // TODO: change description
+                Description = "Meaningful description of the API",
+                Contact = new OpenApiContact
+                {
+                    Name = "Clean CaDET Organization",
+                    Url = new Uri("https://github.com/Clean-CaDET")
+                }
+            });
+            var jwtSecurityScheme = new OpenApiSecurityScheme
+            {
+                BearerFormat = "JWT",
+                Name = "JWT Authentication",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = JwtBearerDefaults.AuthenticationScheme,
+                Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
+                Reference = new OpenApiReference
+                {
+                    Id = JwtBearerDefaults.AuthenticationScheme,
+                    Type = ReferenceType.SecurityScheme
+                }
+            };
+            setup.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+            setup.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                { jwtSecurityScheme, Array.Empty<string>() }
+            });
+        });
+    }
+
     private static void SetupAuth(IServiceCollection services)
     {
         services.AddScoped<IAuthenticationService, AuthenticationService>();
