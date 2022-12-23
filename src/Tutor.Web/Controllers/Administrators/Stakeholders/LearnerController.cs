@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -40,12 +41,23 @@ public class LearnerController : BaseApiController
         return Ok(_mapper.Map<StakeholderAccountDto>(result.Value));
     }
 
+    [HttpPost("bulk")]
+    public ActionResult BulkRegister([FromBody] List<StakeholderAccountDto> stakeholderAccounts)
+    {
+        var result = _learnerService.BulkRegister(
+            stakeholderAccounts.Select(a => _mapper.Map<Learner>(a)).ToList(),
+            stakeholderAccounts.Select(a => a.Index).ToList(),
+            stakeholderAccounts.Select(a => a.Password).ToList());
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        return Ok();
+    }
+
     [HttpPut("{id:int}")]
     public ActionResult Update([FromBody] StakeholderAccountDto stakeholderAccount)
     {
         var result = _learnerService.Update(_mapper.Map<Learner>(stakeholderAccount));
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return Ok(_mapper.Map<StakeholderAccountDto>(result.Value));
     }
 
     [HttpPut("{id:int}/archive")]
@@ -53,7 +65,7 @@ public class LearnerController : BaseApiController
     {
         var result = _learnerService.Archive(id, archive);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return Ok(_mapper.Map<StakeholderAccountDto>(result.Value));
     }
 
     [HttpDelete("{id:int}")]

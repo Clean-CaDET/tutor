@@ -2,6 +2,7 @@
 using FluentResults;
 using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.CourseIteration;
+using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Core.UseCases.Management.CourseIteration;
 
@@ -17,5 +18,10 @@ public class LearnerGroupService: CrudService<LearnerGroup>, ILearnerGroupServic
     public Result<List<LearnerGroup>> GetByCourse(int courseId)
     {
         return _groupRepository.GetCourseGroups(courseId);
+    }
+
+    public Result<List<Learner>> GetMembers(int groupId)
+    {
+        return _groupRepository.GetLearnersInGroup(groupId);
     }
 }

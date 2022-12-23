@@ -8,5 +8,6 @@ public class StakeholderAccountDto
     public string Name { get; set; }
     public string Surname { get; set; }
     public string Index { get; set; }
+    public bool IsArchived { get; set; }
     public string Password { get; set; }
 }

@@ -32,6 +32,20 @@ public class UserDatabaseRepository : IUserRepository
         return user;
     }
 
+    public List<User> BulkRegister(List<string> usernames, List<string> passwords, UserRole role)
+    {
+        var users = new List<User>();
+        for (var i = 0; i < usernames.Count; i++)
+        {
+            var salt = PasswordUtilities.GenerateSalt();
+            var hashedPassword = PasswordUtilities.HashPassword(passwords[i], salt);
+            users.Add(new User(usernames[i], hashedPassword, Convert.ToBase64String(salt), role));
+        }
+        _dbContext.Users.AttachRange(users);
+        _dbContext.SaveChanges();
+        return users;
+    }
+
     public int GetInstructorId(int userId)
     {
         var instructor = _dbContext.Instructors.FirstOrDefault(i => i.UserId == userId);

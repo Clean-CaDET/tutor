@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.Stakeholders;

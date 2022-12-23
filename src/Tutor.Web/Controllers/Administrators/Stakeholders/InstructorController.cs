@@ -45,7 +45,7 @@ public class InstructorController : BaseApiController
     {
         var result = _instructorService.Update(_mapper.Map<Instructor>(stakeholderAccount));
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return Ok(_mapper.Map<StakeholderAccountDto>(result.Value));
     }
 
     [HttpPut("{id:int}/archive")]
@@ -53,7 +53,7 @@ public class InstructorController : BaseApiController
     {
         var result = _instructorService.Archive(id, archive);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return Ok(_mapper.Map<StakeholderAccountDto>(result.Value));
     }
 
     [HttpDelete("{id:int}")]

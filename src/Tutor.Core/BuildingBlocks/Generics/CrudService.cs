@@ -22,7 +22,7 @@ public class CrudService<T> where T : Entity
         return result;
     }
 
-    public Result<T> Create(T entity)
+    public virtual Result<T> Create(T entity)
     {
         var createdEntity = _crudRepository.Create(entity);
         return createdEntity;

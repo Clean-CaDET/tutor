@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
 
@@ -18,7 +20,7 @@ public class CrudDatabaseRepository<T> : ICrudRepository<T> where T : Entity
 
     public PagedResult<T> GetPaged(int page, int pageSize)
     {
-        var task = _dbSet.GetPaged(page, pageSize);
+        var task = _dbSet.OrderByDescending(e => e.Id).GetPaged(page, pageSize);
         task.Wait();
         return task.Result;
     }
@@ -33,6 +35,12 @@ public class CrudDatabaseRepository<T> : ICrudRepository<T> where T : Entity
         _dbSet.Attach(entity);
         DbContext.SaveChanges();
         return entity;
+    }
+
+    public void BulkCreate(List<T> entities)
+    {
+        _dbSet.AttachRange(entities);
+        DbContext.SaveChanges();
     }
 
     public T Update(T entity)

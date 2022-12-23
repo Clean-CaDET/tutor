@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.Stakeholders;
@@ -21,6 +22,21 @@ public class LearnerService : CrudService<Learner>, ILearnerService
         learner.UserId = user.Id;
         // Warning: transactional consistency is not supported here (no rollback if Create fails).
         return Create(learner);
+    }
+
+    public Result BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords)
+    {
+        var users = _userRepository.BulkRegister(usernames, passwords, UserRole.Learner);
+        foreach (var learner in learners)
+        {
+            var user = users.Find(u => u.Username.Equals(learner.Index));
+            if (user == null) continue;
+            learner.UserId = user.Id;
+        }
+        // Warning: transactional consistency is not supported here (no rollback if Create fails).
+        _learnerRepository.BulkCreate(learners);
+
+        return Result.Ok();
     }
 
     public Result<Learner> Archive(int id, bool archive)
