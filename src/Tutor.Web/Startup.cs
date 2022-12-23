@@ -120,8 +120,7 @@ public class Startup
             {
                 Title = "Clean CaDET Tutor API",
                 Version = "v1",
-                // TODO: change description
-                Description = "Meaningful description of the API",
+                Description = "An intelligent tutoring system specialized for the clean code analysis and refactoring domain.",
                 Contact = new OpenApiContact
                 {
                     Name = "Clean CaDET Organization",
