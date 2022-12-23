@@ -22,7 +22,7 @@ public class EnrollmentController : BaseApiController
         _mapper = mapper;
         _enrollmentService = enrollmentService;
     }
-        
+
     [HttpGet]
     public ActionResult<List<CourseDto>> GetEnrolledCourses()
     {
@@ -32,9 +32,10 @@ public class EnrollmentController : BaseApiController
     }
 
     [HttpGet("{courseId:int}")]
-    public ActionResult<List<KnowledgeUnitDto>> GetActiveUnits(int courseId)
+    public ActionResult<CourseDto> GetCourseWithEnrolledAndActiveUnits(int courseId)
     {
-        var result = _enrollmentService.GetActiveUnits(courseId, User.LearnerId());
-        return Ok(result.Value.Select(_mapper.Map<KnowledgeUnitDto>).ToList());
+        var result = _enrollmentService.GetCourseWithEnrolledAndActiveUnits(courseId, User.LearnerId());
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        return Ok(_mapper.Map<CourseDto>(result.Value));
     }
 }

@@ -19,9 +19,9 @@ public class EnrollmentService : IEnrollmentService
         return _enrollmentRepository.GetEnrolledCourses(learnerId);
     }
 
-    public Result<List<KnowledgeUnit>> GetActiveUnits(int courseId, int learnerId)
+    public Result<Course> GetCourseWithEnrolledAndActiveUnits(int courseId, int learnerId)
     {
         // Should change when course iteration is introduced
-        return _enrollmentRepository.GetEnrolledAndActiveUnits(courseId, learnerId);
+        return _enrollmentRepository.GetCourseEnrolledAndActiveUnits(courseId, learnerId);
     }
 }

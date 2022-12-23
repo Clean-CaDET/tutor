@@ -10,4 +10,16 @@ public class Course : Entity
     public string Description { get; private set; }
     public bool IsArchived { get; set; }
     public List<KnowledgeUnit> KnowledgeUnits { get; private set; }
+
+    public Course() {}
+
+    public Course(Course course, List<KnowledgeUnit> knowledgeUnits)
+    {
+        Id = course.Id;
+        Code = course.Code;
+        Name = course.Name;
+        Description = course.Description;
+        IsArchived = course.IsArchived;
+        KnowledgeUnits = knowledgeUnits;
+    }
 }

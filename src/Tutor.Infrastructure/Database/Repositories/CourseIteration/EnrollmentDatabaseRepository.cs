@@ -28,14 +28,11 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
             .Select(lg => lg.Course).Distinct().ToList();
     }
 
-    public List<KnowledgeUnit> GetEnrolledAndActiveUnits(int courseId, int learnerId)
+    public Course GetCourseEnrolledAndActiveUnits(int courseId, int learnerId)
     {
-        return _dbContext.UnitEnrollments
-            .Where(ue => ue.LearnerId.Equals(learnerId)
-                         && ue.KnowledgeUnit.CourseId.Equals(courseId)
-                         && ue.Status.Equals(EnrollmentStatus.Active))
-            .Include(ue => ue.KnowledgeUnit)
-            .Select(ue => ue.KnowledgeUnit).ToList();
+        var course = GetCourse(courseId);
+        var enrolledUnits = GetEnrolledAndActiveUnits(courseId, learnerId);
+        return new Course(course, enrolledUnits);
     }
 
     public bool HasActiveEnrollmentForUnit(int unitId, int learnerId)
@@ -54,5 +51,22 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
         return _dbContext.UnitEnrollments
             .Any(u => u.Status == EnrollmentStatus.Active &&
                       u.KnowledgeUnit.Id == unitId && u.LearnerId == learnerId);
+    }
+
+    private Course GetCourse(int courseId)
+    {
+        return _dbContext.Courses
+            .Where(c => c.Id.Equals(courseId))
+            .FirstOrDefault();
+    }
+
+    private List<KnowledgeUnit> GetEnrolledAndActiveUnits(int courseId, int learnerId)
+    {
+        return _dbContext.UnitEnrollments
+            .Where(ue => ue.LearnerId.Equals(learnerId)
+                         && ue.KnowledgeUnit.CourseId.Equals(courseId)
+                         && ue.Status.Equals(EnrollmentStatus.Active))
+            .Include(ue => ue.KnowledgeUnit)
+            .Select(ue => ue.KnowledgeUnit).ToList();
     }
 }
