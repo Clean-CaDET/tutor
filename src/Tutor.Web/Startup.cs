@@ -267,6 +267,7 @@ public class Startup
 
         services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
         services.AddScoped<IUnitRepository, UnitDatabaseRepository>();
+        services.AddScoped<ILearnerRepository, LearnerDatabaseRepository>();
         services.AddScoped<IOwnedCourseRepository, OwnedCourseDatabaseRepository>();
         services.AddScoped<IGroupRepository, GroupDatabaseRepository>();
         services.AddScoped<IEnrollmentRepository, EnrollmentDatabaseRepository>();

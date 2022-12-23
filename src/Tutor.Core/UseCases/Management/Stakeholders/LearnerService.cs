@@ -9,13 +9,19 @@ namespace Tutor.Core.UseCases.Management.Stakeholders;
 
 public class LearnerService : CrudService<Learner>, ILearnerService
 {
-    private readonly ICrudRepository<Learner> _learnerRepository;
+    private readonly ILearnerRepository _learnerRepository;
     private readonly IUserRepository _userRepository;
-    public LearnerService(ICrudRepository<Learner> crudRepository, IUserRepository userRepository) : base(crudRepository)
+    public LearnerService(ILearnerRepository learnerRepository, IUserRepository userRepository) : base(learnerRepository)
     {
-        _learnerRepository = crudRepository;
+        _learnerRepository = learnerRepository;
         _userRepository = userRepository;
     }
+
+    public Result<PagedResult<Learner>> GetByIndexes(string[] indexes)
+    {
+        return _learnerRepository.GetByIndexes(indexes);
+    }
+
     public Result<Learner> Register(Learner learner, string username, string password)
     {
         var user = _userRepository.Register(username, password, UserRole.Learner);
