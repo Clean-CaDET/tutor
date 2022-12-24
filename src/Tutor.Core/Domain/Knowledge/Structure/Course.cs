@@ -11,7 +11,7 @@ public class Course : Entity
     public bool IsArchived { get; set; }
     public List<KnowledgeUnit> KnowledgeUnits { get; private set; }
 
-    public Course() {}
+    private Course() {}
 
     public Course(Course course, List<KnowledgeUnit> knowledgeUnits)
     {
