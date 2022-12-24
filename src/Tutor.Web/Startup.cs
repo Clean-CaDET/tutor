@@ -42,7 +42,9 @@ using Tutor.Infrastructure.Security;
 using Tutor.Infrastructure.Security.Authentication;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ArrangeTasks;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.Challenges;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiChoiceQuestions;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiResponseQuestions;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ShortAnswerQuestions;
 using Tutor.Web.Mappings.Knowledge.DTOs.InstructionalItems;
 
 namespace Tutor.Web;
@@ -96,12 +98,28 @@ public class Startup
         registry.ClearConventions();
         registry.RegisterConvention(
             new DefaultDiscriminatorConvention<string>(serializerOptions, "typeDiscriminator"));
+        
+        #region Assesment Items
         registry.RegisterType<AtDto>();
         registry.RegisterType<ChallengeDto>();
-        registry.RegisterType<ImageDto>();
+        registry.RegisterType<McqDto>();
         registry.RegisterType<MrqDto>();
+        registry.RegisterType<SaqDto>();
+        #endregion
+        
+        #region Assesment Item Submissions
+        registry.RegisterType<AtSubmissionDto>();
+        registry.RegisterType<ChallengeSubmissionDto>();
+        registry.RegisterType<McqSubmissionDto>();
+        registry.RegisterType<MrqSubmissionDto>();
+        registry.RegisterType<SaqSubmissionDto>();
+        #endregion
+
+        #region Instructional Items
+        registry.RegisterType<ImageDto>();
         registry.RegisterType<TextDto>();
         registry.RegisterType<VideoDto>();
+        #endregion
 
         registry.RegisterConvention(new AllowedTypesDiscriminatorConvention<string>(
             serializerOptions, EventSerializationConfiguration.EventRelatedTypes, "$discriminator"));
