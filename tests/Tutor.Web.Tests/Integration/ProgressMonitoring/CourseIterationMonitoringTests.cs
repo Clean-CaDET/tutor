@@ -19,11 +19,11 @@ public class CourseIterationMonitoringTests : BaseWebIntegrationTest
     [Theory]
     [InlineData("-51", -1, 2)]
     [InlineData("-52", -2, 2)]
-    public void Retrieves_owned_groups(string instructorId, int courseId, int expectedResult)
+    public void Retrieves_owned_course_groups(string instructorId, int courseId, int expectedResult)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupCourseIterationMonitoringController(scope, instructorId);
-        var result = ((OkObjectResult)controller.GetAssignedGroups(courseId).Result)?.Value as List<GroupDto>;
+        var result = ((OkObjectResult)controller.GetCourseGroups(courseId).Result)?.Value as List<GroupDto>;
 
         result.Count.ShouldBe(expectedResult);
     }
