@@ -2,12 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.Domain.KnowledgeMastery.Events;
 using Tutor.Core.Domain.KnowledgeMastery.Events.KnowledgeComponentEvents;
+using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 
 namespace Tutor.Core.UseCases.KnowledgeAnalysis;
 
@@ -16,19 +18,24 @@ public class UnitAnalysisService : IUnitAnalysisService
     private readonly IKnowledgeComponentRepository _knowledgeComponentRepository;
     private readonly IGroupRepository _groupRepository;
     private readonly IEnrollmentRepository _enrollmentRepository;
+    private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly IEventStore _eventStore;
 
-    public UnitAnalysisService(IKnowledgeComponentRepository kcComponentRepository, IGroupRepository groupRepository, IEnrollmentRepository enrollmentRepository, IEventStore eventStore)
+    public UnitAnalysisService(IKnowledgeComponentRepository kcComponentRepository, IGroupRepository groupRepository, 
+        IEnrollmentRepository enrollmentRepository, IOwnedCourseRepository ownedCourseRepository, IEventStore eventStore)
     {
         _knowledgeComponentRepository = kcComponentRepository;
         _groupRepository = groupRepository;
         _enrollmentRepository = enrollmentRepository;
+        _ownedCourseRepository = ownedCourseRepository;
         _eventStore = eventStore;
     }
 
     public Result<List<KcStatistics>> GetKnowledgeComponentsStats(int unitId, int instructorId)
     {
         //Check if instructor owns the course
+        var ownership = _ownedCourseRepository.CheckUnitOwnership(unitId, instructorId);
+        if (ownership is null) return Result.Fail(FailureCode.Forbidden);
 
         var kcs = _knowledgeComponentRepository.GetKnowledgeComponentsForUnit(unitId);
         var kcIds = kcs.Select(kc => kc.Id).ToList();
