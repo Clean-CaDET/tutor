@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
+using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
-using FluentResults;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Stakeholders;
+using Tutor.Core.UseCases.Management.CourseIteration;
 using Tutor.Core.UseCases.Management.Stakeholders;
+using Tutor.Web.Mappings.Knowledge.DTOs;
 using Tutor.Web.Mappings.Stakeholders;
 
 namespace Tutor.Web.Controllers.Administrators.Stakeholders;
@@ -17,11 +19,13 @@ public class LearnerController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly ILearnerService _learnerService;
+    private readonly IEnrollmentService _enrollmentService;
 
-    public LearnerController(IMapper mapper, ILearnerService learnerService)
+    public LearnerController(IMapper mapper, ILearnerService learnerService, IEnrollmentService enrollmentService)
     {
         _mapper = mapper;
         _learnerService = learnerService;
+        _enrollmentService = enrollmentService;
     }
 
     [HttpGet]
@@ -84,5 +88,14 @@ public class LearnerController : BaseApiController
         var result = _learnerService.Delete(id);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok();
+    }
+
+    [HttpGet("{id:int}/courses")]
+    public ActionResult<CourseDto> Update(int id)
+    {
+        var result = _enrollmentService.GetEnrolledCourses(id);
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        var items = result.Value.Select(_mapper.Map<CourseDto>).ToList();
+        return Ok(new PagedResult<CourseDto>(items, items.Count));
     }
 }
