@@ -8,8 +8,10 @@ namespace Tutor.Core.UseCases.Management.CourseIteration;
 public interface ILearnerGroupService
 {
     Result<List<LearnerGroup>> GetByCourse(int courseId);
-    Result<List<Learner>> GetMembers(int groupId);
     Result<LearnerGroup> Create(LearnerGroup group);
     Result<LearnerGroup> Update(LearnerGroup group);
     Result Delete(int id);
+    Result<List<Learner>> GetMembers(int groupId);
+    Result CreateMembers(int groupId, List<Learner> learners);
+    Result DeleteMember(int groupId, int learnerId);
 }

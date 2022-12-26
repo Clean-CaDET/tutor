@@ -7,7 +7,6 @@ using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.UseCases.Management.CourseIteration;
 using Tutor.Web.Mappings.CourseIteration;
-using Tutor.Web.Mappings.Stakeholders;
 
 namespace Tutor.Web.Controllers.Administrators.Courses;
 
@@ -32,15 +31,6 @@ public class CourseGroupController : BaseApiController
 
         var items = result.Value.Select(_mapper.Map<GroupDto>).ToList();
         return Ok(new PagedResult<GroupDto>(items, items.Count));
-    }
-
-    [HttpGet("{groupId:int}")]
-    public ActionResult<List<StakeholderAccountDto>> GetMembers(int groupId)
-    {
-        var result = _groupService.GetMembers(groupId);
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-
-        return Ok(result.Value.Select(_mapper.Map<StakeholderAccountDto>).ToList());
     }
 
     [HttpPost]
