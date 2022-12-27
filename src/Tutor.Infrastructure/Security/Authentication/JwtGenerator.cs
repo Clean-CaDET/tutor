@@ -63,8 +63,8 @@ public class JwtGenerator
         var username = token.Claims.First(c => c.Type == "username").Value;
 
         var id = int.Parse(token.Claims.FirstOrDefault(c => c.Type == "learnerId")?.Value ?? 
-                           token.Claims.First(c => c.Type == "instructorId").Value);
-            
+                           token.Claims.FirstOrDefault(c => c.Type == "instructorId")?.Value ?? token.Claims.First(c => c.Type == "administratorId").Value );
+        
         var role = token.Claims.First(c => c.Type.Equals(ClaimTypes.Role)).Value;
         return ValidateRefreshToken(authenticationTokens.RefreshToken) ? GenerateAccessToken(userId, username, role, id) : Result.Fail("Refresh token is not valid!");
     }
