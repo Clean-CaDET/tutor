@@ -3172,659 +3172,659 @@ INSERT INTO public."CourseOwnerships"("Id", "CourseId", "InstructorId") VALUES
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9998, 'RA-PSW 1', -100);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99986, -9998, -9994, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99986, -9998, -9994);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99985, -9998, -9993, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99985, -9998, -9993);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99984, -9998, -9992, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99984, -9998, -9992);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99983, -9998, -9991, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99983, -9998, -9991);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99982, -9998, -9990, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99982, -9998, -9990);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99981, -9998, -9989, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99981, -9998, -9989);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99980, -9998, -9988, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99980, -9998, -9988);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99979, -9998, -9987, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99979, -9998, -9987);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99978, -9998, -9986, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99978, -9998, -9986);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99977, -9998, -9985, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99977, -9998, -9985);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99976, -9998, -9984, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99976, -9998, -9984);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99975, -9998, -9983, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99975, -9998, -9983);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99974, -9998, -9982, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99974, -9998, -9982);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99973, -9998, -9981, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99973, -9998, -9981);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99972, -9998, -9980, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99972, -9998, -9980);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99971, -9998, -9979, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99971, -9998, -9979);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99970, -9998, -9978, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99970, -9998, -9978);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9997, 'RA-PSW 2', -100);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99967, -9997, -9977, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99967, -9997, -9977);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99966, -9997, -9976, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99966, -9997, -9976);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99965, -9997, -9975, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99965, -9997, -9975);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99964, -9997, -9974, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99964, -9997, -9974);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99963, -9997, -9973, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99963, -9997, -9973);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99962, -9997, -9972, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99962, -9997, -9972);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99961, -9997, -9971, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99961, -9997, -9971);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99960, -9997, -9970, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99960, -9997, -9970);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99959, -9997, -9969, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99959, -9997, -9969);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99958, -9997, -9968, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99958, -9997, -9968);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99957, -9997, -9967, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99957, -9997, -9967);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99956, -9997, -9966, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99956, -9997, -9966);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99955, -9997, -9965, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99955, -9997, -9965);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99954, -9997, -9964, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99954, -9997, -9964);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99953, -9997, -9963, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99953, -9997, -9963);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99952, -9997, -9962, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99952, -9997, -9962);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9996, 'RA-PSW 3', -100);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99949, -9996, -9961, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99949, -9996, -9961);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99948, -9996, -9960, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99948, -9996, -9960);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99947, -9996, -9959, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99947, -9996, -9959);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99946, -9996, -9958, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99946, -9996, -9958);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99945, -9996, -9957, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99945, -9996, -9957);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99944, -9996, -9956, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99944, -9996, -9956);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99943, -9996, -9955, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99943, -9996, -9955);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99942, -9996, -9954, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99942, -9996, -9954);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99941, -9996, -9953, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99941, -9996, -9953);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99940, -9996, -9952, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99940, -9996, -9952);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99939, -9996, -9951, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99939, -9996, -9951);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99938, -9996, -9950, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99938, -9996, -9950);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99937, -9996, -9949, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99937, -9996, -9949);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99936, -9996, -9948, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99936, -9996, -9948);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99935, -9996, -9947, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99935, -9996, -9947);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99934, -9996, -9946, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99934, -9996, -9946);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9995, 'RA-PSW 4', -100);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99931, -9995, -9945, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99931, -9995, -9945);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99930, -9995, -9944, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99930, -9995, -9944);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99929, -9995, -9943, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99929, -9995, -9943);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99928, -9995, -9942, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99928, -9995, -9942);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99927, -9995, -9941, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99927, -9995, -9941);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99926, -9995, -9940, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99926, -9995, -9940);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99925, -9995, -9939, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99925, -9995, -9939);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99924, -9995, -9938, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99924, -9995, -9938);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99923, -9995, -9937, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99923, -9995, -9937);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99922, -9995, -9936, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99922, -9995, -9936);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99921, -9995, -9935, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99921, -9995, -9935);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99920, -9995, -9934, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99920, -9995, -9934);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99919, -9995, -9933, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99919, -9995, -9933);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99918, -9995, -9932, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99918, -9995, -9932);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99917, -9995, -9931, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99917, -9995, -9931);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99916, -9995, -9930, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99916, -9995, -9930);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9994, 'RA-PSW 5', -100);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99913, -9994, -9929, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99913, -9994, -9929);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99912, -9994, -9928, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99912, -9994, -9928);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99911, -9994, -9927, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99911, -9994, -9927);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99910, -9994, -9926, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99910, -9994, -9926);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99909, -9994, -9925, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99909, -9994, -9925);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99908, -9994, -9924, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99908, -9994, -9924);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99907, -9994, -9923, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99907, -9994, -9923);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99906, -9994, -9922, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99906, -9994, -9922);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99905, -9994, -9921, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99905, -9994, -9921);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99904, -9994, -9920, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99904, -9994, -9920);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99903, -9994, -9919, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99903, -9994, -9919);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99902, -9994, -9918, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99902, -9994, -9918);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99901, -9994, -9917, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99901, -9994, -9917);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99900, -9994, -9916, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99900, -9994, -9916);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99899, -9994, -9915, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99899, -9994, -9915);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99898, -9994, -9914, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99898, -9994, -9914);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9993, 'RA-PSW 6', -100);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99895, -9993, -9913, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99895, -9993, -9913);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99894, -9993, -9912, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99894, -9993, -9912);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99893, -9993, -9911, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99893, -9993, -9911);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99892, -9993, -9910, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99892, -9993, -9910);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99891, -9993, -9909, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99891, -9993, -9909);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99890, -9993, -9908, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99890, -9993, -9908);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99889, -9993, -9907, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99889, -9993, -9907);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99888, -9993, -9906, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99888, -9993, -9906);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99887, -9993, -9905, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99887, -9993, -9905);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99886, -9993, -9904, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99886, -9993, -9904);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99885, -9993, -9903, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99885, -9993, -9903);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99884, -9993, -9902, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99884, -9993, -9902);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99883, -9993, -9901, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99883, -9993, -9901);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99882, -9993, -9900, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99882, -9993, -9900);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99881, -9993, -9899, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99881, -9993, -9899);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99880, -9993, -9898, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99880, -9993, -9898);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9992, 'RA-PSW 7', -100);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99877, -9992, -9897, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99877, -9992, -9897);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99876, -9992, -9896, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99876, -9992, -9896);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99875, -9992, -9895, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99875, -9992, -9895);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99874, -9992, -9894, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99874, -9992, -9894);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99873, -9992, -9893, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99873, -9992, -9893);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99872, -9992, -9892, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99872, -9992, -9892);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99871, -9992, -9891, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99871, -9992, -9891);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99870, -9992, -9890, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99870, -9992, -9890);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99869, -9992, -9889, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99869, -9992, -9889);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99868, -9992, -9888, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99868, -9992, -9888);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99867, -9992, -9887, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99867, -9992, -9887);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99866, -9992, -9886, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99866, -9992, -9886);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99865, -9992, -9885, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99865, -9992, -9885);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99864, -9992, -9884, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99864, -9992, -9884);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99863, -9992, -9883, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99863, -9992, -9883);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99862, -9992, -9882, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99862, -9992, -9882);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9991, 'RA-PSW 8', -100);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99859, -9991, -9881, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99859, -9991, -9881);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99858, -9991, -9880, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99858, -9991, -9880);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99857, -9991, -9879, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99857, -9991, -9879);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99856, -9991, -9878, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99856, -9991, -9878);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99855, -9991, -9877, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99855, -9991, -9877);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99854, -9991, -9876, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99854, -9991, -9876);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99853, -9991, -9875, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99853, -9991, -9875);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99852, -9991, -9874, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99852, -9991, -9874);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99851, -9991, -9873, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99851, -9991, -9873);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99850, -9991, -9872, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99850, -9991, -9872);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99849, -9991, -9871, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99849, -9991, -9871);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99848, -9991, -9870, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99848, -9991, -9870);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99847, -9991, -9869, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99847, -9991, -9869);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99846, -9991, -9868, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99846, -9991, -9868);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99845, -9991, -9867, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99845, -9991, -9867);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99844, -9991, -9866, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99844, -9991, -9866);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9990, 'RA-PSW 9', -100);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99841, -9990, -9865, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99841, -9990, -9865);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99840, -9990, -9864, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99840, -9990, -9864);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99839, -9990, -9863, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99839, -9990, -9863);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99838, -9990, -9862, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99838, -9990, -9862);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99837, -9990, -9861, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99837, -9990, -9861);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99836, -9990, -9860, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99836, -9990, -9860);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99835, -9990, -9859, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99835, -9990, -9859);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99834, -9990, -9858, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99834, -9990, -9858);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99833, -9990, -9857, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99833, -9990, -9857);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99832, -9990, -9856, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99832, -9990, -9856);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99831, -9990, -9855, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99831, -9990, -9855);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99830, -9990, -9854, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99830, -9990, -9854);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99829, -9990, -9853, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99829, -9990, -9853);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99828, -9990, -9852, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99828, -9990, -9852);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99827, -9990, -9851, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99827, -9990, -9851);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99826, -9990, -9850, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99826, -9990, -9850);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9989, 'GEO-RP 1', -99);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99822, -9989, -9848, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99822, -9989, -9848);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99821, -9989, -9847, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99821, -9989, -9847);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99820, -9989, -9846, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99820, -9989, -9846);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99819, -9989, -9845, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99819, -9989, -9845);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99818, -9989, -9844, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99818, -9989, -9844);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99817, -9989, -9843, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99817, -9989, -9843);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99816, -9989, -9842, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99816, -9989, -9842);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99815, -9989, -9841, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99815, -9989, -9841);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99814, -9989, -9840, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99814, -9989, -9840);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99813, -9989, -9839, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99813, -9989, -9839);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99812, -9989, -9838, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99812, -9989, -9838);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99811, -9989, -9837, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99811, -9989, -9837);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99810, -9989, -9836, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99810, -9989, -9836);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99809, -9989, -9835, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99809, -9989, -9835);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99808, -9989, -9834, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99808, -9989, -9834);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99807, -9989, -9849, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99807, -9989, -9849);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9988, 'GEO-RP 2', -99);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99803, -9988, -9833, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99803, -9988, -9833);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99802, -9988, -9832, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99802, -9988, -9832);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99801, -9988, -9831, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99801, -9988, -9831);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99800, -9988, -9830, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99800, -9988, -9830);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99799, -9988, -9829, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99799, -9988, -9829);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99798, -9988, -9828, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99798, -9988, -9828);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99797, -9988, -9827, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99797, -9988, -9827);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99796, -9988, -9826, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99796, -9988, -9826);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99795, -9988, -9825, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99795, -9988, -9825);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99794, -9988, -9824, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99794, -9988, -9824);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99793, -9988, -9823, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99793, -9988, -9823);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99792, -9988, -9822, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99792, -9988, -9822);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99791, -9988, -9821, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99791, -9988, -9821);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99790, -9988, -9820, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99790, -9988, -9820);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99789, -9988, -9819, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99789, -9988, -9819);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9987, 'GEO-RP 3', -99);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99785, -9987, -9818, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99785, -9987, -9818);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99784, -9987, -9817, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99784, -9987, -9817);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99783, -9987, -9816, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99783, -9987, -9816);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99782, -9987, -9815, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99782, -9987, -9815);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99781, -9987, -9814, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99781, -9987, -9814);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99780, -9987, -9813, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99780, -9987, -9813);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99779, -9987, -9812, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99779, -9987, -9812);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99778, -9987, -9811, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99778, -9987, -9811);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99777, -9987, -9810, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99777, -9987, -9810);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99776, -9987, -9809, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99776, -9987, -9809);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99775, -9987, -9808, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99775, -9987, -9808);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99774, -9987, -9807, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99774, -9987, -9807);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99773, -9987, -9806, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99773, -9987, -9806);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99772, -9987, -9805, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99772, -9987, -9805);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99771, -9987, -9804, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99771, -9987, -9804);
 
 INSERT INTO public."LearnerGroups"("Id", "Name", "CourseId") VALUES
 	(-9986, 'GEO-RP 4', -99);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99767, -9986, -9803, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99767, -9986, -9803);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99766, -9986, -9802, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99766, -9986, -9802);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99765, -9986, -9801, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99765, -9986, -9801);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99764, -9986, -9800, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99764, -9986, -9800);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99763, -9986, -9799, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99763, -9986, -9799);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99762, -9986, -9798, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99762, -9986, -9798);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99761, -9986, -9797, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99761, -9986, -9797);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99760, -9986, -9796, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99760, -9986, -9796);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99759, -9986, -9795, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99759, -9986, -9795);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99758, -9986, -9794, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99758, -9986, -9794);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99757, -9986, -9793, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99757, -9986, -9793);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99756, -9986, -9792, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99756, -9986, -9792);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99755, -9986, -9791, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99755, -9986, -9791);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99754, -9986, -9790, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99754, -9986, -9790);
 
-INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId", "Role") VALUES
-	(-99753, -9986, -9789, 0);
+INSERT INTO public."GroupMemberships"("Id", "LearnerGroupId", "MemberId") VALUES
+	(-99753, -9986, -9789);
 
 INSERT INTO public."UnitEnrollments"("Id", "LearnerId", "KnowledgeUnitId", "Start", "Status") VALUES
 	(-9999, -10000, -100, '10/11/2022 5:25:22 PM', 0);
