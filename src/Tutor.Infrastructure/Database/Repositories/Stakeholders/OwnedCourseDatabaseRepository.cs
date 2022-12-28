@@ -35,8 +35,7 @@ public class OwnedCourseDatabaseRepository : IOwnedCourseRepository
     public CourseOwnership CheckOwnership(int courseId, int instructorId)
     {
         return _dbContext.CourseOwnerships
-            .Where(m => m.InstructorId.Equals(instructorId) && m.Course.Id.Equals(courseId))
-            .FirstOrDefault();
+            .FirstOrDefault(m => m.InstructorId.Equals(instructorId) && m.Course.Id.Equals(courseId));
     }
 
     public Course GetOwnedCourseWithUnits(int courseId, int instructorId)

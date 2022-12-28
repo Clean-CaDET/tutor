@@ -68,6 +68,8 @@ public class TutorContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
+
         modelBuilder.Entity<Stakeholder>().UseTpcMappingStrategy();
         modelBuilder.Entity<Stakeholder>().Property(s => s.IsArchived).HasDefaultValue(false);
 
