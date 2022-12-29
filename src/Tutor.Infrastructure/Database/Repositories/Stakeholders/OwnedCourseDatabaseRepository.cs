@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +36,15 @@ public class OwnedCourseDatabaseRepository : IOwnedCourseRepository
     {
         return _dbContext.CourseOwnerships
             .FirstOrDefault(m => m.InstructorId.Equals(instructorId) && m.Course.Id.Equals(courseId));
+    }
+
+    public CourseOwnership CheckUnitOwnership(int unitId, int instructorId)
+    {
+        return _dbContext.CourseOwnerships
+            .Where(m => m.InstructorId.Equals(instructorId) && 
+                        m.Course.KnowledgeUnits.Any(ku => ku.Id.Equals(unitId)))
+            .Include(m => m.Course.KnowledgeUnits)
+            .FirstOrDefault();
     }
 
     public Course GetOwnedCourseWithUnits(int courseId, int instructorId)

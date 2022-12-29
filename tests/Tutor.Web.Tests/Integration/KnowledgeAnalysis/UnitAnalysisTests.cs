@@ -30,15 +30,29 @@ public class UnitAnalysisTests : BaseWebIntegrationTest
         result.All(expectedStatistics.Contains).ShouldBeTrue();
     }
 
-    [Fact]
-    public void Retrieves_kc_statistics()
+    [Theory]
+    [InlineData("-51", -1)]
+    public void Retrieves_kc_statistics(string userId, int unitId)
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupAnalysisController(scope, "-51");
+        var controller = SetupAnalysisController(scope, userId);
 
-        var result = ((OkObjectResult)controller.GetKcStatistics(-1).Result).Value as List<KcStatisticsDto>;
+        var result = ((OkObjectResult)controller.GetKcStatistics(unitId).Result).Value as List<KcStatisticsDto>;
 
         result.ShouldNotBeNull();
+    }
+
+    [Theory]
+    [InlineData("-51", -3)]
+    public void Retrieves_kc_statistics_fails_instructor_not_course_owner(string userId, int unitId)
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupAnalysisController(scope, userId);
+
+        var result = (ObjectResult)controller.GetKcStatistics(unitId).Result;
+
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(403);
     }
 
     private KnowledgeAnalysisController SetupAnalysisController(IServiceScope scope, string id)
