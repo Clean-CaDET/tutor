@@ -9,6 +9,7 @@ public class KnowledgeComponentDto
     public string Name { get; set; }
     public string Code { get; set; }
     public string Description { get; set; }
+    public int Order { get; set; }
 
     public int ExpectedDurationInMinutes { get; set; }
     public List<KnowledgeComponentDto> KnowledgeComponents { get; set; }

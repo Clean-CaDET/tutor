@@ -36,16 +36,16 @@ DELETE FROM public."Learners";
 DELETE FROM public."Instructors";
 DELETE FROM public."Users";
 
-INSERT INTO public."Courses"("Id", "Code", "Name", "Description", "IsArchived") VALUES
-	(-100, 'RA-PSW', 'Projektovanje softvera', 'Projektovanje softvera (PSW) je kurs na 4. godini studijskog programa Računarstva i automatike. Cilj predmeta je da upozna studenta sa aktivnostima i izazovima koji postoje u okviru razrađenog procesa razvoja složenog softverskog sistema u velikom timu.', false);
+INSERT INTO public."Courses"("Id", "Code", "Name", "Description", "IsArchived", "StartDate") VALUES
+	(-100, 'RA-PSW', 'Projektovanje softvera', 'Projektovanje softvera (PSW) je kurs na 4. godini studijskog programa Računarstva i automatike. Cilj predmeta je da upozna studenta sa aktivnostima i izazovima koji postoje u okviru razrađenog procesa razvoja složenog softverskog sistema u velikom timu.', false, '9/11/2022 12:00:01 PM');
 
-INSERT INTO public."Courses"("Id", "Code", "Name", "Description", "IsArchived") VALUES
-	(-99, 'GEO-RP', 'Računarski praktikum', 'Računarski praktikum (RP) je kurs na 1. godini studijskog programa Geodezija i geomatika. Cilj predmeta je da upozna studenta sa odabranim poslovnim aplikacijama i osnovama programiranja.', false);
+INSERT INTO public."Courses"("Id", "Code", "Name", "Description", "IsArchived", "StartDate") VALUES
+	(-99, 'GEO-RP', 'Računarski praktikum', 'Računarski praktikum (RP) je kurs na 1. godini studijskog programa Geodezija i geomatika. Cilj predmeta je da upozna studenta sa odabranim poslovnim aplikacijama i osnovama programiranja.', false, '9/11/2022 12:00:01 PM');
 
-INSERT INTO public."KnowledgeUnits"("Id", "Code", "Name", "Description", "CourseId") VALUES
-	(-100, 'PSW01', 'Agilno planiranje i razvoj softvera', 'Kako isplanirati i organizovati posao je ključni element svakog rada, bez obzira na projekat i industriju. Sa **malo planiranja**, razvojni timovi troše vreme razvijajući funkcionalnosti koje ne donose vrednost po cenu bitnih elemenata softvera koje ne stižu da naprave. Sa **previše planiranja**, timovi konstruišu detaljne planove koji se gotovo uvek bacaju i izbegavaju da se prilagode novim informacijama i okolnostima. Kako bi izbegli ove probleme i pronašli tu zlatnu sredinu, učićemo kako da agilno planiramo i razvijamo naša softverska rešenja. Do kraja ove lekcije ćeš upoznati sve strategije i tehnike koje su ti potrebne da kreneš efikasno planiranje i organizaciju razvoja projektnog zadatka.', -100);
+INSERT INTO public."KnowledgeUnits"("Id", "Code", "Name", "Description", "CourseId", "Order") VALUES
+	(-100, 'PSW01', 'Agilno planiranje i razvoj softvera', 'Kako isplanirati i organizovati posao je ključni element svakog rada, bez obzira na projekat i industriju. Sa **malo planiranja**, razvojni timovi troše vreme razvijajući funkcionalnosti koje ne donose vrednost po cenu bitnih elemenata softvera koje ne stižu da naprave. Sa **previše planiranja**, timovi konstruišu detaljne planove koji se gotovo uvek bacaju i izbegavaju da se prilagode novim informacijama i okolnostima. Kako bi izbegli ove probleme i pronašli tu zlatnu sredinu, učićemo kako da agilno planiramo i razvijamo naša softverska rešenja. Do kraja ove lekcije ćeš upoznati sve strategije i tehnike koje su ti potrebne da kreneš efikasno planiranje i organizaciju razvoja projektnog zadatka.', -100, 1);
 
-INSERT INTO public."KnowledgeUnits"("Id", "Code", "Name", "Description", "CourseId") VALUES
+INSERT INTO public."KnowledgeUnits"("Id", "Code", "Name", "Description", "CourseId", "Order") VALUES
 	(-99, 'RP-A', 'Prvi program', 'U sklopu ove lekcije se upoznajemo sa osnovnom strukturom Java programa i alatom koji će nam trebati tokom čitavog kursa.
 
 Konkretno, tražimo odgovore na pitanja:
@@ -53,9 +53,9 @@ Konkretno, tražimo odgovore na pitanja:
 - Kako se program izvršava?
 - Kako izgleda alat koji ćemo koristiti za pisanje naših programa?
 
-Na samom kraju ćemo pokrenuti navedeni alat i napisati prvi program.', -99);
+Na samom kraju ćemo pokrenuti navedeni alat i napisati prvi program.', -99, 1);
 
-INSERT INTO public."KnowledgeUnits"("Id", "Code", "Name", "Description", "CourseId") VALUES
+INSERT INTO public."KnowledgeUnits"("Id", "Code", "Name", "Description", "CourseId", "Order") VALUES
 	(-98, 'RP-B', 'Tipovi podataka', 'U sklopu ove lekcije se upoznajemo sa konceptom podataka i analiziramo njihove tipove.
 
 Konkretno, tražimo odgovore na pitanja:
@@ -63,61 +63,61 @@ Konkretno, tražimo odgovore na pitanja:
 - Kako **tip** podatka definiše skup mogućih vrednosti?
 - Kako **tip** podatka određuje moguće aritmetičke, relacione i logičke operacije nad podacima?
 
-Na samom kraju sabiramo sve u složene naredbe koje uključuju više tipova podataka i operacija.', -99);
+Na samom kraju sabiramo sve u složene naredbe koje uključuju više tipova podataka i operacija.', -99, 2);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-100, 'PSWA01', 'Mapiraj navedeno gradivo na rad na projektnom zadatku', '', 5, -100, NULL);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-100, 'PSWA01', 'Mapiraj navedeno gradivo na rad na projektnom zadatku', '', 5, -100, NULL, 1);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-99, 'PSWA02', 'Analiziraj pitanja koja vode planiranje', '', 9, -100, -100);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-99, 'PSWA02', 'Analiziraj pitanja koja vode planiranje', '', 9, -100, -100, 2);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-98, 'PSWA03', 'Objasni sličnosti i razlike između vodopad i agilnih metodologija razvoja softvera', '', 11, -100, -99);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-98, 'PSWA03', 'Objasni sličnosti i razlike između vodopad i agilnih metodologija razvoja softvera', '', 11, -100, -99, 3);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-97, 'PSWA04', 'Definiši učesnike i aktivnosti Scrum radnog okvira', '', 17, -100, -100);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-97, 'PSWA04', 'Definiši učesnike i aktivnosti Scrum radnog okvira', '', 17, -100, -100, 4);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-96, 'PSWA05', 'Kreiraj kvalitetne korisničke priče', '', 5, -100, -100);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-96, 'PSWA05', 'Kreiraj kvalitetne korisničke priče', '', 5, -100, -100, 5);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-95, 'PSWA06', 'Analiziraj strukturu korisničke priče', '', 9, -100, -96);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-95, 'PSWA06', 'Analiziraj strukturu korisničke priče', '', 9, -100, -96, 6);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-94, 'PSWA07', 'Razloži korisničke priče primenom odgovarajuće strategije', '', 22, -100, -96);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-94, 'PSWA07', 'Razloži korisničke priče primenom odgovarajuće strategije', '', 22, -100, -96, 7);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-93, 'PSWA08', 'Proceni veličinu posla koji definiše korisnička priča', '', 11, -100, -96);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-93, 'PSWA08', 'Proceni veličinu posla koji definiše korisnička priča', '', 11, -100, -96, 8);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-92, 'RP-A01', 'Pokreni program u svom IDEu', '', 8, -99, NULL);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-92, 'RP-A01', 'Pokreni program u svom IDEu', '', 8, -99, NULL, 1);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-91, 'RP-A02', 'Prepoznaj elemente opšte strukture Java programa', '', 3, -99, -92);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-91, 'RP-A02', 'Prepoznaj elemente opšte strukture Java programa', '', 3, -99, -92, 2);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-90, 'RP-A03', 'Opiši princip po kom se izvršava program', '', 2, -99, -92);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-90, 'RP-A03', 'Opiši princip po kom se izvršava program', '', 2, -99, -92, 3);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-89, 'RP-A04', 'Opiši osnovne elemente IDE-a', '', 2, -99, -92);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-89, 'RP-A04', 'Opiši osnovne elemente IDE-a', '', 2, -99, -92, 4);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-88, 'RP-B01', 'Odredi rezultat naredbi koje se sastoje od više različitih operacija', '', 5, -98, NULL);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-88, 'RP-B01', 'Odredi rezultat naredbi koje se sastoje od više različitih operacija', '', 5, -98, NULL, 1);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-87, 'RP-B02', 'Razlikuj koncept podatka, operacije i operatora', '', 3, -98, -88);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-87, 'RP-B02', 'Razlikuj koncept podatka, operacije i operatora', '', 3, -98, -88, 2);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-86, 'RP-B03', 'Navedi primere vrednosti za različite tipove podataka', '', 3, -98, -88);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-86, 'RP-B03', 'Navedi primere vrednosti za različite tipove podataka', '', 3, -98, -88, 3);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-85, 'RP-B04', 'Objasni ponašanje aritmetičkih operacija', '', 5, -98, -88);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-85, 'RP-B04', 'Objasni ponašanje aritmetičkih operacija', '', 5, -98, -88, 4);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-84, 'RP-B05', 'Objasni ponašanje relacionih operacija', '', 3, -98, -88);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-84, 'RP-B05', 'Objasni ponašanje relacionih operacija', '', 3, -98, -88, 5);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-83, 'RP-B06', 'Objasni ponašanje logičkih operacija', '', 3, -98, -88);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-83, 'RP-B06', 'Objasni ponašanje logičkih operacija', '', 3, -98, -88, 6);
 
 INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-1000, -100, 1);
