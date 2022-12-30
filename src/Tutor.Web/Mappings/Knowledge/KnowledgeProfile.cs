@@ -13,8 +13,7 @@ public class KnowledgeProfile : Profile
     {
         CreateMap<CourseDto, Course>();
         CreateMap<Course, CourseDto>();
-        CreateMap<KnowledgeUnit, KnowledgeUnitDto>()
-            .ForMember(dest => dest.KnowledgeComponents, opt => opt.MapFrom(src => src.KnowledgeComponents.Where(kc => kc.ParentId == null || kc.ParentId == 0)));
+        CreateMap<KnowledgeUnit, KnowledgeUnitDto>();
         CreateMap<KnowledgeComponent, KnowledgeComponentDto>();
 
         CreateMap<KcStatistics, KcStatisticsDto>();

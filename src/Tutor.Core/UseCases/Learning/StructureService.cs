@@ -1,5 +1,6 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
+using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.InstructionalItems;
@@ -31,8 +32,14 @@ public class StructureService : IStructureService
         return Result.Ok(_unitRepository.GetUnitWithKcs(unitId));
     }
 
-    public Result<List<KnowledgeComponentMastery>> GetKnowledgeComponentMasteries(List<int> kcIds, int learnerId)
+    public Result<List<KnowledgeComponentMastery>> GetMasteries(int unitId, int learnerId)
     {
+        if (!_enrollmentRepository.HasActiveEnrollmentForUnit(unitId, learnerId))
+            return Result.Fail(FailureCode.NotEnrolledInUnit);
+
+        var kcs = _knowledgeComponentRepository.GetKnowledgeComponentsForUnit(unitId);
+        var kcIds = kcs.Select(kc => kc.Id).ToList();
+
         return Result.Ok(_knowledgeMasteryRepository.GetBasicKcMasteries(kcIds, learnerId));
     }
 

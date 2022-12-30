@@ -16,7 +16,6 @@ public class KnowledgeComponent : Entity
 
     public int KnowledgeUnitId { get; private set; }
     public int? ParentId { get; private set; }
-    public List<KnowledgeComponent> KnowledgeComponents { get; private set; }
     public List<AssessmentItem> AssessmentItems { get; private set; }
     public List<InstructionalItem> InstructionalItems { get; private set; }
 

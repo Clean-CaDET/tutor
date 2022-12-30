@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Mappings.Knowledge.DTOs;
@@ -18,7 +17,6 @@ public class StructureController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly IStructureService _learningStructureService;
-    // Discuss how to structure Course-Unit-KC endpoints and services
     public StructureController(IMapper mapper, IStructureService learningStructureService)
     {
         _mapper = mapper;
@@ -32,40 +30,19 @@ public class StructureController : BaseApiController
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
 
         var unitDto = _mapper.Map<KnowledgeUnitDto>(result.Value);
-        AppendMasteriesToResponse(unitDto, User.LearnerId());
 
         return Ok(unitDto);
     }
-    // Should create some form of unit statistics or another endpoint for retriving KCM statistics for the given ID
-    private void AppendMasteriesToResponse(KnowledgeUnitDto unitDto, int learnerId)
+
+    [HttpGet("units/{unitId:int}/masteries")]
+    public ActionResult<List<KnowledgeComponentMasteryDto>> GetMasteries(int unitId)
     {
-        var kcIds = GetKcIds(unitDto.KnowledgeComponents);
-        var masteries = _learningStructureService.GetKnowledgeComponentMasteries(kcIds, learnerId).Value;
-        PopulateMasteries(unitDto.KnowledgeComponents, masteries);
+        var result = _learningStructureService.GetMasteries(unitId, User.LearnerId());
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+
+        return Ok(result.Value.Select(_mapper.Map<KnowledgeComponentMasteryDto>).ToList());
     }
 
-    private static List<int> GetKcIds(List<KnowledgeComponentDto> knowledgeComponents)
-    {
-        var kcIds = new List<int>();
-        foreach (var k in knowledgeComponents)
-        {
-            kcIds.Add(k.Id);
-            kcIds.AddRange(GetKcIds(k.KnowledgeComponents));
-        }
-
-        return kcIds;
-    }
-
-    private static void PopulateMasteries(List<KnowledgeComponentDto> kcs, List<KnowledgeComponentMastery> masteries)
-    {
-        foreach (var kc in kcs)
-        {
-            var mastery = masteries.Find(m => m.KnowledgeComponentId == kc.Id);
-            kc.Mastery = new KnowledgeComponentMasteryDto { Mastery = mastery.Mastery, IsSatisfied = mastery.IsSatisfied };
-            PopulateMasteries(kc.KnowledgeComponents, masteries);
-        }
-    }
-        
     [HttpGet("knowledge-component/{knowledgeComponentId:int}/")]
     public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
     {

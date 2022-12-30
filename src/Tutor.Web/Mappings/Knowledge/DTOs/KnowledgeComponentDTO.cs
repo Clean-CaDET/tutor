@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Tutor.Web.Mappings.KnowledgeMastery;
-
-namespace Tutor.Web.Mappings.Knowledge.DTOs;
+﻿namespace Tutor.Web.Mappings.Knowledge.DTOs;
 
 public class KnowledgeComponentDto
 {
@@ -10,8 +7,7 @@ public class KnowledgeComponentDto
     public string Code { get; set; }
     public string Description { get; set; }
     public int Order { get; set; }
+    public int ParentId { get; set; }
 
     public int ExpectedDurationInMinutes { get; set; }
-    public List<KnowledgeComponentDto> KnowledgeComponents { get; set; }
-    public KnowledgeComponentMasteryDto Mastery { get; set; }
 }

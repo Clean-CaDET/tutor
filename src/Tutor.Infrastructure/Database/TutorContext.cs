@@ -108,7 +108,7 @@ public class TutorContext : DbContext
     private static void ConfigureKnowledgeComponent(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<KnowledgeComponent>()
-            .HasMany(kc => kc.KnowledgeComponents)
+            .HasMany<KnowledgeComponent>()
             .WithOne()
             .HasForeignKey(kc => kc.ParentId)
             .IsRequired(false);

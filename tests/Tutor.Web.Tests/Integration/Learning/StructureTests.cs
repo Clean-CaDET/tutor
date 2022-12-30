@@ -24,15 +24,15 @@ public class StructureTests : BaseWebIntegrationTest
 
     [Theory]
     [MemberData(nameof(KnowledgeComponentMasteries))]
-    public void Retrieves_kc_mastery_for_unit(int unitId, List<KnowledgeComponentDto> expectedKCs)
+    public void Retrieves_kc_mastery_for_unit(int unitId, List<KnowledgeComponentMasteryDto> expectedKCs)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupStructureController(scope, "-2");
 
-        var unit = ((OkObjectResult)controller.GetUnit(unitId).Result).Value as KnowledgeUnitDto;
+        var actualKcms = ((OkObjectResult)controller.GetMasteries(unitId).Result).Value as List<KnowledgeComponentMasteryDto>;
 
-        expectedKCs.All(expectedKc => unit.KnowledgeComponents.Any(
-                kc => expectedKc.Id == kc.Id && expectedKc.Mastery.Mastery == kc.Mastery.Mastery))
+        expectedKCs.All(expectedKc => actualKcms.Any(
+                kcm => expectedKc.KnowledgeComponentId == kcm.KnowledgeComponentId && expectedKc.Mastery == kcm.Mastery))
             .ShouldBe(true);
     }
 
@@ -43,13 +43,13 @@ public class StructureTests : BaseWebIntegrationTest
             new object[]
             {
                 -1,
-                new List<KnowledgeComponentDto>
+                new List<KnowledgeComponentMasteryDto>
                 {
-                    new() {Id = -11, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.1 }},
-                    new() {Id = -12, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.2 }},
-                    new() {Id = -13, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.3 }},
-                    new() {Id = -14, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.4 }},
-                    new() {Id = -15, Mastery = new KnowledgeComponentMasteryDto { Mastery = 0.5 }}
+                    new() { Mastery = 0.1, KnowledgeComponentId = -11 },
+                    new() { Mastery = 0.2, KnowledgeComponentId = -12 },
+                    new() { Mastery = 0.3, KnowledgeComponentId = -13 },
+                    new() { Mastery = 0.4, KnowledgeComponentId = -14 },
+                    new() { Mastery = 0.5, KnowledgeComponentId = -15 }
                 }
             }
         };
