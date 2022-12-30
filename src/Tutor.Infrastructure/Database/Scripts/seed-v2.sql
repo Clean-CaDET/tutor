@@ -31312,7 +31312,7 @@ INSERT INTO public."AssessmentItemMasteries"("Id", "AssessmentItemId", "Mastery"
 
 
 
-INSERT INTO public."KnowledgeUnits"("Id", "Code", "Name", "Description", "CourseId") VALUES
+INSERT INTO public."KnowledgeUnits"("Id", "Code", "Name", "Description", "CourseId", "Order") VALUES
 	(-97, 'RP-C', 'Promenljive', 'U sklopu ove lekcije se upoznajemo sa konceptom promenljive. Videćemo kako nam promenljiva omogućava da zapamtimo neki podatak u jednoj liniji koda i iskoristimo ga u drugoj.
 
 Dok se upoznajemo sa promenljivom tražimo odgovore na pitanja:
@@ -31320,36 +31320,36 @@ Dok se upoznajemo sa promenljivom tražimo odgovore na pitanja:
 - Kako se upisuje vrednost u promenljivu?
 - Kako se čita vrednost koja je smeštena u promenljivu?
 
-Na samom kraju ćemo analizirati složenije kodove koji kombinuju sve navedeno.', -99);
+Na samom kraju ćemo analizirati složenije kodove koji kombinuju sve navedeno.', -99, 1);
 
-INSERT INTO public."KnowledgeUnits"("Id", "Code", "Name", "Description", "CourseId") VALUES
+INSERT INTO public."KnowledgeUnits"("Id", "Code", "Name", "Description", "CourseId", "Order") VALUES
 	(-96, 'RP-D', 'Rad sa tastaturom', 'U sklopu ove lekcije učimo kako da pravimo složenije i interaktivne programa, gde korisnik može da unese podatke sa tastature koje program obrađuje.
 
 - Prvo se upoznajemo sa vrstom naredbe koja će omogućiti našem programu da pročita podatak sa tastature.
 - Zatim ćemo dopuniti kolekciju mogućih operacija sa katalogom matematičkih funkcija (npr. sinus, kosinus) koji nam koriste za razne geodetske proračune.
 
-Na kraju ćemo sabrati sve što smo do sada naučili kroz složenije zadatke. Analiziraćemo tekstove zadataka i razmatrati kakvi kodovi odgovaraju na njih.', -99);
+Na kraju ćemo sabrati sve što smo do sada naučili kroz složenije zadatke. Analiziraćemo tekstove zadataka i razmatrati kakvi kodovi odgovaraju na njih.', -99, 2);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-82, 'RP-C01', 'Odredi rezultat naredbi koje sadrže promenljive i različite operacije', '', 3, -97, NULL);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-82, 'RP-C01', 'Odredi rezultat naredbi koje sadrže promenljive i različite operacije', '', 3, -97, NULL, 1);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-81, 'RP-C02', 'Definiši promenljivu i njene celine', '', 7, -97, -82);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-81, 'RP-C02', 'Definiši promenljivu i njene celine', '', 7, -97, -82, 1);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-80, 'RP-C03', 'Dodeli različite vrednosti promenljivi', '', 4, -97, -82);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-80, 'RP-C03', 'Dodeli različite vrednosti promenljivi', '', 4, -97, -82, 2);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-79, 'RP-C04', 'Iskoristi vrednosti upisane u promenljivu', '', 6, -97, -82);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-79, 'RP-C04', 'Iskoristi vrednosti upisane u promenljivu', '', 6, -97, -82, 3);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-78, 'RP-D01', 'Analiziraj da li kod ispravno odgovara na tekst zadatka', '', 4, -96, NULL);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-78, 'RP-D01', 'Analiziraj da li kod ispravno odgovara na tekst zadatka', '', 4, -96, NULL, 1);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-77, 'RP-D02', 'Omogući korisniku programa da unese podatke putem tastature', '', 4, -96, -78);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-77, 'RP-D02', 'Omogući korisniku programa da unese podatke putem tastature', '', 4, -96, -78, 1);
 
-INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId") VALUES
-	(-76, 'RP-D03', 'Primeni napredne matematičke operacije', '', 4, -96, -78);
+INSERT INTO public."KnowledgeComponents"("Id", "Code", "Name", "Description", "ExpectedDurationInMinutes", "KnowledgeUnitId", "ParentId", "Order") VALUES
+	(-76, 'RP-D03', 'Primeni napredne matematičke operacije', '', 4, -96, -78, 2);
 
 INSERT INTO public."InstructionalItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-900, -82, 1);
