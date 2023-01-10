@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.UseCases.Management.Stakeholders;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Mappings.Knowledge.DTOs;
@@ -34,6 +35,14 @@ public class OwnedCoursesController : BaseApiController
     public ActionResult<CourseDto> GetCourseWithUnits(int courseId)
     {
         var result = _courseOwnershipService.GetOwnedCourseWithUnits(courseId, User.InstructorId());
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        return Ok(_mapper.Map<CourseDto>(result.Value));
+    }
+
+    [HttpPut("{id:int}")]
+    public ActionResult<CourseDto> Update([FromBody] CourseDto course)
+    {
+        var result = _courseOwnershipService.UpdateOwnedCourse(_mapper.Map<Course>(course), User.InstructorId());
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok(_mapper.Map<CourseDto>(result.Value));
     }

@@ -32,10 +32,10 @@ public class OwnedCourseDatabaseRepository : IOwnedCourseRepository
             .Select(m => m.Instructor).ToList();
     }
 
-    public CourseOwnership CheckOwnership(int courseId, int instructorId)
+    public bool IsOwner(int courseId, int instructorId)
     {
         return _dbContext.CourseOwnerships
-            .FirstOrDefault(m => m.InstructorId.Equals(instructorId) && m.Course.Id.Equals(courseId));
+            .Any(m => m.InstructorId.Equals(instructorId) && m.Course.Id.Equals(courseId));
     }
 
     public CourseOwnership CheckUnitOwnership(int unitId, int instructorId)

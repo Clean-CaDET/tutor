@@ -21,18 +21,21 @@ public class CourseIterationMonitoringService : ICourseIterationMonitoringServic
 
     public Result<List<LearnerGroup>> GetCourseGroups(int instructorId, int courseId)
     {
-        var ownership = _ownedCourseRepository.CheckOwnership(courseId, instructorId);
-        if (ownership is null) return Result.Fail(FailureCode.Forbidden);
+        var isOwner = _ownedCourseRepository.IsOwner(courseId, instructorId);
+        if (!isOwner) return Result.Fail(FailureCode.Forbidden);
         return _groupRepository.GetCourseGroups(courseId);
     }
 
-    public PagedResult<Learner> GetLearnersWithProgress(int courseId, int page, int pageSize)
+    public Result<PagedResult<Learner>> GetLearnersWithProgress(int courseId, int instructorId, int page, int pageSize)
     {
-        return GetLearnersWithProgressForGroup(courseId, 0, page, pageSize);
+        return GetLearnersWithProgressForGroup(courseId, instructorId, 0, page, pageSize);
     }
 
-    public PagedResult<Learner> GetLearnersWithProgressForGroup(int courseId, int groupId, int page, int pageSize)
+    public Result<PagedResult<Learner>> GetLearnersWithProgressForGroup(int courseId, int instructorId, int groupId, int page, int pageSize)
     {
+        var isOwner = _ownedCourseRepository.IsOwner(courseId, instructorId);
+        if (!isOwner) return Result.Fail(FailureCode.Forbidden);
+
         var task = _groupRepository.GetGroupProgressAsync(courseId, groupId, page, pageSize);
         task.Wait();
         return task.Result;

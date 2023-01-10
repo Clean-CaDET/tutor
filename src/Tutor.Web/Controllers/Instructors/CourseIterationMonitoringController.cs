@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using FluentResults;
 using Tutor.Core.BuildingBlocks;
+using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.UseCases.ProgressMonitoring;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Mappings.CourseIteration;
@@ -34,7 +36,13 @@ public class CourseIterationMonitoringController : BaseApiController
     [HttpGet("progress")]
     public ActionResult<PagedResult<LearnerProgressDto>> GetProgressForAll(int courseId, [FromQuery] int page, [FromQuery] int pageSize)
     {
-        var result = _courseIterationMonitoringService.GetLearnersWithProgress(courseId, page, pageSize);
+        var result = _courseIterationMonitoringService.GetLearnersWithProgress(courseId, User.InstructorId(), page, pageSize);
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        return CreateResponse(result.Value);
+    }
+
+    private ActionResult<PagedResult<LearnerProgressDto>> CreateResponse(PagedResult<Learner> result)
+    {
         var progress = result.Results.Select(_mapper.Map<LearnerProgressDto>).ToList();
         return Ok(new PagedResult<LearnerProgressDto>(progress, result.TotalCount));
     }
@@ -42,8 +50,8 @@ public class CourseIterationMonitoringController : BaseApiController
     [HttpGet("progress/{groupId:int}")]
     public ActionResult<PagedResult<LearnerProgressDto>> GetProgressForGroup(int courseId, int groupId, [FromQuery] int page, [FromQuery] int pageSize)
     {
-        var result = _courseIterationMonitoringService.GetLearnersWithProgressForGroup(courseId, groupId, page, pageSize);
-        var progress = result.Results.Select(_mapper.Map<LearnerProgressDto>).ToList();
-        return Ok(new PagedResult<LearnerProgressDto>(progress, result.TotalCount));
+        var result = _courseIterationMonitoringService.GetLearnersWithProgressForGroup(courseId, User.InstructorId(), groupId, page, pageSize);
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        return CreateResponse(result.Value);
     }
 }
