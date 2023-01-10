@@ -91,7 +91,7 @@ public class LearnerController : BaseApiController
     }
 
     [HttpGet("{id:int}/courses")]
-    public ActionResult<CourseDto> Update(int id)
+    public ActionResult<CourseDto> GetEnrolledCourses(int id)
     {
         var result = _enrollmentService.GetEnrolledCourses(id);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);

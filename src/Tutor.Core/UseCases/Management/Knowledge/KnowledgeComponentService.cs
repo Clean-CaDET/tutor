@@ -32,10 +32,10 @@ public class KnowledgeComponentService : CrudService<KnowledgeComponent>, IKnowl
         return Update(kc);
     }
 
-    public Result Delete(int courseId, int id, int instructorId)
+    public Result Delete(int id, int instructorId, int unitId)
     {
         // Should add check if KC with Id is part of course
-        if (!_ownedCourseRepository.IsCourseOwner(courseId, instructorId))
+        if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
         return Delete(id);

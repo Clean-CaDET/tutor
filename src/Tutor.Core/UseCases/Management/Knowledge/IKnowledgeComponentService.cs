@@ -7,5 +7,5 @@ public interface IKnowledgeComponentService
 {
     Result<KnowledgeComponent> Create(KnowledgeComponent kc, int instructorId);
     Result<KnowledgeComponent> Update(KnowledgeComponent kc, int instructorId);
-    Result Delete(int id, int instructorId, int courseId);
+    Result Delete(int id, int instructorId, int unitId);
 }
