@@ -9,6 +9,6 @@ public class KnowledgeUnit : Entity
     public string Name { get; private set; }
     public string Description { get; private set; }
     public int Order { get; private set; }
-    public int CourseId { get; private set; }
+    public int CourseId { get; set; }
     public List<KnowledgeComponent> KnowledgeComponents { get; private set; }
 }

@@ -2,7 +2,7 @@
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Knowledge.Structure;
 
-namespace Tutor.Core.UseCases.Management.Knowledge;
+namespace Tutor.Core.UseCases.Management.Stakeholders;
 
 public interface ICourseService
 {

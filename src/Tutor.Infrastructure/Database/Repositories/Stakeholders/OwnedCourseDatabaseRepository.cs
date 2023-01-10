@@ -32,19 +32,17 @@ public class OwnedCourseDatabaseRepository : IOwnedCourseRepository
             .Select(m => m.Instructor).ToList();
     }
 
-    public bool IsOwner(int courseId, int instructorId)
+    public bool IsCourseOwner(int courseId, int instructorId)
     {
         return _dbContext.CourseOwnerships
             .Any(m => m.InstructorId.Equals(instructorId) && m.Course.Id.Equals(courseId));
     }
 
-    public CourseOwnership CheckUnitOwnership(int unitId, int instructorId)
+    public bool IsUnitOwner(int unitId, int instructorId)
     {
         return _dbContext.CourseOwnerships
-            .Where(m => m.InstructorId.Equals(instructorId) && 
-                        m.Course.KnowledgeUnits.Any(ku => ku.Id.Equals(unitId)))
-            .Include(m => m.Course.KnowledgeUnits)
-            .FirstOrDefault();
+            .Any(m => m.InstructorId.Equals(instructorId)
+                      && m.Course.KnowledgeUnits.Any(ku => ku.Id.Equals(unitId)));
     }
 
     public Course GetOwnedCourseWithUnitsAndKcs(int courseId, int instructorId)

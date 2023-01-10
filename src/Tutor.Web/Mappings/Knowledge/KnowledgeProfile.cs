@@ -14,7 +14,9 @@ public class KnowledgeProfile : Profile
         CreateMap<CourseDto, Course>();
         CreateMap<Course, CourseDto>();
         CreateMap<KnowledgeUnit, KnowledgeUnitDto>();
+        CreateMap<KnowledgeUnitDto, KnowledgeUnit>();
         CreateMap<KnowledgeComponent, KnowledgeComponentDto>();
+        CreateMap<KnowledgeComponentDto, KnowledgeComponent>();
 
         CreateMap<KcStatistics, KcStatisticsDto>();
 

@@ -262,6 +262,7 @@ public class Startup
     {
         services.AddScoped<ICourseService, CourseService>();
         services.AddScoped<IUnitService, UnitService>();
+        services.AddScoped<IKnowledgeComponentService, KnowledgeComponentService>();
 
         services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
         services.AddScoped<ILearnerService, LearnerService>();

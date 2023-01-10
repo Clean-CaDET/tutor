@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Knowledge.Structure;
-using Tutor.Core.UseCases.Management.Knowledge;
+using Tutor.Core.UseCases.Management.Stakeholders;
 using Tutor.Web.Mappings.Knowledge.DTOs;
 
 namespace Tutor.Web.Controllers.Administrators.Courses;

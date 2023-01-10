@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using FluentResults;
+﻿using FluentResults;
 using Tutor.Core.Domain.Knowledge.Structure;
 
 namespace Tutor.Core.UseCases.Management.Knowledge;
 
 public interface IUnitService
 {
-    Result<List<KnowledgeUnit>> GetByCourse(int courseId);
-    Result<KnowledgeUnit> Create(KnowledgeUnit unit);
-    Result<KnowledgeUnit> Update(KnowledgeUnit unit);
-    Result Delete(int id);
+    Result<KnowledgeUnit> Create(KnowledgeUnit unit, int instructorId);
+    Result<KnowledgeUnit> Update(KnowledgeUnit unit, int instructorId);
+    Result Delete(int id, int instructorId);
 }

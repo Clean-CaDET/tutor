@@ -26,7 +26,7 @@ public class CourseOwnershipService : ICourseOwnershipService
 
     public Result<Course> UpdateOwnedCourse(Course course, int instructorId)
     {
-        var isOwner = _ownedCourseRepository.IsOwner(course.Id, instructorId);
+        var isOwner = _ownedCourseRepository.IsCourseOwner(course.Id, instructorId);
         if (!isOwner) return Result.Fail(FailureCode.Forbidden);
 
         return _courseRepository.Update(course);

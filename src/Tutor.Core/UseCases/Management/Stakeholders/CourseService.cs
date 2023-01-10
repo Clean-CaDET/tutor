@@ -5,14 +5,14 @@ using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.Core.Domain.Knowledge.Structure;
 
-namespace Tutor.Core.UseCases.Management.Knowledge;
+namespace Tutor.Core.UseCases.Management.Stakeholders;
 
 public class CourseService : CrudService<Course>, ICourseService
 {
     private readonly ICourseRepository _courseRepository;
     private readonly ICrudRepository<LearnerGroup> _groupRepository;
 
-    public CourseService (ICourseRepository courseRepository, ICrudRepository<LearnerGroup> groupRepository) : base (courseRepository)
+    public CourseService(ICourseRepository courseRepository, ICrudRepository<LearnerGroup> groupRepository) : base(courseRepository)
     {
         _courseRepository = courseRepository;
         _groupRepository = groupRepository;

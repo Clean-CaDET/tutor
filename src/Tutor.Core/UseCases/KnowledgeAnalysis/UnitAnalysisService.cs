@@ -34,8 +34,8 @@ public class UnitAnalysisService : IUnitAnalysisService
     public Result<List<KcStatistics>> GetKnowledgeComponentsStats(int unitId, int instructorId)
     {
         //Check if instructor owns the course
-        var ownership = _ownedCourseRepository.CheckUnitOwnership(unitId, instructorId);
-        if (ownership is null) return Result.Fail(FailureCode.Forbidden);
+        var isOwner = _ownedCourseRepository.IsUnitOwner(unitId, instructorId);
+        if (!isOwner) return Result.Fail(FailureCode.Forbidden);
 
         var kcs = _knowledgeComponentRepository.GetKnowledgeComponentsForUnit(unitId);
         var kcIds = kcs.Select(kc => kc.Id).ToList();

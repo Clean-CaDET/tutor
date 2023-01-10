@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using FluentResults;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.UseCases.ProgressMonitoring;

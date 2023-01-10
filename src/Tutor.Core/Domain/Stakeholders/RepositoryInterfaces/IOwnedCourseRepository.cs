@@ -8,8 +8,8 @@ public interface IOwnedCourseRepository
 {
     List<Course> GetOwnedCourses(int instructorId);
     Result<List<Instructor>> GetOwners(int courseId);
-    bool IsOwner(int courseId, int instructorId);
-    CourseOwnership CheckUnitOwnership(int unitId, int instructorId);
+    bool IsCourseOwner(int courseId, int instructorId);
+    bool IsUnitOwner(int unitId, int instructorId);
     Course GetOwnedCourseWithUnitsAndKcs(int courseId, int instructorId);
     void CreateCourseOwnership(CourseOwnership ownership);
     void DeleteCourseOwnership(int courseId, int instructorId);
