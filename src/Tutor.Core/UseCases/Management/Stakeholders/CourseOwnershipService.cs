@@ -29,12 +29,12 @@ public class CourseOwnershipService : ICourseOwnershipService
         var isOwner = _ownedCourseRepository.IsOwner(course.Id, instructorId);
         if (!isOwner) return Result.Fail(FailureCode.Forbidden);
 
-        return course;
+        return _courseRepository.Update(course);
     }
 
-    public Result<Course> GetOwnedCourseWithUnits(int courseId, int instructorId)
+    public Result<Course> GetOwnedCourseWithUnitsAndKcs(int courseId, int instructorId)
     {
-        return _ownedCourseRepository.GetOwnedCourseWithUnits(courseId, instructorId);
+        return _ownedCourseRepository.GetOwnedCourseWithUnitsAndKcs(courseId, instructorId);
     }
 
     public Result<List<Instructor>> GetOwners(int courseId)

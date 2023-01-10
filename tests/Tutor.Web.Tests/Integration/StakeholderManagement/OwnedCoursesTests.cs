@@ -33,7 +33,7 @@ public class OwnedCoursesTests : BaseWebIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupInstructorController(scope, "-51");
-        var result = ((OkObjectResult)controller.GetCourseWithUnits(-1).Result)?.Value as CourseDto;
+        var result = ((OkObjectResult)controller.GetCourseWithUnitsAndKcs(-1).Result)?.Value as CourseDto;
 
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);

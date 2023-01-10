@@ -32,9 +32,9 @@ public class OwnedCoursesController : BaseApiController
     }
 
     [HttpGet("{courseId:int}")]
-    public ActionResult<CourseDto> GetCourseWithUnits(int courseId)
+    public ActionResult<CourseDto> GetCourseWithUnitsAndKcs(int courseId)
     {
-        var result = _courseOwnershipService.GetOwnedCourseWithUnits(courseId, User.InstructorId());
+        var result = _courseOwnershipService.GetOwnedCourseWithUnitsAndKcs(courseId, User.InstructorId());
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok(_mapper.Map<CourseDto>(result.Value));
     }

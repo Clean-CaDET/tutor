@@ -5,6 +5,7 @@ namespace Tutor.Core.Domain.Knowledge.Structure;
 
 public class KcStatistics : ValueObject
 {
+    // This should be moved to another namespace as it is not directly related to the Knowledge Structure
     public string KcCode { get; init; }
     public string KcName { get; init; }
     public int TotalRegistered { get; init; }

@@ -8,7 +8,7 @@ namespace Tutor.Core.UseCases.Management.Stakeholders;
 public interface ICourseOwnershipService
 {
     Result<List<Course>> GetOwnedCourses(int instructorId);
-    Result<Course> GetOwnedCourseWithUnits(int courseId, int instructorId);
+    Result<Course> GetOwnedCourseWithUnitsAndKcs(int courseId, int instructorId);
     Result<Course> UpdateOwnedCourse(Course course, int instructorId);
 
     Result<List<Instructor>> GetOwners(int courseId);

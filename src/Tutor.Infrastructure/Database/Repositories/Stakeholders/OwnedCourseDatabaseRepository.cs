@@ -47,7 +47,7 @@ public class OwnedCourseDatabaseRepository : IOwnedCourseRepository
             .FirstOrDefault();
     }
 
-    public Course GetOwnedCourseWithUnits(int courseId, int instructorId)
+    public Course GetOwnedCourseWithUnitsAndKcs(int courseId, int instructorId)
     {
         return _dbContext.CourseOwnerships
             .Where(m => m.InstructorId.Equals(instructorId) && m.Course.Id.Equals(courseId))
