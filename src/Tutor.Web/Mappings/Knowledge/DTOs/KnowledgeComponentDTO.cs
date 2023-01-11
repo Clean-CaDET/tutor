@@ -8,6 +8,7 @@ public class KnowledgeComponentDto
     public string Description { get; set; }
     public int Order { get; set; }
     public int? ParentId { get; set; }
+    public int KnowledgeUnitId { get; set; }
 
     public int ExpectedDurationInMinutes { get; set; }
 }

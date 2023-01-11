@@ -16,6 +16,15 @@ public class KnowledgeComponentService : CrudService<KnowledgeComponent>, IKnowl
         _ownedCourseRepository = ownedCourseRepository;
     }
 
+    public Result<KnowledgeComponent> Get(int id, int instructorId)
+    {
+        var kc = Get(id);
+        if(!_ownedCourseRepository.IsUnitOwner(kc.Value.KnowledgeUnitId, instructorId))
+            return Result.Fail(FailureCode.Forbidden);
+
+        return kc;
+    }
+
     public Result<KnowledgeComponent> Create(KnowledgeComponent kc, int instructorId)
     {
         if (!_ownedCourseRepository.IsUnitOwner(kc.KnowledgeUnitId, instructorId))
@@ -32,10 +41,11 @@ public class KnowledgeComponentService : CrudService<KnowledgeComponent>, IKnowl
         return Update(kc);
     }
 
-    public Result Delete(int id, int instructorId, int unitId)
+    public Result Delete(int id, int instructorId)
     {
-        // Should add check if KC with Id is part of course
-        if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId))
+        var kc = Get(id);
+        
+        if (!_ownedCourseRepository.IsUnitOwner(kc.Value.KnowledgeUnitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
         return Delete(id);
