@@ -13,12 +13,15 @@ VALUES (-4, -4, 'Enrolled Student for Events', 'SU-4-2021', NULL);
 INSERT INTO public."Learners"(
     "Id", "UserId", "Name", "Index", "Email")
 VALUES (-5, -5, 'Enrolled Student for Events', 'SU-5-2021', NULL);
+INSERT INTO public."Learners"(
+    "Id", "UserId", "Name", "Index", "Email")
+VALUES (-6, -6, 'Empty student', 'SU-6-2021', NULL);
 
 INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname", "Email") VALUES
-    (-51, -51, 'TestInstructor', 'TestInstructor', NULL);
+    (-51, -51, 'TestInstructor1', 'TestInstructor1', NULL);
 
 INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname", "Email") VALUES
-    (-52, -52, 'TestInstructor', 'TestInstructor', NULL);
+    (-52, -52, 'TestInstructor2', 'TestInstructor2', NULL);
 
 INSERT INTO public."LearnerGroups"(
 	"Id", "Name", "CourseId")

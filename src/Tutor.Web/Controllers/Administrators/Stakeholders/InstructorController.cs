@@ -41,7 +41,7 @@ public class InstructorController : BaseApiController
     }
 
     [HttpPut("{id:int}")]
-    public ActionResult Update([FromBody] StakeholderAccountDto stakeholderAccount)
+    public ActionResult<StakeholderAccountDto> Update([FromBody] StakeholderAccountDto stakeholderAccount)
     {
         var result = _instructorService.Update(_mapper.Map<Instructor>(stakeholderAccount));
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
@@ -49,7 +49,7 @@ public class InstructorController : BaseApiController
     }
 
     [HttpPut("{id:int}/archive")]
-    public ActionResult Archive(int id, [FromBody] bool archive)
+    public ActionResult<StakeholderAccountDto> Archive(int id, [FromBody] bool archive)
     {
         var result = _instructorService.Archive(id, archive);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);

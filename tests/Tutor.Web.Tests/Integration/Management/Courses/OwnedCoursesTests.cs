@@ -8,12 +8,12 @@ using Tutor.Web.Controllers.Instructors;
 using Tutor.Web.Mappings.Knowledge.DTOs;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.StakeholderManagement;
+namespace Tutor.Web.Tests.Integration.Management.Courses;
 
 [Collection("Sequential")]
 public class OwnedCoursesTests : BaseWebIntegrationTest
 {
-    public OwnedCoursesTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
+    public OwnedCoursesTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
 
     [Theory]
     [InlineData("-51", 1)]
@@ -21,7 +21,7 @@ public class OwnedCoursesTests : BaseWebIntegrationTest
     public void Retrieves_owned_courses(string instructorId, int expectedCourseCount)
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupInstructorController(scope, instructorId);
+        var controller = SetupOwnedCoursesController(scope, instructorId);
         var result = ((OkObjectResult)controller.GetOwnedCourses().Result)?.Value as List<CourseDto>;
 
         result.ShouldNotBeNull();
@@ -32,7 +32,7 @@ public class OwnedCoursesTests : BaseWebIntegrationTest
     public void Retrieves_owned_course_with_units()
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupInstructorController(scope, "-51");
+        var controller = SetupOwnedCoursesController(scope, "-51");
         var result = ((OkObjectResult)controller.GetCourseWithUnitsAndKcs(-1).Result)?.Value as CourseDto;
 
         result.ShouldNotBeNull();
@@ -40,7 +40,7 @@ public class OwnedCoursesTests : BaseWebIntegrationTest
         result.KnowledgeUnits.Count.ShouldBe(2);
     }
 
-    private OwnedCoursesController SetupInstructorController(IServiceScope scope, string id)
+    private OwnedCoursesController SetupOwnedCoursesController(IServiceScope scope, string id)
     {
         return new OwnedCoursesController(Factory.Services.GetRequiredService<IMapper>(),
             scope.ServiceProvider.GetRequiredService<ICourseOwnershipService>())
