@@ -32,19 +32,21 @@ public class InstructionController : BaseApiController
     }
 
     [HttpPost]
-    public ActionResult<InstructionalItemDto> Create([FromBody] InstructionalItemDto instructionalItem)
+    public ActionResult<List<InstructionalItemDto>> Create([FromBody] InstructionalItemDto instructionalItem)
     {
         var result = _instructionService.Create(_mapper.Map<InstructionalItem>(instructionalItem), User.InstructorId());
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<InstructionalItemDto>(result.Value));
+        // Dahomey library adds type disciminators to list items but not single items...
+        return Ok(new List<InstructionalItemDto> { _mapper.Map<InstructionalItemDto>(result.Value) });
     }
 
     [HttpPut("{id:int}")]
-    public ActionResult<InstructionalItemDto> Update([FromBody] InstructionalItemDto instructionalItem)
+    public ActionResult<List<InstructionalItemDto>> Update([FromBody] InstructionalItemDto instructionalItem)
     {
         var result = _instructionService.Update(_mapper.Map<InstructionalItem>(instructionalItem), User.InstructorId());
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<InstructionalItemDto>(result.Value));
+        // Dahomey library adds type disciminators to list items but not single items...
+        return Ok(new List<InstructionalItemDto> { _mapper.Map<InstructionalItemDto>(result.Value) });
     }
 
     [HttpDelete("{id:int}")]

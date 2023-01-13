@@ -24,5 +24,10 @@ public class KnowledgeProfile : Profile
         CreateMap<Markdown, TextDto>();
         CreateMap<Image, ImageDto>();
         CreateMap<Video, VideoDto>();
+
+        CreateMap<InstructionalItemDto, InstructionalItem>().IncludeAllDerived();
+        CreateMap<TextDto, Markdown>();
+        CreateMap<ImageDto, Image>();
+        CreateMap<VideoDto, Video>();
     }
 }
