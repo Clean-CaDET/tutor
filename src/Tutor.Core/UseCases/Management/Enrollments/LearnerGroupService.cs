@@ -5,7 +5,7 @@ using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Stakeholders;
 
-namespace Tutor.Core.UseCases.Management.CourseIteration;
+namespace Tutor.Core.UseCases.Management.Enrollments;
 
 public class LearnerGroupService: CrudService<LearnerGroup>, ILearnerGroupService
 {

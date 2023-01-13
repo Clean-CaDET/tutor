@@ -26,7 +26,7 @@ using Tutor.Core.UseCases.KnowledgeAnalysis;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Core.UseCases.Learning.Utilities;
-using Tutor.Core.UseCases.Management.CourseIteration;
+using Tutor.Core.UseCases.Management.Enrollments;
 using Tutor.Core.UseCases.Management.Knowledge;
 using Tutor.Core.UseCases.Management.Stakeholders;
 using Tutor.Core.UseCases.ProgressMonitoring;
@@ -263,6 +263,7 @@ public class Startup
         services.AddScoped<ICourseService, CourseService>();
         services.AddScoped<IUnitService, UnitService>();
         services.AddScoped<IKnowledgeComponentService, KnowledgeComponentService>();
+        services.AddScoped<IInstructionService, InstructionService>();
 
         services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
         services.AddScoped<ILearnerService, LearnerService>();

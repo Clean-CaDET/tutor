@@ -7,7 +7,7 @@ using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.UseCases.ProgressMonitoring;
 using Tutor.Infrastructure.Security.Authentication.Users;
-using Tutor.Web.Mappings.CourseIteration;
+using Tutor.Web.Mappings.Enrollments;
 
 namespace Tutor.Web.Controllers.Instructors;
 

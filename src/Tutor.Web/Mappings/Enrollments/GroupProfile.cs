@@ -4,7 +4,7 @@ using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.Stakeholders;
 
-namespace Tutor.Web.Mappings.CourseIteration;
+namespace Tutor.Web.Mappings.Enrollments;
 
 public class GroupProfile : Profile
 {

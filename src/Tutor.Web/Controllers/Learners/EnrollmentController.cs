@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using Tutor.Core.UseCases.Management.CourseIteration;
+using Tutor.Core.UseCases.Management.Enrollments;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Mappings.Knowledge.DTOs;
 

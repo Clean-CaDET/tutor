@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Stakeholders;
 
-namespace Tutor.Core.UseCases.Management.CourseIteration;
+namespace Tutor.Core.UseCases.Management.Enrollments;
 
 public interface ILearnerGroupService
 {

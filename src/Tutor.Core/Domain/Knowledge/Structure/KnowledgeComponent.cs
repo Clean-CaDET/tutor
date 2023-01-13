@@ -23,4 +23,9 @@ public class KnowledgeComponent : Entity
     {
         return InstructionalItems.OrderBy(i => i.Order).ToList();
     }
+
+    public void RemoveInstructionalItem(int id)
+    {
+        InstructionalItems = InstructionalItems.Where(i => i.Id != id).ToList();
+    }
 }

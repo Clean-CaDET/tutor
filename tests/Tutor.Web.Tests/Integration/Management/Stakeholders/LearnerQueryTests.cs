@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
-using Tutor.Core.UseCases.Management.CourseIteration;
+using Tutor.Core.UseCases.Management.Enrollments;
 using Tutor.Core.UseCases.Management.Stakeholders;
 using Tutor.Web.Controllers.Administrators.Stakeholders;
 using Tutor.Web.Mappings.Stakeholders;

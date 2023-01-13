@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Tutor.Web.Mappings.KnowledgeMastery;
 
-namespace Tutor.Web.Mappings.CourseIteration;
+namespace Tutor.Web.Mappings.Enrollments;
 
 public class KcmProgressDto
 {

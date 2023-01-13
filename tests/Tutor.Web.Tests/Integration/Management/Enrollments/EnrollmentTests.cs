@@ -3,16 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
-using Tutor.Core.UseCases.Management.CourseIteration;
+using Tutor.Core.UseCases.Management.Enrollments;
 using Tutor.Web.Controllers.Learners;
 using Tutor.Web.Mappings.Knowledge.DTOs;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.CourseIterationManagement;
+namespace Tutor.Web.Tests.Integration.Management.Enrollments;
 
 public class EnrollmentTests : BaseWebIntegrationTest
 {
-    public EnrollmentTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
+    public EnrollmentTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
 
     [Theory]
     [InlineData("-1", 2)]

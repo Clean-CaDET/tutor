@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Stakeholders;
-using Tutor.Core.UseCases.Management.CourseIteration;
+using Tutor.Core.UseCases.Management.Enrollments;
 using Tutor.Core.UseCases.Management.Stakeholders;
 using Tutor.Web.Mappings.Knowledge.DTOs;
 using Tutor.Web.Mappings.Stakeholders;
