@@ -10,5 +10,5 @@ public interface IAssessmentService
     /*Result<InstructionalItem> Create(InstructionalItem instruction, int instructorId);
     Result<InstructionalItem> Update(InstructionalItem instruction, int instructorId);*/
     Result<List<AssessmentItem>> UpdateOrdering(int kcId, List<AssessmentItem> items, int instructorId);
-    // Result Delete(int id, int kcId, int instructorId);
+    Result Delete(int id, int kcId, int instructorId);
 }

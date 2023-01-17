@@ -1,6 +1,5 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
-using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
@@ -68,16 +67,13 @@ public class AssessmentService : IAssessmentService
         return Result.Ok(items);
     }
 
-    /*public Result Delete(int id, int kcId, int instructorId)
+    public Result Delete(int id, int kcId, int instructorId)
     {
-        var kc = _kcRepository.GetKnowledgeComponentWithInstruction(kcId);
-
-        if (!_ownedCourseRepository.IsUnitOwner(kc.KnowledgeUnitId, instructorId))
+        if (!_ownedCourseRepository.IsKcOwner(kcId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        kc.RemoveInstructionalItem(id);
-        _kcRepository.Update(kc);
+        _assessmentItemRepository.Delete(id);
 
         return Result.Ok();
-    }*/
+    }
 }

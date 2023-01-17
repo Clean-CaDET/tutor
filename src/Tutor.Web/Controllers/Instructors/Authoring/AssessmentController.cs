@@ -57,11 +57,11 @@ public class AssessmentController : BaseApiController
         return Ok(result.Value.Select(_mapper.Map<AssessmentItemDto>).ToList());
     }
 
-    /*[HttpDelete("{id:int}")]
+    [HttpDelete("{id:int}")]
     public ActionResult Delete(int kcId, int id)
     {
-        var result = _instructionService.Delete(id, kcId, User.InstructorId());
+        var result = _assessmentService.Delete(id, kcId, User.InstructorId());
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok();
-    }*/
+    }
 }
