@@ -45,6 +45,14 @@ public class OwnedCourseDatabaseRepository : IOwnedCourseRepository
                       && m.Course.KnowledgeUnits.Any(ku => ku.Id.Equals(unitId)));
     }
 
+    public bool IsKcOwner(int kcId, int instructorId)
+    {
+        return _dbContext.CourseOwnerships
+            .Any(m => 
+                m.InstructorId.Equals(instructorId) && m.Course.KnowledgeUnits.Any(ku => 
+                    ku.KnowledgeComponents.Any(kc => kc.Id == kcId)));
+    }
+
     public Course GetOwnedCourseWithUnitsAndKcs(int courseId, int instructorId)
     {
         return _dbContext.CourseOwnerships

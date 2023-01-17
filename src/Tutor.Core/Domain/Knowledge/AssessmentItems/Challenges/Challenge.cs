@@ -19,6 +19,8 @@ public class Challenge : AssessmentItem
         FulfillmentStrategies = fulfillmentStrategies;
     }
 
+    public override void ClearFeedback() {}
+
     public override Evaluation Evaluate(Submission submission)
     {
         if (submission is ChallengeSubmission challengeSubmission) return EvaluateChallenge(challengeSubmission.SourceCode, null);

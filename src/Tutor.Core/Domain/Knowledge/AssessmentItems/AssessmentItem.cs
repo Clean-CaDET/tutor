@@ -15,5 +15,6 @@ public abstract class AssessmentItem : Entity
         KnowledgeComponentId = knowledgeComponentId;
     }
 
+    public abstract void ClearFeedback();
     public abstract Evaluation Evaluate(Submission submission);
 }

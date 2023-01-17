@@ -10,6 +10,7 @@ public interface IOwnedCourseRepository
     Result<List<Instructor>> GetOwners(int courseId);
     bool IsCourseOwner(int courseId, int instructorId);
     bool IsUnitOwner(int unitId, int instructorId);
+    bool IsKcOwner(int kcId, int instructorId);
     Course GetOwnedCourseWithUnitsAndKcs(int courseId, int instructorId);
     void CreateCourseOwnership(CourseOwnership ownership);
     void DeleteCourseOwnership(int courseId, int instructorId);

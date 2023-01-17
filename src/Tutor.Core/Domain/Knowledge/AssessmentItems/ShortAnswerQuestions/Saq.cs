@@ -9,6 +9,11 @@ public class Saq : AssessmentItem
     public string Text { get; private set; }
     public List<string> AcceptableAnswers { get; private set; }
 
+    public override void ClearFeedback()
+    {
+        AcceptableAnswers = null;
+    }
+
     public override Evaluation Evaluate(Submission submission)
     {
         if (submission is SaqSubmission saqSubmission) return EvaluateSaq(saqSubmission);

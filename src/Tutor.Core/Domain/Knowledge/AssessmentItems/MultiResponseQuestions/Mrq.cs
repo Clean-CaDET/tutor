@@ -9,6 +9,15 @@ public class Mrq : AssessmentItem
     public string Text { get; private set; }
     public List<MrqItem> Items { get; private set; }
 
+    public override void ClearFeedback()
+    {
+        Items.ForEach(i =>
+        {
+            i.Feedback = "";
+            i.IsCorrect = false;
+        });
+    }
+
     public override Evaluation Evaluate(Submission submission)
     {
         if (submission is MrqSubmission mrqSubmission) return EvaluateMrq(mrqSubmission);

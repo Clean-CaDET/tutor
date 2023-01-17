@@ -1,4 +1,5 @@
 ﻿using Dahomey.Json.Attributes;
+using System.Collections.Generic;
 
 namespace Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ShortAnswerQuestions;
 
@@ -6,4 +7,5 @@ namespace Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ShortAnswerQuestions
 public class SaqDto : AssessmentItemDto
 {
     public string Text { get; set; }
+    public List<string> AcceptableAnswers { get; set; }
 }

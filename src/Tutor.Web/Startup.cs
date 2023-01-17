@@ -264,6 +264,7 @@ public class Startup
         services.AddScoped<IUnitService, UnitService>();
         services.AddScoped<IKnowledgeComponentService, KnowledgeComponentService>();
         services.AddScoped<IInstructionService, InstructionService>();
+        services.AddScoped<IAssessmentService, AssessmentService>();
 
         services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
         services.AddScoped<ILearnerService, LearnerService>();

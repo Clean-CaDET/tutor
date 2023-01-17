@@ -35,6 +35,9 @@ public class SelectionService : ISelectionService
         kcMastery.RecordAssessmentItemSelection(assessmentItemId);
         _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
 
-        return Result.Ok(_assessmentItemRepository.GetDerivedAssessmentItem(assessmentItemId));
+        var item = _assessmentItemRepository.GetDerivedAssessmentItem(assessmentItemId);
+        item.ClearFeedback();
+
+        return Result.Ok(item);
     }
 }

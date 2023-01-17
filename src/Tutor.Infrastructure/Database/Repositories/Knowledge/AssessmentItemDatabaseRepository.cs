@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Query;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.Challenges.FulfillmentStrategies;
@@ -20,8 +22,23 @@ public class AssessmentItemDatabaseRepository : IAssessmentItemRepository
         
     public AssessmentItem GetDerivedAssessmentItem(int assessmentItemId)
     {
-        return _dbContext.AssessmentItems
-            .Where(ae => ae.Id == assessmentItemId)
+        var query = _dbContext.AssessmentItems
+            .Where(ae => ae.Id == assessmentItemId);
+
+        return IncludeDerivedFields(query).FirstOrDefault();
+    }
+    
+    public List<AssessmentItem> GetDerivedAssessmentItemsForKc(int kcId)
+    {
+        var query = _dbContext.AssessmentItems
+            .Where(ae => ae.KnowledgeComponentId == kcId);
+
+        return IncludeDerivedFields(query).ToList();
+    }
+
+    private static IIncludableQueryable<AssessmentItem, ChallengeHint> IncludeDerivedFields(IQueryable<AssessmentItem> query)
+    {
+        return query
             .Include(ae => (ae as Mrq).Items)
             .Include(ae => (ae as ArrangeTask).Containers)
             .ThenInclude(c => c.Elements)
@@ -30,7 +47,6 @@ public class AssessmentItemDatabaseRepository : IAssessmentItemRepository
             .Include(ae => (ae as Challenge).FulfillmentStrategies)
             .ThenInclude(s => (s as RequiredWordsChecker).Hint)
             .Include(ae => (ae as Challenge).FulfillmentStrategies)
-            .ThenInclude(s => (s as BasicMetricChecker).Hint)
-            .FirstOrDefault();
+            .ThenInclude(s => (s as BasicMetricChecker).Hint);
     }
 }
