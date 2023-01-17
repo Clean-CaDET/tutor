@@ -14,6 +14,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.CourseIteration;
@@ -31,6 +32,7 @@ using Tutor.Core.UseCases.Management.Knowledge;
 using Tutor.Core.UseCases.Management.Stakeholders;
 using Tutor.Core.UseCases.ProgressMonitoring;
 using Tutor.Infrastructure;
+using Tutor.Infrastructure.Database;
 using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.Infrastructure.Database.Repositories;
@@ -280,6 +282,8 @@ public class Startup
     {
         services.AddScoped(typeof(ICrudRepository<>), typeof(CrudDatabaseRepository<>));
 
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+
         services.AddScoped<IKnowledgeComponentRepository, KnowledgeComponentDatabaseRepository>();
         services.AddScoped<IAssessmentItemRepository, AssessmentItemDatabaseRepository>();
         services.AddScoped<IKnowledgeMasteryRepository, KnowledgeMasteryDatabaseRepository>();
@@ -292,6 +296,7 @@ public class Startup
         services.AddScoped<IOwnedCourseRepository, OwnedCourseDatabaseRepository>();
         services.AddScoped<IGroupRepository, GroupDatabaseRepository>();
         services.AddScoped<IEnrollmentRepository, EnrollmentDatabaseRepository>();
+
         services.AddSingleton<IEventSerializer>(
             new DefaultEventSerializer(EventSerializationConfiguration.EventRelatedTypes));
     }
