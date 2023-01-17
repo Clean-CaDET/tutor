@@ -1,5 +1,6 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
+using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Knowledge.InstructionalItems;
 using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
@@ -53,6 +54,24 @@ public class InstructionService : IInstructionService
         _kcRepository.Update(kc);
 
         return instruction;
+    }
+
+    public Result<List<InstructionalItem>> UpdateOrdering(int kcId, List<InstructionalItem> items, int instructorId)
+    {
+        var kc = _kcRepository.GetKnowledgeComponentWithInstruction(kcId);
+
+        if (!_ownedCourseRepository.IsUnitOwner(kc.KnowledgeUnitId, instructorId))
+            return Result.Fail(FailureCode.Forbidden);
+
+        foreach (var instruction in kc.InstructionalItems)
+        {
+            var relatedItem = items.FirstOrDefault(i => i.Id == instruction.Id);
+            if(relatedItem == null) return Result.Fail(FailureCode.NotFound);
+            instruction.Order = relatedItem.Order;
+        }
+
+        _kcRepository.Update(kc);
+        return Result.Ok(kc.GetOrderedInstructionalItems());
     }
 
     public Result Delete(int id, int kcId, int instructorId)

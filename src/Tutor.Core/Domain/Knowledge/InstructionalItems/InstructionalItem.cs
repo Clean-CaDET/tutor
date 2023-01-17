@@ -6,5 +6,5 @@ public abstract class InstructionalItem : ValueObject
 {
     public int Id { get; private set; }
     public int KnowledgeComponentId { get; private set; }
-    public int Order { get; private set; }
+    public int Order { get; internal set; }
 }

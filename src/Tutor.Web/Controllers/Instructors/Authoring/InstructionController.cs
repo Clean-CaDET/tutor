@@ -49,6 +49,14 @@ public class InstructionController : BaseApiController
         return Ok(new List<InstructionalItemDto> { _mapper.Map<InstructionalItemDto>(result.Value) });
     }
 
+    [HttpPut("ordering")]
+    public ActionResult UpdateOrdering(int kcId, [FromBody] List<InstructionalItemDto> instructionalItems)
+    {
+        var result = _instructionService.UpdateOrdering(kcId, instructionalItems.Select(_mapper.Map<InstructionalItem>).ToList(), User.InstructorId());
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        return Ok(result.Value.Select(_mapper.Map<InstructionalItemDto>).ToList());
+    }
+
     [HttpDelete("{id:int}")]
     public ActionResult Delete(int kcId, int id)
     {
