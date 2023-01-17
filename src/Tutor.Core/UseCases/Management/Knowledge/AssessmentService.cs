@@ -1,5 +1,6 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
+using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
@@ -51,27 +52,23 @@ public class AssessmentService : IAssessmentService
         _kcRepository.Update(kc);
 
         return instruction;
-    }
+    }*/
 
-    public Result<List<InstructionalItem>> UpdateOrdering(int kcId, List<InstructionalItem> items, int instructorId)
+    public Result<List<AssessmentItem>> UpdateOrdering(int kcId, List<AssessmentItem> items, int instructorId)
     {
-        var kc = _kcRepository.GetKnowledgeComponentWithInstruction(kcId);
-
-        if (!_ownedCourseRepository.IsUnitOwner(kc.KnowledgeUnitId, instructorId))
+        if (!_ownedCourseRepository.IsKcOwner(kcId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        foreach (var instruction in kc.InstructionalItems)
+        foreach (var assessmentItem in items)
         {
-            var relatedItem = items.FirstOrDefault(i => i.Id == instruction.Id);
-            if(relatedItem == null) return Result.Fail(FailureCode.NotFound);
-            instruction.Order = relatedItem.Order;
+            //UoW violation
+            _assessmentItemRepository.Update(assessmentItem);
         }
 
-        _kcRepository.Update(kc);
-        return Result.Ok(kc.GetOrderedInstructionalItems());
+        return Result.Ok(items);
     }
 
-    public Result Delete(int id, int kcId, int instructorId)
+    /*public Result Delete(int id, int kcId, int instructorId)
     {
         var kc = _kcRepository.GetKnowledgeComponentWithInstruction(kcId);
 

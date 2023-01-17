@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.UseCases.Management.Knowledge;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems;
 
 namespace Tutor.Web.Controllers.Instructors.Authoring;
 
-[Route("api/authoring/knowledge-components/{kcId}/assessments")]
+[Route("api/authoring/knowledge-components/{kcId:int}/assessments")]
 [Authorize(Policy = "instructorPolicy")]
 public class AssessmentController : BaseApiController
 {
@@ -46,17 +47,17 @@ public class AssessmentController : BaseApiController
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         // Dahomey library adds type disciminators to list items but not single items...
         return Ok(new List<InstructionalItemDto> { _mapper.Map<InstructionalItemDto>(result.Value) });
-    }
+    }*/
 
     [HttpPut("ordering")]
-    public ActionResult UpdateOrdering(int kcId, [FromBody] List<InstructionalItemDto> instructionalItems)
+    public ActionResult<List<AssessmentItemDto>> UpdateOrdering(int kcId, [FromBody] List<AssessmentItemDto> assessmentItems)
     {
-        var result = _instructionService.UpdateOrdering(kcId, instructionalItems.Select(_mapper.Map<InstructionalItem>).ToList(), User.InstructorId());
+        var result = _assessmentService.UpdateOrdering(kcId, assessmentItems.Select(_mapper.Map<AssessmentItem>).ToList(), User.InstructorId());
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(result.Value.Select(_mapper.Map<InstructionalItemDto>).ToList());
+        return Ok(result.Value.Select(_mapper.Map<AssessmentItemDto>).ToList());
     }
 
-    [HttpDelete("{id:int}")]
+    /*[HttpDelete("{id:int}")]
     public ActionResult Delete(int kcId, int id)
     {
         var result = _instructionService.Delete(id, kcId, User.InstructorId());

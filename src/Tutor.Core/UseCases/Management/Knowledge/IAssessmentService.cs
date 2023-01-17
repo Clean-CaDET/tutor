@@ -8,7 +8,7 @@ public interface IAssessmentService
 {
     Result<List<AssessmentItem>> GetForKc(int kcId, int instructorId);
     /*Result<InstructionalItem> Create(InstructionalItem instruction, int instructorId);
-    Result<InstructionalItem> Update(InstructionalItem instruction, int instructorId);
-    Result<List<InstructionalItem>> UpdateOrdering(int kcId, List<InstructionalItem> items, int instructorId);
-    Result Delete(int id, int kcId, int instructorId);*/
+    Result<InstructionalItem> Update(InstructionalItem instruction, int instructorId);*/
+    Result<List<AssessmentItem>> UpdateOrdering(int kcId, List<AssessmentItem> items, int instructorId);
+    // Result Delete(int id, int kcId, int instructorId);
 }

@@ -11,18 +11,13 @@ using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 
 namespace Tutor.Infrastructure.Database.Repositories.Knowledge;
 
-public class AssessmentItemDatabaseRepository : IAssessmentItemRepository
+public class AssessmentItemDatabaseRepository : CrudDatabaseRepository<AssessmentItem>, IAssessmentItemRepository
 {
-    private readonly TutorContext _dbContext;
-
-    public AssessmentItemDatabaseRepository(TutorContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
+    public AssessmentItemDatabaseRepository(TutorContext dbContext): base(dbContext) {}
         
     public AssessmentItem GetDerivedAssessmentItem(int assessmentItemId)
     {
-        var query = _dbContext.AssessmentItems
+        var query = DbContext.AssessmentItems
             .Where(ae => ae.Id == assessmentItemId);
 
         return IncludeDerivedFields(query).FirstOrDefault();
@@ -30,7 +25,7 @@ public class AssessmentItemDatabaseRepository : IAssessmentItemRepository
     
     public List<AssessmentItem> GetDerivedAssessmentItemsForKc(int kcId)
     {
-        var query = _dbContext.AssessmentItems
+        var query = DbContext.AssessmentItems
             .Where(ae => ae.KnowledgeComponentId == kcId);
 
         return IncludeDerivedFields(query).ToList();

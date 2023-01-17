@@ -10,7 +10,7 @@ using Tutor.Web.Mappings.Knowledge.DTOs.InstructionalItems;
 
 namespace Tutor.Web.Controllers.Instructors.Authoring;
 
-[Route("api/authoring/knowledge-components/{kcId}/instruction")]
+[Route("api/authoring/knowledge-components/{kcId:int}/instruction")]
 [Authorize(Policy = "instructorPolicy")]
 public class InstructionController : BaseApiController
 {
@@ -36,7 +36,7 @@ public class InstructionController : BaseApiController
     {
         var result = _instructionService.Create(_mapper.Map<InstructionalItem>(instructionalItem), User.InstructorId());
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        // Dahomey library adds type disciminators to list items but not single items...
+        // Dahomey library adds type disciminators to list items but not single items... Will migrate to System.Text.JSON soon.
         return Ok(new List<InstructionalItemDto> { _mapper.Map<InstructionalItemDto>(result.Value) });
     }
 
