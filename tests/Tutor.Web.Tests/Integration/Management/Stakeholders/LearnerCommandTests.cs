@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -18,7 +19,7 @@ public class LearnerCommandTests : BaseWebIntegrationTest
     public LearnerCommandTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
 
     [Fact]
-    public void Saves()
+    public void Registers()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupLearnerController(scope);
@@ -44,6 +45,50 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Index == newEntity.Index);
         storedEntity.ShouldNotBeNull();
         storedEntity.UserId.ShouldBe(storedAccount.Id);
+    }
+
+    [Fact]
+    public void Registers_bulk()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var learners = new List<StakeholderAccountDto> {
+            new()
+            {
+                Index = "tana@tanic.com",
+                Email = "tana@tanic.com",
+                Name = "tana",
+                Surname = "tanic",
+                Password = "123"
+            },
+            new()
+            {
+                Index = "mika@mikic.com",
+                Email = "mika@mikic.com",
+                Name = "mika",
+                Surname = "mika",
+                Password = "123"
+            },
+            new()
+            {
+                Index = "steva@stevic.com",
+                Email = "steva@stevic.com",
+                Name = "steva",
+                Surname = "steva",
+                Password = "123"
+            }
+        };
+
+        controller.BulkRegister(learners);
+
+        var storedAccounts = dbContext.Users.Where(u => u.Username == "tana@tanic.com" || u.Username == "mika@mikic.com" || u.Username == "steva@stevic.com").ToList();
+        storedAccounts.ShouldNotBeNull();
+        storedAccounts.Count.ShouldBe(3);
+        var storedLearners = dbContext.Learners.Where(i => i.Index == "tana@tanic.com" || i.Index == "mika@mikic.com" || i.Index== "steva@stevic.com").ToList();
+        storedLearners.ShouldNotBeNull();
+        storedLearners.Count.ShouldBe(3);
+        storedLearners.All(l => storedAccounts.Any(a => a.Id == l.UserId)).ShouldBeTrue();
     }
 
     [Fact]

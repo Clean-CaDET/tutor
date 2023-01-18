@@ -1,10 +1,14 @@
 ﻿INSERT INTO public."Courses"(
-    "Id", "Name", "IsArchived", "StartDate")
-VALUES (-1, 'TestCourse', false, '9/11/2022 12:00:01 PM');
+    "Id", "Code", "Name", "IsArchived", "StartDate")
+VALUES (-1, 'T-1', 'TestCourse1', false, '9/11/2022 12:00:01 PM');
 
 INSERT INTO public."Courses"(
-    "Id", "Name", "IsArchived", "StartDate")
-VALUES (-2, 'TestCourse', false, '9/11/2022 12:00:01 PM');
+    "Id", "Code", "Name", "IsArchived", "StartDate")
+VALUES (-2, 'T-2', 'TestCourse2', false, '9/11/2022 12:00:01 PM');
+
+INSERT INTO public."Courses"(
+    "Id", "Code", "Name", "IsArchived", "StartDate")
+VALUES (-3, 'T-3', 'EmptyCourse', false, '9/11/2022 12:00:01 PM');
 
 INSERT INTO public."KnowledgeUnits"(
 	"Id", "Name", "Description", "CourseId", "Order")

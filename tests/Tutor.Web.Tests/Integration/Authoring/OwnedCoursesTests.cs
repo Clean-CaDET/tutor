@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
+using System.Linq;
 using Tutor.Core.UseCases.Management.Stakeholders;
+using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Instructors;
 using Tutor.Web.Mappings.Knowledge.DTOs;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.Management.Courses;
+namespace Tutor.Web.Tests.Integration.Authoring;
 
 [Collection("Sequential")]
 public class OwnedCoursesTests : BaseWebIntegrationTest
@@ -33,11 +35,33 @@ public class OwnedCoursesTests : BaseWebIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupOwnedCoursesController(scope, "-51");
+
         var result = ((OkObjectResult)controller.GetCourseWithUnitsAndKcs(-1).Result)?.Value as CourseDto;
 
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);
         result.KnowledgeUnits.Count.ShouldBe(2);
+    }
+
+    [Fact]
+    public void Updates_course_description()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var controller = SetupOwnedCoursesController(scope, "-51");
+        var updateCourse = new CourseDto
+        {
+            Id = -1,
+            Description = "Test"
+        };
+
+        var result = ((OkObjectResult)controller.Update(updateCourse).Result)?.Value as CourseDto;
+
+        result.ShouldNotBeNull();
+        result.Id.ShouldBe(-1);
+        result.Description.ShouldBe("Test");
+        var storedCourse = dbContext.Courses.FirstOrDefault(c => c.Id == -1);
+        storedCourse.ShouldNotBeNull();
     }
 
     private OwnedCoursesController SetupOwnedCoursesController(IServiceScope scope, string id)
