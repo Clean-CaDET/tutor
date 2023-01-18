@@ -84,4 +84,22 @@ public class LearnerService : CrudService<Learner>, ILearnerService
         _unitOfWork.Commit();
         return Result.Ok(learner);
     }
+
+    public override Result Delete(int id)
+    {
+        _unitOfWork.BeginTransaction();
+
+        _learnerRepository.Delete(id);
+        _userRepository.Delete(id);
+
+        var result = _unitOfWork.Save();
+        if (result.IsFailed)
+        {
+            _unitOfWork.Rollback();
+            return result;
+        }
+
+        _unitOfWork.Commit();
+        return Result.Ok();
+    }
 }

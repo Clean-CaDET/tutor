@@ -54,6 +54,5 @@ public class CrudDatabaseRepository<T> : ICrudRepository<T> where T : Entity
         var entity = _dbSet.Find(id);
         if (entity == null) throw new ArgumentException("Entity not found: " + id);
         _dbSet.Remove(entity);
-        DbContext.SaveChanges();
     }
 }

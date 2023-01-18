@@ -1,4 +1,4 @@
-﻿using FluentResults;
+using FluentResults;
 
 namespace Tutor.Core.BuildingBlocks.Generics;
 
@@ -34,7 +34,7 @@ public class CrudService<T> where T : Entity
         return Result.Ok(updatedEntity);
     }
 
-    public Result Delete(int id)
+    public virtual Result Delete(int id)
     {
         _crudRepository.Delete(id);
         return Result.Ok();

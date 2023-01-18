@@ -63,4 +63,11 @@ public class UserDatabaseRepository : IUserRepository
     {
         return _dbContext.Users.Find(id);
     }
+
+    public void Delete(int id)
+    {
+        var user = _dbContext.Users.Find(id);
+        if (user == null) throw new ArgumentException("Entity not found: " + id);
+        _dbContext.Users.Remove(user);
+    }
 }

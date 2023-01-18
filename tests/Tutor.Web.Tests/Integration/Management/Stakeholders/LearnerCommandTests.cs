@@ -105,9 +105,10 @@ public class LearnerCommandTests : BaseWebIntegrationTest
 
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-        //Should expand tests to include account deletion (and for instructor)
-        var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Id == -6);
-        storedEntity.ShouldBeNull();
+        var storedLearner = dbContext.Learners.FirstOrDefault(i => i.Id == -6);
+        storedLearner.ShouldBeNull();
+        var storedAccount = dbContext.Users.FirstOrDefault(i => i.Id == -6);
+        storedAccount.ShouldBeNull();
     }
 
     private LearnerController SetupLearnerController(IServiceScope scope)
