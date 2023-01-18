@@ -74,7 +74,7 @@ public class LearnerController : BaseApiController
         return Ok(_mapper.Map<StakeholderAccountDto>(result.Value));
     }
 
-    [HttpPut("{id:int}/archive")]
+    [HttpPatch("{id:int}/archive")]
     public ActionResult<StakeholderAccountDto> Archive(int id, [FromBody] bool archive)
     {
         var result = _learnerService.Archive(id, archive);

@@ -48,7 +48,7 @@ public class InstructorController : BaseApiController
         return Ok(_mapper.Map<StakeholderAccountDto>(result.Value));
     }
 
-    [HttpPut("{id:int}/archive")]
+    [HttpPatch("{id:int}/archive")]
     public ActionResult<StakeholderAccountDto> Archive(int id, [FromBody] bool archive)
     {
         var result = _instructorService.Archive(id, archive);
