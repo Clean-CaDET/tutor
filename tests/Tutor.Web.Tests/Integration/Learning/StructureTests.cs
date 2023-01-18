@@ -22,6 +22,20 @@ public class StructureTests : BaseWebIntegrationTest
 {
     public StructureTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
+    [Fact]
+    public void Retrieves_unit()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupStructureController(scope, "-2");
+
+        var unit = ((OkObjectResult)controller.GetUnit(-1).Result)?.Value as KnowledgeUnitDto;
+
+        unit.ShouldNotBeNull();
+        unit.Id.ShouldBe(-1);
+        unit.KnowledgeComponents.ShouldNotBeNull();
+        unit.KnowledgeComponents.Count.ShouldBe(6);
+    }
+
     [Theory]
     [MemberData(nameof(KnowledgeComponentMasteries))]
     public void Retrieves_kc_mastery_for_unit(int unitId, List<KnowledgeComponentMasteryDto> expectedKCs)
@@ -29,7 +43,7 @@ public class StructureTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupStructureController(scope, "-2");
 
-        var actualKcms = ((OkObjectResult)controller.GetMasteries(unitId).Result).Value as List<KnowledgeComponentMasteryDto>;
+        var actualKcms = ((OkObjectResult)controller.GetMasteries(unitId).Result)?.Value as List<KnowledgeComponentMasteryDto>;
 
         expectedKCs.All(expectedKc => actualKcms.Any(
                 kcm => expectedKc.KnowledgeComponentId == kcm.KnowledgeComponentId && expectedKc.Mastery == kcm.Mastery))
@@ -61,7 +75,7 @@ public class StructureTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupStructureController(scope, "-2");
 
-        var kc = ((OkObjectResult)controller.GetKnowledgeComponent(-11).Result).Value as KnowledgeComponentDto;
+        var kc = ((OkObjectResult)controller.GetKnowledgeComponent(-11).Result)?.Value as KnowledgeComponentDto;
 
         kc.ShouldNotBeNull();
         kc.Id.ShouldBe(-11);
@@ -74,7 +88,7 @@ public class StructureTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupStructureController(scope, "-2");
 
-        var items = ((OkObjectResult)controller.GetInstructionalItems(knowledgeComponentId).Result).Value as List<InstructionalItemDto>;
+        var items = ((OkObjectResult)controller.GetInstructionalItems(knowledgeComponentId).Result)?.Value as List<InstructionalItemDto>;
 
         items.ShouldNotBeNull();
         items.Count.ShouldBe(expectedIEsCount);
