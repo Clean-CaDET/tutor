@@ -106,6 +106,8 @@ public class InstructorCommandTests : BaseWebIntegrationTest
 
         var storedInstructor = dbContext.Instructors.FirstOrDefault(i => i.Id == -52);
         storedInstructor.ShouldBeNull();
+        var storedAccount = dbContext.Users.FirstOrDefault(i => i.Id == -52);
+        storedAccount.ShouldBeNull();
     }
 
     private InstructorController SetupInstructorController(IServiceScope scope)

@@ -1,4 +1,4 @@
-﻿using FluentResults;
+using FluentResults;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.Stakeholders;
@@ -62,5 +62,23 @@ public class InstructorService : CrudService<Instructor>, IInstructorService
 
         _unitOfWork.Commit();
         return Result.Ok(instructor);
+    }
+
+    public override Result Delete(int id)
+    {
+        _unitOfWork.BeginTransaction();
+
+        _instructorRepository.Delete(id);
+        _userRepository.Delete(id);
+
+        var result = _unitOfWork.Save();
+        if (result.IsFailed)
+        {
+            _unitOfWork.Rollback();
+            return result;
+        }
+
+        _unitOfWork.Commit();
+        return Result.Ok();
     }
 }
