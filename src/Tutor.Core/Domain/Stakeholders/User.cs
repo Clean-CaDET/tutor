@@ -7,7 +7,7 @@ public class User
     public string Password { get; private set; }
     public string Salt { get; private set; }
     public UserRole Role { get; private set; }
-    public bool IsActive { get; private set; }
+    public bool IsActive { get; set; }
 
     private User() {}
     public User(string username, string password, string salt, UserRole role)

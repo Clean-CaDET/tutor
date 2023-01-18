@@ -84,7 +84,9 @@ public class InstructorCommandTests : BaseWebIntegrationTest
 
         result.ShouldNotBeNull();
         result.IsArchived.ShouldBe(true);
-        //Should expand tests to include account deactivation
+        var storedAccount = dbContext.Users.FirstOrDefault(u => u.Id == result.UserId);
+        storedAccount.ShouldNotBeNull();
+        storedAccount.IsActive.ShouldBe(false);
         var storedInstructor = dbContext.Instructors.FirstOrDefault(i => i.Id == -51);
         storedInstructor.ShouldNotBeNull();
         storedInstructor.IsArchived.ShouldBe(true);

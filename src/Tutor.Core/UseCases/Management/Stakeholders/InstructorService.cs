@@ -1,4 +1,4 @@
-using FluentResults;
+﻿using FluentResults;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.Stakeholders;
@@ -44,11 +44,23 @@ public class InstructorService : CrudService<Instructor>, IInstructorService
 
     public Result<Instructor> Archive(int id, bool archive)
     {
+        _unitOfWork.BeginTransaction();
+
         var instructor = _instructorRepository.Get(id);
         if (instructor == null) return Result.Fail(FailureCode.NotFound);
-        // Warning: Explicit account (User) deactivation is missing.
         instructor.IsArchived = archive;
-        _instructorRepository.Update(instructor);
+        
+        var user = _userRepository.Get(instructor.UserId);
+        user.IsActive = !archive;
+
+        var result = _unitOfWork.Save();
+        if (result.IsFailed)
+        {
+            _unitOfWork.Rollback();
+            return result;
+        }
+
+        _unitOfWork.Commit();
         return Result.Ok(instructor);
     }
 }

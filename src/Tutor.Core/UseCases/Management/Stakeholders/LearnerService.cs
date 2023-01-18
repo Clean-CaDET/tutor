@@ -1,4 +1,4 @@
-using FluentResults;
+﻿using FluentResults;
 using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
@@ -65,11 +65,23 @@ public class LearnerService : CrudService<Learner>, ILearnerService
 
     public Result<Learner> Archive(int id, bool archive)
     {
+        _unitOfWork.BeginTransaction();
+
         var learner = _learnerRepository.Get(id);
         if (learner == null) return Result.Fail(FailureCode.NotFound);
-        // Warning: Explicit account (User) deactivation is missing.
         learner.IsArchived = archive;
-        _learnerRepository.Update(learner);
+
+        var user = _userRepository.Get(learner.UserId);
+        user.IsActive = !archive;
+
+        var result = _unitOfWork.Save();
+        if (result.IsFailed)
+        {
+            _unitOfWork.Rollback();
+            return result;
+        }
+
+        _unitOfWork.Commit();
         return Result.Ok(learner);
     }
 }

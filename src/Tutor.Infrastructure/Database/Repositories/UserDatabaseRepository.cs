@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.Domain.Stakeholders;
@@ -57,5 +57,10 @@ public class UserDatabaseRepository : IUserRepository
         var learner = _dbContext.Learners.FirstOrDefault(i => i.UserId == userId);
         if (learner == null) throw new KeyNotFoundException("Not found.");
         return learner.Id;
+    }
+
+    public User Get(int id)
+    {
+        return _dbContext.Users.Find(id);
     }
 }
