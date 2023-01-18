@@ -1,4 +1,4 @@
-﻿using FluentResults;
+using FluentResults;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.Stakeholders;
@@ -8,19 +8,38 @@ namespace Tutor.Core.UseCases.Management.Stakeholders;
 
 public class InstructorService : CrudService<Instructor>, IInstructorService
 {
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ICrudRepository<Instructor> _instructorRepository;
     private readonly IUserRepository _userRepository;
-    public InstructorService(ICrudRepository<Instructor> crudRepository, IUserRepository userRepository) : base(crudRepository)
+    public InstructorService(IUnitOfWork unitOfWork, ICrudRepository<Instructor> crudRepository, IUserRepository userRepository) : base(crudRepository)
     {
+        _unitOfWork = unitOfWork;
         _instructorRepository = crudRepository;
         _userRepository = userRepository;
     }
     public Result<Instructor> Register(Instructor instructor, string username, string password)
     {
+        _unitOfWork.BeginTransaction();
+
         var user = _userRepository.Register(username, password, UserRole.Instructor);
+        var result = _unitOfWork.Save();
+        if (result.IsFailed)
+        {
+            _unitOfWork.Rollback();
+            return result;
+        }
+
         instructor.UserId = user.Id;
-        // Warning: transactional consistency is not supported here (no rollback if Create fails).
-        return Create(instructor);
+        var instructorResult = Create(instructor);
+        result = _unitOfWork.Save();
+        if (result.IsFailed)
+        {
+            _unitOfWork.Rollback();
+            return result;
+        }
+
+        _unitOfWork.Commit();
+        return instructorResult;
     }
 
     public Result<Instructor> Archive(int id, bool archive)

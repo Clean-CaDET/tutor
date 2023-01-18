@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +33,6 @@ public class CrudDatabaseRepository<T> : ICrudRepository<T> where T : Entity
     public T Create(T entity)
     {
         _dbSet.Attach(entity);
-        DbContext.SaveChanges();
         return entity;
     }
 

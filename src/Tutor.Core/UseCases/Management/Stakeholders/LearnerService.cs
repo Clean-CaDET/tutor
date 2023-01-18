@@ -1,4 +1,4 @@
-﻿using FluentResults;
+using FluentResults;
 using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
@@ -9,10 +9,12 @@ namespace Tutor.Core.UseCases.Management.Stakeholders;
 
 public class LearnerService : CrudService<Learner>, ILearnerService
 {
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILearnerRepository _learnerRepository;
     private readonly IUserRepository _userRepository;
-    public LearnerService(ILearnerRepository learnerRepository, IUserRepository userRepository) : base(learnerRepository)
+    public LearnerService(IUnitOfWork unitOfWork, ILearnerRepository learnerRepository, IUserRepository userRepository) : base(learnerRepository)
     {
+        _unitOfWork = unitOfWork;
         _learnerRepository = learnerRepository;
         _userRepository = userRepository;
     }
@@ -24,10 +26,26 @@ public class LearnerService : CrudService<Learner>, ILearnerService
 
     public Result<Learner> Register(Learner learner, string username, string password)
     {
+        _unitOfWork.BeginTransaction();
+
         var user = _userRepository.Register(username, password, UserRole.Learner);
+        var result = _unitOfWork.Save();
+        if (result.IsFailed)
+        {
+            _unitOfWork.Rollback();
+            return result;
+        }
         learner.UserId = user.Id;
-        // Warning: transactional consistency is not supported here (no rollback if Create fails).
-        return Create(learner);
+        var learnerResult = Create(learner);
+        result = _unitOfWork.Save();
+        if (result.IsFailed)
+        {
+            _unitOfWork.Rollback();
+            return result;
+        }
+
+        _unitOfWork.Commit();
+        return learnerResult;
     }
 
     public Result BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords)
