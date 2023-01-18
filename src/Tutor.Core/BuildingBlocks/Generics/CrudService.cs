@@ -4,7 +4,7 @@ namespace Tutor.Core.BuildingBlocks.Generics;
 
 public class CrudService<T> where T : Entity
 {
-    private readonly ICrudRepository<T> _crudRepository;
+    protected readonly ICrudRepository<T> _crudRepository;
     public CrudService(ICrudRepository<T> crudRepository)
     {
         _crudRepository = crudRepository;

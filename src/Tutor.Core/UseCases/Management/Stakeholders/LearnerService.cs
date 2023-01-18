@@ -1,20 +1,18 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
-using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 
 namespace Tutor.Core.UseCases.Management.Stakeholders;
 
-public class LearnerService : CrudService<Learner>, ILearnerService
+public class LearnerService : StakeholderService<Learner>, ILearnerService
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly ILearnerRepository _learnerRepository;
     private readonly IUserRepository _userRepository;
-    public LearnerService(IUnitOfWork unitOfWork, ILearnerRepository learnerRepository, IUserRepository userRepository) : base(learnerRepository)
+    public LearnerService(ILearnerRepository learnerRepository, IUnitOfWork unitOfWork, IUserRepository userRepository) 
+        : base(learnerRepository, unitOfWork, userRepository)
     {
-        _unitOfWork = unitOfWork;
         _learnerRepository = learnerRepository;
         _userRepository = userRepository;
     }
@@ -22,30 +20,6 @@ public class LearnerService : CrudService<Learner>, ILearnerService
     public Result<PagedResult<Learner>> GetByIndexes(string[] indexes)
     {
         return _learnerRepository.GetByIndexes(indexes);
-    }
-
-    public Result<Learner> Register(Learner learner, string username, string password)
-    {
-        _unitOfWork.BeginTransaction();
-
-        var user = _userRepository.Register(username, password, UserRole.Learner);
-        var result = _unitOfWork.Save();
-        if (result.IsFailed)
-        {
-            _unitOfWork.Rollback();
-            return result;
-        }
-        learner.UserId = user.Id;
-        var learnerResult = Create(learner);
-        result = _unitOfWork.Save();
-        if (result.IsFailed)
-        {
-            _unitOfWork.Rollback();
-            return result;
-        }
-
-        _unitOfWork.Commit();
-        return learnerResult;
     }
 
     public Result BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords)
@@ -63,43 +37,4 @@ public class LearnerService : CrudService<Learner>, ILearnerService
         return Result.Ok();
     }
 
-    public Result<Learner> Archive(int id, bool archive)
-    {
-        _unitOfWork.BeginTransaction();
-
-        var learner = _learnerRepository.Get(id);
-        if (learner == null) return Result.Fail(FailureCode.NotFound);
-        learner.IsArchived = archive;
-
-        var user = _userRepository.Get(learner.UserId);
-        user.IsActive = !archive;
-
-        var result = _unitOfWork.Save();
-        if (result.IsFailed)
-        {
-            _unitOfWork.Rollback();
-            return result;
-        }
-
-        _unitOfWork.Commit();
-        return Result.Ok(learner);
-    }
-
-    public override Result Delete(int id)
-    {
-        _unitOfWork.BeginTransaction();
-
-        _learnerRepository.Delete(id);
-        _userRepository.Delete(id);
-
-        var result = _unitOfWork.Save();
-        if (result.IsFailed)
-        {
-            _unitOfWork.Rollback();
-            return result;
-        }
-
-        _unitOfWork.Commit();
-        return Result.Ok();
-    }
 }
