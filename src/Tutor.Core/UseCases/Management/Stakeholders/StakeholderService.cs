@@ -41,8 +41,6 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
 
     public Result<T> Archive(int id, bool archive)
     {
-        _unitOfWork.BeginTransaction();
-
         var stakeholderResult = Get(id);
         if (stakeholderResult.IsFailed) return stakeholderResult;
         var stakeholder = (Stakeholder)stakeholderResult.Value;
@@ -52,13 +50,8 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
         user.IsActive = !archive;
 
         var result = _unitOfWork.Save();
-        if (result.IsFailed)
-        {
-            _unitOfWork.Rollback();
-            return result;
-        }
+        if (result.IsFailed) return result;
 
-        _unitOfWork.Commit();
         return Result.Ok((T)stakeholder);
     }
 
@@ -82,19 +75,12 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
 
     public override Result Delete(int id)
     {
-        _unitOfWork.BeginTransaction();
-
         _crudRepository.Delete(id);
         _userRepository.Delete(id);
 
         var result = _unitOfWork.Save();
-        if (result.IsFailed)
-        {
-            _unitOfWork.Rollback();
-            return result;
-        }
+        if (result.IsFailed) return result;
 
-        _unitOfWork.Commit();
         return Result.Ok();
     }
 
