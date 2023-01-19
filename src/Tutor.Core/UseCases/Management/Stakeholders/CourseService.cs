@@ -12,7 +12,7 @@ public class CourseService : CrudService<Course>, ICourseService
     private readonly ICourseRepository _courseRepository;
     private readonly ICrudRepository<LearnerGroup> _groupRepository;
 
-    public CourseService(ICourseRepository courseRepository, ICrudRepository<LearnerGroup> groupRepository) : base(courseRepository)
+    public CourseService(ICourseRepository courseRepository, ICrudRepository<LearnerGroup> groupRepository, IUnitOfWork unitOfWork) : base(courseRepository, unitOfWork)
     {
         _courseRepository = courseRepository;
         _groupRepository = groupRepository;

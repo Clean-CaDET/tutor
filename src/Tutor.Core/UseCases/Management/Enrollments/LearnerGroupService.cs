@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FluentResults;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Stakeholders;
@@ -11,7 +12,7 @@ public class LearnerGroupService: CrudService<LearnerGroup>, ILearnerGroupServic
 {
     private readonly IGroupRepository _groupRepository;
 
-    public LearnerGroupService(IGroupRepository groupRepository) : base(groupRepository)
+    public LearnerGroupService(IGroupRepository groupRepository, IUnitOfWork unitOfWork) : base(groupRepository, unitOfWork)
     {
         _groupRepository = groupRepository;
     }

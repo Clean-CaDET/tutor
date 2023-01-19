@@ -36,5 +36,4 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
 
         return Result.Ok();
     }
-
 }

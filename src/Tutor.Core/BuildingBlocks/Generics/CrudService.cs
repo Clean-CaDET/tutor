@@ -4,10 +4,13 @@ namespace Tutor.Core.BuildingBlocks.Generics;
 
 public class CrudService<T> where T : Entity
 {
+    protected readonly IUnitOfWork _unitOfWork;
     protected readonly ICrudRepository<T> _crudRepository;
-    public CrudService(ICrudRepository<T> crudRepository)
+
+    public CrudService(ICrudRepository<T> crudRepository, IUnitOfWork unitOfWork)
     {
         _crudRepository = crudRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public Result<PagedResult<T>> GetPaged(int page, int pageSize)

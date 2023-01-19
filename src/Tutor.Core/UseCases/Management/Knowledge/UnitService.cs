@@ -11,7 +11,7 @@ public class UnitService : CrudService<KnowledgeUnit>, IUnitService
 {
     private readonly IOwnedCourseRepository _ownedCourseRepository;
 
-    public UnitService(IUnitRepository unitRepository, IOwnedCourseRepository ownedCourseRepository) : base(unitRepository)
+    public UnitService(IUnitRepository unitRepository, IOwnedCourseRepository ownedCourseRepository, IUnitOfWork unitOfWork) : base(unitRepository, unitOfWork)
     {
         _ownedCourseRepository = ownedCourseRepository;
     }

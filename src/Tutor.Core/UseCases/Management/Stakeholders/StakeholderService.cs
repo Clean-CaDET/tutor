@@ -1,4 +1,4 @@
-﻿using FluentResults;
+using FluentResults;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.Stakeholders;
@@ -8,12 +8,11 @@ namespace Tutor.Core.UseCases.Management.Stakeholders;
 
 public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> where T : Stakeholder
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IUserRepository _userRepository;
 
-    public StakeholderService(ICrudRepository<T> crudRepository, IUnitOfWork unitOfWork, IUserRepository userRepository) : base(crudRepository)
+    public StakeholderService(ICrudRepository<T> crudRepository, IUnitOfWork unitOfWork, IUserRepository userRepository) 
+        : base(crudRepository, unitOfWork)
     {
-        _unitOfWork = unitOfWork;
         _userRepository = userRepository;
     }
     public Result<T> Register(T stakeholder, string username, string password)
