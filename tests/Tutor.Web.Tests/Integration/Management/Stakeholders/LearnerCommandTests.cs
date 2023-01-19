@@ -47,6 +47,25 @@ public class LearnerCommandTests : BaseWebIntegrationTest
     }
 
     [Fact]
+    public void Save_fails_existing_username()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var newEntity = new StakeholderAccountDto
+        {
+            Index = "SU-1-2021",
+            Email = "SU-1-2021",
+            Name = "pera",
+            Surname = "peric",
+            Password = "123"
+        };
+
+        var result = (ObjectResult)controller.Register(newEntity).Result;
+        result.StatusCode.ShouldBe(409);
+    }
+
+    [Fact]
     public void Updates()
     {
         using var scope = Factory.Services.CreateScope();
@@ -55,9 +74,9 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         var updatedEntity = new StakeholderAccountDto
         {
             Id = -2,
-            Email = "pera@peric.com",
-            Name = "pera",
-            Surname = "peric",
+            Email = "mika@mikic.com",
+            Name = "mika",
+            Surname = "mikic",
             Password = "123"
         };
 
@@ -69,10 +88,27 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         result.Name.ShouldBe(updatedEntity.Name);
         result.Surname.ShouldBe(updatedEntity.Surname);
 
-        var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Email == updatedEntity.Email);
+        var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Id == updatedEntity.Id);
         storedEntity.ShouldNotBeNull();
+        var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == updatedEntity.Email);
+        storedAccount.ShouldNotBeNull();
         var oldEntity = dbContext.Learners.FirstOrDefault(i => i.Name == "SU-2-2021");
         oldEntity.ShouldBeNull();
+    }
+
+    [Fact]
+    public void Update_fails_invalid_id()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var updatedEntity = new StakeholderAccountDto
+        {
+            Id = -1000,
+        };
+
+        var result = (ObjectResult)controller.Update(updatedEntity).Result;
+        result.StatusCode.ShouldBe(404);
     }
 
     [Fact]

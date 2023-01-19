@@ -45,7 +45,25 @@ public class InstructorCommandTests : BaseWebIntegrationTest
     }
 
     [Fact]
-    public void Update_instructor()
+    public void Save_instructor_fails_existing_username()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupInstructorController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var newInstructor = new StakeholderAccountDto
+        {
+            Email = "SU-1-2021",
+            Name = "pera",
+            Surname = "peric",
+            Password = "123"
+        };
+
+        var result = (ObjectResult)controller.Register(newInstructor).Result;
+        result.StatusCode.ShouldBe(409);
+    }
+
+    [Fact]
+    public void Updates_instructor()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupInstructorController(scope);
@@ -53,9 +71,9 @@ public class InstructorCommandTests : BaseWebIntegrationTest
         var updatedInstructor = new StakeholderAccountDto
         {
             Id = -51,
-            Email = "pera@peric.com",
-            Name = "pera",
-            Surname = "peric",
+            Email = "mika@mikic.com",
+            Name = "mika",
+            Surname = "mikic",
             Password = "123"
         };
 
@@ -67,10 +85,27 @@ public class InstructorCommandTests : BaseWebIntegrationTest
         result.Name.ShouldBe(updatedInstructor.Name);
         result.Surname.ShouldBe(updatedInstructor.Surname);
         
-        var storedInstructor = dbContext.Instructors.FirstOrDefault(i => i.Email == updatedInstructor.Email);
+        var storedInstructor = dbContext.Instructors.FirstOrDefault(i => i.Id == updatedInstructor.Id);
         storedInstructor.ShouldNotBeNull();
+        var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == updatedInstructor.Email);
+        storedAccount.ShouldNotBeNull();
         var oldInstructor = dbContext.Instructors.FirstOrDefault(i => i.Name == "TestInstructor1");
         oldInstructor.ShouldBeNull();
+    }
+
+    [Fact]
+    public void Update_instructor_fails_invalid_id()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupInstructorController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var updatedInstructor = new StakeholderAccountDto
+        {
+            Id = -1000,
+        };
+
+        var result = (ObjectResult)controller.Update(updatedInstructor).Result;
+        result.StatusCode.ShouldBe(404);
     }
 
     [Fact]

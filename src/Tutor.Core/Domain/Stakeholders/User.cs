@@ -3,7 +3,7 @@
 public class User
 {
     public int Id { get; private set; }
-    public string Username { get; private set; }
+    public string Username { get; set; }
     public string Password { get; private set; }
     public string Salt { get; private set; }
     public UserRole Role { get; private set; }

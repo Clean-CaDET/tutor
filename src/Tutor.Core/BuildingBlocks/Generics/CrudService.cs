@@ -1,4 +1,4 @@
-using FluentResults;
+﻿using FluentResults;
 
 namespace Tutor.Core.BuildingBlocks.Generics;
 
@@ -22,18 +22,27 @@ public class CrudService<T> where T : Entity
     public Result<T> Get(int id)
     {
         var result = _crudRepository.Get(id);
+        if (result is null) return Result.Fail(FailureCode.NotFound);
         return result;
     }
 
     public virtual Result<T> Create(T entity)
     {
         var createdEntity = _crudRepository.Create(entity);
+
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+        
         return createdEntity;
     }
 
-    public Result<T> Update(T entity)
+    public virtual Result<T> Update(T entity)
     {
         var updatedEntity = _crudRepository.Update(entity);
+
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+
         return Result.Ok(updatedEntity);
     }
 

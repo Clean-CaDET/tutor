@@ -44,8 +44,14 @@ public class CrudDatabaseRepository<T> : ICrudRepository<T> where T : Entity
 
     public T Update(T entity)
     {
-        DbContext.Entry(entity).State = EntityState.Modified;
-        DbContext.SaveChanges();
+        DbContext.Update(entity);
+        return entity;
+    }
+    public T Update(T storedEntity, T entity)
+    {
+        // DDD does not go well with _dbContext tracking changes if entity is present in context
+        // How it works: if entity is tracked, changes are registered when setter is called
+        DbContext.Entry(storedEntity).CurrentValues.SetValues(entity);
         return entity;
     }
 

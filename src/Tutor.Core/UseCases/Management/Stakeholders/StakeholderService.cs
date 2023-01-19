@@ -1,4 +1,4 @@
-using FluentResults;
+﻿using FluentResults;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.Stakeholders;
@@ -60,6 +60,24 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
 
         _unitOfWork.Commit();
         return Result.Ok((T)stakeholder);
+    }
+
+    public override Result<T> Update(T stakeholder)
+    {
+        // Question: do we expect valid data? (id and userId in this case)
+
+        var dbStakeholder = _crudRepository.Get(stakeholder.Id);
+        if (dbStakeholder is null) return Result.Fail(FailureCode.NotFound);
+        var user = _userRepository.Get(dbStakeholder.UserId);
+
+        _crudRepository.Update(dbStakeholder, stakeholder);
+        user.Username = stakeholder.Email;
+
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+
+        return stakeholder;
+
     }
 
     public override Result Delete(int id)
