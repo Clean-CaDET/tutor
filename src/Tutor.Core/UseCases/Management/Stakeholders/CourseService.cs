@@ -1,4 +1,4 @@
-﻿using FluentResults;
+using FluentResults;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.CourseIteration;
@@ -20,11 +20,13 @@ public class CourseService : CrudService<Course>, ICourseService
 
     public override Result<Course> Create(Course course)
     {
-        // Warning: Unit of work
-        var createdCourse = base.Create(course);
-        _groupRepository.Create(new LearnerGroup("Group 1", createdCourse.Value));
+        // If object has navigation property, related objects will be added to context and saved with it
+        _groupRepository.Create(new LearnerGroup("Group 1", course));
 
-        return createdCourse;
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+
+        return course;
     }
 
     public Result<PagedResult<Course>> GetAll(bool includeArchived, int page, int pageSize)
