@@ -32,25 +32,25 @@ public class AssessmentController : BaseApiController
     }
 
     [HttpPost]
-    public ActionResult<AssessmentItemDto> Create([FromBody] AssessmentItemDto instructionalItem)
+    public ActionResult<AssessmentItemDto> Create([FromBody] AssessmentItemDto items)
     {
-        var result = _assessmentService.Create(_mapper.Map<AssessmentItem>(instructionalItem), User.InstructorId());
+        var result = _assessmentService.Create(_mapper.Map<AssessmentItem>(items), User.InstructorId());
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok(_mapper.Map<AssessmentItemDto>(result.Value));
     }
 
     [HttpPut("{id:int}")]
-    public ActionResult<AssessmentItemDto> Update([FromBody] AssessmentItemDto instructionalItem)
+    public ActionResult<AssessmentItemDto> Update([FromBody] AssessmentItemDto items)
     {
-        var result = _assessmentService.Update(_mapper.Map<AssessmentItem>(instructionalItem), User.InstructorId());
+        var result = _assessmentService.Update(_mapper.Map<AssessmentItem>(items), User.InstructorId());
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok(_mapper.Map<AssessmentItemDto>(result.Value));
     }
 
     [HttpPut("ordering")]
-    public ActionResult<List<AssessmentItemDto>> UpdateOrdering(int kcId, [FromBody] List<AssessmentItemDto> assessmentItems)
+    public ActionResult<List<AssessmentItemDto>> UpdateOrdering(int kcId, [FromBody] List<AssessmentItemDto> items)
     {
-        var result = _assessmentService.UpdateOrdering(kcId, assessmentItems.Select(_mapper.Map<AssessmentItem>).ToList(), User.InstructorId());
+        var result = _assessmentService.UpdateOrdering(kcId, items.Select(_mapper.Map<AssessmentItem>).ToList(), User.InstructorId());
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok(result.Value.Select(_mapper.Map<AssessmentItemDto>).ToList());
     }

@@ -40,7 +40,8 @@ public class OwnedCoursesTests : BaseWebIntegrationTest
 
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);
-        result.KnowledgeUnits.Count.ShouldBe(2);
+        result.KnowledgeUnits.Count.ShouldBe(3);
+        result.KnowledgeUnits.First(u => u.Id == -1).KnowledgeComponents.Count.ShouldBe(6);
     }
 
     [Fact]
