@@ -37,6 +37,9 @@ public class CourseCommandTests : BaseWebIntegrationTest
         var storedEntity = dbContext.Courses.FirstOrDefault(i => i.Code == newEntity.Code);
         storedEntity.ShouldNotBeNull();
         storedEntity.Id.ShouldBe(result.Id);
+        var storedLearnerGroup = dbContext.LearnerGroups.FirstOrDefault(g => g.Name == "Group 1");
+        storedLearnerGroup.ShouldNotBeNull();
+        storedLearnerGroup.CourseId.ShouldBe(result.Id);
     }
 
     [Fact]

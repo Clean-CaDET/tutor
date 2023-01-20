@@ -3,7 +3,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.UseCases.Management.Enrollments;
 using Tutor.Core.UseCases.Management.Stakeholders;
@@ -49,7 +48,7 @@ public class LearnerCommandTests : BaseWebIntegrationTest
     }
 
     [Fact]
-    public void Save_fails_existing_username()
+    public void Register_fails_existing_username()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupLearnerController(scope);
@@ -69,37 +68,44 @@ public class LearnerCommandTests : BaseWebIntegrationTest
     }
 
     [Fact]
-    public void Bulk_saves()
+    public void Registers_bulk()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupLearnerController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
-        var newEntities = new List<StakeholderAccountDto>
-        {
-            new StakeholderAccountDto
+        var learners = new List<StakeholderAccountDto> {
+            new()
             {
-                Index = "pera@prvi.com",
-                Email = "pera@prvi.com",
-                Name = "pera",
-                Surname = "prvi",
+                Index = "tana@tanic.com",
+                Email = "tana@tanic.com",
+                Name = "tana",
+                Surname = "tanic",
                 Password = "123"
             },
-            new StakeholderAccountDto
+            new()
             {
-                Index = "pera@drugi.com",
-                Email = "pera@drugi.com",
-                Name = "pera",
-                Surname = "drugi",
+                Index = "zika@zikic.com",
+                Email = "zika@zikic.com",
+                Name = "zika",
+                Surname = "zikic",
                 Password = "123"
             },
+            new()
+            {
+                Index = "steva@stevic.com",
+                Email = "steva@stevic.com",
+                Name = "steva",
+                Surname = "steva",
+                Password = "123"
+            }
         };
 
-        var result = (OkResult)controller.BulkRegister(newEntities);
+        var result = (OkResult)controller.BulkRegister(learners);
 
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
 
-        foreach (var newEntity in newEntities)
+        foreach (var newEntity in learners)
         {
             var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == newEntity.Index);
             storedAccount.ShouldNotBeNull();
