@@ -18,8 +18,8 @@ public class GroupProfile : Profile
                 opt => opt.MapFrom(src => src.KnowledgeComponentMasteries));
 
         CreateMap<KnowledgeComponentMastery, KcmProgressDto>()
-            .ForMember(dest => dest.DurationOfFinishedSessionsInMinutes, opt => opt.MapFrom(src =>
-                (src.SessionTracker.DurationOfFinishedSessions.Hours * 60) +
-                src.SessionTracker.DurationOfFinishedSessions.Minutes));
+            .ForMember(dest => dest.DurationOfAllSessionsInMinutes, opt => opt.MapFrom(src =>
+                (src.SessionTracker.DurationOfAllSessions.Hours * 60) +
+                src.SessionTracker.DurationOfAllSessions.Minutes));
     }
 }
