@@ -36,11 +36,16 @@ public class CourseService : CrudService<Course>, ICourseService
 
     public Result<Course> Archive(int id, bool archive)
     {
-        var course = _courseRepository.Get(id);
-        if (course == null) return Result.Fail(FailureCode.NotFound);
+        var courseResult = Get(id);
+        if (courseResult.IsFailed) return courseResult;
 
+        var course = courseResult.Value;
         course.IsArchived = archive;
         _courseRepository.Update(course);
+
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+
         return Result.Ok(course);
     }
 }

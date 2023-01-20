@@ -45,6 +45,22 @@ public class CoursesTests : BaseWebIntegrationTest
         storedLearnerGroup.CourseId.ShouldBe(result.Id);
     }
 
+    [Fact]
+    public void Archives_course()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupCoursesController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+
+        var result = ((OkObjectResult)controller.Archive(-1, true).Result)?.Value as CourseDto;
+
+        result.ShouldNotBeNull();
+        result.IsArchived.ShouldBe(true);
+        var storedCourse = dbContext.Courses.FirstOrDefault(c => c.Id == result.Id);
+        storedCourse.ShouldNotBeNull();
+        storedCourse.IsArchived.ShouldBe(true);
+    }
+
     private CourseController SetupCoursesController(IServiceScope scope)
     {
         return new CourseController(Factory.Services.GetRequiredService<IMapper>(),
