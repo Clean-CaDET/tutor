@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.Domain.Stakeholders;
@@ -27,7 +27,7 @@ public class UserDatabaseRepository : IUserRepository
         var salt = PasswordUtilities.GenerateSalt();
         var hashedPassword = PasswordUtilities.HashPassword(password, salt);
         var user = new User(username, hashedPassword, Convert.ToBase64String(salt), role);
-        _dbContext.Users.Attach(user);
+        _dbContext.Users.Add(user);
         return user;
     }
 
@@ -40,8 +40,7 @@ public class UserDatabaseRepository : IUserRepository
             var hashedPassword = PasswordUtilities.HashPassword(passwords[i], salt);
             users.Add(new User(usernames[i], hashedPassword, Convert.ToBase64String(salt), role));
         }
-        _dbContext.Users.AttachRange(users);
-        //_dbContext.SaveChanges();
+        _dbContext.Users.AddRange(users);
         return users;
     }
 

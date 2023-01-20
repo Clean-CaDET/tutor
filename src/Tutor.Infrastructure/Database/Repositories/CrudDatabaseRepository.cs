@@ -32,14 +32,13 @@ public class CrudDatabaseRepository<T> : ICrudRepository<T> where T : Entity
 
     public T Create(T entity)
     {
-        _dbSet.Attach(entity);
+        _dbSet.Add(entity);
         return entity;
     }
 
     public void BulkCreate(List<T> entities)
     {
-        _dbSet.AttachRange(entities);
-        DbContext.SaveChanges();
+        _dbSet.AddRange(entities);
     }
 
     public T Update(T entity)

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.UseCases.Management.Enrollments;
 using Tutor.Core.UseCases.Management.Stakeholders;
@@ -62,7 +63,97 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         };
 
         var result = (ObjectResult)controller.Register(newEntity).Result;
+        result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(409);
+    }
+
+    [Fact]
+    public void Bulk_saves()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var newEntities = new List<StakeholderAccountDto>
+        {
+            new StakeholderAccountDto
+            {
+                Index = "pera@prvi.com",
+                Email = "pera@prvi.com",
+                Name = "pera",
+                Surname = "prvi",
+                Password = "123"
+            },
+            new StakeholderAccountDto
+            {
+                Index = "pera@drugi.com",
+                Email = "pera@drugi.com",
+                Name = "pera",
+                Surname = "drugi",
+                Password = "123"
+            },
+        };
+
+        var result = (OkResult)controller.BulkRegister(newEntities);
+
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(200);
+
+        foreach (var newEntity in newEntities)
+        {
+            var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == newEntity.Index);
+            storedAccount.ShouldNotBeNull();
+            var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Index == newEntity.Index);
+            storedEntity.ShouldNotBeNull();
+            storedEntity.UserId.ShouldBe(storedAccount.Id);
+        }
+    }
+
+    [Fact]
+    public void Bulk_save_fails_existing_username_last_entity()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var newEntities = new List<StakeholderAccountDto>
+        {
+            new StakeholderAccountDto
+            {
+                Index = "pera@prvi.com",
+                Email = "pera@prvi.com",
+                Name = "pera",
+                Surname = "prvi",
+                Password = "123"
+            },
+            new StakeholderAccountDto
+            {
+                Index = "pera@drugi.com",
+                Email = "pera@drugi.com",
+                Name = "pera",
+                Surname = "drugi",
+                Password = "123"
+            },
+            new StakeholderAccountDto
+            {
+                Index = "pera@prvi.com",
+                Email = "pera@prvi.com",
+                Name = "pera",
+                Surname = "prvi",
+                Password = "123"
+            },
+        };
+
+        var result = (ObjectResult)controller.BulkRegister(newEntities);
+
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(409);
+
+        foreach (var newEntity in newEntities)
+        {
+            var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == newEntity.Index);
+            storedAccount.ShouldBeNull();
+            var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Index == newEntity.Index);
+            storedEntity.ShouldBeNull();
+        }
     }
 
     [Fact]
@@ -108,6 +199,7 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         };
 
         var result = (ObjectResult)controller.Update(updatedEntity).Result;
+        result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(404);
     }
 

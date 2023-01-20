@@ -59,6 +59,7 @@ public class InstructorCommandTests : BaseWebIntegrationTest
         };
 
         var result = (ObjectResult)controller.Register(newInstructor).Result;
+        result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(409);
     }
 
@@ -105,6 +106,7 @@ public class InstructorCommandTests : BaseWebIntegrationTest
         };
 
         var result = (ObjectResult)controller.Update(updatedInstructor).Result;
+        result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(404);
     }
 

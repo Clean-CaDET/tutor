@@ -24,16 +24,31 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
 
     public Result BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords)
     {
+        _unitOfWork.BeginTransaction();
+
         var users = _userRepository.BulkRegister(usernames, passwords, UserRole.Learner);
+        var result = _unitOfWork.Save();
+        if (result.IsFailed)
+        {
+            _unitOfWork.Rollback();
+            return result;
+        }
+
         foreach (var learner in learners)
         {
             var user = users.Find(u => u.Username.Equals(learner.Index));
             if (user == null) continue;
             learner.UserId = user.Id;
         }
-        // Warning: transactional consistency is not supported here (no rollback if Create fails).
         _learnerRepository.BulkCreate(learners);
+        result = _unitOfWork.Save();
+        if (result.IsFailed)
+        {
+            _unitOfWork.Rollback();
+            return result;
+        }
 
+        _unitOfWork.Commit();
         return Result.Ok();
     }
 }
