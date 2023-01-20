@@ -26,32 +26,26 @@ public class AssessmentService : IAssessmentService
         return _assessmentItemRepository.GetDerivedAssessmentItemsForKc(kcId);
     }
 
-    /*public Result<InstructionalItem> Create(InstructionalItem instruction, int instructorId)
+    public Result<AssessmentItem> Create(AssessmentItem item, int instructorId)
     {
-        var kc = _kcRepository.GetKnowledgeComponentWithInstruction(instruction.KnowledgeComponentId);
-
-        if (!_ownedCourseRepository.IsUnitOwner(kc.KnowledgeUnitId, instructorId))
+        if (!_ownedCourseRepository.IsKcOwner(item.KnowledgeComponentId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        kc.InstructionalItems.Add(instruction);
-        _kcRepository.Update(kc);
+        _assessmentItemRepository.Create(item);
 
-        return instruction;
+        return item;
     }
-
-    public Result<InstructionalItem> Update(InstructionalItem instruction, int instructorId)
+    
+    public Result<AssessmentItem> Update(AssessmentItem item, int instructorId)
     {
-        var kc = _kcRepository.GetKnowledgeComponentWithInstruction(instruction.KnowledgeComponentId);
-
-        if (!_ownedCourseRepository.IsUnitOwner(kc.KnowledgeUnitId, instructorId))
+        if (!_ownedCourseRepository.IsKcOwner(item.KnowledgeComponentId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        kc.RemoveInstructionalItem(instruction.Id);
-        kc.InstructionalItems.Add(instruction);
-        _kcRepository.Update(kc);
+        // TODO: Need to enable MrqItem VO serialization to avoid more complex logic
+        _assessmentItemRepository.Update(item);
 
-        return instruction;
-    }*/
+        return item;
+    }
 
     public Result<List<AssessmentItem>> UpdateOrdering(int kcId, List<AssessmentItem> items, int instructorId)
     {
@@ -71,6 +65,10 @@ public class AssessmentService : IAssessmentService
     {
         if (!_ownedCourseRepository.IsKcOwner(kcId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
+
+        var assessment = _assessmentItemRepository.Get(id);
+        if (assessment.KnowledgeComponentId != kcId)
+            return Result.Fail(FailureCode.NotFound);
 
         _assessmentItemRepository.Delete(id);
 

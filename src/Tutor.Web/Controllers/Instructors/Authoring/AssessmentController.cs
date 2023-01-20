@@ -31,23 +31,21 @@ public class AssessmentController : BaseApiController
         return Ok(result.Value.Select(_mapper.Map<AssessmentItemDto>).ToList());
     }
 
-    /*[HttpPost]
-    public ActionResult<List<InstructionalItemDto>> Create([FromBody] InstructionalItemDto instructionalItem)
+    [HttpPost]
+    public ActionResult<AssessmentItemDto> Create([FromBody] AssessmentItemDto instructionalItem)
     {
-        var result = _instructionService.Create(_mapper.Map<InstructionalItem>(instructionalItem), User.InstructorId());
+        var result = _assessmentService.Create(_mapper.Map<AssessmentItem>(instructionalItem), User.InstructorId());
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        // Dahomey library adds type disciminators to list items but not single items...
-        return Ok(new List<InstructionalItemDto> { _mapper.Map<InstructionalItemDto>(result.Value) });
+        return Ok(_mapper.Map<AssessmentItemDto>(result.Value));
     }
 
     [HttpPut("{id:int}")]
-    public ActionResult<List<InstructionalItemDto>> Update([FromBody] InstructionalItemDto instructionalItem)
+    public ActionResult<AssessmentItemDto> Update([FromBody] AssessmentItemDto instructionalItem)
     {
-        var result = _instructionService.Update(_mapper.Map<InstructionalItem>(instructionalItem), User.InstructorId());
+        var result = _assessmentService.Update(_mapper.Map<AssessmentItem>(instructionalItem), User.InstructorId());
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        // Dahomey library adds type disciminators to list items but not single items...
-        return Ok(new List<InstructionalItemDto> { _mapper.Map<InstructionalItemDto>(result.Value) });
-    }*/
+        return Ok(_mapper.Map<AssessmentItemDto>(result.Value));
+    }
 
     [HttpPut("ordering")]
     public ActionResult<List<AssessmentItemDto>> UpdateOrdering(int kcId, [FromBody] List<AssessmentItemDto> assessmentItems)
