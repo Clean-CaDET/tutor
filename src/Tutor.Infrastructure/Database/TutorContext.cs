@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Diagnostics;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
@@ -84,7 +83,10 @@ public class TutorContext : DbContext
         modelBuilder.Entity<Markdown>().ToTable("Texts");
         modelBuilder.Entity<Image>().ToTable("Images");
         modelBuilder.Entity<Video>().ToTable("Videos");
-        modelBuilder.Entity<Mrq>().ToTable("MultiResponseQuestions");
+        modelBuilder.Entity<Mrq>().ToTable("MultiResponseQuestions")
+            .HasMany(m => m.Items)
+            .WithOne()
+            .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<Mcq>().ToTable("MultiChoiceQuestions");
         modelBuilder.Entity<Saq>().ToTable("ShortAnswerQuestions");
         ConfigureArrangeTask(modelBuilder);
