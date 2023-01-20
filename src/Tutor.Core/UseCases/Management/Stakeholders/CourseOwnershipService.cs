@@ -12,11 +12,13 @@ public class CourseOwnershipService : ICourseOwnershipService
 {
     private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly ICourseRepository _courseRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CourseOwnershipService(IOwnedCourseRepository ownedCourseRepository, ICourseRepository courseRepository)
+    public CourseOwnershipService(IOwnedCourseRepository ownedCourseRepository, ICourseRepository courseRepository, IUnitOfWork unitOfWork)
     {
         _ownedCourseRepository = ownedCourseRepository;
         _courseRepository = courseRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public Result<List<Course>> GetOwnedCourses(int instructorId)
@@ -29,7 +31,13 @@ public class CourseOwnershipService : ICourseOwnershipService
         var isOwner = _ownedCourseRepository.IsCourseOwner(course.Id, instructorId);
         if (!isOwner) return Result.Fail(FailureCode.Forbidden);
 
-        return _courseRepository.Update(course);
+        _courseRepository.Update(course);
+        // DEMO: context caching (with and without save called)
+        // (PgAdmin confirmation)
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+
+        return course;
     }
 
     public Result<Course> GetOwnedCourseWithUnitsAndKcs(int courseId, int instructorId)

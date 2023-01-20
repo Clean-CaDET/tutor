@@ -61,8 +61,13 @@ public class OwnedCoursesTests : BaseWebIntegrationTest
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);
         result.Description.ShouldBe("Test");
+
+        // DEMO - context caching
+        // (with and without change tracker clearing)
+        dbContext.ChangeTracker.Clear();
         var storedCourse = dbContext.Courses.FirstOrDefault(c => c.Id == -1);
         storedCourse.ShouldNotBeNull();
+        storedCourse.Description.ShouldBe(updateCourse.Description);
     }
 
     private OwnedCoursesController SetupOwnedCoursesController(IServiceScope scope, string id)
