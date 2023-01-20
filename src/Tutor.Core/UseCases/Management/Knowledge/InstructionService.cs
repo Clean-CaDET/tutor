@@ -12,11 +12,13 @@ public class InstructionService : IInstructionService
 {
     private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly IKnowledgeComponentRepository _kcRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public InstructionService(IKnowledgeComponentRepository kcRepository, IOwnedCourseRepository ownedCourseRepository)
+    public InstructionService(IKnowledgeComponentRepository kcRepository, IOwnedCourseRepository ownedCourseRepository, IUnitOfWork unitOfWork)
     {
         _kcRepository = kcRepository;
         _ownedCourseRepository = ownedCourseRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public Result<List<InstructionalItem>> GetForKc(int kcId, int instructorId)
@@ -37,7 +39,8 @@ public class InstructionService : IInstructionService
             return Result.Fail(FailureCode.Forbidden);
 
         kc.InstructionalItems.Add(instruction);
-        _kcRepository.Update(kc);
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
 
         return instruction;
     }
@@ -51,7 +54,8 @@ public class InstructionService : IInstructionService
 
         kc.RemoveInstructionalItem(instruction.Id);
         kc.InstructionalItems.Add(instruction);
-        _kcRepository.Update(kc);
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
 
         return instruction;
     }
@@ -70,7 +74,9 @@ public class InstructionService : IInstructionService
             instruction.Order = relatedItem.Order;
         }
 
-        _kcRepository.Update(kc);
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+
         return Result.Ok(kc.GetOrderedInstructionalItems());
     }
 
@@ -82,7 +88,8 @@ public class InstructionService : IInstructionService
             return Result.Fail(FailureCode.Forbidden);
 
         kc.RemoveInstructionalItem(id);
-        _kcRepository.Update(kc);
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
 
         return Result.Ok();
     }

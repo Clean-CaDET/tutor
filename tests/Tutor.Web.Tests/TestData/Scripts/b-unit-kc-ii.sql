@@ -57,6 +57,24 @@ VALUES (-311, 'Odredi semantičku svrhu metode', '', -3, 2);
 
 INSERT INTO public."InstructionalItems"(
     "Id", "KnowledgeComponentId", "Order")
+VALUES (-101, -10, 1);
+INSERT INTO public."Texts"(
+    "Id", "Content")
+VALUES (-101, 'Test first text');
+INSERT INTO public."InstructionalItems"(
+    "Id", "KnowledgeComponentId", "Order")
+VALUES (-102, -10, 2);
+INSERT INTO public."Texts"(
+    "Id", "Content")
+VALUES (-102, 'Test second text');
+INSERT INTO public."InstructionalItems"(
+    "Id", "KnowledgeComponentId", "Order")
+VALUES (-103, -10, 3);
+INSERT INTO public."Images"(
+    "Id", "Url", "Caption")
+VALUES (-103, 'image_url', 'Test third image');
+INSERT INTO public."InstructionalItems"(
+    "Id", "KnowledgeComponentId", "Order")
 VALUES (-111, -11, 1);
 INSERT INTO public."Texts"(
     "Id", "Content")
