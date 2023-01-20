@@ -41,7 +41,6 @@ public class CourseService : CrudService<Course>, ICourseService
 
         var course = courseResult.Value;
         course.IsArchived = archive;
-        _courseRepository.Update(course);
 
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;

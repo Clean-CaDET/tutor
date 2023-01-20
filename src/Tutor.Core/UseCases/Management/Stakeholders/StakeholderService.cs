@@ -57,10 +57,9 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
 
     public override Result<T> Update(T stakeholder)
     {
-        // Question: do we expect valid data? (id and userId in this case)
-
-        var dbStakeholder = _crudRepository.Get(stakeholder.Id);
-        if (dbStakeholder is null) return Result.Fail(FailureCode.NotFound);
+        var dbStakeholderResult = Get(stakeholder.Id);
+        if (dbStakeholderResult.IsFailed) return dbStakeholderResult;
+        var dbStakeholder = dbStakeholderResult.Value;
         var user = _userRepository.Get(dbStakeholder.UserId);
 
         _crudRepository.Update(dbStakeholder, stakeholder);

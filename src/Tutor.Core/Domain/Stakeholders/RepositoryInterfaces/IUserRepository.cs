@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Tutor.Core.BuildingBlocks;
 
 namespace Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 
