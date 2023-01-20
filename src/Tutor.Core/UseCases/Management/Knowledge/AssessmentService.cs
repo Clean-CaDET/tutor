@@ -26,61 +26,52 @@ public class AssessmentService : IAssessmentService
         return _assessmentItemRepository.GetDerivedAssessmentItemsForKc(kcId);
     }
 
-    /*public Result<InstructionalItem> Create(InstructionalItem instruction, int instructorId)
+    public Result<AssessmentItem> Create(AssessmentItem item, int instructorId)
     {
-        var kc = _kcRepository.GetKnowledgeComponentWithInstruction(instruction.KnowledgeComponentId);
-
-        if (!_ownedCourseRepository.IsUnitOwner(kc.KnowledgeUnitId, instructorId))
+        if (!_ownedCourseRepository.IsKcOwner(item.KnowledgeComponentId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        kc.InstructionalItems.Add(instruction);
-        _kcRepository.Update(kc);
+        _assessmentItemRepository.Create(item);
 
-        return instruction;
+        return item;
+    }
+    
+    public Result<AssessmentItem> Update(AssessmentItem item, int instructorId)
+    {
+        if (!_ownedCourseRepository.IsKcOwner(item.KnowledgeComponentId, instructorId))
+            return Result.Fail(FailureCode.Forbidden);
+
+        // TODO: Need to enable MrqItem VO serialization to avoid more complex logic
+        _assessmentItemRepository.Update(item);
+
+        return item;
     }
 
-    public Result<InstructionalItem> Update(InstructionalItem instruction, int instructorId)
+    public Result<List<AssessmentItem>> UpdateOrdering(int kcId, List<AssessmentItem> items, int instructorId)
     {
-        var kc = _kcRepository.GetKnowledgeComponentWithInstruction(instruction.KnowledgeComponentId);
-
-        if (!_ownedCourseRepository.IsUnitOwner(kc.KnowledgeUnitId, instructorId))
+        if (!_ownedCourseRepository.IsKcOwner(kcId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        kc.RemoveInstructionalItem(instruction.Id);
-        kc.InstructionalItems.Add(instruction);
-        _kcRepository.Update(kc);
-
-        return instruction;
-    }
-
-    public Result<List<InstructionalItem>> UpdateOrdering(int kcId, List<InstructionalItem> items, int instructorId)
-    {
-        var kc = _kcRepository.GetKnowledgeComponentWithInstruction(kcId);
-
-        if (!_ownedCourseRepository.IsUnitOwner(kc.KnowledgeUnitId, instructorId))
-            return Result.Fail(FailureCode.Forbidden);
-
-        foreach (var instruction in kc.InstructionalItems)
+        foreach (var assessmentItem in items)
         {
-            var relatedItem = items.FirstOrDefault(i => i.Id == instruction.Id);
-            if(relatedItem == null) return Result.Fail(FailureCode.NotFound);
-            instruction.Order = relatedItem.Order;
+            //UoW violation
+            _assessmentItemRepository.Update(assessmentItem);
         }
 
-        _kcRepository.Update(kc);
-        return Result.Ok(kc.GetOrderedInstructionalItems());
+        return Result.Ok(items);
     }
 
     public Result Delete(int id, int kcId, int instructorId)
     {
-        var kc = _kcRepository.GetKnowledgeComponentWithInstruction(kcId);
-
-        if (!_ownedCourseRepository.IsUnitOwner(kc.KnowledgeUnitId, instructorId))
+        if (!_ownedCourseRepository.IsKcOwner(kcId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        kc.RemoveInstructionalItem(id);
-        _kcRepository.Update(kc);
+        var assessment = _assessmentItemRepository.Get(id);
+        if (assessment.KnowledgeComponentId != kcId)
+            return Result.Fail(FailureCode.NotFound);
+
+        _assessmentItemRepository.Delete(id);
 
         return Result.Ok();
-    }*/
+    }
 }

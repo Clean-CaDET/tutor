@@ -19,25 +19,26 @@ public class AssessmentItemsProfile : Profile
 {
     public AssessmentItemsProfile()
     {
+        CreateMap<AssessmentItemDto, AssessmentItem>().IncludeAllDerived();
         CreateMap<AssessmentItem, AssessmentItemDto>().IncludeAllDerived();
         CreateMap<SubmissionDto, Submission>().IncludeAllDerived();
         CreateMap<Evaluation, EvaluationDto>().IncludeAllDerived();
 
         #region Short answer question
-        CreateMap<Saq, SaqDto>();
+        CreateMap<Saq, SaqDto>().ReverseMap();
         CreateMap<SaqEvaluation, SaqEvaluationDto>();
         CreateMap<SaqSubmissionDto, SaqSubmission>();
         #endregion
 
         #region Multiple choice question
-        CreateMap<Mcq, McqDto>();
+        CreateMap<Mcq, McqDto>().ReverseMap();
         CreateMap<McqEvaluation, McqEvaluationDto>();
         CreateMap<McqSubmissionDto, McqSubmission>();
         #endregion
 
         #region Multiple response question
-        CreateMap<Mrq, MrqDto>();
-        CreateMap<MrqItem, MrqItemDto>();
+        CreateMap<Mrq, MrqDto>().ReverseMap();
+        CreateMap<MrqItem, MrqItemDto>().ReverseMap();
         CreateMap<MrqSubmissionDto, MrqSubmission>()
             .ForMember(dest => dest.SubmittedAnswerIds, opt => opt.MapFrom(src => src.Answers.Select(a => a.Id)));
         CreateMap<MrqEvaluation, MrqEvaluationDto>();

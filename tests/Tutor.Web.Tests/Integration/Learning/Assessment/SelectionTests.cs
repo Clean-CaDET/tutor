@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualBasic;
 using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Web.Controllers.Learners.Learning.Assessment;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems;
-using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiChoiceQuestions;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiResponseQuestions;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ShortAnswerQuestions;
 using Xunit;

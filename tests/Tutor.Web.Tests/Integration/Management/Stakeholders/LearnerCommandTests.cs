@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -19,7 +20,7 @@ public class LearnerCommandTests : BaseWebIntegrationTest
     public LearnerCommandTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
 
     [Fact]
-    public void Saves()
+    public void Registers()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupLearnerController(scope);

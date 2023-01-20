@@ -35,8 +35,9 @@ public class EnrollmentTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupEnrollmentController(scope, learnerId.ToString());
 
-        var course = ((OkObjectResult)controller.GetCourseWithEnrolledAndActiveUnits(courseId).Result).Value as CourseDto;
+        var course = ((OkObjectResult)controller.GetCourseWithEnrolledAndActiveUnits(courseId).Result)?.Value as CourseDto;
 
+        course.ShouldNotBeNull();
         course.KnowledgeUnits.Count.ShouldBe(expectedUnitCount);
     }
 

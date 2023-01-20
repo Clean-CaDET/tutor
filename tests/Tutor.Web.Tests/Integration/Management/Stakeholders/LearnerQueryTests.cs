@@ -7,6 +7,7 @@ using Tutor.Core.BuildingBlocks;
 using Tutor.Core.UseCases.Management.Enrollments;
 using Tutor.Core.UseCases.Management.Stakeholders;
 using Tutor.Web.Controllers.Administrators.Stakeholders;
+using Tutor.Web.Mappings.Knowledge.DTOs;
 using Tutor.Web.Mappings.Stakeholders;
 using Xunit;
 
@@ -61,6 +62,19 @@ public class LearnerQueryTests : BaseWebIntegrationTest
                 6
             }
         };
+    }
+
+    [Fact]
+    public void Retrieves_learner_courses()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+
+        var result = ((OkObjectResult)controller.GetEnrolledCourses(-1).Result)?.Value as PagedResult<CourseDto>;
+
+        result.ShouldNotBeNull();
+        result.Results.Count.ShouldBe(2);
+        result.TotalCount.ShouldBe(2);
     }
 
     private LearnerController SetupLearnerController(IServiceScope scope)

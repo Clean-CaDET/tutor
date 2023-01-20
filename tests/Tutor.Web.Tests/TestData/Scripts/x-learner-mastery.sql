@@ -25,10 +25,13 @@ INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname", "Email") VAL
 
 INSERT INTO public."LearnerGroups"(
 	"Id", "Name", "CourseId")
-VALUES (-1, 'Test Group', -1);
+VALUES (-1, 'Test Group 1', -1);
 INSERT INTO public."LearnerGroups"(
 	"Id", "Name", "CourseId")
-VALUES (-11, 'Test Group', -1);
+VALUES (-11, 'Test Group 2', -1);
+INSERT INTO public."LearnerGroups"(
+	"Id", "Name", "CourseId")
+VALUES (-12, 'Test Group 3', -1);
 INSERT INTO public."GroupMemberships"(
     "Id", "MemberId", "LearnerGroupId")
     VALUES (-102, -1, -11);

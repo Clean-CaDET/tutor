@@ -12,12 +12,12 @@ namespace Tutor.Web.Controllers.Administrators.Courses;
 
 [Authorize(Policy = "administratorPolicy")]
 [Route("api/management/courses/{courseId:int}/groups")]
-public class CourseGroupController : BaseApiController
+public class GroupController : BaseApiController
 {
     private readonly IMapper _mapper;
     private readonly ILearnerGroupService _groupService;
 
-    public CourseGroupController(IMapper mapper, ILearnerGroupService groupService)
+    public GroupController(IMapper mapper, ILearnerGroupService groupService)
     {
         _mapper = mapper;
         _groupService = groupService;
