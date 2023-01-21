@@ -1,5 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
@@ -29,7 +33,6 @@ public class TutorContext : DbContext
     public DbSet<Video> Videos { get; set; }
     public DbSet<Mrq> MultiResponseQuestions { get; set; }
     public DbSet<Mcq> MultiChoiceQuestions { get; set; }
-    public DbSet<MrqItem> MrqItems { get; set; }
     public DbSet<Saq> ShortAnswerQuestions { get; set; }
     public DbSet<ArrangeTask> ArrangeTasks { get; set; }
     public DbSet<ArrangeTaskContainer> ArrangeTaskContainers { get; set; }
@@ -73,6 +76,20 @@ public class TutorContext : DbContext
         modelBuilder.Entity<Stakeholder>().UseTpcMappingStrategy();
         modelBuilder.Entity<Stakeholder>().Property(s => s.IsArchived).HasDefaultValue(false);
 
+        modelBuilder.Entity<CourseOwnership>()
+            .HasOne<Instructor>()
+            .WithMany()
+            .HasForeignKey(c => c.InstructorId);
+        modelBuilder.Entity<Instructor>()
+            .HasMany<CourseOwnership>()
+            .WithOne()
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<LearnerGroup>()
+            .HasMany(g => g.Membership)
+            .WithOne()
+            .OnDelete(DeleteBehavior.Cascade);
+
         ConfigureKnowledge(modelBuilder);
         ConfigureKnowledgeMastery(modelBuilder);
         ConfigureCourseIteration(modelBuilder);
@@ -84,9 +101,15 @@ public class TutorContext : DbContext
         modelBuilder.Entity<Image>().ToTable("Images");
         modelBuilder.Entity<Video>().ToTable("Videos");
         modelBuilder.Entity<Mrq>().ToTable("MultiResponseQuestions")
-            .HasMany(m => m.Items)
-            .WithOne()
-            .OnDelete(DeleteBehavior.Cascade);
+            .Property(m => m.Items)
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                v => JsonSerializer.Deserialize<List<MrqItem>>(v, (JsonSerializerOptions)null),
+                new ValueComparer<List<MrqItem>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c));
+
         modelBuilder.Entity<Mcq>().ToTable("MultiChoiceQuestions");
         modelBuilder.Entity<Saq>().ToTable("ShortAnswerQuestions");
         ConfigureArrangeTask(modelBuilder);
@@ -134,6 +157,15 @@ public class TutorContext : DbContext
             trackerBuilder.Ignore(tracker => tracker.Id);
         });
         kcmBuilder.Navigation(kcm => kcm.SessionTracker).IsRequired();
+        kcmBuilder
+            .HasOne<KnowledgeComponent>()
+            .WithMany()
+            .HasForeignKey(kcm => kcm.KnowledgeComponentId);
+
+        modelBuilder.Entity<AssessmentItemMastery>()
+            .HasOne<AssessmentItem>()
+            .WithMany()
+            .HasForeignKey(aim => aim.AssessmentItemId);
     }
 
     private static void ConfigureCourseIteration(ModelBuilder modelBuilder)

@@ -20,7 +20,6 @@ DELETE FROM public."RequiredWordsCheckers";
 DELETE FROM public."ChallengeHints";
 DELETE FROM public."ChallengeFulfillmentStrategies";
 DELETE FROM public."Challenges";
-DELETE FROM public."MrqItems";
 DELETE FROM public."MultiResponseQuestions";
 DELETE FROM public."MultiChoiceQuestions";
 DELETE FROM public."ArrangeTaskElements";
