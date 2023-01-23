@@ -45,7 +45,6 @@ public class AssessmentService : IAssessmentService
         if (!_ownedCourseRepository.IsKcOwner(item.KnowledgeComponentId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        // TODO: Need to enable MrqItem VO serialization to avoid more complex logic
         _assessmentItemRepository.Update(item);
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;

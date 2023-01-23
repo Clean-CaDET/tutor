@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using System.Xml.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
@@ -13,13 +14,15 @@ public class SelectionService : ISelectionService
     private readonly IKnowledgeMasteryRepository _knowledgeMasteryRepository;
     private readonly IAssessmentItemSelector _assessmentItemSelector;
     private readonly IAssessmentItemRepository _assessmentItemRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public SelectionService(IEnrollmentRepository enrollmentRepository, IKnowledgeMasteryRepository knowledgeMasteryRepository, IAssessmentItemSelector assessmentItemSelector, IAssessmentItemRepository assessmentItemRepository)
+    public SelectionService(IEnrollmentRepository enrollmentRepository, IKnowledgeMasteryRepository knowledgeMasteryRepository, IAssessmentItemSelector assessmentItemSelector, IAssessmentItemRepository assessmentItemRepository, IUnitOfWork unitOfWork)
     {
         _enrollmentRepository = enrollmentRepository;
         _knowledgeMasteryRepository = knowledgeMasteryRepository;
         _assessmentItemSelector = assessmentItemSelector;
         _assessmentItemRepository = assessmentItemRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public Result<AssessmentItem> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId)
@@ -34,6 +37,8 @@ public class SelectionService : ISelectionService
 
         kcMastery.RecordAssessmentItemSelection(assessmentItemId);
         _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
 
         var item = _assessmentItemRepository.GetDerivedAssessmentItem(assessmentItemId);
         item.ClearFeedback();

@@ -70,7 +70,6 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
     public void CreateBulkMemberships(IEnumerable<GroupMembership> memberships)
     {
         DbContext.AttachRange(memberships);
-        DbContext.SaveChanges();
     }
 
     public void DeleteMember(int groupId, int learnerId)
@@ -78,6 +77,5 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
         var membership = DbContext.GroupMemberships.First(m => m.LearnerGroupId == groupId && m.Member.Id == learnerId);
         if (membership == null) throw new ArgumentException("Membership not found.");
         DbContext.GroupMemberships.Remove(membership);
-        DbContext.SaveChanges();
     }
 }

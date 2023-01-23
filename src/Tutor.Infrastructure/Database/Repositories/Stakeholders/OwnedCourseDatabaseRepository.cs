@@ -65,7 +65,6 @@ public class OwnedCourseDatabaseRepository : IOwnedCourseRepository
     public void CreateCourseOwnership(CourseOwnership ownership)
     {
         _dbContext.CourseOwnerships.Add(ownership);
-        _dbContext.SaveChanges();
     }
 
     public void DeleteCourseOwnership(int courseId, int instructorId)
@@ -74,6 +73,5 @@ public class OwnedCourseDatabaseRepository : IOwnedCourseRepository
             .FirstOrDefault(o => o.Course.Id == courseId && o.InstructorId == instructorId);
         if (entity == null) throw new ArgumentException("Entity not found");
         _dbContext.CourseOwnerships.Remove(entity);
-        _dbContext.SaveChanges();
     }
 }

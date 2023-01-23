@@ -9,11 +9,13 @@ public class SessionService : ISessionService
 {
     private readonly IKnowledgeMasteryRepository _knowledgeMasteryRepository;
     private readonly IEnrollmentRepository _enrollmentRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public SessionService(IKnowledgeMasteryRepository ikcMasteryRepository, IEnrollmentRepository enrollmentRepository)
+    public SessionService(IKnowledgeMasteryRepository ikcMasteryRepository, IEnrollmentRepository enrollmentRepository, IUnitOfWork unitOfWork)
     {
         _knowledgeMasteryRepository = ikcMasteryRepository;
         _enrollmentRepository = enrollmentRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public Result LaunchSession(int knowledgeComponentId, int learnerId)
@@ -26,6 +28,8 @@ public class SessionService : ISessionService
 
         var result = kcMastery.LaunchSession();
         _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
+        var saveResult = _unitOfWork.Save();
+        if (saveResult.IsFailed) return saveResult;
 
         return result;
     }
@@ -40,6 +44,8 @@ public class SessionService : ISessionService
 
         var result = kcMastery.TerminateSession();
         _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
+        var saveResult = _unitOfWork.Save();
+        if (saveResult.IsFailed) return saveResult;
 
         return result;
     }

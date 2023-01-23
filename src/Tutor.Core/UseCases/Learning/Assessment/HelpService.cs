@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.KnowledgeMastery;
 
 namespace Tutor.Core.UseCases.Learning.Assessment;
@@ -6,10 +7,12 @@ namespace Tutor.Core.UseCases.Learning.Assessment;
 public class HelpService : IHelpService
 {
     private readonly IKnowledgeMasteryRepository _knowledgeMasteryRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public HelpService(IKnowledgeMasteryRepository knowledgeMasteryRepository)
+    public HelpService(IKnowledgeMasteryRepository knowledgeMasteryRepository, IUnitOfWork unitOfWork)
     {
         _knowledgeMasteryRepository = knowledgeMasteryRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public Result RecordHintRequest(int learnerId, int assessmentItemId)
@@ -20,6 +23,8 @@ public class HelpService : IHelpService
         var result = kcm.RecordAssessmentItemHintRequest(assessmentItemId);
 
         if (result.IsSuccess) _knowledgeMasteryRepository.UpdateKcMastery(kcm);
+        result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
 
         return result;
     }
@@ -32,6 +37,8 @@ public class HelpService : IHelpService
         var result = kcm.RecordAssessmentItemSolutionRequest(assessmentItemId);
 
         if (result.IsSuccess) _knowledgeMasteryRepository.UpdateKcMastery(kcm);
+        result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
 
         return result;
     }
@@ -45,6 +52,8 @@ public class HelpService : IHelpService
         var result = kcm.RecordInstructorMessage(message);
 
         if (result.IsSuccess) _knowledgeMasteryRepository.UpdateKcMastery(kcm);
+        result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
 
         return result;
     }

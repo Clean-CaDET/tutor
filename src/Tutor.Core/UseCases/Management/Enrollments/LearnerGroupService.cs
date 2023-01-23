@@ -31,12 +31,20 @@ public class LearnerGroupService: CrudService<LearnerGroup>, ILearnerGroupServic
     {
         var memberships = learners.Select(l => new GroupMembership(l, groupId));
         _groupRepository.CreateBulkMemberships(memberships);
+
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+        
         return Result.Ok();
     }
 
     public Result DeleteMember(int groupId, int learnerId)
     {
         _groupRepository.DeleteMember(groupId, learnerId);
+
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+
         return Result.Ok();
     }
 }

@@ -13,12 +13,14 @@ public class EvaluationService : IEvaluationService
     private readonly IKnowledgeMasteryRepository _knowledgeMasteryRepository;
     private readonly IAssessmentItemRepository _assessmentItemRepository;
     private readonly IEnrollmentRepository _enrollmentRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public EvaluationService(IKnowledgeMasteryRepository knowledgeMasteryRepository, IAssessmentItemRepository assessmentItemRepository, IEnrollmentRepository enrollmentRepository)
+    public EvaluationService(IKnowledgeMasteryRepository knowledgeMasteryRepository, IAssessmentItemRepository assessmentItemRepository, IEnrollmentRepository enrollmentRepository, IUnitOfWork unitOfWork)
     {
         _knowledgeMasteryRepository = knowledgeMasteryRepository;
         _assessmentItemRepository = assessmentItemRepository;
         _enrollmentRepository = enrollmentRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public Result<Evaluation> EvaluateAssessmentItemSubmission(int assessmentItemId, Submission submission,
@@ -44,6 +46,8 @@ public class EvaluationService : IEvaluationService
 
         kcMastery.RecordAssessmentItemAnswerSubmission(assessmentItemId, submission, evaluation);
         _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
 
         return Result.Ok(evaluation);
     }

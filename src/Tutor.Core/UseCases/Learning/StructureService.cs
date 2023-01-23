@@ -16,13 +16,15 @@ public class StructureService : IStructureService
     private readonly IEnrollmentRepository _enrollmentRepository;
     private readonly IKnowledgeComponentRepository _knowledgeComponentRepository;
     private readonly IUnitRepository _unitRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public StructureService(IKnowledgeMasteryRepository knowledgeMasteryRepository, IEnrollmentRepository enrollmentRepository, IKnowledgeComponentRepository knowledgeComponentRepository, IUnitRepository unitRepository)
+    public StructureService(IKnowledgeMasteryRepository knowledgeMasteryRepository, IEnrollmentRepository enrollmentRepository, IKnowledgeComponentRepository knowledgeComponentRepository, IUnitRepository unitRepository, IUnitOfWork unitOfWork)
     {
         _knowledgeMasteryRepository = knowledgeMasteryRepository;
         _enrollmentRepository = enrollmentRepository;
         _knowledgeComponentRepository = knowledgeComponentRepository;
         _unitRepository = unitRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public Result<KnowledgeUnit> GetUnit(int unitId, int learnerId)
@@ -72,5 +74,6 @@ public class StructureService : IStructureService
         var kcMastery = _knowledgeMasteryRepository.GetBareKcMastery(knowledgeComponentId, learnerId);
         kcMastery.RecordInstructionalItemSelection();
         _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
+        _unitOfWork.Save();
     }
 }
