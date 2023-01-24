@@ -12,11 +12,6 @@ public class GroupProfile : Profile
         CreateMap<LearnerGroup, GroupDto>();
         CreateMap<GroupDto, LearnerGroup>();
 
-        CreateMap<Learner, LearnerProgressDto>()
-            .ForMember(dest => dest.Learner, opt => opt.MapFrom(src => src))
-            .ForMember(dest => dest.KnowledgeComponentProgress,
-                opt => opt.MapFrom(src => src.KnowledgeComponentMasteries));
-
         CreateMap<KnowledgeComponentMastery, KcmProgressDto>()
             .ForMember(dest => dest.DurationOfAllSessionsInMinutes, opt => opt.MapFrom(src =>
                 (src.SessionTracker.DurationOfAllSessions.Hours * 60) +
