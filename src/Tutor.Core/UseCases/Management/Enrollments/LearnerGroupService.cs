@@ -1,7 +1,6 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
 using System.Linq;
-using FluentResults;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.CourseIteration;

@@ -15,7 +15,7 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
     {
         _userRepository = userRepository;
     }
-    public Result<T> Register(T stakeholder, string username, string password)
+    public Result<T> Register(T entity, string username, string password)
     {
         _unitOfWork.BeginTransaction();
 
@@ -26,8 +26,8 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
             _unitOfWork.Rollback();
             return result;
         }
-        stakeholder.UserId = user.Id;
-        var learnerResult = Create(stakeholder);
+        entity.UserId = user.Id;
+        var registerResult = Create(entity);
         result = _unitOfWork.Save();
         if (result.IsFailed)
         {
@@ -36,7 +36,7 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
         }
 
         _unitOfWork.Commit();
-        return learnerResult;
+        return registerResult;
     }
 
     public Result<T> Archive(int id, bool archive)
@@ -55,21 +55,21 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
         return Result.Ok((T)stakeholder);
     }
 
-    public override Result<T> Update(T stakeholder)
+    public override Result<T> Update(T entity)
     {
-        var dbStakeholderResult = Get(stakeholder.Id);
+        var dbStakeholderResult = Get(entity.Id);
         if (dbStakeholderResult.IsFailed) return dbStakeholderResult;
         var dbStakeholder = dbStakeholderResult.Value;
         var user = _userRepository.Get(dbStakeholder.UserId);
-        stakeholder.UserId = user.Id;
+        entity.UserId = user.Id;
 
-        _crudRepository.Update(dbStakeholder, stakeholder);
-        user.Username = stakeholder.Email;
+        _crudRepository.Update(dbStakeholder, entity);
+        user.Username = entity.Email;
 
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 
-        return stakeholder;
+        return entity;
 
     }
 
