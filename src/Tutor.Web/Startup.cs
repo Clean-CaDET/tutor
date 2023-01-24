@@ -30,7 +30,7 @@ using Tutor.Core.UseCases.Learning.Utilities;
 using Tutor.Core.UseCases.Management.Enrollments;
 using Tutor.Core.UseCases.Management.Knowledge;
 using Tutor.Core.UseCases.Management.Stakeholders;
-using Tutor.Core.UseCases.ProgressMonitoring;
+using Tutor.Core.UseCases.Monitoring;
 using Tutor.Infrastructure;
 using Tutor.Infrastructure.Database;
 using Tutor.Infrastructure.Database.EventStore;
@@ -248,7 +248,7 @@ public class Startup
         services.AddScoped<IFeedbackService, FeedbackService>();
         services.AddScoped<INoteService, NoteService>();
 
-        services.AddScoped<ICourseIterationMonitoringService, CourseIterationMonitoringService>();
+        services.AddScoped<IGroupMonitoringService, GroupMonitoringService>();
         services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
         SetupMoveOn(services);
     }

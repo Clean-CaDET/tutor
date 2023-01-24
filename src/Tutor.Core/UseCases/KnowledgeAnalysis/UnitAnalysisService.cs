@@ -33,9 +33,7 @@ public class UnitAnalysisService : IUnitAnalysisService
 
     public Result<List<KcStatistics>> GetKnowledgeComponentsStats(int unitId, int instructorId)
     {
-        //Check if instructor owns the course
-        var isOwner = _ownedCourseRepository.IsUnitOwner(unitId, instructorId);
-        if (!isOwner) return Result.Fail(FailureCode.Forbidden);
+        if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
         var kcs = _knowledgeComponentRepository.GetKnowledgeComponentsForUnit(unitId);
         var kcIds = kcs.Select(kc => kc.Id).ToList();
@@ -51,7 +49,11 @@ public class UnitAnalysisService : IUnitAnalysisService
 
     public Result<List<KcStatistics>> GetKnowledgeComponentsStatsForGroup(int unitId, int groupId, int instructorId)
     {
-        var learnerIds = _groupRepository.GetLearnersInGroup(groupId).Select(l => l.Id).ToList();
+        if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
+
+        var task = _groupRepository.GetLearnersInGroupAsync(groupId, 0, 0);
+        task.Wait();
+        var learnerIds = task.Result.Results.Select(l => l.Id).ToList();
 
         var kcs = _knowledgeComponentRepository.GetKnowledgeComponentsForUnit(unitId);
         var kcIds = kcs.Select(kc => kc.Id).ToList();

@@ -7,7 +7,6 @@ using Tutor.Core.UseCases.Management.Enrollments;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Administrators.Courses;
 using Tutor.Web.Mappings.Enrollments;
-using Tutor.Web.Mappings.Knowledge.DTOs;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Management.Courses;

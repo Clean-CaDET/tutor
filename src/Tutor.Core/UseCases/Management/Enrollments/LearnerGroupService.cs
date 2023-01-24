@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FluentResults;
+using System.Collections.Generic;
 using System.Linq;
 using FluentResults;
 using Tutor.Core.BuildingBlocks;
@@ -24,7 +25,9 @@ public class LearnerGroupService: CrudService<LearnerGroup>, ILearnerGroupServic
 
     public Result<List<Learner>> GetMembers(int groupId)
     {
-        return _groupRepository.GetLearnersInGroup(groupId);
+        var task = _groupRepository.GetLearnersInGroupAsync(groupId, 0, 0);
+        task.Wait();
+        return task.Result.Results;
     }
 
     public Result CreateMembers(int groupId, List<Learner> learners)

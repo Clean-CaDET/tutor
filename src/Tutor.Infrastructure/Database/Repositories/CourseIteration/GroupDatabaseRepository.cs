@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
+using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Infrastructure.Database.Repositories.CourseIteration;
@@ -19,53 +20,38 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
         return DbContext.LearnerGroups.Where(g => g.CourseId == courseId).ToList();
     }
 
-    public async Task<PagedResult<Learner>> GetGroupProgressAsync(int courseId, int groupId, int page, int pageSize)
+    public List<KnowledgeComponentMastery> GetMasteriesForLearnersAndUnit(int unitId, int[] learnerIds)
     {
-        if (groupId == 0)
-        {
-            return await GetAllLearnersAsync(page, pageSize, courseId);
-        }
-        return await GetLearnersByGroupAsync(page, pageSize, groupId);
-    }
+        var kcIds = DbContext.KnowledgeComponents
+            .Where(kc => kc.KnowledgeUnitId == unitId)
+            .Select(kc => kc.Id);
 
-    private Task<PagedResult<Learner>> GetLearnersByGroupAsync(int page, int pageSize, int groupId)
-    {
-        return DbContext.GroupMemberships
-            .Where(g => g.LearnerGroupId == groupId)
-            .Include(g => g.Member)
-            .ThenInclude(l => l.KnowledgeComponentMasteries)
-            .ThenInclude(kcm => kcm.AssessmentItemMasteries)
-            .Include(g => g.Member)
-            .ThenInclude(l => l.KnowledgeComponentMasteries)
-            .Include(g => g.Member)
-            .ThenInclude(l => l.KnowledgeComponentMasteries)
-            .ThenInclude(kcm => kcm.SessionTracker)
-            .Select(g => g.Member)
-            .GetPaged(page, pageSize);
+        return DbContext.KcMasteries
+            .Where(kcm => learnerIds.Contains(kcm.LearnerId) && kcIds.Contains(kcm.KnowledgeComponentId))
+            .Include(kcm => kcm.AssessmentItemMasteries)
+            .Include(kcm => kcm.SessionTracker)
+            .ToList();
     }
-
-    private Task<PagedResult<Learner>> GetAllLearnersAsync(int page, int pageSize, int courseId)
+    
+    private IQueryable<Learner> GetLearnerQuery(int courseId)
     {
-        var learnerIds = DbContext.LearnerGroups.Where(lg => lg.CourseId.Equals(courseId))
+        return DbContext.LearnerGroups.Where(lg => lg.CourseId.Equals(courseId))
             .Include(lg => lg.Membership)
             .SelectMany(m => m.Membership)
-            .Select(m => m.Member.Id);
-
-        var query = DbContext.Learners.Where(learner => learnerIds.Contains(learner.Id))
-            .Include(l => l.KnowledgeComponentMasteries)
-            .ThenInclude(kcm => kcm.AssessmentItemMasteries)
-            .Include(l => l.KnowledgeComponentMasteries)
-            .ThenInclude(kcm => kcm.SessionTracker);
-       
-        return query.GetPaged(page, pageSize);
+            .Select(m => m.Member);
     }
 
-    public List<Learner> GetLearnersInGroup(int groupId)
+    public Task<PagedResult<Learner>> GetLearnersInCourseAsync(int courseId, int page, int pageSize)
+    {
+        return GetLearnerQuery(courseId).GetPaged(page, pageSize);
+    }
+
+    public Task<PagedResult<Learner>> GetLearnersInGroupAsync(int groupId, int page, int pageSize)
     {
         return DbContext.GroupMemberships
             .Where(m => m.LearnerGroupId == groupId)
             .Include(m => m.Member)
-            .Select(m => m.Member).ToList();
+            .Select(m => m.Member).GetPaged(page, pageSize);
     }
 
     public void CreateBulkMemberships(IEnumerable<GroupMembership> memberships)
