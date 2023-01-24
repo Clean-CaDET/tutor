@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
+using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Infrastructure.Database.Repositories.CourseIteration;
@@ -16,6 +17,17 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
     public List<LearnerGroup> GetCourseGroups(int courseId)
     {
         return DbContext.LearnerGroups.Where(g => g.CourseId == courseId).ToList();
+    }
+
+    public List<KnowledgeComponentMastery> GetMasteriesForLearnersAndUnit(int unitId, int[] learnerIds)
+    {
+        var kcIds = DbContext.KnowledgeComponents
+            .Where(kc => kc.KnowledgeUnitId == unitId)
+            .Select(kc => kc.Id);
+
+        return DbContext.KcMasteries
+            .Where(kcm => learnerIds.Contains(kcm.LearnerId) && kcIds.Contains(kcm.KnowledgeComponentId))
+            .ToList();
     }
 
     public async Task<PagedResult<Learner>> GetLearnersWithMasteries(int courseId, int groupId, int page, int pageSize)
@@ -45,10 +57,7 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
 
     private Task<PagedResult<Learner>> GetAllLearnersWithMasteriesAsync(int page, int pageSize, int courseId)
     {
-        var learnerIds = DbContext.LearnerGroups.Where(lg => lg.CourseId.Equals(courseId))
-            .Include(lg => lg.Membership)
-            .SelectMany(m => m.Membership)
-            .Select(m => m.Member.Id);
+        var learnerIds = GetLearnerQuery(courseId).Select(l => l.Id);
 
         var query = DbContext.Learners.Where(learner => learnerIds.Contains(learner.Id))
             .Include(l => l.KnowledgeComponentMasteries)
@@ -59,12 +68,25 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
         return query.GetPaged(page, pageSize);
     }
 
-    public List<Learner> GetLearnersInGroup(int groupId)
+    private IQueryable<Learner> GetLearnerQuery(int courseId)
+    {
+        return DbContext.LearnerGroups.Where(lg => lg.CourseId.Equals(courseId))
+            .Include(lg => lg.Membership)
+            .SelectMany(m => m.Membership)
+            .Select(m => m.Member);
+    }
+
+    public Task<PagedResult<Learner>> GetLearnersInCourseAsync(int courseId, int page, int pageSize)
+    {
+        return GetLearnerQuery(courseId).GetPaged(page, pageSize);
+    }
+
+    public Task<PagedResult<Learner>> GetLearnersInGroupAsync(int groupId, int page, int pageSize)
     {
         return DbContext.GroupMemberships
             .Where(m => m.LearnerGroupId == groupId)
             .Include(m => m.Member)
-            .Select(m => m.Member).ToList();
+            .Select(m => m.Member).GetPaged(page, pageSize);
     }
 
     public void CreateBulkMemberships(IEnumerable<GroupMembership> memberships)
