@@ -27,9 +27,11 @@ public class UnitTests : BaseWebIntegrationTest
             Code = "TT-5",
             Name = "TT-5"
         };
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Create(-1, newEntity).Result)?.Value as KnowledgeUnitDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldNotBe(0);
         result.Code.ShouldBe(newEntity.Code);
@@ -50,9 +52,11 @@ public class UnitTests : BaseWebIntegrationTest
             Id = -1,
             Code = "TT-1"
         };
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Update(-1, updatedEntity).Result)?.Value as KnowledgeUnitDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);
         result.Code.ShouldBe(updatedEntity.Code);
@@ -68,12 +72,13 @@ public class UnitTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var result = (OkResult)controller.Delete(-4);
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-
         var storedEntity = dbContext.KnowledgeUnits.FirstOrDefault(i => i.Id == -4);
         storedEntity.ShouldBeNull();
     }

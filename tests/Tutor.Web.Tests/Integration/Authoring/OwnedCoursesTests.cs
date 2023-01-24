@@ -55,16 +55,14 @@ public class OwnedCoursesTests : BaseWebIntegrationTest
             Id = -1,
             Description = "Test"
         };
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Update(updateCourse).Result)?.Value as CourseDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);
         result.Description.ShouldBe("Test");
-
-        // DEMO - context caching
-        // (with and without change tracker clearing)
-        dbContext.ChangeTracker.Clear();
         var storedCourse = dbContext.Courses.FirstOrDefault(c => c.Id == -1);
         storedCourse.ShouldNotBeNull();
         storedCourse.Description.ShouldBe(updateCourse.Description);

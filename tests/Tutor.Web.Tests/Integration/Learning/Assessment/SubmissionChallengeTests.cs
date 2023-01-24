@@ -5,6 +5,7 @@ using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.UseCases.Learning.Assessment;
+using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Learners.Learning;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Tests.TestData;
@@ -23,6 +24,8 @@ public class SubmissionChallengeTests : BaseWebIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupChallengeEvaluationController(scope, submission.LearnerId.ToString());
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var actualEvaluation = ((OkObjectResult)controller.SubmitChallenge(submission).Result).Value as ChallengeEvaluationDto;
 
@@ -108,6 +111,8 @@ public class SubmissionChallengeTests : BaseWebIntegrationTest
             AssessmentItemId = -211,
             LearnerId = -2
         };
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var result = controller.SubmitChallenge(submission).Result;
 
@@ -132,6 +137,8 @@ public class SubmissionChallengeTests : BaseWebIntegrationTest
                     }"
             }
         };
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var actualEvaluation = ((OkObjectResult)controller.SubmitChallenge(submission).Result).Value as ChallengeEvaluationDto;
 

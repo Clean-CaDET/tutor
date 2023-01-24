@@ -121,9 +121,10 @@ public class StructureTests : BaseWebIntegrationTest
         var assessmentItem = dbContext.AssessmentItems.FirstOrDefault(ae => ae.Id == assessmentItemId);
         var knowledgeComponent =
             dbContext.KnowledgeComponents.FirstOrDefault(kc => kc.Id == assessmentItem.KnowledgeComponentId);
-            
+
         controller.SubmitAssessmentAnswer(assessmentItemId, submission);
-            
+
+        dbContext.ChangeTracker.Clear();
         var actualKcMastery = dbContext.KcMasteries.FirstOrDefault(kcm => kcm.LearnerId == learnerId
                                                                           && kcm.KnowledgeComponentId == knowledgeComponent.Id);
             

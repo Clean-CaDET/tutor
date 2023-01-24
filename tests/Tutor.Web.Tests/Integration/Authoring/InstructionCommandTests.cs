@@ -28,13 +28,14 @@ public class InstructionCommandTests : BaseWebIntegrationTest
             KnowledgeComponentId = -11,
             Order = 3,
         };
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Create(newEntity).Result)?.Value as List<InstructionalItemDto>;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.ShouldNotBeEmpty();
         result.Count.ShouldBe(1);
-
         var storedEntity = dbContext.InstructionalItems.FirstOrDefault(i => i.Id == result[0].Id);
         storedEntity.ShouldNotBeNull();
         storedEntity.Order.ShouldBe(3);
@@ -52,13 +53,14 @@ public class InstructionCommandTests : BaseWebIntegrationTest
             KnowledgeComponentId = -10,
             Content = "TT-1"
         };
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Update(newEntity).Result)?.Value as List<InstructionalItemDto>;
-
+        
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.ShouldNotBeEmpty();
         result.Count.ShouldBe(1);
-
         var savedEntity = dbContext.Texts.FirstOrDefault(i => i.Id == result[0].Id);
         savedEntity.ShouldNotBeNull();
         savedEntity.Content.ShouldBe(newEntity.Content);
@@ -92,8 +94,11 @@ public class InstructionCommandTests : BaseWebIntegrationTest
                 Order = 1,
             }
         };
+        dbContext.Database.BeginTransaction();
+
         var result = ((OkObjectResult)controller.UpdateOrdering(-10, instructionalItems)).Value as List<InstructionalItemDto>;
         
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Count.ShouldBe(3);
         result[0].Id.ShouldBe(-103);
@@ -116,12 +121,13 @@ public class InstructionCommandTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupInstructionController(scope, "-51");
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var result = (OkResult)controller.Delete(-15, -152);
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-
         var storedEntity = dbContext.Images.FirstOrDefault(i => i.Id == -152);
         storedEntity.ShouldBeNull();
     }

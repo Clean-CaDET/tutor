@@ -35,6 +35,7 @@ public class LearnerCommandTests : BaseWebIntegrationTest
 
         var result = ((OkObjectResult)controller.Register(newEntity).Result)?.Value as StakeholderAccountDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldNotBe(0);
         result.Email.ShouldBe(newEntity.Email);
@@ -102,9 +103,9 @@ public class LearnerCommandTests : BaseWebIntegrationTest
 
         var result = (OkResult)controller.BulkRegister(learners);
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-
         foreach (var newEntity in learners)
         {
             var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == newEntity.Index);
@@ -116,7 +117,7 @@ public class LearnerCommandTests : BaseWebIntegrationTest
     }
 
     [Fact]
-    public void Bulk_save_fails_existing_username_last_entity()
+    public void Register_bulk_fails_existing_username()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupLearnerController(scope);
@@ -151,9 +152,9 @@ public class LearnerCommandTests : BaseWebIntegrationTest
 
         var result = (ObjectResult)controller.BulkRegister(newEntities);
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(409);
-
         foreach (var newEntity in newEntities)
         {
             var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == newEntity.Index);
@@ -177,9 +178,11 @@ public class LearnerCommandTests : BaseWebIntegrationTest
             Surname = "mikic",
             Password = "123"
         };
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Update(updatedEntity).Result)?.Value as StakeholderAccountDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-2);
         result.Email.ShouldBe(updatedEntity.Email);
@@ -204,8 +207,11 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         {
             Id = -1000,
         };
+        dbContext.Database.BeginTransaction();
 
         var result = (ObjectResult)controller.Update(updatedEntity).Result;
+
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(404);
     }
@@ -216,9 +222,11 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupLearnerController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Archive(-3, true).Result)?.Value as StakeholderAccountDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.IsArchived.ShouldBe(true);
         var storedAccount = dbContext.Users.FirstOrDefault(u => u.Id == result.UserId);
@@ -235,9 +243,11 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupLearnerController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var result = (OkResult)controller.Delete(-6);
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
         var storedLearner = dbContext.Learners.FirstOrDefault(i => i.Id == -6);

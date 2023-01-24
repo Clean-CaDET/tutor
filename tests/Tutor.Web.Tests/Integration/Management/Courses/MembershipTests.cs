@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
@@ -48,12 +49,16 @@ public class MembershipTests : BaseWebIntegrationTest
                 Id = -2
             }
         };
+        dbContext.Database.BeginTransaction();
 
         var result = (OkResult)controller.CreateMembers(-3, learners);
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-        var storedMemberships = dbContext.GroupMemberships.Where(m => m.LearnerGroupId == -3).ToList();
+        var storedMemberships = dbContext.GroupMemberships
+            .Where(m => m.LearnerGroupId == -3)
+            .Include(m => m.Member).ToList();
         storedMemberships.ShouldNotBeNull();
         storedMemberships.Any(m => m.Member.Id == -1).ShouldBeTrue();
         storedMemberships.Any(m => m.Member.Id == -2).ShouldBeTrue();
@@ -65,12 +70,13 @@ public class MembershipTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var result = (OkResult)controller.Delete(-11, -1);
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-
         var storedCourses = dbContext.GroupMemberships.FirstOrDefault(m => m.Member.Id == -1 && m.LearnerGroupId == -11);
         storedCourses.ShouldBeNull();
     }

@@ -27,9 +27,11 @@ public class CourseCommandTests : BaseWebIntegrationTest
             Code = "TT-1",
             Name = "Test-1"
         };
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Create(newEntity).Result)?.Value as CourseDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldNotBe(0);
         result.Code.ShouldBe(newEntity.Code);
@@ -55,9 +57,11 @@ public class CourseCommandTests : BaseWebIntegrationTest
             Name = "Test-2",
             Description = "Test-2"
         };
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Update(updatedEntity).Result)?.Value as CourseDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);
         result.Code.ShouldBe(updatedEntity.Code);
@@ -75,9 +79,11 @@ public class CourseCommandTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Archive(-2, true).Result)?.Value as CourseDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.IsArchived.ShouldBe(true);
         var storedCourse = dbContext.Courses.FirstOrDefault(i => i.Id == -2);
@@ -91,12 +97,13 @@ public class CourseCommandTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var result = (OkResult)controller.Delete(-3);
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-
         var storedCourses = dbContext.Courses.FirstOrDefault(i => i.Id == -3);
         storedCourses.ShouldBeNull();
     }
