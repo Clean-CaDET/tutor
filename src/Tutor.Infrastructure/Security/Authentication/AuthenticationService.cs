@@ -4,7 +4,6 @@ using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 using Tutor.Infrastructure.Security.Authentication.Users;
-using static OfficeOpenXml.ExcelErrorValue;
 
 namespace Tutor.Infrastructure.Security.Authentication;
 
