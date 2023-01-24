@@ -31,15 +31,15 @@ public class GroupMonitoringTests : BaseWebIntegrationTest
 
     [Theory]
     [MemberData(nameof(TestData))]
-    public void Retrieves_group_progress(string userId, int courseId, int groupId, PagedResult<LearnerProgressDto> expectedProgress)
+    public void Retrieves_learner_progress(string userId, int[] learnerIds, int expectedProgressCount)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope, userId);
 
-        var result = ((OkObjectResult)controller.GetProgressForGroup(courseId, groupId, 1, 10).Result)?.Value as PagedResult<LearnerProgressDto>;
+        var result = ((OkObjectResult)controller.GetLearnerProgress(-1, -1, learnerIds).Result)?.Value as List<KcmProgressDto>;
 
         result.ShouldNotBeNull();
-        result.TotalCount.ShouldBe(expectedProgress.TotalCount);
+        result.Count.ShouldBe(expectedProgressCount);
     }
     
     public static IEnumerable<object[]> TestData()
@@ -48,22 +48,21 @@ public class GroupMonitoringTests : BaseWebIntegrationTest
         {
             new object[]
             {
-                "-51", -1, -1,
-                new PagedResult<LearnerProgressDto>(new List<LearnerProgressDto>(), 4)
+                "-51", new []{-2, -3}, 12
+            },
+            new object[]
+            {
+                "-51", new []{-2}, 6
+            },
+            new object[]
+            {
+                "-51", new []{-3}, 6
+            },
+            new object[]
+            {
+                "-51", new []{-1}, 0
             }
         };
-    }
-
-    [Fact]
-    public void Retrieves_progress_of_all_learners()
-    {
-        using var scope = Factory.Services.CreateScope();
-        var controller = SetupController(scope, "-51");
-
-        var result = ((OkObjectResult)controller.GetProgressForAll(-1, 1, 10).Result)?.Value as PagedResult<LearnerProgressDto>;
-
-        result.ShouldNotBeNull();
-        result.TotalCount.ShouldBe(5);
     }
 
     private GroupMonitoringController SetupController(IServiceScope scope, string id)
