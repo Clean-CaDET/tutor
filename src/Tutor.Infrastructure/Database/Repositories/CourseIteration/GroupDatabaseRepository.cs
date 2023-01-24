@@ -18,16 +18,16 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
         return DbContext.LearnerGroups.Where(g => g.CourseId == courseId).ToList();
     }
 
-    public async Task<PagedResult<Learner>> GetGroupProgressAsync(int courseId, int groupId, int page, int pageSize)
+    public async Task<PagedResult<Learner>> GetLearnersWithMasteries(int courseId, int groupId, int page, int pageSize)
     {
         if (groupId == 0)
         {
-            return await GetAllLearnersAsync(page, pageSize, courseId);
+            return await GetAllLearnersWithMasteriesAsync(page, pageSize, courseId);
         }
-        return await GetLearnersByGroupAsync(page, pageSize, groupId);
+        return await GetLearnersWithMasteriesByGroupAsync(page, pageSize, groupId);
     }
 
-    private Task<PagedResult<Learner>> GetLearnersByGroupAsync(int page, int pageSize, int groupId)
+    private Task<PagedResult<Learner>> GetLearnersWithMasteriesByGroupAsync(int page, int pageSize, int groupId)
     {
         return DbContext.GroupMemberships
             .Where(g => g.LearnerGroupId == groupId)
@@ -43,7 +43,7 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
             .GetPaged(page, pageSize);
     }
 
-    private Task<PagedResult<Learner>> GetAllLearnersAsync(int page, int pageSize, int courseId)
+    private Task<PagedResult<Learner>> GetAllLearnersWithMasteriesAsync(int page, int pageSize, int courseId)
     {
         var learnerIds = DbContext.LearnerGroups.Where(lg => lg.CourseId.Equals(courseId))
             .Include(lg => lg.Membership)

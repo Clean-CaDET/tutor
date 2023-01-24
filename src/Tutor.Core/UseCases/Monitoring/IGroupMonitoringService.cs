@@ -4,9 +4,9 @@ using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Stakeholders;
 
-namespace Tutor.Core.UseCases.ProgressMonitoring;
+namespace Tutor.Core.UseCases.Monitoring;
 
-public interface ICourseIterationMonitoringService
+public interface IGroupMonitoringService
 {
     Result<List<LearnerGroup>> GetCourseGroups(int instructorId, int courseId);
     Result<PagedResult<Learner>> GetLearnersWithProgress(int courseId, int instructorId, int page, int pageSize);

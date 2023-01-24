@@ -5,14 +5,14 @@ using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 
-namespace Tutor.Core.UseCases.ProgressMonitoring;
+namespace Tutor.Core.UseCases.Monitoring;
 
-public class CourseIterationMonitoringService : ICourseIterationMonitoringService
+public class GroupMonitoringService : IGroupMonitoringService
 {
     private readonly IGroupRepository _groupRepository;
     private readonly IOwnedCourseRepository _ownedCourseRepository;
 
-    public CourseIterationMonitoringService(IGroupRepository groupRepository, 
+    public GroupMonitoringService(IGroupRepository groupRepository, 
         IOwnedCourseRepository ownedCourseRepository)
     {
         _groupRepository = groupRepository;
@@ -36,7 +36,7 @@ public class CourseIterationMonitoringService : ICourseIterationMonitoringServic
         var isOwner = _ownedCourseRepository.IsCourseOwner(courseId, instructorId);
         if (!isOwner) return Result.Fail(FailureCode.Forbidden);
 
-        var task = _groupRepository.GetGroupProgressAsync(courseId, groupId, page, pageSize);
+        var task = _groupRepository.GetLearnersWithMasteries(courseId, groupId, page, pageSize);
         task.Wait();
         return task.Result;
     }

@@ -4,17 +4,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
-using Tutor.Core.UseCases.ProgressMonitoring;
+using Tutor.Core.UseCases.Monitoring;
 using Tutor.Web.Controllers.Instructors;
 using Tutor.Web.Mappings.Enrollments;
 using Xunit;
 
-namespace Tutor.Web.Tests.Integration.ProgressMonitoring;
+namespace Tutor.Web.Tests.Integration.Monitoring;
 
 [Collection("Sequential")]
-public class CourseIterationMonitoringTests : BaseWebIntegrationTest
+public class GroupMonitoringTests : BaseWebIntegrationTest
 {
-    public CourseIterationMonitoringTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
+    public GroupMonitoringTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
     
     [Theory]
     [InlineData("-51", -1, 3)]
@@ -22,7 +22,7 @@ public class CourseIterationMonitoringTests : BaseWebIntegrationTest
     public void Retrieves_owned_course_groups(string instructorId, int courseId, int expectedResult)
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupCourseIterationMonitoringController(scope, instructorId);
+        var controller = SetupController(scope, instructorId);
         var result = ((OkObjectResult)controller.GetCourseGroups(courseId).Result)?.Value as List<GroupDto>;
 
         result.ShouldNotBeNull();
@@ -34,7 +34,7 @@ public class CourseIterationMonitoringTests : BaseWebIntegrationTest
     public void Retrieves_group_progress(string userId, int courseId, int groupId, PagedResult<LearnerProgressDto> expectedProgress)
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupCourseIterationMonitoringController(scope, userId);
+        var controller = SetupController(scope, userId);
 
         var result = ((OkObjectResult)controller.GetProgressForGroup(courseId, groupId, 1, 10).Result)?.Value as PagedResult<LearnerProgressDto>;
 
@@ -58,7 +58,7 @@ public class CourseIterationMonitoringTests : BaseWebIntegrationTest
     public void Retrieves_progress_of_all_learners()
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupCourseIterationMonitoringController(scope, "-51");
+        var controller = SetupController(scope, "-51");
 
         var result = ((OkObjectResult)controller.GetProgressForAll(-1, 1, 10).Result)?.Value as PagedResult<LearnerProgressDto>;
 
@@ -66,10 +66,10 @@ public class CourseIterationMonitoringTests : BaseWebIntegrationTest
         result.TotalCount.ShouldBe(5);
     }
 
-    private CourseIterationMonitoringController SetupCourseIterationMonitoringController(IServiceScope scope, string id)
+    private GroupMonitoringController SetupController(IServiceScope scope, string id)
     {
-        return new CourseIterationMonitoringController(Factory.Services.GetRequiredService<IMapper>(),
-            scope.ServiceProvider.GetRequiredService<ICourseIterationMonitoringService>())
+        return new GroupMonitoringController(Factory.Services.GetRequiredService<IMapper>(),
+            scope.ServiceProvider.GetRequiredService<IGroupMonitoringService>())
         {
             ControllerContext = BuildContext(id, "instructor")
         };
