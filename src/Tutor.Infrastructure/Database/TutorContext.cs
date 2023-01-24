@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
@@ -38,7 +38,6 @@ public class TutorContext : DbContext
     public DbSet<ArrangeTaskContainer> ArrangeTaskContainers { get; set; }
     public DbSet<ArrangeTaskElement> ArrangeTaskElements { get; set; }
     public DbSet<Challenge> Challenges { get; set; }
-    public DbSet<ChallengeFulfillmentStrategy> ChallengeFulfillmentStrategies { get; set; }
 
     #endregion
     #region Knowledge Mastery
@@ -71,6 +70,10 @@ public class TutorContext : DbContext
 
         modelBuilder.Entity<Stakeholder>().UseTpcMappingStrategy();
         modelBuilder.Entity<Stakeholder>().Property(s => s.IsArchived).HasDefaultValue(false);
+        modelBuilder.Entity<Stakeholder>()
+            .HasOne<User>()
+            .WithOne()
+            .HasForeignKey<Stakeholder>(s => s.UserId);
 
         modelBuilder.Entity<CourseOwnership>()
             .HasOne(c => c.Instructor)
@@ -86,6 +89,7 @@ public class TutorContext : DbContext
         ConfigureKnowledge(modelBuilder);
         ConfigureKnowledgeMastery(modelBuilder);
         ConfigureCourseIteration(modelBuilder);
+        ConfigureLearningUtilities(modelBuilder);
     }
 
     private static void ConfigureKnowledge(ModelBuilder modelBuilder)
@@ -173,5 +177,40 @@ public class TutorContext : DbContext
         modelBuilder.Entity<GroupMembership>()
             .HasOne(g => g.Member)
             .WithMany();
+
+        modelBuilder.Entity<UnitEnrollment>()
+            .HasOne<Learner>()
+            .WithMany()
+            .HasForeignKey(u => u.LearnerId);
+    }
+
+    private static void ConfigureLearningUtilities(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<TutorImprovementFeedback>()
+            .HasOne<Learner>()
+            .WithMany()
+            .HasForeignKey(t => t.LearnerId);
+        modelBuilder.Entity<TutorImprovementFeedback>()
+            .HasOne<KnowledgeUnit>()
+            .WithMany()
+            .HasForeignKey(t => t.UnitId);
+
+        modelBuilder.Entity<EmotionsFeedback>()
+            .HasOne<Learner>()
+            .WithMany()
+            .HasForeignKey(e => e.LearnerId);
+        modelBuilder.Entity<EmotionsFeedback>()
+            .HasOne<KnowledgeComponent>()
+            .WithMany()
+            .HasForeignKey(e => e.KnowledgeComponentId);
+
+        modelBuilder.Entity<Note>()
+            .HasOne<Learner>()
+            .WithMany()
+            .HasForeignKey(n => n.LearnerId);
+        modelBuilder.Entity<Note>()
+            .HasOne<KnowledgeUnit>()
+            .WithMany()
+            .HasForeignKey(n => n.UnitId);
     }
 }

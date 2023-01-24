@@ -61,6 +61,7 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
         if (dbStakeholderResult.IsFailed) return dbStakeholderResult;
         var dbStakeholder = dbStakeholderResult.Value;
         var user = _userRepository.Get(dbStakeholder.UserId);
+        stakeholder.UserId = user.Id;
 
         _crudRepository.Update(dbStakeholder, stakeholder);
         user.Username = stakeholder.Email;

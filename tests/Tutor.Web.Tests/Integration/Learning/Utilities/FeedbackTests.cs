@@ -68,13 +68,13 @@ public class FeedbackTests : BaseWebIntegrationTest
     {
         new object[]
         {
-            new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -1, Comment = "I had a nice time studying using Smart Tutor"},
-            new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -1, Comment = "I had a nice time studying using Smart Tutor"}
+            new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -11, Comment = "I had a nice time studying using Smart Tutor"},
+            new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -11, Comment = "I had a nice time studying using Smart Tutor"}
         },
         new object[]
         {
-            new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -2, Comment = "I was bored"},
-            new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -2, Comment = "I was bored"}
+            new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -21, Comment = "I was bored"},
+            new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -21, Comment = "I was bored"}
         }
     };
 
