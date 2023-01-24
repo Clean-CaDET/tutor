@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
@@ -39,10 +39,6 @@ public class TutorContext : DbContext
     public DbSet<ArrangeTaskElement> ArrangeTaskElements { get; set; }
     public DbSet<Challenge> Challenges { get; set; }
     public DbSet<ChallengeFulfillmentStrategy> ChallengeFulfillmentStrategies { get; set; }
-    public DbSet<BasicMetricChecker> BasicMetricCheckers { get; set; }
-    public DbSet<BannedWordsChecker> BannedWordsCheckers { get; set; }
-    public DbSet<RequiredWordsChecker> RequiredWordsCheckers { get; set; }
-    public DbSet<ChallengeHint> ChallengeHints { get; set; }
 
     #endregion
     #region Knowledge Mastery
@@ -77,12 +73,9 @@ public class TutorContext : DbContext
         modelBuilder.Entity<Stakeholder>().Property(s => s.IsArchived).HasDefaultValue(false);
 
         modelBuilder.Entity<CourseOwnership>()
-            .HasOne<Instructor>()
+            .HasOne(c => c.Instructor)
             .WithMany()
-            .HasForeignKey(c => c.InstructorId);
-        modelBuilder.Entity<Instructor>()
-            .HasMany<CourseOwnership>()
-            .WithOne()
+            .HasForeignKey(c => c.InstructorId)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<LearnerGroup>()
@@ -112,10 +105,17 @@ public class TutorContext : DbContext
 
         modelBuilder.Entity<Mcq>().ToTable("MultiChoiceQuestions");
         modelBuilder.Entity<Saq>().ToTable("ShortAnswerQuestions");
+
+        modelBuilder.Entity<ChallengeFulfillmentStrategy>().ToTable("ChallengeFulfillmentStrategies");
+        modelBuilder.Entity<BasicMetricChecker>().ToTable("BasicMetricCheckers");
+        modelBuilder.Entity<BannedWordsChecker>().ToTable("BannedWordsCheckers");
+        modelBuilder.Entity<RequiredWordsChecker>().ToTable("RequiredWordsCheckers");
+        modelBuilder.Entity<ChallengeHint>().ToTable("ChallengeHints");
+
         ConfigureArrangeTask(modelBuilder);
         ConfigureChallenge(modelBuilder);
         ConfigureKnowledgeComponent(modelBuilder);
-    }
+}
 
     private static void ConfigureArrangeTask(ModelBuilder modelBuilder)
     {
