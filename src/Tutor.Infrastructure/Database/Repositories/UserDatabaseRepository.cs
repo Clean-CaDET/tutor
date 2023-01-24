@@ -1,6 +1,8 @@
+﻿using FluentResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 using Tutor.Infrastructure.Security.Authentication.Users;
@@ -44,17 +46,17 @@ public class UserDatabaseRepository : IUserRepository
         return users;
     }
 
-    public int GetInstructorId(int userId)
+    public Result<int> GetInstructorId(int userId)
     {
         var instructor = _dbContext.Instructors.FirstOrDefault(i => i.UserId == userId);
-        if(instructor == null) throw new KeyNotFoundException("Not found.");
+        if (instructor == null) return Result.Fail(FailureCode.NotFound);
         return instructor.Id;
     }
 
-    public int GetLearnerId(int userId)
+    public Result<int> GetLearnerId(int userId)
     {
         var learner = _dbContext.Learners.FirstOrDefault(i => i.UserId == userId);
-        if (learner == null) throw new KeyNotFoundException("Not found.");
+        if (learner == null) return Result.Fail(FailureCode.NotFound);
         return learner.Id;
     }
 
@@ -63,10 +65,12 @@ public class UserDatabaseRepository : IUserRepository
         return _dbContext.Users.Find(id);
     }
 
-    public void Delete(int id)
+    public Result Delete(int id)
     {
         var user = _dbContext.Users.Find(id);
-        if (user == null) throw new ArgumentException("Entity not found: " + id);
+        if (user == null) return Result.Fail(FailureCode.NotFound);
+       
         _dbContext.Users.Remove(user);
+        return Result.Ok();
     }
 }

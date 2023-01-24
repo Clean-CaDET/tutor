@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FluentResults;
+using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
 
 namespace Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
@@ -8,8 +9,8 @@ public interface IUserRepository
     User GetActiveByName(string username);
     User Register(string username, string password, UserRole role);
     List<User> BulkRegister(List<string> usernames, List<string> passwords, UserRole role);
-    int GetInstructorId(int userId);
-    int GetLearnerId(int userId);
+    Result<int> GetInstructorId(int userId);
+    Result<int> GetLearnerId(int userId);
     User Get(int id);
-    void Delete(int id);
+    Result Delete(int id);
 }

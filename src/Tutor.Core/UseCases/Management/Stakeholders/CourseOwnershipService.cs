@@ -65,8 +65,10 @@ public class CourseOwnershipService : ICourseOwnershipService
 
     public Result RemoveOwnership(int courseId, int instructorId)
     {
-        _ownedCourseRepository.DeleteCourseOwnership(courseId, instructorId);
-        var result = _unitOfWork.Save();
+        var result = _ownedCourseRepository.DeleteCourseOwnership(courseId, instructorId);
+        if (result.IsFailed) return result;
+
+        result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 
         return Result.Ok();

@@ -6,6 +6,7 @@ using FluentResults;
 using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
+using Tutor.Core.BuildingBlocks;
 
 namespace Tutor.Infrastructure.Database.Repositories.Stakeholders;
 
@@ -67,11 +68,13 @@ public class OwnedCourseDatabaseRepository : IOwnedCourseRepository
         _dbContext.CourseOwnerships.Add(ownership);
     }
 
-    public void DeleteCourseOwnership(int courseId, int instructorId)
+    public Result DeleteCourseOwnership(int courseId, int instructorId)
     {
         var entity =  _dbContext.CourseOwnerships
             .FirstOrDefault(o => o.Course.Id == courseId && o.InstructorId == instructorId);
-        if (entity == null) throw new ArgumentException("Entity not found");
+        if (entity == null) return Result.Fail(FailureCode.NotFound);
+
         _dbContext.CourseOwnerships.Remove(entity);
+        return Result.Ok();
     }
 }

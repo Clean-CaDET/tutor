@@ -40,9 +40,10 @@ public class LearnerGroupService: CrudService<LearnerGroup>, ILearnerGroupServic
 
     public Result DeleteMember(int groupId, int learnerId)
     {
-        _groupRepository.DeleteMember(groupId, learnerId);
+        var result = _groupRepository.DeleteMember(groupId, learnerId);
+        if (result.IsFailed) return result;
 
-        var result = _unitOfWork.Save();
+        result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 
         return Result.Ok();

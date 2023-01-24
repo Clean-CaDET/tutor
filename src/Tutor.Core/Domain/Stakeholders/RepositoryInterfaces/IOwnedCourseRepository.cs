@@ -13,5 +13,5 @@ public interface IOwnedCourseRepository
     bool IsKcOwner(int kcId, int instructorId);
     Course GetOwnedCourseWithUnitsAndKcs(int courseId, int instructorId);
     void CreateCourseOwnership(CourseOwnership ownership);
-    void DeleteCourseOwnership(int courseId, int instructorId);
+    Result DeleteCourseOwnership(int courseId, int instructorId);
 }

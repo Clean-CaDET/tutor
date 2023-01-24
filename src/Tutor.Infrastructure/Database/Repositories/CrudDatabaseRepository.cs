@@ -1,3 +1,4 @@
+﻿using FluentResults;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -54,10 +55,12 @@ public class CrudDatabaseRepository<T> : ICrudRepository<T> where T : Entity
         return entity;
     }
 
-    public void Delete(int id)
+    public Result Delete(int id)
     {
         var entity = _dbSet.Find(id);
-        if (entity == null) throw new ArgumentException("Entity not found: " + id);
+        if (entity == null) return Result.Fail(FailureCode.NotFound);
+
         _dbSet.Remove(entity);
+        return Result.Ok();
     }
 }

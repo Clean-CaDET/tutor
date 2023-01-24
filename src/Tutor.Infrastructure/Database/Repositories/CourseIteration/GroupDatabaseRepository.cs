@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentResults;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,10 +73,12 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
         DbContext.AttachRange(memberships);
     }
 
-    public void DeleteMember(int groupId, int learnerId)
+    public Result DeleteMember(int groupId, int learnerId)
     {
         var membership = DbContext.GroupMemberships.First(m => m.LearnerGroupId == groupId && m.Member.Id == learnerId);
-        if (membership == null) throw new ArgumentException("Membership not found.");
+        if (membership == null) return Result.Fail(FailureCode.NotFound);
+
         DbContext.GroupMemberships.Remove(membership);
+        return Result.Ok();
     }
 }

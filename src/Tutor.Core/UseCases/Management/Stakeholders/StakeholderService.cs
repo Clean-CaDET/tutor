@@ -75,10 +75,12 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
 
     public override Result Delete(int id)
     {
-        _crudRepository.Delete(id);
-        _userRepository.Delete(id);
+        var result = _crudRepository.Delete(id);
+        if (result is null) return Result.Fail(FailureCode.NotFound);
+        result = _userRepository.Delete(id);
+        if (result is null) return Result.Fail(FailureCode.NotFound);
 
-        var result = _unitOfWork.Save();
+        result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 
         return Result.Ok();

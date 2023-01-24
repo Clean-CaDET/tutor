@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FluentResults;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
@@ -12,5 +13,5 @@ public interface IGroupRepository : ICrudRepository<LearnerGroup>
     Task<PagedResult<Learner>> GetGroupProgressAsync(int courseId, int groupId, int page, int pageSize);
     List<Learner> GetLearnersInGroup(int groupId);
     void CreateBulkMemberships(IEnumerable<GroupMembership> memberships);
-    void DeleteMember(int groupId, int learnerId);
+    Result DeleteMember(int groupId, int learnerId);
 }

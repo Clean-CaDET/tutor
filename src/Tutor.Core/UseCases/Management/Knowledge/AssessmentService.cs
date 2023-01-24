@@ -74,6 +74,7 @@ public class AssessmentService : IAssessmentService
             return Result.Fail(FailureCode.Forbidden);
 
         var assessment = _assessmentItemRepository.Get(id);
+        if (assessment == null) return Result.Fail(FailureCode.NotFound);
         if (assessment.KnowledgeComponentId != kcId)
             return Result.Fail(FailureCode.NotFound);
         
