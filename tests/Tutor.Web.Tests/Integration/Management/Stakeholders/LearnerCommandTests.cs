@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Linq;
-using Tutor.Core.UseCases.Management.Enrollments;
 using Tutor.Core.UseCases.Management.Stakeholders;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Administrators.Stakeholders;
 using Tutor.Web.Mappings.Stakeholders;
 using Xunit;
+using Tutor.Core.UseCases.Monitoring;
 
 namespace Tutor.Web.Tests.Integration.Management.Stakeholders;
 

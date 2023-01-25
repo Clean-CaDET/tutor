@@ -1,8 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using FluentResults;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.Structure;
+using System;
+using Tutor.Core.BuildingBlocks;
 
 namespace Tutor.Infrastructure.Database.Repositories.CourseIteration;
 
@@ -20,7 +23,6 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
         return _dbContext.UnitEnrollments.Count(enrollment => enrollment.KnowledgeUnit.Id == unitId);
     }
 
-    // Should be reworked when we add course iteration concept.
     public List<Course> GetEnrolledCourses(int learnerId)
     {
         return _dbContext.LearnerGroups
@@ -30,9 +32,19 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
 
     public Course GetCourseEnrolledAndActiveUnits(int courseId, int learnerId)
     {
-        var course = GetCourse(courseId);
+        var course = _dbContext.Courses.FirstOrDefault(c => c.Id.Equals(courseId));
         var enrolledUnits = GetEnrolledAndActiveUnits(courseId, learnerId);
         return new Course(course, enrolledUnits);
+    }
+
+    private List<KnowledgeUnit> GetEnrolledAndActiveUnits(int courseId, int learnerId)
+    {
+        return _dbContext.UnitEnrollments
+            .Where(ue => ue.LearnerId.Equals(learnerId)
+                         && ue.KnowledgeUnit.CourseId.Equals(courseId)
+                         && ue.Status.Equals(EnrollmentStatus.Active))
+            .Include(ue => ue.KnowledgeUnit)
+            .Select(ue => ue.KnowledgeUnit).ToList();
     }
 
     public bool HasActiveEnrollmentForUnit(int unitId, int learnerId)
@@ -53,20 +65,29 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
                       u.KnowledgeUnit.Id == unitId && u.LearnerId == learnerId);
     }
 
-    private Course GetCourse(int courseId)
-    {
-        return _dbContext.Courses
-            .Where(c => c.Id.Equals(courseId))
-            .FirstOrDefault();
-    }
-
-    private List<KnowledgeUnit> GetEnrolledAndActiveUnits(int courseId, int learnerId)
+    public Result<List<UnitEnrollment>> GetEnrollments(int unitId, int[] learnerIds)
     {
         return _dbContext.UnitEnrollments
-            .Where(ue => ue.LearnerId.Equals(learnerId)
-                         && ue.KnowledgeUnit.CourseId.Equals(courseId)
-                         && ue.Status.Equals(EnrollmentStatus.Active))
-            .Include(ue => ue.KnowledgeUnit)
-            .Select(ue => ue.KnowledgeUnit).ToList();
+            .Where(e => e.KnowledgeUnit.Id == unitId && learnerIds.Contains(e.LearnerId))
+            .ToList();
+    }
+
+    public Result<UnitEnrollment> Create(UnitEnrollment newEnrollment)
+    {
+        _dbContext.UnitEnrollments.Add(newEnrollment);
+        _dbContext.SaveChanges();
+        return newEnrollment;
+    }
+
+    public Result DeleteEnrollment(int learnerId, int unitId)
+    {
+        var entity = _dbContext.UnitEnrollments
+            .FirstOrDefault(e => e.KnowledgeUnit.Id == unitId && e.LearnerId == learnerId);
+        if (entity == null) return Result.Fail(FailureCode.NotFound);
+
+        _dbContext.UnitEnrollments.Remove(entity);
+        _dbContext.SaveChanges();
+
+        return Result.Ok();
     }
 }
