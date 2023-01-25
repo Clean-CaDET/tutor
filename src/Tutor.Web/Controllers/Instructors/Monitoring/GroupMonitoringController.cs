@@ -42,16 +42,8 @@ public class GroupMonitoringController : BaseApiController
         return Ok(new PagedResult<StakeholderAccountDto>(progress, result.Value.TotalCount));
     }
 
-    [HttpGet("progress/{unitId:int}")]
-    public ActionResult<List<KcmProgressDto>> GetLearnerProgress(int unitId, [FromQuery] int[] learnerIds)
-    {
-        var result = _groupMonitoringService.GetLearnerProgress(unitId, learnerIds, User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(result.Value.Select(_mapper.Map<KcmProgressDto>).ToList());
-    }
-
-    [HttpPost("enrollment/{unitId:int}")]
-    public ActionResult<List<UnitEnrollmentDto>> GetLearnerEnrollments(int unitId, [FromBody] int[] learnerIds)
+    [HttpPost("progress/{unitId:int}")]
+    public ActionResult<List<KcmProgressDto>> GetLearnerProgress(int unitId, [FromBody] int[] learnerIds)
     {
         var result = _groupMonitoringService.GetLearnerProgress(unitId, learnerIds, User.InstructorId());
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
