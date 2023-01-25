@@ -26,10 +26,10 @@ public class SessionService : ISessionService
         var kcMastery = _knowledgeMasteryRepository.GetBareKcMastery(knowledgeComponentId, learnerId);
         if (kcMastery == null) return Result.Fail(FailureCode.NotFound);
 
-        var result = kcMastery.LaunchSession();
+        kcMastery.LaunchSession();
         _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
-        var saveResult = _unitOfWork.Save();
-        if (saveResult.IsFailed) return saveResult;
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
 
         return result;
     }
@@ -43,9 +43,10 @@ public class SessionService : ISessionService
         if (kcMastery == null) return Result.Fail(FailureCode.NotFound);
 
         var result = kcMastery.TerminateSession();
+        if (result.IsFailed) return result;
         _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
-        var saveResult = _unitOfWork.Save();
-        if (saveResult.IsFailed) return saveResult;
+        result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
 
         return result;
     }

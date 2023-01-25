@@ -68,13 +68,6 @@ public class TutorContext : DbContext
     {
         modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
 
-        modelBuilder.Entity<Stakeholder>().UseTpcMappingStrategy();
-        modelBuilder.Entity<Stakeholder>().Property(s => s.IsArchived).HasDefaultValue(false);
-        modelBuilder.Entity<Stakeholder>()
-            .HasOne<User>()
-            .WithOne()
-            .HasForeignKey<Stakeholder>(s => s.UserId);
-
         modelBuilder.Entity<CourseOwnership>()
             .HasOne(c => c.Instructor)
             .WithMany()
@@ -86,10 +79,21 @@ public class TutorContext : DbContext
             .WithOne()
             .OnDelete(DeleteBehavior.Cascade);
 
+        ConfigureStakeholder(modelBuilder);
         ConfigureKnowledge(modelBuilder);
         ConfigureKnowledgeMastery(modelBuilder);
         ConfigureCourseIteration(modelBuilder);
         ConfigureLearningUtilities(modelBuilder);
+    }
+
+    private static void ConfigureStakeholder(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Stakeholder>().UseTpcMappingStrategy();
+        modelBuilder.Entity<Stakeholder>().Property(s => s.IsArchived).HasDefaultValue(false);
+        modelBuilder.Entity<Stakeholder>()
+            .HasOne<User>()
+            .WithOne()
+            .HasForeignKey<Stakeholder>(s => s.UserId);
     }
 
     private static void ConfigureKnowledge(ModelBuilder modelBuilder)

@@ -70,7 +70,6 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
         if (result.IsFailed) return result;
 
         return entity;
-
     }
 
     public override Result Delete(int id)
