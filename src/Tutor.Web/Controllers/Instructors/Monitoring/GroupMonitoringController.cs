@@ -12,7 +12,7 @@ using Tutor.Web.Mappings.Stakeholders;
 namespace Tutor.Web.Controllers.Instructors.Monitoring;
 
 [Authorize(Policy = "instructorPolicy")]
-[Route("api/monitoring/{courseId:int}")]
+[Route("api/monitoring")]
 public class GroupMonitoringController : BaseApiController
 {
     private readonly IMapper _mapper;
@@ -24,7 +24,7 @@ public class GroupMonitoringController : BaseApiController
         _groupMonitoringService = groupMonitoringService;
     }
 
-    [HttpGet]
+    [HttpGet("{courseId:int}/groups")]
     public ActionResult<List<GroupDto>> GetCourseGroups(int courseId)
     {
         var result = _groupMonitoringService.GetCourseGroups(User.InstructorId(), courseId);
@@ -32,7 +32,7 @@ public class GroupMonitoringController : BaseApiController
         return Ok(result.Value.Select(_mapper.Map<GroupDto>).ToList());
     }
 
-    [HttpGet("groups/{groupId:int}")]
+    [HttpGet("{courseId:int}/groups/{groupId:int}")]
     public ActionResult<PagedResult<StakeholderAccountDto>> GetGroupLearners(int courseId, int groupId, [FromQuery] int page, [FromQuery] int pageSize)
     {
         var result = _groupMonitoringService.GetLearners(User.InstructorId(), courseId, groupId, page, pageSize);
