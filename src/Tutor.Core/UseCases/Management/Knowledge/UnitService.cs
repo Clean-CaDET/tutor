@@ -26,7 +26,7 @@ public class UnitService : CrudService<KnowledgeUnit>, IUnitService
 
     public Result<KnowledgeUnit> Update(KnowledgeUnit unit, int instructorId)
     {
-        if (!_ownedCourseRepository.IsCourseOwner(unit.CourseId, instructorId))
+        if (!_ownedCourseRepository.IsUnitOwner(unit.Id, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
         return Update(unit);

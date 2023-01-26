@@ -98,9 +98,37 @@ public class TutorContext : DbContext
 
     private static void ConfigureKnowledge(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Markdown>().ToTable("Texts");
-        modelBuilder.Entity<Image>().ToTable("Images");
-        modelBuilder.Entity<Video>().ToTable("Videos");
+        ConfigureInstructionalItems(modelBuilder);
+        ConfigureQuestions(modelBuilder);
+        ConfigureArrangeTask(modelBuilder);
+        ConfigureChallenge(modelBuilder);
+        ConfigureKnowledgeComponent(modelBuilder);
+    }
+
+    private static void ConfigureInstructionalItems(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<InstructionalItem>()
+            .HasDiscriminator<string>("ItemType")
+            .HasValue<Markdown>("Text")
+            .HasValue<Image>("Image")
+            .HasValue<Video>("Video");
+
+        modelBuilder.Entity<Image>()
+            .Property(i => i.Url)
+            .HasColumnName("Url");
+        modelBuilder.Entity<Image>()
+            .Property(i => i.Caption)
+            .HasColumnName("Caption");
+        modelBuilder.Entity<Video>()
+            .Property(v => v.Url)
+            .HasColumnName("Url");
+        modelBuilder.Entity<Video>()
+            .Property(v => v.Caption)
+            .HasColumnName("Caption");
+    }
+
+    private static void ConfigureQuestions(ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<Mrq>().ToTable("MultiResponseQuestions")
             .Property(m => m.Items)
             .HasConversion(
@@ -110,20 +138,9 @@ public class TutorContext : DbContext
                     (c1, c2) => c1.SequenceEqual(c2),
                     c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                     c => c));
-
         modelBuilder.Entity<Mcq>().ToTable("MultiChoiceQuestions");
         modelBuilder.Entity<Saq>().ToTable("ShortAnswerQuestions");
-
-        modelBuilder.Entity<ChallengeFulfillmentStrategy>().ToTable("ChallengeFulfillmentStrategies");
-        modelBuilder.Entity<BasicMetricChecker>().ToTable("BasicMetricCheckers");
-        modelBuilder.Entity<BannedWordsChecker>().ToTable("BannedWordsCheckers");
-        modelBuilder.Entity<RequiredWordsChecker>().ToTable("RequiredWordsCheckers");
-        modelBuilder.Entity<ChallengeHint>().ToTable("ChallengeHints");
-
-        ConfigureArrangeTask(modelBuilder);
-        ConfigureChallenge(modelBuilder);
-        ConfigureKnowledgeComponent(modelBuilder);
-}
+    }
 
     private static void ConfigureArrangeTask(ModelBuilder modelBuilder)
     {
@@ -137,6 +154,8 @@ public class TutorContext : DbContext
         modelBuilder.Entity<BannedWordsChecker>().ToTable("BannedWordsCheckers");
         modelBuilder.Entity<RequiredWordsChecker>().ToTable("RequiredWordsCheckers");
         modelBuilder.Entity<BasicMetricChecker>().ToTable("BasicMetricCheckers");
+        modelBuilder.Entity<ChallengeFulfillmentStrategy>().ToTable("ChallengeFulfillmentStrategies");
+        modelBuilder.Entity<ChallengeHint>().ToTable("ChallengeHints");
     }
 
     private static void ConfigureKnowledgeComponent(ModelBuilder modelBuilder)

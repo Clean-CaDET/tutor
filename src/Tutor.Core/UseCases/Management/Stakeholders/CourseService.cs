@@ -20,7 +20,6 @@ public class CourseService : CrudService<Course>, ICourseService
 
     public override Result<Course> Create(Course course)
     {
-        // If object has navigation property, related objects will be added to context and saved with it
         _groupRepository.Create(new LearnerGroup("Group 1", course));
 
         var result = _unitOfWork.Save();

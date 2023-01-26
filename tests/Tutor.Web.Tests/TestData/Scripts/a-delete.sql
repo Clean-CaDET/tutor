@@ -10,10 +10,6 @@ DELETE FROM public."GroupMemberships";
 DELETE FROM public."LearnerGroups";
 DELETE FROM public."Learners";
 
-
-DELETE FROM public."Texts";
-DELETE FROM public."Images";
-DELETE FROM public."Videos";
 DELETE FROM public."BasicMetricCheckers";
 DELETE FROM public."BannedWordsCheckers";
 DELETE FROM public."RequiredWordsCheckers";
