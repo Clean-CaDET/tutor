@@ -69,7 +69,9 @@ public class EnrollmentService : IEnrollmentService
     {
         if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
         //Instead of delete maybe only change status?
-        _enrollmentRepository.DeleteEnrollment(learnerId, unitId);
+        var enrollment = _enrollmentRepository.GetEnrollment(unitId, learnerId);
+        if (enrollment is null) return Result.Fail(FailureCode.NotFound);
+        _enrollmentRepository.DeleteEnrollment(enrollment);
 
         return Result.Ok();
     }
