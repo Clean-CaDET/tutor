@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Linq;
-using Tutor.Core.UseCases.Management.Enrollments;
+using Tutor.Core.UseCases.Management.Groups;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Administrators.Courses;
 using Tutor.Web.Mappings.Enrollments;

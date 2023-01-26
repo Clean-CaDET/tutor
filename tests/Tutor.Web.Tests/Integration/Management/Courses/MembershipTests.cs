@@ -6,7 +6,7 @@ using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks;
-using Tutor.Core.UseCases.Management.Enrollments;
+using Tutor.Core.UseCases.Management.Groups;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Administrators.Courses;
 using Tutor.Web.Mappings.Stakeholders;

@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using Tutor.Core.UseCases.Monitoring;
-using Tutor.Web.Controllers.Instructors;
+using Tutor.Web.Controllers.Instructors.Monitoring;
 using Tutor.Web.Mappings.Enrollments;
 using Xunit;
 
@@ -35,7 +35,7 @@ public class GroupMonitoringTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope, userId);
 
-        var result = ((OkObjectResult)controller.GetLearnerProgress(-1, -1, learnerIds).Result)?.Value as List<KcmProgressDto>;
+        var result = ((OkObjectResult)controller.GetLearnerProgress(-1, learnerIds).Result)?.Value as List<KcmProgressDto>;
 
         result.ShouldNotBeNull();
         result.Count.ShouldBe(expectedProgressCount);

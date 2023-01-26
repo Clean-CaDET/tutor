@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
-using Tutor.Core.UseCases.Management.Enrollments;
+using Tutor.Core.UseCases.Management.Groups;
 using Tutor.Web.Mappings.Enrollments;
 
 namespace Tutor.Web.Controllers.Administrators.Courses;
