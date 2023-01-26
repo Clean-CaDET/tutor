@@ -52,7 +52,7 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 
-        return Result.Ok((T)stakeholder);
+        return Result.Ok(stakeholder);
     }
 
     public override Result<T> Update(T entity)

@@ -5,7 +5,7 @@ namespace Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 
 public interface IOwnedCourseRepository
 {
-    CourseOwnership GetCourseOwnership(int courseId, int instructoId);
+    CourseOwnership GetCourseOwnership(int courseId, int instructorId);
     List<Course> GetOwnedCourses(int instructorId);
     List<Instructor> GetOwners(int courseId);
     bool IsCourseOwner(int courseId, int instructorId);
