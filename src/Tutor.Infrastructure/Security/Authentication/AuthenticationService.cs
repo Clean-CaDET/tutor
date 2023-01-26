@@ -42,11 +42,11 @@ public class AuthenticationService : IAuthenticationService
         var id = 0;
         if (user.GetPrimaryRoleName().Equals("learner"))
         {
-            id = _userRepository.GetLearnerId(user.Id).Value;
+            id = _userRepository.GetLearnerId(user.Id);
         }
         else if (user.GetPrimaryRoleName().Equals("instructor"))
         {
-            id = _userRepository.GetInstructorId(user.Id).Value;
+            id = _userRepository.GetInstructorId(user.Id);
         }
         return id;
     }

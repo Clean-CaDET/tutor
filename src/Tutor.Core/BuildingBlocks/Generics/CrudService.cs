@@ -48,10 +48,12 @@ public class CrudService<T> where T : Entity
 
     public virtual Result Delete(int id)
     {
-        var result = _crudRepository.Delete(id);
-        if (result.IsFailed) return result;
+        var entity = _crudRepository.Get(id);
+        if (entity is null) return Result.Fail(FailureCode.NotFound);
 
-        result = _unitOfWork.Save();
+        _crudRepository.Delete(id);
+
+        var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 
         return Result.Ok();

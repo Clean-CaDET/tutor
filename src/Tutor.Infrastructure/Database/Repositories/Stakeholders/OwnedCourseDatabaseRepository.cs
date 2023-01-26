@@ -1,11 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using FluentResults;
 using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
-using Tutor.Core.BuildingBlocks;
 
 namespace Tutor.Infrastructure.Database.Repositories.Stakeholders;
 
@@ -18,6 +16,12 @@ public class OwnedCourseDatabaseRepository : IOwnedCourseRepository
         _dbContext = dbContext;
     }
     
+    public CourseOwnership GetCourseOwnership(int courseId, int instructorId)
+    {
+        return _dbContext.CourseOwnerships
+            .FirstOrDefault(o => o.Course.Id == courseId && o.InstructorId == instructorId);
+    }
+
     public List<Course> GetOwnedCourses(int instructorId)
     {
         return _dbContext.CourseOwnerships
@@ -25,7 +29,7 @@ public class OwnedCourseDatabaseRepository : IOwnedCourseRepository
             .Select(m => m.Course).ToList();
     }
 
-    public Result<List<Instructor>> GetOwners(int courseId)
+    public List<Instructor> GetOwners(int courseId)
     {
         return _dbContext.CourseOwnerships
             .Where(m => m.Course.Id.Equals(courseId))
@@ -67,13 +71,8 @@ public class OwnedCourseDatabaseRepository : IOwnedCourseRepository
         _dbContext.CourseOwnerships.Add(ownership);
     }
 
-    public Result DeleteCourseOwnership(int courseId, int instructorId)
+    public void DeleteCourseOwnership(CourseOwnership ownership)
     {
-        var entity =  _dbContext.CourseOwnerships
-            .FirstOrDefault(o => o.Course.Id == courseId && o.InstructorId == instructorId);
-        if (entity == null) return Result.Fail(FailureCode.NotFound);
-
-        _dbContext.CourseOwnerships.Remove(entity);
-        return Result.Ok();
+        _dbContext.CourseOwnerships.Remove(ownership);
     }
 }

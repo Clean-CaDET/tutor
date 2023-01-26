@@ -1,5 +1,4 @@
-﻿using FluentResults;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks;
@@ -48,18 +47,13 @@ public class CrudDatabaseRepository<T> : ICrudRepository<T> where T : Entity
     }
     public T Update(T storedEntity, T entity)
     {
-        // DDD does not go well with _dbContext tracking changes if entity is present in context
-        // How it works: if entity is tracked, changes are registered when setter is called
         DbContext.Entry(storedEntity).CurrentValues.SetValues(entity);
         return entity;
     }
 
-    public Result Delete(int id)
+    public void Delete(int id)
     {
         var entity = _dbSet.Find(id);
-        if (entity == null) return Result.Fail(FailureCode.NotFound);
-
         _dbSet.Remove(entity);
-        return Result.Ok();
     }
 }

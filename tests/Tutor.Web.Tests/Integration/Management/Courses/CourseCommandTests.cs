@@ -74,6 +74,23 @@ public class CourseCommandTests : BaseWebIntegrationTest
     }
 
     [Fact]
+    public void Update_fails_invalid_id()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var updatedEntity = new CourseDto
+        {
+            Id = -1000
+        };
+
+        var result = (ObjectResult)controller.Update(updatedEntity).Result;
+
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(409);
+    }
+
+    [Fact]
     public void Archives()
     {
         using var scope = Factory.Services.CreateScope();
@@ -106,6 +123,19 @@ public class CourseCommandTests : BaseWebIntegrationTest
         result.StatusCode.ShouldBe(200);
         var storedCourses = dbContext.Courses.FirstOrDefault(i => i.Id == -3);
         storedCourses.ShouldBeNull();
+    }
+
+    [Fact]
+    public void Delete_fails_invalid_id()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+
+        var result = (ObjectResult)controller.Delete(-1000);
+
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(404);
     }
 
     private CourseController SetupController(IServiceScope scope)

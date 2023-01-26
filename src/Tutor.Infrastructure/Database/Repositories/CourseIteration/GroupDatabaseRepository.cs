@@ -1,5 +1,4 @@
-﻿using FluentResults;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +13,11 @@ namespace Tutor.Infrastructure.Database.Repositories.CourseIteration;
 public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGroupRepository
 {
     public GroupDatabaseRepository(TutorContext dbContext) : base(dbContext) {}
+
+    public GroupMembership GetGroupMembership(int groupId, int learnerId)
+    {
+        return DbContext.GroupMemberships.FirstOrDefault(m => m.LearnerGroupId == groupId && m.Member.Id == learnerId);
+    }
 
     public List<LearnerGroup> GetCourseGroups(int courseId)
     {
@@ -59,12 +63,8 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
         DbContext.AttachRange(memberships);
     }
 
-    public Result DeleteMember(int groupId, int learnerId)
+    public void DeleteMember(GroupMembership membership)
     {
-        var membership = DbContext.GroupMemberships.First(m => m.LearnerGroupId == groupId && m.Member.Id == learnerId);
-        if (membership == null) return Result.Fail(FailureCode.NotFound);
-
         DbContext.GroupMemberships.Remove(membership);
-        return Result.Ok();
     }
 }

@@ -32,8 +32,6 @@ public class CourseOwnershipService : ICourseOwnershipService
         if (!isOwner) return Result.Fail(FailureCode.Forbidden);
 
         _courseRepository.Update(course);
-        // DEMO: context caching (with and without save called)
-        // (PgAdmin confirmation)
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 
@@ -65,10 +63,12 @@ public class CourseOwnershipService : ICourseOwnershipService
 
     public Result RemoveOwnership(int courseId, int instructorId)
     {
-        var result = _ownedCourseRepository.DeleteCourseOwnership(courseId, instructorId);
-        if (result.IsFailed) return result;
+        var ownership = _ownedCourseRepository.GetCourseOwnership(courseId, instructorId);
+        if (ownership is null) return Result.Fail(FailureCode.NotFound);
 
-        result = _unitOfWork.Save();
+        _ownedCourseRepository.DeleteCourseOwnership(ownership);
+
+        var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 
         return Result.Ok();

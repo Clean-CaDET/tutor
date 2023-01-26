@@ -41,9 +41,9 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
 
     public Result<T> Archive(int id, bool archive)
     {
-        var stakeholderResult = Get(id);
-        if (stakeholderResult.IsFailed) return stakeholderResult;
-        var stakeholder = (Stakeholder)stakeholderResult.Value;
+        var stakeholder = _crudRepository.Get(id);
+        if (stakeholder is null) return Result.Fail(FailureCode.NotFound);
+
         stakeholder.IsArchived = archive;
 
         var user = _userRepository.Get(stakeholder.UserId);
@@ -57,9 +57,8 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
 
     public override Result<T> Update(T entity)
     {
-        var dbStakeholderResult = Get(entity.Id);
-        if (dbStakeholderResult.IsFailed) return dbStakeholderResult;
-        var dbStakeholder = dbStakeholderResult.Value;
+        var dbStakeholder = _crudRepository.Get(entity.Id);
+        if (dbStakeholder is null) return Result.Fail(FailureCode.NotFound);
         var user = _userRepository.Get(dbStakeholder.UserId);
         entity.UserId = user.Id;
 
@@ -74,12 +73,12 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
 
     public override Result Delete(int id)
     {
-        var result = _crudRepository.Delete(id);
-        if (result is null) return Result.Fail(FailureCode.NotFound);
-        result = _userRepository.Delete(id);
-        if (result is null) return Result.Fail(FailureCode.NotFound);
+        var stakeholder = _crudRepository.Get(id);
+        if (stakeholder is null) return Result.Fail(FailureCode.NotFound);
+        _crudRepository.Delete(id);
+        _userRepository.Delete(stakeholder.UserId);
 
-        result = _unitOfWork.Save();
+        var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 
         return Result.Ok();

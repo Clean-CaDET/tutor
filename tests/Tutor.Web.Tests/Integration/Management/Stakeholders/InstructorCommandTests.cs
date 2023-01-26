@@ -114,7 +114,7 @@ public class InstructorCommandTests : BaseWebIntegrationTest
     }
 
     [Fact]
-    public void Archive_instructor()
+    public void Archives_instructor()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupInstructorController(scope);
@@ -135,7 +135,7 @@ public class InstructorCommandTests : BaseWebIntegrationTest
     }
 
     [Fact]
-    public void Delete_instructor()
+    public void Deletes_instructor()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupInstructorController(scope);
@@ -153,6 +153,19 @@ public class InstructorCommandTests : BaseWebIntegrationTest
         storedAccount.ShouldBeNull();
         var courseOwnerships = dbContext.CourseOwnerships.Where(c => c.InstructorId == -52);
         courseOwnerships.Count().ShouldBe(0);
+    }
+
+    [Fact]
+    public void Delete_instructor_fails_invalid_id()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupInstructorController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+
+        var result = (ObjectResult)controller.Delete(-1000);
+
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(404);
     }
 
     private InstructorController SetupInstructorController(IServiceScope scope)
