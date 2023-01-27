@@ -1,19 +1,56 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using DotNet.Testcontainers.Builders;
+using DotNet.Testcontainers.Configurations;
+using DotNet.Testcontainers.Containers;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Tutor.Infrastructure.Database;
 using Tutor.Infrastructure.Database.EventStore.Postgres;
-using Tutor.Infrastructure.Security;
+using Xunit;
 
 namespace Tutor.Web.Tests.Integration;
 
-public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Startup>
+public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Startup>, IAsyncLifetime
 {
+    private readonly TestcontainerDatabase _dbContainer;
+    private readonly TestcontainerDatabase _dbEventContainer;
+
+    public TutorApplicationTestFactory()
+    {
+        var config = InitConfiguration();
+        var testContainers = config.GetValue("TESTCONTAINERS", false);
+        if (testContainers)
+        {
+            _dbContainer = new TestcontainersBuilder<PostgreSqlTestcontainer>()
+                    .WithDatabase(new PostgreSqlTestcontainerConfiguration
+                    {
+                        Database = "smart_tutor_test",
+                        Username = "postgres",
+                        Password = "postgres",
+                    })
+                    .WithImage("postgres:11")
+                    .WithCleanUp(true)
+                    .Build();
+            _dbEventContainer = new TestcontainersBuilder<PostgreSqlTestcontainer>()
+                    .WithDatabase(new PostgreSqlTestcontainerConfiguration
+                    {
+                        Database = "smart_tutor_test_events",
+                        Username = "postgres",
+                        Password = "postgres",
+                    })
+                    .WithImage("postgres:11")
+                    .WithCleanUp(true)
+                    .Build();
+        }
+    }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureServices(services =>
@@ -45,7 +82,7 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
         }
     }
 
-    private static ServiceProvider BuildServiceProvider(IServiceCollection services)
+    private ServiceProvider BuildServiceProvider(IServiceCollection services)
     {
         var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<TutorContext>));
         services.Remove(descriptor);
@@ -57,31 +94,70 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
         return services.BuildServiceProvider();
     }
 
-    private static string CreateConnectionStringForTest()
+    private string CreateConnectionStringForTest()
     {
-        var server = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "localhost";
-        var port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "5432";
-        var database = EnvironmentConnection.GetSecret("DATABASE_SCHEMA") ?? "smart-tutor-test";
-        var user = EnvironmentConnection.GetSecret("DATABASE_USERNAME") ?? "postgres";
-        var password = EnvironmentConnection.GetSecret("DATABASE_PASSWORD") ?? "super";
-        var integratedSecurity = Environment.GetEnvironmentVariable("DATABASE_INTEGRATED_SECURITY") ?? "false";
-        var pooling = Environment.GetEnvironmentVariable("DATABASE_POOLING") ?? "true";
+        var config = InitConfiguration();
+        var testContainers = config.GetValue("TESTCONTAINERS", false);
+        if (testContainers) return _dbContainer.ConnectionString;
+
+        var server = config.GetValue("DATABASE_HOST", "localhost");
+        var port = config.GetValue("DATABASE_PORT", "5432");
+        var database = config.GetValue("DATABASE_SCHEMA", "smart-tutor-test");
+        var user = config.GetValue("DATABASE_USERNAME", "postgres");
+        var password = config.GetValue("DATABASE_PASSWORD", "super");
+        var integratedSecurity = config.GetValue("DATABASE_INTEGRATED_SECURITY", "false");
+        var pooling = config.GetValue("DATABASE_POOLING", "true");
 
         return
             $"Server={server};Port={port};Database={database};User ID={user};Password={password};Integrated Security={integratedSecurity};Pooling={pooling};Include Error Detail=True";
     }
 
-    private static string CreateConnectionStringForEvents()
+    private string CreateConnectionStringForEvents()
     {
-        var server = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "localhost";
-        var port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "5432";
-        var database = EnvironmentConnection.GetSecret("EVENT_DATABASE_SCHEMA") ?? "smart-tutor-test-events";
-        var user = EnvironmentConnection.GetSecret("DATABASE_USERNAME") ?? "postgres";
-        var password = EnvironmentConnection.GetSecret("DATABASE_PASSWORD") ?? "super";
-        var integratedSecurity = Environment.GetEnvironmentVariable("DATABASE_INTEGRATED_SECURITY") ?? "false";
-        var pooling = Environment.GetEnvironmentVariable("DATABASE_POOLING") ?? "true";
+        var config = InitConfiguration();
+        var testContainers = config.GetValue("TESTCONTAINERS", false);
+        if (testContainers) return _dbEventContainer.ConnectionString;
+
+        var server = config.GetValue("DATABASE_HOST", "localhost");
+        var port = config.GetValue("DATABASE_PORT", "5432");
+        var database = config.GetValue("EVENT_DATABASE_SCHEMA", "smart-tutor-test-events");
+        var user = config.GetValue("DATABASE_USERNAME", "postgres");
+        var password = config.GetValue("DATABASE_PASSWORD", "super");
+        var integratedSecurity = config.GetValue("DATABASE_INTEGRATED_SECURITY", "false");
+        var pooling = config.GetValue("DATABASE_POOLING", "true");
 
         return
             $"Server={server};Port={port};Database={database};User ID={user};Password={password};Integrated Security={integratedSecurity};Pooling={pooling};";
+    }
+
+    public static IConfiguration InitConfiguration()
+    {
+        var config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.test.json")
+            .AddEnvironmentVariables()
+            .Build();
+        return config;
+    }
+
+    public async Task InitializeAsync()
+    {
+        var config = InitConfiguration();
+        var testContainers = config.GetValue("TESTCONTAINERS", false);
+        if (testContainers)
+        {
+            await _dbContainer.StartAsync();
+            await _dbEventContainer.StartAsync();
+        }
+    }
+
+    public new async Task DisposeAsync()
+    {
+        var config = InitConfiguration();
+        var testContainers = config.GetValue("TESTCONTAINERS", false);
+        if (testContainers)
+        {
+            await _dbContainer.DisposeAsync();
+            await _dbEventContainer.StartAsync();
+        }
     }
 }

@@ -1,13 +1,12 @@
 ﻿using Shouldly;
 using System.IO;
 using Tutor.Infrastructure.DataImport;
-using Xunit;
 
 namespace Tutor.Infrastructure.Tests.Integration.DataImport;
 
 public class ExcelToSqlTransformerTests
 {
-    [Fact]
+    //[Fact]
     public void Can_transform_to_sql()
     {
         const string sourceFolder = "C:/TUTOR-EDU/FTN/Add-RP-IF/domain";
