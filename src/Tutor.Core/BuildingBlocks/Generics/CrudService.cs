@@ -2,7 +2,7 @@
 
 namespace Tutor.Core.BuildingBlocks.Generics;
 
-public class CrudService<T> : ICrudService<T> where T : Entity
+public class CrudService<T> where T : Entity
 {
     protected readonly IUnitOfWork _unitOfWork;
     protected readonly ICrudRepository<T> _crudRepository;

@@ -61,6 +61,8 @@ public class OwnershipTests : BaseWebIntegrationTest
         result.StatusCode.ShouldBe(200);
         var storedCourses = dbContext.CourseOwnerships.FirstOrDefault(o => o.Course.Id == -1 && o.InstructorId == -51);
         storedCourses.ShouldBeNull();
+        var storedInstructor = dbContext.Instructors.FirstOrDefault(i => i.Id == -51);
+        storedInstructor.ShouldNotBeNull();
     }
 
     private CourseOwnerController SetupController(IServiceScope scope)
