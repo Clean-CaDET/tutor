@@ -78,7 +78,7 @@ public class AssessmentService : IAssessmentService
         if (assessment.KnowledgeComponentId != kcId)
             return Result.Fail(FailureCode.NotFound);
         
-        _assessmentItemRepository.Delete(id);
+        _assessmentItemRepository.Delete(assessment);
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 

@@ -10,5 +10,5 @@ public interface ICrudRepository<TEntity> where TEntity : Entity
     void BulkCreate(List<TEntity> entities);
     TEntity Update(TEntity entity);
     TEntity Update(TEntity storedEntity, TEntity entity);
-    void Delete(int id);
+    void Delete(TEntity entity);
 }

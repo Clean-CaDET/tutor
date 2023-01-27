@@ -75,8 +75,9 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
     {
         var stakeholder = _crudRepository.Get(id);
         if (stakeholder is null) return Result.Fail(FailureCode.NotFound);
-        _crudRepository.Delete(id);
-        _userRepository.Delete(stakeholder.UserId);
+        _crudRepository.Delete(stakeholder);
+        var user = _userRepository.Get(stakeholder.UserId);
+        _userRepository.Delete(user);
 
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;

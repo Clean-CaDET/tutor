@@ -51,9 +51,8 @@ public class CrudDatabaseRepository<T> : ICrudRepository<T> where T : Entity
         return entity;
     }
 
-    public void Delete(int id)
+    public void Delete(T entity)
     {
-        var entity = _dbSet.Find(id);
         _dbSet.Remove(entity);
     }
 }

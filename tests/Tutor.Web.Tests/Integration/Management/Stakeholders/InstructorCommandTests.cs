@@ -105,7 +105,6 @@ public class InstructorCommandTests : BaseWebIntegrationTest
         {
             Id = -1000,
         };
-        dbContext.Database.BeginTransaction();
 
         var result = (ObjectResult)controller.Update(updatedInstructor).Result;
 

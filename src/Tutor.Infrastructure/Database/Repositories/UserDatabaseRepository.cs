@@ -61,9 +61,8 @@ public class UserDatabaseRepository : IUserRepository
         return _dbContext.Users.Find(id);
     }
 
-    public void Delete(int id)
+    public void Delete(User user)
     {
-        var user = _dbContext.Users.Find(id);
         _dbContext.Users.Remove(user);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Tutor.Core.BuildingBlocks.Generics;
 
-public class CrudService<T> where T : Entity
+public class CrudService<T> : ICrudService<T> where T : Entity
 {
     protected readonly IUnitOfWork _unitOfWork;
     protected readonly ICrudRepository<T> _crudRepository;
@@ -51,7 +51,7 @@ public class CrudService<T> where T : Entity
         var entity = _crudRepository.Get(id);
         if (entity is null) return Result.Fail(FailureCode.NotFound);
 
-        _crudRepository.Delete(id);
+        _crudRepository.Delete(entity);
 
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
