@@ -45,7 +45,7 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
                         Username = "postgres",
                         Password = "postgres",
                     })
-                    .WithImage("postgres:11")
+                    .WithImage("postgres")
                     .WithCleanUp(true)
                     .Build();
         }
