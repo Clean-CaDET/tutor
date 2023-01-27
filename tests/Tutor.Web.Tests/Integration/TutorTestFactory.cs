@@ -36,7 +36,7 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
                         Username = "postgres",
                         Password = "postgres",
                     })
-                    .WithImage("postgres")
+                    .WithImage("stellirin/postgres-windows")
                     .WithCleanUp(true)
                     .Build();
             _dbEventContainer = new TestcontainersBuilder<PostgreSqlTestcontainer>()
@@ -46,7 +46,7 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
                         Username = "postgres",
                         Password = "postgres",
                     })
-                    .WithImage("postgres")
+                    .WithImage("stellirin/postgres-windows")
                     .WithCleanUp(true)
                     .Build();
         }
