@@ -8,4 +8,5 @@ public class SaqDto : AssessmentItemDto
 {
     public string Text { get; set; }
     public List<string> AcceptableAnswers { get; set; }
+    public string Feedback { get; set; }
 }

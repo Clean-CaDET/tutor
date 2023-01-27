@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Quickenshtein;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,10 +9,13 @@ public class Saq : AssessmentItem
 {
     public string Text { get; private set; }
     public List<string> AcceptableAnswers { get; private set; }
+    public string Feedback { get; private set; }
+    public int Tolerance { get; private set; }
 
     public override void ClearFeedback()
     {
         AcceptableAnswers = null;
+        Feedback = string.Empty;
     }
 
     public override Evaluation Evaluate(Submission submission)
@@ -22,7 +26,7 @@ public class Saq : AssessmentItem
 
     private SaqEvaluation EvaluateSaq(SaqSubmission saqSubmission)
     {
-        return new SaqEvaluation(CalculateWordListCorrectness(saqSubmission.Answer), AcceptableAnswers);
+        return new SaqEvaluation(CalculateWordListCorrectness(saqSubmission.Answer), AcceptableAnswers, Feedback);
     }
 
     private double CalculateWordListCorrectness(string saqSubmissionAnswer)
@@ -35,15 +39,24 @@ public class Saq : AssessmentItem
         {
             var acceptableWords = acceptableAnswer.Split(',', StringSplitOptions.TrimEntries);
             maxCorrectness = submissionWords.Length > acceptableWords.Length ?
-                Math.Max(GetDegreeOfOverlap(submissionWords, acceptableWords), maxCorrectness) :
-                Math.Max(GetDegreeOfOverlap(acceptableWords, submissionWords), maxCorrectness);
+                Math.Max(GetDegreeOfOverlap(submissionWords, acceptableWords, Tolerance), maxCorrectness) :
+                Math.Max(GetDegreeOfOverlap(acceptableWords, submissionWords, Tolerance), maxCorrectness);
         }
 
         return maxCorrectness;
     }
 
-    private static double GetDegreeOfOverlap(string[] largerArray, string[] smallerOrEqualArray)
+    private static double GetDegreeOfOverlap(string[] largerArray, string[] smallerOrEqualArray, int tolerance)
     {
-        return (double)largerArray.Count(smallerOrEqualArray.Contains) / largerArray.Length;
+        int matching = 0;
+        foreach (var largerArrayValue in largerArray)
+        {
+            foreach (var smallerArrayValue in smallerOrEqualArray)
+            {
+                if (Levenshtein.GetDistance(largerArrayValue, smallerArrayValue, CalculationOptions.DefaultWithThreading) <= tolerance)
+                    matching += 1;
+            }
+        }
+        return (double)matching / largerArray.Length;
     }
 }

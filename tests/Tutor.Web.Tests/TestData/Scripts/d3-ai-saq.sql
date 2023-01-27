@@ -1,6 +1,6 @@
 ﻿INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
     (-212, -21, 12);
-INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
+INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers", "Feedback", "Tolerance") VALUES
     (-212, 'Iz sledećeg koda navedi sve nazive identifikatora (razdvojene zarezom) koji krše česte konvencije u pisanju programa.
 
 public List<string> GetCamelCaseWords(List<string> Words)
@@ -18,12 +18,12 @@ public List<string> GetCamelCaseWords(List<string> Words)
     }}
 
     return camelCaseWords;
-}}', '{{"Words, word_parts, idx, abc"}}');
+}}', '{{"Words, word_parts, idx, abc"}}', 'Smislen feedback', 0);
 
 
 INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
     (-995, -21, 13);
-INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
+INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers", "Feedback", "Tolerance") VALUES
         (-995, 'Posmatrajući sledeću strukturu paketa, navedi nazive klasa (razdvojene zarezom i bez .cs) koji krše konvenciju.
 
     - Hospital
@@ -52,4 +52,14 @@ INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VAL
     - Controllers
     - PatientRecordController.cs
     - EmployeeController.cs
-    - ScheduleController.cs', '{{"MedicalRecordService, PhysicianStorage"}}');
+    - ScheduleController.cs', '{{"MedicalRecordService, PhysicianStorage"}}', 'Feedback', 0);
+
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
+    (-213, -21, 14);
+INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers", "Feedback", "Tolerance") VALUES
+    (-213, 'Mogu se pogresiti 3 slova u odgovoru', '{{"odgovor"}}', 'Ovo je odgovor', 3);
+
+INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
+    (-214, -21, 15);
+INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers", "Feedback", "Tolerance") VALUES
+    (-214, 'Moze se pogresiti 1 slovo u svakoj reci odgovora', '{{"prva, druga, treca, cetvrta"}}', 'Ovo je odgovor', 1);
