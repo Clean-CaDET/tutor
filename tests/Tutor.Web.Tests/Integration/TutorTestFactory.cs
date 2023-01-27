@@ -21,11 +21,12 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
 {
     private readonly TestcontainerDatabase _dbContainer;
     private readonly TestcontainerDatabase _dbEventContainer;
+    private readonly IConfiguration _config;
 
     public TutorApplicationTestFactory()
     {
-        var config = InitConfiguration();
-        var testContainers = config.GetValue("TESTCONTAINERS", false);
+        _config = InitConfiguration();
+        var testContainers = _config.GetValue("TESTCONTAINERS", true);
         if (testContainers)
         {
             _dbContainer = new TestcontainersBuilder<PostgreSqlTestcontainer>()
@@ -96,17 +97,16 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
 
     private string CreateConnectionStringForTest()
     {
-        var config = InitConfiguration();
-        var testContainers = config.GetValue("TESTCONTAINERS", false);
+        var testContainers = _config.GetValue("TESTCONTAINERS", true);
         if (testContainers) return _dbContainer.ConnectionString;
 
-        var server = config.GetValue("DATABASE_HOST", "localhost");
-        var port = config.GetValue("DATABASE_PORT", "5432");
-        var database = config.GetValue("DATABASE_SCHEMA", "smart-tutor-test");
-        var user = config.GetValue("DATABASE_USERNAME", "postgres");
-        var password = config.GetValue("DATABASE_PASSWORD", "super");
-        var integratedSecurity = config.GetValue("DATABASE_INTEGRATED_SECURITY", "false");
-        var pooling = config.GetValue("DATABASE_POOLING", "true");
+        var server = _config.GetValue("DATABASE_HOST", "localhost");
+        var port = _config.GetValue("DATABASE_PORT", "5432");
+        var database = _config.GetValue("DATABASE_SCHEMA", "smart-tutor-test");
+        var user = _config.GetValue("DATABASE_USERNAME", "postgres");
+        var password = _config.GetValue("DATABASE_PASSWORD", "super");
+        var integratedSecurity = _config.GetValue("DATABASE_INTEGRATED_SECURITY", "false");
+        var pooling = _config.GetValue("DATABASE_POOLING", "true");
 
         return
             $"Server={server};Port={port};Database={database};User ID={user};Password={password};Integrated Security={integratedSecurity};Pooling={pooling};Include Error Detail=True";
@@ -114,23 +114,22 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
 
     private string CreateConnectionStringForEvents()
     {
-        var config = InitConfiguration();
-        var testContainers = config.GetValue("TESTCONTAINERS", false);
+        var testContainers = _config.GetValue("TESTCONTAINERS", true);
         if (testContainers) return _dbEventContainer.ConnectionString;
 
-        var server = config.GetValue("DATABASE_HOST", "localhost");
-        var port = config.GetValue("DATABASE_PORT", "5432");
-        var database = config.GetValue("EVENT_DATABASE_SCHEMA", "smart-tutor-test-events");
-        var user = config.GetValue("DATABASE_USERNAME", "postgres");
-        var password = config.GetValue("DATABASE_PASSWORD", "super");
-        var integratedSecurity = config.GetValue("DATABASE_INTEGRATED_SECURITY", "false");
-        var pooling = config.GetValue("DATABASE_POOLING", "true");
+        var server = _config.GetValue("DATABASE_HOST", "localhost");
+        var port = _config.GetValue("DATABASE_PORT", "5432");
+        var database = _config.GetValue("EVENT_DATABASE_SCHEMA", "smart-tutor-test-events");
+        var user =  _config.GetValue("DATABASE_USERNAME", "postgres");
+        var password = _config.GetValue("DATABASE_PASSWORD", "super");
+        var integratedSecurity = _config.GetValue("DATABASE_INTEGRATED_SECURITY", "false");
+        var pooling = _config.GetValue("DATABASE_POOLING", "true");
 
         return
             $"Server={server};Port={port};Database={database};User ID={user};Password={password};Integrated Security={integratedSecurity};Pooling={pooling};";
     }
 
-    public static IConfiguration InitConfiguration()
+    public IConfiguration InitConfiguration()
     {
         var config = new ConfigurationBuilder()
             .AddJsonFile("appsettings.test.json")
@@ -141,8 +140,7 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
 
     public async Task InitializeAsync()
     {
-        var config = InitConfiguration();
-        var testContainers = config.GetValue("TESTCONTAINERS", false);
+        var testContainers = _config.GetValue("TESTCONTAINERS", true);
         if (testContainers)
         {
             await _dbContainer.StartAsync();
@@ -152,12 +150,11 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
 
     public new async Task DisposeAsync()
     {
-        var config = InitConfiguration();
-        var testContainers = config.GetValue("TESTCONTAINERS", false);
+        var testContainers = _config.GetValue("TESTCONTAINERS", true);
         if (testContainers)
         {
             await _dbContainer.DisposeAsync();
-            await _dbEventContainer.StartAsync();
+            await _dbEventContainer.DisposeAsync();
         }
     }
 }
