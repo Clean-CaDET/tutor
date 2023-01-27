@@ -14,12 +14,10 @@ public class FeedbackDatabaseRepository : IFeedbackRepository
     public void SaveEmotionsFeedback(EmotionsFeedback emotionsFeedback)
     {
         _dbContext.EmotionsFeedbacks.Attach(emotionsFeedback);
-        _dbContext.SaveChanges();
     }
 
     public void SaveTutorImprovementFeedback(TutorImprovementFeedback tutorImprovementFeedback)
     {
         _dbContext.TutorImprovementFeedbacks.Attach(tutorImprovementFeedback);
-        _dbContext.SaveChanges();
     }
 }

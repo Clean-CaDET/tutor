@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.Core.UseCases.Learning;
+using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Learners.Learning;
 using Xunit;
 
@@ -17,6 +18,8 @@ public class SessionTests : BaseWebIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupSessionController(scope, "-2");
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var launchResult = controller.LaunchSession(-15);
         var terminationResult = controller.TerminateSession(-15);
@@ -30,6 +33,8 @@ public class SessionTests : BaseWebIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupSessionController(scope, "-2");
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var terminationResult = (ObjectResult)controller.TerminateSession(-15);
 

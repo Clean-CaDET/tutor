@@ -14,6 +14,11 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
 {
     public GroupDatabaseRepository(TutorContext dbContext) : base(dbContext) {}
 
+    public GroupMembership GetGroupMembership(int groupId, int learnerId)
+    {
+        return DbContext.GroupMemberships.FirstOrDefault(m => m.LearnerGroupId == groupId && m.Member.Id == learnerId);
+    }
+
     public List<LearnerGroup> GetCourseGroups(int courseId)
     {
         return DbContext.LearnerGroups.Where(g => g.CourseId == courseId).ToList();
@@ -56,14 +61,10 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
     public void CreateBulkMemberships(IEnumerable<GroupMembership> memberships)
     {
         DbContext.AttachRange(memberships);
-        DbContext.SaveChanges();
     }
 
-    public void DeleteMember(int groupId, int learnerId)
+    public void DeleteMember(GroupMembership membership)
     {
-        var membership = DbContext.GroupMemberships.First(m => m.LearnerGroupId == groupId && m.Member.Id == learnerId);
-        if (membership == null) throw new ArgumentException("Membership not found.");
         DbContext.GroupMemberships.Remove(membership);
-        DbContext.SaveChanges();
     }
 }

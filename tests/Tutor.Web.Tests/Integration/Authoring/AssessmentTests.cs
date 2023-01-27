@@ -42,9 +42,11 @@ public class AssessmentTests : BaseWebIntegrationTest
             KnowledgeComponentId = -11,
             Text = "TT-1"
         };
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Create(newEntity).Result)?.Value as McqDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldNotBe(0);
         result.KnowledgeComponentId.ShouldBe(newEntity.KnowledgeComponentId);
@@ -67,9 +69,11 @@ public class AssessmentTests : BaseWebIntegrationTest
             KnowledgeComponentId = -21,
             Feedback = "TT-1"
         };
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Update(updatedEntity).Result)?.Value as McqDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldBe(updatedEntity.Id);
         result.Feedback.ShouldBe(updatedEntity.Feedback);
@@ -87,12 +91,13 @@ public class AssessmentTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var result = (OkResult)controller.Delete(-15, -153);
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-
         var storedEntity = dbContext.MultiResponseQuestions.FirstOrDefault(i => i.Id == -153);
         storedEntity.ShouldBeNull();
     }

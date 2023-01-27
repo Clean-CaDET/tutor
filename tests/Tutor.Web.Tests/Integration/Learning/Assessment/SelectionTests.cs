@@ -5,6 +5,7 @@ using Shouldly;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.UseCases.Learning.Assessment;
+using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Learners.Learning.Assessment;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiResponseQuestions;
@@ -70,6 +71,8 @@ public class SelectionTests : BaseWebIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupAssessmentSelectionController(scope, "-2");
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var item = ((OkObjectResult)controller.GetSuitableAssessmentItem(-15).Result)?.Value as MrqDto;
         
@@ -83,6 +86,8 @@ public class SelectionTests : BaseWebIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupAssessmentSelectionController(scope, "-3");
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var response = controller.GetSuitableAssessmentItem(-21).Result;
         

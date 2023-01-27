@@ -5,13 +5,9 @@ using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Core.UseCases.Management.Stakeholders;
 
-public interface ILearnerService
+public interface ILearnerService : IStakeholderService<Learner>
 {
     Result<PagedResult<Learner>> GetPaged(int page, int pageSize);
     Result<PagedResult<Learner>> GetByIndexes(string[] indexes);
-    Result<Learner> Register(Learner learner, string username, string password);
     Result BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords);
-    Result<Learner> Update(Learner entity);
-    Result Delete(int id);
-    Result<Learner> Archive(int id, bool archive);
 }

@@ -11,11 +11,13 @@ public class AssessmentService : IAssessmentService
 {
     private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly IAssessmentItemRepository _assessmentItemRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public AssessmentService(IAssessmentItemRepository assessmentItemRepository, IOwnedCourseRepository ownedCourseRepository)
+    public AssessmentService(IAssessmentItemRepository assessmentItemRepository, IOwnedCourseRepository ownedCourseRepository, IUnitOfWork unitOfWork)
     {
         _assessmentItemRepository = assessmentItemRepository;
         _ownedCourseRepository = ownedCourseRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public Result<List<AssessmentItem>> GetForKc(int kcId, int instructorId)
@@ -32,6 +34,8 @@ public class AssessmentService : IAssessmentService
             return Result.Fail(FailureCode.Forbidden);
 
         _assessmentItemRepository.Create(item);
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
 
         return item;
     }
@@ -41,8 +45,9 @@ public class AssessmentService : IAssessmentService
         if (!_ownedCourseRepository.IsKcOwner(item.KnowledgeComponentId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        // TODO: Need to enable MrqItem VO serialization to avoid more complex logic
         _assessmentItemRepository.Update(item);
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
 
         return item;
     }
@@ -54,9 +59,11 @@ public class AssessmentService : IAssessmentService
 
         foreach (var assessmentItem in items)
         {
-            //UoW violation
             _assessmentItemRepository.Update(assessmentItem);
         }
+
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
 
         return Result.Ok(items);
     }
@@ -67,10 +74,13 @@ public class AssessmentService : IAssessmentService
             return Result.Fail(FailureCode.Forbidden);
 
         var assessment = _assessmentItemRepository.Get(id);
+        if (assessment == null) return Result.Fail(FailureCode.NotFound);
         if (assessment.KnowledgeComponentId != kcId)
             return Result.Fail(FailureCode.NotFound);
-
-        _assessmentItemRepository.Delete(id);
+        
+        _assessmentItemRepository.Delete(assessment);
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
 
         return Result.Ok();
     }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks;
@@ -32,29 +31,28 @@ public class CrudDatabaseRepository<T> : ICrudRepository<T> where T : Entity
 
     public T Create(T entity)
     {
-        _dbSet.Attach(entity);
-        DbContext.SaveChanges();
+        _dbSet.Add(entity);
         return entity;
     }
 
     public void BulkCreate(List<T> entities)
     {
-        _dbSet.AttachRange(entities);
-        DbContext.SaveChanges();
+        _dbSet.AddRange(entities);
     }
 
     public T Update(T entity)
     {
-        DbContext.Entry(entity).State = EntityState.Modified;
-        DbContext.SaveChanges();
+        DbContext.Update(entity);
+        return entity;
+    }
+    public T Update(T storedEntity, T entity)
+    {
+        DbContext.Entry(storedEntity).CurrentValues.SetValues(entity);
         return entity;
     }
 
-    public void Delete(int id)
+    public void Delete(T entity)
     {
-        var entity = _dbSet.Find(id);
-        if (entity == null) throw new ArgumentException("Entity not found: " + id);
         _dbSet.Remove(entity);
-        DbContext.SaveChanges();
     }
 }

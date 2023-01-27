@@ -26,9 +26,11 @@ public class GroupCommandTests : BaseWebIntegrationTest
         {
             Name = "TT-1"
         };
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Create(-1, newEntity).Result)?.Value as GroupDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldNotBe(0);
         result.Name.ShouldBe(newEntity.Name);
@@ -49,9 +51,11 @@ public class GroupCommandTests : BaseWebIntegrationTest
             Name = "TT-2",
             CourseId = -1
         };
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Update(updatedEntity).Result)?.Value as GroupDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-11);
         result.Name.ShouldBe(updatedEntity.Name);
@@ -67,12 +71,13 @@ public class GroupCommandTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var result = (OkResult)controller.Delete(-12);
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-
         var storedGroup = dbContext.LearnerGroups.FirstOrDefault(i => i.Id == -12);
         storedGroup.ShouldBeNull();
     }

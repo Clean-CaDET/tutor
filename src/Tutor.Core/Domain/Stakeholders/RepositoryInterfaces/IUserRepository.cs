@@ -4,9 +4,11 @@ namespace Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 
 public interface IUserRepository
 {
-    public User GetActiveByName(string username);
-    public User Register(string username, string password, UserRole role);
-    public List<User> BulkRegister(List<string> usernames, List<string> passwords, UserRole role);
-    public int GetInstructorId(int userId);
-    public int GetLearnerId(int userId);
+    User GetActiveByName(string username);
+    User Register(string username, string password, UserRole role);
+    List<User> BulkRegister(List<string> usernames, List<string> passwords, UserRole role);
+    int GetInstructorId(int userId);
+    int GetLearnerId(int userId);
+    User Get(int id);
+    void Delete(User user);
 }

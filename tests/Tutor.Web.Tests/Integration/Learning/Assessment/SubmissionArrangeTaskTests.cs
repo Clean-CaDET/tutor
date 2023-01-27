@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
+using Tutor.Infrastructure.Database;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ArrangeTasks;
 using Xunit;
 
@@ -18,6 +19,8 @@ public class SubmissionArrangeTaskTests : BaseAssessmentEvaluationIntegrationTes
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupAssessmentEvaluationController(scope, "-3");
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var actualEvaluation = ((ObjectResult)controller.SubmitAssessmentAnswer(assessmentItemId, submission).Result).Value as AtEvaluationDto;
 
@@ -32,6 +35,8 @@ public class SubmissionArrangeTaskTests : BaseAssessmentEvaluationIntegrationTes
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupAssessmentEvaluationController(scope, "-3");
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var response = (ObjectResult)controller.SubmitAssessmentAnswer(assessmentItemId, submission).Result;
 

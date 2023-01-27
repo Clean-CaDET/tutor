@@ -56,37 +56,31 @@ INSERT INTO public."KnowledgeComponents"(
 VALUES (-311, 'Odredi semantičku svrhu metode', '', -3, 2);
 
 INSERT INTO public."InstructionalItems"(
-    "Id", "KnowledgeComponentId", "Order")
-VALUES (-111, -11, 1);
-INSERT INTO public."Texts"(
-    "Id", "Content")
-VALUES (-111, 'Imenovanje je proces određivanja i dodeljivanja imena identifikatoru. Identifikatore pronalazimo svuda u kodu. Tako imenujemo datoteke, direktorijume, klase, metode i promenljive. U Java programima imenujemo pakete i JAR datoteke, dok kod C# jezika imenujemo namespace i DLL datoteke. Dobro ime treba da **objasni svrhu elementa** koji imenujemo i da pokuša da odgovori na pitanja: Zašto dati element postoji? Šta radi? Kako se koristi?');
+    "Id", "KnowledgeComponentId", "Order", "ItemType", "Content")
+VALUES (-101, -10, 1, 'Text', 'Test first text');
 INSERT INTO public."InstructionalItems"(
-    "Id", "KnowledgeComponentId", "Order")
-VALUES (-112, -11, 2);
-INSERT INTO public."Images"(
-    "Id", "Url", "Caption")
-VALUES (-112, 'https://i.ibb.co/vqjMTyJ/simple-names-sr.png', 'U većini slučajeva kada hoćemo da stavimo komentar, pravo rešenje je smišljanje jasnijeg imena.');
+    "Id", "KnowledgeComponentId", "Order", "ItemType", "Content")
+VALUES (-102, -10, 2, 'Text', 'Test second text');
+INSERT INTO public."InstructionalItems"(
+    "Id", "KnowledgeComponentId", "Order", "ItemType", "Url", "Caption")
+VALUES (-103, -10, 3, 'Image', 'image_url', 'Test third image');
+INSERT INTO public."InstructionalItems"(
+    "Id", "KnowledgeComponentId", "Order", "ItemType", "Content")
+VALUES (-111, -11, 1, 'Text', 'Imenovanje je proces određivanja i dodeljivanja imena identifikatoru. Identifikatore pronalazimo svuda u kodu. Tako imenujemo datoteke, direktorijume, klase, metode i promenljive. U Java programima imenujemo pakete i JAR datoteke, dok kod C# jezika imenujemo namespace i DLL datoteke. Dobro ime treba da **objasni svrhu elementa** koji imenujemo i da pokuša da odgovori na pitanja: Zašto dati element postoji? Šta radi? Kako se koristi?');
+INSERT INTO public."InstructionalItems"(
+    "Id", "KnowledgeComponentId", "Order", "ItemType", "Url", "Caption")
+VALUES (-112, -11, 2, 'Image', 'https://i.ibb.co/vqjMTyJ/simple-names-sr.png', 'U većini slučajeva kada hoćemo da stavimo komentar, pravo rešenje je smišljanje jasnijeg imena.');
 
 INSERT INTO public."InstructionalItems"(
-    "Id", "KnowledgeComponentId", "Order")
-VALUES (-151, -15, 4);
-INSERT INTO public."Images"(
-    "Id", "Url", "Caption")
-VALUES (-151, 'https://i.ibb.co/Tw9qktR/domain-names-sr.png', 'Lakše ćemo razumeti nove zahteve kada koristimo u kodu isti jezik kao naši klijenti.');
+    "Id", "KnowledgeComponentId", "Order", "ItemType", "Url", "Caption")
+VALUES (-151, -15, 4, 'Image', 'https://i.ibb.co/Tw9qktR/domain-names-sr.png', 'Lakše ćemo razumeti nove zahteve kada koristimo u kodu isti jezik kao naši klijenti.');
 INSERT INTO public."InstructionalItems"(
-    "Id", "KnowledgeComponentId", "Order")
-VALUES (-152, -15, 3);
-INSERT INTO public."Images"(
-    "Id", "Url", "Caption")
-VALUES (-152, 'https://i.ibb.co/f144vCk/names-example.png', 'Ovako objektno orijentisani programer imenuje stvari kada izbegava reči iz poslovnog domena.');
+    "Id", "KnowledgeComponentId", "Order", "ItemType", "Url", "Caption")
+VALUES (-152, -15, 3, 'Image', 'https://i.ibb.co/f144vCk/names-example.png', 'Ovako objektno orijentisani programer imenuje stvari kada izbegava reči iz poslovnog domena.');
 
 INSERT INTO public."InstructionalItems"(
-    "Id", "KnowledgeComponentId", "Order")
-VALUES (-311, -31, 1);
-INSERT INTO public."Texts"(
-    "Id", "Content")
-VALUES (-311, 'Imenovanje je proces određivanja i dodeljivanja imena identifikatoru. Identifikatore pronalazimo svuda u kodu. Tako imenujemo datoteke, direktorijume, klase, metode i promenljive. U Java programima imenujemo pakete i JAR datoteke, dok kod C# jezika imenujemo namespace i DLL datoteke. Dobro ime treba da **objasni svrhu elementa** koji imenujemo i da pokuša da odgovori na pitanja: Zašto dati element postoji? Šta radi? Kako se koristi?');
+    "Id", "KnowledgeComponentId", "Order", "ItemType", "Content")
+VALUES (-311, -31, 1, 'Text', 'Imenovanje je proces određivanja i dodeljivanja imena identifikatoru. Identifikatore pronalazimo svuda u kodu. Tako imenujemo datoteke, direktorijume, klase, metode i promenljive. U Java programima imenujemo pakete i JAR datoteke, dok kod C# jezika imenujemo namespace i DLL datoteke. Dobro ime treba da **objasni svrhu elementa** koji imenujemo i da pokuša da odgovori na pitanja: Zašto dati element postoji? Šta radi? Kako se koristi?');
 
 INSERT INTO public."KnowledgeUnits"(
     "Id", "Name", "Description", "CourseId", "Order")

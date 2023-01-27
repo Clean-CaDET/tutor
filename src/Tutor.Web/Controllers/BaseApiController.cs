@@ -15,6 +15,7 @@ public class BaseApiController : ControllerBase
         if (errors.Contains(FailureCode.Forbidden)) code = 403;
         if (errors.Contains(FailureCode.NotFound)) code = 404;
         if (errors.Contains(FailureCode.InvalidAssessmentSubmission)) code = 400;
+        if (errors.Contains(FailureCode.Conflict)) code = 409;
         return Problem(statusCode: code, detail: string.Join(";", errors));
     }
 }

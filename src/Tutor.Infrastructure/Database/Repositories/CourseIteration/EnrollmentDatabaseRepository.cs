@@ -1,11 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using FluentResults;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.Structure;
 using System;
-using Tutor.Core.BuildingBlocks;
 
 namespace Tutor.Infrastructure.Database.Repositories.CourseIteration;
 
@@ -65,29 +63,29 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
                       u.KnowledgeUnit.Id == unitId && u.LearnerId == learnerId);
     }
 
-    public Result<List<UnitEnrollment>> GetEnrollments(int unitId, int[] learnerIds)
+    public UnitEnrollment GetEnrollment(int unitId, int learnerId)
+    {
+        return _dbContext.UnitEnrollments
+            .FirstOrDefault(e => e.KnowledgeUnit.Id == unitId && e.LearnerId == learnerId);
+    }
+
+    public List<UnitEnrollment> GetEnrollments(int unitId, int[] learnerIds)
     {
         return _dbContext.UnitEnrollments
             .Where(e => e.KnowledgeUnit.Id == unitId && learnerIds.Contains(e.LearnerId))
             .ToList();
     }
 
-    public Result<UnitEnrollment> Create(UnitEnrollment newEnrollment)
+    public UnitEnrollment Create(UnitEnrollment newEnrollment)
     {
         _dbContext.UnitEnrollments.Add(newEnrollment);
         _dbContext.SaveChanges();
         return newEnrollment;
     }
 
-    public Result DeleteEnrollment(int learnerId, int unitId)
+    public void DeleteEnrollment(UnitEnrollment enrollment)
     {
-        var entity = _dbContext.UnitEnrollments
-            .FirstOrDefault(e => e.KnowledgeUnit.Id == unitId && e.LearnerId == learnerId);
-        if (entity == null) return Result.Fail(FailureCode.NotFound);
-
-        _dbContext.UnitEnrollments.Remove(entity);
+        _dbContext.UnitEnrollments.Remove(enrollment);
         _dbContext.SaveChanges();
-
-        return Result.Ok();
     }
 }

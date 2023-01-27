@@ -1,4 +1,4 @@
-﻿using FluentResults;
+using FluentResults;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.CourseIteration;
@@ -12,7 +12,7 @@ public class CourseService : CrudService<Course>, ICourseService
     private readonly ICourseRepository _courseRepository;
     private readonly ICrudRepository<LearnerGroup> _groupRepository;
 
-    public CourseService(ICourseRepository courseRepository, ICrudRepository<LearnerGroup> groupRepository) : base(courseRepository)
+    public CourseService(ICourseRepository courseRepository, ICrudRepository<LearnerGroup> groupRepository, IUnitOfWork unitOfWork) : base(courseRepository, unitOfWork)
     {
         _courseRepository = courseRepository;
         _groupRepository = groupRepository;
@@ -20,11 +20,12 @@ public class CourseService : CrudService<Course>, ICourseService
 
     public override Result<Course> Create(Course course)
     {
-        // Warning: Unit of work
-        var createdCourse = base.Create(course);
-        _groupRepository.Create(new LearnerGroup("Group 1", createdCourse.Value));
+        _groupRepository.Create(new LearnerGroup("Group 1", course));
 
-        return createdCourse;
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+
+        return course;
     }
 
     public Result<PagedResult<Course>> GetAll(bool includeArchived, int page, int pageSize)
@@ -34,11 +35,15 @@ public class CourseService : CrudService<Course>, ICourseService
 
     public Result<Course> Archive(int id, bool archive)
     {
-        var course = _courseRepository.Get(id);
-        if (course == null) return Result.Fail(FailureCode.NotFound);
+        var courseResult = Get(id);
+        if (courseResult.IsFailed) return courseResult;
 
+        var course = courseResult.Value;
         course.IsArchived = archive;
-        _courseRepository.Update(course);
+
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+
         return Result.Ok(course);
     }
 }
