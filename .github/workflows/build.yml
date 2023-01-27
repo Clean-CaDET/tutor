@@ -52,6 +52,6 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
       - name: Pull Docker Images
         shell: powershell
-        run: docker pull stellirin/postgres-windows # hard-coded image
+        run: docker pull postgres # hard-coded image
       - name: Test
         run: dotnet test --no-restore
