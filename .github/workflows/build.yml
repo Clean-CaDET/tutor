@@ -50,6 +50,5 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"Clean-CaDET_tutor" /o:"clean-cadet" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.exclusions="**/Migrations/**, **/*.sql"
           dotnet build --no-incremental
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-      - name: Test docker
-        shell: powershell
-        run: docker --version
+      - name: Test
+        run: dotnet test --no-restore
