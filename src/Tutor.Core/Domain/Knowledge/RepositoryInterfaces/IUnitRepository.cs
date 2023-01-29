@@ -6,6 +6,6 @@ namespace Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 
 public interface IUnitRepository : ICrudRepository<KnowledgeUnit>
 {
-    List<KnowledgeUnit> GetByCourseId(int courseId);
     KnowledgeUnit GetUnitWithKcs(int unitId);
+    KnowledgeUnit GetUnitWithKcsAndAssessments(int unitId);
 }

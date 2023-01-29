@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.Structure;
-using System;
 
 namespace Tutor.Infrastructure.Database.Repositories.CourseIteration;
 
@@ -16,7 +16,7 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
         _dbContext = dbContext;
     }
 
-    public int CountAllEnrollmentsInUnit(int unitId)
+    public int CountEnrollmentsForUnit(int unitId)
     {
         return _dbContext.UnitEnrollments.Count(enrollment => enrollment.KnowledgeUnit.Id == unitId);
     }
@@ -79,13 +79,12 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
     public UnitEnrollment Create(UnitEnrollment newEnrollment)
     {
         _dbContext.UnitEnrollments.Add(newEnrollment);
-        _dbContext.SaveChanges();
         return newEnrollment;
     }
 
-    public void DeleteEnrollment(UnitEnrollment enrollment)
+    public UnitEnrollment Update(UnitEnrollment enrollment)
     {
-        _dbContext.UnitEnrollments.Remove(enrollment);
-        _dbContext.SaveChanges();
+        _dbContext.UnitEnrollments.Update(enrollment);
+        return enrollment;
     }
 }

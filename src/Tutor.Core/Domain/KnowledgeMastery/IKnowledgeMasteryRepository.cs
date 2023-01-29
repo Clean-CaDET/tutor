@@ -9,4 +9,5 @@ public interface IKnowledgeMasteryRepository
     KnowledgeComponentMastery GetFullKcMastery(int knowledgeComponentId, int learnerId);
     KnowledgeComponentMastery GetKcMasteryForAssessmentItem(int assessmentItemId, int learnerId);
     void UpdateKcMastery(KnowledgeComponentMastery kcMastery);
+    void Create(KnowledgeComponentMastery kcMastery);
 }

@@ -10,7 +10,7 @@ public class UnitEnrollment : Entity
     public int KnowledgeUnitId { get; private set; }
     public KnowledgeUnit KnowledgeUnit { get; private set; }
     public DateTime Start { get; private set; }
-    public EnrollmentStatus Status { get; private set; }
+    public EnrollmentStatus Status { get; internal set; }
 
     private UnitEnrollment() {}
 

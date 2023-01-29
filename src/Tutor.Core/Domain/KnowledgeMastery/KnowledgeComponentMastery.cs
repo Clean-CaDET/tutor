@@ -37,6 +37,15 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         }
     }
 
+    private KnowledgeComponentMastery() {}
+
+    internal KnowledgeComponentMastery(int learnerId, int knowledgeComponentId, List<AssessmentItemMastery> assessmentItemMasteries)
+    {
+        LearnerId = learnerId;
+        KnowledgeComponentId = knowledgeComponentId;
+        AssessmentItemMasteries = assessmentItemMasteries;
+    }
+
     public override void Initialize()
     {
         SessionTracker?.Initialize(this);

@@ -61,4 +61,9 @@ public class KnowledgeMasteryDatabaseRepository : IKnowledgeMasteryRepository
         _dbContext.KcMasteries.Attach(kcMastery);
         _eventStore.Save(kcMastery);
     }
+
+    public void Create(KnowledgeComponentMastery kcMastery)
+    {
+        _dbContext.KcMasteries.Add(kcMastery);
+    }
 }
