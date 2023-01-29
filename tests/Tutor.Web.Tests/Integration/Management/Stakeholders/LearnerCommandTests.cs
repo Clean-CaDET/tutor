@@ -35,6 +35,7 @@ public class LearnerCommandTests : BaseWebIntegrationTest
 
         var result = ((OkObjectResult)controller.Register(newEntity).Result)?.Value as StakeholderAccountDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldNotBe(0);
         result.Email.ShouldBe(newEntity.Email);
@@ -45,6 +46,26 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Index == newEntity.Index);
         storedEntity.ShouldNotBeNull();
         storedEntity.UserId.ShouldBe(storedAccount.Id);
+    }
+
+    [Fact]
+    public void Register_fails_existing_username()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var newEntity = new StakeholderAccountDto
+        {
+            Index = "SU-1-2021",
+            Email = "SU-1-2021",
+            Name = "pera",
+            Surname = "peric",
+            Password = "123"
+        };
+
+        var result = (ObjectResult)controller.Register(newEntity).Result;
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(409);
     }
 
     [Fact]
@@ -64,10 +85,10 @@ public class LearnerCommandTests : BaseWebIntegrationTest
             },
             new()
             {
-                Index = "mika@mikic.com",
-                Email = "mika@mikic.com",
-                Name = "mika",
-                Surname = "mika",
+                Index = "zika@zikic.com",
+                Email = "zika@zikic.com",
+                Name = "zika",
+                Surname = "zikic",
                 Password = "123"
             },
             new()
@@ -80,15 +101,67 @@ public class LearnerCommandTests : BaseWebIntegrationTest
             }
         };
 
-        controller.BulkRegister(learners);
+        var result = (OkResult)controller.BulkRegister(learners);
 
-        var storedAccounts = dbContext.Users.Where(u => u.Username == "tana@tanic.com" || u.Username == "mika@mikic.com" || u.Username == "steva@stevic.com").ToList();
-        storedAccounts.ShouldNotBeNull();
-        storedAccounts.Count.ShouldBe(3);
-        var storedLearners = dbContext.Learners.Where(i => i.Index == "tana@tanic.com" || i.Index == "mika@mikic.com" || i.Index== "steva@stevic.com").ToList();
-        storedLearners.ShouldNotBeNull();
-        storedLearners.Count.ShouldBe(3);
-        storedLearners.All(l => storedAccounts.Any(a => a.Id == l.UserId)).ShouldBeTrue();
+        dbContext.ChangeTracker.Clear();
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(200);
+        foreach (var newEntity in learners)
+        {
+            var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == newEntity.Index);
+            storedAccount.ShouldNotBeNull();
+            var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Index == newEntity.Index);
+            storedEntity.ShouldNotBeNull();
+            storedEntity.UserId.ShouldBe(storedAccount.Id);
+        }
+    }
+
+    [Fact]
+    public void Register_bulk_fails_existing_username()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var newEntities = new List<StakeholderAccountDto>
+        {
+            new StakeholderAccountDto
+            {
+                Index = "pera@prvi.com",
+                Email = "pera@prvi.com",
+                Name = "pera",
+                Surname = "prvi",
+                Password = "123"
+            },
+            new StakeholderAccountDto
+            {
+                Index = "pera@drugi.com",
+                Email = "pera@drugi.com",
+                Name = "pera",
+                Surname = "drugi",
+                Password = "123"
+            },
+            new StakeholderAccountDto
+            {
+                Index = "pera@prvi.com",
+                Email = "pera@prvi.com",
+                Name = "pera",
+                Surname = "prvi",
+                Password = "123"
+            },
+        };
+
+        var result = (ObjectResult)controller.BulkRegister(newEntities);
+
+        dbContext.ChangeTracker.Clear();
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(409);
+        foreach (var newEntity in newEntities)
+        {
+            var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == newEntity.Index);
+            storedAccount.ShouldBeNull();
+            var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Index == newEntity.Index);
+            storedEntity.ShouldBeNull();
+        }
     }
 
     [Fact]
@@ -100,24 +173,47 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         var updatedEntity = new StakeholderAccountDto
         {
             Id = -2,
-            Email = "pera@peric.com",
-            Name = "pera",
-            Surname = "peric",
+            Email = "mika@mikic.com",
+            Name = "mika",
+            Surname = "mikic",
             Password = "123"
         };
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Update(updatedEntity).Result)?.Value as StakeholderAccountDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-2);
         result.Email.ShouldBe(updatedEntity.Email);
         result.Name.ShouldBe(updatedEntity.Name);
         result.Surname.ShouldBe(updatedEntity.Surname);
 
-        var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Email == updatedEntity.Email);
+        var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Id == updatedEntity.Id);
         storedEntity.ShouldNotBeNull();
+        var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == updatedEntity.Email);
+        storedAccount.ShouldNotBeNull();
         var oldEntity = dbContext.Learners.FirstOrDefault(i => i.Name == "SU-2-2021");
         oldEntity.ShouldBeNull();
+    }
+
+    [Fact]
+    public void Update_fails_invalid_id()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var updatedEntity = new StakeholderAccountDto
+        {
+            Id = -1000,
+        };
+        dbContext.Database.BeginTransaction();
+
+        var result = (ObjectResult)controller.Update(updatedEntity).Result;
+
+        dbContext.ChangeTracker.Clear();
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(404);
     }
 
     [Fact]
@@ -126,12 +222,16 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupLearnerController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Archive(-3, true).Result)?.Value as StakeholderAccountDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.IsArchived.ShouldBe(true);
-        //Should expand tests to include account deactivation
+        var storedAccount = dbContext.Users.FirstOrDefault(u => u.Id == result.UserId);
+        storedAccount.ShouldNotBeNull();
+        storedAccount.IsActive.ShouldBe(false);
         var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Id == -3);
         storedEntity.ShouldNotBeNull();
         storedEntity.IsArchived.ShouldBe(true);
@@ -143,14 +243,17 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupLearnerController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var result = (OkResult)controller.Delete(-6);
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-        //Should expand tests to include account deletion (and for instructor)
-        var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Id == -6);
-        storedEntity.ShouldBeNull();
+        var storedLearner = dbContext.Learners.FirstOrDefault(i => i.Id == -6);
+        storedLearner.ShouldBeNull();
+        var storedAccount = dbContext.Users.FirstOrDefault(i => i.Id == -6);
+        storedAccount.ShouldBeNull();
     }
 
     private LearnerController SetupLearnerController(IServiceScope scope)

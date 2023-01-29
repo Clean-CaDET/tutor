@@ -27,9 +27,11 @@ public class CourseCommandTests : BaseWebIntegrationTest
             Code = "TT-1",
             Name = "Test-1"
         };
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Create(newEntity).Result)?.Value as CourseDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldNotBe(0);
         result.Code.ShouldBe(newEntity.Code);
@@ -37,6 +39,9 @@ public class CourseCommandTests : BaseWebIntegrationTest
         var storedEntity = dbContext.Courses.FirstOrDefault(i => i.Code == newEntity.Code);
         storedEntity.ShouldNotBeNull();
         storedEntity.Id.ShouldBe(result.Id);
+        var storedLearnerGroup = dbContext.LearnerGroups.FirstOrDefault(g => g.Name == "Group 1");
+        storedLearnerGroup.ShouldNotBeNull();
+        storedLearnerGroup.CourseId.ShouldBe(result.Id);
     }
 
     [Fact]
@@ -52,9 +57,11 @@ public class CourseCommandTests : BaseWebIntegrationTest
             Name = "Test-2",
             Description = "Test-2"
         };
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Update(updatedEntity).Result)?.Value as CourseDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);
         result.Code.ShouldBe(updatedEntity.Code);
@@ -67,14 +74,33 @@ public class CourseCommandTests : BaseWebIntegrationTest
     }
 
     [Fact]
+    public void Update_fails_invalid_id()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var updatedEntity = new CourseDto
+        {
+            Id = -1000
+        };
+
+        var result = (ObjectResult)controller.Update(updatedEntity).Result;
+
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(409);
+    }
+
+    [Fact]
     public void Archives()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Archive(-2, true).Result)?.Value as CourseDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.IsArchived.ShouldBe(true);
         var storedCourse = dbContext.Courses.FirstOrDefault(i => i.Id == -2);
@@ -88,14 +114,28 @@ public class CourseCommandTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var result = (OkResult)controller.Delete(-3);
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-
         var storedCourses = dbContext.Courses.FirstOrDefault(i => i.Id == -3);
         storedCourses.ShouldBeNull();
+    }
+
+    [Fact]
+    public void Delete_fails_invalid_id()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+
+        var result = (ObjectResult)controller.Delete(-1000);
+
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(404);
     }
 
     private CourseController SetupController(IServiceScope scope)

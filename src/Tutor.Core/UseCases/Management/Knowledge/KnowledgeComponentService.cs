@@ -11,7 +11,7 @@ public class KnowledgeComponentService : CrudService<KnowledgeComponent>, IKnowl
 {
     private readonly IOwnedCourseRepository _ownedCourseRepository;
 
-    public KnowledgeComponentService(IKnowledgeComponentRepository kcRepository, IOwnedCourseRepository ownedCourseRepository) : base(kcRepository)
+    public KnowledgeComponentService(IKnowledgeComponentRepository kcRepository, IOwnedCourseRepository ownedCourseRepository, IUnitOfWork unitOfWork) : base(kcRepository, unitOfWork)
     {
         _ownedCourseRepository = ownedCourseRepository;
     }

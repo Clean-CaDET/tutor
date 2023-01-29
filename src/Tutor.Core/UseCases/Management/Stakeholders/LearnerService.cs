@@ -1,17 +1,17 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
-using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 
 namespace Tutor.Core.UseCases.Management.Stakeholders;
 
-public class LearnerService : CrudService<Learner>, ILearnerService
+public class LearnerService : StakeholderService<Learner>, ILearnerService
 {
     private readonly ILearnerRepository _learnerRepository;
     private readonly IUserRepository _userRepository;
-    public LearnerService(ILearnerRepository learnerRepository, IUserRepository userRepository) : base(learnerRepository)
+    public LearnerService(ILearnerRepository learnerRepository, IUnitOfWork unitOfWork, IUserRepository userRepository) 
+        : base(learnerRepository, unitOfWork, userRepository)
     {
         _learnerRepository = learnerRepository;
         _userRepository = userRepository;
@@ -22,36 +22,33 @@ public class LearnerService : CrudService<Learner>, ILearnerService
         return _learnerRepository.GetByIndexes(indexes);
     }
 
-    public Result<Learner> Register(Learner learner, string username, string password)
-    {
-        var user = _userRepository.Register(username, password, UserRole.Learner);
-        learner.UserId = user.Id;
-        // Warning: transactional consistency is not supported here (no rollback if Create fails).
-        return Create(learner);
-    }
-
     public Result BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords)
     {
+        _unitOfWork.BeginTransaction();
+
         var users = _userRepository.BulkRegister(usernames, passwords, UserRole.Learner);
+        var result = _unitOfWork.Save();
+        if (result.IsFailed)
+        {
+            _unitOfWork.Rollback();
+            return result;
+        }
+
         foreach (var learner in learners)
         {
             var user = users.Find(u => u.Username.Equals(learner.Index));
             if (user == null) continue;
             learner.UserId = user.Id;
         }
-        // Warning: transactional consistency is not supported here (no rollback if Create fails).
         _learnerRepository.BulkCreate(learners);
+        result = _unitOfWork.Save();
+        if (result.IsFailed)
+        {
+            _unitOfWork.Rollback();
+            return result;
+        }
 
+        _unitOfWork.Commit();
         return Result.Ok();
-    }
-
-    public Result<Learner> Archive(int id, bool archive)
-    {
-        var learner = _learnerRepository.Get(id);
-        if (learner == null) return Result.Fail(FailureCode.NotFound);
-        // Warning: Explicit account (User) deactivation is missing.
-        learner.IsArchived = archive;
-        _learnerRepository.Update(learner);
-        return Result.Ok(learner);
     }
 }

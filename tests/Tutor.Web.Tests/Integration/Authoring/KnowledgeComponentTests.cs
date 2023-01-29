@@ -41,9 +41,11 @@ public class KnowledgeComponentTests : BaseWebIntegrationTest
             Code = "TT-5",
             Name = "TT-5"
         };
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Create(newEntity).Result)?.Value as KnowledgeComponentDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldNotBe(0);
         result.Code.ShouldBe(newEntity.Code);
@@ -65,9 +67,11 @@ public class KnowledgeComponentTests : BaseWebIntegrationTest
             KnowledgeUnitId = -1,
             Code = "TT-10"
         };
+        dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.Update(updatedEntity).Result)?.Value as KnowledgeComponentDto;
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-10);
         result.Code.ShouldBe(updatedEntity.Code);
@@ -83,12 +87,13 @@ public class KnowledgeComponentTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var result = (OkResult)controller.Delete(-11);
 
+        dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-
         var storedEntity = dbContext.KnowledgeComponents.FirstOrDefault(i => i.Id == -11);
         storedEntity.ShouldBeNull();
     }

@@ -1,6 +1,7 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
 using System.Linq;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Stakeholders;
@@ -11,7 +12,7 @@ public class LearnerGroupService: CrudService<LearnerGroup>, ILearnerGroupServic
 {
     private readonly IGroupRepository _groupRepository;
 
-    public LearnerGroupService(IGroupRepository groupRepository) : base(groupRepository)
+    public LearnerGroupService(IGroupRepository groupRepository, IUnitOfWork unitOfWork) : base(groupRepository, unitOfWork)
     {
         _groupRepository = groupRepository;
     }
@@ -32,12 +33,23 @@ public class LearnerGroupService: CrudService<LearnerGroup>, ILearnerGroupServic
     {
         var memberships = learners.Select(l => new GroupMembership(l, groupId));
         _groupRepository.CreateBulkMemberships(memberships);
+
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+        
         return Result.Ok();
     }
 
     public Result DeleteMember(int groupId, int learnerId)
     {
-        _groupRepository.DeleteMember(groupId, learnerId);
+        var membership = _groupRepository.GetGroupMembership(groupId, learnerId);
+        if (membership is null) return Result.Fail(FailureCode.NotFound);
+
+        _groupRepository.DeleteMember(membership);
+
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+
         return Result.Ok();
     }
 }

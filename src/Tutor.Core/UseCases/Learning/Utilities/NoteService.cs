@@ -10,7 +10,7 @@ public class NoteService : CrudService<Note>, INoteService
 {
     private readonly INoteRepository _noteRepository;
 
-    public NoteService(INoteRepository noteRepository) : base(noteRepository)
+    public NoteService(INoteRepository noteRepository, IUnitOfWork unitOfWork) : base(noteRepository, unitOfWork)
     {
         _noteRepository = noteRepository;
     }

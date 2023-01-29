@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using Tutor.Core.UseCases.Learning.Utilities;
+using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Learners.Learning.Utilities.Notes;
 using Xunit;
 
@@ -19,8 +20,10 @@ public class NotesTests : BaseWebIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupNotesController(scope, "-2");
-
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
         var noteDto = new NoteDto() { Text = "Test", UnitId = -1 };
+        dbContext.Database.BeginTransaction();
+
         var note = ((OkObjectResult)controller.Create(noteDto).Result)?.Value as NoteDto;
 
         note.Text.ShouldBe("Test");
@@ -31,6 +34,8 @@ public class NotesTests : BaseWebIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupNotesController(scope, "-2");
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var result = (OkResult)controller.Delete(-1);
 
@@ -42,6 +47,8 @@ public class NotesTests : BaseWebIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupNotesController(scope, "-1");
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var noteDto = new NoteDto() { Text = "Test update", Id = -2, UnitId = -1 };
         var result = (OkResult)controller.Update(noteDto);

@@ -23,14 +23,15 @@ public class FeedbackTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupFeedbackController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var actualFeedback = ((OkObjectResult)controller.PostEmotionsFeedback(postedFeedback).Result).Value as EmotionsFeedbackDto;
 
+        dbContext.ChangeTracker.Clear();
         actualFeedback.ShouldNotBeNull();
         actualFeedback.LearnerId.ShouldBe(expectedFeedback.LearnerId);
         actualFeedback.KnowledgeComponentId.ShouldBe(expectedFeedback.KnowledgeComponentId);
         actualFeedback.Comment.ShouldBe(expectedFeedback.Comment);
-
         var feedback = dbContext.EmotionsFeedbacks.OrderBy(s => s.TimeStamp).Last(c => c.Comment == postedFeedback.Comment);
         feedback.Comment.ShouldBe(expectedFeedback.Comment);
     }
@@ -42,15 +43,16 @@ public class FeedbackTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupFeedbackController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        dbContext.Database.BeginTransaction();
 
         var actualFeedback = ((OkObjectResult)controller.PostTutorImprovementFeedback(postedFeedback).Result).Value as TutorImprovementFeedbackDto;
 
+        dbContext.ChangeTracker.Clear();
         actualFeedback.ShouldNotBeNull();
         actualFeedback.LearnerId.ShouldBe(expectedFeedback.LearnerId);
         actualFeedback.UnitId.ShouldBe(expectedFeedback.UnitId);
         actualFeedback.SoftwareComment.ShouldBe(expectedFeedback.SoftwareComment);
         actualFeedback.ContentComment.ShouldBe(expectedFeedback.ContentComment);
-
         var feedback = dbContext.TutorImprovementFeedbacks.OrderBy(s => s.TimeStamp).Last(c => c.SoftwareComment == postedFeedback.SoftwareComment && c.ContentComment == postedFeedback.ContentComment);
         feedback.SoftwareComment.ShouldBe(expectedFeedback.SoftwareComment);
         feedback.ContentComment.ShouldBe(expectedFeedback.ContentComment);
@@ -68,13 +70,13 @@ public class FeedbackTests : BaseWebIntegrationTest
     {
         new object[]
         {
-            new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -1, Comment = "I had a nice time studying using Smart Tutor"},
-            new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -1, Comment = "I had a nice time studying using Smart Tutor"}
+            new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -11, Comment = "I had a nice time studying using Smart Tutor"},
+            new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -11, Comment = "I had a nice time studying using Smart Tutor"}
         },
         new object[]
         {
-            new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -2, Comment = "I was bored"},
-            new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -2, Comment = "I was bored"}
+            new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -21, Comment = "I was bored"},
+            new EmotionsFeedbackDto {LearnerId = -1, KnowledgeComponentId = -21, Comment = "I was bored"}
         }
     };
 
