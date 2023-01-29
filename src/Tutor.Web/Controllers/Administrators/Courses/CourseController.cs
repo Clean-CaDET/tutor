@@ -49,7 +49,7 @@ public class CourseController : BaseApiController
         return Ok(_mapper.Map<CourseDto>(result.Value));
     }
 
-    [HttpPut("{id:int}/archive")]
+    [HttpPatch("{id:int}/archive")]
     public ActionResult<CourseDto> Archive(int id, [FromBody] bool archive)
     {
         var result = _courseService.Archive(id, archive);

@@ -19,6 +19,7 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
 
     public Result<PagedResult<Learner>> GetByIndexes(string[] indexes)
     {
+        if (indexes == null) return Result.Fail(FailureCode.InvalidArgument);
         return _learnerRepository.GetByIndexes(indexes);
     }
 
