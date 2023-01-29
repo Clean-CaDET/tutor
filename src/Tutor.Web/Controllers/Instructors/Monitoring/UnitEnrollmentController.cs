@@ -23,6 +23,7 @@ public class UnitEnrollmentController : BaseApiController
     }
 
     // POST because of int[] that can have 150 elements, making the query too long.
+    // A better solution might be to send groupId and 0 or a separate endpoint for All groups, but that clashes with pagination.
     [HttpPost("all")]
     public ActionResult<List<UnitEnrollmentDto>> GetEnrollments(int unitId, [FromBody] int[] learnerIds)
     {
