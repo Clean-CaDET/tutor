@@ -25,13 +25,13 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
 
     public Result BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords)
     {
-        _unitOfWork.BeginTransaction();
+        UnitOfWork.BeginTransaction();
 
         var users = _userRepository.BulkRegister(usernames, passwords, UserRole.Learner);
-        var result = _unitOfWork.Save();
+        var result = UnitOfWork.Save();
         if (result.IsFailed)
         {
-            _unitOfWork.Rollback();
+            UnitOfWork.Rollback();
             return result;
         }
 
@@ -42,14 +42,14 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
             learner.UserId = user.Id;
         }
         _learnerRepository.BulkCreate(learners);
-        result = _unitOfWork.Save();
+        result = UnitOfWork.Save();
         if (result.IsFailed)
         {
-            _unitOfWork.Rollback();
+            UnitOfWork.Rollback();
             return result;
         }
 
-        _unitOfWork.Commit();
+        UnitOfWork.Commit();
         return Result.Ok();
     }
 }

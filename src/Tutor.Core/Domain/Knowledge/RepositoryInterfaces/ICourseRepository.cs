@@ -6,5 +6,6 @@ namespace Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 
 public interface ICourseRepository : ICrudRepository<Course>
 {
-    PagedResult<Course> GetActive(int page, int pageSize);
+    PagedResult<Course> GetPagedSortedByDate(int page, int pageSize);
+    Course GetFullCourse(int courseId);
 }

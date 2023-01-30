@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Knowledge.Structure;
-using Tutor.Core.UseCases.Management.Stakeholders;
+using Tutor.Core.UseCases.Management.Courses;
 using Tutor.Web.Mappings.Knowledge.DTOs;
 
 namespace Tutor.Web.Controllers.Administrators.Courses;
@@ -26,7 +26,7 @@ public class CourseController : BaseApiController
     [HttpGet]
     public ActionResult<List<CourseDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
     {
-        var result = _courseService.GetAll(true, page, pageSize);
+        var result = _courseService.GetAll(page, pageSize);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
 
         var items = result.Value.Results.Select(_mapper.Map<CourseDto>).ToList();
@@ -36,7 +36,15 @@ public class CourseController : BaseApiController
     [HttpPost]
     public ActionResult<CourseDto> Create([FromBody] CourseDto course)
     {
-        var result = _courseService.Create(_mapper.Map<Course>(course));
+        var result = _courseService.CreateWithGroup(_mapper.Map<Course>(course));
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        return Ok(_mapper.Map<CourseDto>(result.Value));
+    }
+
+    [HttpPost("{id:int}/clone")]
+    public ActionResult<CourseDto> Clone(int id, [FromBody] CourseDto course)
+    {
+        var result = _courseService.Clone(id, _mapper.Map<Course>(course));
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok(_mapper.Map<CourseDto>(result.Value));
     }

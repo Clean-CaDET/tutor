@@ -34,7 +34,7 @@ public class LearnerGroupService: CrudService<LearnerGroup>, ILearnerGroupServic
         var memberships = learners.Select(l => new GroupMembership(l, groupId));
         _groupRepository.CreateBulkMemberships(memberships);
 
-        var result = _unitOfWork.Save();
+        var result = UnitOfWork.Save();
         if (result.IsFailed) return result;
         
         return Result.Ok();
@@ -47,7 +47,7 @@ public class LearnerGroupService: CrudService<LearnerGroup>, ILearnerGroupServic
 
         _groupRepository.DeleteMember(membership);
 
-        var result = _unitOfWork.Save();
+        var result = UnitOfWork.Save();
         if (result.IsFailed) return result;
 
         return Result.Ok();
