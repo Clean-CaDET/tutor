@@ -810,7 +810,7 @@ INSERT INTO public."MultiResponseQuestions"("Id", "Text", "Items") VALUES
 
 INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-975, -92, 1);
-INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers") VALUES
+INSERT INTO public."ShortAnswerQuestions"("Id", "Text", "AcceptableAnswers", "Feedback", "Tolerance") VALUES
 	(-975, 'Zadatak ti je da:
 
 1. Instaliraš i pokreneš Eclipse.
@@ -842,7 +842,7 @@ System.out.println("Prilivi od prodaje: " + mesecniPrilivEur + " EUR.");
 System.out.println();
 System.out.println("Profit: ");
 System.out.println(String.format("%.3f", mesecniPrilivEur - mesecniTroskoviEur));
-```', '{"181.356"}');
+```', '{"181.356"}', 'Tačan odgovor je 181.356.', 0);
 
 INSERT INTO public."AssessmentItems"("Id", "KnowledgeComponentId", "Order") VALUES
 	(-974, -91, 1);
