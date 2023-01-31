@@ -19,18 +19,19 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
 
     public Result<PagedResult<Learner>> GetByIndexes(string[] indexes)
     {
+        if (indexes == null) return Result.Fail(FailureCode.InvalidArgument);
         return _learnerRepository.GetByIndexes(indexes);
     }
 
     public Result BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords)
     {
-        _unitOfWork.BeginTransaction();
+        UnitOfWork.BeginTransaction();
 
         var users = _userRepository.BulkRegister(usernames, passwords, UserRole.Learner);
-        var result = _unitOfWork.Save();
+        var result = UnitOfWork.Save();
         if (result.IsFailed)
         {
-            _unitOfWork.Rollback();
+            UnitOfWork.Rollback();
             return result;
         }
 
@@ -41,14 +42,14 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
             learner.UserId = user.Id;
         }
         _learnerRepository.BulkCreate(learners);
-        result = _unitOfWork.Save();
+        result = UnitOfWork.Save();
         if (result.IsFailed)
         {
-            _unitOfWork.Rollback();
+            UnitOfWork.Rollback();
             return result;
         }
 
-        _unitOfWork.Commit();
+        UnitOfWork.Commit();
         return Result.Ok();
     }
 }

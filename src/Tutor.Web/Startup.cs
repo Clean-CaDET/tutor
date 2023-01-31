@@ -27,6 +27,7 @@ using Tutor.Core.UseCases.KnowledgeAnalysis;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Core.UseCases.Learning.Assessment;
 using Tutor.Core.UseCases.Learning.Utilities;
+using Tutor.Core.UseCases.Management.Courses;
 using Tutor.Core.UseCases.Management.Groups;
 using Tutor.Core.UseCases.Management.Knowledge;
 using Tutor.Core.UseCases.Management.Stakeholders;

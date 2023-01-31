@@ -5,7 +5,7 @@ namespace Tutor.Core.Domain.CourseIteration;
 
 public interface IEnrollmentRepository
 {
-    int CountAllEnrollmentsInUnit(int unitId);
+    int CountEnrollmentsForUnit(int unitId);
     List<Course> GetEnrolledCourses(int learnerId);
     Course GetCourseEnrolledAndActiveUnits(int courseId, int learnerId);
     bool HasActiveEnrollmentForUnit(int unitId, int learnerId);
@@ -13,5 +13,5 @@ public interface IEnrollmentRepository
     UnitEnrollment GetEnrollment(int unitId, int learnerId);
     List<UnitEnrollment> GetEnrollments(int unitId, int[] learnerIds);
     UnitEnrollment Create(UnitEnrollment newEnrollment);
-    void DeleteEnrollment(UnitEnrollment enrollment);
+    UnitEnrollment Update(UnitEnrollment enrollment);
 }

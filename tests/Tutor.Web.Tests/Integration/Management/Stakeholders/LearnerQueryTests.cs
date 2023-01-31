@@ -25,7 +25,7 @@ public class LearnerQueryTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupLearnerController(scope);
 
-        var result = ((OkObjectResult)controller.GetAll(0, 0, indexes).Result)?.Value as PagedResult<StakeholderAccountDto>;
+        var result = ((OkObjectResult)controller.GetSelected(indexes).Result)?.Value as PagedResult<StakeholderAccountDto>;
 
         result.ShouldNotBeNull();
         result.Results.Count.ShouldBe(expectedCount);
@@ -55,13 +55,20 @@ public class LearnerQueryTests : BaseWebIntegrationTest
             {
                 new[] { "SU-1-2021", "SU-222-2021" },
                 1
-            },
-            new object[]
-            {
-                null,
-                6
             }
         };
+    }
+
+    [Fact]
+    public void Retrieves_learners_with_bad_argument()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+
+        var result = (ObjectResult)controller.GetSelected(null).Result;
+
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(400);
     }
 
     [Fact]

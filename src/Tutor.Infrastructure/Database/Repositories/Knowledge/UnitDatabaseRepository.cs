@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.Core.Domain.Knowledge.Structure;
 
@@ -10,16 +9,20 @@ public class UnitDatabaseRepository : CrudDatabaseRepository<KnowledgeUnit>, IUn
 {
     public UnitDatabaseRepository(TutorContext dbContext) : base(dbContext) {}
     
-    public List<KnowledgeUnit> GetByCourseId(int courseId)
-    {
-        return DbContext.KnowledgeUnits.Where(u => u.CourseId == courseId).ToList();
-    }
-
     public KnowledgeUnit GetUnitWithKcs(int unitId)
     {
         return DbContext.KnowledgeUnits
             .Where(u => u.Id == unitId)
             .Include(u => u.KnowledgeComponents)
+            .FirstOrDefault();
+    }
+
+    public KnowledgeUnit GetUnitWithKcsAndAssessments(int unitId)
+    {
+        return DbContext.KnowledgeUnits
+            .Where(u => u.Id == unitId)
+            .Include(u => u.KnowledgeComponents)
+            .ThenInclude(kc => kc.AssessmentItems)
             .FirstOrDefault();
     }
 }

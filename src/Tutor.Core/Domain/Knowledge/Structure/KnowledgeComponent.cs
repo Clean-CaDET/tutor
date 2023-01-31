@@ -15,7 +15,7 @@ public class KnowledgeComponent : Entity
     public int? ExpectedDurationInMinutes { get; private set; }
 
     public int KnowledgeUnitId { get; private set; }
-    public int? ParentId { get; private set; }
+    public int? ParentId { get; internal set; }
     public List<AssessmentItem> AssessmentItems { get; private set; }
     public List<InstructionalItem> InstructionalItems { get; private set; }
 

@@ -42,7 +42,7 @@ public class UnitAnalysisService : IUnitAnalysisService
             _eventStore.Events.Where(e => kcIds.Contains(e.RootElement.GetProperty("KnowledgeComponentId").GetInt32()));
         var events = eventQuery.ToList<KnowledgeComponentEvent>();
 
-        var enrolledLearnersCount = _enrollmentRepository.CountAllEnrollmentsInUnit(unitId);
+        var enrolledLearnersCount = _enrollmentRepository.CountEnrollmentsForUnit(unitId);
             
         return CalculateKcStatistics(kcs, events, enrolledLearnersCount);
     }

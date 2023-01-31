@@ -17,6 +17,13 @@ public class AssessmentItemMastery : EventSourcedEntity
     public bool IsAttempted => SubmissionCount > 0;
     public bool IsPassed => Mastery > PassThreshold;
 
+    private AssessmentItemMastery() {}
+
+    internal AssessmentItemMastery(int itemId)
+    {
+        AssessmentItemId = itemId;
+    }
+
     public void RecordSelection()
     {
         Causes(new AssessmentItemSelected()

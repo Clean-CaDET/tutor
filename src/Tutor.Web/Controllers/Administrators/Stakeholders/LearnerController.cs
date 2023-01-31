@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -29,18 +28,20 @@ public class LearnerController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<PagedResult<StakeholderAccountDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize, [FromQuery] string[] indexes)
+    public ActionResult<PagedResult<StakeholderAccountDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
     {
-        Result<PagedResult<Learner>> result;
-        if (indexes == null || indexes.Length == 0)
-        {
-            result = _learnerService.GetPaged(page, pageSize);
-        }
-        else
-        {
-            result = _learnerService.GetByIndexes(indexes);
-        }
+        var result = _learnerService.GetPaged(page, pageSize);
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
 
+        var items = result.Value.Results.Select(_mapper.Map<StakeholderAccountDto>).ToList();
+        return Ok(new PagedResult<StakeholderAccountDto>(items, result.Value.TotalCount));
+    }
+
+    // Post because of potential URL length limit violation with query params
+    [HttpPost("selected")]
+    public ActionResult<PagedResult<StakeholderAccountDto>> GetSelected([FromBody] string[] indexes)
+    {
+        var result = _learnerService.GetByIndexes(indexes);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
 
         var items = result.Value.Results.Select(_mapper.Map<StakeholderAccountDto>).ToList();
