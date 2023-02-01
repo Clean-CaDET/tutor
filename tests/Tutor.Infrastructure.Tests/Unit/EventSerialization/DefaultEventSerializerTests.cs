@@ -4,52 +4,51 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Core.LearnerModel.DomainOverlay.KnowledgeComponentMasteries.Events.AssessmentItemEvents;
+using Tutor.Core.Domain.KnowledgeMastery.Events.AssessmentItemEvents;
+using Tutor.Infrastructure.Database.EventStore;
 using Tutor.Infrastructure.Database.EventStore.DefaultEventSerializer;
-using Tutor.Infrastructure.EventConfiguration;
 using Tutor.Infrastructure.Tests.TestData.EventStore;
 using Xunit;
 
-namespace Tutor.Infrastructure.Tests.Unit.EventSerialization
+namespace Tutor.Infrastructure.Tests.Unit.EventSerialization;
+
+public class DefaultEventSerializerTests
 {
-    public class DefaultEventSerializerTests
+    [Theory]
+    [MemberData(nameof(Events))]
+    public void Serializes_and_deserializes_events(DomainEvent @event, IImmutableDictionary<Type, string> eventRelatedTypes)
     {
-        [Theory]
-        [MemberData(nameof(Events))]
-        public void Serializes_and_deserializes_events(DomainEvent @event, IImmutableDictionary<Type, string> eventRelatedTypes)
+        var serializer = new DefaultEventSerializer(eventRelatedTypes);
+
+        var serialized = serializer.Serialize(@event);
+        var deserialized = serializer.Deserialize(serialized);
+
+        deserialized.ShouldNotBeNull();
+        deserialized.ShouldBeOfType(@event.GetType());
+        foreach (var property in @event.GetType().GetProperties())
         {
-            var serializer = new DefaultEventSerializer(eventRelatedTypes);
-
-            var serialized = serializer.Serialize(@event);
-            var deserialized = serializer.Deserialize(serialized);
-
-            deserialized.ShouldNotBeNull();
-            deserialized.ShouldBeOfType(@event.GetType());
-            foreach (var property in @event.GetType().GetProperties())
-            {
-                property.GetValue(deserialized).ShouldBe(property.GetValue(@event));
-            }
+            property.GetValue(deserialized).ShouldBe(property.GetValue(@event));
         }
+    }
 
-        public static IEnumerable<object[]> Events()
+    public static IEnumerable<object[]> Events()
+    {
+        var events = TestEvents.Examples.Select(e => new object[] { e, TestEvents.Types }).ToList();
+        events.Add(new object[]
         {
-            var events = TestEvents.Examples.Select(e => new object[] { e, TestEvents.Types }).ToList();
-            events.Add(new object[]
+            new AssessmentItemSelected()
             {
-                new AssessmentItemSelected()
-                {
-                    KnowledgeComponentId = 1,
-                    AssessmentItemId = 2,
-                    LearnerId = 3
-                },
-                EventSerializationConfiguration.EventRelatedTypes
-            });
-            events.Add(new object[]
-            {
-                new AssessmentItemAnswered(),
-                EventSerializationConfiguration.EventRelatedTypes
-            });
-            return events;
-        }
+                KnowledgeComponentId = 1,
+                AssessmentItemId = 2,
+                LearnerId = 3
+            },
+            EventSerializationConfiguration.EventRelatedTypes
+        });
+        events.Add(new object[]
+        {
+            new AssessmentItemAnswered(),
+            EventSerializationConfiguration.EventRelatedTypes
+        });
+        return events;
     }
 }

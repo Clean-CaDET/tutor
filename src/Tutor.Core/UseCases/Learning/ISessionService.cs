@@ -1,0 +1,9 @@
+﻿using FluentResults;
+
+namespace Tutor.Core.UseCases.Learning;
+
+public interface ISessionService
+{
+    Result LaunchSession(int knowledgeComponentId, int learnerId);
+    Result TerminateSession(int knowledgeComponentId, int learnerId);
+}

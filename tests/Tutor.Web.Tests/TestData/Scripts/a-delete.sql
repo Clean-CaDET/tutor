@@ -10,17 +10,12 @@ DELETE FROM public."GroupMemberships";
 DELETE FROM public."LearnerGroups";
 DELETE FROM public."Learners";
 
-
-DELETE FROM public."Texts";
-DELETE FROM public."Images";
-DELETE FROM public."Videos";
 DELETE FROM public."BasicMetricCheckers";
 DELETE FROM public."BannedWordsCheckers";
 DELETE FROM public."RequiredWordsCheckers";
 DELETE FROM public."ChallengeHints";
 DELETE FROM public."ChallengeFulfillmentStrategies";
 DELETE FROM public."Challenges";
-DELETE FROM public."MrqItems";
 DELETE FROM public."MultiResponseQuestions";
 DELETE FROM public."MultiChoiceQuestions";
 DELETE FROM public."ArrangeTaskElements";
