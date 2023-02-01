@@ -1,7 +1,16 @@
-﻿namespace Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems;
+﻿using System.Collections.Generic;
+using Tutor.Core.BuildingBlocks;
 
-public class HintDto
+namespace Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems;
+
+public class HintDto : ValueObject
 {
-    public string Markdown { get; private set; }
-    public int Order { get; private set; }
+    public string Markdown { get; set; }
+    public int Order { get; set; }
+    
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Markdown;
+        yield return Order;
+    }
 }

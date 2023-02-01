@@ -194,7 +194,7 @@ INSERT INTO public."AssessmentItemMasteries"(
 
 INSERT INTO public."AssessmentItemMasteries"(
 	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
-	VALUES (-11, -153, 0.6, 1, -6, '2021-12-19 21:28:50.379749+01', 0);
+	VALUES (-11, -153, 0.6, 1, -6, '2021-12-19 21:28:50.379749+01', 1);
 INSERT INTO public."AssessmentItemMasteries"(
 	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
 	VALUES (-12, -153, 0.0, 0, -66, null, 0);
@@ -206,7 +206,7 @@ INSERT INTO public."AssessmentItemMasteries"(
 	VALUES (-14, -154, 0.0, 0, -66, null, 0);
 INSERT INTO public."AssessmentItemMasteries"(
 	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
-	VALUES (-15, -155, 0.75, 2, -6, '2021-12-19 21:27:50.379749+01', 0);
+	VALUES (-15, -155, 0.75, 2, -6, '2021-12-19 21:27:50.379749+01', 2);
 INSERT INTO public."AssessmentItemMasteries"(
 	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
 	VALUES (-16, -155, 0.0, 0, -66, null, 0);

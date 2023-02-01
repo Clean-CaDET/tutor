@@ -61,7 +61,7 @@ public class RuleAssessmentFeedbackGenerator : IAssessmentFeedbackGenerator
     private static bool AnyHintsRemain(AssessmentItemMastery existingMastery, AssessmentItem item)
     {
         if(item.Hints == null) return false;
-        return item.Hints.Count < existingMastery.HintRequestCount;
+        return item.Hints.Count > existingMastery.HintRequestCount;
     }
 
     private static Feedback CreateHint(AssessmentItemMastery existingMastery, AssessmentItem item, double correctnessLevel)
