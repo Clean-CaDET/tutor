@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoMapper;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
@@ -23,6 +24,10 @@ public class AssessmentItemsProfile : Profile
         CreateMap<AssessmentItem, AssessmentItemDto>().IncludeAllDerived();
         CreateMap<SubmissionDto, Submission>().IncludeAllDerived();
         CreateMap<Evaluation, EvaluationDto>().IncludeAllDerived();
+        
+        CreateMap<Feedback, FeedbackDto>().ForMember(dest => dest.Type,
+            opt => opt.MapFrom(src => Enum.GetName(src.FeedbackType)));
+        CreateMap<Hint, HintDto>();
 
         #region Short answer question
         CreateMap<Saq, SaqDto>().ReverseMap();

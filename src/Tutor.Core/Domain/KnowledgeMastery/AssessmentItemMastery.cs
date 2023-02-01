@@ -13,7 +13,8 @@ public class AssessmentItemMastery : EventSourcedEntity
     public int AssessmentItemId { get; private set; }
     public double Mastery { get; private set; }
     public int SubmissionCount { get; private set; }
-    public DateTime? LastSubmissionTime { get; set; }
+    public DateTime? LastSubmissionTime { get; private set; }
+    public int HintRequestCount { get; private set; }
     public bool IsAttempted => SubmissionCount > 0;
     public bool IsPassed => Mastery > PassThreshold;
 
@@ -32,19 +33,23 @@ public class AssessmentItemMastery : EventSourcedEntity
         });
     }
 
-    public void RecordAnswerSubmission(Submission submission, Evaluation evaluation)
+    public void RecordAnswerSubmission(Submission submission, Feedback feedback)
     {
         Causes(new AssessmentItemAnswered
         {
             AssessmentItemId = AssessmentItemId,
             Submission = submission,
-            Evaluation = evaluation
+            Feedback = feedback
         });
     }
 
-    public Result RecordHintRequest()
+    public Result RecordHintRequest(string hint)
     {
-        Causes(new HintsRequested());
+        Causes(new HintsRequested
+        {
+            AssessmentItemId = AssessmentItemId,
+            Hint = hint
+        });
         return Result.Ok();
     }
 
@@ -61,8 +66,13 @@ public class AssessmentItemMastery : EventSourcedEntity
 
     private void When(AssessmentItemAnswered @event)
     {
-        if (Mastery <= @event.Evaluation.CorrectnessLevel) Mastery = @event.Evaluation.CorrectnessLevel;
+        if (Mastery <= @event.Feedback.Evaluation.CorrectnessLevel) Mastery = @event.Feedback.Evaluation.CorrectnessLevel;
         SubmissionCount++;
         LastSubmissionTime = @event.TimeStamp;
+    }
+
+    private void When(HintsRequested @event)
+    {
+        HintRequestCount++;
     }
 }

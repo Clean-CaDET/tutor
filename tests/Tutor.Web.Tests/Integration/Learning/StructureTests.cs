@@ -127,7 +127,6 @@ public class StructureTests : BaseWebIntegrationTest
         dbContext.ChangeTracker.Clear();
         var actualKcMastery = dbContext.KcMasteries.FirstOrDefault(kcm => kcm.LearnerId == learnerId
                                                                           && kcm.KnowledgeComponentId == knowledgeComponent.Id);
-            
         actualKcMastery.Mastery.ShouldBe(expectedKcMastery);
     }
     //Rethink this test

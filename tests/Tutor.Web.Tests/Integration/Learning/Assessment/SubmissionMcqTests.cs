@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using Tutor.Infrastructure.Database;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiChoiceQuestions;
 using Xunit;
 
@@ -23,10 +24,10 @@ public class SubmissionMcqTests : BaseAssessmentEvaluationIntegrationTest
         dbContext.Database.BeginTransaction();
 
         var actualEvaluation = ((ObjectResult)controller.SubmitAssessmentAnswer(assessmentItemId, submission).Result).Value
-            as McqEvaluationDto;
+            as FeedbackDto;
 
         actualEvaluation.ShouldNotBeNull();
-        actualEvaluation.CorrectnessLevel.ShouldBe(expectedEvaluation.CorrectnessLevel);
+        actualEvaluation.Evaluation.CorrectnessLevel.ShouldBe(expectedEvaluation.CorrectnessLevel);
     }
 
     public static IEnumerable<object[]> McqSubmissions()

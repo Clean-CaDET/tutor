@@ -20,7 +20,9 @@ public class HelpService : IHelpService
         var kcm = _knowledgeMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
         if (kcm == null) return Result.Fail("Cannot seek hints for assessment item with ID: " + assessmentItemId);
 
-        var result = kcm.RecordAssessmentItemHintRequest(assessmentItemId);
+        //TODO: Tie in with "Ask for Hint" endpoint
+
+        var result = kcm.RecordAssessmentItemHintRequest(assessmentItemId, "");
 
         if (result.IsSuccess) _knowledgeMasteryRepository.UpdateKcMastery(kcm);
         result = _unitOfWork.Save();

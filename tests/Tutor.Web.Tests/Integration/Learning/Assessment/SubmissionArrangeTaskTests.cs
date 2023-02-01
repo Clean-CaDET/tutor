@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using Tutor.Infrastructure.Database;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ArrangeTasks;
 using Xunit;
 
@@ -22,11 +23,10 @@ public class SubmissionArrangeTaskTests : BaseAssessmentEvaluationIntegrationTes
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
         dbContext.Database.BeginTransaction();
 
-        var actualEvaluation = ((ObjectResult)controller.SubmitAssessmentAnswer(assessmentItemId, submission).Result).Value as AtEvaluationDto;
+        var actualEvaluation = ((ObjectResult)controller.SubmitAssessmentAnswer(assessmentItemId, submission).Result).Value as FeedbackDto;
 
         actualEvaluation.ShouldNotBeNull();
-        actualEvaluation.CorrectnessLevel.ShouldBe(expectedEvaluation.CorrectnessLevel);
-        actualEvaluation.ContainerEvaluations.Count.ShouldBe(expectedEvaluation.ContainerEvaluations.Count);
+        actualEvaluation.Evaluation.CorrectnessLevel.ShouldBe(expectedEvaluation.CorrectnessLevel);
     }
 
     [Theory]
