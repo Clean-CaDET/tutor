@@ -136,6 +136,102 @@ public class SubmissionSaqTests : BaseAssessmentEvaluationIntegrationTest
                 {
                     CorrectnessLevel = 0
                 }
+            },
+            new object[]
+            {
+                -213,
+                new SaqSubmissionDto
+                {
+                    Answer = "odgovor"
+                },
+                new SaqEvaluationDto
+                {
+                    CorrectnessLevel = 1
+                }
+            },
+            new object[]
+            {
+                -213,
+                new SaqSubmissionDto
+                {
+                    Answer = "Odgovor"
+                },
+                new SaqEvaluationDto
+                {
+                    CorrectnessLevel = 1
+                }
+            },
+            new object[]
+            {
+                -213,
+                new SaqSubmissionDto
+                {
+                    Answer = "Odgovor."
+                },
+                new SaqEvaluationDto
+                {
+                    CorrectnessLevel = 1
+                }
+            },
+            new object[]
+            {
+                -213,
+                new SaqSubmissionDto
+                {
+                    Answer = "odfivor"
+                },
+                new SaqEvaluationDto
+                {
+                    CorrectnessLevel = 1
+                }
+            },
+            new object[]
+            {
+                -213,
+                new SaqSubmissionDto
+                {
+                    Answer = "ODGOVOR"
+                },
+                new SaqEvaluationDto
+                {
+                    CorrectnessLevel = 0
+                }
+            },
+            new object[]
+            {
+                -214,
+                new SaqSubmissionDto
+                {
+                    Answer = "prva,druga,treca,cetvrta"
+                },
+                new SaqEvaluationDto
+                {
+                    CorrectnessLevel = 1
+                }
+            },
+            new object[]
+            {
+                -214,
+                new SaqSubmissionDto
+                {
+                    Answer = "prvaa,druuga,ttreca,cetvrrta"
+                },
+                new SaqEvaluationDto
+                {
+                    CorrectnessLevel = 1
+                }
+            },
+            new object[]
+            {
+                -214,
+                new SaqSubmissionDto
+                {
+                    Answer = "PRva,DRugi,treci,cetvrta"
+                },
+                new SaqEvaluationDto
+                {
+                    CorrectnessLevel = 0.5
+                }
             }
         };
     }
