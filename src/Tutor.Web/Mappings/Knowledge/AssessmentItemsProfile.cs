@@ -25,9 +25,9 @@ public class AssessmentItemsProfile : Profile
         CreateMap<SubmissionDto, Submission>().IncludeAllDerived();
         CreateMap<Evaluation, EvaluationDto>().IncludeAllDerived();
         
-        CreateMap<Feedback, FeedbackDto>().ForMember(dest => dest.Type,
-            opt => opt.MapFrom(src => Enum.GetName(src.FeedbackType)));
-        CreateMap<Hint, HintDto>();
+        CreateMap<Feedback, FeedbackDto>()
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(src => Enum.GetName(src.FeedbackType)))
+            .ForMember(dest => dest.Hint, opt => opt.MapFrom(src => src.Hint != null ? src.Hint.Markdown : null));
 
         #region Short answer question
         CreateMap<Saq, SaqDto>().ReverseMap();

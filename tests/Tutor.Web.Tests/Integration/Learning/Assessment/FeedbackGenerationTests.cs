@@ -9,6 +9,7 @@ using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Learning.Assessment;
 
+[Collection("Sequential")]
 public class FeedbackGenerationTests : BaseAssessmentEvaluationIntegrationTest
 {
     public FeedbackGenerationTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
@@ -150,11 +151,7 @@ public class FeedbackGenerationTests : BaseAssessmentEvaluationIntegrationTest
                     {
                         CorrectnessLevel = 0.6
                     },
-                    Hint = new HintDto
-                    {
-                        Markdown = "Hint 3",
-                        Order = 3
-                    }
+                    Hint = "Hint 3"
                 }
             },
             new object[]
