@@ -29,6 +29,13 @@ public class NoteController : BaseApiController
         return Ok(result.Value.Select(_mapper.Map<NoteDto>).ToList());
     }
 
+    [HttpGet("export")]
+    public ActionResult<List<NoteDto>> ExportLearnersNotes(int unitId)
+    {
+        var result = _noteService.GetNotesExport(User.LearnerId(), unitId);
+        return File(result.Value, "text/markdown", "NotesFromUnit" + unitId + ".md");
+    }
+
     [HttpPost]
     public ActionResult<NoteDto> Create([FromBody] NoteDto noteDto)
     {

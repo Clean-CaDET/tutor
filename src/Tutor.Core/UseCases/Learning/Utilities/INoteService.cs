@@ -10,4 +10,5 @@ public interface INoteService
     Result<Note> Update(Note note);
     Result<List<Note>> GetAppropriateNotes(int learnerId, int unitId);
     Result Delete(int noteId, int learnerId);
+    Result<byte[]> GetNotesExport(int learnerId, int unitId);
 }
