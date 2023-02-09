@@ -20,6 +20,7 @@ using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.Core.Domain.KnowledgeMastery;
+using Tutor.Core.Domain.KnowledgeMastery.DomainServices;
 using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
 using Tutor.Core.Domain.LearningUtilities;
 using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
@@ -250,7 +251,9 @@ public class Startup
         services.AddScoped<INoteService, NoteService>();
 
         services.AddScoped<IGroupMonitoringService, GroupMonitoringService>();
+        // The domain services below should be selected from a configuration file or some other configurable mechanism.
         services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
+        services.AddScoped<IAssessmentFeedbackGenerator, RuleAssessmentFeedbackGenerator>();
         SetupMoveOn(services);
     }
 

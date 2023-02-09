@@ -127,7 +127,6 @@ public class StructureTests : BaseWebIntegrationTest
         dbContext.ChangeTracker.Clear();
         var actualKcMastery = dbContext.KcMasteries.FirstOrDefault(kcm => kcm.LearnerId == learnerId
                                                                           && kcm.KnowledgeComponentId == knowledgeComponent.Id);
-            
         actualKcMastery.Mastery.ShouldBe(expectedKcMastery);
     }
     //Rethink this test
@@ -153,8 +152,8 @@ public class StructureTests : BaseWebIntegrationTest
                 {
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1062},
-                        new() {Id = -1065}
+                        new() {Text = "-1062"},
+                        new() {Text = "-1065"}
                     }
                 },
                 0.5
@@ -167,8 +166,8 @@ public class StructureTests : BaseWebIntegrationTest
                 {
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1061},
-                        new() {Id = -1065}
+                        new() {Text = "-1061"},
+                        new() {Text = "-1065"}
                     }
                 },
                 0.5
@@ -181,9 +180,9 @@ public class StructureTests : BaseWebIntegrationTest
                 {
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1071},
-                        new() {Id = -1074},
-                        new() {Id = -1073}
+                        new() {Text = "-1071"},
+                        new() {Text = "-1073"},
+                        new() {Text = "-1074"}
                     }
                 },
                 0.5
@@ -196,23 +195,8 @@ public class StructureTests : BaseWebIntegrationTest
                 {
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1071},
-                        new() {Id = -1074},
-                        new() {Id = -1073}
-                    }
-                },
-                0.5
-            },
-            new object[]
-            {
-                -3,
-                -107,
-                new MrqSubmissionDto
-                {
-                    Answers = new List<MrqItemDto>
-                    {
-                        new() {Id = -1072},
-                        new() {Id = -1074},
+                        new() {Text = "-1072"},
+                        new() {Text = "-1074"}
                     }
                 },
                 0.8
@@ -225,8 +209,8 @@ public class StructureTests : BaseWebIntegrationTest
                 {
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1072},
-                        new() {Id = -1075},
+                        new() {Text = "-1072"},
+                        new() {Text = "-1075"}
                     }
                 },
                 1.0
@@ -239,8 +223,8 @@ public class StructureTests : BaseWebIntegrationTest
                 {
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1062},
-                        new() {Id = -1065}
+                        new() {Text = "-1062"},
+                        new() {Text = "-1065"}
                     }
                 },
                 0.5
@@ -253,8 +237,8 @@ public class StructureTests : BaseWebIntegrationTest
                 {
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1061},
-                        new() {Id = -1065}
+                        new() {Text = "-1061"},
+                        new() {Text = "-1065"}
                     }
                 },
                 0.5
@@ -267,9 +251,9 @@ public class StructureTests : BaseWebIntegrationTest
                 {
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1071},
-                        new() {Id = -1074},
-                        new() {Id = -1073}
+                        new() {Text = "-1071"},
+                        new() {Text = "-1073"},
+                        new() {Text = "-1074"}
                     }
                 },
                 0.5
@@ -282,23 +266,8 @@ public class StructureTests : BaseWebIntegrationTest
                 {
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1071},
-                        new() {Id = -1074},
-                        new() {Id = -1073}
-                    }
-                },
-                0.5
-            },
-            new object[]
-            {
-                -2,
-                -107,
-                new MrqSubmissionDto
-                {
-                    Answers = new List<MrqItemDto>
-                    {
-                        new() {Id = -1072},
-                        new() {Id = -1074},
+                        new() {Text = "-1072"},
+                        new() {Text = "-1074"}
                     }
                 },
                 0.8
@@ -311,8 +280,8 @@ public class StructureTests : BaseWebIntegrationTest
                 {
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1072},
-                        new() {Id = -1075},
+                        new() {Text = "-1072"},
+                        new() {Text = "-1075"}
                     }
                 },
                 1.0

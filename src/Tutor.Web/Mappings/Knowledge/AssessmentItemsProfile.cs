@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoMapper;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.AssessmentItems.ArrangeTasks;
@@ -23,6 +24,10 @@ public class AssessmentItemsProfile : Profile
         CreateMap<AssessmentItem, AssessmentItemDto>().IncludeAllDerived();
         CreateMap<SubmissionDto, Submission>().IncludeAllDerived();
         CreateMap<Evaluation, EvaluationDto>().IncludeAllDerived();
+        
+        CreateMap<Feedback, FeedbackDto>()
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(src => Enum.GetName(src.FeedbackType)))
+            .ForMember(dest => dest.Hint, opt => opt.MapFrom(src => src.Hint != null ? src.Hint.Markdown : null));
 
         #region Short answer question
         CreateMap<Saq, SaqDto>().ReverseMap();
@@ -40,10 +45,9 @@ public class AssessmentItemsProfile : Profile
         CreateMap<Mrq, MrqDto>().ReverseMap();
         CreateMap<MrqItem, MrqItemDto>().ReverseMap();
         CreateMap<MrqSubmissionDto, MrqSubmission>()
-            .ForMember(dest => dest.SubmittedAnswerIds, opt => opt.MapFrom(src => src.Answers.Select(a => a.Id)));
+            .ForMember(dest => dest.SubmittedAnswers, opt => opt.MapFrom(src => src.Answers.Select(a => a.Text)));
         CreateMap<MrqEvaluation, MrqEvaluationDto>();
         CreateMap<MrqItemEvaluation, MrqItemEvaluationDto>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.FullItem.Id))
             .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.FullItem.Text))
             .ForMember(dest => dest.Feedback, opt => opt.MapFrom(src => src.FullItem.Feedback));
         #endregion

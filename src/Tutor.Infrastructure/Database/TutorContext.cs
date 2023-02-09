@@ -99,6 +99,16 @@ public class TutorContext : DbContext
     private static void ConfigureKnowledge(ModelBuilder modelBuilder)
     {
         ConfigureInstructionalItems(modelBuilder);
+
+        modelBuilder.Entity<AssessmentItem>()
+            .Property(item => item.Hints)
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                v => JsonSerializer.Deserialize<List<Hint>>(v, (JsonSerializerOptions)null),
+                new ValueComparer<List<Hint>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c));
         ConfigureQuestions(modelBuilder);
         ConfigureArrangeTask(modelBuilder);
         ConfigureChallenge(modelBuilder);

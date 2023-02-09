@@ -81,7 +81,6 @@ public class UnitEnrollmentCommandTests : BaseWebIntegrationTest
         enrollment.Count.ShouldBe(1);
         enrollment[0].Status.ShouldBe(EnrollmentStatus.Hidden);
 
-
         var kcIds = new[] { -21, -211 };
         var relatedMasteries = dbContext.KcMasteries
             .Where(kcm => kcm.LearnerId == -2 && kcIds.Contains(kcm.KnowledgeComponentId)).ToList();

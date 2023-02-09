@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using Tutor.Infrastructure.Database;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiResponseQuestions;
 using Xunit;
 
@@ -22,16 +23,10 @@ public class SubmissionMrqTests : BaseAssessmentEvaluationIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
         dbContext.Database.BeginTransaction();
 
-        var actualEvaluation = ((ObjectResult)controller.SubmitAssessmentAnswer(assessmentItemId, submission).Result).Value as MrqEvaluationDto;
+        var actualEvaluation = ((ObjectResult)controller.SubmitAssessmentAnswer(assessmentItemId, submission).Result).Value as FeedbackDto;
 
         actualEvaluation.ShouldNotBeNull();
-        actualEvaluation.ItemEvaluations.Count.ShouldBe(expectedEvaluation.ItemEvaluations.Count);
-        foreach (var actualItem in actualEvaluation.ItemEvaluations)
-        {
-            var relatedItem = expectedEvaluation.ItemEvaluations.Find(i => i.Id == actualItem.Id);
-            relatedItem.ShouldNotBeNull();
-            relatedItem.SubmissionWasCorrect.ShouldBe(actualItem.SubmissionWasCorrect);
-        }
+        actualEvaluation.Evaluation.CorrectnessLevel.ShouldBe(expectedEvaluation.CorrectnessLevel);
     }
 
     public static IEnumerable<object[]> MrqSubmissions()
@@ -45,22 +40,23 @@ public class SubmissionMrqTests : BaseAssessmentEvaluationIntegrationTest
                 {
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1531},
-                        new() {Id = -1532},
-                        new() {Id = -1533},
-                        new() {Id = -1534},
-                        new() {Id = -1535}
+                        new() {Text = "-1531"},
+                        new() {Text = "-1532"},
+                        new() {Text = "-1533"},
+                        new() {Text = "-1534"},
+                        new() {Text = "-1535"}
                     }
                 },
                 new MrqEvaluationDto
                 {
+                    CorrectnessLevel = 0.4,
                     ItemEvaluations = new List<MrqItemEvaluationDto>
                     {
-                        new() {Id = -1531, SubmissionWasCorrect = false},
-                        new() {Id = -1532, SubmissionWasCorrect = true},
-                        new() {Id = -1533, SubmissionWasCorrect = false},
-                        new() {Id = -1534, SubmissionWasCorrect = false},
-                        new() {Id = -1535, SubmissionWasCorrect = true}
+                        new() {Text = "-1531", SubmissionWasCorrect = false},
+                        new() {Text = "-1532", SubmissionWasCorrect = true},
+                        new() {Text = "-1533", SubmissionWasCorrect = false},
+                        new() {Text = "-1534", SubmissionWasCorrect = false},
+                        new() {Text = "-1535", SubmissionWasCorrect = true}
                     }
                 }
             },
@@ -71,19 +67,20 @@ public class SubmissionMrqTests : BaseAssessmentEvaluationIntegrationTest
                 {
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1532},
-                        new() {Id = -1535}
+                        new() {Text = "-1532"},
+                        new() {Text = "-1535"}
                     }
                 },
                 new MrqEvaluationDto
                 {
+                    CorrectnessLevel = 1,
                     ItemEvaluations = new List<MrqItemEvaluationDto>
                     {
-                        new() {Id = -1531, SubmissionWasCorrect = true},
-                        new() {Id = -1532, SubmissionWasCorrect = true},
-                        new() {Id = -1533, SubmissionWasCorrect = true},
-                        new() {Id = -1534, SubmissionWasCorrect = true},
-                        new() {Id = -1535, SubmissionWasCorrect = true}
+                        new() {Text = "-1531", SubmissionWasCorrect = true},
+                        new() {Text = "-1532", SubmissionWasCorrect = true},
+                        new() {Text = "-1533", SubmissionWasCorrect = true},
+                        new() {Text = "-1534", SubmissionWasCorrect = true},
+                        new() {Text = "-1535", SubmissionWasCorrect = true}
                     }
                 }
             },
@@ -93,13 +90,14 @@ public class SubmissionMrqTests : BaseAssessmentEvaluationIntegrationTest
                 new MrqSubmissionDto(),
                 new MrqEvaluationDto
                 {
+                    CorrectnessLevel = 0.6,
                     ItemEvaluations = new List<MrqItemEvaluationDto>
                     {
-                        new() {Id = -1531, SubmissionWasCorrect = true},
-                        new() {Id = -1532, SubmissionWasCorrect = false},
-                        new() {Id = -1533, SubmissionWasCorrect = true},
-                        new() {Id = -1534, SubmissionWasCorrect = true},
-                        new() {Id = -1535, SubmissionWasCorrect = false}
+                        new() {Text = "-1531", SubmissionWasCorrect = true},
+                        new() {Text = "-1532", SubmissionWasCorrect = false},
+                        new() {Text = "-1533", SubmissionWasCorrect = true},
+                        new() {Text = "-1534", SubmissionWasCorrect = true},
+                        new() {Text = "-1535", SubmissionWasCorrect = false}
                     }
                 }
             }

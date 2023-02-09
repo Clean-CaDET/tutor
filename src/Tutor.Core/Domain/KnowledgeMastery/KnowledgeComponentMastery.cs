@@ -94,13 +94,13 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         return Result.Ok();
     }
 
-    public Result RecordAssessmentItemAnswerSubmission(int assessmentItemId, Submission submission, Evaluation evaluation)
+    public Result RecordAssessmentItemAnswerSubmission(int assessmentItemId, Submission submission, Feedback feedback)
     {
         var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
         if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
 
         JoinOrLaunchSession();
-        aim.RecordAnswerSubmission(submission, evaluation);
+        aim.RecordAnswerSubmission(submission, feedback);
         TryPass();
         TryComplete();
 
@@ -130,13 +130,13 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         Causes(new KnowledgeComponentSatisfied());
     }
 
-    public Result RecordAssessmentItemHintRequest(int assessmentItemId)
+    public Result RecordAssessmentItemHintRequest(int assessmentItemId, string hint)
     {
         var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
         if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
 
         JoinOrLaunchSession();
-        return aim.RecordHintRequest();
+        return aim.RecordHintRequest(hint);
     }
 
     public Result RecordAssessmentItemSolutionRequest(int assessmentItemId)
@@ -211,8 +211,18 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         if (Mastery > 0.97) Mastery = 1; // Resolves rounding errors.
     }
 
+    private void When(HintsRequested @event)
+    {
+        var itemId = @event.AssessmentItemId;
+        var assessmentMastery = AssessmentItemMasteries.Find(am => am.AssessmentItemId == itemId);
+        if (assessmentMastery == null)
+            throw new EventSourcingException("No mastery for assessment item with id: " + itemId + ". Were masteries created and loaded correctly?");
+
+        assessmentMastery.Apply(@event);
+    }
+
     private static void When(KnowledgeComponentEvent @event)
     {
-        // No action for AssessmentItemSelected, InstructionalItemsSelected, SoughtHelp, InstructorMessageEvent, SessionTerminated, SessionAbandoned.
+        // No action for AssessmentItemSelected, InstructionalItemsSelected, SolutionRequest, InstructorMessageEvent, SessionTerminated, SessionAbandoned.
     }
 }

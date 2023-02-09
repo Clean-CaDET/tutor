@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using Tutor.Infrastructure.Database;
+using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ShortAnswerQuestions;
 using Xunit;
 
@@ -22,10 +23,10 @@ public class SubmissionSaqTests : BaseAssessmentEvaluationIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
         dbContext.Database.BeginTransaction();
 
-        var actualEvaluation = ((ObjectResult)controller.SubmitAssessmentAnswer(assessmentItemId, submission).Result).Value as SaqEvaluationDto;
+        var feedback = ((ObjectResult)controller.SubmitAssessmentAnswer(assessmentItemId, submission).Result).Value as FeedbackDto;
 
-        actualEvaluation.ShouldNotBeNull();
-        actualEvaluation.CorrectnessLevel.ShouldBe(expectedEvaluation.CorrectnessLevel);
+        feedback.ShouldNotBeNull();
+        feedback.Evaluation.CorrectnessLevel.ShouldBe(expectedEvaluation.CorrectnessLevel);
     }
 
     public static IEnumerable<object[]> SaqSubmissions()

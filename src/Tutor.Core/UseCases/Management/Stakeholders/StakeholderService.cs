@@ -84,5 +84,4 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
 
         return Result.Ok();
     }
-
 }
