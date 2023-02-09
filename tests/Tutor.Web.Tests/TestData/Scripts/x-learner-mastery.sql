@@ -222,7 +222,7 @@ INSERT INTO public."AssessmentItemMasteries"(
 	VALUES (-19, -211, 0.0, 0, -7, null, 0);
 INSERT INTO public."AssessmentItemMasteries"(
 	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
-	VALUES (-20, -211, 0.0, 0, -67, null, 0);
+	VALUES (-20, -211, 0.0, 1, -67, '2021-12-19 21:30:50.379749+01', 0);
 INSERT INTO public."AssessmentItemMasteries"(
 	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
 	VALUES (-21, -212, 0.0, 0, -7, null, 0);

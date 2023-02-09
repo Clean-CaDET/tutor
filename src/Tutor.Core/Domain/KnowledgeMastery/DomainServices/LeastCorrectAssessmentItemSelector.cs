@@ -10,12 +10,22 @@ public class LeastCorrectAssessmentItemSelector : IAssessmentItemSelector
     {
         if (assessmentMasteries == null || assessmentMasteries.Count == 0) throw new ArgumentException("Empty AI mastery list.");
 
-        if (assessmentMasteries.Count > 1) assessmentMasteries = RemoveLastSubmitted(assessmentMasteries);
-
         if (isPassed) return FindItemWithOldestAttempt(assessmentMasteries);
 
+        if (HasPreviousSubmissions(assessmentMasteries)) assessmentMasteries = RemoveLastSubmitted(assessmentMasteries);
+        
         var itemWithoutSubmission = FindItemWithoutSubmissions(assessmentMasteries);
         return itemWithoutSubmission != 0 ? itemWithoutSubmission : FindMinCorrectnessItem(assessmentMasteries);
+    }
+
+    private static int FindItemWithOldestAttempt(List<AssessmentItemMastery> assessmentMasteries)
+    {
+        return assessmentMasteries.MinBy(am => am.LastSubmissionTime).AssessmentItemId;
+    }
+
+    private static bool HasPreviousSubmissions(List<AssessmentItemMastery> assessmentMasteries)
+    {
+        return assessmentMasteries.Count > 1 && assessmentMasteries.Any(m => m.LastSubmissionTime != null);
     }
 
     private static List<AssessmentItemMastery> RemoveLastSubmitted(List<AssessmentItemMastery> assessmentMasteries)
@@ -26,11 +36,6 @@ public class LeastCorrectAssessmentItemSelector : IAssessmentItemSelector
         return retVal;
     }
 
-    private static int FindItemWithOldestAttempt(List<AssessmentItemMastery> assessmentMasteries)
-    {
-        return assessmentMasteries.MinBy(am => am.LastSubmissionTime).AssessmentItemId;
-    }
-
     private static int FindItemWithoutSubmissions(List<AssessmentItemMastery> assessmentMasteries)
     {
         var noSubmissionItem = assessmentMasteries.FirstOrDefault(am => am.SubmissionCount == 0);
@@ -39,6 +44,8 @@ public class LeastCorrectAssessmentItemSelector : IAssessmentItemSelector
 
     private static int FindMinCorrectnessItem(List<AssessmentItemMastery> assessmentMasteries)
     {
-        return assessmentMasteries.MinBy(am => am.Mastery).AssessmentItemId;
+        var minimumCorrectnessItem = assessmentMasteries.MinBy(am => am.Mastery);
+
+        return minimumCorrectnessItem.IsPassed ? FindItemWithOldestAttempt(assessmentMasteries) : minimumCorrectnessItem.AssessmentItemId;
     }
 }
