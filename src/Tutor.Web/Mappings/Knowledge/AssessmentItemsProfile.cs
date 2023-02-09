@@ -45,10 +45,9 @@ public class AssessmentItemsProfile : Profile
         CreateMap<Mrq, MrqDto>().ReverseMap();
         CreateMap<MrqItem, MrqItemDto>().ReverseMap();
         CreateMap<MrqSubmissionDto, MrqSubmission>()
-            .ForMember(dest => dest.SubmittedAnswerIds, opt => opt.MapFrom(src => src.Answers.Select(a => a.Id)));
+            .ForMember(dest => dest.SubmittedAnswers, opt => opt.MapFrom(src => src.Answers.Select(a => a.Text)));
         CreateMap<MrqEvaluation, MrqEvaluationDto>();
         CreateMap<MrqItemEvaluation, MrqItemEvaluationDto>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.FullItem.Id))
             .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.FullItem.Text))
             .ForMember(dest => dest.Feedback, opt => opt.MapFrom(src => src.FullItem.Feedback));
         #endregion

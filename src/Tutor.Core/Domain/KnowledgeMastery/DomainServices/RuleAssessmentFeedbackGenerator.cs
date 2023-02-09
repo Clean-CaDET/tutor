@@ -2,7 +2,7 @@
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
 
-namespace Tutor.Core.Domain.KnowledgeMastery;
+namespace Tutor.Core.Domain.KnowledgeMastery.DomainServices;
 
 public class RuleAssessmentFeedbackGenerator : IAssessmentFeedbackGenerator
 {
@@ -24,7 +24,9 @@ public class RuleAssessmentFeedbackGenerator : IAssessmentFeedbackGenerator
 
         if (IsFirstSubmission(existingMastery)) return CreatePump(evaluation.CorrectnessLevel);
         if (AnyHintsRemain(existingMastery, item)) return CreateHint(existingMastery, item, evaluation.CorrectnessLevel);
-        
+
+        if (IsFirstAttempt(submission)) return CreatePump(evaluation.CorrectnessLevel);
+
         return CreateSolution(evaluation);
     }
 
@@ -60,12 +62,17 @@ public class RuleAssessmentFeedbackGenerator : IAssessmentFeedbackGenerator
 
     private static bool AnyHintsRemain(AssessmentItemMastery existingMastery, AssessmentItem item)
     {
-        if(item.Hints == null) return false;
+        if (item.Hints == null) return false;
         return item.Hints.Count > existingMastery.HintRequestCount;
     }
 
     private static Feedback CreateHint(AssessmentItemMastery existingMastery, AssessmentItem item, double correctnessLevel)
     {
         return new Feedback(FeedbackType.Hint, item.Hints[existingMastery.HintRequestCount], new Evaluation(correctnessLevel));
+    }
+
+    private static bool IsFirstAttempt(Submission submission)
+    {
+        return submission.ReattemptCount == 0;
     }
 }

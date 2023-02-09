@@ -26,18 +26,18 @@ public class Mrq : AssessmentItem
 
     private MrqEvaluation EvaluateMrq(MrqSubmission mrqSubmission)
     {
-        var answerEvaluations = CheckAnswers(mrqSubmission.SubmittedAnswerIds);
+        var answerEvaluations = CheckAnswers(mrqSubmission.SubmittedAnswers);
         var correctness = (double)answerEvaluations.Count(a => a.SubmissionWasCorrect) / answerEvaluations.Count;
 
         return new MrqEvaluation(correctness, answerEvaluations);
     }
 
-    private List<MrqItemEvaluation> CheckAnswers(List<int> submittedAnswerIds)
+    private List<MrqItemEvaluation> CheckAnswers(List<string> submittedAnswers)
     {
         var answerEvaluations = new List<MrqItemEvaluation>();
         foreach (var answer in Items)
         {
-            var answerWasMarked = submittedAnswerIds.Contains(answer.Id);
+            var answerWasMarked = submittedAnswers.Contains(answer.Text);
             answerEvaluations.Add(new MrqItemEvaluation(answer, answer.IsCorrect ? answerWasMarked : !answerWasMarked));
         }
 

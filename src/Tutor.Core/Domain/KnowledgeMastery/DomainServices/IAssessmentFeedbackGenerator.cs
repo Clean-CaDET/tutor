@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
 
-namespace Tutor.Core.Domain.KnowledgeMastery;
+namespace Tutor.Core.Domain.KnowledgeMastery.DomainServices;
 
 public interface IAssessmentFeedbackGenerator
 {

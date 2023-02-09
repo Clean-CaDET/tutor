@@ -55,11 +55,11 @@ public class FeedbackGenerationTests : BaseAssessmentEvaluationIntegrationTest
                     ReattemptCount = 0,
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1531},
-                        new() {Id = -1532},
-                        new() {Id = -1533},
-                        new() {Id = -1534},
-                        new() {Id = -1535}
+                        new() {Text = "-1531"},
+                        new() {Text = "-1532"},
+                        new() {Text = "-1533"},
+                        new() {Text = "-1534"},
+                        new() {Text = "-1535"}
                     }
                 },
                 new FeedbackDto
@@ -80,11 +80,11 @@ public class FeedbackGenerationTests : BaseAssessmentEvaluationIntegrationTest
                     ReattemptCount = 2,
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1531},
-                        new() {Id = -1532},
-                        new() {Id = -1533},
-                        new() {Id = -1534},
-                        new() {Id = -1535}
+                        new() {Text = "-1531"},
+                        new() {Text = "-1532"},
+                        new() {Text = "-1533"},
+                        new() {Text = "-1534"},
+                        new() {Text = "-1535"}
                     }
                 },
                 new FeedbackDto
@@ -105,8 +105,8 @@ public class FeedbackGenerationTests : BaseAssessmentEvaluationIntegrationTest
                     ReattemptCount = 0,
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1552},
-                        new() {Id = -1555}
+                        new() {Text = "-1552"},
+                        new() {Text = "-1555"}
                     }
                 },
                 new FeedbackDto
@@ -124,10 +124,11 @@ public class FeedbackGenerationTests : BaseAssessmentEvaluationIntegrationTest
                 -153,
                 new MrqSubmissionDto
                 {
+                    ReattemptCount = 1,
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1533},
-                        new() {Id = -1535}
+                        new() {Text = "-1533"},
+                        new() {Text = "-1535"}
                     }
                 },
                 new FeedbackDto
@@ -158,7 +159,10 @@ public class FeedbackGenerationTests : BaseAssessmentEvaluationIntegrationTest
             {
                 "-2",
                 -153,
-                new MrqSubmissionDto(),
+                new MrqSubmissionDto
+                {
+                    ReattemptCount = 1,
+                },
                 new FeedbackDto
                 {
                     Type = "Solution",

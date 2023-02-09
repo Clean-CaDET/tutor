@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Tutor.Core.Domain.KnowledgeMastery;
+namespace Tutor.Core.Domain.KnowledgeMastery.DomainServices;
 
 public class LeastCorrectAssessmentItemSelector : IAssessmentItemSelector
 {

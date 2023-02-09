@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Tutor.Core.Domain.KnowledgeMastery;
+namespace Tutor.Core.Domain.KnowledgeMastery.DomainServices;
 
 public interface IAssessmentItemSelector
 {

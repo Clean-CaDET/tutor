@@ -20,6 +20,7 @@ using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.Core.Domain.KnowledgeMastery;
+using Tutor.Core.Domain.KnowledgeMastery.DomainServices;
 using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
 using Tutor.Core.Domain.LearningUtilities;
 using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;

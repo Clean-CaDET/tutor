@@ -4,6 +4,7 @@ using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.Core.Domain.KnowledgeMastery;
+using Tutor.Core.Domain.KnowledgeMastery.DomainServices;
 
 namespace Tutor.Core.UseCases.Learning.Assessment;
 

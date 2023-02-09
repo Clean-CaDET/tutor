@@ -40,11 +40,11 @@ public class SubmissionMrqTests : BaseAssessmentEvaluationIntegrationTest
                 {
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1531},
-                        new() {Id = -1532},
-                        new() {Id = -1533},
-                        new() {Id = -1534},
-                        new() {Id = -1535}
+                        new() {Text = "-1531"},
+                        new() {Text = "-1532"},
+                        new() {Text = "-1533"},
+                        new() {Text = "-1534"},
+                        new() {Text = "-1535"}
                     }
                 },
                 new MrqEvaluationDto
@@ -52,11 +52,11 @@ public class SubmissionMrqTests : BaseAssessmentEvaluationIntegrationTest
                     CorrectnessLevel = 0.4,
                     ItemEvaluations = new List<MrqItemEvaluationDto>
                     {
-                        new() {Id = -1531, SubmissionWasCorrect = false},
-                        new() {Id = -1532, SubmissionWasCorrect = true},
-                        new() {Id = -1533, SubmissionWasCorrect = false},
-                        new() {Id = -1534, SubmissionWasCorrect = false},
-                        new() {Id = -1535, SubmissionWasCorrect = true}
+                        new() {Text = "-1531", SubmissionWasCorrect = false},
+                        new() {Text = "-1532", SubmissionWasCorrect = true},
+                        new() {Text = "-1533", SubmissionWasCorrect = false},
+                        new() {Text = "-1534", SubmissionWasCorrect = false},
+                        new() {Text = "-1535", SubmissionWasCorrect = true}
                     }
                 }
             },
@@ -67,8 +67,8 @@ public class SubmissionMrqTests : BaseAssessmentEvaluationIntegrationTest
                 {
                     Answers = new List<MrqItemDto>
                     {
-                        new() {Id = -1532},
-                        new() {Id = -1535}
+                        new() {Text = "-1532"},
+                        new() {Text = "-1535"}
                     }
                 },
                 new MrqEvaluationDto
@@ -76,11 +76,11 @@ public class SubmissionMrqTests : BaseAssessmentEvaluationIntegrationTest
                     CorrectnessLevel = 1,
                     ItemEvaluations = new List<MrqItemEvaluationDto>
                     {
-                        new() {Id = -1531, SubmissionWasCorrect = true},
-                        new() {Id = -1532, SubmissionWasCorrect = true},
-                        new() {Id = -1533, SubmissionWasCorrect = true},
-                        new() {Id = -1534, SubmissionWasCorrect = true},
-                        new() {Id = -1535, SubmissionWasCorrect = true}
+                        new() {Text = "-1531", SubmissionWasCorrect = true},
+                        new() {Text = "-1532", SubmissionWasCorrect = true},
+                        new() {Text = "-1533", SubmissionWasCorrect = true},
+                        new() {Text = "-1534", SubmissionWasCorrect = true},
+                        new() {Text = "-1535", SubmissionWasCorrect = true}
                     }
                 }
             },
@@ -93,11 +93,11 @@ public class SubmissionMrqTests : BaseAssessmentEvaluationIntegrationTest
                     CorrectnessLevel = 0.6,
                     ItemEvaluations = new List<MrqItemEvaluationDto>
                     {
-                        new() {Id = -1531, SubmissionWasCorrect = true},
-                        new() {Id = -1532, SubmissionWasCorrect = false},
-                        new() {Id = -1533, SubmissionWasCorrect = true},
-                        new() {Id = -1534, SubmissionWasCorrect = true},
-                        new() {Id = -1535, SubmissionWasCorrect = false}
+                        new() {Text = "-1531", SubmissionWasCorrect = true},
+                        new() {Text = "-1532", SubmissionWasCorrect = false},
+                        new() {Text = "-1533", SubmissionWasCorrect = true},
+                        new() {Text = "-1534", SubmissionWasCorrect = true},
+                        new() {Text = "-1535", SubmissionWasCorrect = false}
                     }
                 }
             }
