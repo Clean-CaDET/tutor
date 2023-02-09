@@ -9,7 +9,7 @@ public class ArrangeTask : AssessmentItem
     public string Text { get; private set; }
     public List<ArrangeTaskContainer> Containers { get; private set; }
 
-    public override void ClearFeedback() {}
+    protected override void ClearSolution() {}
 
     public override Evaluation Evaluate(Submission submission)
     {

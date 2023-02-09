@@ -20,8 +20,10 @@ public class AssessmentItemsProfile : Profile
 {
     public AssessmentItemsProfile()
     {
-        CreateMap<AssessmentItemDto, AssessmentItem>().IncludeAllDerived();
-        CreateMap<AssessmentItem, AssessmentItemDto>().IncludeAllDerived();
+        CreateMap<AssessmentItemDto, AssessmentItem>().IncludeAllDerived()
+            .ForMember(dest => dest.Hints, opt => opt.MapFrom(src => src.Hints.Select((h, i) => new Hint(h, i))));
+        CreateMap<AssessmentItem, AssessmentItemDto>().IncludeAllDerived()
+            .ForMember(dest => dest.Hints, opt => opt.MapFrom(src => src.Hints.Select(h => h.Markdown)));
         CreateMap<SubmissionDto, Submission>().IncludeAllDerived();
         CreateMap<Evaluation, EvaluationDto>().IncludeAllDerived();
         

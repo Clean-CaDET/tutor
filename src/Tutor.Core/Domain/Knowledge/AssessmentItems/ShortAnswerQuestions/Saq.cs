@@ -12,7 +12,7 @@ public class Saq : AssessmentItem
     public string Feedback { get; private set; }
     public int Tolerance { get; private set; }
 
-    public override void ClearFeedback()
+    protected override void ClearSolution()
     {
         AcceptableAnswers = null;
         Feedback = string.Empty;

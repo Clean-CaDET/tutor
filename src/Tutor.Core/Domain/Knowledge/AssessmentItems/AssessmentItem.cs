@@ -17,6 +17,13 @@ public abstract class AssessmentItem : Entity
         KnowledgeComponentId = knowledgeComponentId;
     }
 
-    public abstract void ClearFeedback();
+    public void ClearFeedback()
+    {
+        Hints = null;
+        ClearSolution();
+    }
+
+    protected abstract void ClearSolution();
+
     public abstract Evaluation Evaluate(Submission submission);
 }

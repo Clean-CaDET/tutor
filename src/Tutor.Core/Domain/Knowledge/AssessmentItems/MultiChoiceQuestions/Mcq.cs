@@ -10,7 +10,7 @@ public class Mcq : AssessmentItem
     public string CorrectAnswer { get; private set; }
     public string Feedback { get; private set; }
 
-    public override void ClearFeedback()
+    protected override void ClearSolution()
     {
         CorrectAnswer = string.Empty;
         Feedback = string.Empty;

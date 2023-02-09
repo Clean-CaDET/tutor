@@ -19,7 +19,7 @@ public class Challenge : AssessmentItem
         FulfillmentStrategies = fulfillmentStrategies;
     }
 
-    public override void ClearFeedback() {}
+    protected override void ClearSolution() {}
 
     public override Evaluation Evaluate(Submission submission)
     {

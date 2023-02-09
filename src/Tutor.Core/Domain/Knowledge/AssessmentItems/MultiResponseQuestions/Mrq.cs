@@ -9,7 +9,7 @@ public class Mrq : AssessmentItem
     public string Text { get; private set; }
     public List<MrqItem> Items { get; private set; }
 
-    public override void ClearFeedback()
+    protected override void ClearSolution()
     {
         Items.ForEach(i =>
         {
