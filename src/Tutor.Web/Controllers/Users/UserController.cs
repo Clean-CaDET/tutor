@@ -4,29 +4,28 @@ using Tutor.Infrastructure.Security.Authentication;
 namespace Tutor.Web.Controllers.Users;
 
 [Route("api/users")]
-[ApiController]
-public class UserController : ControllerBase
+public class UserController : BaseApiController
 {
-    private readonly IAuthService _authService;
+    private readonly IAuthenticationService _authenticationService;
 
-    public UserController(IAuthService authService)
+    public UserController(IAuthenticationService authenticationService)
     {
-        _authService = authService;
+        _authenticationService = authenticationService;
     }
 
     [HttpPost("login")]
     public ActionResult<AuthenticationTokens> Login([FromBody] CredentialsDto credentials)
     {
-        var result = _authService.Login(credentials.Username, credentials.Password);
-        if (result.IsSuccess) return Ok(result.Value);
-        return NotFound(result.Errors);
+        var result = _authenticationService.Login(credentials.Username, credentials.Password);
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        return Ok(result.Value);
     }
 
     [HttpPost("refresh")]
     public ActionResult<AuthenticationTokens> RefreshToken([FromBody] AuthenticationTokens authenticationTokens)
     {
-        var result = _authService.RefreshToken(authenticationTokens);
-        if (result.IsSuccess) return Ok(result.Value);
-        return BadRequest(result.Errors);
+        var result = _authenticationService.RefreshToken(authenticationTokens);
+        if (result.IsFailed) return BadRequest(result.Errors);
+        return Ok(result.Value);
     }
 }

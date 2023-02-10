@@ -1,109 +1,109 @@
 ﻿INSERT INTO public."Learners"(
-    "Id", "UserId", "Name", "Index")
-VALUES (-1, -1, 'Unenrolled Student', 'SU-1-2021');
+    "Id", "UserId", "Name", "Index", "Email")
+VALUES (-1, -1, 'Unenrolled Student', 'SU-1-2021', NULL);
 INSERT INTO public."Learners"(
-    "Id", "UserId", "Name", "Index")
-VALUES (-2, -2, 'Enrolled Student for KCM', 'SU-2-2021');
+    "Id", "UserId", "Name", "Index", "Email")
+VALUES (-2, -2, 'Enrolled Student for KCM', 'SU-2-2021', NULL);
 INSERT INTO public."Learners"(
-    "Id", "UserId", "Name", "Index")
-VALUES (-3, -3, 'Enrolled Student for Submissions', 'SU-3-2021');
+    "Id", "UserId", "Name", "Index", "Email")
+VALUES (-3, -3, 'Enrolled Student for Submissions', 'SU-3-2021', NULL);
 INSERT INTO public."Learners"(
-    "Id", "UserId", "Name", "Index")
-VALUES (-4, -4, 'Enrolled Student for Events', 'SU-4-2021');
+    "Id", "UserId", "Name", "Index", "Email")
+VALUES (-4, -4, 'Enrolled Student for Events', 'SU-4-2021', NULL);
 INSERT INTO public."Learners"(
-    "Id", "UserId", "Name", "Index")
-VALUES (-5, -5, 'Enrolled Student for Events', 'SU-5-2021');
+    "Id", "UserId", "Name", "Index", "Email")
+VALUES (-5, -5, 'Enrolled Student for Events', 'SU-5-2021', NULL);
+INSERT INTO public."Learners"(
+    "Id", "UserId", "Name", "Index", "Email")
+VALUES (-6, -6, 'Empty student', 'SU-6-2021', NULL);
 
-INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname") VALUES
-    (-51, -51, 'TestInstructor', 'TestInstructor');
+INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname", "Email") VALUES
+    (-51, -51, 'TestInstructor1', 'TestInstructor1', NULL);
 
-INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname") VALUES
-    (-52, -52, 'TestInstructor', 'TestInstructor');
+INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname", "Email") VALUES
+    (-52, -52, 'TestInstructor2', 'TestInstructor2', NULL);
 
 INSERT INTO public."LearnerGroups"(
 	"Id", "Name", "CourseId")
-VALUES (-1, 'Test Group', -1);
+VALUES (-1, 'Test Group 1', -1);
+INSERT INTO public."LearnerGroups"(
+	"Id", "Name", "CourseId")
+VALUES (-11, 'Test Group 2', -1);
+INSERT INTO public."LearnerGroups"(
+	"Id", "Name", "CourseId")
+VALUES (-12, 'Test Group 3', -1);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-    VALUES (-1, null, -51, -1, 1);
+    "Id", "MemberId", "LearnerGroupId")
+    VALUES (-102, -1, -11);
 INSERT INTO public."GroupMemberships"(
-	"Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-	VALUES (-2, -1, null, -1, 0);
+    "Id", "MemberId", "LearnerGroupId")
+	VALUES (-3, -2, -1);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-	VALUES (-3, -2, null, -1, 0);
+    "Id", "MemberId", "LearnerGroupId")
+	VALUES (-4, -3, -1);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-	VALUES (-4, -3, null, -1, 0);
+    "Id", "MemberId", "LearnerGroupId")
+	VALUES (-5, -4, -1);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-	VALUES (-5, -4, null, -1, 0);
-INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-	VALUES (-6, -5, null, -1, 0);
+    "Id", "MemberId", "LearnerGroupId")
+	VALUES (-6, -5, -1);
 
 INSERT INTO public."LearnerGroups"(
     "Id", "Name", "CourseId")
 VALUES (-2, 'Test Group', -2);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-7, null, -52, -2, 1);
+    "Id", "MemberId", "LearnerGroupId")
+VALUES (-8, -1, -2);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-8, -1, null, -2, 0);
+    "Id", "MemberId", "LearnerGroupId")
+VALUES (-9, -2, -2);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-9, -2, null, -2, 0);
+    "Id", "MemberId", "LearnerGroupId")
+VALUES (-10, -3, -2);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-10, -3, null, -2, 0);
+    "Id", "MemberId", "LearnerGroupId")
+VALUES (-11, -4, -2);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-11, -4, null, -2, 0);
-INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-12, -5, null, -2, 0);
+    "Id", "MemberId", "LearnerGroupId")
+VALUES (-12, -5, -2);
 
 INSERT INTO public."LearnerGroups"(
     "Id", "Name", "CourseId")
 VALUES (-3, 'Test Group', -2);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-13, null, -52, -3, 1);
+    "Id", "MemberId", "LearnerGroupId")
+VALUES (-14, -1, -3);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-14, -1, null, -3, 0);
+    "Id", "MemberId", "LearnerGroupId")
+VALUES (-15, -2, -3);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-15, -2, null, -3, 0);
+    "Id", "MemberId", "LearnerGroupId")
+VALUES (-16, -3, -3);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-16, -3, null, -3, 0);
+    "Id", "MemberId", "LearnerGroupId")
+VALUES (-17, -4, -3);
 INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-17, -4, null, -3, 0);
-INSERT INTO public."GroupMemberships"(
-    "Id", "LearnerId", "InstructorId", "LearnerGroupId", "Role")
-VALUES (-18, -5, null, -3, 0);
+    "Id", "MemberId", "LearnerGroupId")
+VALUES (-18, -5, -3);
 
 INSERT INTO public."UnitEnrollments"(
 	"Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
 	VALUES (-1, -2, -1, '2021-12-19 21:29:50.379749+01', 1);
 INSERT INTO public."UnitEnrollments"(
 	"Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
-	VALUES (-2, -2, -2, '2021-12-19 21:29:50.379749+01', 0);
+	VALUES (-2, -2, -2, '2021-12-19 21:29:50.379749+01', 1);
 INSERT INTO public."UnitEnrollments"(
     "Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
-VALUES (-3, -3, -1, '2021-12-19 21:29:50.379749+01', 0);
+VALUES (-3, -3, -1, '2021-12-19 21:29:50.379749+01', 1);
 INSERT INTO public."UnitEnrollments"(
     "Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
-VALUES (-4, -3, -2, '2021-12-19 21:29:50.379749+01', 0);
+VALUES (-4, -3, -2, '2021-12-19 21:29:50.379749+01', 1);
 INSERT INTO public."UnitEnrollments"(
     "Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
-VALUES (-5, -4, -1, '2021-12-19 21:29:50.379749+01', 0);
+VALUES (-5, -4, -1, '2021-12-19 21:29:50.379749+01', 1);
 INSERT INTO public."UnitEnrollments"(
     "Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
-VALUES (-6, -5, -1, '2021-12-19 21:29:50.379749+01', 0);
+VALUES (-6, -5, -1, '2021-12-19 21:29:50.379749+01', 1);
 
 INSERT INTO public."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "IsCompleted", "IsStarted")
@@ -160,98 +160,104 @@ VALUES (-68, 0.0, -211, -3, false, false, false, false);
 
 
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-1, -106, 0.0, 0, -1, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-1, -106, 0.0, 0, -1, null, 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-2, -106, 0.0, 0, -61, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-2, -106, 0.0, 0, -61, null, 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-3, -107, 0.0, 0, -1, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-3, -107, 0.0, 0, -1, null, 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-4, -107, 0.0, 0, -61, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-4, -107, 0.0, 0, -61, null, 0);
 
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-5, -134, 0.75, 0, -4, '2021-12-19 21:25:50.379749+01');
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-5, -134, 0.75, 0, -4, '2021-12-19 21:25:50.379749+01', 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-6, -134, 0.0, 0, -64, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-6, -134, 0.0, 0, -64, null, 0);
 
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-7, -143, 1.0, 0, -5, '2021-12-19 21:25:50.379749+01');
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-7, -143, 1.0, 0, -5, '2021-12-19 21:25:50.379749+01', 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-8, -143, 0.0, 0, -65, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-8, -143, 0.0, 0, -65, null, 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-9, -144, 0.0, 0, -5, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-9, -144, 0.0, 0, -5, null, 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-10, -144, 0.0, 0, -65, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-10, -144, 0.0, 0, -65, null, 0);
 
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-11, -153, 0.6, 1, -6, '2021-12-19 21:28:50.379749+01');
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-11, -153, 0.6, 1, -6, '2021-12-19 21:28:50.379749+01', 1);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-12, -153, 0.0, 0, -66, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-12, -153, 0.0, 0, -66, null, 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-13, -154, 0.7, 1, -6, '2021-12-19 21:29:50.379749+01');
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-13, -154, 0.7, 1, -6, '2021-12-19 21:29:50.379749+01', 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-14, -154, 0.0, 0, -66, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-14, -154, 0.0, 0, -66, null, 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-15, -155, 0.75, 2, -6, '2021-12-19 21:27:50.379749+01');
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-15, -155, 0.75, 2, -6, '2021-12-19 21:27:50.379749+01', 2);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-16, -155, 0.0, 0, -66, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-16, -155, 0.0, 0, -66, null, 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-17, -156, 0.4, 1, -6, '2021-12-19 21:30:50.379749+01');
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-17, -156, 0.4, 1, -6, '2021-12-19 21:30:50.379749+01', 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-18, -156, 0.0, 0, -66, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-18, -156, 0.0, 0, -66, null, 0);
 
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-19, -211, 0.0, 0, -7, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-19, -211, 0.0, 0, -7, null, 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-20, -211, 0.0, 0, -67, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-20, -211, 0.0, 1, -67, '2021-12-19 21:30:50.379749+01', 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-21, -212, 0.0, 0, -7, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-21, -212, 0.0, 0, -7, null, 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-22, -212, 0.0, 0, -67, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-22, -212, 0.0, 0, -67, null, 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-23, -995, 0.0, 0, -7, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-23, -995, 0.0, 0, -7, null, 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-24, -995, 0.0, 0, -67, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-24, -995, 0.0, 0, -67, null, 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-25, -956, 0.0, 0, -7, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-25, -956, 0.0, 0, -7, null, 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-26, -956, 0.0, 0, -67, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-26, -956, 0.0, 0, -67, null, 0);
+INSERT INTO public."AssessmentItemMasteries"(
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-27, -213, 0.0, 0, -67, null, 0);
+INSERT INTO public."AssessmentItemMasteries"(
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-28, -214, 0.0, 0, -67, null, 0);
 
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-27, -2111, 0.0, 0, -8, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-29, -2111, 0.0, 0, -8, null, 0);
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-28, -2111, 0.0, 0, -68, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-30, -2111, 0.0, 0, -68, null, 0);
 
 INSERT INTO public."AssessmentItemMasteries"(
-	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime")
-	VALUES (-29, -10001, 0.0, 0, -67, null);
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-31, -10001, 0.0, 0, -67, null, 0);
 
 INSERT INTO public."CourseOwnerships"(
     "Id", "CourseId", "InstructorId")

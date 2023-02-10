@@ -4,105 +4,103 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text.Json;
 using Tutor.Core.BuildingBlocks.EventSourcing;
-using Tutor.Infrastructure.Database.EventStore;
 
-namespace Tutor.Infrastructure.Tests.TestData.EventStore.EventQueryable
+namespace Tutor.Infrastructure.Tests.TestData.EventStore.EventQueryable;
+
+public class EventQueryableTestCase
 {
-    public class EventQueryableTestCase
+    public IEnumerable<IQueryParameter> QueryParameters { get; set; } = new List<IQueryParameter>();
+
+    public IEventQueryable Execute(IEventQueryable queryable)
     {
-        public IEnumerable<IQueryParameter> QueryParameters { get; set; } = new List<IQueryParameter>();
+        var random = new Random(Guid.NewGuid().GetHashCode());
+        var parametersInRandomOrder = QueryParameters.OrderBy(_ => random.Next());
 
-        public IEventQueryable Execute(IEventQueryable queryable)
+        var result = queryable;
+        foreach (var parameter in parametersInRandomOrder)
+            result = parameter.ApplyToEventQueryable(result);
+        return result;
+    }
+
+    public IEnumerable<DomainEvent> GetExpectedResult(IEnumerable<DomainEvent> events)
+    {
+        var result = events;
+        foreach (var parameter in QueryParameters)
+            result = parameter.ApplyToEnumerable(result);
+        return result;
+    }
+
+    public interface IQueryParameter
+    {
+        public IEnumerable<DomainEvent> ApplyToEnumerable(IEnumerable<DomainEvent> events);
+        public IEventQueryable ApplyToEventQueryable(IEventQueryable events);
+    }
+
+    public class AfterParameter : IQueryParameter
+    {
+        public DateTime Moment { get; }
+
+        public AfterParameter(DateTime moment)
         {
-            var random = new Random(Guid.NewGuid().GetHashCode());
-            var parametersInRandomOrder = QueryParameters.OrderBy(_ => random.Next());
-
-            var result = queryable;
-            foreach (var parameter in parametersInRandomOrder)
-                result = parameter.ApplyToEventQueryable(result);
-            return result;
+            Moment = moment;
         }
 
-        public IEnumerable<DomainEvent> GetExpectedResult(IEnumerable<DomainEvent> events)
+        public IEnumerable<DomainEvent> ApplyToEnumerable(IEnumerable<DomainEvent> events)
         {
-            var result = events;
-            foreach (var parameter in QueryParameters)
-                result = parameter.ApplyToEnumerable(result);
-            return result;
+            return events.Where(e => e.TimeStamp >= Moment);
         }
 
-        public interface IQueryParameter
+        public IEventQueryable ApplyToEventQueryable(IEventQueryable events)
         {
-            public IEnumerable<DomainEvent> ApplyToEnumerable(IEnumerable<DomainEvent> events);
-            public IEventQueryable ApplyToEventQueryable(IEventQueryable events);
+            return events.After(Moment);
+        }
+    }
+
+    public class BeforeParameter : IQueryParameter
+    {
+        public DateTime Moment { get; }
+
+        public BeforeParameter(DateTime moment)
+        {
+            Moment = moment;
         }
 
-        public class AfterParameter : IQueryParameter
+        public IEnumerable<DomainEvent> ApplyToEnumerable(IEnumerable<DomainEvent> events)
         {
-            public DateTime Moment { get; private set; }
-
-            public AfterParameter(DateTime moment)
-            {
-                Moment = moment;
-            }
-
-            public IEnumerable<DomainEvent> ApplyToEnumerable(IEnumerable<DomainEvent> events)
-            {
-                return events.Where(e => e.TimeStamp >= Moment);
-            }
-
-            public IEventQueryable ApplyToEventQueryable(IEventQueryable events)
-            {
-                return events.After(Moment);
-            }
+            return events.Where(e => e.TimeStamp <= Moment);
         }
 
-        public class BeforeParameter : IQueryParameter
+        public IEventQueryable ApplyToEventQueryable(IEventQueryable events)
         {
-            public DateTime Moment { get; private set; }
+            return events.Before(Moment);
+        }
+    }
 
-            public BeforeParameter(DateTime moment)
-            {
-                Moment = moment;
-            }
+    public class ConditionParameter : IQueryParameter
+    {
+        public Expression<Func<JsonDocument, bool>> JsonCondition { get; }
+        public Func<dynamic, bool> DynamicCondition { get; }
 
-            public IEnumerable<DomainEvent> ApplyToEnumerable(IEnumerable<DomainEvent> events)
-            {
-                return events.Where(e => e.TimeStamp <= Moment);
-            }
-
-            public IEventQueryable ApplyToEventQueryable(IEventQueryable events)
-            {
-                return events.Before(Moment);
-            }
+        public ConditionParameter(Expression<Func<JsonDocument, bool>> jsonCondition, Func<dynamic, bool> dynamicCondition)
+        {
+            JsonCondition = jsonCondition;
+            DynamicCondition = dynamicCondition;
         }
 
-        public class ConditionParameter : IQueryParameter
+        private bool SatisfiesCondition(DomainEvent @event)
         {
-            public Expression<Func<JsonDocument, bool>> JsonCondition { get; private set; }
-            public Func<dynamic, bool> DynamicCondition { get; private set; }
+            try { return DynamicCondition.Invoke(@event); }
+            catch (Exception) { return false; }
+        }
 
-            public ConditionParameter(Expression<Func<JsonDocument, bool>> jsonCondition, Func<dynamic, bool> dynamicCondition)
-            {
-                JsonCondition = jsonCondition;
-                DynamicCondition = dynamicCondition;
-            }
+        public IEnumerable<DomainEvent> ApplyToEnumerable(IEnumerable<DomainEvent> events)
+        {
+            return events.Where(SatisfiesCondition);
+        }
 
-            private bool SatisfiesCondition(DomainEvent @event)
-            {
-                try { return DynamicCondition.Invoke(@event); }
-                catch (Exception) { return false; }
-            }
-
-            public IEnumerable<DomainEvent> ApplyToEnumerable(IEnumerable<DomainEvent> events)
-            {
-                return events.Where(SatisfiesCondition);
-            }
-
-            public IEventQueryable ApplyToEventQueryable(IEventQueryable events)
-            {
-                return events.Where(JsonCondition);
-            }
+        public IEventQueryable ApplyToEventQueryable(IEventQueryable events)
+        {
+            return events.Where(JsonCondition);
         }
     }
 }

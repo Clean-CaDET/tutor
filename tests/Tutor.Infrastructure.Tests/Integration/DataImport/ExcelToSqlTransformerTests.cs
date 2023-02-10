@@ -1,23 +1,22 @@
 ﻿using Shouldly;
 using System.IO;
-using Tutor.Infrastructure.Database.DataImport;
+using Tutor.Infrastructure.DataImport;
 using Xunit;
 
-namespace Tutor.Infrastructure.Tests.Integration.DataImport
+namespace Tutor.Infrastructure.Tests.Integration.DataImport;
+
+public class ExcelToSqlTransformerTests
 {
-    public class ExcelToSqlTransformerTests
+    [Fact]
+    public void Can_transform_to_sql()
     {
-        [Fact]
-        public void Can_transform_to_sql()
-        {
-            const string sourceFolder = "C:/TUTOR-EDU/test-excels/domain";
-            const string learnerFolder = "C:/TUTOR-EDU/test-excels/learner";
-            const string enrollmentFolder = "C:/TUTOR-EDU/test-excels/enrollment";
-            const string destinationFile = "C:/TUTOR-EDU/test-excels/output.sql";
+        const string sourceFolder = "C:/TUTOR-EDU/FTN/Add-RP-IF/domain";
+        const string learnerFolder = "C:/TUTOR-EDU/FTN/Add-RP-IF/learner";
+        const string enrollmentFolder = "C:/TUTOR-EDU/FTN/Add-RP-IF/enrollment";
+        const string destinationFile = "C:/TUTOR-EDU/FTN/output-RP-IF-5.sql";
 
-            ExcelToSqlTransformer.Transform(sourceFolder, learnerFolder, enrollmentFolder, destinationFile);
+        ExcelToSqlTransformer.TransformUnitIncrement(sourceFolder, learnerFolder, enrollmentFolder, destinationFile);
 
-            File.Exists(destinationFile).ShouldBeTrue();
-        }
+        File.Exists(destinationFile).ShouldBeTrue();
     }
 }

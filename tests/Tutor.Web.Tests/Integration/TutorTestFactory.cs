@@ -68,7 +68,7 @@ public class TutorApplicationTestFactory<TStartup> : WebApplicationFactory<Start
         var pooling = Environment.GetEnvironmentVariable("DATABASE_POOLING") ?? "true";
 
         return
-            $"Server={server};Port={port};Database={database};User ID={user};Password={password};Integrated Security={integratedSecurity};Pooling={pooling};";
+            $"Server={server};Port={port};Database={database};User ID={user};Password={password};Integrated Security={integratedSecurity};Pooling={pooling};Include Error Detail=True";
     }
 
     private static string CreateConnectionStringForEvents()
