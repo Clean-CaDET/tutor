@@ -7,7 +7,7 @@ services:
       - public
       - application
     ports:
-      - "${GATEWAY_PUBLISHED_PORT-8080}:8080"
+      - "${GATEWAY_PUBLISHED_PORT-80}:8080"
     configs:
       - source: nginx.conf
         target: /etc/nginx/nginx.conf
