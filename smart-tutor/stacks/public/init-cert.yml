@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  gateway:
+    image: ccadett/tutor-ui-web:${GATEWAY_VERSION-latest}
+    ports:
+      - "${GATEWAY_PUBLISHED_PORT-80}:80"
+      - "${GATEWAY_PUBLISHED_SSL_PORT-443}:443"
+    volumes:
+      - ./gateway/files/config/nginx.conf:/etc/nginx/nginx.conf
+      - ./gateway/files/config/api_gateway_init_cert.conf:/etc/nginx/api_gateway.conf
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  certbot:
+    image: certbot/certbot:v2.3.0
+    environment:
+      HTTPS_PROXY: "http://proxy.uns.ac.rs:8080/"
+      HTTP_PROXY: "http://proxy.uns.ac.rs:8080/"
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+

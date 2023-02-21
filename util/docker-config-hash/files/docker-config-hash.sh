@@ -3,8 +3,8 @@
 show_help() {
     echo "********** OPTIONS **********"
     printf "  %s\n" "-s|--stage              stage/environment"
-    printf "  %s\n" "-e|--environment-file   path to configuration template file which utilizes environment variables, default: ../env.conf.template"
-    printf "  %s\n" "-c|--compose-file       path to docker compose file, default: ../public.yml"
+    printf "  %s\n" "-e|--environment-file   path to configuration template file which utilizes environment variables, default: ./env.conf.template"
+    printf "  %s\n" "-c|--compose-file       path to docker compose file, default: ./public.yml"
 }
 
 POSITIONAL=()
@@ -40,8 +40,8 @@ set -- "${POSITIONAL[@]}"
 
 
 export STAGE=${STAGE:-dev}
-COMPOSE_FILE=${COMPOSE_FILE:-../public.yml}
-ENVIRONMENT_TEMPLATE_FILE=${ENVIRONMENT_TEMPLATE_FILE:-../env.conf.template}
+COMPOSE_FILE=${COMPOSE_FILE:-./public.yml}
+ENVIRONMENT_TEMPLATE_FILE=${ENVIRONMENT_TEMPLATE_FILE:-./env.conf.template}
 ENVIRONMENT_FILE=./env.${STAGE}.conf
 
 envsubst < "${ENVIRONMENT_TEMPLATE_FILE}" > "${ENVIRONMENT_FILE}"

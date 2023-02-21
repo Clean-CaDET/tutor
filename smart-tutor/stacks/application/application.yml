@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   smart-tutor:
-    image: cleancadet/smart-tutor:${SMART_TUTOR_VERSION-latest}
+    image: ccadett/tutor:${SMART_TUTOR_VERSION-latest}
     networks:
       - application
       - persistence

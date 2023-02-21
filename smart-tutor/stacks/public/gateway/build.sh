@@ -2,7 +2,7 @@
 
 show_help() {
     echo "********** OPTIONS **********"
-    printf "  %s\n" "-n|--name               image name, default: cleancadet/gateway"
+    printf "  %s\n" "-n|--name               image name, default: ccadet/tutor-ui-web"
     printf "  %s\n" "-t|--target             target stage in Dockerfile, default: gatewayWithFront"
     printf "  %s\n" "--smart_tutor_api_url   base URL path for Smart Tutor service, default: http://127.0.0.1:8080/smart-tutor/api/"
     printf "  %s\n" "--keycloak_auth_url     Keycloak authorization URL path, default: http://127.0.0.1:8080/keycloak/auth"
@@ -63,7 +63,7 @@ esac
 done
 set -- "${POSITIONAL[@]}"
 
-NAME=${NAME:-cleancadet/gateway}
+NAME=${NAME:-ccadet/tutor-ui-web}
 TARGET=${TARGET:-gatewayWithFront}
 SMART_TUTOR_API_URL=${SMART_TUTOR_API_URL:-http://127.0.0.1:8080/smart-tutor/api/}
 KEYCLOAK_AUTH_URL=${KEYCLOAK_AUTH_URL:-http://127.0.0.1:8080/keycloak/auth}
