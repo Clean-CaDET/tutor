@@ -15,11 +15,11 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
     {
         _userRepository = userRepository;
     }
-    public Result<T> Register(T entity, string username, string password)
+    public Result<T> Register(T entity, string username, string password, UserRole role)
     {
         UnitOfWork.BeginTransaction();
 
-        var user = _userRepository.Register(username, password, UserRole.Learner);
+        var user = _userRepository.Register(username, password, role);
         var result = UnitOfWork.Save();
         if (result.IsFailed)
         {

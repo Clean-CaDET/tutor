@@ -10,6 +10,7 @@ using Tutor.Web.Controllers.Administrators.Stakeholders;
 using Tutor.Web.Mappings.Stakeholders;
 using Xunit;
 using Tutor.Core.UseCases.Monitoring;
+using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Web.Tests.Integration.Management.Stakeholders;
 
@@ -43,6 +44,7 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         result.Surname.ShouldBe(newEntity.Surname);
         var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == newEntity.Index);
         storedAccount.ShouldNotBeNull();
+        storedAccount.Role.ShouldBe(UserRole.Learner);
         var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Index == newEntity.Index);
         storedEntity.ShouldNotBeNull();
         storedEntity.UserId.ShouldBe(storedAccount.Id);

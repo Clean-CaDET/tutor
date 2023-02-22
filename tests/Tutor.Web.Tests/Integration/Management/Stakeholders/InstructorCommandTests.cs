@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Linq;
+using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.UseCases.Management.Stakeholders;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Administrators.Stakeholders;
@@ -40,6 +41,7 @@ public class InstructorCommandTests : BaseWebIntegrationTest
         result.Surname.ShouldBe(newInstructor.Surname);
         var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == newInstructor.Email);
         storedAccount.ShouldNotBeNull();
+        storedAccount.Role.ShouldBe(UserRole.Instructor);
         var storedInstructor = dbContext.Instructors.FirstOrDefault(i => i.Email == newInstructor.Email);
         storedInstructor.ShouldNotBeNull();
         storedInstructor.UserId.ShouldBe(storedAccount.Id);

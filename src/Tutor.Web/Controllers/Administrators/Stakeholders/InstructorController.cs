@@ -35,7 +35,7 @@ public class InstructorController : BaseApiController
     [HttpPost]
     public ActionResult<StakeholderAccountDto> Register([FromBody] StakeholderAccountDto stakeholderAccount)
     {
-        var result = _instructorService.Register(_mapper.Map<Instructor>(stakeholderAccount), stakeholderAccount.Email, stakeholderAccount.Password);
+        var result = _instructorService.Register(_mapper.Map<Instructor>(stakeholderAccount), stakeholderAccount.Email, stakeholderAccount.Password, UserRole.Instructor);
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok(_mapper.Map<StakeholderAccountDto>(result.Value));
     }
