@@ -9,9 +9,9 @@ namespace Tutor.Web.Controllers.Instructors.Monitoring
     [Route("api/monitoring/progress")]
     public class ProgressOverviewController : BaseApiController
     {
-        private readonly IEmailService _emailService;
+        private readonly IEmailSender _emailService;
 
-        public ProgressOverviewController(IEmailService emailService)
+        public ProgressOverviewController(IEmailSender emailService)
         {
             _emailService = emailService;
         }
