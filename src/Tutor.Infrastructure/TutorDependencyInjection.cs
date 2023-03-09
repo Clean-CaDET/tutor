@@ -6,6 +6,7 @@ using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Infrastructure.Database;
 using Tutor.Infrastructure.Database.EventStore.Postgres;
 using Tutor.Infrastructure.Security;
+using Tutor.Infrastructure.Smtp;
 
 namespace Tutor.Infrastructure;
 
@@ -19,6 +20,9 @@ public static class TutorDependencyInjection
             opt.UseNpgsql(CreateConnectionStringFromEnvironment()));
         services.AddScoped<IEventStore, PostgresStore>();
 
+        services.AddScoped<IEmailService, EmailService>();
+        var emailConfig = CreateEmailConfigurationFromEnvironment();
+        services.AddSingleton(emailConfig);
         return services;
     }
 
@@ -34,5 +38,21 @@ public static class TutorDependencyInjection
 
         return
             $"Server={server};Port={port};Database={database};User ID={user};Password={password};Integrated Security={integratedSecurity};Pooling={pooling};";
+    }
+
+    private static EmailConfiguration CreateEmailConfigurationFromEnvironment()
+    {
+        var smtpHost = Environment.GetEnvironmentVariable("SMTP_HOST") ?? "smtp.gmail.com";
+        var smtpPort = Environment.GetEnvironmentVariable("SMTP_PORT") ?? "587";
+        var username = Environment.GetEnvironmentVariable("SMTP_USERNAME") ?? "perapera2359@gmail.com";
+        var password = Environment.GetEnvironmentVariable("SMTP_PASSWORD") ?? "rreskjmprcqsbfjg";
+
+        return new EmailConfiguration
+        {
+            SmtpHost = smtpHost,
+            SmtpPort = int.Parse(smtpPort),
+            Username = username,
+            Password = password
+        };
     }
 }
