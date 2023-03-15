@@ -31,4 +31,13 @@ public class EventsController : BaseApiController
         var result = _eventStore.Events.ToList();
         return Ok(result);
     }
+
+    [HttpGet("learner")]
+    public ActionResult<List<DomainEvent>> GetAllEvents([FromQuery] int learnerId, [FromQuery] int kcId)
+    {
+        var result = _eventStore.Events.Where(e => 
+                e.RootElement.GetProperty("KnowledgeComponentId").GetInt32() == kcId &&
+                e.RootElement.GetProperty("LearnerId").GetInt32() == learnerId).ToList();
+        return Ok(result);
+    }
 }
