@@ -71,6 +71,16 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         return SessionTracker.Abandon();
     }
 
+    public Result PauseSession()
+    {
+        return SessionTracker.Pause();
+    }
+
+    public Result ContinueSession()
+    {
+        return SessionTracker.Continue();
+    }
+
     private void JoinOrLaunchSession()
     {
         if (!SessionTracker.HasUnfinishedSession) LaunchSession();

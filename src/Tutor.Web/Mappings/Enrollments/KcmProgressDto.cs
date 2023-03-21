@@ -10,4 +10,5 @@ public class KcmProgressDto
     public KcMasteryStatisticsDto Statistics { get; set; }
     public List<AssessmentItemMasteryDto> AssessmentItemMasteries { get; set; }
     public int DurationOfAllSessionsInMinutes { get; set; }
+    public int DurationOfAllPausesInMinutes { get; set; }
 }

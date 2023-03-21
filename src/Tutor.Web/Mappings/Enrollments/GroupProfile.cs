@@ -15,7 +15,10 @@ public class GroupProfile : Profile
         CreateMap<KnowledgeComponentMastery, KcmProgressDto>()
             .ForMember(dest => dest.DurationOfAllSessionsInMinutes, opt => opt.MapFrom(src =>
                 (src.SessionTracker.DurationOfAllSessions.Hours * 60) +
-                src.SessionTracker.DurationOfAllSessions.Minutes));
+                src.SessionTracker.DurationOfAllSessions.Minutes))
+            .ForMember(dest => dest.DurationOfAllPausesInMinutes, opt => opt.MapFrom(src =>
+                (src.SessionTracker.DurationOfAllPauses.Hours * 60) +
+                src.SessionTracker.DurationOfAllPauses.Minutes));
 
         CreateMap<UnitEnrollment, UnitEnrollmentDto>()
             .ForMember(dest => dest.Status, 
