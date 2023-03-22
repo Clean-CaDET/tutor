@@ -24,8 +24,8 @@ public class CourseQueryTests : BaseWebIntegrationTest
         var result = ((OkObjectResult)controller.GetAll(0, 0).Result)?.Value as PagedResult<CourseDto>;
 
         result.ShouldNotBeNull();
-        result.Results.Count.ShouldBe(3);
-        result.TotalCount.ShouldBe(3);
+        result.Results.Count.ShouldBe(4);
+        result.TotalCount.ShouldBe(4);
     }
 
     private CourseController SetupController(IServiceScope scope)
