@@ -3,6 +3,7 @@
     <TargetFramework>net7.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'SmartTutor' " />
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="Dahomey.Json" Version="1.12.2" />
