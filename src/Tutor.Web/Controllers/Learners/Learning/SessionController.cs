@@ -32,7 +32,7 @@ public class SessionController : BaseApiController
         return Ok();
     }
     
-    [HttpPost("pauseSession")]
+    [HttpPost("pause")]
     public ActionResult Pause(int knowledgeComponentId)
     {
         var result = _sessionService.PauseSession(knowledgeComponentId, User.LearnerId());
@@ -40,7 +40,7 @@ public class SessionController : BaseApiController
         return Ok();
     }
     
-    [HttpPost("continueSession")]
+    [HttpPost("continue")]
     public ActionResult TerminatePause(int knowledgeComponentId)
     {
         var result = _sessionService.ContinueSession(knowledgeComponentId, User.LearnerId());
@@ -48,4 +48,11 @@ public class SessionController : BaseApiController
         return Ok();
     }
     
+    [HttpPost("abandon")]
+    public ActionResult AbandonSession(int knowledgeComponentId)
+    {
+        var result = _sessionService.AbandonSession(knowledgeComponentId, User.LearnerId());
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        return Ok();
+    }
 }

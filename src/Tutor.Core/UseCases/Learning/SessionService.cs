@@ -84,4 +84,21 @@ public class SessionService : ISessionService
 
         return result;
     }
+
+    public Result AbandonSession(int knowledgeComponentId, int learnerId)
+    {
+        if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId))
+            return Result.Fail(FailureCode.NotEnrolledInUnit);
+
+        var kcMastery = _knowledgeMasteryRepository.GetBareKcMastery(knowledgeComponentId, learnerId);
+        if (kcMastery == null) return Result.Fail(FailureCode.NotFound);
+
+        var result = kcMastery.AbandonSession();
+        if (result.IsFailed) return result;
+        _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
+        result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+
+        return result;
+    }
 }

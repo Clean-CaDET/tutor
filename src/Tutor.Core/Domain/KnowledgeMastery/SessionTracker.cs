@@ -26,8 +26,12 @@ public class SessionTracker : EventSourcedEntity
 
     public void Launch()
     {
-        if (HasUnfinishedSession) Causes(new SessionAbandoned());
-
+        if (HasUnfinishedSession)
+        {
+            if (IsPaused) Continue();
+            Causes(new SessionAbandoned());
+        }
+        
         Causes(new SessionLaunched());
     }
 
@@ -36,7 +40,7 @@ public class SessionTracker : EventSourcedEntity
         if (!HasUnfinishedSession) return Result.Fail("No active session to terminate.");
         if (IsPaused) Continue();
 
-        Causes(new SessionTerminated());
+            Causes(new SessionTerminated());
         return Result.Ok();
     }
 
@@ -93,10 +97,13 @@ public class SessionTracker : EventSourcedEntity
     private void When(SessionPaused @event)
     {
         LastPause = @event.TimeStamp;
+        
+        LastActivity = LastPause.Value.AddMinutes(-3);
     }
 
     private void When(SessionContinued @event)
     {
+        LastActivity = @event.TimeStamp;
         DurationOfFinishedPauses += @event.TimeStamp - LastPause.Value;
         LastPause = null;
     }
