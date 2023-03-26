@@ -30,9 +30,10 @@ namespace Tutor.Infrastructure.Database
                 _dbContext.SaveChanges();
                 return Result.Ok();
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException e)
             {
-                return Result.Fail(FailureCode.Conflict);
+                Error rootError = new Error(e.Message).CausedBy(e);
+                return Result.Fail(FailureCode.Conflict).WithError(rootError);
             }
         }
 
