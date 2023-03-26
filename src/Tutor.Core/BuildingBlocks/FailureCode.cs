@@ -11,4 +11,6 @@ public static class FailureCode
     public static readonly IError NotFound = new Error("Accessed resource not found.");
     public static readonly IError Forbidden = new Error("Access to resource is restricted.");
     public static readonly IError Conflict = new Error("Database persistence conflict exception.");
+
+    public static readonly IError InternalServerError = new Error("Internal server error, unhandled exception.");
 }

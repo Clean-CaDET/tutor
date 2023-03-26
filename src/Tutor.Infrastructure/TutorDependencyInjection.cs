@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+using System;
+using Castle.DynamicProxy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Infrastructure.Database;
 using Tutor.Infrastructure.Database.EventStore.Postgres;
+using Tutor.Infrastructure.Interceptors;
 using Tutor.Infrastructure.Security;
 using Tutor.Infrastructure.Smtp;
 
@@ -23,6 +25,9 @@ public static class TutorDependencyInjection
         services.AddScoped<IEmailService, EmailService>();
         var emailConfig = CreateEmailConfigurationFromEnvironment();
         services.AddSingleton(emailConfig);
+
+        services.AddSingleton(new ProxyGenerator());
+        services.AddScoped<IInterceptor, Logging>();
         return services;
     }
 
