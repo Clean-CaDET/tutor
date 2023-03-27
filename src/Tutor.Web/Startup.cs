@@ -1,4 +1,3 @@
-using Castle.DynamicProxy;
 using Dahomey.Json;
 using Dahomey.Json.Serialization.Conventions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System;
 using System.IO;
 using System.Text;
@@ -320,7 +320,7 @@ public class Startup
         {
             app.UseExceptionHandler("/error");
         }
-        
+        app.UseSerilogRequestLogging();
         app.UseCors(CorsPolicy);
         app.UseHttpsRedirection();
         app.UseAuthentication();
