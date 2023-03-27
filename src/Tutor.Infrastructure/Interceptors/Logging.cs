@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
 using Castle.DynamicProxy;
 using FluentResults;
@@ -17,25 +18,31 @@ namespace Tutor.Infrastructure.Interceptors
 
         public void Intercept(IInvocation invocation)
         {
-            _logger.LogDebug($"Calling method {invocation.TargetType}.{invocation.Method.Name}.");
+            _logger.LogDebug("Calling method {@Class}.{@Method}.", 
+                invocation.TargetType, invocation.Method.Name);
             invocation.Proceed();
             try
             {
                 dynamic result = invocation.ReturnValue;
                 if (result.IsSuccess)
                 {
-                    _logger.LogInformation("Successful execution of method");
+                    _logger.LogInformation("Successful execution of method: {@Class}.{@Method}.", 
+                        invocation.TargetType, invocation.Method.Name);
                 }
                 else
                 {
-                    _logger.LogWarning("Unsuccesful execution of method + errors");
+                    var errors = (List<IError>)result.Errors;
+                    _logger.LogWarning("Unsuccesful execution of method {@Class}.{@Method}, with errors: {@Errors}.",
+                        invocation.TargetType, invocation.Method.Name, errors);
                 }
             }
             catch (Exception e)
             {
-                _logger.LogError("Unexpected exception happened, handling it + creating FluentResult error for end user");
                 Error rootError = new Error(e.Message).CausedBy(e);
-                invocation.ReturnValue = Result.Fail(FailureCode.InternalServerError).WithError(rootError);
+                var result = Result.Fail(FailureCode.InternalServerError).WithError(rootError);
+                invocation.ReturnValue = result;
+                _logger.LogError("Exception in execution of method {@Class}.{@Method}, with cause: {@Errors}.",
+                    invocation.TargetType, invocation.Method.Name, result.Errors);
             }
         }
     }
