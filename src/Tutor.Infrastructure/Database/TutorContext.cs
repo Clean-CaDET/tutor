@@ -74,6 +74,11 @@ public class TutorContext : DbContext
             .HasForeignKey(c => c.InstructorId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        modelBuilder.Entity<CourseOwnership>()
+            .HasOne(c => c.Course)
+            .WithMany()
+            .OnDelete(DeleteBehavior.Cascade);
+
         modelBuilder.Entity<LearnerGroup>()
             .HasMany(g => g.Membership)
             .WithOne()
