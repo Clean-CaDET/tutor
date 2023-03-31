@@ -320,7 +320,6 @@ public class Startup
         {
             app.UseExceptionHandler("/error");
         }
-        app.UseSerilogRequestLogging();
         app.UseCors(CorsPolicy);
         app.UseHttpsRedirection();
         app.UseAuthentication();

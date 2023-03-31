@@ -7,32 +7,30 @@ using System;
 
 namespace Tutor.Infrastructure.Interceptors
 {
-    public class Logging : IInterceptor
+    public class LoggingInterceptor : IInterceptor
     {
-        private readonly ILogger<Logging> _logger;
+        private readonly ILogger<LoggingInterceptor> _logger;
 
-        public Logging(ILogger<Logging> logger)
+        public LoggingInterceptor(ILogger<LoggingInterceptor> logger)
         {
             _logger = logger;
         }
 
         public void Intercept(IInvocation invocation)
         {
-            _logger.LogDebug("Calling method {@Class}.{@Method}.", 
-                invocation.TargetType, invocation.Method.Name);
             invocation.Proceed();
             try
             {
                 dynamic result = invocation.ReturnValue;
                 if (result.IsSuccess)
                 {
-                    _logger.LogInformation("Successful execution of method: {@Class}.{@Method}.", 
+                    _logger.LogInformation("Call: {@Class}.{@Method}. Ok.", 
                         invocation.TargetType, invocation.Method.Name);
                 }
                 else
                 {
                     var errors = (List<IError>)result.Errors;
-                    _logger.LogWarning("Unsuccesful execution of method {@Class}.{@Method}, with errors: {@Errors}.",
+                    _logger.LogWarning("Call: {@Class}.{@Method}. Fail: {@Errors}.",
                         invocation.TargetType, invocation.Method.Name, errors);
                 }
             }
@@ -41,7 +39,7 @@ namespace Tutor.Infrastructure.Interceptors
                 Error rootError = new Error(e.Message).CausedBy(e);
                 var result = Result.Fail(FailureCode.InternalServerError).WithError(rootError);
                 invocation.ReturnValue = result;
-                _logger.LogError("Exception in execution of method {@Class}.{@Method}, with cause: {@Errors}.",
+                _logger.LogError("Call: {@Class}.{@Method}. Error: {@Errors}.",
                     invocation.TargetType, invocation.Method.Name, result.Errors);
             }
         }

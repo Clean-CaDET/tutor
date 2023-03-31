@@ -27,7 +27,7 @@ public static class TutorDependencyInjection
         services.AddSingleton(emailConfig);
 
         services.AddSingleton(new ProxyGenerator());
-        services.AddScoped<IInterceptor, Logging>();
+        services.AddScoped<IInterceptor, LoggingInterceptor>();
         return services;
     }
 
