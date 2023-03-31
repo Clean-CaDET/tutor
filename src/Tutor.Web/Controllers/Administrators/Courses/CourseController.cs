@@ -69,7 +69,9 @@ public class CourseController : BaseApiController
     public ActionResult Delete(int id)
     {
         var result = _courseService.Delete(id);
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return CreateResponse(result, Ok, CreateErrorResponse);
+        
+        //if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        //return Ok();
     }
 }

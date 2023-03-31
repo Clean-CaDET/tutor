@@ -1,4 +1,5 @@
-﻿using FluentResults;
+﻿using System;
+using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
@@ -18,5 +19,23 @@ public class BaseApiController : ControllerBase
         if (errors.Contains(FailureCode.NotFound)) code = 404;
         if (errors.Contains(FailureCode.Conflict)) code = 409;
         return Problem(statusCode: code, detail: string.Join(";", errors));
+    }
+
+    protected ActionResult CreateResponse(Result result, Func<ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure)
+    {
+        if (result.IsSuccess)
+        {
+            return onSuccess();
+        }
+        return onFailure(result.Errors);
+    }
+
+    protected ActionResult CreateResponse<T>(Result<T> result, Func<T, ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure)
+    {
+        if (result.IsSuccess)
+        {
+            return onSuccess(result.Value);
+        }
+        return onFailure(result.Errors);
     }
 }
