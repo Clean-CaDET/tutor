@@ -259,6 +259,10 @@ INSERT INTO public."AssessmentItemMasteries"(
 	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
 	VALUES (-31, -10001, 0.0, 0, -67, null, 0);
 
+INSERT INTO public."KcMasteries"(
+    "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "IsCompleted", "IsStarted")
+VALUES (-411, 1.0, -41, -4, true, true, true, true);
+
 INSERT INTO public."CourseOwnerships"(
     "Id", "CourseId", "InstructorId")
 VALUES (-1, -1, -51);

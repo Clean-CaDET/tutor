@@ -23,6 +23,20 @@ public class StructureTests : BaseWebIntegrationTest
     public StructureTests(TutorApplicationTestFactory<Startup> factory) : base(factory) {}
 
     [Fact]
+    public void Retrieves_mastered_unit_ids()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupStructureController(scope, "-4");
+        var unitIds = new[] { -1, -2, -3, -4 };
+
+        var masteredUnitIds = ((OkObjectResult)controller.GetMasteredUnitIds(unitIds).Result)?.Value as List<int>;
+
+        masteredUnitIds.ShouldNotBeNull();
+        masteredUnitIds.Count.ShouldBe(1);
+        masteredUnitIds.ShouldContain(-4);
+    }
+
+    [Fact]
     public void Retrieves_unit()
     {
         using var scope = Factory.Services.CreateScope();
