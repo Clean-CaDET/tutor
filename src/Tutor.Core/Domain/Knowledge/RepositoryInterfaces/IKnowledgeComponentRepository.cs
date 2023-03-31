@@ -8,4 +8,5 @@ public interface IKnowledgeComponentRepository : ICrudRepository<KnowledgeCompon
 {
     List<KnowledgeComponent> GetKnowledgeComponentsForUnit(int unitId);
     KnowledgeComponent GetKnowledgeComponentWithInstruction(int knowledgeComponentId);
+    List<KnowledgeComponent> GetRootKcs(int[] unitIds);
 }

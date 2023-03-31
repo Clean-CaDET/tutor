@@ -23,6 +23,14 @@ public class StructureController : BaseApiController
         _learningStructureService = learningStructureService;
     }
 
+    [HttpPost("units/mastered")]
+    public ActionResult<List<int>> GetMasteredUnitIds([FromBody] int[] unitIds)
+    {
+        var result = _learningStructureService.GetMasteredUnitIds(unitIds, User.LearnerId());
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        return Ok(result.Value);
+    }
+
     [HttpGet("units/{unitId:int}")]
     public ActionResult<KnowledgeUnitDto> GetUnit(int unitId)
     {
