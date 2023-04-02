@@ -27,9 +27,8 @@ public class StructureTests : BaseWebIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupStructureController(scope, "-4");
-        var unitIds = new[] { -1, -2, -3, -4 };
-
-        var masteredUnitIds = ((OkObjectResult)controller.GetMasteredUnitIds(unitIds).Result)?.Value as List<int>;
+        
+        var masteredUnitIds = ((OkObjectResult)controller.GetMasteredUnitIds(-1).Result)?.Value as List<int>;
 
         masteredUnitIds.ShouldNotBeNull();
         masteredUnitIds.Count.ShouldBe(1);

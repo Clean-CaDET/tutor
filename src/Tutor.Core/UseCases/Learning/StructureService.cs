@@ -27,14 +27,21 @@ public class StructureService : IStructureService
         _unitOfWork = unitOfWork;
     }
 
-    public Result<List<int>> GetMasteredUnitIds(int[] unitIds, int learnerId)
+    public Result<List<int>> GetMasteredUnitIds(int courseId, int learnerId)
     {
+        var unitIds = GetUnitIds(courseId, learnerId);
         var rootKcs = _knowledgeComponentRepository.GetRootKcs(unitIds);
         var masteries = _knowledgeMasteryRepository
             .GetBareKcMasteries(rootKcs.Select(kc => kc.Id).ToList(), learnerId);
         var masteredRootKcs = GetMasteredKcs(rootKcs, masteries);
 
         return masteredRootKcs.Select(kc => kc.KnowledgeUnitId).ToList();
+    }
+
+    private int[] GetUnitIds(int courseId, int learnerId)
+    {
+        var course = _enrollmentRepository.GetCourseEnrolledAndActiveUnits(courseId, learnerId);
+        return course.KnowledgeUnits.Select(u => u.Id).ToArray();
     }
 
     private static List<KnowledgeComponent> GetMasteredKcs(List<KnowledgeComponent> rootKcs, List<KnowledgeComponentMastery> masteries)
