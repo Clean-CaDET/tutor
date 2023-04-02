@@ -21,4 +21,11 @@ public class KnowledgeComponentDatabaseRepository : CrudDatabaseRepository<Knowl
             .Include(kc => kc.InstructionalItems)
             .FirstOrDefault(kc => kc.Id == knowledgeComponentId);
     }
+
+    public List<KnowledgeComponent> GetRootKcs(int[] unitIds)
+    {
+        return DbContext.KnowledgeComponents
+            .Where(kc => kc.ParentId == null && unitIds.Contains(kc.KnowledgeUnitId))
+            .ToList();
+    }
 }
