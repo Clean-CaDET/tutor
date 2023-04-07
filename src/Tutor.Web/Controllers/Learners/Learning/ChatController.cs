@@ -11,6 +11,7 @@ using Tutor.Infrastructure.Security.Authentication.Users;
 
 namespace Tutor.Web.Controllers.Learners.Learning;
 
+[Authorize(Policy = "learnerPolicy")]
 [Route("api/learning/chat")]
 public class ChatController : BaseApiController
 {
