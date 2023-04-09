@@ -9,5 +9,4 @@ public interface ISessionService
     Result PauseSession(int knowledgeComponentId, int learnerId);
     Result ContinueSession(int knowledgeComponentId, int learnerId);
     Result AbandonSession(int knowledgeComponentId, int learnerId);
-
 }
