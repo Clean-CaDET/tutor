@@ -14,10 +14,9 @@ public class SessionTracker : EventSourcedEntity
     public TimeSpan DurationOfFinishedSessions { get; private set; } = new(0);
     public bool HasUnfinishedSession => StartOfUnfinishedSession.HasValue;
 
-    public TimeSpan? DurationOfUnfinishedSession => HasUnfinishedSession ? LastActivity.Value - StartOfUnfinishedSession.Value : null;
+    public TimeSpan? DurationOfUnfinishedSession => HasUnfinishedSession ? DateTime.UtcNow - StartOfUnfinishedSession.Value : null;
     public DateTime? StartOfUnfinishedSession { get; private set; }
-    public DateTime? LastActivity { get; private set; }
-    
+
     public bool IsPaused { get; private set; }
     public TimeSpan DurationOfAllPauses => DurationOfFinishedPauses + DurationOfUnfinishedPauses.GetValueOrDefault();
     public TimeSpan DurationOfFinishedPauses { get; private set; } = new(0);
@@ -81,29 +80,22 @@ public class SessionTracker : EventSourcedEntity
     private void When(SessionLaunched @event)
     {
         StartOfUnfinishedSession = @event.TimeStamp;
-        LastActivity = @event.TimeStamp;
         CountOfSessions++;
     }
 
     private void When(SessionTerminated @event)
     {
-        LastActivity = @event.TimeStamp;
-
         DurationOfFinishedSessions += DurationOfUnfinishedSession.GetValueOrDefault();
         StartOfUnfinishedSession = null;
-        LastActivity = null;
     }
 
     private void When(SessionPaused @event)
     {
         LastPause = @event.TimeStamp;
-        
-        LastActivity = LastPause.Value.AddMinutes(-3);
     }
 
     private void When(SessionContinued @event)
     {
-        LastActivity = @event.TimeStamp;
         DurationOfFinishedPauses += @event.TimeStamp - LastPause.Value;
         LastPause = null;
     }
@@ -112,29 +104,24 @@ public class SessionTracker : EventSourcedEntity
     {
         DurationOfFinishedSessions += DurationOfUnfinishedSession.GetValueOrDefault();
         StartOfUnfinishedSession = null;
-        LastActivity = null;
     }
 
     private void When(KnowledgeComponentCompleted @event)
     {
-        LastActivity = @event.TimeStamp;
         @event.MinutesToCompletion = DurationOfAllSessions.TotalMinutes;
     }
 
     private void When(KnowledgeComponentPassed @event)
     {
-        LastActivity = @event.TimeStamp;
         @event.MinutesToPass = DurationOfAllSessions.TotalMinutes;
     }
 
     private void When(KnowledgeComponentSatisfied @event)
     {
-        LastActivity = @event.TimeStamp;
         @event.MinutesToSatisfaction = DurationOfAllSessions.TotalMinutes;
     }
 
     private void When(KnowledgeComponentEvent @event)
     {
-        LastActivity = @event.TimeStamp;
     }
 }
