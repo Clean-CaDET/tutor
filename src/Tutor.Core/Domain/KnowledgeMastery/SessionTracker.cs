@@ -38,8 +38,8 @@ public class SessionTracker : EventSourcedEntity
     {
         if (!HasUnfinishedSession) return Result.Fail("No active session to terminate.");
         if (IsPaused) Continue();
-
-            Causes(new SessionTerminated());
+        
+        Causes(new SessionTerminated());
         return Result.Ok();
     }
 
