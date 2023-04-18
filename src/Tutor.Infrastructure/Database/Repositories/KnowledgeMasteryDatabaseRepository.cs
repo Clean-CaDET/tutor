@@ -28,7 +28,8 @@ public class KnowledgeMasteryDatabaseRepository : IKnowledgeMasteryRepository
         kcm?.Initialize();
         return kcm;
     }
-    public List<KnowledgeComponentMastery> GetBasicKcMasteries(List<int> kcIds, int learnerId)
+
+    public List<KnowledgeComponentMastery> GetBareKcMasteries(List<int> kcIds, int learnerId)
     {
         var kcms = _dbContext.KcMasteries
             .Include(kcm => kcm.SessionTracker)
