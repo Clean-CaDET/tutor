@@ -1,11 +1,10 @@
 ﻿using FluentResults;
-using System.Collections.Generic;
-using Tutor.Core.Domain.Knowledge.Structure;
+using Tutor.Core.Domain.KnowledgeAnalysis;
 
 namespace Tutor.Core.UseCases.KnowledgeAnalysis;
 
 public interface IUnitAnalysisService
 {
-    Result<List<KcStatistics>> GetKnowledgeComponentsStats(int unitId, int instructorId);
-    Result<List<KcStatistics>> GetKnowledgeComponentsStatsForGroup(int unitId, int groupId, int instructorId);
+    Result<KcStatistics> GetKcStatistics(int kcId, int instructorId);
+    Result<KcStatistics> GetKcStatisticsForGroup(int kcId, int groupId, int instructorId);
 }

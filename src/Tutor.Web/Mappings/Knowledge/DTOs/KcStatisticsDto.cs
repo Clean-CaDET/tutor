@@ -5,24 +5,23 @@ namespace Tutor.Web.Mappings.Knowledge.DTOs;
 
 public class KcStatisticsDto
 {
-    public string KcCode { get; set; }
-    public string KcName { get; set; }
+    public int KcId { get; set; }
     public int TotalRegistered { get; set; }
     public int TotalStarted { get; set; }
     public int TotalCompleted { get; set; }
     public int TotalPassed { get; set; }
-    public List<int> MinutesToCompletion { get; set; }
-    public List<int> MinutesToPass { get; set; }
+    public List<double> MinutesToCompletion { get; set; }
+    public List<double> MinutesToPass { get; set; }
 
     public override int GetHashCode()
     {
-        return KcCode.GetHashCode();
+        return KcId.GetHashCode();
     }
 
     public override bool Equals(object obj)
     {
         if (obj is not KcStatisticsDto other) return false;
-        return KcCode == other.KcCode
+        return KcId == other.KcId
                && TotalCompleted == other.TotalCompleted
                && TotalPassed == other.TotalPassed
                && TotalStarted == other.TotalStarted

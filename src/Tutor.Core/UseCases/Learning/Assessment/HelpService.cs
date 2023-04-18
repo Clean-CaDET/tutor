@@ -17,12 +17,12 @@ public class HelpService : IHelpService
 
     public Result RecordHintRequest(int learnerId, int assessmentItemId)
     {
-        var kcm = _knowledgeMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
+        var kcm = _knowledgeMasteryRepository.GetFullForAssessmentItem(assessmentItemId, learnerId);
         if (kcm == null) return Result.Fail("Cannot seek hints for assessment item with ID: " + assessmentItemId);
 
         var result = kcm.RecordAssessmentItemHintRequest(assessmentItemId, "");
 
-        if (result.IsSuccess) _knowledgeMasteryRepository.UpdateKcMastery(kcm);
+        if (result.IsSuccess) _knowledgeMasteryRepository.Update(kcm);
         result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 
@@ -31,12 +31,12 @@ public class HelpService : IHelpService
 
     public Result RecordSolutionRequest(int learnerId, int assessmentItemId)
     {
-        var kcm = _knowledgeMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
+        var kcm = _knowledgeMasteryRepository.GetFullForAssessmentItem(assessmentItemId, learnerId);
         if (kcm == null) return Result.Fail("Cannot seek solution for assessment item with ID: " + assessmentItemId);
 
         var result = kcm.RecordAssessmentItemSolutionRequest(assessmentItemId);
 
-        if (result.IsSuccess) _knowledgeMasteryRepository.UpdateKcMastery(kcm);
+        if (result.IsSuccess) _knowledgeMasteryRepository.Update(kcm);
         result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 
@@ -46,12 +46,12 @@ public class HelpService : IHelpService
     //Should be moved to an instructor service or whatever will be used to interact with the chatbot
     public Result RecordInstructorMessage(int learnerId, int kcId, string message)
     {
-        var kcm = _knowledgeMasteryRepository.GetBareKcMastery(kcId, learnerId);
+        var kcm = _knowledgeMasteryRepository.GetBare(kcId, learnerId);
         if (kcm == null) return Result.Fail("Learner not enrolled in KC: " + kcId);
 
         var result = kcm.RecordInstructorMessage(message);
 
-        if (result.IsSuccess) _knowledgeMasteryRepository.UpdateKcMastery(kcm);
+        if (result.IsSuccess) _knowledgeMasteryRepository.Update(kcm);
         result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 

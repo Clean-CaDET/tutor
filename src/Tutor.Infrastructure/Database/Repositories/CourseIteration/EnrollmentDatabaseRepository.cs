@@ -15,11 +15,6 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
         _dbContext = dbContext;
     }
 
-    public int CountEnrollmentsForUnit(int unitId)
-    {
-        return _dbContext.UnitEnrollments.Count(enrollment => enrollment.KnowledgeUnit.Id == unitId);
-    }
-
     public List<Course> GetEnrolledCourses(int learnerId)
     {
         return _dbContext.LearnerGroups

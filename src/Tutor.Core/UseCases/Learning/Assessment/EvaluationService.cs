@@ -31,7 +31,7 @@ public class EvaluationService : IEvaluationService
         if (assessmentItem == null) return Result.Fail(FailureCode.NotFound);
         if (!_enrollmentRepository.HasActiveEnrollmentForKc(assessmentItem.KnowledgeComponentId, learnerId))
             return Result.Fail(FailureCode.NotEnrolledInUnit);
-        var kcMastery = _knowledgeMasteryRepository.GetFullKcMastery(assessmentItem.KnowledgeComponentId, learnerId);
+        var kcMastery = _knowledgeMasteryRepository.GetFull(assessmentItem.KnowledgeComponentId, learnerId);
         
         var feedback = _assessmentFeedbackGenerator.CreateFeedback(
             kcMastery.AssessmentItemMasteries.Find(m => m.AssessmentItemId == assessmentItemId),
@@ -48,7 +48,7 @@ public class EvaluationService : IEvaluationService
     {
         if (feedback.FeedbackType == FeedbackType.Hint) kcMastery.RecordAssessmentItemHintRequest(itemId, feedback.Hint.Markdown);
         kcMastery.RecordAssessmentItemAnswerSubmission(itemId, submission, feedback);
-        _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
+        _knowledgeMasteryRepository.Update(kcMastery);
         return _unitOfWork.Save();
     }
 }

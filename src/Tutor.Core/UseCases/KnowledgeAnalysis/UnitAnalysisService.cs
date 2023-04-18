@@ -1,12 +1,10 @@
 ﻿using FluentResults;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.Domain.CourseIteration;
-using Tutor.Core.Domain.Knowledge.RepositoryInterfaces;
-using Tutor.Core.Domain.Knowledge.Structure;
+using Tutor.Core.Domain.KnowledgeAnalysis;
 using Tutor.Core.Domain.KnowledgeMastery.Events;
 using Tutor.Core.Domain.KnowledgeMastery.Events.KnowledgeComponentEvents;
 using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
@@ -15,91 +13,67 @@ namespace Tutor.Core.UseCases.KnowledgeAnalysis;
 
 public class UnitAnalysisService : IUnitAnalysisService
 {
-    private readonly IKnowledgeComponentRepository _knowledgeComponentRepository;
     private readonly IGroupRepository _groupRepository;
-    private readonly IEnrollmentRepository _enrollmentRepository;
     private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly IEventStore _eventStore;
 
-    public UnitAnalysisService(IKnowledgeComponentRepository kcComponentRepository, IGroupRepository groupRepository, 
-        IEnrollmentRepository enrollmentRepository, IOwnedCourseRepository ownedCourseRepository, IEventStore eventStore)
+    public UnitAnalysisService(IGroupRepository groupRepository, IOwnedCourseRepository ownedCourseRepository, IEventStore eventStore)
     {
-        _knowledgeComponentRepository = kcComponentRepository;
         _groupRepository = groupRepository;
-        _enrollmentRepository = enrollmentRepository;
         _ownedCourseRepository = ownedCourseRepository;
         _eventStore = eventStore;
     }
 
-    public Result<List<KcStatistics>> GetKnowledgeComponentsStats(int unitId, int instructorId)
+    public Result<KcStatistics> GetKcStatistics(int kcId, int instructorId)
     {
-        if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
+        if (!_ownedCourseRepository.IsKcOwner(kcId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
-        var kcs = _knowledgeComponentRepository.GetKnowledgeComponentsForUnit(unitId);
-        var kcIds = kcs.Select(kc => kc.Id).ToList();
+        var events = _eventStore.Events
+            .Where(e => e.RootElement.GetProperty("KnowledgeComponentId").GetInt32() == kcId)
+            .ToList<KnowledgeComponentEvent>();
 
-        var eventQuery =
-            _eventStore.Events.Where(e => kcIds.Contains(e.RootElement.GetProperty("KnowledgeComponentId").GetInt32()));
-        var events = eventQuery.ToList<KnowledgeComponentEvent>();
-
-        var enrolledLearnersCount = _enrollmentRepository.CountEnrollmentsForUnit(unitId);
-            
-        return CalculateKcStatistics(kcs, events, enrolledLearnersCount);
+        return CalculateStatistics(kcId, events, 0); // Add KcRegistration event or count related KCMs?
     }
 
-    public Result<List<KcStatistics>> GetKnowledgeComponentsStatsForGroup(int unitId, int groupId, int instructorId)
+    public Result<KcStatistics> GetKcStatisticsForGroup(int kcId, int groupId, int instructorId)
     {
-        if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
+        if (!_ownedCourseRepository.IsKcOwner(kcId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
         var task = _groupRepository.GetLearnersInGroupAsync(groupId, 0, 0);
         task.Wait();
         var learnerIds = task.Result.Results.Select(l => l.Id).ToList();
-
-        var kcs = _knowledgeComponentRepository.GetKnowledgeComponentsForUnit(unitId);
-        var kcIds = kcs.Select(kc => kc.Id).ToList();
-
+        
         var events = _eventStore.Events
-            .Where(e => kcIds.Contains(e.RootElement.GetProperty("KnowledgeComponentId").GetInt32()))
+            .Where(e => e.RootElement.GetProperty("KnowledgeComponentId").GetInt32() == kcId)
             .Where(e => learnerIds.Contains(e.RootElement.GetProperty("LearnerId").GetInt32()))
             .ToList<KnowledgeComponentEvent>();
 
-        return CalculateKcStatistics(kcs, events, learnerIds.Count);
+        return CalculateStatistics(kcId, events, learnerIds.Count);
     }
 
-    private static List<KcStatistics> CalculateKcStatistics(List<KnowledgeComponent> kcs, List<KnowledgeComponentEvent> events, int enrolledLearnersCount)
+    private static KcStatistics CalculateStatistics(int kcId, List<KnowledgeComponentEvent> events, int registeredCount)
     {
-        return kcs.Select(kc =>
+        return new KcStatistics
         {
-            var kcEvents = events.Where(e => e.KnowledgeComponentId == kc.Id).ToList();
-            var startedEvents = kcEvents.Where(e => e is KnowledgeComponentStarted).ToList();
-            var completedEvents = kcEvents.Where(e => e is KnowledgeComponentCompleted).ToList();
-            var passedEvents = kcEvents.Where(e => e is KnowledgeComponentPassed).ToList();
-
-            return new KcStatistics
-            {
-                KcCode = kc.Code,
-                KcName = kc.Name,
-                TotalRegistered = enrolledLearnersCount,
-                TotalStarted = startedEvents.Count,
-                TotalCompleted = completedEvents.Count,
-                TotalPassed = passedEvents.Count,
-                MinutesToCompletion = CalculateMinutesBetweenEvents(startedEvents, completedEvents),
-                MinutesToPass = CalculateMinutesBetweenEvents(startedEvents, passedEvents)
-            };
-        }).ToList();
+            KcId = kcId,
+            TotalRegistered = registeredCount,
+            TotalStarted = events.OfType<KnowledgeComponentStarted>().Count(),
+            TotalCompleted = events.OfType<KnowledgeComponentCompleted>().Count(),
+            TotalPassed = events.OfType<KnowledgeComponentPassed>().Count(),
+            MinutesToCompletion = GetMinutesToCompletion(events),
+            MinutesToPass = GetMinutesToPass(events)
+        };
     }
 
-    private static List<int> CalculateMinutesBetweenEvents(List<KnowledgeComponentEvent> startEvents, List<KnowledgeComponentEvent> endEvents)
+    private static List<double> GetMinutesToCompletion(List<KnowledgeComponentEvent> events)
     {
-        var result = new List<int>();
-        foreach (var endEvent in endEvents)
-        {
-            var matchingStartEvent = startEvents.Find(e => e.LearnerId == endEvent.LearnerId);
-            if (matchingStartEvent == null) throw new InvalidOperationException();
+        return events.OfType<KnowledgeComponentCompleted>()
+            .Select(e => e.MinutesToCompletion).ToList();
+    }
 
-            var minuteDifference = (endEvent.TimeStamp - matchingStartEvent.TimeStamp).TotalMinutes;
-            result.Add((int)minuteDifference);
-        }
-        return result;
+    private static List<double> GetMinutesToPass(List<KnowledgeComponentEvent> events)
+    {
+        return events.OfType<KnowledgeComponentPassed>()
+            .Select(e => e.MinutesToPass).ToList();
     }
 }

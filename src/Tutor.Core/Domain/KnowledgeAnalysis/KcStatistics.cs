@@ -1,23 +1,21 @@
 ﻿using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
 
-namespace Tutor.Core.Domain.Knowledge.Structure;
+namespace Tutor.Core.Domain.KnowledgeAnalysis;
 
 public class KcStatistics : ValueObject
 {
-    // This should be moved to another namespace as it is not directly related to the Knowledge Structure
-    public string KcCode { get; init; }
-    public string KcName { get; init; }
+    public int KcId { get; init; }
     public int TotalRegistered { get; init; }
     public int TotalStarted { get; init; }
     public int TotalCompleted { get; init; }
     public int TotalPassed { get; init; }
-    public List<int> MinutesToCompletion { get; init; }
-    public List<int> MinutesToPass { get; init; }
+    public List<double> MinutesToCompletion { get; init; }
+    public List<double> MinutesToPass { get; init; }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        yield return KcCode;
+        yield return KcId;
         yield return TotalCompleted;
         yield return TotalPassed;
         yield return TotalStarted;

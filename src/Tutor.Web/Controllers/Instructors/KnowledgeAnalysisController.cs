@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
 using Tutor.Core.UseCases.KnowledgeAnalysis;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Mappings.Knowledge.DTOs;
@@ -10,7 +8,7 @@ using Tutor.Web.Mappings.Knowledge.DTOs;
 namespace Tutor.Web.Controllers.Instructors;
 
 [Authorize(Policy = "instructorPolicy")]
-[Route("api/knowledge-analysis/{unitId:int}")]
+[Route("api/knowledge-analysis/{kcId:int}")]
 public class KnowledgeAnalysisController : BaseApiController
 {
     private readonly IUnitAnalysisService _unitAnalysisService;
@@ -23,18 +21,18 @@ public class KnowledgeAnalysisController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<KcStatisticsDto>> GetKcStatistics(int unitId)
+    public ActionResult<KcStatisticsDto> GetKcStatistics(int kcId)
     {
-        var result = _unitAnalysisService.GetKnowledgeComponentsStats(unitId, User.InstructorId());
+        var result = _unitAnalysisService.GetKcStatistics(kcId, User.InstructorId());
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(result.Value.Select(_mapper.Map<KcStatisticsDto>).ToList());
+        return Ok(_mapper.Map<KcStatisticsDto>(result.Value));
     }
 
     [HttpGet("groups/{groupId:int}/")]
-    public ActionResult<List<KcStatisticsDto>> GetKcStatisticsForGroup(int unitId, int groupId)
+    public ActionResult<KcStatisticsDto> GetKcStatisticsForGroup(int kcId, int groupId)
     {
-        var result = _unitAnalysisService.GetKnowledgeComponentsStatsForGroup(unitId, groupId, User.InstructorId());
+        var result = _unitAnalysisService.GetKcStatisticsForGroup(kcId, groupId, User.InstructorId());
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(result.Value.Select(_mapper.Map<KcStatisticsDto>).ToList());
+        return Ok(_mapper.Map<KcStatisticsDto>(result.Value));
     }
 }

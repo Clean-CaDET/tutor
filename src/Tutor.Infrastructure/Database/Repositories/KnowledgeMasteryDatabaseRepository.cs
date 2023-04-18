@@ -20,7 +20,7 @@ public class KnowledgeMasteryDatabaseRepository : IKnowledgeMasteryRepository
         _moveOnCriteria = moveOnCriteria;
     }
 
-    public KnowledgeComponentMastery GetBareKcMastery(int knowledgeComponentId, int learnerId)
+    public KnowledgeComponentMastery GetBare(int knowledgeComponentId, int learnerId)
     {
         var kcm = _dbContext.KcMasteries
             .Include(kcm => kcm.SessionTracker)
@@ -29,16 +29,7 @@ public class KnowledgeMasteryDatabaseRepository : IKnowledgeMasteryRepository
         return kcm;
     }
 
-    public List<KnowledgeComponentMastery> GetBareKcMasteries(List<int> kcIds, int learnerId)
-    {
-        var kcms = _dbContext.KcMasteries
-            .Include(kcm => kcm.SessionTracker)
-            .Where(kcm => kcm.LearnerId == learnerId && kcIds.Contains(kcm.KnowledgeComponentId)).ToList();
-        foreach (var kcm in kcms) kcm.Initialize();
-        return kcms;
-    }
-
-    public KnowledgeComponentMastery GetFullKcMastery(int knowledgeComponentId, int learnerId)
+    public KnowledgeComponentMastery GetFull(int knowledgeComponentId, int learnerId)
     {
         var kcm = _dbContext.KcMasteries
             .Include(kcm => kcm.SessionTracker)
@@ -51,13 +42,22 @@ public class KnowledgeMasteryDatabaseRepository : IKnowledgeMasteryRepository
         return kcm;
     }
 
-    public KnowledgeComponentMastery GetKcMasteryForAssessmentItem(int assessmentItemId, int learnerId)
+    public KnowledgeComponentMastery GetFullForAssessmentItem(int assessmentItemId, int learnerId)
     {
         var assessmentItem = _dbContext.AssessmentItems.FirstOrDefault(ae => ae.Id == assessmentItemId);
-        return assessmentItem == null ? null : GetFullKcMastery(assessmentItem.KnowledgeComponentId, learnerId);
+        return assessmentItem == null ? null : GetFull(assessmentItem.KnowledgeComponentId, learnerId);
     }
 
-    public void UpdateKcMastery(KnowledgeComponentMastery kcMastery)
+    public List<KnowledgeComponentMastery> GetAllBareForLearnerAndKcs(List<int> kcIds, int learnerId)
+    {
+        var kcms = _dbContext.KcMasteries
+            .Include(kcm => kcm.SessionTracker)
+            .Where(kcm => kcm.LearnerId == learnerId && kcIds.Contains(kcm.KnowledgeComponentId)).ToList();
+        foreach (var kcm in kcms) kcm.Initialize();
+        return kcms;
+    }
+
+    public void Update(KnowledgeComponentMastery kcMastery)
     {
         _dbContext.KcMasteries.Attach(kcMastery);
         _eventStore.Save(kcMastery);

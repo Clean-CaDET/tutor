@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
-using System.Linq;
 using Tutor.Core.UseCases.KnowledgeAnalysis;
 using Tutor.Web.Controllers.Instructors;
 using Tutor.Web.Mappings.Knowledge.DTOs;
@@ -18,26 +17,25 @@ public class UnitAnalysisTests : BaseWebIntegrationTest
 
     [Theory]
     [MemberData(nameof(TestData))]
-    public void Retrieves_kc_statistics_for_group(string userId, int unitId, int groupId, List<KcStatisticsDto> expectedStatistics)
+    public void Retrieves_kc_statistics_for_group(string userId, int kcId, int groupId, KcStatisticsDto expectedStatistics)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupAnalysisController(scope, userId);
 
-        var result = ((OkObjectResult)controller.GetKcStatisticsForGroup(unitId, groupId).Result).Value as List<KcStatisticsDto>;
+        var result = ((OkObjectResult)controller.GetKcStatisticsForGroup(kcId, groupId).Result).Value as KcStatisticsDto;
 
         result.ShouldNotBeNull();
-        result.Count.ShouldBe(expectedStatistics.Count);
-        result.All(expectedStatistics.Contains).ShouldBeTrue();
+        result.ShouldBe(expectedStatistics);
     }
 
     [Theory]
-    [InlineData("-51", -1)]
-    public void Retrieves_kc_statistics(string userId, int unitId)
+    [InlineData("-51", -10)]
+    public void Retrieves_kc_statistics(string userId, int kcId)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupAnalysisController(scope, userId);
 
-        var result = ((OkObjectResult)controller.GetKcStatistics(unitId).Result).Value as List<KcStatisticsDto>;
+        var result = ((OkObjectResult)controller.GetKcStatistics(kcId).Result).Value as KcStatisticsDto;
 
         result.ShouldNotBeNull();
     }
@@ -71,71 +69,89 @@ public class UnitAnalysisTests : BaseWebIntegrationTest
         {
             new object[]
             {
-                "-51", -1, -1,
-                new List<KcStatisticsDto>
+                "-51", -10, -1,
+                new KcStatisticsDto
                 {
-                    new()
-                    {
-                        KcCode = "N00",
-                        MinutesToCompletion = new List<int> {0,0,0,1},
-                        MinutesToPass = new List<int> {0,1},
-                        TotalRegistered = 4,
-                        TotalStarted = 4,
-                        TotalCompleted = 4,
-                        TotalPassed = 2
-                    },
-                    new()
-                    {
-                        KcCode = "N01",
-                        MinutesToCompletion = new List<int> {0,0,0,0},
-                        MinutesToPass = new List<int> {0,0},
-                        TotalRegistered = 4,
-                        TotalStarted = 4,
-                        TotalCompleted = 4,
-                        TotalPassed = 2
-                    },
-                    new()
-                    {
-                        KcCode = "N02",
-                        MinutesToCompletion = new List<int>(),
-                        MinutesToPass = new List<int>(),
-                        TotalRegistered = 4,
-                        TotalStarted = 1,
-                        TotalCompleted = 0,
-                        TotalPassed = 0
-                    },
-                    new()
-                    {
-                        KcCode = "N03",
-                        MinutesToCompletion = new List<int>(),
-                        MinutesToPass = new List<int>(),
-                        TotalRegistered = 4,
-                        TotalStarted = 1,
-                        TotalCompleted = 0,
-                        TotalPassed = 0
-                    },
-                    new()
-                    {
-                        KcCode = "N04",
-                        MinutesToCompletion = new List<int>(),
-                        MinutesToPass = new List<int>(),
-                        TotalRegistered = 4,
-                        TotalStarted = 0,
-                        TotalCompleted = 0,
-                        TotalPassed = 0
-                    },
-                    new()
-                    {
-                        KcCode = "N05",
-                        MinutesToCompletion = new List<int>(),
-                        MinutesToPass = new List<int>(),
-                        TotalRegistered = 4,
-                        TotalStarted = 0,
-                        TotalCompleted = 0,
-                        TotalPassed = 0
-                    }
+                    KcId = -10,
+                    MinutesToCompletion = new List<double> {0,0,0,0},
+                    MinutesToPass = new List<double> {0,0},
+                    TotalRegistered = 4,
+                    TotalStarted = 4,
+                    TotalCompleted = 4,
+                    TotalPassed = 2
                 }
-            }
+            },
+            new object[]
+            {
+                "-51", -11, -1,
+                new KcStatisticsDto
+                {
+                    KcId = -11,
+                    MinutesToCompletion = new List<double> { 0, 0, 0, 0 },
+                    MinutesToPass = new List<double> { 0, 0 },
+                    TotalRegistered = 4,
+                    TotalStarted = 4,
+                    TotalCompleted = 4,
+                    TotalPassed = 2
+                }
+            },
+            new object[]
+            {
+                "-51", -12, -1,
+                new KcStatisticsDto
+                {
+                    KcId = -12,
+                    MinutesToCompletion = new List<double>(),
+                    MinutesToPass = new List<double>(),
+                    TotalRegistered = 4,
+                    TotalStarted = 1,
+                    TotalCompleted = 0,
+                    TotalPassed = 0
+                }
+            },
+            new object[]
+            {
+                "-51", -13, -1,
+                new KcStatisticsDto
+                {
+                    KcId = -13,
+                    MinutesToCompletion = new List<double>(),
+                    MinutesToPass = new List<double>(),
+                    TotalRegistered = 4,
+                    TotalStarted = 1,
+                    TotalCompleted = 0,
+                    TotalPassed = 0
+                }
+            },
+            new object[]
+            {
+                "-51", -14, -1,
+                new KcStatisticsDto
+                {
+                    KcId = -14,
+                    MinutesToCompletion = new List<double>(),
+                    MinutesToPass = new List<double>(),
+                    TotalRegistered = 4,
+                    TotalStarted = 0,
+                    TotalCompleted = 0,
+                    TotalPassed = 0
+                }
+            },
+            new object[]
+            {
+                "-51", -15, -1,
+                new KcStatisticsDto
+                {
+                    KcId = -15,
+                    MinutesToCompletion = new List <double>(),
+                    MinutesToPass = new List <double>(),
+                    TotalRegistered = 4,
+                    TotalStarted = 0,
+                    TotalCompleted = 0,
+                    TotalPassed = 0
+                }
+            },
+
         };
     }
 }
