@@ -28,10 +28,7 @@ public class SessionService : ISessionService
 
         kcMastery.LaunchSession();
         _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
-        var result = _unitOfWork.Save();
-        if (result.IsFailed) return result;
-
-        return result;
+        return _unitOfWork.Save();
     }
 
     public Result TerminateSession(int knowledgeComponentId, int learnerId)
@@ -45,10 +42,7 @@ public class SessionService : ISessionService
         var result = kcMastery.TerminateSession();
         if (result.IsFailed) return result;
         _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
-        result = _unitOfWork.Save();
-        if (result.IsFailed) return result;
-
-        return result;
+        return _unitOfWork.Save();
     }
 
     public Result PauseSession(int knowledgeComponentId, int learnerId)
@@ -62,10 +56,7 @@ public class SessionService : ISessionService
         var result = kcMastery.PauseSession();
         if (result.IsFailed) return result;
         _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
-        result = _unitOfWork.Save();
-        if (result.IsFailed) return result;
-
-        return result;
+        return _unitOfWork.Save();
     }
 
     public Result ContinueSession(int knowledgeComponentId, int learnerId)
@@ -79,10 +70,7 @@ public class SessionService : ISessionService
         var result = kcMastery.ContinueSession();
         if (result.IsFailed) return result;
         _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
-        result = _unitOfWork.Save();
-        if (result.IsFailed) return result;
-
-        return result;
+        return _unitOfWork.Save();
     }
 
     public Result AbandonSession(int knowledgeComponentId, int learnerId)
@@ -96,9 +84,6 @@ public class SessionService : ISessionService
         var result = kcMastery.AbandonSession();
         if (result.IsFailed) return result;
         _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
-        result = _unitOfWork.Save();
-        if (result.IsFailed) return result;
-
-        return result;
+        return _unitOfWork.Save();
     }
 }

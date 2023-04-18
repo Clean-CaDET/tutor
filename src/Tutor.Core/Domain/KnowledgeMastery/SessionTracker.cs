@@ -18,10 +18,10 @@ public class SessionTracker : EventSourcedEntity
     public DateTime? StartOfUnfinishedSession { get; private set; }
 
     public bool IsPaused { get; private set; }
-    public TimeSpan DurationOfAllPauses => DurationOfFinishedPauses + DurationOfUnfinishedPauses.GetValueOrDefault();
+    public TimeSpan DurationOfAllPauses => DurationOfFinishedPauses + DurationOfUnfinishedPause.GetValueOrDefault();
     public TimeSpan DurationOfFinishedPauses { get; private set; } = new(0);
-    public TimeSpan? DurationOfUnfinishedPauses => IsPaused ? DateTime.UtcNow - LastPause.Value : null;
-    public DateTime? LastPause { get; private set; }
+    public TimeSpan? DurationOfUnfinishedPause => IsPaused ? DateTime.UtcNow - UnfinishedPauseStart.Value : null;
+    public DateTime? UnfinishedPauseStart { get; private set; }
 
     public void Launch()
     {
@@ -91,13 +91,13 @@ public class SessionTracker : EventSourcedEntity
 
     private void When(SessionPaused @event)
     {
-        LastPause = @event.TimeStamp;
+        UnfinishedPauseStart = @event.TimeStamp;
     }
 
     private void When(SessionContinued @event)
     {
-        DurationOfFinishedPauses += @event.TimeStamp - LastPause.Value;
-        LastPause = null;
+        DurationOfFinishedPauses += @event.TimeStamp - UnfinishedPauseStart.Value;
+        UnfinishedPauseStart = null;
     }
 
     private void When(SessionAbandoned @event)
