@@ -108,17 +108,17 @@ public class SessionTracker : EventSourcedEntity
 
     private void When(KnowledgeComponentCompleted @event)
     {
-        @event.MinutesToCompletion = DurationOfAllSessions.TotalMinutes;
+        @event.MinutesToCompletion = DurationOfAllSessions.TotalMinutes - DurationOfAllPauses.TotalMinutes;
     }
 
     private void When(KnowledgeComponentPassed @event)
     {
-        @event.MinutesToPass = DurationOfAllSessions.TotalMinutes;
+        @event.MinutesToPass = DurationOfAllSessions.TotalMinutes - DurationOfAllPauses.TotalMinutes;
     }
 
     private void When(KnowledgeComponentSatisfied @event)
     {
-        @event.MinutesToSatisfaction = DurationOfAllSessions.TotalMinutes;
+        @event.MinutesToSatisfaction = DurationOfAllSessions.TotalMinutes - DurationOfAllPauses.TotalMinutes;
     }
 
     private void When(KnowledgeComponentEvent @event)
