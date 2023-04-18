@@ -13,13 +13,8 @@ public class GroupProfile : Profile
         CreateMap<GroupDto, LearnerGroup>();
 
         CreateMap<KnowledgeComponentMastery, KcmProgressDto>()
-            .ForMember(dest => dest.DurationOfAllSessionsInMinutes, opt => opt.MapFrom(src =>
-                (src.SessionTracker.DurationOfAllSessions.Hours * 60) +
-                src.SessionTracker.DurationOfAllSessions.Minutes))
-            .ForMember(dest => dest.DurationOfAllPausesInMinutes, opt => opt.MapFrom(src =>
-                (src.SessionTracker.DurationOfAllPauses.Hours * 60) +
-                src.SessionTracker.DurationOfAllPauses.Minutes));
-
+            .ForMember(dest => dest.ActiveSessionInMinutes, opt => opt.MapFrom(src =>
+                src.SessionTracker.DurationOfAllSessions.TotalMinutes - src.SessionTracker.DurationOfAllPauses.TotalMinutes));
         CreateMap<UnitEnrollment, UnitEnrollmentDto>()
             .ForMember(dest => dest.Status, 
                 opt => opt.MapFrom(

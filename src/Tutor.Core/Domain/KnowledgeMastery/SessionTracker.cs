@@ -14,13 +14,13 @@ public class SessionTracker : EventSourcedEntity
     public TimeSpan DurationOfFinishedSessions { get; private set; } = new(0);
     public bool HasUnfinishedSession => StartOfUnfinishedSession.HasValue;
 
-    public TimeSpan? DurationOfUnfinishedSession => HasUnfinishedSession ? DateTime.UtcNow - StartOfUnfinishedSession.Value : null;
+    public TimeSpan? DurationOfUnfinishedSession => HasUnfinishedSession ? DateTime.UtcNow - StartOfUnfinishedSession.Value : TimeSpan.Zero;
     public DateTime? StartOfUnfinishedSession { get; private set; }
 
     public bool IsPaused { get; private set; }
     public TimeSpan DurationOfAllPauses => DurationOfFinishedPauses + DurationOfUnfinishedPause.GetValueOrDefault();
     public TimeSpan DurationOfFinishedPauses { get; private set; } = new(0);
-    public TimeSpan? DurationOfUnfinishedPause => IsPaused ? DateTime.UtcNow - UnfinishedPauseStart.Value : null;
+    public TimeSpan? DurationOfUnfinishedPause => IsPaused ? DateTime.UtcNow - UnfinishedPauseStart.Value : TimeSpan.Zero;
     public DateTime? UnfinishedPauseStart { get; private set; }
 
     public void Launch()

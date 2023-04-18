@@ -233,6 +233,6 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     private static void When(KnowledgeComponentEvent @event)
     {
-        // No action for AssessmentItemSelected, InstructionalItemsSelected, SolutionRequest, InstructorMessageEvent, SessionTerminated, SessionAbandoned.
+        // No action for AssessmentItemSelected, InstructionalItemsSelected, SolutionRequest, InstructorMessageEvent, and SessionLifecycle events.
     }
 }
