@@ -27,6 +27,29 @@ public class StructureService : IStructureService
         _unitOfWork = unitOfWork;
     }
 
+    public Result<List<int>> GetMasteredUnitIds(int courseId, int learnerId)
+    {
+        var unitIds = GetUnitIds(courseId, learnerId);
+        var rootKcs = _knowledgeComponentRepository.GetRootKcs(unitIds);
+        var masteries = _knowledgeMasteryRepository
+            .GetBareKcMasteries(rootKcs.Select(kc => kc.Id).ToList(), learnerId);
+        var masteredRootKcs = GetMasteredKcs(rootKcs, masteries);
+
+        return masteredRootKcs.Select(kc => kc.KnowledgeUnitId).ToList();
+    }
+
+    private int[] GetUnitIds(int courseId, int learnerId)
+    {
+        var course = _enrollmentRepository.GetCourseEnrolledAndActiveUnits(courseId, learnerId);
+        return course.KnowledgeUnits.Select(u => u.Id).ToArray();
+    }
+
+    private static List<KnowledgeComponent> GetMasteredKcs(List<KnowledgeComponent> rootKcs, List<KnowledgeComponentMastery> masteries)
+    {
+        var masteredKcIds = masteries.Where(m => m.IsSatisfied).Select(m => m.KnowledgeComponentId);
+        return rootKcs.Where(kc => masteredKcIds.Contains(kc.Id)).ToList();
+    }
+
     public Result<KnowledgeUnit> GetUnit(int unitId, int learnerId)
     {
         if(!_enrollmentRepository.HasActiveEnrollmentForUnit(unitId, learnerId))
@@ -42,7 +65,7 @@ public class StructureService : IStructureService
         var kcs = _knowledgeComponentRepository.GetKnowledgeComponentsForUnit(unitId);
         var kcIds = kcs.Select(kc => kc.Id).ToList();
 
-        return Result.Ok(_knowledgeMasteryRepository.GetBasicKcMasteries(kcIds, learnerId));
+        return Result.Ok(_knowledgeMasteryRepository.GetBareKcMasteries(kcIds, learnerId));
     }
 
     public Result<KnowledgeComponent> GetKnowledgeComponent(int knowledgeComponentId, int learnerId)

@@ -89,3 +89,6 @@ VALUES (-311, -31, 1, 'Text', 'Imenovanje je proces određivanja i dodeljivanja 
 INSERT INTO public."KnowledgeUnits"(
     "Id", "Name", "Description", "CourseId", "Order")
 VALUES (-4, 'T-4', 'T-4', -1, 3);
+INSERT INTO public."KnowledgeComponents"(
+    "Id", "Name", "Description", "KnowledgeUnitId", "Order")
+VALUES (-41, 'KC-4-4', '', -4, 2);
