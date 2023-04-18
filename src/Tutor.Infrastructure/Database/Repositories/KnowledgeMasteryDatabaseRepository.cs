@@ -67,4 +67,9 @@ public class KnowledgeMasteryDatabaseRepository : IKnowledgeMasteryRepository
     {
         _dbContext.KcMasteries.Add(kcMastery);
     }
+
+    public int Count(int kcId)
+    {
+        return _dbContext.KcMasteries.Count(m => m.KnowledgeComponentId == kcId);
+    }
 }

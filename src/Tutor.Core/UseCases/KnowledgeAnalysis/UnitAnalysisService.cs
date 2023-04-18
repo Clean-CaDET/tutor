@@ -1,10 +1,12 @@
-﻿using FluentResults;
+﻿using System;
+using FluentResults;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.EventSourcing;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.KnowledgeAnalysis;
+using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.KnowledgeMastery.Events;
 using Tutor.Core.Domain.KnowledgeMastery.Events.KnowledgeComponentEvents;
 using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
@@ -16,12 +18,14 @@ public class UnitAnalysisService : IUnitAnalysisService
     private readonly IGroupRepository _groupRepository;
     private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly IEventStore _eventStore;
+    private readonly IKnowledgeMasteryRepository _masteryRepository;
 
-    public UnitAnalysisService(IGroupRepository groupRepository, IOwnedCourseRepository ownedCourseRepository, IEventStore eventStore)
+    public UnitAnalysisService(IGroupRepository groupRepository, IOwnedCourseRepository ownedCourseRepository, IEventStore eventStore, IKnowledgeMasteryRepository masteryRepository)
     {
         _groupRepository = groupRepository;
         _ownedCourseRepository = ownedCourseRepository;
         _eventStore = eventStore;
+        _masteryRepository = masteryRepository;
     }
 
     public Result<KcStatistics> GetKcStatistics(int kcId, int instructorId)
@@ -32,7 +36,7 @@ public class UnitAnalysisService : IUnitAnalysisService
             .Where(e => e.RootElement.GetProperty("KnowledgeComponentId").GetInt32() == kcId)
             .ToList<KnowledgeComponentEvent>();
 
-        return CalculateStatistics(kcId, events, 0); // Add KcRegistration event or count related KCMs?
+        return CalculateStatistics(kcId, events, _masteryRepository.Count(kcId)); // Add KcRegistration event?
     }
 
     public Result<KcStatistics> GetKcStatisticsForGroup(int kcId, int groupId, int instructorId)
@@ -68,12 +72,12 @@ public class UnitAnalysisService : IUnitAnalysisService
     private static List<double> GetMinutesToCompletion(List<KnowledgeComponentEvent> events)
     {
         return events.OfType<KnowledgeComponentCompleted>()
-            .Select(e => e.MinutesToCompletion).ToList();
+            .Select(e => Math.Round(e.MinutesToCompletion, 2)).ToList();
     }
 
     private static List<double> GetMinutesToPass(List<KnowledgeComponentEvent> events)
     {
         return events.OfType<KnowledgeComponentPassed>()
-            .Select(e => e.MinutesToPass).ToList();
+            .Select(e => Math.Round(e.MinutesToPass, 2)).ToList();
     }
 }

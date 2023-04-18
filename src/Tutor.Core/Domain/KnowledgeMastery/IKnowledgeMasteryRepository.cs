@@ -10,4 +10,5 @@ public interface IKnowledgeMasteryRepository
     List<KnowledgeComponentMastery> GetAllBareForLearnerAndKcs(List<int> kcIds, int learnerId);
     void Update(KnowledgeComponentMastery kcMastery);
     void Create(KnowledgeComponentMastery kcMastery);
+    int Count(int kcId);
 }
