@@ -57,6 +57,14 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
             .Select(m => m.Member).GetPaged(page, pageSize);
     }
 
+    public List<int> GetLearnerIdsInGroup(int groupId)
+    {
+        return DbContext.GroupMemberships
+            .Where(m => m.LearnerGroupId == groupId)
+            .Include(m => m.Member)
+            .Select(m => m.Member.Id).ToList();
+    }
+
     public void CreateBulkMemberships(IEnumerable<GroupMembership> memberships)
     {
         DbContext.AttachRange(memberships);
