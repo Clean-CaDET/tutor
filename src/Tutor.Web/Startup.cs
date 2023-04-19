@@ -236,6 +236,7 @@ public class Startup
         SetupManagementServices(services);
 
         services.AddScoped<IUnitAnalysisService, UnitAnalysisService>();
+        services.AddScoped<IAssessmentAnalysisService, AssessmentAnalysisService>();
     }
 
     private void SetupLearningServices(IServiceCollection services)

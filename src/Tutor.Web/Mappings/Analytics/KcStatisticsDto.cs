@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Tutor.Web.Mappings.Knowledge.DTOs;
+namespace Tutor.Web.Mappings.Analytics;
 
 public class KcStatisticsDto
 {

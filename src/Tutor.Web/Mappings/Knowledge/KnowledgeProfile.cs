@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Tutor.Core.Domain.Knowledge.InstructionalItems;
 using Tutor.Core.Domain.Knowledge.Structure;
-using Tutor.Core.Domain.KnowledgeAnalysis;
 using Tutor.Web.Mappings.Knowledge.DTOs;
 using Tutor.Web.Mappings.Knowledge.DTOs.InstructionalItems;
 
@@ -17,8 +16,6 @@ public class KnowledgeProfile : Profile
         CreateMap<KnowledgeUnitDto, KnowledgeUnit>();
         CreateMap<KnowledgeComponent, KnowledgeComponentDto>();
         CreateMap<KnowledgeComponentDto, KnowledgeComponent>();
-
-        CreateMap<KcStatistics, KcStatisticsDto>();
 
         CreateMap<InstructionalItem, InstructionalItemDto>().IncludeAllDerived();
         CreateMap<Markdown, TextDto>();

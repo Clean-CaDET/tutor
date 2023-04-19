@@ -4,8 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
 using Tutor.Core.UseCases.KnowledgeAnalysis;
-using Tutor.Web.Controllers.Instructors;
-using Tutor.Web.Mappings.Knowledge.DTOs;
+using Tutor.Web.Controllers.Instructors.Analytics;
+using Tutor.Web.Mappings.Analytics;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.KnowledgeAnalysis;
@@ -57,6 +57,7 @@ public class UnitAnalysisTests : BaseWebIntegrationTest
     {
         return new KnowledgeAnalysisController(
             scope.ServiceProvider.GetRequiredService<IUnitAnalysisService>(),
+            scope.ServiceProvider.GetRequiredService<IAssessmentAnalysisService>(),
             Factory.Services.GetRequiredService<IMapper>())
         {
             ControllerContext = BuildContext(id, "instructor")

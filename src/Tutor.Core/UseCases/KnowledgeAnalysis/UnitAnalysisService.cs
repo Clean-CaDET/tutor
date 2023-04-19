@@ -43,9 +43,7 @@ public class UnitAnalysisService : IUnitAnalysisService
     {
         if (!_ownedCourseRepository.IsKcOwner(kcId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
-        var task = _groupRepository.GetLearnersInGroupAsync(groupId, 0, 0);
-        task.Wait();
-        var learnerIds = task.Result.Results.Select(l => l.Id).ToList();
+        var learnerIds = _groupRepository.GetLearnerIdsInGroup(groupId);
         
         var events = _eventStore.Events
             .Where(e => e.RootElement.GetProperty("KnowledgeComponentId").GetInt32() == kcId)
