@@ -31,4 +31,28 @@ public class SessionController : BaseApiController
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         return Ok();
     }
+    
+    [HttpPost("pause")]
+    public ActionResult Pause(int knowledgeComponentId)
+    {
+        var result = _sessionService.PauseSession(knowledgeComponentId, User.LearnerId());
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        return Ok();
+    }
+    
+    [HttpPost("continue")]
+    public ActionResult TerminatePause(int knowledgeComponentId)
+    {
+        var result = _sessionService.ContinueSession(knowledgeComponentId, User.LearnerId());
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        return Ok();
+    }
+    
+    [HttpPost("abandon")]
+    public ActionResult AbandonSession(int knowledgeComponentId)
+    {
+        var result = _sessionService.AbandonSession(knowledgeComponentId, User.LearnerId());
+        if (result.IsFailed) return CreateErrorResponse(result.Errors);
+        return Ok();
+    }
 }
