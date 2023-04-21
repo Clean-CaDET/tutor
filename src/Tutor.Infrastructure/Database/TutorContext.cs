@@ -48,6 +48,7 @@ public class TutorContext : DbContext
     public DbSet<EmotionsFeedback> EmotionsFeedbacks { get; set; }
     public DbSet<TutorImprovementFeedback> TutorImprovementFeedbacks { get; set; }
     public DbSet<Note> Notes { get; set; }
+    public DbSet<Chat> Chats { get; set; }
 
     #endregion
     #region Course Iteration
