@@ -34,6 +34,11 @@ services:
       DATABASE_USER: ${SMART_TUTOR_DATABASE_USERNAME}
       DATABASE_SCHEMA: ${SMART_TUTOR_DATABASE_SCHEMA}
       SMART_TUTOR_CORS_ORIGINS: ${SMART_TUTOR_CORS_ORIGINS}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "6"
     depends_on:
       - database
     volumes:
