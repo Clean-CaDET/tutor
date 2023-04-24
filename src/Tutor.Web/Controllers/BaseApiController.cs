@@ -41,32 +41,32 @@ public class BaseApiController : ControllerBase
         return onFailure(result.Errors);
     }
 
-    protected ActionResult CreateResponse<T, P>(Result<T> result, Func<P, ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure, IMapper mapper)
+    protected ActionResult CreateResponse<TIn, TOut>(Result<TIn> result, Func<TOut, ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure, IMapper mapper)
     {
         if (result.IsSuccess)
         {
-            return onSuccess(mapper.Map<P>(result.Value));
+            return onSuccess(mapper.Map<TOut>(result.Value));
         }
         return onFailure(result.Errors);
     }
 
-    protected ActionResult CreateResponse<T, P>(Result<List<T>> result, Func<List<P>, ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure, IMapper mapper)
-        where T : class
+    protected ActionResult CreateResponse<TIn, TOut>(Result<List<TIn>> result, Func<List<TOut>, ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure, IMapper mapper)
+        where TIn : class
     {
         if (result.IsSuccess)
         {
-            return onSuccess(result.Value.Select(mapper.Map<P>).ToList());
+            return onSuccess(result.Value.Select(mapper.Map<TOut>).ToList());
         }
         return onFailure(result.Errors);
     }
 
-    protected ActionResult CreateResponse<T, P>(Result<PagedResult<T>> result, Func<PagedResult<P>, ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure, IMapper mapper)
-        where T : class
+    protected ActionResult CreateResponse<TIn, TOut>(Result<PagedResult<TIn>> result, Func<PagedResult<TOut>, ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure, IMapper mapper)
+        where TIn : class
     {
         if (result.IsSuccess)
         {
-            var items = result.Value.Results.Select(mapper.Map<P>).ToList();
-            return onSuccess(new PagedResult<P>(items, result.Value.TotalCount));
+            var items = result.Value.Results.Select(mapper.Map<TOut>).ToList();
+            return onSuccess(new PagedResult<TOut>(items, result.Value.TotalCount));
         }
         return onFailure(result.Errors);
     }
