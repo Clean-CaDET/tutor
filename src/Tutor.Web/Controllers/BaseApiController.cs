@@ -3,6 +3,8 @@ using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
+using AutoMapper;
+using System.Linq;
 
 namespace Tutor.Web.Controllers;
 
@@ -35,6 +37,36 @@ public class BaseApiController : ControllerBase
         if (result.IsSuccess)
         {
             return onSuccess(result.Value);
+        }
+        return onFailure(result.Errors);
+    }
+
+    protected ActionResult CreateResponse<T, P>(Result<T> result, Func<P, ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure, IMapper mapper)
+    {
+        if (result.IsSuccess)
+        {
+            return onSuccess(mapper.Map<P>(result.Value));
+        }
+        return onFailure(result.Errors);
+    }
+
+    protected ActionResult CreateResponse<T, P>(Result<List<T>> result, Func<List<P>, ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure, IMapper mapper)
+        where T : Entity
+    {
+        if (result.IsSuccess)
+        {
+            return onSuccess(result.Value.Select(mapper.Map<P>).ToList());
+        }
+        return onFailure(result.Errors);
+    }
+
+    protected ActionResult CreateResponse<T, P>(Result<PagedResult<T>> result, Func<PagedResult<P>, ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure, IMapper mapper)
+        where T : Entity
+    {
+        if (result.IsSuccess)
+        {
+            var items = result.Value.Results.Select(mapper.Map<P>).ToList();
+            return onSuccess(new PagedResult<P>(items, result.Value.TotalCount));
         }
         return onFailure(result.Errors);
     }
