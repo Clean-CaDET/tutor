@@ -24,14 +24,10 @@ public class GroupController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<GroupDto>> GetAll(int courseId)
+    public ActionResult<PagedResult<GroupDto>> GetAll(int courseId, [FromQuery] int page, [FromQuery] int pageSize)
     {
-        var result = _groupService.GetByCourse(courseId);
-        // Not using generic method because service returns list, not paged
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-
-        var items = result.Value.Select(_mapper.Map<GroupDto>).ToList();
-        return Ok(new PagedResult<GroupDto>(items, items.Count));
+        var result = _groupService.GetByCourse(courseId, page, pageSize);
+        return CreateResponse<LearnerGroup, GroupDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpPost]

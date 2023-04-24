@@ -17,9 +17,9 @@ public class LearnerGroupService: CrudService<LearnerGroup>, ILearnerGroupServic
         _groupRepository = groupRepository;
     }
 
-    public Result<List<LearnerGroup>> GetByCourse(int courseId)
+    public Result<PagedResult<LearnerGroup>> GetByCourse(int courseId, int page, int pageSize)
     {
-        return _groupRepository.GetCourseGroups(courseId);
+        return _groupRepository.GetCourseGroups(courseId, page, pageSize);
     }
 
     public Result<List<Learner>> GetMembers(int groupId)

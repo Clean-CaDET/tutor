@@ -27,9 +27,9 @@ public class GroupMonitoringController : BaseApiController
     }
 
     [HttpGet("{courseId:int}/groups")]
-    public ActionResult<List<GroupDto>> GetCourseGroups(int courseId)
+    public ActionResult<PagedResult<GroupDto>> GetCourseGroups(int courseId, [FromQuery] int page, [FromQuery] int pageSize)
     {
-        var result = _groupMonitoringService.GetCourseGroups(User.InstructorId(), courseId);
+        var result = _groupMonitoringService.GetCourseGroups(User.InstructorId(), courseId, page, pageSize);
         return CreateResponse<LearnerGroup, GroupDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
