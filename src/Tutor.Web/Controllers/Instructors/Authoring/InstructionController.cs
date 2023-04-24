@@ -27,16 +27,15 @@ public class InstructionController : BaseApiController
     public ActionResult<List<InstructionalItemDto>> GetForKc(int kcId)
     {
         var result = _instructionService.GetForKc(kcId, User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(result.Value.Select(_mapper.Map<InstructionalItemDto>).ToList());
+        return CreateResponse<InstructionalItem, InstructionalItemDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpPost]
     public ActionResult<List<InstructionalItemDto>> Create([FromBody] InstructionalItemDto instructionalItem)
     {
         var result = _instructionService.Create(_mapper.Map<InstructionalItem>(instructionalItem), User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
         // Dahomey library adds type disciminators to list items but not single items... Will migrate to System.Text.JSON soon.
+        // Should migrate to CreateResponse after (currently, entity is mapped to dto, list is mapped to list, page is mapped to page) 
         return Ok(new List<InstructionalItemDto> { _mapper.Map<InstructionalItemDto>(result.Value) });
     }
 
@@ -44,8 +43,8 @@ public class InstructionController : BaseApiController
     public ActionResult<List<InstructionalItemDto>> Update([FromBody] InstructionalItemDto instructionalItem)
     {
         var result = _instructionService.Update(_mapper.Map<InstructionalItem>(instructionalItem), User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
         // Dahomey library adds type disciminators to list items but not single items...
+        // Should migrate to CreateResponse after (currently, entity is mapped to dto, list is mapped to list, page is mapped to page) 
         return Ok(new List<InstructionalItemDto> { _mapper.Map<InstructionalItemDto>(result.Value) });
     }
 
@@ -53,15 +52,13 @@ public class InstructionController : BaseApiController
     public ActionResult UpdateOrdering(int kcId, [FromBody] List<InstructionalItemDto> instructionalItems)
     {
         var result = _instructionService.UpdateOrdering(kcId, instructionalItems.Select(_mapper.Map<InstructionalItem>).ToList(), User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(result.Value.Select(_mapper.Map<InstructionalItemDto>).ToList());
+        return CreateResponse<InstructionalItem, InstructionalItemDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpDelete("{id:int}")]
     public ActionResult Delete(int kcId, int id)
     {
         var result = _instructionService.Delete(id, kcId, User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return CreateResponse(result, Ok, CreateErrorResponse);
     }
 }

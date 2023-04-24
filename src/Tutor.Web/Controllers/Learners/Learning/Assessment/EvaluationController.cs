@@ -28,8 +28,7 @@ public class EvaluationController : BaseApiController
     public ActionResult<FeedbackDto> SubmitAssessmentAnswer(int assessmentItemId, [FromBody] SubmissionDto submission)
     {
         var result = _assessmentEvaluationService.EvaluateAssessmentItemSubmission(assessmentItemId, _mapper.Map<Submission>(submission), User.LearnerId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<FeedbackDto>(result.Value));
+        return CreateResponse<Feedback, FeedbackDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     // Should be moved into a standalone module
@@ -38,7 +37,6 @@ public class EvaluationController : BaseApiController
     {
         var result = _assessmentHelpService
             .RecordInstructorMessage(User.LearnerId(), instructorMessageDto.KcId, instructorMessageDto.Message);
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return CreateResponse(result, Ok, CreateErrorResponse);
     }
 }

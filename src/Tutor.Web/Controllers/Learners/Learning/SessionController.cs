@@ -20,15 +20,13 @@ public class SessionController : BaseApiController
     public ActionResult LaunchSession(int knowledgeComponentId)
     {
         var result = _sessionService.LaunchSession(knowledgeComponentId, User.LearnerId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return CreateResponse(result, Ok, CreateErrorResponse);
     }
 
     [HttpPost("terminate")]
     public ActionResult TerminateSession(int knowledgeComponentId)
     {
         var result = _sessionService.TerminateSession(knowledgeComponentId, User.LearnerId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return CreateResponse(result, Ok, CreateErrorResponse);
     }
 }

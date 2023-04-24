@@ -25,8 +25,7 @@ public class FeedbackController : BaseApiController
     {
         emotionsFeedback.LearnerId = User.LearnerId();
         var result = _feedbackService.SaveEmotionsFeedback(_mapper.Map<EmotionsFeedback>(emotionsFeedback));
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<EmotionsFeedbackDto>(emotionsFeedback));
+        return CreateResponse<EmotionsFeedback, EmotionsFeedbackDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpPost("improvements")]
@@ -34,7 +33,6 @@ public class FeedbackController : BaseApiController
     {
         tutorImprovementFeedback.LearnerId = User.LearnerId();
         var result = _feedbackService.SaveTutorImprovementFeedback(_mapper.Map<TutorImprovementFeedback>(tutorImprovementFeedback));
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<TutorImprovementFeedbackDto>(tutorImprovementFeedback));
+        return CreateResponse<TutorImprovementFeedback, TutorImprovementFeedbackDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 }

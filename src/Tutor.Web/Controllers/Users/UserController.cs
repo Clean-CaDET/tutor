@@ -18,9 +18,6 @@ public class UserController : BaseApiController
     {
         var result = _authenticationService.Login(credentials.Username, credentials.Password);
         return CreateResponse(result, Ok, CreateErrorResponse);
-        
-        //if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        //return Ok(result.Value);
     }
 
     [HttpPost("refresh")]
@@ -28,7 +25,5 @@ public class UserController : BaseApiController
     {
         var result = _authenticationService.RefreshToken(authenticationTokens);
         return CreateResponse(result, Ok, BadRequest);
-        //if (result.IsFailed) return BadRequest(result.Errors);
-        //return Ok(result.Value);
     }
 }

@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.UseCases.Management.Courses;
 using Tutor.Web.Mappings.Knowledge.DTOs;
@@ -27,42 +25,35 @@ public class CourseController : BaseApiController
     public ActionResult<List<CourseDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
     {
         var result = _courseService.GetAll(page, pageSize);
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-
-        var items = result.Value.Results.Select(_mapper.Map<CourseDto>).ToList();
-        return Ok(new PagedResult<CourseDto>(items, result.Value.TotalCount));
+        return CreateResponse<Course, CourseDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpPost]
     public ActionResult<CourseDto> Create([FromBody] CourseDto course)
     {
         var result = _courseService.CreateWithGroup(_mapper.Map<Course>(course));
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<CourseDto>(result.Value));
+        return CreateResponse<Course, CourseDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpPost("{id:int}/clone")]
     public ActionResult<CourseDto> Clone(int id, [FromBody] CourseDto course)
     {
         var result = _courseService.Clone(id, _mapper.Map<Course>(course));
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<CourseDto>(result.Value));
+        return CreateResponse<Course, CourseDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpPut("{id:int}")]
     public ActionResult<CourseDto> Update([FromBody] CourseDto course)
     {
         var result = _courseService.Update(_mapper.Map<Course>(course));
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<CourseDto>(result.Value));
+        return CreateResponse<Course, CourseDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpPatch("{id:int}/archive")]
     public ActionResult<CourseDto> Archive(int id, [FromBody] bool archive)
     {
         var result = _courseService.Archive(id, archive);
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<CourseDto>(result.Value));
+        return CreateResponse<Course, CourseDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpDelete("{id:int}")]
@@ -70,8 +61,5 @@ public class CourseController : BaseApiController
     {
         var result = _courseService.Delete(id);
         return CreateResponse(result, Ok, CreateErrorResponse);
-        
-        //if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        //return Ok();
     }
 }

@@ -51,7 +51,7 @@ public class BaseApiController : ControllerBase
     }
 
     protected ActionResult CreateResponse<T, P>(Result<List<T>> result, Func<List<P>, ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure, IMapper mapper)
-        where T : Entity
+        where T : class
     {
         if (result.IsSuccess)
         {
@@ -61,7 +61,7 @@ public class BaseApiController : ControllerBase
     }
 
     protected ActionResult CreateResponse<T, P>(Result<PagedResult<T>> result, Func<PagedResult<P>, ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure, IMapper mapper)
-        where T : Entity
+        where T : class
     {
         if (result.IsSuccess)
         {

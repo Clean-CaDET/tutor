@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.UseCases.Management.Stakeholders;
@@ -26,41 +25,34 @@ public class InstructorController : BaseApiController
     public ActionResult<PagedResult<StakeholderAccountDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
     {
         var result = _instructorService.GetPaged(page, pageSize);
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-
-        var items = result.Value.Results.Select(_mapper.Map<StakeholderAccountDto>).ToList();
-        return Ok(new PagedResult<StakeholderAccountDto>(items, result.Value.TotalCount));
+        return CreateResponse<Instructor, StakeholderAccountDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpPost]
     public ActionResult<StakeholderAccountDto> Register([FromBody] StakeholderAccountDto stakeholderAccount)
     {
         var result = _instructorService.Register(_mapper.Map<Instructor>(stakeholderAccount), stakeholderAccount.Email, stakeholderAccount.Password, UserRole.Instructor);
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<StakeholderAccountDto>(result.Value));
+        return CreateResponse<Instructor, StakeholderAccountDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpPut("{id:int}")]
     public ActionResult<StakeholderAccountDto> Update([FromBody] StakeholderAccountDto stakeholderAccount)
     {
         var result = _instructorService.Update(_mapper.Map<Instructor>(stakeholderAccount));
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<StakeholderAccountDto>(result.Value));
+        return CreateResponse<Instructor, StakeholderAccountDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpPatch("{id:int}/archive")]
     public ActionResult<StakeholderAccountDto> Archive(int id, [FromBody] bool archive)
     {
         var result = _instructorService.Archive(id, archive);
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<StakeholderAccountDto>(result.Value));
+        return CreateResponse<Instructor, StakeholderAccountDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpDelete("{id:int}")]
     public ActionResult Delete(int id)
     {
         var result = _instructorService.Delete(id);
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return CreateResponse(result, Ok, CreateErrorResponse);
     }
 }

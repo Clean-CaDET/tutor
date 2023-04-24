@@ -28,8 +28,7 @@ namespace Tutor.Web.Controllers.Instructors.Authoring
             newUnit.CourseId = courseId;
 
             var result = _unitService.Create(newUnit, User.InstructorId());
-            if (result.IsFailed) return CreateErrorResponse(result.Errors);
-            return Ok(_mapper.Map<KnowledgeUnitDto>(result.Value));
+            return CreateResponse<KnowledgeUnit, KnowledgeUnitDto>(result, Ok, CreateErrorResponse, _mapper);
         }
 
         [HttpPut("{id:int}")]
@@ -39,16 +38,14 @@ namespace Tutor.Web.Controllers.Instructors.Authoring
             updatedUnit.CourseId = courseId;
 
             var result = _unitService.Update(updatedUnit, User.InstructorId());
-            if (result.IsFailed) return CreateErrorResponse(result.Errors);
-            return Ok(_mapper.Map<KnowledgeUnitDto>(result.Value));
+            return CreateResponse<KnowledgeUnit, KnowledgeUnitDto>(result, Ok, CreateErrorResponse, _mapper);
         }
 
         [HttpDelete("{id:int}")]
         public ActionResult Delete(int id)
         {
             var result = _unitService.Delete(id, User.InstructorId());
-            if (result.IsFailed) return CreateErrorResponse(result.Errors);
-            return Ok();
+            return CreateResponse(result, Ok, CreateErrorResponse);
         }
     }
 }

@@ -25,8 +25,7 @@ public class KnowledgeComponentController : BaseApiController
     public ActionResult<KnowledgeComponentDto> Get(int id)
     {
         var result = _kcService.Get(id, User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<KnowledgeComponentDto>(result.Value));
+        return CreateResponse<KnowledgeComponent, KnowledgeComponentDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpPost]
@@ -35,8 +34,7 @@ public class KnowledgeComponentController : BaseApiController
         var newKc = _mapper.Map<KnowledgeComponent>(kc);
 
         var result = _kcService.Create(newKc, User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<KnowledgeComponentDto>(result.Value));
+        return CreateResponse<KnowledgeComponent, KnowledgeComponentDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpPut("{id:int}")]
@@ -45,15 +43,13 @@ public class KnowledgeComponentController : BaseApiController
         var updatedKc = _mapper.Map<KnowledgeComponent>(kc);
 
         var result = _kcService.Update(updatedKc, User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<KnowledgeComponentDto>(result.Value));
+        return CreateResponse<KnowledgeComponent, KnowledgeComponentDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpDelete("{id:int}")]
     public ActionResult Delete(int id)
     {
         var result = _kcService.Delete(id, User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return CreateResponse(result, Ok, CreateErrorResponse);
     }
 }

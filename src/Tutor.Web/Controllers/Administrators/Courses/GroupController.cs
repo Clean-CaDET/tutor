@@ -27,6 +27,7 @@ public class GroupController : BaseApiController
     public ActionResult<List<GroupDto>> GetAll(int courseId)
     {
         var result = _groupService.GetByCourse(courseId);
+        // Not using generic method because service returns list, not paged
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
 
         var items = result.Value.Select(_mapper.Map<GroupDto>).ToList();
@@ -38,23 +39,20 @@ public class GroupController : BaseApiController
     {
         group.CourseId = courseId;
         var result = _groupService.Create(_mapper.Map<LearnerGroup>(group));
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<GroupDto>(result.Value));
+        return CreateResponse<LearnerGroup, GroupDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpPut("{groupId:int}")]
     public ActionResult<GroupDto> Update([FromBody] GroupDto group)
     {
         var result = _groupService.Update(_mapper.Map<LearnerGroup>(group));
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<GroupDto>(result.Value));
+        return CreateResponse<LearnerGroup, GroupDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpDelete("{groupId:int}")]
     public ActionResult Delete(int groupId)
     {
         var result = _groupService.Delete(groupId);
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return CreateResponse(result, Ok, CreateErrorResponse);
     }
 }

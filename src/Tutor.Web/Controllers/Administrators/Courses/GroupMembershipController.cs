@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks;
+using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.UseCases.Management.Groups;
+using Tutor.Web.Mappings.Enrollments;
 using Tutor.Web.Mappings.Stakeholders;
 
 namespace Tutor.Web.Controllers.Administrators.Courses;
@@ -28,6 +30,7 @@ public class GroupMembershipController : BaseApiController
     public ActionResult<List<StakeholderAccountDto>> GetMembers(int groupId)
     {
         var result = _groupService.GetMembers(groupId);
+        // Not using generic method because service returns list, not paged
         if (result.IsFailed) return CreateErrorResponse(result.Errors);
         var retVal = new PagedResult<StakeholderAccountDto>(
             result.Value.Select(_mapper.Map<StakeholderAccountDto>).ToList(), result.Value.Count);
@@ -39,15 +42,13 @@ public class GroupMembershipController : BaseApiController
     {
         var result = _groupService.CreateMembers(groupId,
             stakeholderAccounts.Select(_mapper.Map<Learner>).ToList());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return CreateResponse(result, Ok, CreateErrorResponse);
     }
 
     [HttpDelete("{learnerId:int}")]
     public ActionResult Delete(int groupId, int learnerId)
     {
         var result = _groupService.DeleteMember(groupId, learnerId);
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return CreateResponse(result, Ok, CreateErrorResponse);
     }
 }

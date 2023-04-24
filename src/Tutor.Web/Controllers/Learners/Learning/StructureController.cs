@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
+using Tutor.Core.Domain.Knowledge.InstructionalItems;
+using Tutor.Core.Domain.Knowledge.Structure;
+using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Mappings.Knowledge.DTOs;
@@ -27,35 +29,27 @@ public class StructureController : BaseApiController
     public ActionResult<KnowledgeUnitDto> GetUnit(int unitId)
     {
         var result = _learningStructureService.GetUnit(unitId, User.LearnerId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-
-        var unitDto = _mapper.Map<KnowledgeUnitDto>(result.Value);
-
-        return Ok(unitDto);
+        return CreateResponse<KnowledgeUnit, KnowledgeUnitDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpGet("units/{unitId:int}/masteries")]
     public ActionResult<List<KnowledgeComponentMasteryDto>> GetMasteries(int unitId)
     {
         var result = _learningStructureService.GetMasteries(unitId, User.LearnerId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-
-        return Ok(result.Value.Select(_mapper.Map<KnowledgeComponentMasteryDto>).ToList());
+        return CreateResponse<KnowledgeComponentMastery, KnowledgeComponentMasteryDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpGet("knowledge-component/{knowledgeComponentId:int}/")]
     public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
     {
         var result = _learningStructureService.GetKnowledgeComponent(knowledgeComponentId, User.LearnerId());
-        if(result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<KnowledgeComponentDto>(result.Value));
+        return CreateResponse<KnowledgeComponent, KnowledgeComponentDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpGet("knowledge-component/{knowledgeComponentId:int}/instructional-items/")]
     public ActionResult<List<InstructionalItemDto>> GetInstructionalItems(int knowledgeComponentId)
     {
         var result = _learningStructureService.GetInstructionalItems(knowledgeComponentId, User.LearnerId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(result.Value.Select(_mapper.Map<InstructionalItemDto>).ToList());
+        return CreateResponse<InstructionalItem, InstructionalItemDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 }
