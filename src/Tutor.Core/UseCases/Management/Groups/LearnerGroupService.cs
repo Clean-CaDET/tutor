@@ -22,11 +22,11 @@ public class LearnerGroupService: CrudService<LearnerGroup>, ILearnerGroupServic
         return _groupRepository.GetCourseGroups(courseId, page, pageSize);
     }
 
-    public Result<List<Learner>> GetMembers(int groupId)
+    public Result<PagedResult<Learner>> GetMembers(int groupId, int page, int pageSize)
     {
-        var task = _groupRepository.GetLearnersInGroupAsync(groupId, 0, 0);
+        var task = _groupRepository.GetLearnersInGroupAsync(groupId, page, pageSize);
         task.Wait();
-        return task.Result.Results;
+        return task.Result;
     }
 
     public Result CreateMembers(int groupId, List<Learner> learners)

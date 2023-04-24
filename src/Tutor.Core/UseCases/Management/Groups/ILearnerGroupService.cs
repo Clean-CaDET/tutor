@@ -12,7 +12,7 @@ public interface ILearnerGroupService
     Result<LearnerGroup> Create(LearnerGroup group);
     Result<LearnerGroup> Update(LearnerGroup group);
     Result Delete(int id);
-    Result<List<Learner>> GetMembers(int groupId);
+    Result<PagedResult<Learner>> GetMembers(int groupId, int page, int pageSize);
     Result CreateMembers(int groupId, List<Learner> learners);
     Result DeleteMember(int groupId, int learnerId);
 }

@@ -4,10 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks;
-using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.UseCases.Management.Groups;
-using Tutor.Web.Mappings.Enrollments;
 using Tutor.Web.Mappings.Stakeholders;
 
 namespace Tutor.Web.Controllers.Administrators.Courses;
@@ -27,14 +25,10 @@ public class GroupMembershipController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<StakeholderAccountDto>> GetMembers(int groupId)
+    public ActionResult<PagedResult<StakeholderAccountDto>> GetMembers(int groupId, [FromQuery] int page, [FromQuery] int pageSize)
     {
-        var result = _groupService.GetMembers(groupId);
-        // Not using generic method because service returns list, not paged
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        var retVal = new PagedResult<StakeholderAccountDto>(
-            result.Value.Select(_mapper.Map<StakeholderAccountDto>).ToList(), result.Value.Count);
-        return Ok(retVal);
+        var result = _groupService.GetMembers(groupId, page, pageSize);
+        return CreateResponse<Learner, StakeholderAccountDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
     [HttpPost("bulk")]
