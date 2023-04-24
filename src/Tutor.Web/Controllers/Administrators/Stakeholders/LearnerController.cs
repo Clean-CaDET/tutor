@@ -82,12 +82,9 @@ public class LearnerController : BaseApiController
     }
 
     [HttpGet("{id:int}/courses")]
-    public ActionResult<CourseDto> GetEnrolledCourses(int id)
+    public ActionResult<PagedResult<CourseDto>> GetEnrolledCourses(int id, [FromQuery] int page, [FromQuery] int pageSize)
     {
-        var result = _enrollmentService.GetEnrolledCourses(id);
-        // Not using generic method because service returns list, not paged
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        var items = result.Value.Select(_mapper.Map<CourseDto>).ToList();
-        return Ok(new PagedResult<CourseDto>(items, items.Count));
+        var result = _enrollmentService.GetEnrolledCourses(id, page, pageSize);
+        return CreateResponse<Course, CourseDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 }

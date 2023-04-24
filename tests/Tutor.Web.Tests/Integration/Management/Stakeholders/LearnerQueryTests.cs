@@ -77,7 +77,7 @@ public class LearnerQueryTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupLearnerController(scope);
 
-        var result = ((OkObjectResult)controller.GetEnrolledCourses(-1).Result)?.Value as PagedResult<CourseDto>;
+        var result = ((OkObjectResult)controller.GetEnrolledCourses(-1, 0, 0).Result)?.Value as PagedResult<CourseDto>;
 
         result.ShouldNotBeNull();
         result.Results.Count.ShouldBe(2);

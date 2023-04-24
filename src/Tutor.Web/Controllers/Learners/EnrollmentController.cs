@@ -2,6 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.UseCases.Monitoring;
 using Tutor.Infrastructure.Security.Authentication.Users;
@@ -24,9 +25,9 @@ public class EnrollmentController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<CourseDto>> GetEnrolledCourses()
+    public ActionResult<PagedResult<CourseDto>> GetEnrolledCourses([FromQuery] int page, [FromQuery] int pageSize)
     {
-        var result = _enrollmentService.GetEnrolledCourses(User.LearnerId());
+        var result = _enrollmentService.GetEnrolledCourses(User.LearnerId(), page, pageSize);
         return CreateResponse<Course, CourseDto>(result, Ok, CreateErrorResponse, _mapper);
     }
 
