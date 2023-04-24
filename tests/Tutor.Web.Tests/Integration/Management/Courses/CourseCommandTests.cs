@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Linq;
@@ -109,7 +110,7 @@ public class CourseCommandTests : BaseWebIntegrationTest
     }
 
     [Fact]
-    public void Deletes()
+    public void Deletes_empty_course()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
@@ -121,8 +122,33 @@ public class CourseCommandTests : BaseWebIntegrationTest
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-        var storedCourses = dbContext.Courses.FirstOrDefault(i => i.Id == -3);
-        storedCourses.ShouldBeNull();
+        var storedCourse = dbContext.Courses.FirstOrDefault(i => i.Id == -3);
+        storedCourse.ShouldBeNull();
+    }
+
+    [Fact]
+    public void Deletes_course_with_ownerships()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var instructorIds = dbContext.CourseOwnerships.Include(co => co.Course).Where(co => co.Id == -4).Select(co => co.InstructorId).ToList();
+        dbContext.Database.BeginTransaction();
+
+        var result = (OkResult)controller.Delete(-4);
+
+        dbContext.ChangeTracker.Clear();
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(200);
+        var storedCourse = dbContext.Courses.FirstOrDefault(i => i.Id == -4);
+        storedCourse.ShouldBeNull();
+        var storedOwnerships = dbContext.CourseOwnerships.Include(co => co.Course).Where(co => co.Course.Id == -4);
+        storedOwnerships.Count().ShouldBe(0);
+        foreach (var id in instructorIds)
+        {
+            var instructor = dbContext.Instructors.Where(i => i.Id == id);
+            instructor.ShouldNotBeNull();
+        }
     }
 
     [Fact]
@@ -136,6 +162,21 @@ public class CourseCommandTests : BaseWebIntegrationTest
 
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(404);
+    }
+
+    [Fact]
+    public void Delete_fails_existing_units()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+
+        var result = (ObjectResult)controller.Delete(-1);
+
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(403);
+        var storedCourse = dbContext.Courses.FirstOrDefault(i => i.Id == -1);
+        storedCourse.ShouldNotBeNull();
     }
 
     private CourseController SetupController(IServiceScope scope)

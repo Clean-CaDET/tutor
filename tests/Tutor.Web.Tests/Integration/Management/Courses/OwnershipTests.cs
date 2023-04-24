@@ -59,10 +59,12 @@ public class OwnershipTests : BaseWebIntegrationTest
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-        var storedCourses = dbContext.CourseOwnerships.FirstOrDefault(o => o.Course.Id == -1 && o.InstructorId == -51);
-        storedCourses.ShouldBeNull();
+        var storedOwnerships = dbContext.CourseOwnerships.FirstOrDefault(o => o.Course.Id == -1 && o.InstructorId == -51);
+        storedOwnerships.ShouldBeNull();
         var storedInstructor = dbContext.Instructors.FirstOrDefault(i => i.Id == -51);
         storedInstructor.ShouldNotBeNull();
+        var storedCourse = dbContext.Courses.FirstOrDefault(i => i.Id == -1);
+        storedCourse.ShouldNotBeNull();
     }
 
     private CourseOwnerController SetupController(IServiceScope scope)

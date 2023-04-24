@@ -71,6 +71,16 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         return SessionTracker.Abandon();
     }
 
+    public Result PauseSession()
+    {
+        return SessionTracker.Pause();
+    }
+
+    public Result ContinueSession()
+    {
+        return SessionTracker.Continue();
+    }
+
     private void JoinOrLaunchSession()
     {
         if (!SessionTracker.HasUnfinishedSession) LaunchSession();
@@ -223,6 +233,6 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
     private static void When(KnowledgeComponentEvent @event)
     {
-        // No action for AssessmentItemSelected, InstructionalItemsSelected, SolutionRequest, InstructorMessageEvent, SessionTerminated, SessionAbandoned.
+        // No action for AssessmentItemSelected, InstructionalItemsSelected, SolutionRequest, InstructorMessageEvent, and SessionLifecycle events.
     }
 }

@@ -9,5 +9,5 @@ public class KcmProgressDto
     public int KnowledgeComponentId { get; set; }
     public KcMasteryStatisticsDto Statistics { get; set; }
     public List<AssessmentItemMasteryDto> AssessmentItemMasteries { get; set; }
-    public int DurationOfAllSessionsInMinutes { get; set; }
+    public int ActiveSessionInMinutes { get; set; }
 }

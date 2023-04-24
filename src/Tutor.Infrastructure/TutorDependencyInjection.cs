@@ -22,7 +22,7 @@ public static class TutorDependencyInjection
             opt.UseNpgsql(CreateConnectionStringFromEnvironment()));
         services.AddScoped<IEventStore, PostgresStore>();
 
-        services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IEmailSender, EmailSender>();
         var emailConfig = CreateEmailConfigurationFromEnvironment();
         services.AddSingleton(emailConfig);
 
@@ -51,13 +51,17 @@ public static class TutorDependencyInjection
         var smtpPort = Environment.GetEnvironmentVariable("SMTP_PORT") ?? "587";
         var username = Environment.GetEnvironmentVariable("SMTP_USERNAME") ?? "perapera2359@gmail.com";
         var password = Environment.GetEnvironmentVariable("SMTP_PASSWORD") ?? "rreskjmprcqsbfjg";
+        var proxyAddress = Environment.GetEnvironmentVariable("PROXY_ADDRESS") ?? "proxy.uns.ac.rs";
+        var proxyPort = Environment.GetEnvironmentVariable("PROXY_PORT") ?? "8080";
 
         return new EmailConfiguration
         {
             SmtpHost = smtpHost,
             SmtpPort = int.Parse(smtpPort),
             Username = username,
-            Password = password
+            Password = password,
+            ProxyAddress = proxyAddress,
+            ProxyPort = int.Parse(proxyPort)
         };
     }
 }

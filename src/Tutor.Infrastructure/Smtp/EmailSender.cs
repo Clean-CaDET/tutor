@@ -5,13 +5,14 @@ using MailKit.Net.Smtp;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MailKit.Net.Proxy;
 
 namespace Tutor.Infrastructure.Smtp
 {
-    public class EmailService : IEmailService
+    public class EmailSender : IEmailSender
     {
         private readonly EmailConfiguration _config;
-        public EmailService(EmailConfiguration config)
+        public EmailSender(EmailConfiguration config)
         {
             _config = config;
         }
@@ -50,6 +51,7 @@ namespace Tutor.Infrastructure.Smtp
         private async Task<SmtpClient> OpenConnection()
         {
             var smtp = new SmtpClient();
+            smtp.ProxyClient = new HttpProxyClient(_config.ProxyAddress, _config.ProxyPort);
             await smtp.ConnectAsync(_config.SmtpHost, _config.SmtpPort, SecureSocketOptions.StartTls);
             await smtp.AuthenticateAsync(_config.Username, _config.Password);
             return smtp;

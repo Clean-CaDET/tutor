@@ -10,6 +10,10 @@ INSERT INTO public."Courses"(
     "Id", "Code", "Name", "IsArchived", "StartDate")
 VALUES (-3, 'T-3', 'EmptyCourse', false, '9/11/2022 12:00:01 PM');
 
+INSERT INTO public."Courses"(
+    "Id", "Code", "Name", "IsArchived", "StartDate")
+VALUES (-4, 'T-4', 'EmptyCourseWithOwnership', false, '9/11/2022 12:00:01 PM');
+
 INSERT INTO public."KnowledgeUnits"(
 	"Id", "Name", "Description", "CourseId", "Order")
 	VALUES (-1, 'T-1', 'T-1', -1, 1);
@@ -85,3 +89,6 @@ VALUES (-311, -31, 1, 'Text', 'Imenovanje je proces određivanja i dodeljivanja 
 INSERT INTO public."KnowledgeUnits"(
     "Id", "Name", "Description", "CourseId", "Order")
 VALUES (-4, 'T-4', 'T-4', -1, 3);
+INSERT INTO public."KnowledgeComponents"(
+    "Id", "Name", "Description", "KnowledgeUnitId", "Order")
+VALUES (-41, 'KC-4-4', '', -4, 2);

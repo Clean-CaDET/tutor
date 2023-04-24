@@ -14,28 +14,59 @@ public class SessionTracker : EventSourcedEntity
     public TimeSpan DurationOfFinishedSessions { get; private set; } = new(0);
     public bool HasUnfinishedSession => StartOfUnfinishedSession.HasValue;
 
-    public TimeSpan? DurationOfUnfinishedSession => HasUnfinishedSession ? LastActivity.Value - StartOfUnfinishedSession.Value : null;
+    public TimeSpan? DurationOfUnfinishedSession => HasUnfinishedSession ? DateTime.UtcNow - StartOfUnfinishedSession.Value : TimeSpan.Zero;
     public DateTime? StartOfUnfinishedSession { get; private set; }
-    public DateTime? LastActivity { get; private set; }
+
+    public bool IsPaused { get; private set; }
+    public TimeSpan DurationOfAllPauses => DurationOfFinishedPauses + DurationOfUnfinishedPause.GetValueOrDefault();
+    public TimeSpan DurationOfFinishedPauses { get; private set; } = new(0);
+    public TimeSpan? DurationOfUnfinishedPause => IsPaused ? DateTime.UtcNow - UnfinishedPauseStart.Value : TimeSpan.Zero;
+    public DateTime? UnfinishedPauseStart { get; private set; }
 
     public void Launch()
     {
-        if (HasUnfinishedSession) Causes(new SessionAbandoned());
-
+        if (HasUnfinishedSession)
+        {
+            if (IsPaused) Continue();
+            Causes(new SessionAbandoned());
+        }
+        
         Causes(new SessionLaunched());
     }
 
     public Result Terminate()
     {
         if (!HasUnfinishedSession) return Result.Fail("No active session to terminate.");
-
+        if (IsPaused) Continue();
+        
         Causes(new SessionTerminated());
+        return Result.Ok();
+    }
+
+    public Result Pause()
+    {
+        if (!HasUnfinishedSession) return Result.Fail("No active session to pause.");
+        if (IsPaused) return Result.Fail("Session is already paused.");
+        
+        IsPaused = true;
+        Causes(new SessionPaused());
+        return Result.Ok();
+    }
+
+    public Result Continue()
+    {
+        if (!HasUnfinishedSession) return Result.Fail("No active session to continue.");
+        if (!IsPaused) return Result.Fail("Session is not paused.");
+            
+        IsPaused = false;
+        Causes(new SessionContinued());
         return Result.Ok();
     }
 
     public Result Abandon()
     {
         if (!HasUnfinishedSession) return Result.Fail("No active session to abandon.");
+        if (IsPaused) Continue();
 
         Causes(new SessionAbandoned());
         return Result.Ok();
@@ -49,46 +80,48 @@ public class SessionTracker : EventSourcedEntity
     private void When(SessionLaunched @event)
     {
         StartOfUnfinishedSession = @event.TimeStamp;
-        LastActivity = @event.TimeStamp;
         CountOfSessions++;
     }
 
     private void When(SessionTerminated @event)
     {
-        LastActivity = @event.TimeStamp;
-
         DurationOfFinishedSessions += DurationOfUnfinishedSession.GetValueOrDefault();
         StartOfUnfinishedSession = null;
-        LastActivity = null;
+    }
+
+    private void When(SessionPaused @event)
+    {
+        UnfinishedPauseStart = @event.TimeStamp;
+    }
+
+    private void When(SessionContinued @event)
+    {
+        DurationOfFinishedPauses += @event.TimeStamp - UnfinishedPauseStart.Value;
+        UnfinishedPauseStart = null;
     }
 
     private void When(SessionAbandoned @event)
     {
         DurationOfFinishedSessions += DurationOfUnfinishedSession.GetValueOrDefault();
         StartOfUnfinishedSession = null;
-        LastActivity = null;
     }
 
     private void When(KnowledgeComponentCompleted @event)
     {
-        LastActivity = @event.TimeStamp;
-        @event.MinutesToCompletion = DurationOfAllSessions.TotalMinutes;
+        @event.MinutesToCompletion = DurationOfAllSessions.TotalMinutes - DurationOfAllPauses.TotalMinutes;
     }
 
     private void When(KnowledgeComponentPassed @event)
     {
-        LastActivity = @event.TimeStamp;
-        @event.MinutesToPass = DurationOfAllSessions.TotalMinutes;
+        @event.MinutesToPass = DurationOfAllSessions.TotalMinutes - DurationOfAllPauses.TotalMinutes;
     }
 
     private void When(KnowledgeComponentSatisfied @event)
     {
-        LastActivity = @event.TimeStamp;
-        @event.MinutesToSatisfaction = DurationOfAllSessions.TotalMinutes;
+        @event.MinutesToSatisfaction = DurationOfAllSessions.TotalMinutes - DurationOfAllPauses.TotalMinutes;
     }
 
     private void When(KnowledgeComponentEvent @event)
     {
-        LastActivity = @event.TimeStamp;
     }
 }
