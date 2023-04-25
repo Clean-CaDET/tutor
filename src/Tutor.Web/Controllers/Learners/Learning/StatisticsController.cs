@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.UseCases.Learning;
 using Tutor.Infrastructure.Security.Authentication.Users;
-using Tutor.Web.Mappings.Knowledge.DTOs;
 using Tutor.Web.Mappings.KnowledgeMastery;
 
 namespace Tutor.Web.Controllers.Learners.Learning;
@@ -14,12 +12,10 @@ namespace Tutor.Web.Controllers.Learners.Learning;
 [Route("api/learning/statistics/")]
 public class StatisticsController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly IStatisticsService _learningStatisticsService;
 
-    public StatisticsController(IMapper mapper, IStatisticsService learningStatisticsService)
+    public StatisticsController(IMapper mapper, IStatisticsService learningStatisticsService) : base(mapper)
     {
-        _mapper = mapper;
         _learningStatisticsService = learningStatisticsService;
     }
 
@@ -27,7 +23,7 @@ public class StatisticsController : BaseApiController
     public ActionResult<KcMasteryStatisticsDto> GetKcMasteryStatistics(int knowledgeComponentId)
     {
         var result = _learningStatisticsService.GetKcMasteryStatistics(knowledgeComponentId, User.LearnerId());
-        return CreateResponse<KcMasteryStatistics, KcMasteryStatisticsDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<KcMasteryStatistics, KcMasteryStatisticsDto>(result);
     }
 
     [HttpGet("aim/{assessmentItemId:int}")]

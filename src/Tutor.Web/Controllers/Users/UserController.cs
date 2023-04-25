@@ -17,13 +17,13 @@ public class UserController : BaseApiController
     public ActionResult<AuthenticationTokens> Login([FromBody] CredentialsDto credentials)
     {
         var result = _authenticationService.Login(credentials.Username, credentials.Password);
-        return CreateResponse(result, Ok, CreateErrorResponse);
+        return CreateResponse(result);
     }
 
     [HttpPost("refresh")]
     public ActionResult<AuthenticationTokens> RefreshToken([FromBody] AuthenticationTokens authenticationTokens)
     {
         var result = _authenticationService.RefreshToken(authenticationTokens);
-        return CreateResponse(result, Ok, BadRequest);
+        return CreateResponse(result, onFailure: BadRequest);
     }
 }

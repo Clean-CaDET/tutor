@@ -12,12 +12,10 @@ namespace Tutor.Web.Controllers.Learners.Learning.Assessment;
 [Route("api/learning/knowledge-component/{knowledgeComponentId:int}/assessment-item/")]
 public class SelectionController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly ISelectionService _assessmentSelectionService;
 
-    public SelectionController(IMapper mapper, ISelectionService assessmentSelectionService)
+    public SelectionController(IMapper mapper, ISelectionService assessmentSelectionService) : base(mapper)
     {
-        _mapper = mapper;
         _assessmentSelectionService = assessmentSelectionService;
     }
 
@@ -25,6 +23,6 @@ public class SelectionController : BaseApiController
     public ActionResult<AssessmentItemDto> GetSuitableAssessmentItem(int knowledgeComponentId)
     {
         var result = _assessmentSelectionService.SelectSuitableAssessmentItem(knowledgeComponentId, User.LearnerId());
-        return CreateResponse<AssessmentItem, AssessmentItemDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<AssessmentItem, AssessmentItemDto>(result);
     }
 }

@@ -12,12 +12,10 @@ namespace Tutor.Web.Controllers.Instructors.Authoring;
 [Authorize(Policy = "instructorPolicy")]
 public class KnowledgeComponentController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly IKnowledgeComponentService _kcService;
 
-    public KnowledgeComponentController(IMapper mapper, IKnowledgeComponentService kcService)
+    public KnowledgeComponentController(IMapper mapper, IKnowledgeComponentService kcService) : base(mapper)
     {
-        _mapper = mapper;
         _kcService = kcService;
     }
 
@@ -25,7 +23,7 @@ public class KnowledgeComponentController : BaseApiController
     public ActionResult<KnowledgeComponentDto> Get(int id)
     {
         var result = _kcService.Get(id, User.InstructorId());
-        return CreateResponse<KnowledgeComponent, KnowledgeComponentDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<KnowledgeComponent, KnowledgeComponentDto>(result);
     }
 
     [HttpPost]
@@ -34,7 +32,7 @@ public class KnowledgeComponentController : BaseApiController
         var newKc = _mapper.Map<KnowledgeComponent>(kc);
 
         var result = _kcService.Create(newKc, User.InstructorId());
-        return CreateResponse<KnowledgeComponent, KnowledgeComponentDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<KnowledgeComponent, KnowledgeComponentDto>(result);
     }
 
     [HttpPut("{id:int}")]
@@ -43,13 +41,13 @@ public class KnowledgeComponentController : BaseApiController
         var updatedKc = _mapper.Map<KnowledgeComponent>(kc);
 
         var result = _kcService.Update(updatedKc, User.InstructorId());
-        return CreateResponse<KnowledgeComponent, KnowledgeComponentDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<KnowledgeComponent, KnowledgeComponentDto>(result);
     }
 
     [HttpDelete("{id:int}")]
     public ActionResult Delete(int id)
     {
         var result = _kcService.Delete(id, User.InstructorId());
-        return CreateResponse(result, Ok, CreateErrorResponse);
+        return CreateResponse(result);
     }
 }

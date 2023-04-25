@@ -13,12 +13,10 @@ namespace Tutor.Web.Controllers.Instructors;
 [Route("api/owned-courses")]
 public class OwnedCoursesController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly ICourseOwnershipService _courseOwnershipService;
     
-    public OwnedCoursesController(IMapper mapper, ICourseOwnershipService courseOwnershipService)
+    public OwnedCoursesController(IMapper mapper, ICourseOwnershipService courseOwnershipService) : base(mapper)
     {
-        _mapper = mapper;
         _courseOwnershipService = courseOwnershipService;
     }
 
@@ -26,20 +24,20 @@ public class OwnedCoursesController : BaseApiController
     public ActionResult<List<CourseDto>> GetOwnedCourses()
     {
         var result = _courseOwnershipService.GetOwnedCourses(User.InstructorId());
-        return CreateResponse<Course, CourseDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Course, CourseDto>(result);
     }
 
     [HttpGet("{courseId:int}")]
     public ActionResult<CourseDto> GetCourseWithUnitsAndKcs(int courseId)
     {
         var result = _courseOwnershipService.GetOwnedCourseWithUnitsAndKcs(courseId, User.InstructorId());
-        return CreateResponse<Course, CourseDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Course, CourseDto>(result);
     }
 
     [HttpPut("{id:int}")]
     public ActionResult<CourseDto> Update([FromBody] CourseDto course)
     {
         var result = _courseOwnershipService.UpdateOwnedCourse(_mapper.Map<Course>(course), User.InstructorId());
-        return CreateResponse<Course, CourseDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Course, CourseDto>(result);
     }
 }

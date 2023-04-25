@@ -11,12 +11,10 @@ namespace Tutor.Web.Controllers.Learners.Learning.Utilities.Feedback;
 [Route("api/learning/unit/{unitId:int}/feedback")]
 public class FeedbackController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly IFeedbackService _feedbackService;
 
-    public FeedbackController(IMapper mapper, IFeedbackService feedbackService)
+    public FeedbackController(IMapper mapper, IFeedbackService feedbackService) : base(mapper)
     {
-        _mapper = mapper;
         _feedbackService = feedbackService;
     }
 
@@ -25,7 +23,7 @@ public class FeedbackController : BaseApiController
     {
         emotionsFeedback.LearnerId = User.LearnerId();
         var result = _feedbackService.SaveEmotionsFeedback(_mapper.Map<EmotionsFeedback>(emotionsFeedback));
-        return CreateResponse<EmotionsFeedback, EmotionsFeedbackDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<EmotionsFeedback, EmotionsFeedbackDto>(result);
     }
 
     [HttpPost("improvements")]
@@ -33,6 +31,6 @@ public class FeedbackController : BaseApiController
     {
         tutorImprovementFeedback.LearnerId = User.LearnerId();
         var result = _feedbackService.SaveTutorImprovementFeedback(_mapper.Map<TutorImprovementFeedback>(tutorImprovementFeedback));
-        return CreateResponse<TutorImprovementFeedback, TutorImprovementFeedbackDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<TutorImprovementFeedback, TutorImprovementFeedbackDto>(result);
     }
 }

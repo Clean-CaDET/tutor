@@ -13,13 +13,11 @@ namespace Tutor.Web.Controllers.Learners.Learning.Assessment;
 [Route("api/learning/assessment-item/{assessmentItemId:int}/submissions")]
 public class EvaluationController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly IEvaluationService _assessmentEvaluationService;
     private readonly IHelpService _assessmentHelpService;
 
-    public EvaluationController(IMapper mapper, IEvaluationService service, IHelpService assessmentHelpService)
+    public EvaluationController(IMapper mapper, IEvaluationService service, IHelpService assessmentHelpService) : base(mapper)
     {
-        _mapper = mapper;
         _assessmentEvaluationService = service;
         _assessmentHelpService = assessmentHelpService;
     }
@@ -28,7 +26,7 @@ public class EvaluationController : BaseApiController
     public ActionResult<FeedbackDto> SubmitAssessmentAnswer(int assessmentItemId, [FromBody] SubmissionDto submission)
     {
         var result = _assessmentEvaluationService.EvaluateAssessmentItemSubmission(assessmentItemId, _mapper.Map<Submission>(submission), User.LearnerId());
-        return CreateResponse<Feedback, FeedbackDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Feedback, FeedbackDto>(result);
     }
 
     // Should be moved into a standalone module
@@ -37,6 +35,6 @@ public class EvaluationController : BaseApiController
     {
         var result = _assessmentHelpService
             .RecordInstructorMessage(User.LearnerId(), instructorMessageDto.KcId, instructorMessageDto.Message);
-        return CreateResponse(result, Ok, CreateErrorResponse);
+        return CreateResponse(result);
     }
 }

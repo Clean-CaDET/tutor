@@ -14,12 +14,10 @@ namespace Tutor.Web.Controllers.Instructors.Authoring;
 [Authorize(Policy = "instructorPolicy")]
 public class InstructionController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly IInstructionService _instructionService;
 
-    public InstructionController(IMapper mapper, IInstructionService instructionService)
+    public InstructionController(IMapper mapper, IInstructionService instructionService) : base(mapper)
     {
-        _mapper = mapper;
         _instructionService = instructionService;
     }
 
@@ -27,7 +25,7 @@ public class InstructionController : BaseApiController
     public ActionResult<List<InstructionalItemDto>> GetForKc(int kcId)
     {
         var result = _instructionService.GetForKc(kcId, User.InstructorId());
-        return CreateResponse<InstructionalItem, InstructionalItemDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<InstructionalItem, InstructionalItemDto>(result);
     }
 
     [HttpPost]
@@ -52,13 +50,13 @@ public class InstructionController : BaseApiController
     public ActionResult UpdateOrdering(int kcId, [FromBody] List<InstructionalItemDto> instructionalItems)
     {
         var result = _instructionService.UpdateOrdering(kcId, instructionalItems.Select(_mapper.Map<InstructionalItem>).ToList(), User.InstructorId());
-        return CreateResponse<InstructionalItem, InstructionalItemDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<InstructionalItem, InstructionalItemDto>(result);
     }
 
     [HttpDelete("{id:int}")]
     public ActionResult Delete(int kcId, int id)
     {
         var result = _instructionService.Delete(id, kcId, User.InstructorId());
-        return CreateResponse(result, Ok, CreateErrorResponse);
+        return CreateResponse(result);
     }
 }

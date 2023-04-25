@@ -12,12 +12,10 @@ namespace Tutor.Web.Controllers.Administrators.Courses;
 [Route("api/management/courses")]
 public class CourseController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly ICourseService _courseService;
 
-    public CourseController(IMapper mapper, ICourseService courseService)
+    public CourseController(IMapper mapper, ICourseService courseService) : base(mapper)
     {
-        _mapper = mapper;
         _courseService = courseService;
     }
 
@@ -25,41 +23,41 @@ public class CourseController : BaseApiController
     public ActionResult<List<CourseDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
     {
         var result = _courseService.GetAll(page, pageSize);
-        return CreateResponse<Course, CourseDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Course, CourseDto>(result);
     }
 
     [HttpPost]
     public ActionResult<CourseDto> Create([FromBody] CourseDto course)
     {
         var result = _courseService.CreateWithGroup(_mapper.Map<Course>(course));
-        return CreateResponse<Course, CourseDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Course, CourseDto>(result);
     }
 
     [HttpPost("{id:int}/clone")]
     public ActionResult<CourseDto> Clone(int id, [FromBody] CourseDto course)
     {
         var result = _courseService.Clone(id, _mapper.Map<Course>(course));
-        return CreateResponse<Course, CourseDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Course, CourseDto>(result);
     }
 
     [HttpPut("{id:int}")]
     public ActionResult<CourseDto> Update([FromBody] CourseDto course)
     {
         var result = _courseService.Update(_mapper.Map<Course>(course));
-        return CreateResponse<Course, CourseDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Course, CourseDto>(result);
     }
 
     [HttpPatch("{id:int}/archive")]
     public ActionResult<CourseDto> Archive(int id, [FromBody] bool archive)
     {
         var result = _courseService.Archive(id, archive);
-        return CreateResponse<Course, CourseDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Course, CourseDto>(result);
     }
 
     [HttpDelete("{id:int}")]
     public ActionResult Delete(int id)
     {
         var result = _courseService.Delete(id);
-        return CreateResponse(result, Ok, CreateErrorResponse);
+        return CreateResponse(result);
     }
 }

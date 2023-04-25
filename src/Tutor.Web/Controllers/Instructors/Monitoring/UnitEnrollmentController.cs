@@ -13,12 +13,10 @@ namespace Tutor.Web.Controllers.Instructors.Monitoring;
 [Route("api/monitoring/enrollments/unit/{unitId:int}")]
 public class UnitEnrollmentController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly IEnrollmentService _enrollmentService;
 
-    public UnitEnrollmentController(IMapper mapper, IEnrollmentService enrollmentService)
+    public UnitEnrollmentController(IMapper mapper, IEnrollmentService enrollmentService) : base(mapper)
     {
-        _mapper = mapper;
         _enrollmentService = enrollmentService;
     }
 
@@ -28,27 +26,27 @@ public class UnitEnrollmentController : BaseApiController
     public ActionResult<List<UnitEnrollmentDto>> GetEnrollments(int unitId, [FromBody] int[] learnerIds)
     {
         var result = _enrollmentService.GetEnrollments(unitId, learnerIds, User.InstructorId());
-        return CreateResponse<UnitEnrollment, UnitEnrollmentDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<UnitEnrollment, UnitEnrollmentDto>(result);
     }
 
     [HttpPost("bulk")]
     public ActionResult<List<UnitEnrollmentDto>> BulkEnroll(int unitId, [FromBody] int[] learnerIds)
     {
         var result = _enrollmentService.BulkEnroll(unitId, learnerIds, User.InstructorId());
-        return CreateResponse<UnitEnrollment, UnitEnrollmentDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<UnitEnrollment, UnitEnrollmentDto>(result);
     }
 
     [HttpPost]
     public ActionResult<UnitEnrollmentDto> Enroll(int unitId, [FromBody] int learnerId)
     {
         var result = _enrollmentService.Enroll(unitId, learnerId, User.InstructorId());
-        return CreateResponse<UnitEnrollment, UnitEnrollmentDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<UnitEnrollment, UnitEnrollmentDto>(result);
     }
 
     [HttpDelete("{learnerId:int}")]
     public ActionResult Unenroll(int unitId, int learnerId)
     {
         var result = _enrollmentService.Unenroll(unitId, learnerId, User.InstructorId());
-        return CreateResponse(result, Ok, CreateErrorResponse);
+        return CreateResponse(result);
     }
 }

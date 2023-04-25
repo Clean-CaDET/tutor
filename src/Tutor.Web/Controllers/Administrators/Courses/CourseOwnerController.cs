@@ -12,12 +12,10 @@ namespace Tutor.Web.Controllers.Administrators.Courses;
 [Route("api/management/courses/{courseId:int}/owners")]
 public class CourseOwnerController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly ICourseOwnershipService _ownershipService;
 
-    public CourseOwnerController(IMapper mapper, ICourseOwnershipService ownershipService)
+    public CourseOwnerController(IMapper mapper, ICourseOwnershipService ownershipService) : base(mapper)
     {
-        _mapper = mapper;
         _ownershipService = ownershipService;
     }
 
@@ -25,20 +23,20 @@ public class CourseOwnerController : BaseApiController
     public ActionResult<List<StakeholderAccountDto>> GetAll(int courseId)
     {
         var result = _ownershipService.GetOwners(courseId);
-        return CreateResponse<Instructor, StakeholderAccountDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Instructor, StakeholderAccountDto>(result);
     }
 
     [HttpPost]
     public ActionResult Create(int courseId, [FromBody] int instructorId)
     {
         var result = _ownershipService.AssignOwnership(courseId, instructorId);
-        return CreateResponse(result, Ok, CreateErrorResponse);
+        return CreateResponse(result);
     }
 
     [HttpDelete("{instructorId:int}")]
     public ActionResult Delete(int courseId, int instructorId)
     {
         var result = _ownershipService.RemoveOwnership(courseId, instructorId);
-        return CreateResponse(result, Ok, CreateErrorResponse);
+        return CreateResponse(result);
     }
 }

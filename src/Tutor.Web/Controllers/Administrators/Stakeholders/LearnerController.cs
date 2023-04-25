@@ -17,13 +17,11 @@ namespace Tutor.Web.Controllers.Administrators.Stakeholders;
 [Route("api/management/learners")]
 public class LearnerController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly ILearnerService _learnerService;
     private readonly IEnrollmentService _enrollmentService;
 
-    public LearnerController(IMapper mapper, ILearnerService learnerService, IEnrollmentService enrollmentService)
+    public LearnerController(IMapper mapper, ILearnerService learnerService, IEnrollmentService enrollmentService) : base(mapper)
     {
-        _mapper = mapper;
         _learnerService = learnerService;
         _enrollmentService = enrollmentService;
     }
@@ -32,7 +30,7 @@ public class LearnerController : BaseApiController
     public ActionResult<PagedResult<StakeholderAccountDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
     {
         var result = _learnerService.GetPaged(page, pageSize);
-        return CreateResponse<Learner, StakeholderAccountDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Learner, StakeholderAccountDto>(result);
     }
 
     // Post because of potential URL length limit violation with query params
@@ -40,14 +38,14 @@ public class LearnerController : BaseApiController
     public ActionResult<PagedResult<StakeholderAccountDto>> GetSelected([FromBody] string[] indexes)
     {
         var result = _learnerService.GetByIndexes(indexes);
-        return CreateResponse<Learner, StakeholderAccountDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Learner, StakeholderAccountDto>(result);
     }
 
     [HttpPost]
     public ActionResult<StakeholderAccountDto> Register([FromBody] StakeholderAccountDto stakeholderAccount)
     {
         var result = _learnerService.Register(_mapper.Map<Learner>(stakeholderAccount), stakeholderAccount.Index, stakeholderAccount.Password, UserRole.Learner);
-        return CreateResponse<Learner, StakeholderAccountDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Learner, StakeholderAccountDto>(result);
     }
 
     [HttpPost("bulk")]
@@ -57,34 +55,34 @@ public class LearnerController : BaseApiController
             stakeholderAccounts.Select(a => _mapper.Map<Learner>(a)).ToList(),
             stakeholderAccounts.Select(a => a.Index).ToList(),
             stakeholderAccounts.Select(a => a.Password).ToList());
-        return CreateResponse(result, Ok, CreateErrorResponse);
+        return CreateResponse(result);
     }
 
     [HttpPut("{id:int}")]
     public ActionResult<StakeholderAccountDto> Update([FromBody] StakeholderAccountDto stakeholderAccount)
     {
         var result = _learnerService.Update(_mapper.Map<Learner>(stakeholderAccount));
-        return CreateResponse<Learner, StakeholderAccountDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Learner, StakeholderAccountDto>(result);
     }
 
     [HttpPatch("{id:int}/archive")]
     public ActionResult<StakeholderAccountDto> Archive(int id, [FromBody] bool archive)
     {
         var result = _learnerService.Archive(id, archive);
-        return CreateResponse<Learner, StakeholderAccountDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Learner, StakeholderAccountDto>(result);
     }
 
     [HttpDelete("{id:int}")]
     public ActionResult Delete(int id)
     {
         var result = _learnerService.Delete(id);
-        return CreateResponse(result, Ok, CreateErrorResponse);
+        return CreateResponse(result);
     }
 
     [HttpGet("{id:int}/courses")]
     public ActionResult<PagedResult<CourseDto>> GetEnrolledCourses(int id, [FromQuery] int page, [FromQuery] int pageSize)
     {
         var result = _enrollmentService.GetEnrolledCourses(id, page, pageSize);
-        return CreateResponse<Course, CourseDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Course, CourseDto>(result);
     }
 }

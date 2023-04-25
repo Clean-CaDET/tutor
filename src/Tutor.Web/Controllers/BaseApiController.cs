@@ -11,6 +11,13 @@ namespace Tutor.Web.Controllers;
 [ApiController]
 public class BaseApiController : ControllerBase
 {
+    protected readonly IMapper _mapper;
+
+    public BaseApiController(IMapper mapper = null)
+    {
+        _mapper = mapper;
+    }
+
     protected ActionResult CreateErrorResponse(List<IError> errors)
     {
         var code = 500;
@@ -23,8 +30,11 @@ public class BaseApiController : ControllerBase
         return Problem(statusCode: code, detail: string.Join(";", errors));
     }
 
-    protected ActionResult CreateResponse(Result result, Func<ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure)
+    protected ActionResult CreateResponse(Result result, Func<ActionResult> onSuccess = null, Func<List<IError>, ActionResult> onFailure = null)
     {
+        if (onSuccess is null) onSuccess = Ok;
+        if (onFailure is null) onFailure = CreateErrorResponse;
+
         if (result.IsSuccess)
         {
             return onSuccess();
@@ -32,8 +42,12 @@ public class BaseApiController : ControllerBase
         return onFailure(result.Errors);
     }
 
-    protected ActionResult CreateResponse<T>(Result<T> result, Func<T, ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure)
+    protected ActionResult CreateResponse<T>(Result<T> result, Func<T, ActionResult> onSuccess = null, Func<List<IError>, ActionResult> onFailure = null)
+        where T : class
     {
+        if (onSuccess is null) onSuccess = Ok;
+        if (onFailure is null) onFailure = CreateErrorResponse;
+
         if (result.IsSuccess)
         {
             return onSuccess(result.Value);
@@ -41,31 +55,41 @@ public class BaseApiController : ControllerBase
         return onFailure(result.Errors);
     }
 
-    protected ActionResult CreateResponse<TIn, TOut>(Result<TIn> result, Func<TOut, ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure, IMapper mapper)
+    protected ActionResult CreateResponse<TIn, TOut>(Result<TIn> result, Func<TOut, ActionResult> onSuccess = null, Func<List<IError>, ActionResult> onFailure = null)
+        where TOut : class
     {
+        if (onSuccess is null) onSuccess = Ok;
+        if (onFailure is null) onFailure = CreateErrorResponse;
+
         if (result.IsSuccess)
         {
-            return onSuccess(mapper.Map<TOut>(result.Value));
+            return onSuccess(_mapper.Map<TOut>(result.Value));
         }
         return onFailure(result.Errors);
     }
 
-    protected ActionResult CreateResponse<TIn, TOut>(Result<List<TIn>> result, Func<List<TOut>, ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure, IMapper mapper)
+    protected ActionResult CreateResponse<TIn, TOut>(Result<List<TIn>> result, Func<List<TOut>, ActionResult> onSuccess = null, Func<List<IError>, ActionResult> onFailure = null)
         where TIn : class
     {
+        if (onSuccess is null) onSuccess = Ok;
+        if (onFailure is null) onFailure = CreateErrorResponse;
+
         if (result.IsSuccess)
         {
-            return onSuccess(result.Value.Select(mapper.Map<TOut>).ToList());
+            return onSuccess(result.Value.Select(_mapper.Map<TOut>).ToList());
         }
         return onFailure(result.Errors);
     }
 
-    protected ActionResult CreateResponse<TIn, TOut>(Result<PagedResult<TIn>> result, Func<PagedResult<TOut>, ActionResult> onSuccess, Func<List<IError>, ActionResult> onFailure, IMapper mapper)
+    protected ActionResult CreateResponse<TIn, TOut>(Result<PagedResult<TIn>> result, Func<PagedResult<TOut>, ActionResult> onSuccess = null, Func<List<IError>, ActionResult> onFailure = null)
         where TIn : class
     {
+        if (onSuccess is null) onSuccess = Ok;
+        if (onFailure is null) onFailure = CreateErrorResponse;
+
         if (result.IsSuccess)
         {
-            var items = result.Value.Results.Select(mapper.Map<TOut>).ToList();
+            var items = result.Value.Results.Select(_mapper.Map<TOut>).ToList();
             return onSuccess(new PagedResult<TOut>(items, result.Value.TotalCount));
         }
         return onFailure(result.Errors);

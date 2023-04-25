@@ -17,11 +17,9 @@ namespace Tutor.Web.Controllers.Learners.Learning;
 [Route("api/learning")]
 public class StructureController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly IStructureService _learningStructureService;
-    public StructureController(IMapper mapper, IStructureService learningStructureService)
+    public StructureController(IMapper mapper, IStructureService learningStructureService) : base(mapper)
     {
-        _mapper = mapper;
         _learningStructureService = learningStructureService;
     }
 
@@ -37,27 +35,27 @@ public class StructureController : BaseApiController
     public ActionResult<KnowledgeUnitDto> GetUnit(int unitId)
     {
         var result = _learningStructureService.GetUnit(unitId, User.LearnerId());
-        return CreateResponse<KnowledgeUnit, KnowledgeUnitDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<KnowledgeUnit, KnowledgeUnitDto>(result);
     }
 
     [HttpGet("units/{unitId:int}/masteries")]
     public ActionResult<List<KnowledgeComponentMasteryDto>> GetMasteries(int unitId)
     {
         var result = _learningStructureService.GetMasteries(unitId, User.LearnerId());
-        return CreateResponse<KnowledgeComponentMastery, KnowledgeComponentMasteryDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<KnowledgeComponentMastery, KnowledgeComponentMasteryDto>(result);
     }
 
     [HttpGet("knowledge-component/{knowledgeComponentId:int}/")]
     public ActionResult<KnowledgeComponentDto> GetKnowledgeComponent(int knowledgeComponentId)
     {
         var result = _learningStructureService.GetKnowledgeComponent(knowledgeComponentId, User.LearnerId());
-        return CreateResponse<KnowledgeComponent, KnowledgeComponentDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<KnowledgeComponent, KnowledgeComponentDto>(result);
     }
 
     [HttpGet("knowledge-component/{knowledgeComponentId:int}/instructional-items/")]
     public ActionResult<List<InstructionalItemDto>> GetInstructionalItems(int knowledgeComponentId)
     {
         var result = _learningStructureService.GetInstructionalItems(knowledgeComponentId, User.LearnerId());
-        return CreateResponse<InstructionalItem, InstructionalItemDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<InstructionalItem, InstructionalItemDto>(result);
     }
 }

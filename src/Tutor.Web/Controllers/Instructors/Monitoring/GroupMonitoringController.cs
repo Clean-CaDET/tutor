@@ -17,12 +17,10 @@ namespace Tutor.Web.Controllers.Instructors.Monitoring;
 [Route("api/monitoring")]
 public class GroupMonitoringController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly IGroupMonitoringService _groupMonitoringService;
 
-    public GroupMonitoringController(IMapper mapper, IGroupMonitoringService groupMonitoringService)
+    public GroupMonitoringController(IMapper mapper, IGroupMonitoringService groupMonitoringService) : base(mapper)
     {
-        _mapper = mapper;
         _groupMonitoringService = groupMonitoringService;
     }
 
@@ -30,20 +28,20 @@ public class GroupMonitoringController : BaseApiController
     public ActionResult<PagedResult<GroupDto>> GetCourseGroups(int courseId, [FromQuery] int page, [FromQuery] int pageSize)
     {
         var result = _groupMonitoringService.GetCourseGroups(User.InstructorId(), courseId, page, pageSize);
-        return CreateResponse<LearnerGroup, GroupDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<LearnerGroup, GroupDto>(result);
     }
 
     [HttpGet("{courseId:int}/groups/{groupId:int}")]
     public ActionResult<PagedResult<StakeholderAccountDto>> GetGroupLearners(int courseId, int groupId, [FromQuery] int page, [FromQuery] int pageSize)
     {
         var result = _groupMonitoringService.GetLearners(User.InstructorId(), courseId, groupId, page, pageSize);
-        return CreateResponse<Learner, StakeholderAccountDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Learner, StakeholderAccountDto>(result);
     }
 
     [HttpPost("progress/{unitId:int}")]
     public ActionResult<List<KcmProgressDto>> GetLearnerProgress(int unitId, [FromBody] int[] learnerIds)
     {
         var result = _groupMonitoringService.GetLearnerProgress(unitId, learnerIds, User.InstructorId());
-        return CreateResponse<KnowledgeComponentMastery, KcmProgressDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<KnowledgeComponentMastery, KcmProgressDto>(result);
     }
 }

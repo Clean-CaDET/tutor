@@ -12,20 +12,18 @@ namespace Tutor.Web.Controllers.Learners.Learning.Utilities.Notes;
 [Route("api/learning/unit/{unitId:int}/notes")]
 public class NoteController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly INoteService _noteService;
 
-    public NoteController(IMapper mapper, INoteService noteService)
+    public NoteController(IMapper mapper, INoteService noteService) : base(mapper)
     {
         _noteService = noteService;
-        _mapper = mapper;
     }
 
     [HttpGet]
     public ActionResult<List<NoteDto>> GetLearnersNotes(int unitId)
     {
         var result = _noteService.GetAppropriateNotes(User.LearnerId(), unitId);
-        return CreateResponse<Note, NoteDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Note, NoteDto>(result);
     }
 
     [HttpGet("export")]
@@ -41,7 +39,7 @@ public class NoteController : BaseApiController
         var note = _mapper.Map<Note>(noteDto);
         note.LearnerId = User.LearnerId();
         var result = _noteService.Create(note);
-        return CreateResponse<Note, NoteDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Note, NoteDto>(result);
     }
 
     [HttpPut("{noteId:int}")]
@@ -50,13 +48,13 @@ public class NoteController : BaseApiController
         var note = _mapper.Map<Note>(noteDto);
         note.LearnerId = User.LearnerId();
         var result = _noteService.Update(note);
-        return CreateResponse<Note, NoteDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<Note, NoteDto>(result);
     }
 
     [HttpDelete("{noteId:int}")]
     public ActionResult Delete(int noteId)
     {
         var result = _noteService.Delete(noteId, User.LearnerId());
-        return CreateResponse(result, Ok, CreateErrorResponse);
+        return CreateResponse(result);
     }
 }

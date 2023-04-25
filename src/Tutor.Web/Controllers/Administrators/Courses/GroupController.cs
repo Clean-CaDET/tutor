@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.UseCases.Management.Groups;
@@ -14,12 +12,10 @@ namespace Tutor.Web.Controllers.Administrators.Courses;
 [Route("api/management/courses/{courseId:int}/groups")]
 public class GroupController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly ILearnerGroupService _groupService;
 
-    public GroupController(IMapper mapper, ILearnerGroupService groupService)
+    public GroupController(IMapper mapper, ILearnerGroupService groupService) : base(mapper)
     {
-        _mapper = mapper;
         _groupService = groupService;
     }
 
@@ -27,7 +23,7 @@ public class GroupController : BaseApiController
     public ActionResult<PagedResult<GroupDto>> GetAll(int courseId, [FromQuery] int page, [FromQuery] int pageSize)
     {
         var result = _groupService.GetByCourse(courseId, page, pageSize);
-        return CreateResponse<LearnerGroup, GroupDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<LearnerGroup, GroupDto>(result);
     }
 
     [HttpPost]
@@ -35,20 +31,20 @@ public class GroupController : BaseApiController
     {
         group.CourseId = courseId;
         var result = _groupService.Create(_mapper.Map<LearnerGroup>(group));
-        return CreateResponse<LearnerGroup, GroupDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<LearnerGroup, GroupDto>(result);
     }
 
     [HttpPut("{groupId:int}")]
     public ActionResult<GroupDto> Update([FromBody] GroupDto group)
     {
         var result = _groupService.Update(_mapper.Map<LearnerGroup>(group));
-        return CreateResponse<LearnerGroup, GroupDto>(result, Ok, CreateErrorResponse, _mapper);
+        return CreateResponse<LearnerGroup, GroupDto>(result);
     }
 
     [HttpDelete("{groupId:int}")]
     public ActionResult Delete(int groupId)
     {
         var result = _groupService.Delete(groupId);
-        return CreateResponse(result, Ok, CreateErrorResponse);
+        return CreateResponse(result);
     }
 }
