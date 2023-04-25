@@ -1,5 +1,4 @@
-﻿using System;
-using FluentResults;
+﻿using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
@@ -23,6 +22,7 @@ public class BaseApiController : ControllerBase
         var code = 500;
         if (errors.Contains(FailureCode.InvalidAssessmentSubmission)) code = 400;
         if (errors.Contains(FailureCode.InvalidArgument)) code = 400;
+        if (errors.Contains(FailureCode.InvalidRefreshToken)) code = 400;
         if (errors.Contains(FailureCode.NotEnrolledInUnit)) code = 403;
         if (errors.Contains(FailureCode.Forbidden)) code = 403;
         if (errors.Contains(FailureCode.NotFound)) code = 404;
@@ -30,68 +30,51 @@ public class BaseApiController : ControllerBase
         return Problem(statusCode: code, detail: string.Join(";", errors));
     }
 
-    protected ActionResult CreateResponse(Result result, Func<ActionResult> onSuccess = null, Func<List<IError>, ActionResult> onFailure = null)
+    protected ActionResult CreateResponse(Result result)
     {
-        if (onSuccess is null) onSuccess = Ok;
-        if (onFailure is null) onFailure = CreateErrorResponse;
-
         if (result.IsSuccess)
         {
-            return onSuccess();
+            return Ok();
         }
-        return onFailure(result.Errors);
+        return CreateErrorResponse(result.Errors);
     }
 
-    protected ActionResult CreateResponse<T>(Result<T> result, Func<T, ActionResult> onSuccess = null, Func<List<IError>, ActionResult> onFailure = null)
-        where T : class
+    protected ActionResult CreateResponse<T>(Result<T> result)
     {
-        if (onSuccess is null) onSuccess = Ok;
-        if (onFailure is null) onFailure = CreateErrorResponse;
-
         if (result.IsSuccess)
         {
-            return onSuccess(result.Value);
+            return Ok(result.Value);
         }
-        return onFailure(result.Errors);
+        return CreateErrorResponse(result.Errors);
     }
 
-    protected ActionResult CreateResponse<TIn, TOut>(Result<TIn> result, Func<TOut, ActionResult> onSuccess = null, Func<List<IError>, ActionResult> onFailure = null)
-        where TOut : class
+    protected ActionResult CreateResponse<TIn, TOut>(Result<TIn> result)
     {
-        if (onSuccess is null) onSuccess = Ok;
-        if (onFailure is null) onFailure = CreateErrorResponse;
-
         if (result.IsSuccess)
         {
-            return onSuccess(_mapper.Map<TOut>(result.Value));
+            return Ok(_mapper.Map<TOut>(result.Value));
         }
-        return onFailure(result.Errors);
+        return CreateErrorResponse(result.Errors);
     }
 
-    protected ActionResult CreateResponse<TIn, TOut>(Result<List<TIn>> result, Func<List<TOut>, ActionResult> onSuccess = null, Func<List<IError>, ActionResult> onFailure = null)
+    protected ActionResult CreateResponse<TIn, TOut>(Result<List<TIn>> result)
         where TIn : class
     {
-        if (onSuccess is null) onSuccess = Ok;
-        if (onFailure is null) onFailure = CreateErrorResponse;
-
         if (result.IsSuccess)
         {
-            return onSuccess(result.Value.Select(_mapper.Map<TOut>).ToList());
+            return Ok(result.Value.Select(_mapper.Map<TOut>).ToList());
         }
-        return onFailure(result.Errors);
+        return CreateErrorResponse(result.Errors);
     }
 
-    protected ActionResult CreateResponse<TIn, TOut>(Result<PagedResult<TIn>> result, Func<PagedResult<TOut>, ActionResult> onSuccess = null, Func<List<IError>, ActionResult> onFailure = null)
+    protected ActionResult CreateResponse<TIn, TOut>(Result<PagedResult<TIn>> result)
         where TIn : class
     {
-        if (onSuccess is null) onSuccess = Ok;
-        if (onFailure is null) onFailure = CreateErrorResponse;
-
         if (result.IsSuccess)
         {
             var items = result.Value.Results.Select(_mapper.Map<TOut>).ToList();
-            return onSuccess(new PagedResult<TOut>(items, result.Value.TotalCount));
+            return Ok(new PagedResult<TOut>(items, result.Value.TotalCount));
         }
-        return onFailure(result.Errors);
+        return CreateErrorResponse(result.Errors);
     }
 }

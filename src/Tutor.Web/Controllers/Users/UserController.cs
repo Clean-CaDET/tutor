@@ -24,6 +24,6 @@ public class UserController : BaseApiController
     public ActionResult<AuthenticationTokens> RefreshToken([FromBody] AuthenticationTokens authenticationTokens)
     {
         var result = _authenticationService.RefreshToken(authenticationTokens);
-        return CreateResponse(result, onFailure: BadRequest);
+        return CreateResponse(result);
     }
 }
