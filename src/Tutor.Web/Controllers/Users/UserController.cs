@@ -17,8 +17,7 @@ public class UserController : BaseApiController
     public ActionResult<AuthenticationTokens> Login([FromBody] CredentialsDto credentials)
     {
         var result = _authenticationService.Login(credentials.Username, credentials.Password);
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(result.Value);
+        return CreateResponse(result);
     }
 
     [HttpPost("refresh")]

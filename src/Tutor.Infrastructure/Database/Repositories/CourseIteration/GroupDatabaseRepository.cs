@@ -18,9 +18,11 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup>, IGr
         return DbContext.GroupMemberships.FirstOrDefault(m => m.LearnerGroupId == groupId && m.Member.Id == learnerId);
     }
 
-    public List<LearnerGroup> GetCourseGroups(int courseId)
+    public PagedResult<LearnerGroup> GetCourseGroups(int courseId, int page, int pageSize)
     {
-        return DbContext.LearnerGroups.Where(g => g.CourseId == courseId).ToList();
+        var task = DbContext.LearnerGroups.Where(g => g.CourseId == courseId).GetPaged(page, pageSize);
+        task.Wait();
+        return task.Result;
     }
 
     public List<KnowledgeComponentMastery> GetMasteriesForLearnersAndUnit(int unitId, int[] learnerIds)

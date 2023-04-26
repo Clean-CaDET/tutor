@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Tutor.Core.UseCases.Learning.Utilities;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Learners.Learning.Utilities.Notes;
+using Tutor.Web.Mappings.Knowledge.DTOs;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Learning.Utilities;
@@ -50,10 +51,13 @@ public class NotesTests : BaseWebIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
         dbContext.Database.BeginTransaction();
 
-        var noteDto = new NoteDto() { Text = "Test update", Id = -2, UnitId = -1 };
-        var result = (OkResult)controller.Update(noteDto);
+        var updatedEntity = new NoteDto() { Text = "Test update", Id = -2, UnitId = -1 };
+        var result = ((OkObjectResult)controller.Update(updatedEntity).Result)?.Value as NoteDto;
 
-        result.StatusCode.ShouldBe(200);
+        result.ShouldNotBeNull();
+        result.Id.ShouldBe(updatedEntity.Id);
+        result.UnitId.ShouldBe(updatedEntity.UnitId);
+        result.Text.ShouldBe(updatedEntity.Text);
     }
 
     [Fact]

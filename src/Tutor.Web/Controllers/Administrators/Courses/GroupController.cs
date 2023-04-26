@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.UseCases.Management.Groups;
@@ -14,23 +12,18 @@ namespace Tutor.Web.Controllers.Administrators.Courses;
 [Route("api/management/courses/{courseId:int}/groups")]
 public class GroupController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly ILearnerGroupService _groupService;
 
-    public GroupController(IMapper mapper, ILearnerGroupService groupService)
+    public GroupController(IMapper mapper, ILearnerGroupService groupService) : base(mapper)
     {
-        _mapper = mapper;
         _groupService = groupService;
     }
 
     [HttpGet]
-    public ActionResult<List<GroupDto>> GetAll(int courseId)
+    public ActionResult<PagedResult<GroupDto>> GetAll(int courseId, [FromQuery] int page, [FromQuery] int pageSize)
     {
-        var result = _groupService.GetByCourse(courseId);
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-
-        var items = result.Value.Select(_mapper.Map<GroupDto>).ToList();
-        return Ok(new PagedResult<GroupDto>(items, items.Count));
+        var result = _groupService.GetByCourse(courseId, page, pageSize);
+        return CreateResponse<LearnerGroup, GroupDto>(result);
     }
 
     [HttpPost]
@@ -38,23 +31,20 @@ public class GroupController : BaseApiController
     {
         group.CourseId = courseId;
         var result = _groupService.Create(_mapper.Map<LearnerGroup>(group));
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<GroupDto>(result.Value));
+        return CreateResponse<LearnerGroup, GroupDto>(result);
     }
 
     [HttpPut("{groupId:int}")]
     public ActionResult<GroupDto> Update([FromBody] GroupDto group)
     {
         var result = _groupService.Update(_mapper.Map<LearnerGroup>(group));
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<GroupDto>(result.Value));
+        return CreateResponse<LearnerGroup, GroupDto>(result);
     }
 
     [HttpDelete("{groupId:int}")]
     public ActionResult Delete(int groupId)
     {
         var result = _groupService.Delete(groupId);
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return CreateResponse(result);
     }
 }
