@@ -22,7 +22,6 @@ public class BaseApiController : ControllerBase
         var code = 500;
         if (errors.Contains(FailureCode.InvalidAssessmentSubmission)) code = 400;
         if (errors.Contains(FailureCode.InvalidArgument)) code = 400;
-        if (errors.Contains(FailureCode.InvalidRefreshToken)) code = 400;
         if (errors.Contains(FailureCode.NotEnrolledInUnit)) code = 403;
         if (errors.Contains(FailureCode.Forbidden)) code = 403;
         if (errors.Contains(FailureCode.NotFound)) code = 404;
