@@ -27,6 +27,8 @@ public static class EventSerializationConfiguration
         { typeof(SessionLaunched), "SessionLaunched" },
         { typeof(SessionTerminated), "SessionTerminated" },
         { typeof(SessionAbandoned), "SessionAbandoned" },
+        { typeof(SessionPaused), "SessionPaused"},
+        { typeof(SessionContinued), "SessionContinued"},
         { typeof(InstructionalItemsSelected), "InstructionalItemsSelected" },
         { typeof(EncouragingMessageSent), "EncouragingMessageSent" },
         #region Submissions

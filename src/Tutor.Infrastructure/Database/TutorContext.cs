@@ -48,6 +48,7 @@ public class TutorContext : DbContext
     public DbSet<EmotionsFeedback> EmotionsFeedbacks { get; set; }
     public DbSet<TutorImprovementFeedback> TutorImprovementFeedbacks { get; set; }
     public DbSet<Note> Notes { get; set; }
+    public DbSet<Chat> Chats { get; set; }
 
     #endregion
     #region Course Iteration
@@ -196,6 +197,8 @@ public class TutorContext : DbContext
         {
             trackerBuilder.Property(tracker => tracker.CountOfSessions).IsRequired().HasDefaultValue(0);
             trackerBuilder.Property(tracker => tracker.DurationOfFinishedSessions).IsRequired().HasDefaultValue(TimeSpan.Zero);
+            trackerBuilder.Property(tracker => tracker.IsPaused).IsRequired().HasDefaultValue(false);
+            trackerBuilder.Property(tracker => tracker.DurationOfFinishedPauses).IsRequired().HasDefaultValue(TimeSpan.Zero);
             trackerBuilder.Ignore(tracker => tracker.Id);
         });
         kcmBuilder.Navigation(kcm => kcm.SessionTracker).IsRequired();
