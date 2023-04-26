@@ -11,9 +11,9 @@ using Xunit;
 namespace Tutor.Web.Tests.Integration.KnowledgeAnalysis;
 
 [Collection("Sequential")]
-public class UnitAnalysisTests : BaseWebIntegrationTest
+public class KnowledgeAnalysisTests : BaseWebIntegrationTest
 {
-    public UnitAnalysisTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
+    public KnowledgeAnalysisTests(TutorApplicationTestFactory<Startup> factory) : base(factory) { }
 
     [Theory]
     [MemberData(nameof(TestData))]
@@ -22,7 +22,7 @@ public class UnitAnalysisTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupAnalysisController(scope, userId);
 
-        var result = ((OkObjectResult)controller.GetKcStatisticsForGroup(kcId, groupId).Result).Value as KcStatisticsDto;
+        var result = ((OkObjectResult)controller.GetStatisticsForGroup(kcId, groupId).Result).Value as KcStatisticsDto;
 
         result.ShouldNotBeNull();
         result.ShouldBe(expectedStatistics);
@@ -35,7 +35,7 @@ public class UnitAnalysisTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupAnalysisController(scope, userId);
 
-        var result = ((OkObjectResult)controller.GetKcStatistics(kcId).Result).Value as KcStatisticsDto;
+        var result = ((OkObjectResult)controller.GetStatistics(kcId).Result).Value as KcStatisticsDto;
 
         result.ShouldNotBeNull();
     }
@@ -47,7 +47,7 @@ public class UnitAnalysisTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupAnalysisController(scope, userId);
 
-        var result = (ObjectResult)controller.GetKcStatistics(unitId).Result;
+        var result = (ObjectResult)controller.GetStatistics(unitId).Result;
 
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(403);
@@ -56,8 +56,7 @@ public class UnitAnalysisTests : BaseWebIntegrationTest
     private KnowledgeAnalysisController SetupAnalysisController(IServiceScope scope, string id)
     {
         return new KnowledgeAnalysisController(
-            scope.ServiceProvider.GetRequiredService<IUnitAnalysisService>(),
-            scope.ServiceProvider.GetRequiredService<IAssessmentAnalysisService>(),
+            scope.ServiceProvider.GetRequiredService<IKnowledgeAnalysisService>(),
             Factory.Services.GetRequiredService<IMapper>())
         {
             ControllerContext = BuildContext(id, "instructor")

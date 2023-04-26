@@ -25,7 +25,7 @@ public class AssessmentAnalysisService : IAssessmentAnalysisService
         _eventStore = eventStore;
     }
 
-    public Result<List<AiStatistics>> GetAiStatistics(int kcId, int instructorId)
+    public Result<List<AiStatistics>> GetStatistics(int kcId, int instructorId)
     {
         if (!_ownedCourseRepository.IsKcOwner(kcId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
@@ -36,7 +36,7 @@ public class AssessmentAnalysisService : IAssessmentAnalysisService
         return CalculateStatistics(events);
     }
 
-    public Result<List<AiStatistics>> GetAiStatisticsForGroup(int kcId, int groupId, int instructorId)
+    public Result<List<AiStatistics>> GetStatisticsForGroup(int kcId, int groupId, int instructorId)
     {
         if (!_ownedCourseRepository.IsKcOwner(kcId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 

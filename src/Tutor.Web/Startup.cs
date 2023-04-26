@@ -235,7 +235,7 @@ public class Startup
         SetupLearningServices(services);
         SetupManagementServices(services);
 
-        services.AddScoped<IUnitAnalysisService, UnitAnalysisService>();
+        services.AddScoped<IKnowledgeAnalysisService, KnowledgeAnalysisService>();
         services.AddScoped<IAssessmentAnalysisService, AssessmentAnalysisService>();
     }
 

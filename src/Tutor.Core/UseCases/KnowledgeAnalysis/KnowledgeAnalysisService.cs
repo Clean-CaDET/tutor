@@ -13,14 +13,14 @@ using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 
 namespace Tutor.Core.UseCases.KnowledgeAnalysis;
 
-public class UnitAnalysisService : IUnitAnalysisService
+public class KnowledgeAnalysisService : IKnowledgeAnalysisService
 {
     private readonly IGroupRepository _groupRepository;
     private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly IEventStore _eventStore;
     private readonly IKnowledgeMasteryRepository _masteryRepository;
 
-    public UnitAnalysisService(IGroupRepository groupRepository, IOwnedCourseRepository ownedCourseRepository, IEventStore eventStore, IKnowledgeMasteryRepository masteryRepository)
+    public KnowledgeAnalysisService(IGroupRepository groupRepository, IOwnedCourseRepository ownedCourseRepository, IEventStore eventStore, IKnowledgeMasteryRepository masteryRepository)
     {
         _groupRepository = groupRepository;
         _ownedCourseRepository = ownedCourseRepository;
@@ -28,7 +28,7 @@ public class UnitAnalysisService : IUnitAnalysisService
         _masteryRepository = masteryRepository;
     }
 
-    public Result<KcStatistics> GetKcStatistics(int kcId, int instructorId)
+    public Result<KcStatistics> GetStatistics(int kcId, int instructorId)
     {
         if (!_ownedCourseRepository.IsKcOwner(kcId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
@@ -39,7 +39,7 @@ public class UnitAnalysisService : IUnitAnalysisService
         return CalculateStatistics(kcId, events, _masteryRepository.Count(kcId)); // Add KcRegistration event?
     }
 
-    public Result<KcStatistics> GetKcStatisticsForGroup(int kcId, int groupId, int instructorId)
+    public Result<KcStatistics> GetStatisticsForGroup(int kcId, int groupId, int instructorId)
     {
         if (!_ownedCourseRepository.IsKcOwner(kcId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
