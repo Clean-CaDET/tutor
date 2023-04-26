@@ -90,7 +90,7 @@ public class Startup
                 {
                     builder.WithOrigins(ParseCorsOrigins())
                         .WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization, "access_token")
-                        .WithMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
+                        .WithMethods("GET", "PUT", "POST", "PATCH", "DELETE", "OPTIONS");
                 });
         });
         SetupAuth(services);
