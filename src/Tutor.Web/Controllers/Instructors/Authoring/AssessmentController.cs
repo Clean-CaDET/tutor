@@ -14,12 +14,10 @@ namespace Tutor.Web.Controllers.Instructors.Authoring;
 [Authorize(Policy = "instructorPolicy")]
 public class AssessmentController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly IAssessmentService _assessmentService;
 
-    public AssessmentController(IMapper mapper, IAssessmentService assessmentService)
+    public AssessmentController(IMapper mapper, IAssessmentService assessmentService) : base(mapper)
     {
-        _mapper = mapper;
         _assessmentService = assessmentService;
     }
 
@@ -27,39 +25,34 @@ public class AssessmentController : BaseApiController
     public ActionResult<List<AssessmentItemDto>> GetForKc(int kcId)
     {
         var result = _assessmentService.GetForKc(kcId, User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(result.Value.Select(_mapper.Map<AssessmentItemDto>).ToList());
+        return CreateResponse<AssessmentItem, AssessmentItemDto>(result);
     }
 
     [HttpPost]
     public ActionResult<AssessmentItemDto> Create([FromBody] AssessmentItemDto items)
     {
         var result = _assessmentService.Create(_mapper.Map<AssessmentItem>(items), User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<AssessmentItemDto>(result.Value));
+        return CreateResponse<AssessmentItem, AssessmentItemDto>(result);
     }
 
     [HttpPut("{id:int}")]
     public ActionResult<AssessmentItemDto> Update([FromBody] AssessmentItemDto items)
     {
         var result = _assessmentService.Update(_mapper.Map<AssessmentItem>(items), User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<AssessmentItemDto>(result.Value));
+        return CreateResponse<AssessmentItem, AssessmentItemDto>(result);
     }
 
     [HttpPut("ordering")]
     public ActionResult<List<AssessmentItemDto>> UpdateOrdering(int kcId, [FromBody] List<AssessmentItemDto> items)
     {
         var result = _assessmentService.UpdateOrdering(kcId, items.Select(_mapper.Map<AssessmentItem>).ToList(), User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(result.Value.Select(_mapper.Map<AssessmentItemDto>).ToList());
+        return CreateResponse<AssessmentItem, AssessmentItemDto>(result);
     }
 
     [HttpDelete("{id:int}")]
     public ActionResult Delete(int kcId, int id)
     {
         var result = _assessmentService.Delete(id, kcId, User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return CreateResponse(result);
     }
 }

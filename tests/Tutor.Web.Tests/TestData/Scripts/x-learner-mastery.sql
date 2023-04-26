@@ -277,3 +277,7 @@ VALUES (-2, -1, -52);
 INSERT INTO public."CourseOwnerships"(
     "Id", "CourseId", "InstructorId")
 VALUES (-3, -2, -52);
+
+INSERT INTO public."CourseOwnerships"(
+    "Id", "CourseId", "InstructorId")
+VALUES (-4, -4, -52);

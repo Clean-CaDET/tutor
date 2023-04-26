@@ -28,7 +28,6 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
         }
         entity.UserId = user.Id;
         var registerResult = Create(entity);
-        result = UnitOfWork.Save();
         if (result.IsFailed)
         {
             UnitOfWork.Rollback();

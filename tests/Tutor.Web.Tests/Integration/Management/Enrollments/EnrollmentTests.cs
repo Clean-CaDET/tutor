@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.UseCases.Monitoring;
 using Tutor.Web.Controllers.Learners;
 using Tutor.Web.Mappings.Knowledge.DTOs;
@@ -21,10 +22,11 @@ public class EnrollmentTests : BaseWebIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupEnrollmentController(scope, learnerId);
-        var result = ((OkObjectResult)controller.GetEnrolledCourses().Result)?.Value as List<CourseDto>;
+        var result = ((OkObjectResult)controller.GetEnrolledCourses(0, 0).Result)?.Value as PagedResult<CourseDto>;
 
         result.ShouldNotBeNull();
-        result.Count.ShouldBe(expectedCourseCount);
+        result.Results.Count.ShouldBe(expectedCourseCount);
+        result.TotalCount.ShouldBe(expectedCourseCount);
     }
 
     [Theory]

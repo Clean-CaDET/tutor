@@ -19,7 +19,7 @@ public class OwnedCoursesTests : BaseWebIntegrationTest
 
     [Theory]
     [InlineData("-51", 1)]
-    [InlineData("-52", 2)]
+    [InlineData("-52", 3)]
     public void Retrieves_owned_courses(string instructorId, int expectedCourseCount)
     {
         using var scope = Factory.Services.CreateScope();

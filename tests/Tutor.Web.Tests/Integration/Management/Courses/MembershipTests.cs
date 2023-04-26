@@ -25,7 +25,7 @@ public class MembershipTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
 
-        var result = ((OkObjectResult)controller.GetMembers(-1).Result)?.Value as PagedResult<StakeholderAccountDto>;
+        var result = ((OkObjectResult)controller.GetMembers(-1, 0, 0).Result)?.Value as PagedResult<StakeholderAccountDto>;
 
         result.ShouldNotBeNull();
         result.Results.Count.ShouldBe(4);

@@ -27,9 +27,9 @@ public class EnrollmentService : IEnrollmentService
         _unitOfWork = unitOfWork;
     }
 
-    public Result<List<Course>> GetEnrolledCourses(int learnerId)
+    public Result<PagedResult<Course>> GetEnrolledCourses(int learnerId, int page, int pageSize)
     {
-        return _enrollmentRepository.GetEnrolledCourses(learnerId);
+        return _enrollmentRepository.GetEnrolledCourses(learnerId, page, pageSize);
     }
 
     public Result<Course> GetCourseWithEnrolledAndActiveUnits(int courseId, int learnerId)

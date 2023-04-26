@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.Structure;
 
@@ -20,11 +23,13 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
         return _dbContext.UnitEnrollments.Count(enrollment => enrollment.KnowledgeUnit.Id == unitId);
     }
 
-    public List<Course> GetEnrolledCourses(int learnerId)
+    public PagedResult<Course> GetEnrolledCourses(int learnerId, int page, int pageSize)
     {
-        return _dbContext.LearnerGroups
+        var task = _dbContext.LearnerGroups
             .Where(lg => lg.Membership.Any(m => m.Member.Id.Equals(learnerId)))
-            .Select(lg => lg.Course).Distinct().ToList();
+            .Select(lg => lg.Course).Distinct().GetPaged(page, pageSize);
+        task.Wait();
+        return task.Result;
     }
 
     public Course GetCourseEnrolledAndActiveUnits(int courseId, int learnerId)

@@ -15,23 +15,18 @@ namespace Tutor.Web.Controllers.Administrators.Courses;
 [ApiController]
 public class GroupMembershipController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly ILearnerGroupService _groupService;
 
-    public GroupMembershipController(IMapper mapper, ILearnerGroupService groupService)
+    public GroupMembershipController(IMapper mapper, ILearnerGroupService groupService) : base(mapper)
     {
-        _mapper = mapper;
         _groupService = groupService;
     }
 
     [HttpGet]
-    public ActionResult<List<StakeholderAccountDto>> GetMembers(int groupId)
+    public ActionResult<PagedResult<StakeholderAccountDto>> GetMembers(int groupId, [FromQuery] int page, [FromQuery] int pageSize)
     {
-        var result = _groupService.GetMembers(groupId);
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        var retVal = new PagedResult<StakeholderAccountDto>(
-            result.Value.Select(_mapper.Map<StakeholderAccountDto>).ToList(), result.Value.Count);
-        return Ok(retVal);
+        var result = _groupService.GetMembers(groupId, page, pageSize);
+        return CreateResponse<Learner, StakeholderAccountDto>(result);
     }
 
     [HttpPost("bulk")]
@@ -39,15 +34,13 @@ public class GroupMembershipController : BaseApiController
     {
         var result = _groupService.CreateMembers(groupId,
             stakeholderAccounts.Select(_mapper.Map<Learner>).ToList());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return CreateResponse(result);
     }
 
     [HttpDelete("{learnerId:int}")]
     public ActionResult Delete(int groupId, int learnerId)
     {
         var result = _groupService.DeleteMember(groupId, learnerId);
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return CreateResponse(result);
     }
 }

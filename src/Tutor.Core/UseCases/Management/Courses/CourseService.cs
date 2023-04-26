@@ -113,4 +113,22 @@ public class CourseService : CrudService<Course>, ICourseService
 
         return Result.Ok(course);
     }
+
+    public override Result Delete(int id)
+    {
+        var entity = _courseRepository.GetFullCourse(id);
+        if (entity is null) return Result.Fail(FailureCode.NotFound);
+
+        if (entity.KnowledgeUnits.Count > 0)
+        {
+            return Result.Fail(FailureCode.Forbidden);
+        }
+
+        _courseRepository.Delete(entity);
+
+        var result = UnitOfWork.Save();
+        if (result.IsFailed) return result;
+
+        return Result.Ok();
+    }
 }
