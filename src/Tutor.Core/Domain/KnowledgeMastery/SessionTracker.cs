@@ -123,5 +123,6 @@ public class SessionTracker : EventSourcedEntity
 
     private void When(KnowledgeComponentEvent @event)
     {
+        // LastActivity is no longer being recorded.
     }
 }
