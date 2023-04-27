@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
+using Tutor.Core.Domain.KnowledgeAnalysis;
 using Tutor.Core.UseCases.KnowledgeAnalysis;
 using Tutor.Infrastructure.Security.Authentication.Users;
 using Tutor.Web.Mappings.Analytics;
@@ -14,11 +14,9 @@ namespace Tutor.Web.Controllers.Instructors.Analytics;
 public class AssessmentAnalysisController : BaseApiController
 {
     private readonly IAssessmentAnalysisService _assessmentAnalysisService;
-    private readonly IMapper _mapper;
 
-    public AssessmentAnalysisController(IAssessmentAnalysisService assessmentAnalysisService, IMapper mapper)
+    public AssessmentAnalysisController(IAssessmentAnalysisService assessmentAnalysisService, IMapper mapper) : base(mapper)
     {
-        _mapper = mapper;
         _assessmentAnalysisService = assessmentAnalysisService;
     }
 
@@ -26,15 +24,13 @@ public class AssessmentAnalysisController : BaseApiController
     public ActionResult<List<AiStatisticsDto>> GetStatistics(int kcId)
     {
         var result = _assessmentAnalysisService.GetStatistics(kcId, User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(result.Value.Select(_mapper.Map<AiStatisticsDto>).ToList());
+        return CreateResponse<AiStatistics, AiStatisticsDto>(result);
     }
 
     [HttpGet("groups/{groupId:int}/")]
     public ActionResult<List<AiStatisticsDto>> GetAiStatisticsForGroup(int kcId, int groupId)
     {
         var result = _assessmentAnalysisService.GetStatisticsForGroup(kcId, groupId, User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(result.Value.Select(_mapper.Map<AiStatisticsDto>).ToList());
+        return CreateResponse<AiStatistics, AiStatisticsDto>(result);
     }
 }
