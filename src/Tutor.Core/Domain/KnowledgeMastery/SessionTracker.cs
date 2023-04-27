@@ -45,8 +45,8 @@ public class SessionTracker : EventSourcedEntity
 
     public Result Pause()
     {
-        if (!HasUnfinishedSession) return Result.Fail("No active session to pause.");
-        if (IsPaused) return Result.Fail("Session is already paused.");
+        if (!HasUnfinishedSession) Launch();
+        if (IsPaused) Continue();
         
         IsPaused = true;
         Causes(new SessionPaused());
@@ -55,8 +55,8 @@ public class SessionTracker : EventSourcedEntity
 
     public Result Continue()
     {
-        if (!HasUnfinishedSession) return Result.Fail("No active session to continue.");
-        if (!IsPaused) return Result.Fail("Session is not paused.");
+        if (!HasUnfinishedSession) Launch();
+        if (!IsPaused) Pause();
             
         IsPaused = false;
         Causes(new SessionContinued());
