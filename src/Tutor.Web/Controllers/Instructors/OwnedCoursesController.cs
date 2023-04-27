@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using Tutor.Core.Domain.Knowledge.Structure;
 using Tutor.Core.UseCases.Management.Stakeholders;
 using Tutor.Infrastructure.Security.Authentication.Users;
@@ -14,12 +13,10 @@ namespace Tutor.Web.Controllers.Instructors;
 [Route("api/owned-courses")]
 public class OwnedCoursesController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly ICourseOwnershipService _courseOwnershipService;
     
-    public OwnedCoursesController(IMapper mapper, ICourseOwnershipService courseOwnershipService)
+    public OwnedCoursesController(IMapper mapper, ICourseOwnershipService courseOwnershipService) : base(mapper)
     {
-        _mapper = mapper;
         _courseOwnershipService = courseOwnershipService;
     }
 
@@ -27,23 +24,20 @@ public class OwnedCoursesController : BaseApiController
     public ActionResult<List<CourseDto>> GetOwnedCourses()
     {
         var result = _courseOwnershipService.GetOwnedCourses(User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(result.Value.Select(_mapper.Map<CourseDto>).ToList());
+        return CreateResponse<Course, CourseDto>(result);
     }
 
     [HttpGet("{courseId:int}")]
     public ActionResult<CourseDto> GetCourseWithUnitsAndKcs(int courseId)
     {
         var result = _courseOwnershipService.GetOwnedCourseWithUnitsAndKcs(courseId, User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<CourseDto>(result.Value));
+        return CreateResponse<Course, CourseDto>(result);
     }
 
     [HttpPut("{id:int}")]
     public ActionResult<CourseDto> Update([FromBody] CourseDto course)
     {
         var result = _courseOwnershipService.UpdateOwnedCourse(_mapper.Map<Course>(course), User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<CourseDto>(result.Value));
+        return CreateResponse<Course, CourseDto>(result);
     }
 }

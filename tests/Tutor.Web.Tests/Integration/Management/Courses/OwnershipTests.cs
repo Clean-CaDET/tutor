@@ -37,7 +37,7 @@ public class OwnershipTests : BaseWebIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
         dbContext.Database.BeginTransaction();
 
-        var result = (OkResult)controller.Create(-3, -51);
+        var result = (OkObjectResult)controller.Create(-3, -51);
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();

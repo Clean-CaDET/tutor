@@ -12,12 +12,10 @@ namespace Tutor.Web.Controllers.Instructors.Analytics;
 public class KnowledgeAnalysisController : BaseApiController
 {
     private readonly IKnowledgeAnalysisService _kcAnalysisService;
-    private readonly IMapper _mapper;
 
-    public KnowledgeAnalysisController(IKnowledgeAnalysisService kcAnalysisService, IMapper mapper)
+    public KnowledgeAnalysisController(IKnowledgeAnalysisService kcAnalysisService, IMapper mapper): base(mapper)
     {
         _kcAnalysisService = kcAnalysisService;
-        _mapper = mapper;
     }
 
     [HttpGet]

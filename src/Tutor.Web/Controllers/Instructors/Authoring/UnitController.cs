@@ -12,12 +12,10 @@ namespace Tutor.Web.Controllers.Instructors.Authoring;
 [Authorize(Policy = "instructorPolicy")]
 public class UnitController : BaseApiController
 {
-    private readonly IMapper _mapper;
     private readonly IUnitService _unitService;
 
-    public UnitController(IMapper mapper, IUnitService unitService)
+    public UnitController(IMapper mapper, IUnitService unitService) : base(mapper)
     {
-        _mapper = mapper;
         _unitService = unitService;
     }
 
@@ -28,8 +26,7 @@ public class UnitController : BaseApiController
         newUnit.CourseId = courseId;
 
         var result = _unitService.Create(newUnit, User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<KnowledgeUnitDto>(result.Value));
+        return CreateResponse<KnowledgeUnit, KnowledgeUnitDto>(result);
     }
 
     [HttpPut("{id:int}")]
@@ -39,15 +36,13 @@ public class UnitController : BaseApiController
         updatedUnit.CourseId = courseId;
 
         var result = _unitService.Update(updatedUnit, User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok(_mapper.Map<KnowledgeUnitDto>(result.Value));
+        return CreateResponse<KnowledgeUnit, KnowledgeUnitDto>(result);
     }
 
     [HttpDelete("{id:int}")]
     public ActionResult Delete(int id)
     {
         var result = _unitService.Delete(id, User.InstructorId());
-        if (result.IsFailed) return CreateErrorResponse(result.Errors);
-        return Ok();
+        return CreateResponse(result);
     }
 }

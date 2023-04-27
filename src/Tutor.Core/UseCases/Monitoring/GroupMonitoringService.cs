@@ -20,10 +20,10 @@ public class GroupMonitoringService : IGroupMonitoringService
         _ownedCourseRepository = ownedCourseRepository;
     }
 
-    public Result<List<LearnerGroup>> GetCourseGroups(int instructorId, int courseId)
+    public Result<PagedResult<LearnerGroup>> GetCourseGroups(int instructorId, int courseId, int page, int pageSize)
     {
         if (!_ownedCourseRepository.IsCourseOwner(courseId, instructorId)) return Result.Fail(FailureCode.Forbidden);
-        return _groupRepository.GetCourseGroups(courseId);
+        return _groupRepository.GetCourseGroups(courseId, page, pageSize);
     }
 
     public Result<PagedResult<Learner>> GetLearners(int instructorId, int courseId, int groupId, int page, int pageSize)

@@ -44,6 +44,7 @@ using Tutor.Infrastructure.Database.Repositories.LearningUtilities;
 using Tutor.Infrastructure.Database.Repositories.Stakeholders;
 using Tutor.Infrastructure.Security;
 using Tutor.Infrastructure.Security.Authentication;
+using Tutor.Web.Extensions;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.ArrangeTasks;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.Challenges;
 using Tutor.Web.Mappings.Knowledge.DTOs.AssessmentItems.MultiChoiceQuestions;
@@ -88,7 +89,7 @@ public class Startup
                 {
                     builder.WithOrigins(ParseCorsOrigins())
                         .WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization, "access_token")
-                        .WithMethods("GET", "PUT", "POST", "DELETE", "OPTIONS");
+                        .WithMethods("GET", "PUT", "POST", "PATCH", "DELETE", "OPTIONS");
                 });
         });
         SetupAuth(services);
@@ -173,7 +174,7 @@ public class Startup
 
     private static void SetupAuth(IServiceCollection services)
     {
-        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddProxiedScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IUserRepository, UserDatabaseRepository>();
 
         services.AddAuthorization(options =>
@@ -235,23 +236,23 @@ public class Startup
         SetupLearningServices(services);
         SetupManagementServices(services);
 
-        services.AddScoped<IKnowledgeAnalysisService, KnowledgeAnalysisService>();
-        services.AddScoped<IAssessmentAnalysisService, AssessmentAnalysisService>();
+        services.AddProxiedScoped<IKnowledgeAnalysisService, KnowledgeAnalysisService>();
+        services.AddProxiedScoped<IAssessmentAnalysisService, AssessmentAnalysisService>();
     }
 
     private void SetupLearningServices(IServiceCollection services)
     {
-        services.AddScoped<ISessionService, SessionService>();
-        services.AddScoped<IStructureService, StructureService>();
-        services.AddScoped<IStatisticsService, StatisticsService>();
-        services.AddScoped<ISelectionService, SelectionService>();
-        services.AddScoped<IEvaluationService, EvaluationService>();
-        services.AddScoped<IHelpService, HelpService>();
+        services.AddProxiedScoped<ISessionService, SessionService>();
+        services.AddProxiedScoped<IStructureService, StructureService>();
+        services.AddProxiedScoped<IStatisticsService, StatisticsService>();
+        services.AddProxiedScoped<ISelectionService, SelectionService>();
+        services.AddProxiedScoped<IEvaluationService, EvaluationService>();
+        services.AddProxiedScoped<IHelpService, HelpService>();
 
-        services.AddScoped<IFeedbackService, FeedbackService>();
-        services.AddScoped<INoteService, NoteService>();
+        services.AddProxiedScoped<IFeedbackService, FeedbackService>();
+        services.AddProxiedScoped<INoteService, NoteService>();
 
-        services.AddScoped<IGroupMonitoringService, GroupMonitoringService>();
+        services.AddProxiedScoped<IGroupMonitoringService, GroupMonitoringService>();
         // The domain services below should be selected from a configuration file or some other configurable mechanism.
         services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
         services.AddScoped<IAssessmentFeedbackGenerator, RuleAssessmentFeedbackGenerator>();
@@ -267,18 +268,18 @@ public class Startup
 
     private static void SetupManagementServices(IServiceCollection services)
     {
-        services.AddScoped<ICourseService, CourseService>();
-        services.AddScoped<IUnitService, UnitService>();
-        services.AddScoped<IKnowledgeComponentService, KnowledgeComponentService>();
-        services.AddScoped<IInstructionService, InstructionService>();
-        services.AddScoped<IAssessmentService, AssessmentService>();
+        services.AddProxiedScoped<ICourseService, CourseService>();
+        services.AddProxiedScoped<IUnitService, UnitService>();
+        services.AddProxiedScoped<IKnowledgeComponentService, KnowledgeComponentService>();
+        services.AddProxiedScoped<IInstructionService, InstructionService>();
+        services.AddProxiedScoped<IAssessmentService, AssessmentService>();
 
-        services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
-        services.AddScoped<ILearnerService, LearnerService>();
-        services.AddScoped<IInstructorService, InstructorService>();
+        services.AddProxiedScoped<ICourseOwnershipService, CourseOwnershipService>();
+        services.AddProxiedScoped<ILearnerService, LearnerService>();
+        services.AddProxiedScoped<IInstructorService, InstructorService>();
         
-        services.AddScoped<ILearnerGroupService, LearnerGroupService>();
-        services.AddScoped<IEnrollmentService, EnrollmentService>();
+        services.AddProxiedScoped<ILearnerGroupService, LearnerGroupService>();
+        services.AddProxiedScoped<IEnrollmentService, EnrollmentService>();
     }
     #endregion
 
@@ -319,7 +320,6 @@ public class Startup
         {
             app.UseExceptionHandler("/error");
         }
-        
         app.UseCors(CorsPolicy);
         app.UseHttpsRedirection();
         app.UseAuthentication();

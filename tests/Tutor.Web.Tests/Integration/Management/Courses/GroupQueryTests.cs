@@ -21,7 +21,7 @@ public class GroupQueryTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
 
-        var result = ((OkObjectResult)controller.GetAll(-1).Result)?.Value as PagedResult<GroupDto>;
+        var result = ((OkObjectResult)controller.GetAll(-1, 0, 0).Result)?.Value as PagedResult<GroupDto>;
 
         result.ShouldNotBeNull();
         result.Results.Count.ShouldBe(3);

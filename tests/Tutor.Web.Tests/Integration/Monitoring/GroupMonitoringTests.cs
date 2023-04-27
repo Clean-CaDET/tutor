@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Collections.Generic;
+using Tutor.Core.BuildingBlocks;
 using Tutor.Core.UseCases.Monitoring;
 using Tutor.Web.Controllers.Instructors.Monitoring;
 using Tutor.Web.Mappings.Enrollments;
@@ -22,10 +23,11 @@ public class GroupMonitoringTests : BaseWebIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope, instructorId);
-        var result = ((OkObjectResult)controller.GetCourseGroups(courseId).Result)?.Value as List<GroupDto>;
+        var result = ((OkObjectResult)controller.GetCourseGroups(courseId, 0, 0).Result)?.Value as PagedResult<GroupDto>;
 
         result.ShouldNotBeNull();
-        result.Count.ShouldBe(expectedResult);
+        result.Results.Count.ShouldBe(expectedResult);
+        result.TotalCount.ShouldBe(expectedResult);
     }
 
     [Theory]
