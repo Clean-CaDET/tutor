@@ -9,24 +9,24 @@ namespace Tutor.Web.Controllers.Instructors.Monitoring
     [Route("api/monitoring/progress")]
     public class ProgressOverviewController : BaseApiController
     {
-        private readonly IEmailSender _emailService;
+        private readonly IEmailSender _emailSender;
 
-        public ProgressOverviewController(IEmailSender emailService)
+        public ProgressOverviewController(IEmailSender emailSender)
         {
-            _emailService = emailService;
+            _emailSender = emailSender;
         }
 
         [HttpPost("overview")]
         public ActionResult SendOverviewMessage(Message message)
         {
-            _emailService.SendAsync(message);
+            _emailSender.SendAsync(message);
             return Ok();
         }
 
         [HttpPost("overview/bulk")]
         public ActionResult SendBulkOverviewMessage(List<Message> messages)
         {
-            _emailService.SendBulkAsync(messages);
+            _emailSender.SendBulkAsync(messages);
             return Ok();
         }
     }
