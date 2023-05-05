@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -44,7 +44,8 @@ public class LearnerController : BaseApiController
     [HttpPost]
     public ActionResult<StakeholderAccountDto> Register([FromBody] StakeholderAccountDto stakeholderAccount)
     {
-        var result = _learnerService.Register(_mapper.Map<Learner>(stakeholderAccount), stakeholderAccount.Index, stakeholderAccount.Password, UserRole.Learner);
+        var userRole = stakeholderAccount.IsCommercial ? UserRole.LearnerCommercial : UserRole.Learner;
+        var result = _learnerService.Register(_mapper.Map<Learner>(stakeholderAccount), stakeholderAccount.Index, stakeholderAccount.Password, userRole);
         return CreateResponse<Learner, StakeholderAccountDto>(result);
     }
 

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -67,7 +67,7 @@ public class LearnerCommandTests : BaseWebIntegrationTest
 
         var result = (ObjectResult)controller.Register(newEntity).Result;
         result.ShouldNotBeNull();
-        result.StatusCode.ShouldBe(409);
+        result.StatusCode.ShouldBe(400);
     }
 
     [Fact]

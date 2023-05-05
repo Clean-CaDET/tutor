@@ -4,6 +4,7 @@ namespace Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 
 public interface IUserRepository
 {
+    User GetByName(string username);
     User GetActiveByName(string username);
     User Register(string username, string password, UserRole role);
     List<User> BulkRegister(List<string> usernames, List<string> passwords, UserRole role);

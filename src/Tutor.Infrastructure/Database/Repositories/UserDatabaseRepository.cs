@@ -16,6 +16,12 @@ public class UserDatabaseRepository : IUserRepository
         _dbContext = dbContext;
     }
 
+    public User GetByName(string username)
+    {
+        return _dbContext.Users
+            .FirstOrDefault(user => user.Username == username);
+    }
+
     public User GetActiveByName(string username)
     {
         return _dbContext.Users
