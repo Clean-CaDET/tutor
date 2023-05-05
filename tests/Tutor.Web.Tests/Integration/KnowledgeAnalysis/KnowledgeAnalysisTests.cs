@@ -151,7 +151,6 @@ public class KnowledgeAnalysisTests : BaseWebIntegrationTest
                     TotalPassed = 0
                 }
             },
-
         };
     }
 }

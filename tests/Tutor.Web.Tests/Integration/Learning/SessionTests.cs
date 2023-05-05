@@ -147,17 +147,17 @@ public class SessionTests : BaseWebIntegrationTest
     }
     
     [Fact]
-    public void Pause_fails_without_active_session()
+    public void Pause_without_active_session()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupSessionController(scope, "-2");
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
         dbContext.Database.BeginTransaction();
 
-        var pauseResult = (ObjectResult)controller.Pause(-15);
+        var pauseResult = controller.Pause(-15);
 
         pauseResult.ShouldNotBeNull();
-        pauseResult.StatusCode.ShouldBe(500);
+        pauseResult.ShouldBeOfType<OkResult>();
     }
     
     [Fact]

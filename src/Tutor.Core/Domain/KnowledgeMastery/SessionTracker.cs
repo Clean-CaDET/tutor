@@ -45,7 +45,7 @@ public class SessionTracker : EventSourcedEntity
 
     public Result Pause()
     {
-        if (!HasUnfinishedSession) return Result.Fail("No active session to pause.");
+        if (!HasUnfinishedSession) Launch();
         if (IsPaused) return Result.Fail("Session is already paused.");
         
         IsPaused = true;
@@ -55,7 +55,7 @@ public class SessionTracker : EventSourcedEntity
 
     public Result Continue()
     {
-        if (!HasUnfinishedSession) return Result.Fail("No active session to continue.");
+        if (!HasUnfinishedSession) Launch();
         if (!IsPaused) return Result.Fail("Session is not paused.");
             
         IsPaused = false;
@@ -123,5 +123,6 @@ public class SessionTracker : EventSourcedEntity
 
     private void When(KnowledgeComponentEvent @event)
     {
+        // LastActivity is no longer being recorded.
     }
 }
