@@ -8,10 +8,11 @@ using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 
 namespace Tutor.Core.UseCases.Management.Stakeholders;
 
-public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> where T : Stakeholder
+public partial class StakeholderService<T> : CrudService<T>, IStakeholderService<T> where T : Stakeholder
 {
+    [GeneratedRegex(@"\s+")]
+    private partial Regex WhitespacesRegex();
     private readonly IUserRepository _userRepository;
-    private static readonly Regex _whitespacesRegex = new Regex(@"\s+");
 
     public StakeholderService(ICrudRepository<T> crudRepository, IUnitOfWork unitOfWork, IUserRepository userRepository) 
         : base(crudRepository, unitOfWork)
@@ -94,20 +95,27 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
         return Result.Ok();
     }
 
-    protected static Result GetRole(string learnerType, out UserRole userRole)
+    protected Result GetRole(string learnerType, out UserRole userRole)
     {
-        if (learnerType == "FTN")
+        if (Enum.TryParse(learnerType, true, out userRole)) return Result.Ok();
+        if (GetLearnerRole(learnerType, out userRole)) return Result.Ok();
+        return Result.Fail(FailureCode.InvalidUserType);
+    }
+
+    private bool GetLearnerRole(string learnerType, out UserRole userRole)
+    {
+        learnerType = WhitespacesRegex().Replace(learnerType, "");
+        if (learnerType.Equals("FTN", StringComparison.OrdinalIgnoreCase))
         {
             userRole = UserRole.Learner;
-            return Result.Ok();
+            return true;
         }
-        
-        var existingRole = Enum.TryParse(learnerType, true, out userRole);
-        if (existingRole) return Result.Ok();
-        
-        learnerType = _whitespacesRegex.Replace(learnerType, "");
-        existingRole = Enum.TryParse("Learner" + learnerType, true, out userRole);
-        if (!existingRole) return Result.Fail(FailureCode.InvalidUserType);
-        return Result.Ok();
+        if (learnerType.Equals("FTNInf", StringComparison.OrdinalIgnoreCase))
+        {
+            userRole = UserRole.LearnerCommercial;
+            return true;
+        }
+        userRole = default;
+        return false;
     }
 }

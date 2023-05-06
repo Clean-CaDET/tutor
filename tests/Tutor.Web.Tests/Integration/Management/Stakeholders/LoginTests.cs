@@ -30,7 +30,7 @@ public class LoginTests : BaseWebIntegrationTest
         var learnerIdClaim = decodedAccessToken.Claims.FirstOrDefault(c => c.Type == "learnerId");
         learnerIdClaim.ShouldNotBeNull();
         learnerIdClaim.Value.ShouldBe("-1");
-        var learnerCommercialIdClaim = decodedAccessToken.Claims.FirstOrDefault(c => c.Type == "learnerftninfId");
+        var learnerCommercialIdClaim = decodedAccessToken.Claims.FirstOrDefault(c => c.Type == "learnercommercialId");
         learnerCommercialIdClaim.ShouldBeNull();
     }
 
@@ -47,7 +47,7 @@ public class LoginTests : BaseWebIntegrationTest
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var decodedAccessToken = tokenHandler.ReadJwtToken(authenticationResponse.AccessToken);
-        var learnerCommercialIdClaim = decodedAccessToken.Claims.FirstOrDefault(c => c.Type == "learnerftninfId");
+        var learnerCommercialIdClaim = decodedAccessToken.Claims.FirstOrDefault(c => c.Type == "learnercommercialId");
         learnerCommercialIdClaim.ShouldNotBeNull();
         learnerCommercialIdClaim.Value.ShouldBe("-53");
         var learnerIdClaim = decodedAccessToken.Claims.FirstOrDefault(c => c.Type == "learnerId");
@@ -84,7 +84,7 @@ public class LoginTests : BaseWebIntegrationTest
         var learnerIdClaim = decodedAccessToken.Claims.FirstOrDefault(c => c.Type == "learnerId");
         learnerIdClaim.ShouldNotBeNull();
         learnerIdClaim.Value.ShouldBe("-1");
-        var learnerCommercialIdClaim = decodedAccessToken.Claims.FirstOrDefault(c => c.Type == "learnerftninfId");
+        var learnerCommercialIdClaim = decodedAccessToken.Claims.FirstOrDefault(c => c.Type == "learnercommercialId");
         learnerCommercialIdClaim.ShouldBeNull();
     }
 }

@@ -31,5 +31,5 @@ public enum UserRole
     Instructor,
     // All learner roles should start with 'Learner'
     Learner,
-    LearnerFTNInf
+    LearnerCommercial
 }
