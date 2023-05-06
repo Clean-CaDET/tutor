@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -50,13 +50,15 @@ public class LearnerController : BaseApiController
     }
 
     [HttpPost("bulk")]
-    public ActionResult BulkRegister([FromBody] List<StakeholderAccountDto> stakeholderAccounts)
+    public ActionResult<BulkAccountsDto> BulkRegister([FromBody] List<StakeholderAccountDto> stakeholderAccounts)
     {
+        var userRole = stakeholderAccounts.First().IsCommercial ? UserRole.LearnerCommercial : UserRole.Learner;
         var result = _learnerService.BulkRegister(
             stakeholderAccounts.Select(a => _mapper.Map<Learner>(a)).ToList(),
             stakeholderAccounts.Select(a => a.Index).ToList(),
-            stakeholderAccounts.Select(a => a.Password).ToList());
-        return CreateResponse(result);
+            stakeholderAccounts.Select(a => a.Password).ToList(),
+            userRole);
+        return CreateResponse<(List<Learner>, List<Learner>), BulkAccountsDto>(result);
     }
 
     [HttpPut("{id:int}")]

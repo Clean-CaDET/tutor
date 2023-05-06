@@ -22,6 +22,11 @@ public class UserDatabaseRepository : IUserRepository
             .FirstOrDefault(user => user.Username == username);
     }
 
+    public List<User> GetByNames(List<string> names)
+    {
+        return _dbContext.Users.Where(u => names.Contains(u.Username)).ToList();
+    }
+
     public User GetActiveByName(string username)
     {
         return _dbContext.Users

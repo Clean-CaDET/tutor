@@ -26,7 +26,7 @@ public class BaseApiController : ControllerBase
         if (errors.Contains(FailureCode.Forbidden)) code = 403;
         if (errors.Contains(FailureCode.NotFound)) code = 404;
         if (errors.Contains(FailureCode.Conflict)) code = 409;
-        if (errors.Contains(FailureCode.ExistingUsername)) code = 400;
+        if (errors.Contains(FailureCode.DuplicateUsername)) code = 400;
         return Problem(statusCode: code, detail: string.Join(";", errors));
     }
 
