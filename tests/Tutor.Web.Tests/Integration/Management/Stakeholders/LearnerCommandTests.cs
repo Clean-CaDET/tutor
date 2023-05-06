@@ -31,7 +31,8 @@ public class LearnerCommandTests : BaseWebIntegrationTest
             Email = "pera@peric.com",
             Name = "pera",
             Surname = "peric",
-            Password = "123"
+            Password = "123",
+            UserType = "Learner"
         };
 
         var result = ((OkObjectResult)controller.Register(newEntity).Result)?.Value as StakeholderAccountDto;
@@ -63,7 +64,7 @@ public class LearnerCommandTests : BaseWebIntegrationTest
             Name = "pera",
             Surname = "peric",
             Password = "123",
-            IsCommercial = true
+            UserType = "FTNInf"
         };
 
         var result = ((OkObjectResult)controller.Register(newEntity).Result)?.Value as StakeholderAccountDto;
@@ -76,7 +77,7 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         result.Surname.ShouldBe(newEntity.Surname);
         var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == newEntity.Index);
         storedAccount.ShouldNotBeNull();
-        storedAccount.Role.ShouldBe(UserRole.LearnerCommercial);
+        storedAccount.Role.ShouldBe(UserRole.LearnerFTNInf);
         var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Index == newEntity.Index);
         storedEntity.ShouldNotBeNull();
         storedEntity.UserId.ShouldBe(storedAccount.Id);
@@ -94,7 +95,29 @@ public class LearnerCommandTests : BaseWebIntegrationTest
             Email = "SU-1-2021",
             Name = "pera",
             Surname = "peric",
-            Password = "123"
+            Password = "123",
+            UserType = "Learner"
+        };
+
+        var result = (ObjectResult)controller.Register(newEntity).Result;
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(400);
+    }
+
+    [Fact]
+    public void Register_fails_invalid_user_type()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var newEntity = new StakeholderAccountDto
+        {
+            Index = "SU-1-2021",
+            Email = "SU-1-2021",
+            Name = "pera",
+            Surname = "peric",
+            Password = "123",
+            UserType = "perica"
         };
 
         var result = (ObjectResult)controller.Register(newEntity).Result;
@@ -115,7 +138,8 @@ public class LearnerCommandTests : BaseWebIntegrationTest
                 Email = "tana@tanic.com",
                 Name = "tana",
                 Surname = "tanic",
-                Password = "123"
+                Password = "123",
+                UserType = "FTN"
             },
             new()
             {
@@ -166,7 +190,8 @@ public class LearnerCommandTests : BaseWebIntegrationTest
                 Email = "SU-1-2021",
                 Name = "pera",
                 Surname = "peric",
-                Password = "123"
+                Password = "123",
+                UserType = "FTN"
             },
             new StakeholderAccountDto
             {
@@ -217,7 +242,7 @@ public class LearnerCommandTests : BaseWebIntegrationTest
                 Name = "tana",
                 Surname = "tanic",
                 Password = "123",
-                IsCommercial = true
+                UserType = "FTNInf"
             },
             new()
             {
@@ -247,7 +272,7 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         {
             var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == newEntity.Index);
             storedAccount.ShouldNotBeNull();
-            storedAccount.Role.ShouldBe(UserRole.LearnerCommercial);
+            storedAccount.Role.ShouldBe(UserRole.LearnerFTNInf);
             var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Index == newEntity.Index);
             storedEntity.ShouldNotBeNull();
             storedEntity.UserId.ShouldBe(storedAccount.Id);
@@ -268,7 +293,8 @@ public class LearnerCommandTests : BaseWebIntegrationTest
                 Email = "pera@prvi.com",
                 Name = "pera",
                 Surname = "prvi",
-                Password = "123"
+                Password = "123",
+                UserType = "FTN"
             },
             new StakeholderAccountDto
             {

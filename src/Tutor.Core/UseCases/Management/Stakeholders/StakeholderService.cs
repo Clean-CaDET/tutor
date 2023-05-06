@@ -1,4 +1,6 @@
 ﻿using FluentResults;
+using System;
+using System.Text.RegularExpressions;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.Stakeholders;
@@ -9,14 +11,18 @@ namespace Tutor.Core.UseCases.Management.Stakeholders;
 public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> where T : Stakeholder
 {
     private readonly IUserRepository _userRepository;
+    private static readonly Regex _whitespacesRegex = new Regex(@"\s+");
 
     public StakeholderService(ICrudRepository<T> crudRepository, IUnitOfWork unitOfWork, IUserRepository userRepository) 
         : base(crudRepository, unitOfWork)
     {
         _userRepository = userRepository;
     }
-    public Result<T> Register(T entity, string username, string password, UserRole role)
+    public Result<T> Register(T entity, string username, string password, string userType)
     {
+        var result = GetRole(userType, out UserRole role);
+        if (result.IsFailed) return result;
+
         UnitOfWork.BeginTransaction();
 
         var existingUser = _userRepository.GetByName(username);
@@ -24,7 +30,7 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
             return Result.Fail(FailureCode.DuplicateUsername);
 
         var user = _userRepository.Register(username, password, role);
-        var result = UnitOfWork.Save();
+        result = UnitOfWork.Save();
         if (result.IsFailed)
         {
             UnitOfWork.Rollback();
@@ -85,6 +91,23 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
         var result = UnitOfWork.Save();
         if (result.IsFailed) return result;
 
+        return Result.Ok();
+    }
+
+    protected static Result GetRole(string learnerType, out UserRole userRole)
+    {
+        if (learnerType == "FTN")
+        {
+            userRole = UserRole.Learner;
+            return Result.Ok();
+        }
+        
+        var existingRole = Enum.TryParse(learnerType, true, out userRole);
+        if (existingRole) return Result.Ok();
+        
+        learnerType = _whitespacesRegex.Replace(learnerType, "");
+        existingRole = Enum.TryParse("Learner" + learnerType, true, out userRole);
+        if (!existingRole) return Result.Fail(FailureCode.InvalidUserType);
         return Result.Ok();
     }
 }

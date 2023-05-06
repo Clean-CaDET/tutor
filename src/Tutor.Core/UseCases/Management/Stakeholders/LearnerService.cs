@@ -24,9 +24,12 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
         return _learnerRepository.GetByIndexes(indexes);
     }
 
-    public Result<(List<Learner>, List<Learner>)> BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords, UserRole role)
+    public Result<(List<Learner>, List<Learner>)> BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords, string learnerType)
     {
-        var result = CheckDuplicateUsernames(usernames);
+        var result = GetRole(learnerType, out UserRole role);
+        if (result.IsFailed) return result;
+
+        result = CheckDuplicateUsernames(usernames);
         if (result.IsFailed) return result;
 
         UnitOfWork.BeginTransaction();

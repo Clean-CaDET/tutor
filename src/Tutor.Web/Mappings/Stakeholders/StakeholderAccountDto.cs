@@ -10,5 +10,5 @@ public class StakeholderAccountDto
     public string Index { get; set; }
     public bool IsArchived { get; set; }
     public string Password { get; set; }
-    public bool IsCommercial { get; set; }
+    public string UserType { get; set; }
 }

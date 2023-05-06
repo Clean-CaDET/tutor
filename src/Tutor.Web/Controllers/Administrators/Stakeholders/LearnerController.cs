@@ -44,20 +44,19 @@ public class LearnerController : BaseApiController
     [HttpPost]
     public ActionResult<StakeholderAccountDto> Register([FromBody] StakeholderAccountDto stakeholderAccount)
     {
-        var userRole = stakeholderAccount.IsCommercial ? UserRole.LearnerCommercial : UserRole.Learner;
-        var result = _learnerService.Register(_mapper.Map<Learner>(stakeholderAccount), stakeholderAccount.Index, stakeholderAccount.Password, userRole);
+        var result = _learnerService.Register(_mapper.Map<Learner>(stakeholderAccount), stakeholderAccount.Index, 
+            stakeholderAccount.Password, stakeholderAccount.UserType);
         return CreateResponse<Learner, StakeholderAccountDto>(result);
     }
 
     [HttpPost("bulk")]
     public ActionResult<BulkAccountsDto> BulkRegister([FromBody] List<StakeholderAccountDto> stakeholderAccounts)
     {
-        var userRole = stakeholderAccounts.First().IsCommercial ? UserRole.LearnerCommercial : UserRole.Learner;
         var result = _learnerService.BulkRegister(
             stakeholderAccounts.Select(a => _mapper.Map<Learner>(a)).ToList(),
             stakeholderAccounts.Select(a => a.Index).ToList(),
             stakeholderAccounts.Select(a => a.Password).ToList(),
-            userRole);
+            stakeholderAccounts.First().UserType);
         return CreateResponse<(List<Learner>, List<Learner>), BulkAccountsDto>(result);
     }
 

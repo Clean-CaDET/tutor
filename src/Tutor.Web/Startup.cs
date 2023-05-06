@@ -182,7 +182,7 @@ public class Startup
         {
             options.AddPolicy("administratorPolicy", policy => policy.RequireRole("administrator"));
             options.AddPolicy("instructorPolicy", policy => policy.RequireRole("instructor"));
-            options.AddPolicy("learnerPolicy", policy => policy.RequireRole("learner", "learnercommercial"));
+            options.AddPolicy("learnerPolicy", policy => policy.RequireRole("learner", "learnerftninf"));
         });
 
         var key = EnvironmentConnection.GetSecret("JWT_KEY") ?? "tutor_secret_key";

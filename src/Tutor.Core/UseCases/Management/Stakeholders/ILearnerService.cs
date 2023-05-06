@@ -9,5 +9,5 @@ public interface ILearnerService : IStakeholderService<Learner>
 {
     Result<PagedResult<Learner>> GetPaged(int page, int pageSize);
     Result<PagedResult<Learner>> GetByIndexes(string[] indexes);
-    Result<(List<Learner>, List<Learner>)> BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords, UserRole role);
+    Result<(List<Learner>, List<Learner>)> BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords, string learnerType);
 }
