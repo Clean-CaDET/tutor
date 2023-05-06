@@ -87,5 +87,4 @@ public class LoginTests : BaseWebIntegrationTest
         var learnerCommercialIdClaim = decodedAccessToken.Claims.FirstOrDefault(c => c.Type == "learnerftninfId");
         learnerCommercialIdClaim.ShouldBeNull();
     }
-
 }
