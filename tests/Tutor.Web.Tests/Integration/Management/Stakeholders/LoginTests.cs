@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using Tutor.Infrastructure.Security.Authentication;
