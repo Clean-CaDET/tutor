@@ -12,5 +12,7 @@ public class StakeholderProfile : Profile
 
         CreateMap<StakeholderAccountDto, Instructor>();
         CreateMap<Instructor, StakeholderAccountDto>();
+
+        CreateMap<Learner, LearnerDto>();
     }
 }

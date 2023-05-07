@@ -10,7 +10,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
-using Serilog;
 using System;
 using System.IO;
 using System.Text;
@@ -24,6 +23,7 @@ using Tutor.Core.Domain.KnowledgeMastery;
 using Tutor.Core.Domain.KnowledgeMastery.DomainServices;
 using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
 using Tutor.Core.Domain.LearningUtilities;
+using Tutor.Core.Domain.Session;
 using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 using Tutor.Core.UseCases.KnowledgeAnalysis;
 using Tutor.Core.UseCases.Learning;
@@ -42,6 +42,7 @@ using Tutor.Infrastructure.Database.Repositories;
 using Tutor.Infrastructure.Database.Repositories.CourseIteration;
 using Tutor.Infrastructure.Database.Repositories.Knowledge;
 using Tutor.Infrastructure.Database.Repositories.LearningUtilities;
+using Tutor.Infrastructure.Database.Repositories.Session;
 using Tutor.Infrastructure.Database.Repositories.Stakeholders;
 using Tutor.Infrastructure.Security;
 using Tutor.Infrastructure.Security.Authentication;
@@ -253,6 +254,7 @@ public class Startup
         services.AddProxiedScoped<INoteService, NoteService>();
 
         services.AddProxiedScoped<IGroupMonitoringService, GroupMonitoringService>();
+        services.AddProxiedScoped<ICalendarService, CalendarService>();
         // The domain services below should be selected from a configuration file or some other configurable mechanism.
         services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
         services.AddScoped<IAssessmentFeedbackGenerator, RuleAssessmentFeedbackGenerator>();
@@ -302,6 +304,7 @@ public class Startup
         services.AddScoped<IOwnedCourseRepository, OwnedCourseDatabaseRepository>();
         services.AddScoped<IGroupRepository, GroupDatabaseRepository>();
         services.AddScoped<IEnrollmentRepository, EnrollmentDatabaseRepository>();
+        services.AddScoped<ISessionDatabaseRepository, SessionDatabaseRepository>();
 
         services.AddSingleton<IEventSerializer>(
             new DefaultEventSerializer(EventSerializationConfiguration.EventRelatedTypes));
