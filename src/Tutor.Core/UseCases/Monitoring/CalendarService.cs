@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentResults;
-using Tutor.Core.BuildingBlocks.EventSourcing;
+using Tutor.Core.Domain.KnowledgeMastery.Events.SessionLifecycleEvents;
 using Tutor.Core.Domain.Session;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
@@ -22,9 +22,8 @@ public class CalendarService : ICalendarService
     
     public Result<List<Session>> GetSessions(int learnerId)
     {
-        var sessionLaunchedEvents = _sessionDatabaseRepository.GetLaunchedSessions(learnerId).OrderBy(e => e.TimeStamp);
-        var sessionFinishedEvents = _sessionDatabaseRepository.GetFinishedSessions(learnerId).OrderBy(e => e.TimeStamp);
-        var sessionLaunchedAndFinishedEvents = InitSessions(sessionLaunchedEvents, sessionFinishedEvents);
+        IEnumerable<SessionLaunched> sessionLaunchedEvents = _sessionDatabaseRepository.GetSessionLaunchedEvents(learnerId).OrderBy(e => e.TimeStamp);
+        var sessionLaunchedAndFinishedEvents = InitSessions(learnerId, sessionLaunchedEvents);
         var mergedSessions = MergeSessions(sessionLaunchedAndFinishedEvents);
         
         foreach (var session in mergedSessions)
@@ -41,11 +40,21 @@ public class CalendarService : ICalendarService
         return _learnerRepository.GetById(learnerId);
     }
 
-    private List<Session> InitSessions(IEnumerable<DomainEvent> launchedSessionEvents, IEnumerable<DomainEvent> finishedSessionEvents)
+    private List<Session> InitSessions(int learnerId, IEnumerable<SessionLaunched> launchedSessionEvents)
     {
-        var launchedAndFinishedSessionsEvents = launchedSessionEvents.Zip(finishedSessionEvents, (launched, finished) =>
-            new { First = launched, Second = finished });
-        return launchedAndFinishedSessionsEvents.Select(session => new Session { Start = session.First.TimeStamp, End = session.Second.TimeStamp }).ToList();
+        var sessions = new List<Session>();
+        foreach (var launchedSessionEvent in launchedSessionEvents)
+        {
+            var sessionFinishedEvent = _sessionDatabaseRepository.GetSessionFinishedEvent(learnerId, launchedSessionEvent);
+            if (sessionFinishedEvent == null) continue;
+            var newSession = new Session
+            {
+                Start = launchedSessionEvent.TimeStamp,
+                End = sessionFinishedEvent.TimeStamp
+            };
+            sessions.Add(newSession);
+        }
+        return sessions;
     }
 
     private List<Session> MergeSessions(List<Session> sessions)
