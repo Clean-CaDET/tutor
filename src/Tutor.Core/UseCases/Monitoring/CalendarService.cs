@@ -93,7 +93,7 @@ public class CalendarService : ICalendarService
             {
                 merging = false;
                 var mergedSession = new Session
-                {
+                { 
                     Start = start,
                     End = end
                 };
@@ -102,5 +102,4 @@ public class CalendarService : ICalendarService
         }
         return mergedSessions;
     }
-    
 }
