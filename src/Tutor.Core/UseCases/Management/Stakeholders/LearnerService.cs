@@ -18,6 +18,13 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
         _userRepository = userRepository;
     }
 
+    public Result<(PagedResult<Learner>, List<UserRole>)> GetPagedWithRole(int page, int pageSize)
+    {
+        var learners = _learnerRepository.GetPaged(page, pageSize);
+        var roles = _userRepository.GetByNames(learners.Results.Select(l => l.Index).ToList()).Select(u => u.Role).ToList();
+        return (learners, roles);
+    }
+
     public Result<PagedResult<Learner>> GetByIndexes(string[] indexes)
     {
         if (indexes == null) return Result.Fail(FailureCode.InvalidArgument);

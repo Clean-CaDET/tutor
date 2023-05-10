@@ -29,8 +29,11 @@ public class LearnerController : BaseApiController
     [HttpGet]
     public ActionResult<PagedResult<StakeholderAccountDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
     {
-        var result = _learnerService.GetPaged(page, pageSize);
-        return CreateResponse<Learner, StakeholderAccountDto>(result);
+        var (learners, roles) = _learnerService.GetPagedWithRole(page, pageSize).Value;
+        var learnerDtos = learners.Results.Select(_mapper.Map<StakeholderAccountDto>).ToList();
+        var learnerRoles = learnerDtos.Zip(roles, (learner, role) => { learner.UserType = role.ToString(); return learner; }).ToList();
+
+        return Ok(new PagedResult<StakeholderAccountDto>(learnerRoles, learners.TotalCount));
     }
 
     // Post because of potential URL length limit violation with query params

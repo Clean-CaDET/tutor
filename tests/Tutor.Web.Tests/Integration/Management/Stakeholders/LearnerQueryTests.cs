@@ -84,6 +84,24 @@ public class LearnerQueryTests : BaseWebIntegrationTest
         result.TotalCount.ShouldBe(2);
     }
 
+    [Fact]
+    public void Retrieves_paged_learners_with_roles()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+
+        var result = ((OkObjectResult)controller.GetAll(0, 0).Result)?.Value as PagedResult<StakeholderAccountDto>;
+
+        result.ShouldNotBeNull();
+        result.Results.Count.ShouldBe(7);
+        result.TotalCount.ShouldBe(7);
+        foreach (var item in result.Results)
+        {
+            item.ShouldNotBeNull();
+            item.UserType.ShouldNotBeNull();
+        }
+    }
+
     private LearnerController SetupLearnerController(IServiceScope scope)
     {
         return new LearnerController(Factory.Services.GetRequiredService<IMapper>(),

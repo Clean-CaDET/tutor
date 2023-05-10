@@ -18,7 +18,7 @@ INSERT INTO public."Learners"(
 VALUES (-6, -6, 'Empty student', 'SU-6-2021', NULL);
 INSERT INTO public."Learners"(
     "Id", "UserId", "Name", "Index", "Email")
-VALUES (-53, -53, 'CommercialUser', NULL, 'email@email.com');
+VALUES (-53, -53, 'CommercialUser', 'email@email.com', 'email@email.com');
 
 INSERT INTO public."Instructors"("Id", "UserId", "Name", "Surname", "Email") VALUES
     (-51, -51, 'TestInstructor1', 'TestInstructor1', NULL);
