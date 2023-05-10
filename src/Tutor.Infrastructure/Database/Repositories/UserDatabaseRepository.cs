@@ -24,7 +24,9 @@ public class UserDatabaseRepository : IUserRepository
 
     public List<User> GetByNames(List<string> usernames)
     {
-        return _dbContext.Users.Where(u => usernames.Contains(u.Username)).ToList();
+        return _dbContext.Users.Where(u => usernames.Contains(u.Username))
+            .OrderBy(u => usernames.IndexOf(u.Username))
+            .ToList();
     }
 
     public User GetActiveByName(string username)
