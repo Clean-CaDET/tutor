@@ -18,7 +18,7 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
         _userRepository = userRepository;
     }
 
-    public Result<(PagedResult<Learner>, List<UserRole>)> GetPagedWithRole(int page, int pageSize)
+    public Result<(PagedResult<Learner> learners, List<UserRole> roles)> GetPagedWithRole(int page, int pageSize)
     {
         var learners = _learnerRepository.GetPaged(page, pageSize);
         var roles = _userRepository.GetByNames(learners.Results.Select(l => l.Index).ToList()).Select(u => u.Role).ToList();
@@ -31,7 +31,7 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
         return _learnerRepository.GetByIndexes(indexes);
     }
 
-    public Result<(List<Learner>, List<Learner>)> BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords, string learnerType)
+    public Result<(List<Learner> existingLearners, List<Learner> newLearners)> BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords, string learnerType)
     {
         var result = GetRole(learnerType, out UserRole role);
         if (result.IsFailed) return result;
@@ -76,7 +76,7 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
         return anyDuplicate ? Result.Fail(FailureCode.DuplicateUsername) : Result.Ok();
     }
 
-    private (List<Learner>, List<Learner>) FindExistingAndNewLearners(List<Learner> learners, List<string> usernames)
+    private (List<Learner> existingLearners, List<Learner> newLearners) FindExistingAndNewLearners(List<Learner> learners, List<string> usernames)
     {
         var existingUsers = _userRepository.GetByNames(usernames);
 

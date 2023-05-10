@@ -60,7 +60,7 @@ public class LearnerController : BaseApiController
             stakeholderAccounts.Select(a => a.Index).ToList(),
             stakeholderAccounts.Select(a => a.Password).ToList(),
             stakeholderAccounts.First().UserType);
-        return CreateResponse<(List<Learner>, List<Learner>), BulkAccountsDto>(result);
+        return CreateResponse<(List<Learner> existingLearners, List<Learner> newLearners), BulkAccountsDto>(result);
     }
 
     [HttpPut("{id:int}")]
