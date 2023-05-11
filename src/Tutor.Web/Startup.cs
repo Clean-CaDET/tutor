@@ -10,7 +10,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
-using Serilog;
 using System;
 using System.IO;
 using System.Text;
@@ -237,7 +236,8 @@ public class Startup
         SetupLearningServices(services);
         SetupManagementServices(services);
 
-        services.AddProxiedScoped<IUnitAnalysisService, UnitAnalysisService>();
+        services.AddProxiedScoped<IKnowledgeAnalysisService, KnowledgeAnalysisService>();
+        services.AddProxiedScoped<IAssessmentAnalysisService, AssessmentAnalysisService>();
     }
 
     private void SetupLearningServices(IServiceCollection services)

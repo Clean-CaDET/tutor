@@ -17,8 +17,6 @@ public class KnowledgeProfile : Profile
         CreateMap<KnowledgeComponent, KnowledgeComponentDto>();
         CreateMap<KnowledgeComponentDto, KnowledgeComponent>();
 
-        CreateMap<KcStatistics, KcStatisticsDto>();
-
         CreateMap<InstructionalItem, InstructionalItemDto>().IncludeAllDerived();
         CreateMap<Markdown, TextDto>();
         CreateMap<Image, ImageDto>();

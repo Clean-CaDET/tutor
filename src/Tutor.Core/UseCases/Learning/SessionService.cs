@@ -25,7 +25,8 @@ public class SessionService : ISessionService
 
         var kcMastery = result.Value;
         kcMastery.LaunchSession();
-        _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
+
+        _knowledgeMasteryRepository.Update(kcMastery);
         return _unitOfWork.Save();
     }
 
@@ -37,7 +38,8 @@ public class SessionService : ISessionService
         var kcMastery = kcMasteryResult.Value;
         var result = kcMastery.TerminateSession();
         if (result.IsFailed) return result;
-        _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
+
+        _knowledgeMasteryRepository.Update(kcMastery);
         return _unitOfWork.Save();
     }
 
@@ -48,8 +50,9 @@ public class SessionService : ISessionService
 
         var kcMastery = kcMasteryResult.Value;
         var result = kcMastery.PauseSession();
+
         if (result.IsFailed) return result;
-        _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
+        _knowledgeMasteryRepository.Update(kcMastery);
         return _unitOfWork.Save();
     }
 
@@ -61,7 +64,7 @@ public class SessionService : ISessionService
         var kcMastery = kcMasteryResult.Value;
         var result = kcMastery.ContinueSession();
         if (result.IsFailed) return result;
-        _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
+        _knowledgeMasteryRepository.Update(kcMastery);
         return _unitOfWork.Save();
     }
 
@@ -73,14 +76,14 @@ public class SessionService : ISessionService
         var kcMastery = kcMasteryResult.Value;
         var result = kcMastery.AbandonSession();
         if (result.IsFailed) return result;
-        _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
+        _knowledgeMasteryRepository.Update(kcMastery);
         return _unitOfWork.Save();
     }
 
     private Result<KnowledgeComponentMastery> TryGetKcMastery(int knowledgeComponentId, int learnerId)
     {
         if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId)) return Result.Fail(FailureCode.NotEnrolledInUnit);
-        var kcMastery = _knowledgeMasteryRepository.GetBareKcMastery(knowledgeComponentId, learnerId);
+        var kcMastery = _knowledgeMasteryRepository.GetBare(knowledgeComponentId, learnerId);
         if (kcMastery == null) return Result.Fail(FailureCode.NotFound);
         return Result.Ok(kcMastery);
     }

@@ -1,12 +1,11 @@
 ﻿using FluentResults;
 
-namespace Tutor.Core.BuildingBlocks
+namespace Tutor.Core.BuildingBlocks;
+
+public interface IUnitOfWork
 {
-    public interface IUnitOfWork
-    {
-        void BeginTransaction();
-        Result Save();
-        Result Commit();
-        Result Rollback();
-    }
+    void BeginTransaction();
+    Result Save();
+    Result Commit();
+    Result Rollback();
 }
