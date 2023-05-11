@@ -95,6 +95,7 @@ public class EnrollmentService : IEnrollmentService
         foreach (var kc in unit.KnowledgeComponents)
         {
             var assessmentMasteries = kc.AssessmentItems
+                .OrderBy(i => i.Order)
                 .Select(item => new AssessmentItemMastery(item.Id)).ToList();
             var kcMastery = new KnowledgeComponentMastery(learnerId, kc.Id, assessmentMasteries);
             _knowledgeMasteryRepository.Create(kcMastery);

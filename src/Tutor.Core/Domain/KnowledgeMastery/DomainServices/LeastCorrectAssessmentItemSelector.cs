@@ -20,7 +20,8 @@ public class LeastCorrectAssessmentItemSelector : IAssessmentItemSelector
 
     private static int FindItemWithOldestAttempt(List<AssessmentItemMastery> assessmentMasteries)
     {
-        return assessmentMasteries.MinBy(am => am.LastSubmissionTime).AssessmentItemId;
+        var noSubmissionItem = FindItemWithoutSubmissions(assessmentMasteries);
+        return noSubmissionItem != 0 ? noSubmissionItem : assessmentMasteries.MinBy(am => am.LastSubmissionTime).AssessmentItemId;
     }
 
     private static bool HasPreviousSubmissions(List<AssessmentItemMastery> assessmentMasteries)
