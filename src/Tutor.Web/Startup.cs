@@ -251,6 +251,7 @@ public class Startup
 
         services.AddProxiedScoped<IFeedbackService, FeedbackService>();
         services.AddProxiedScoped<INoteService, NoteService>();
+        services.AddProxiedScoped<IRatingService, RatingService>();
 
         services.AddProxiedScoped<IGroupMonitoringService, GroupMonitoringService>();
         // The domain services below should be selected from a configuration file or some other configurable mechanism.
@@ -295,6 +296,7 @@ public class Startup
         services.AddScoped<IKnowledgeMasteryRepository, KnowledgeMasteryDatabaseRepository>();
         services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
         services.AddScoped<INoteRepository, NoteRepository>();
+        services.AddScoped<IRatingRepository, RatingRepository>();
 
         services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
         services.AddScoped<IUnitRepository, UnitDatabaseRepository>();
