@@ -19,11 +19,8 @@ public partial class StakeholderService<T> : CrudService<T>, IStakeholderService
     {
         _userRepository = userRepository;
     }
-    public Result<T> Register(T entity, string username, string password, string userType)
+    public Result<T> Register(T entity, string username, string password, UserRole role)
     {
-        var result = GetRole(userType, out UserRole role);
-        if (result.IsFailed) return result;
-
         UnitOfWork.BeginTransaction();
 
         var existingUser = _userRepository.GetByName(username);
@@ -31,7 +28,7 @@ public partial class StakeholderService<T> : CrudService<T>, IStakeholderService
             return Result.Fail(FailureCode.DuplicateUsername);
 
         var user = _userRepository.Register(username, password, role);
-        result = UnitOfWork.Save();
+        var result = UnitOfWork.Save();
         if (result.IsFailed)
         {
             UnitOfWork.Rollback();

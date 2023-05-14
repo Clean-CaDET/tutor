@@ -31,34 +31,25 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
         return _learnerRepository.GetByIndexes(indexes);
     }
 
-    public Result<(List<Learner> existingLearners, List<Learner> newLearners)> BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords, string learnerType)
+    public Result<List<Learner>> BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords, UserRole role)
     {
-        var result = GetRole(learnerType, out UserRole role);
-        if (result.IsFailed) return result;
-
-        result = CheckDuplicateUsernames(usernames);
-        if (result.IsFailed) return result;
-
         UnitOfWork.BeginTransaction();
 
-        var (existingLearners, newLearners) = FindExistingAndNewLearners(learners, usernames);
-        var newUsernames = newLearners.Select(l => l.Index).ToList();
-
-        var newUsers = _userRepository.BulkRegister(newUsernames, passwords, role);
-        result = UnitOfWork.Save();
+        var users = _userRepository.BulkRegister(usernames, passwords, role);
+        var result = UnitOfWork.Save();
         if (result.IsFailed)
         {
             UnitOfWork.Rollback();
             return result;
         }
 
-        foreach (var learner in newLearners)
+        foreach (var learner in learners)
         {
-            var user = newUsers.Find(u => u.Username.Equals(learner.Index));
+            var user = users.Find(u => u.Username.Equals(learner.Index));
+            if (user == null) continue;
             learner.UserId = user.Id;
         }
-
-        _learnerRepository.BulkCreate(newLearners);
+        _learnerRepository.BulkCreate(learners);
         result = UnitOfWork.Save();
         if (result.IsFailed)
         {
@@ -67,28 +58,6 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
         }
 
         UnitOfWork.Commit();
-        return Result.Ok((existingLearners, newLearners));
-    }
-
-    private static Result CheckDuplicateUsernames(List<string> usernames)
-    {
-        var anyDuplicate = usernames.GroupBy(u => u).Any(g => g.Count() > 1);
-        return anyDuplicate ? Result.Fail(FailureCode.DuplicateUsername) : Result.Ok();
-    }
-
-    private (List<Learner> existingLearners, List<Learner> newLearners) FindExistingAndNewLearners(List<Learner> learners, List<string> usernames)
-    {
-        var existingUsers = _userRepository.GetByNames(usernames);
-
-        var existingLearners = new List<Learner>();
-        var newLearners = new List<Learner>();
-        foreach (var learner in learners)
-        {
-            var user = existingUsers.Find(u => u.Username.Equals(learner.Index));
-            if (user == null) newLearners.Add(learner);
-            else existingLearners.Add(learner);
-        }
-
-        return (existingLearners, newLearners);
+        return Result.Ok(learners);
     }
 }
