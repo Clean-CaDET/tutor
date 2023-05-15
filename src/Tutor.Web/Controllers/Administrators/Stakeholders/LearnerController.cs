@@ -78,7 +78,7 @@ public class LearnerController : BaseApiController
     [HttpPut("{id:int}")]
     public ActionResult<StakeholderAccountDto> Update([FromBody] StakeholderAccountDto stakeholderAccount)
     {
-        var result = _learnerService.Update(_mapper.Map<Learner>(stakeholderAccount));
+        var result = _learnerService.Update(_mapper.Map<Learner>(stakeholderAccount), stakeholderAccount.Index);
         return CreateResponse<Learner, StakeholderAccountDto>(result);
     }
 

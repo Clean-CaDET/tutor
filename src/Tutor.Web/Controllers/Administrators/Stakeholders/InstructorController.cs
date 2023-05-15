@@ -36,7 +36,7 @@ public class InstructorController : BaseApiController
     [HttpPut("{id:int}")]
     public ActionResult<StakeholderAccountDto> Update([FromBody] StakeholderAccountDto stakeholderAccount)
     {
-        var result = _instructorService.Update(_mapper.Map<Instructor>(stakeholderAccount));
+        var result = _instructorService.Update(_mapper.Map<Instructor>(stakeholderAccount), stakeholderAccount.Email);
         return CreateResponse<Instructor, StakeholderAccountDto>(result);
     }
 
