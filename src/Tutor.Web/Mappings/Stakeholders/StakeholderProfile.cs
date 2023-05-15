@@ -13,9 +13,5 @@ public class StakeholderProfile : Profile
 
         CreateMap<StakeholderAccountDto, Instructor>();
         CreateMap<Instructor, StakeholderAccountDto>();
-
-        CreateMap<(List<Learner> existingLearners, List<Learner> newLearners), BulkAccountsDto>()
-            .ForMember(dest => dest.ExistingAccounts, opt => opt.MapFrom(src => src.existingLearners))
-            .ForMember(dest => dest.NewAccounts, opt => opt.MapFrom(src => src.newLearners));
     }
 }

@@ -30,11 +30,8 @@ public class LearnerController : BaseApiController
     [HttpGet]
     public ActionResult<PagedResult<StakeholderAccountDto>> GetAll([FromQuery] int page, [FromQuery] int pageSize)
     {
-        var (learners, roles) = _learnerService.GetPagedWithRole(page, pageSize).Value;
-        var learnerDtos = learners.Results.Select(_mapper.Map<StakeholderAccountDto>).ToList();
-        var learnerRoles = learnerDtos.Zip(roles, (learner, role) => { learner.LearnerType = role.ToString(); return learner; }).ToList();
-
-        return Ok(new PagedResult<StakeholderAccountDto>(learnerRoles, learners.TotalCount));
+        var result = _learnerService.GetPaged(page, pageSize);
+        return CreateResponse<Learner, StakeholderAccountDto>(result);
     }
 
     // Post because of potential URL length limit violation with query params
@@ -61,7 +58,7 @@ public class LearnerController : BaseApiController
     }
 
     [HttpPost("bulk")]
-    public ActionResult<BulkAccountsDto> BulkRegister([FromBody] List<StakeholderAccountDto> stakeholderAccounts)
+    public ActionResult<List<Learner>> BulkRegister([FromBody] List<StakeholderAccountDto> stakeholderAccounts)
     {
         var mappingResult = MapLearners(stakeholderAccounts);
         if (mappingResult.IsFailed)

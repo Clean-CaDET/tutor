@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -85,7 +85,7 @@ public class LearnerQueryTests : BaseWebIntegrationTest
     }
 
     [Fact]
-    public void Retrieves_paged_learners_with_roles()
+    public void Retrieves_paged_learners()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupLearnerController(scope);
@@ -98,7 +98,7 @@ public class LearnerQueryTests : BaseWebIntegrationTest
         foreach (var item in result.Results)
         {
             item.ShouldNotBeNull();
-            item.UserType.ShouldNotBeNull();
+            item.LearnerType.ShouldNotBeNull();
         }
     }
 
