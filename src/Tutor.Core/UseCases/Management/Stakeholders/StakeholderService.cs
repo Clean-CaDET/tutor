@@ -19,8 +19,7 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
     {
         UnitOfWork.BeginTransaction();
 
-        var existingUser = _userRepository.GetByName(username);
-        if (existingUser != null)
+        if (_userRepository.Exists(username))
             return Result.Fail(FailureCode.DuplicateUsername);
 
         var user = _userRepository.Register(username, password, role);
