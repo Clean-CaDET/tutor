@@ -63,7 +63,7 @@ public class LearnerController : BaseApiController
         var mappingResult = MapLearners(stakeholderAccounts);
         if (mappingResult.IsFailed)
         {
-            return BadRequest(mappingResult.Errors);
+            return BadRequest(string.Join(";", mappingResult.Errors));
         }
         var learners = mappingResult.Value;
 
