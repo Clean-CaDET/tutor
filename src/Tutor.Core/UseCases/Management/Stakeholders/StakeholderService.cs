@@ -1,6 +1,4 @@
 ﻿using FluentResults;
-using System;
-using System.Text.RegularExpressions;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.BuildingBlocks.Generics;
 using Tutor.Core.Domain.Stakeholders;
@@ -10,8 +8,6 @@ namespace Tutor.Core.UseCases.Management.Stakeholders;
 
 public partial class StakeholderService<T> : CrudService<T>, IStakeholderService<T> where T : Stakeholder
 {
-    [GeneratedRegex(@"\s+")]
-    private partial Regex WhitespacesRegex();
     private readonly IUserRepository _userRepository;
 
     public StakeholderService(ICrudRepository<T> crudRepository, IUnitOfWork unitOfWork, IUserRepository userRepository) 
@@ -90,29 +86,5 @@ public partial class StakeholderService<T> : CrudService<T>, IStakeholderService
         if (result.IsFailed) return result;
 
         return Result.Ok();
-    }
-
-    protected Result GetRole(string learnerType, out UserRole userRole)
-    {
-        if (Enum.TryParse(learnerType, true, out userRole)) return Result.Ok();
-        if (GetLearnerRole(learnerType, out userRole)) return Result.Ok();
-        return Result.Fail(FailureCode.InvalidUserType);
-    }
-
-    private bool GetLearnerRole(string learnerType, out UserRole userRole)
-    {
-        learnerType = WhitespacesRegex().Replace(learnerType, "");
-        if (learnerType.Equals("FTN", StringComparison.OrdinalIgnoreCase))
-        {
-            userRole = UserRole.Learner;
-            return true;
-        }
-        if (learnerType.Equals("FTNInf", StringComparison.OrdinalIgnoreCase))
-        {
-            userRole = UserRole.LearnerCommercial;
-            return true;
-        }
-        userRole = default;
-        return false;
     }
 }
