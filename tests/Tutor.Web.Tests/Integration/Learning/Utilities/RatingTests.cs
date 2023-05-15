@@ -1,4 +1,5 @@
 ﻿
+using System.Linq;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,13 +21,16 @@ public class RatingTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupRatingController(scope, "-2");
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
-        var tags = new[] {"test", "test"};
+        var tags = new[] {"Težina zadataka", "Jasnoća zadataka"};
         var kcRating = new KnowledgeComponentRatingDto { KnowledgeComponentId = -10, Rating = 5, Tags = tags};
         dbContext.Database.BeginTransaction();
 
         var result = ((OkObjectResult)controller.RateKnowledgeComponent(kcRating).Result)?.Value as KnowledgeComponentRatingDto;
+        var rating = dbContext.KnowledgeComponentRatings.FirstOrDefault();
         
-        result.Rating.ShouldBe(5);
+        result.Tags[0].ShouldBe("Težina zadataka");
+        result.Tags[1].ShouldBe("Jasnoća zadataka");
+        rating.Rating.ShouldBe(5);
     }
     
     private static RatingController SetupRatingController(IServiceScope scope, string id)
