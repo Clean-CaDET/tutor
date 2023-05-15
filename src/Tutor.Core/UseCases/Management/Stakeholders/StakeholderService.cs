@@ -6,7 +6,7 @@ using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
 
 namespace Tutor.Core.UseCases.Management.Stakeholders;
 
-public partial class StakeholderService<T> : CrudService<T>, IStakeholderService<T> where T : Stakeholder
+public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> where T : Stakeholder
 {
     private readonly IUserRepository _userRepository;
 
