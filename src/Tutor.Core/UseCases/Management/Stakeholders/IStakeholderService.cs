@@ -6,7 +6,7 @@ namespace Tutor.Core.UseCases.Management.Stakeholders;
 public interface IStakeholderService<T> where T : Stakeholder
 {
     Result<T> Register(T entity, string username, string password, UserRole role);
-    Result<T> Update(T entity, string username);
+    Result<T> Update(T entity);
     Result<T> Archive(int id, bool archive);
     Result Delete(int id);
 }

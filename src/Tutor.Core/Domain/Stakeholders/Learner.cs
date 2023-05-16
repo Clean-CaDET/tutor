@@ -12,7 +12,6 @@ public class Learner : Stakeholder
 
 public enum LearnerType
 {
-    // Should values match UserRole values?
     Regular,
     Commercial
 }

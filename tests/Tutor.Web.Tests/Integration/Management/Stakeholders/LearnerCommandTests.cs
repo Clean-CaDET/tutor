@@ -329,7 +329,6 @@ public class LearnerCommandTests : BaseWebIntegrationTest
             Name = "mika",
             Surname = "mikic",
             Password = "123",
-            Index = "SU-222-2021"
         };
         dbContext.Database.BeginTransaction();
 
@@ -344,7 +343,7 @@ public class LearnerCommandTests : BaseWebIntegrationTest
 
         var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Id == updatedEntity.Id);
         storedEntity.ShouldNotBeNull();
-        var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == updatedEntity.Index);
+        var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == updatedEntity.Email);
         storedAccount.ShouldNotBeNull();
         var oldEntity = dbContext.Learners.FirstOrDefault(i => i.Name == "SU-2-2021");
         oldEntity.ShouldBeNull();

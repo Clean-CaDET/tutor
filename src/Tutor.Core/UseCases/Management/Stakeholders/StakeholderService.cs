@@ -57,7 +57,7 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
         return Result.Ok(stakeholder);
     }
 
-    public Result<T> Update(T entity, string username)
+    public override Result<T> Update(T entity)
     {
         var dbStakeholder = CrudRepository.Get(entity.Id);
         if (dbStakeholder is null) return Result.Fail(FailureCode.NotFound);
@@ -65,7 +65,7 @@ public class StakeholderService<T> : CrudService<T>, IStakeholderService<T> wher
         entity.UserId = user.Id;
 
         CrudRepository.Update(dbStakeholder, entity);
-        user.Username = username;
+        user.Username = entity.Email;
 
         var result = UnitOfWork.Save();
         if (result.IsFailed) return result;
