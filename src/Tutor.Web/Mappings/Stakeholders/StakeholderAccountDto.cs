@@ -10,4 +10,5 @@ public class StakeholderAccountDto
     public string Index { get; set; }
     public bool IsArchived { get; set; }
     public string Password { get; set; }
+    public string LearnerType { get; set; }
 }

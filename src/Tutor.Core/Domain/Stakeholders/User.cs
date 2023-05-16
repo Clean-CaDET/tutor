@@ -29,5 +29,7 @@ public enum UserRole
 {
     Administrator,
     Instructor,
-    Learner
+    // All learner roles should start with 'Learner'
+    Learner,
+    LearnerCommercial
 }

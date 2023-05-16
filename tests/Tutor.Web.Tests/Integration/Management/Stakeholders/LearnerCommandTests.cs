@@ -31,7 +31,8 @@ public class LearnerCommandTests : BaseWebIntegrationTest
             Email = "pera@peric.com",
             Name = "pera",
             Surname = "peric",
-            Password = "123"
+            Password = "123",
+            LearnerType = "Regular"
         };
 
         var result = ((OkObjectResult)controller.Register(newEntity).Result)?.Value as StakeholderAccountDto;
@@ -51,6 +52,38 @@ public class LearnerCommandTests : BaseWebIntegrationTest
     }
 
     [Fact]
+    public void Registers_commercial()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var newEntity = new StakeholderAccountDto
+        {
+            Index = "commercial-pera@peric.com",
+            Email = "commercial-pera@peric.com",
+            Name = "pera",
+            Surname = "peric",
+            Password = "123",
+            LearnerType = "Commercial"
+        };
+
+        var result = ((OkObjectResult)controller.Register(newEntity).Result)?.Value as StakeholderAccountDto;
+
+        dbContext.ChangeTracker.Clear();
+        result.ShouldNotBeNull();
+        result.Id.ShouldNotBe(0);
+        result.Email.ShouldBe(newEntity.Email);
+        result.Name.ShouldBe(newEntity.Name);
+        result.Surname.ShouldBe(newEntity.Surname);
+        var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == newEntity.Index);
+        storedAccount.ShouldNotBeNull();
+        storedAccount.Role.ShouldBe(UserRole.LearnerCommercial);
+        var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Index == newEntity.Index);
+        storedEntity.ShouldNotBeNull();
+        storedEntity.UserId.ShouldBe(storedAccount.Id);
+    }
+
+    [Fact]
     public void Register_fails_existing_username()
     {
         using var scope = Factory.Services.CreateScope();
@@ -62,12 +95,34 @@ public class LearnerCommandTests : BaseWebIntegrationTest
             Email = "SU-1-2021",
             Name = "pera",
             Surname = "peric",
-            Password = "123"
+            Password = "123",
+            LearnerType = "Regular"
         };
 
         var result = (ObjectResult)controller.Register(newEntity).Result;
         result.ShouldNotBeNull();
-        result.StatusCode.ShouldBe(409);
+        result.StatusCode.ShouldBe(400);
+    }
+
+    [Fact]
+    public void Register_fails_invalid_learner_type()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var newEntity = new StakeholderAccountDto
+        {
+            Index = "SU-1-2021",
+            Email = "SU-1-2021",
+            Name = "pera",
+            Surname = "peric",
+            Password = "123",
+            LearnerType = "perica"
+        };
+
+        var result = (ObjectResult)controller.Register(newEntity).Result;
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(400);
     }
 
     [Fact]
@@ -83,7 +138,8 @@ public class LearnerCommandTests : BaseWebIntegrationTest
                 Email = "tana@tanic.com",
                 Name = "tana",
                 Surname = "tanic",
-                Password = "123"
+                Password = "123",
+                LearnerType = "Regular"
             },
             new()
             {
@@ -91,7 +147,8 @@ public class LearnerCommandTests : BaseWebIntegrationTest
                 Email = "zika@zikic.com",
                 Name = "zika",
                 Surname = "zikic",
-                Password = "123"
+                Password = "123",
+                LearnerType = "Regular"
             },
             new()
             {
@@ -99,19 +156,21 @@ public class LearnerCommandTests : BaseWebIntegrationTest
                 Email = "steva@stevic.com",
                 Name = "steva",
                 Surname = "steva",
-                Password = "123"
+                Password = "123",
+                LearnerType = "Regular"
             }
         };
 
-        var result = (OkResult)controller.BulkRegister(learners);
+        var result = ((OkObjectResult)controller.BulkRegister(learners).Result)?.Value as List<StakeholderAccountDto>;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
-        result.StatusCode.ShouldBe(200);
+        result.Count.ShouldBe(3);
         foreach (var newEntity in learners)
         {
             var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == newEntity.Index);
             storedAccount.ShouldNotBeNull();
+            storedAccount.Role.ShouldBe(UserRole.Learner);
             var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Index == newEntity.Index);
             storedEntity.ShouldNotBeNull();
             storedEntity.UserId.ShouldBe(storedAccount.Id);
@@ -119,20 +178,125 @@ public class LearnerCommandTests : BaseWebIntegrationTest
     }
 
     [Fact]
-    public void Register_bulk_fails_existing_username()
+    public void Register_bulk_commercial()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupLearnerController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
-        var newEntities = new List<StakeholderAccountDto>
+        var learners = new List<StakeholderAccountDto> {
+            new()
+            {
+                Index = "commercial-tana@tanic.com",
+                Email = "commercial-tana@tanic.com",
+                Name = "tana",
+                Surname = "tanic",
+                Password = "123",
+                LearnerType = "Commercial"
+            },
+            new()
+            {
+                Index = "commercial-zika@zikic.com",
+                Email = "commercial-zika@zikic.com",
+                Name = "zika",
+                Surname = "zikic",
+                Password = "123",
+                LearnerType = "Commercial"
+            },
+            new()
+            {
+                Index = "commercial-steva@stevic.com",
+                Email = "commercial-steva@stevic.com",
+                Name = "steva",
+                Surname = "steva",
+                Password = "123",
+                LearnerType = "Commercial"
+            }
+        };
+
+        var result = ((OkObjectResult)controller.BulkRegister(learners).Result)?.Value as List<StakeholderAccountDto>;
+
+        dbContext.ChangeTracker.Clear();
+        result.ShouldNotBeNull();
+        result.Count.ShouldBe(3);
+        foreach (var newEntity in learners)
         {
+            var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == newEntity.Index);
+            storedAccount.ShouldNotBeNull();
+            storedAccount.Role.ShouldBe(UserRole.LearnerCommercial);
+            var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Index == newEntity.Index);
+            storedEntity.ShouldNotBeNull();
+            storedEntity.UserId.ShouldBe(storedAccount.Id);
+        }
+    }
+
+    [Fact]
+    public void Registers_bulk_fails_mixed_learner_types()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var learners = new List<StakeholderAccountDto> {
+            new()
+            {
+                Index = "tana@tanic.com",
+                Email = "tana@tanic.com",
+                Name = "tana",
+                Surname = "tanic",
+                Password = "123",
+                LearnerType = "Regular"
+            },
+            new()
+            {
+                Index = "zika@zikic.com",
+                Email = "zika@zikic.com",
+                Name = "zika",
+                Surname = "zikic",
+                Password = "123",
+                LearnerType = "Commercial"
+            },
+            new()
+            {
+                Index = "steva@stevic.com",
+                Email = "steva@stevic.com",
+                Name = "steva",
+                Surname = "steva",
+                Password = "123",
+                LearnerType = "Regular"
+            }
+        };
+
+        var result = (ObjectResult)controller.BulkRegister(learners).Result;
+
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(400);
+    }
+
+    [Fact]
+    public void Register_bulk_with_existing_username()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+
+        var learners = new List<StakeholderAccountDto>
+        {
+            new StakeholderAccountDto
+            {
+                Index = "SU-1-2021",
+                Email = "SU-1-2021",
+                Name = "pera",
+                Surname = "peric",
+                Password = "123",
+                LearnerType = "Regular"
+            },
             new StakeholderAccountDto
             {
                 Index = "pera@prvi.com",
                 Email = "pera@prvi.com",
                 Name = "pera",
                 Surname = "prvi",
-                Password = "123"
+                Password = "123",
+                LearnerType = "Regular"
             },
             new StakeholderAccountDto
             {
@@ -140,30 +304,16 @@ public class LearnerCommandTests : BaseWebIntegrationTest
                 Email = "pera@drugi.com",
                 Name = "pera",
                 Surname = "drugi",
-                Password = "123"
-            },
-            new StakeholderAccountDto
-            {
-                Index = "pera@prvi.com",
-                Email = "pera@prvi.com",
-                Name = "pera",
-                Surname = "prvi",
-                Password = "123"
+                Password = "123",
+                LearnerType = "Regular"
             },
         };
 
-        var result = (ObjectResult)controller.BulkRegister(newEntities);
+        var result = (ObjectResult)controller.BulkRegister(learners).Result;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(409);
-        foreach (var newEntity in newEntities)
-        {
-            var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == newEntity.Index);
-            storedAccount.ShouldBeNull();
-            var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Index == newEntity.Index);
-            storedEntity.ShouldBeNull();
-        }
     }
 
     [Fact]
@@ -178,7 +328,7 @@ public class LearnerCommandTests : BaseWebIntegrationTest
             Email = "mika@mikic.com",
             Name = "mika",
             Surname = "mikic",
-            Password = "123"
+            Password = "123",
         };
         dbContext.Database.BeginTransaction();
 

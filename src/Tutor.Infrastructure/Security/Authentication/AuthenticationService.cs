@@ -40,7 +40,7 @@ public class AuthenticationService : IAuthenticationService
     private int AppendDomainDataToJwt(User user)
     {
         var id = 0;
-        if (user.GetPrimaryRoleName().Equals("learner"))
+        if (user.GetPrimaryRoleName().StartsWith("learner"))
         {
             id = _userRepository.GetLearnerId(user.Id);
         }

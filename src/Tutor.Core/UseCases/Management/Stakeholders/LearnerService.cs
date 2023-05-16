@@ -1,5 +1,6 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
+using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;
@@ -23,11 +24,11 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
         return _learnerRepository.GetByIndexes(indexes);
     }
 
-    public Result BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords)
+    public Result<List<Learner>> BulkRegister(List<Learner> learners, List<string> usernames, List<string> passwords, UserRole role)
     {
         UnitOfWork.BeginTransaction();
 
-        var users = _userRepository.BulkRegister(usernames, passwords, UserRole.Learner);
+        var users = _userRepository.BulkRegister(usernames, passwords, role);
         var result = UnitOfWork.Save();
         if (result.IsFailed)
         {
@@ -50,6 +51,6 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
         }
 
         UnitOfWork.Commit();
-        return Result.Ok();
+        return Result.Ok(learners);
     }
 }

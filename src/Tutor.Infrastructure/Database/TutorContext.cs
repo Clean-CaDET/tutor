@@ -102,6 +102,8 @@ public class TutorContext : DbContext
             .HasOne<User>()
             .WithOne()
             .HasForeignKey<Stakeholder>(s => s.UserId);
+
+        modelBuilder.Entity<Learner>().Property(l => l.LearnerType).HasDefaultValue(LearnerType.Regular);
     }
 
     private static void ConfigureKnowledge(ModelBuilder modelBuilder)

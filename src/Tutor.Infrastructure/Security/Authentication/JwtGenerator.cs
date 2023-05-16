@@ -62,7 +62,7 @@ public class JwtGenerator
         var userId = int.Parse(token.Claims.First(c => c.Type == "id").Value);
         var username = token.Claims.First(c => c.Type == "username").Value;
 
-        var id = int.Parse(token.Claims.FirstOrDefault(c => c.Type == "learnerId")?.Value ?? 
+        var id = int.Parse(token.Claims.FirstOrDefault(c => c.Type.StartsWith("learner"))?.Value ?? 
                            token.Claims.FirstOrDefault(c => c.Type == "instructorId")?.Value ?? token.Claims.First(c => c.Type == "administratorId").Value );
         
         var role = token.Claims.First(c => c.Type.Equals(ClaimTypes.Role)).Value;

@@ -25,3 +25,6 @@ VALUES (-51, 'SU-51-2021', 'SXQ0w0gW19OPoX3+jZ+tmcU6xl9uQFa5wRFcYbN8UKo=', '+ZcR
 INSERT INTO public."Users"(
     "Id", "Username", "Password", "Salt", "Role", "IsActive") -- Password: 123
 VALUES (-52, 'SU-52-2021', 'SXQ0w0gW19OPoX3+jZ+tmcU6xl9uQFa5wRFcYbN8UKo=', '+ZcRExvqgCaST38r2oPT5A==', 1, true);
+INSERT INTO public."Users"(
+    "Id", "Username", "Password", "Salt", "Role", "IsActive") -- Password: 123
+VALUES (-53, 'email@email.com', 'SXQ0w0gW19OPoX3+jZ+tmcU6xl9uQFa5wRFcYbN8UKo=', '+ZcRExvqgCaST38r2oPT5A==', 3, true);
