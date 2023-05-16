@@ -7,7 +7,6 @@ using Tutor.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.Core.Domain.KnowledgeMastery.Events;
 using Tutor.Core.Domain.KnowledgeMastery.Events.AssessmentItemEvents;
 using Tutor.Core.Domain.KnowledgeMastery.Events.KnowledgeComponentEvents;
-using Tutor.Core.Domain.KnowledgeMastery.Events.SessionLifecycleEvents;
 using Tutor.Core.Domain.KnowledgeMastery.MoveOn;
 
 namespace Tutor.Core.Domain.KnowledgeMastery;
@@ -177,11 +176,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
     protected override void Apply(DomainEvent @event)
     {
         if (@event is not KnowledgeComponentEvent kcEvent) throw new EventSourcingException("Unexpected event type: " + @event.GetType());
-        if (kcEvent is SessionPaused)
-        {
-            kcEvent.TimeStamp = kcEvent.TimeStamp.AddMinutes(-2);
-        }
-        
+
         kcEvent.KnowledgeComponentId = KnowledgeComponentId;
         kcEvent.LearnerId = LearnerId;
 
