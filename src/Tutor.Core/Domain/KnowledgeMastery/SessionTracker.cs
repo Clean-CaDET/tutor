@@ -91,7 +91,7 @@ public class SessionTracker : EventSourcedEntity
 
     private void When(SessionPaused @event)
     {
-        UnfinishedPauseStart = @event.TimeStamp;
+        UnfinishedPauseStart = @event.TimeStamp.AddMinutes(-2);
     }
 
     private void When(SessionContinued @event)
