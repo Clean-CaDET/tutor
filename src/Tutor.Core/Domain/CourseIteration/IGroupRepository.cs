@@ -13,6 +13,7 @@ public interface IGroupRepository : ICrudRepository<LearnerGroup>
     PagedResult<LearnerGroup> GetCourseGroups(int courseId, int page, int pageSize);
     Task<PagedResult<Learner>> GetLearnersInCourseAsync(int courseId, int page, int pageSize);
     Task<PagedResult<Learner>> GetLearnersInGroupAsync(int groupId, int page, int pageSize);
+    List<int> GetLearnerIdsInGroup(int groupId);
     List<KnowledgeComponentMastery> GetMasteriesForLearnersAndUnit(int unitId, int[] learnerIds);
     void CreateBulkMemberships(IEnumerable<GroupMembership> memberships);
     void DeleteMember(GroupMembership membership);

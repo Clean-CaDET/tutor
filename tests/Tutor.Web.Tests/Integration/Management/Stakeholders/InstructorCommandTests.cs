@@ -62,7 +62,7 @@ public class InstructorCommandTests : BaseWebIntegrationTest
 
         var result = (ObjectResult)controller.Register(newInstructor).Result;
         result.ShouldNotBeNull();
-        result.StatusCode.ShouldBe(409);
+        result.StatusCode.ShouldBe(400);
     }
 
     [Fact]

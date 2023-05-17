@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Drawing.Printing;
 using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
@@ -16,11 +14,6 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
     public EnrollmentDatabaseRepository(TutorContext dbContext)
     {
         _dbContext = dbContext;
-    }
-
-    public int CountEnrollmentsForUnit(int unitId)
-    {
-        return _dbContext.UnitEnrollments.Count(enrollment => enrollment.KnowledgeUnit.Id == unitId);
     }
 
     public PagedResult<Course> GetEnrolledCourses(int learnerId, int page, int pageSize)

@@ -10,7 +10,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
-using Serilog;
 using System;
 using System.IO;
 using System.Text;
@@ -182,7 +181,7 @@ public class Startup
         {
             options.AddPolicy("administratorPolicy", policy => policy.RequireRole("administrator"));
             options.AddPolicy("instructorPolicy", policy => policy.RequireRole("instructor"));
-            options.AddPolicy("learnerPolicy", policy => policy.RequireRole("learner"));
+            options.AddPolicy("learnerPolicy", policy => policy.RequireRole("learner", "learnercommercial"));
         });
 
         var key = EnvironmentConnection.GetSecret("JWT_KEY") ?? "tutor_secret_key";
@@ -237,7 +236,8 @@ public class Startup
         SetupLearningServices(services);
         SetupManagementServices(services);
 
-        services.AddProxiedScoped<IUnitAnalysisService, UnitAnalysisService>();
+        services.AddProxiedScoped<IKnowledgeAnalysisService, KnowledgeAnalysisService>();
+        services.AddProxiedScoped<IAssessmentAnalysisService, AssessmentAnalysisService>();
     }
 
     private void SetupLearningServices(IServiceCollection services)
@@ -251,6 +251,7 @@ public class Startup
 
         services.AddProxiedScoped<IFeedbackService, FeedbackService>();
         services.AddProxiedScoped<INoteService, NoteService>();
+        services.AddProxiedScoped<IRatingService, RatingService>();
 
         services.AddProxiedScoped<IGroupMonitoringService, GroupMonitoringService>();
         // The domain services below should be selected from a configuration file or some other configurable mechanism.
@@ -295,6 +296,7 @@ public class Startup
         services.AddScoped<IKnowledgeMasteryRepository, KnowledgeMasteryDatabaseRepository>();
         services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
         services.AddScoped<INoteRepository, NoteRepository>();
+        services.AddScoped<IRatingRepository, RatingRepository>();
 
         services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
         services.AddScoped<IUnitRepository, UnitDatabaseRepository>();

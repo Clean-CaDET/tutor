@@ -40,4 +40,13 @@ public class EventsController : BaseApiController
                 e.RootElement.GetProperty("LearnerId").GetInt32() == learnerId).ToList();
         return Ok(result);
     }
+
+    [HttpGet("answers/{aiId:int}")]
+    public ActionResult<List<DomainEvent>> GetAiSubmissions(int aiId)
+    {
+        var result = _eventStore.Events.Where(e =>
+            e.RootElement.GetProperty("$discriminator").GetString() == "AssessmentItemAnswered" &&
+            e.RootElement.GetProperty("AssessmentItemId").GetInt32() == aiId).ToList();
+        return Ok(result);
+    }
 }

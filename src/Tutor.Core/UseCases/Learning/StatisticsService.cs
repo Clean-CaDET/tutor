@@ -21,7 +21,7 @@ public class StatisticsService : IStatisticsService
         if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId))
             return Result.Fail(FailureCode.NotEnrolledInUnit);
 
-        var kcMastery = _knowledgeMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
+        var kcMastery = _knowledgeMasteryRepository.GetFull(knowledgeComponentId, learnerId);
         if (kcMastery == null) return Result.Fail(FailureCode.NotFound);
 
         return Result.Ok(kcMastery.Statistics);
@@ -29,7 +29,7 @@ public class StatisticsService : IStatisticsService
 
     public Result<double> GetMaxAssessmentCorrectness(int assessmentItemId, int learnerId)
     {
-        var kcm = _knowledgeMasteryRepository.GetKcMasteryForAssessmentItem(assessmentItemId, learnerId);
+        var kcm = _knowledgeMasteryRepository.GetFullForAssessmentItem(assessmentItemId, learnerId);
         var itemMastery = kcm.AssessmentItemMasteries.Find(am => am.AssessmentItemId == assessmentItemId);
         return Result.Ok(itemMastery?.Mastery ?? 0.0);
     }

@@ -6,7 +6,6 @@ namespace Tutor.Core.Domain.CourseIteration;
 
 public interface IEnrollmentRepository
 {
-    int CountEnrollmentsForUnit(int unitId);
     PagedResult<Course> GetEnrolledCourses(int learnerId, int page, int pageSize);
     Course GetCourseEnrolledAndActiveUnits(int courseId, int learnerId);
     bool HasActiveEnrollmentForUnit(int unitId, int learnerId);

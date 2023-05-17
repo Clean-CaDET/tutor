@@ -49,6 +49,8 @@ public class TutorContext : DbContext
     public DbSet<TutorImprovementFeedback> TutorImprovementFeedbacks { get; set; }
     public DbSet<Note> Notes { get; set; }
     public DbSet<Chat> Chats { get; set; }
+    
+    public DbSet<KnowledgeComponentRating> KnowledgeComponentRatings { get; set; }
 
     #endregion
     #region Course Iteration
@@ -100,6 +102,8 @@ public class TutorContext : DbContext
             .HasOne<User>()
             .WithOne()
             .HasForeignKey<Stakeholder>(s => s.UserId);
+
+        modelBuilder.Entity<Learner>().Property(l => l.LearnerType).HasDefaultValue(LearnerType.Regular);
     }
 
     private static void ConfigureKnowledge(ModelBuilder modelBuilder)

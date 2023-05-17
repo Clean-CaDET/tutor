@@ -49,7 +49,9 @@ public class SessionTracker : EventSourcedEntity
         if (IsPaused) return Result.Fail("Session is already paused.");
         
         IsPaused = true;
-        Causes(new SessionPaused());
+        var sessionPausedEvent = new SessionPaused();
+        sessionPausedEvent.TimeStamp = sessionPausedEvent.TimeStamp.AddMinutes(-2);
+        Causes(sessionPausedEvent);
         return Result.Ok();
     }
 

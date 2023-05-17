@@ -30,13 +30,13 @@ public class SelectionService : ISelectionService
         if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId))
             return Result.Fail(FailureCode.NotEnrolledInUnit);
 
-        var kcMastery = _knowledgeMasteryRepository.GetFullKcMastery(knowledgeComponentId, learnerId);
+        var kcMastery = _knowledgeMasteryRepository.GetFull(knowledgeComponentId, learnerId);
         if(kcMastery == null) return Result.Fail(FailureCode.NotFound);
 
         var assessmentItemId = _assessmentItemSelector.SelectSuitableAssessmentItemId(kcMastery.AssessmentItemMasteries, kcMastery.IsPassed);
 
         kcMastery.RecordAssessmentItemSelection(assessmentItemId);
-        _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
+        _knowledgeMasteryRepository.Update(kcMastery);
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 

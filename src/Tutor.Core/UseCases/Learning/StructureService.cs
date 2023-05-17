@@ -32,7 +32,7 @@ public class StructureService : IStructureService
         var unitIds = GetUnitIds(courseId, learnerId);
         var rootKcs = _knowledgeComponentRepository.GetRootKcs(unitIds);
         var masteries = _knowledgeMasteryRepository
-            .GetBareKcMasteries(rootKcs.Select(kc => kc.Id).ToList(), learnerId);
+            .GetAllBareForLearnerAndKcs(rootKcs.Select(kc => kc.Id).ToList(), learnerId);
         var masteredRootKcs = GetMasteredKcs(rootKcs, masteries);
 
         return masteredRootKcs.Select(kc => kc.KnowledgeUnitId).ToList();
@@ -65,7 +65,7 @@ public class StructureService : IStructureService
         var kcs = _knowledgeComponentRepository.GetKnowledgeComponentsForUnit(unitId);
         var kcIds = kcs.Select(kc => kc.Id).ToList();
 
-        return Result.Ok(_knowledgeMasteryRepository.GetBareKcMasteries(kcIds, learnerId));
+        return Result.Ok(_knowledgeMasteryRepository.GetAllBareForLearnerAndKcs(kcIds, learnerId));
     }
 
     public Result<KnowledgeComponent> GetKnowledgeComponent(int knowledgeComponentId, int learnerId)
@@ -94,9 +94,9 @@ public class StructureService : IStructureService
 
     private void RecordInstructionalItemSelection(int knowledgeComponentId, int learnerId)
     {
-        var kcMastery = _knowledgeMasteryRepository.GetBareKcMastery(knowledgeComponentId, learnerId);
+        var kcMastery = _knowledgeMasteryRepository.GetBare(knowledgeComponentId, learnerId);
         kcMastery.RecordInstructionalItemSelection();
-        _knowledgeMasteryRepository.UpdateKcMastery(kcMastery);
+        _knowledgeMasteryRepository.Update(kcMastery);
         _unitOfWork.Save();
     }
 }

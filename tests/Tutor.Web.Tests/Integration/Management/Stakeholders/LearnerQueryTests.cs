@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -82,6 +82,24 @@ public class LearnerQueryTests : BaseWebIntegrationTest
         result.ShouldNotBeNull();
         result.Results.Count.ShouldBe(2);
         result.TotalCount.ShouldBe(2);
+    }
+
+    [Fact]
+    public void Retrieves_paged_learners()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+
+        var result = ((OkObjectResult)controller.GetAll(0, 0).Result)?.Value as PagedResult<StakeholderAccountDto>;
+
+        result.ShouldNotBeNull();
+        result.Results.Count.ShouldBe(7);
+        result.TotalCount.ShouldBe(7);
+        foreach (var item in result.Results)
+        {
+            item.ShouldNotBeNull();
+            item.LearnerType.ShouldNotBeNull();
+        }
     }
 
     private LearnerController SetupLearnerController(IServiceScope scope)

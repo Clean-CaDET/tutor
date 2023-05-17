@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -44,18 +45,34 @@ public class LearnerController : BaseApiController
     [HttpPost]
     public ActionResult<StakeholderAccountDto> Register([FromBody] StakeholderAccountDto stakeholderAccount)
     {
-        var result = _learnerService.Register(_mapper.Map<Learner>(stakeholderAccount), stakeholderAccount.Index, stakeholderAccount.Password, UserRole.Learner);
+        var result = MapLearner(stakeholderAccount);
+        if (result.IsFailed)
+        {
+            return BadRequest(result.Errors);
+        }
+        var learner = result.Value;
+
+        result = _learnerService.Register(learner, stakeholderAccount.Index, stakeholderAccount.Password, 
+            learner.LearnerType == LearnerType.Regular ? UserRole.Learner : UserRole.LearnerCommercial);
         return CreateResponse<Learner, StakeholderAccountDto>(result);
     }
 
     [HttpPost("bulk")]
-    public ActionResult BulkRegister([FromBody] List<StakeholderAccountDto> stakeholderAccounts)
+    public ActionResult<List<Learner>> BulkRegister([FromBody] List<StakeholderAccountDto> stakeholderAccounts)
     {
+        var mappingResult = MapLearners(stakeholderAccounts);
+        if (mappingResult.IsFailed)
+        {
+            return BadRequest(string.Join(";", mappingResult.Errors));
+        }
+        var learners = mappingResult.Value;
+
         var result = _learnerService.BulkRegister(
-            stakeholderAccounts.Select(a => _mapper.Map<Learner>(a)).ToList(),
+            learners,
             stakeholderAccounts.Select(a => a.Index).ToList(),
-            stakeholderAccounts.Select(a => a.Password).ToList());
-        return CreateResponse(result);
+            stakeholderAccounts.Select(a => a.Password).ToList(),
+            learners.First().LearnerType == LearnerType.Regular ? UserRole.Learner : UserRole.LearnerCommercial);
+        return CreateResponse<List<Learner>, List<StakeholderAccountDto>>(result);
     }
 
     [HttpPut("{id:int}")]
@@ -84,5 +101,36 @@ public class LearnerController : BaseApiController
     {
         var result = _enrollmentService.GetEnrolledCourses(id, page, pageSize);
         return CreateResponse<Course, CourseDto>(result);
+    }
+
+    private Result<Learner> MapLearner(StakeholderAccountDto stakeholderAccount)
+    {
+        Learner learner;
+        try
+        {
+            learner = _mapper.Map<Learner>(stakeholderAccount);
+        }
+        catch (AutoMapperMappingException e)
+        {
+            Error rootError = new Error(e.Message).CausedBy(e);
+            return Result.Fail("Unsupported learner type.").WithError(rootError);
+        }
+        return Result.Ok(learner);
+    }
+
+    private Result<List<Learner>> MapLearners(List<StakeholderAccountDto> stakeholderAccounts)
+    {
+        if (stakeholderAccounts.Select(s => s.LearnerType).Distinct().Count() > 1)
+        {
+            return Result.Fail("All learners must be of same type.");
+        }
+        var result = stakeholderAccounts.Select(MapLearner).ToList();
+        var failed = result.FirstOrDefault(p => p.IsFailed);
+        if (failed != null)
+        {
+            return Result.Fail(failed.Errors);
+        }
+        var learners = result.Select(l => l.Value).ToList();
+        return learners;
     }
 }
