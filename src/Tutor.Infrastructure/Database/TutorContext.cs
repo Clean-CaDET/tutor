@@ -221,12 +221,14 @@ public class TutorContext : DbContext
     {
         modelBuilder.Entity<GroupMembership>()
             .HasOne(g => g.Member)
-            .WithMany();
+            .WithMany()
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<UnitEnrollment>()
             .HasOne<Learner>()
             .WithMany()
-            .HasForeignKey(u => u.LearnerId);
+            .HasForeignKey(u => u.LearnerId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
     private static void ConfigureLearningUtilities(ModelBuilder modelBuilder)
