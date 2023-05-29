@@ -27,6 +27,7 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
 
     public Course GetUnarchivedCourseEnrolledAndActiveUnits(int courseId, int learnerId)
     {
+        // TODO: Does not seem right.
         var course = _dbContext.Courses.FirstOrDefault(c => c.Id.Equals(courseId) && !c.IsArchived);
         if(course == null) return null;
 
@@ -44,26 +45,20 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
             .Select(ue => ue.KnowledgeUnit).ToList();
     }
 
-    public bool HasActiveEnrollmentForUnit(int unitId, int learnerId)
+    public UnitEnrollment GetEnrollment(int unitId, int learnerId)
     {
-        return _dbContext.UnitEnrollments.Any(u => u.Status == EnrollmentStatus.Active &&
-                                                   u.KnowledgeUnit.Id == unitId && u.LearnerId == learnerId);
+        return _dbContext.UnitEnrollments
+            .FirstOrDefault(e => e.KnowledgeUnit.Id == unitId && e.LearnerId == learnerId);
     }
 
-    public bool HasActiveEnrollmentForKc(int knowledgeComponentId, int learnerId)
+    public UnitEnrollment GetEnrollmentForKc(int knowledgeComponentId, int learnerId)
     {
         var unitId = _dbContext.KnowledgeComponents
             .Where(kc => kc.Id == knowledgeComponentId)
             .Select(kc => kc.KnowledgeUnitId)
             .FirstOrDefault();
 
-        return HasActiveEnrollmentForUnit(unitId, learnerId);
-    }
-
-    public UnitEnrollment GetEnrollment(int unitId, int learnerId)
-    {
-        return _dbContext.UnitEnrollments
-            .FirstOrDefault(e => e.KnowledgeUnit.Id == unitId && e.LearnerId == learnerId);
+        return GetEnrollment(unitId, learnerId);
     }
 
     public List<UnitEnrollment> GetEnrollments(int unitId, int[] learnerIds)

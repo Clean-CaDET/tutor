@@ -82,7 +82,7 @@ public class SessionService : ISessionService
 
     private Result<KnowledgeComponentMastery> TryGetKcMastery(int knowledgeComponentId, int learnerId)
     {
-        if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId)) return Result.Fail(FailureCode.NotEnrolledInUnit);
+        if (!_enrollmentRepository.GetEnrollmentForKc(knowledgeComponentId, learnerId).IsActive()) return Result.Fail(FailureCode.NotEnrolledInUnit);
         var kcMastery = _knowledgeMasteryRepository.GetBare(knowledgeComponentId, learnerId);
         if (kcMastery == null) return Result.Fail(FailureCode.NotFound);
         return Result.Ok(kcMastery);
