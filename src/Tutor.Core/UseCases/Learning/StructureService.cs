@@ -40,7 +40,7 @@ public class StructureService : IStructureService
 
     private int[] GetUnitIds(int courseId, int learnerId)
     {
-        var course = _enrollmentRepository.GetCourseEnrolledAndActiveUnits(courseId, learnerId);
+        var course = _enrollmentRepository.GetUnarchivedCourseEnrolledAndActiveUnits(courseId, learnerId);
         return course.KnowledgeUnits.Select(u => u.Id).ToArray();
     }
 

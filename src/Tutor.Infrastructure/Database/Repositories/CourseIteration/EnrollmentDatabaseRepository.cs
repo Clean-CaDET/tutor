@@ -20,14 +20,16 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
     {
         var task = _dbContext.LearnerGroups
             .Where(lg => lg.Membership.Any(m => m.Member.Id.Equals(learnerId)))
-            .Select(lg => lg.Course).Distinct().GetPaged(page, pageSize);
+            .Select(lg => lg.Course).Where(c => !c.IsArchived).Distinct().GetPaged(page, pageSize);
         task.Wait();
         return task.Result;
     }
 
-    public Course GetCourseEnrolledAndActiveUnits(int courseId, int learnerId)
+    public Course GetUnarchivedCourseEnrolledAndActiveUnits(int courseId, int learnerId)
     {
-        var course = _dbContext.Courses.FirstOrDefault(c => c.Id.Equals(courseId));
+        var course = _dbContext.Courses.FirstOrDefault(c => c.Id.Equals(courseId) && !c.IsArchived);
+        if(course == null) return null;
+
         var enrolledUnits = GetEnrolledAndActiveUnits(courseId, learnerId);
         return new Course(course, enrolledUnits);
     }
