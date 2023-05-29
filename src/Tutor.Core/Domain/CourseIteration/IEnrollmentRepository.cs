@@ -14,4 +14,5 @@ public interface IEnrollmentRepository
     List<UnitEnrollment> GetEnrollments(int unitId, int[] learnerIds);
     UnitEnrollment Create(UnitEnrollment newEnrollment);
     UnitEnrollment Update(UnitEnrollment enrollment);
+    List<UnitEnrollment> GetActiveEnrollmentsForCourse(int courseId);
 }

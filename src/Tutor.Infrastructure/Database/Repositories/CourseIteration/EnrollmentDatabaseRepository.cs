@@ -4,6 +4,7 @@ using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.Structure;
+using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Infrastructure.Database.Repositories.CourseIteration;
 
@@ -85,5 +86,12 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
     {
         _dbContext.UnitEnrollments.Update(enrollment);
         return enrollment;
+    }
+
+    public List<UnitEnrollment> GetActiveEnrollmentsForCourse(int courseId)
+    {
+        return _dbContext.UnitEnrollments
+            .Where(ue => ue.KnowledgeUnit.CourseId.Equals(courseId) 
+                         && ue.Status.Equals(EnrollmentStatus.Active)).ToList();
     }
 }

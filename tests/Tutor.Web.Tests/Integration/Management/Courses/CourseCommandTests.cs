@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Linq;
+using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.UseCases.Management.Courses;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Administrators.Courses;
@@ -79,7 +80,6 @@ public class CourseCommandTests : BaseWebIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
-        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
         var updatedEntity = new CourseDto
         {
             Id = -1000
@@ -99,14 +99,18 @@ public class CourseCommandTests : BaseWebIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
         dbContext.Database.BeginTransaction();
 
-        var result = ((OkObjectResult)controller.Archive(-2, true).Result)?.Value as CourseDto;
+        var result = ((OkObjectResult)controller.Archive(-1, true).Result)?.Value as CourseDto;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.IsArchived.ShouldBe(true);
-        var storedCourse = dbContext.Courses.FirstOrDefault(i => i.Id == -2);
+        var storedCourse = dbContext.Courses.Include(c => c.KnowledgeUnits).FirstOrDefault(i => i.Id == -1);
         storedCourse.ShouldNotBeNull();
         storedCourse.IsArchived.ShouldBe(true);
+        var units = storedCourse.KnowledgeUnits.Select(u => u.Id);
+        var enrollments = dbContext.UnitEnrollments.Where(e => units.Contains(e.KnowledgeUnitId)).ToList();
+        enrollments.ShouldNotBeNull();
+        enrollments.All(e => e.Status == EnrollmentStatus.Hidden).ShouldBeTrue();
     }
 
     [Fact]
