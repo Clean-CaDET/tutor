@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tutor.Core.BuildingBlocks;
@@ -52,13 +53,13 @@ public class EnrollmentService : IEnrollmentService
         return _enrollmentRepository.GetEnrollments(unitId, learnerIds);
     }
 
-    public Result<List<UnitEnrollment>> BulkEnroll(int unitId, int[] learnerIds, int instructorId)
+    public Result<List<UnitEnrollment>> BulkEnroll(int unitId, int[] learnerIds, DateTime start, int instructorId)
     {
         if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
         
         var unit = _unitRepository.GetUnitWithKcsAndAssessments(unitId);
         
-        var enrollments = learnerIds.Select(learnerId => Enroll(unit, learnerId)).ToList();
+        var enrollments = learnerIds.Select(learnerId => Enroll(unit, start, learnerId)).ToList();
 
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
@@ -66,11 +67,11 @@ public class EnrollmentService : IEnrollmentService
         return enrollments;
     }
 
-    public Result<UnitEnrollment> Enroll(int unitId, int learnerId, int instructorId)
+    public Result<UnitEnrollment> Enroll(int unitId, int learnerId, DateTime start, int instructorId)
     {
         if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
-        var enrollment = Enroll(_unitRepository.GetUnitWithKcsAndAssessments(unitId), learnerId);
+        var enrollment = Enroll(_unitRepository.GetUnitWithKcsAndAssessments(unitId), start, learnerId);
 
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
@@ -78,7 +79,7 @@ public class EnrollmentService : IEnrollmentService
         return enrollment;
     }
 
-    private UnitEnrollment Enroll(KnowledgeUnit unit, int learnerId)
+    private UnitEnrollment Enroll(KnowledgeUnit unit, DateTime start, int learnerId)
     {
         var existingEnrollment = _enrollmentRepository.GetEnrollment(unit.Id, learnerId);
         if(existingEnrollment != null)
@@ -87,10 +88,11 @@ public class EnrollmentService : IEnrollmentService
             if (existingEnrollment.Status == EnrollmentStatus.Active) return existingEnrollment;
             
             existingEnrollment.Status = EnrollmentStatus.Active;
+            existingEnrollment.Start = start;
             return _enrollmentRepository.Update(existingEnrollment);
         }
 
-        var newEnrollment = new UnitEnrollment(learnerId, unit.Id);
+        var newEnrollment = new UnitEnrollment(learnerId, start, unit.Id);
         _enrollmentRepository.Create(newEnrollment);
 
         CreateMasteries(unit, learnerId);

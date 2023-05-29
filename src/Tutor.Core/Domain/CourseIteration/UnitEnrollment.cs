@@ -9,16 +9,16 @@ public class UnitEnrollment : Entity
     public int LearnerId { get; private set; }
     public int KnowledgeUnitId { get; private set; }
     public KnowledgeUnit KnowledgeUnit { get; private set; }
-    public DateTime Start { get; private set; }
+    public DateTime Start { get; internal set; }
     public EnrollmentStatus Status { get; internal set; }
 
     private UnitEnrollment() {}
 
-    public UnitEnrollment(int learnerId, int knowledgeUnitId)
+    public UnitEnrollment(int learnerId, DateTime start, int knowledgeUnitId)
     {
         LearnerId = learnerId;
         KnowledgeUnitId = knowledgeUnitId;
-        Start = DateTime.UtcNow;
+        Start = start;
         Status = EnrollmentStatus.Active;
     }
 
