@@ -40,8 +40,9 @@ public class StructureService : IStructureService
 
     private int[] GetUnitIds(int courseId, int learnerId)
     {
-        var course = _enrollmentRepository.GetUnarchivedCourseEnrolledAndActiveUnits(courseId, learnerId);
-        return course.KnowledgeUnits.Select(u => u.Id).ToArray();
+        var allEnrollments = _enrollmentRepository.GetEnrollmentsWithUnitsByCourse(courseId, learnerId);
+        var activeEnrollments = allEnrollments.Where(e => e.IsActive());
+        return activeEnrollments.Select(u => u.KnowledgeUnitId).ToArray();
     }
 
     private static List<KnowledgeComponent> GetMasteredKcs(List<KnowledgeComponent> rootKcs, List<KnowledgeComponentMastery> masteries)

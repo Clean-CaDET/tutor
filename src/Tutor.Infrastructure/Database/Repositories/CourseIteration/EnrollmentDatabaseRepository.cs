@@ -25,24 +25,19 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
         return task.Result;
     }
 
-    public Course GetUnarchivedCourseEnrolledAndActiveUnits(int courseId, int learnerId)
+    public Course GetEnrolledCourse(int courseId, int learnerId)
     {
-        // TODO: Does not seem right.
-        var course = _dbContext.Courses.FirstOrDefault(c => c.Id.Equals(courseId) && !c.IsArchived);
-        if(course == null) return null;
-
-        var enrolledUnits = GetEnrolledAndActiveUnits(courseId, learnerId);
-        return new Course(course, enrolledUnits);
+        return _dbContext.LearnerGroups
+            .Where(lg => lg.Membership.Any(m => m.Member.Id.Equals(learnerId)))
+            .Select(lg => lg.Course).FirstOrDefault(c => c.Id == courseId && !c.IsArchived);
     }
 
-    private List<KnowledgeUnit> GetEnrolledAndActiveUnits(int courseId, int learnerId)
+    public List<UnitEnrollment> GetEnrollmentsWithUnitsByCourse(int courseId, int learnerId)
     {
         return _dbContext.UnitEnrollments
             .Where(ue => ue.LearnerId.Equals(learnerId)
-                         && ue.KnowledgeUnit.CourseId.Equals(courseId)
-                         && ue.Status == EnrollmentStatus.Active)
-            .Include(ue => ue.KnowledgeUnit)
-            .Select(ue => ue.KnowledgeUnit).ToList();
+                         && ue.KnowledgeUnit.CourseId.Equals(courseId))
+            .Include(ue => ue.KnowledgeUnit).ToList();
     }
 
     public UnitEnrollment GetEnrollment(int unitId, int learnerId)

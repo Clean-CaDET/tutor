@@ -7,7 +7,8 @@ namespace Tutor.Core.Domain.CourseIteration;
 public interface IEnrollmentRepository
 {
     PagedResult<Course> GetEnrolledCourses(int learnerId, int page, int pageSize);
-    Course GetUnarchivedCourseEnrolledAndActiveUnits(int courseId, int learnerId);
+    Course GetEnrolledCourse(int courseId, int learnerId);
+    List<UnitEnrollment> GetEnrollmentsWithUnitsByCourse(int courseId, int learnerId);
     UnitEnrollment GetEnrollmentForKc(int knowledgeComponentId, int learnerId);
     UnitEnrollment GetEnrollment(int unitId, int learnerId);
     List<UnitEnrollment> GetEnrollments(int unitId, int[] learnerIds);

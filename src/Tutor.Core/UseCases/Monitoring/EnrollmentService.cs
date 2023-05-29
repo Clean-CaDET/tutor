@@ -34,10 +34,15 @@ public class EnrollmentService : IEnrollmentService
 
     public Result<Course> GetCourseWithEnrolledAndActiveUnits(int courseId, int learnerId)
     {
-        var course = _enrollmentRepository.GetUnarchivedCourseEnrolledAndActiveUnits(courseId, learnerId);
+        var course = _enrollmentRepository.GetEnrolledCourse(courseId, learnerId);
         if(course == null) return Result.Fail(FailureCode.NotFound);
         
-        return course;
+        var allEnrollments = _enrollmentRepository.GetEnrollmentsWithUnitsByCourse(courseId, learnerId);
+        var activeUnits = allEnrollments
+            .Where(e => e.IsActive())
+            .Select(e => e.KnowledgeUnit).ToList();
+        
+        return new Course(course, activeUnits);
     }
 
     public Result<List<UnitEnrollment>> GetEnrollments(int unitId, int[] learnerIds, int instructorId)
