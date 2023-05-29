@@ -11,6 +11,7 @@ using Tutor.Web.Mappings.Stakeholders;
 using Xunit;
 using Tutor.Core.UseCases.Monitoring;
 using Tutor.Core.Domain.Stakeholders;
+using Microsoft.EntityFrameworkCore;
 
 namespace Tutor.Web.Tests.Integration.Management.Stakeholders;
 
@@ -368,6 +369,33 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         result.StatusCode.ShouldBe(404);
     }
 
+    // Potential bug cause: learner update should not change username or should be more explicit about it
+    [Fact]
+    public void Update_fails_username_overlaps_with_email()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        // User Username field becomes Learner Email field, but was Learner Index field
+        // Given email already exists
+        // Stakeholder hierarchy problem
+        var updatedEntity = new StakeholderAccountDto
+        {
+            Id = -2,
+            Email = "email@email.com",
+            Name = "mika",
+            Surname = "mikic",
+            Password = "123",
+        };
+        dbContext.Database.BeginTransaction();
+
+        var result = (ObjectResult)controller.Update(updatedEntity).Result;
+
+        dbContext.ChangeTracker.Clear();
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(409);
+    }
+
     [Fact]
     public void Archives()
     {
@@ -389,23 +417,29 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         storedEntity.IsArchived.ShouldBe(true);
     }
 
-    [Fact]
-    public void Deletes()
+    [Theory]
+    [InlineData(-6)]
+    [InlineData(-2)]
+    public void Deletes(int learnerId)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupLearnerController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
         dbContext.Database.BeginTransaction();
 
-        var result = (OkResult)controller.Delete(-6);
+        var result = (OkResult)controller.Delete(learnerId);
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-        var storedLearner = dbContext.Learners.FirstOrDefault(i => i.Id == -6);
+        var storedLearner = dbContext.Learners.FirstOrDefault(i => i.Id == learnerId);
         storedLearner.ShouldBeNull();
-        var storedAccount = dbContext.Users.FirstOrDefault(i => i.Id == -6);
+        var storedAccount = dbContext.Users.FirstOrDefault(i => i.Id == learnerId);
         storedAccount.ShouldBeNull();
+        var unitEnrollment = dbContext.UnitEnrollments.FirstOrDefault(i => i.LearnerId == learnerId);
+        unitEnrollment.ShouldBeNull();
+        var groupMembership = dbContext.GroupMemberships.Include(i => i.Member).FirstOrDefault(i => i.Member.Id == learnerId);
+        groupMembership.ShouldBeNull();
     }
 
     private LearnerController SetupLearnerController(IServiceScope scope)
