@@ -14,4 +14,5 @@ public interface IEnrollmentService
     Result<List<UnitEnrollment>> BulkEnroll(int unitId, int[] learnerIds, int instructorId);
     Result<UnitEnrollment> Enroll(int unitId, int learnerId, int instructorId);
     Result Unenroll(int unitId, int learnerId, int instructorId);
+    Result<List<UnitEnrollment>> BulkUnenroll(int unitId, int[] learnerIds, int instructorId);
 }

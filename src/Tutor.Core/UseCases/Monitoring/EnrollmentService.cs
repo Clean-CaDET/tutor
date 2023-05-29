@@ -120,4 +120,21 @@ public class EnrollmentService : IEnrollmentService
 
         return Result.Ok();
     }
+
+    public Result<List<UnitEnrollment>> BulkUnenroll(int unitId, int[] learnerIds, int instructorId)
+    {
+        if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
+
+        var enrollments = _enrollmentRepository.GetEnrollments(unitId, learnerIds);
+        enrollments.ForEach(e =>
+        {
+            e.Status = EnrollmentStatus.Hidden;
+            _enrollmentRepository.Update(e);
+        });
+
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+
+        return enrollments;
+    }
 }

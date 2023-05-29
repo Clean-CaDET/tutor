@@ -49,4 +49,11 @@ public class UnitEnrollmentController : BaseApiController
         var result = _enrollmentService.Unenroll(unitId, learnerId, User.InstructorId());
         return CreateResponse(result);
     }
+
+    [HttpPost("bulk-unenroll")]
+    public ActionResult<List<UnitEnrollmentDto>> BulkUnenroll(int unitId, [FromBody] int[] learnerIds)
+    {
+        var result = _enrollmentService.BulkUnenroll(unitId, learnerIds, User.InstructorId());
+        return CreateResponse<UnitEnrollment, UnitEnrollmentDto>(result);
+    }
 }
