@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.UseCases.Monitoring;
 using Tutor.Web.Controllers.Learners;

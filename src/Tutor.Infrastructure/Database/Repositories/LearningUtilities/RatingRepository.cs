@@ -1,5 +1,4 @@
-﻿using FluentResults;
-using Tutor.Core.Domain.LearningUtilities;
+﻿using Tutor.Core.Domain.LearningUtilities;
 
 namespace Tutor.Infrastructure.Database.Repositories.LearningUtilities;
 

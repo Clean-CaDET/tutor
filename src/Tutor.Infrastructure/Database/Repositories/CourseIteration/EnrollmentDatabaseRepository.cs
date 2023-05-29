@@ -4,7 +4,6 @@ using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.CourseIteration;
 using Tutor.Core.Domain.Knowledge.Structure;
-using Tutor.Core.Domain.Stakeholders;
 
 namespace Tutor.Infrastructure.Database.Repositories.CourseIteration;
 
@@ -40,7 +39,7 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
         return _dbContext.UnitEnrollments
             .Where(ue => ue.LearnerId.Equals(learnerId)
                          && ue.KnowledgeUnit.CourseId.Equals(courseId)
-                         && ue.Status.Equals(EnrollmentStatus.Active))
+                         && ue.Status == EnrollmentStatus.Active)
             .Include(ue => ue.KnowledgeUnit)
             .Select(ue => ue.KnowledgeUnit).ToList();
     }
@@ -58,9 +57,7 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
             .Select(kc => kc.KnowledgeUnitId)
             .FirstOrDefault();
 
-        return _dbContext.UnitEnrollments
-            .Any(u => u.Status == EnrollmentStatus.Active &&
-                      u.KnowledgeUnit.Id == unitId && u.LearnerId == learnerId);
+        return HasActiveEnrollmentForUnit(unitId, learnerId);
     }
 
     public UnitEnrollment GetEnrollment(int unitId, int learnerId)
@@ -91,7 +88,6 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
     public List<UnitEnrollment> GetActiveEnrollmentsForCourse(int courseId)
     {
         return _dbContext.UnitEnrollments
-            .Where(ue => ue.KnowledgeUnit.CourseId.Equals(courseId) 
-                         && ue.Status.Equals(EnrollmentStatus.Active)).ToList();
+            .Where(ue => ue.KnowledgeUnit.CourseId.Equals(courseId) && ue.Status == EnrollmentStatus.Active).ToList();
     }
 }

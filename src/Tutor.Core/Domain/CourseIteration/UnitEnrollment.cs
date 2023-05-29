@@ -21,6 +21,11 @@ public class UnitEnrollment : Entity
         Start = DateTime.UtcNow;
         Status = EnrollmentStatus.Active;
     }
+
+    public bool IsActive()
+    {
+        return Status == EnrollmentStatus.Active && Start < DateTime.Now;
+    }
 }
 
 public enum EnrollmentStatus

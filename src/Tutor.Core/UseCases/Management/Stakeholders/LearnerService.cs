@@ -1,6 +1,5 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
-using System.Linq;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.Stakeholders;
 using Tutor.Core.Domain.Stakeholders.RepositoryInterfaces;

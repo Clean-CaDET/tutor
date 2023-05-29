@@ -1,9 +1,7 @@
 ﻿using FluentResults;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.Domain.LearningUtilities;
 using Tutor.Infrastructure.Database;
