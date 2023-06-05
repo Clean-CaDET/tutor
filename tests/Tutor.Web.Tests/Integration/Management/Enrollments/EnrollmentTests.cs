@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using System.Collections.Generic;
 using Tutor.Core.BuildingBlocks;
 using Tutor.Core.UseCases.Monitoring;
 using Tutor.Web.Controllers.Learners;
@@ -41,6 +40,17 @@ public class EnrollmentTests : BaseWebIntegrationTest
 
         course.ShouldNotBeNull();
         course.KnowledgeUnits.Count.ShouldBe(expectedUnitCount);
+    }
+
+    [Fact]
+    public void Does_not_retrieve_archived_course()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupEnrollmentController(scope, "-1");
+
+        var response = (ObjectResult)controller.GetCourseWithEnrolledAndActiveUnits(-5).Result;
+
+        response.StatusCode.ShouldBe(404);
     }
 
     private EnrollmentController SetupEnrollmentController(IServiceScope scope, string id)

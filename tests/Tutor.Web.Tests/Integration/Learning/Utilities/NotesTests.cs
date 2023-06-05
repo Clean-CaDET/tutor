@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using Tutor.Core.UseCases.Learning.Utilities;
 using Tutor.Infrastructure.Database;
 using Tutor.Web.Controllers.Learners.Learning.Utilities.Notes;
-using Tutor.Web.Mappings.Knowledge.DTOs;
 using Xunit;
 
 namespace Tutor.Web.Tests.Integration.Learning.Utilities;

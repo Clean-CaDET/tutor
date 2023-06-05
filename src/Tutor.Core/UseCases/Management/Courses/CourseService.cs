@@ -18,13 +18,15 @@ public class CourseService : CrudService<Course>, ICourseService
     private readonly ICourseRepository _courseRepository;
     private readonly ICrudRepository<LearnerGroup> _groupRepository;
     private readonly IOwnedCourseRepository _ownedCourseRepository;
+    private readonly IEnrollmentRepository _enrollmentRepository;
 
-    public CourseService(IMapper mapper, ICourseRepository courseRepository, ICrudRepository<LearnerGroup> groupRepository, IUnitOfWork unitOfWork, IOwnedCourseRepository ownedCourseRepository) : base(courseRepository, unitOfWork)
+    public CourseService(IMapper mapper, ICourseRepository courseRepository, ICrudRepository<LearnerGroup> groupRepository, IUnitOfWork unitOfWork, IOwnedCourseRepository ownedCourseRepository, IEnrollmentRepository enrollmentRepository) : base(courseRepository, unitOfWork)
     {
         _mapper = mapper;
         _courseRepository = courseRepository;
         _groupRepository = groupRepository;
         _ownedCourseRepository = ownedCourseRepository;
+        _enrollmentRepository = enrollmentRepository;
     }
 
     public Result<Course> CreateWithGroup(Course course)
@@ -108,10 +110,25 @@ public class CourseService : CrudService<Course>, ICourseService
         var course = courseResult.Value;
         course.IsArchived = archive;
 
+        if (course.IsArchived)
+        {
+            HideEnrollments(course.Id);
+        }
+
         var result = UnitOfWork.Save();
         if (result.IsFailed) return result;
 
         return Result.Ok(course);
+    }
+
+    private void HideEnrollments(int courseId)
+    {
+        var enrollments = _enrollmentRepository.GetActiveEnrollmentsForCourse(courseId);
+        enrollments.ForEach(e =>
+        {
+            e.Status = EnrollmentStatus.Hidden;
+            _enrollmentRepository.Update(e);
+        });
     }
 
     public override Result Delete(int id)

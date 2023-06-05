@@ -40,8 +40,9 @@ public class StructureService : IStructureService
 
     private int[] GetUnitIds(int courseId, int learnerId)
     {
-        var course = _enrollmentRepository.GetCourseEnrolledAndActiveUnits(courseId, learnerId);
-        return course.KnowledgeUnits.Select(u => u.Id).ToArray();
+        var allEnrollments = _enrollmentRepository.GetEnrollmentsWithUnitsByCourse(courseId, learnerId);
+        var activeEnrollments = allEnrollments.Where(e => e.IsActive());
+        return activeEnrollments.Select(u => u.KnowledgeUnitId).ToArray();
     }
 
     private static List<KnowledgeComponent> GetMasteredKcs(List<KnowledgeComponent> rootKcs, List<KnowledgeComponentMastery> masteries)
@@ -52,14 +53,14 @@ public class StructureService : IStructureService
 
     public Result<KnowledgeUnit> GetUnit(int unitId, int learnerId)
     {
-        if(!_enrollmentRepository.HasActiveEnrollmentForUnit(unitId, learnerId))
+        if(!_enrollmentRepository.GetEnrollment(unitId, learnerId).IsActive())
             return Result.Fail(FailureCode.NotEnrolledInUnit);
         return Result.Ok(_unitRepository.GetUnitWithKcs(unitId));
     }
 
     public Result<List<KnowledgeComponentMastery>> GetMasteries(int unitId, int learnerId)
     {
-        if (!_enrollmentRepository.HasActiveEnrollmentForUnit(unitId, learnerId))
+        if (!_enrollmentRepository.GetEnrollment(unitId, learnerId).IsActive())
             return Result.Fail(FailureCode.NotEnrolledInUnit);
 
         var kcs = _knowledgeComponentRepository.GetKnowledgeComponentsForUnit(unitId);
@@ -70,7 +71,7 @@ public class StructureService : IStructureService
 
     public Result<KnowledgeComponent> GetKnowledgeComponent(int knowledgeComponentId, int learnerId)
     {
-        if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId))
+        if (!_enrollmentRepository.GetEnrollmentForKc(knowledgeComponentId, learnerId).IsActive())
             return Result.Fail(FailureCode.NotEnrolledInUnit);
         
         var kc = _knowledgeComponentRepository.GetKnowledgeComponentWithInstruction(knowledgeComponentId);
@@ -81,7 +82,7 @@ public class StructureService : IStructureService
 
     public Result<List<InstructionalItem>> GetInstructionalItems(int knowledgeComponentId, int learnerId)
     {
-        if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId))
+        if (!_enrollmentRepository.GetEnrollmentForKc(knowledgeComponentId, learnerId).IsActive())
             return Result.Fail(FailureCode.NotEnrolledInUnit);
 
         var kc = _knowledgeComponentRepository.GetKnowledgeComponentWithInstruction(knowledgeComponentId);

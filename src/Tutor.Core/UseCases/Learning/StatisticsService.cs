@@ -18,7 +18,7 @@ public class StatisticsService : IStatisticsService
 
     public Result<KcMasteryStatistics> GetKcMasteryStatistics(int knowledgeComponentId, int learnerId)
     {
-        if (!_enrollmentRepository.HasActiveEnrollmentForKc(knowledgeComponentId, learnerId))
+        if (!_enrollmentRepository.GetEnrollmentForKc(knowledgeComponentId, learnerId).IsActive())
             return Result.Fail(FailureCode.NotEnrolledInUnit);
 
         var kcMastery = _knowledgeMasteryRepository.GetFull(knowledgeComponentId, learnerId);

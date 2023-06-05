@@ -29,7 +29,7 @@ public class EvaluationService : IEvaluationService
     {
         var assessmentItem = _assessmentItemRepository.GetDerivedAssessmentItem(assessmentItemId);
         if (assessmentItem == null) return Result.Fail(FailureCode.NotFound);
-        if (!_enrollmentRepository.HasActiveEnrollmentForKc(assessmentItem.KnowledgeComponentId, learnerId))
+        if (!_enrollmentRepository.GetEnrollmentForKc(assessmentItem.KnowledgeComponentId, learnerId).IsActive())
             return Result.Fail(FailureCode.NotEnrolledInUnit);
         var kcMastery = _knowledgeMasteryRepository.GetFull(assessmentItem.KnowledgeComponentId, learnerId);
         

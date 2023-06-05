@@ -30,16 +30,16 @@ public class UnitEnrollmentController : BaseApiController
     }
 
     [HttpPost("bulk")]
-    public ActionResult<List<UnitEnrollmentDto>> BulkEnroll(int unitId, [FromBody] int[] learnerIds)
+    public ActionResult<List<UnitEnrollmentDto>> BulkEnroll(int unitId, [FromBody] EnrollmentRequestDto request)
     {
-        var result = _enrollmentService.BulkEnroll(unitId, learnerIds, User.InstructorId());
+        var result = _enrollmentService.BulkEnroll(unitId, request.LearnerIds, request.Start, User.InstructorId());
         return CreateResponse<UnitEnrollment, UnitEnrollmentDto>(result);
     }
 
     [HttpPost]
-    public ActionResult<UnitEnrollmentDto> Enroll(int unitId, [FromBody] int learnerId)
+    public ActionResult<UnitEnrollmentDto> Enroll(int unitId, [FromBody] EnrollmentRequestDto request)
     {
-        var result = _enrollmentService.Enroll(unitId, learnerId, User.InstructorId());
+        var result = _enrollmentService.Enroll(unitId, request.LearnerIds[0], request.Start, User.InstructorId());
         return CreateResponse<UnitEnrollment, UnitEnrollmentDto>(result);
     }
 
@@ -48,5 +48,12 @@ public class UnitEnrollmentController : BaseApiController
     {
         var result = _enrollmentService.Unenroll(unitId, learnerId, User.InstructorId());
         return CreateResponse(result);
+    }
+
+    [HttpPost("bulk-unenroll")]
+    public ActionResult<List<UnitEnrollmentDto>> BulkUnenroll(int unitId, [FromBody] int[] learnerIds)
+    {
+        var result = _enrollmentService.BulkUnenroll(unitId, learnerIds, User.InstructorId());
+        return CreateResponse<UnitEnrollment, UnitEnrollmentDto>(result);
     }
 }

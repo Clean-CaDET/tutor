@@ -37,9 +37,6 @@ INSERT INTO public."LearnerGroups"(
 VALUES (-12, 'Test Group 3', -1);
 INSERT INTO public."GroupMemberships"(
     "Id", "MemberId", "LearnerGroupId")
-    VALUES (-102, -1, -11);
-INSERT INTO public."GroupMemberships"(
-    "Id", "MemberId", "LearnerGroupId")
 	VALUES (-3, -2, -1);
 INSERT INTO public."GroupMemberships"(
     "Id", "MemberId", "LearnerGroupId")
@@ -50,6 +47,9 @@ INSERT INTO public."GroupMemberships"(
 INSERT INTO public."GroupMemberships"(
     "Id", "MemberId", "LearnerGroupId")
 	VALUES (-6, -5, -1);
+INSERT INTO public."GroupMemberships"(
+    "Id", "MemberId", "LearnerGroupId")
+    VALUES (-102, -1, -11);
 
 INSERT INTO public."LearnerGroups"(
     "Id", "Name", "CourseId")
@@ -88,6 +88,13 @@ VALUES (-17, -4, -3);
 INSERT INTO public."GroupMemberships"(
     "Id", "MemberId", "LearnerGroupId")
 VALUES (-18, -5, -3);
+
+INSERT INTO public."LearnerGroups"(
+	"Id", "Name", "CourseId")
+VALUES (-13, 'Archived Course Group 1', -5);
+INSERT INTO public."GroupMemberships"(
+    "Id", "MemberId", "LearnerGroupId")
+VALUES (-131, -1, -13);
 
 INSERT INTO public."UnitEnrollments"(
 	"Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")

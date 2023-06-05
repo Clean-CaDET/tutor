@@ -24,21 +24,24 @@ public class UnitEnrollmentCommandTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope, "-51");
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
-        var learnerIds = new[] { -4, -5 };
+        var enrollmentRequest = new EnrollmentRequestDto
+        {
+            LearnerIds = new[] { -4, -5 }
+        };
 
-        var result = ((OkObjectResult)controller.BulkEnroll(-2, learnerIds).Result)?.Value as List<UnitEnrollmentDto>;
+        var result = ((OkObjectResult)controller.BulkEnroll(-2, enrollmentRequest).Result)?.Value as List<UnitEnrollmentDto>;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Count.ShouldBe(2);
         result.All(e => e.Status == "Active").ShouldBeTrue();
         var newEnrollments = dbContext.UnitEnrollments
-            .Where(e => e.KnowledgeUnitId == -2 && learnerIds.Contains(e.LearnerId)).ToList();
+            .Where(e => e.KnowledgeUnitId == -2 && enrollmentRequest.LearnerIds.Contains(e.LearnerId)).ToList();
         newEnrollments.Count.ShouldBe(2);
 
         var kcIds = new[] { -21, -211 };
         var newKcMasteries = dbContext.KcMasteries
-            .Where(kcm => learnerIds.Contains(kcm.LearnerId) && kcIds.Contains(kcm.KnowledgeComponentId)).ToList();
+            .Where(kcm => enrollmentRequest.LearnerIds.Contains(kcm.LearnerId) && kcIds.Contains(kcm.KnowledgeComponentId)).ToList();
         newKcMasteries.Count.ShouldBe(4);
     }
 
@@ -48,8 +51,12 @@ public class UnitEnrollmentCommandTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope, "-51");
         var dbContext = scope.ServiceProvider.GetRequiredService<TutorContext>();
+        var enrollmentRequest = new EnrollmentRequestDto
+        {
+            LearnerIds = new[] { -1 }
+        };
 
-        var result = ((OkObjectResult)controller.Enroll(-2, -1).Result)?.Value as UnitEnrollmentDto;
+        var result = ((OkObjectResult)controller.Enroll(-2, enrollmentRequest).Result)?.Value as UnitEnrollmentDto;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
