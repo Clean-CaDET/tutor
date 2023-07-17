@@ -6,7 +6,7 @@ using Tutor.Stakeholders.API.Interfaces;
 using Tutor.Stakeholders.Core.Domain;
 using Tutor.Stakeholders.Core.Domain.RepositoryInterfaces;
 
-namespace Tutor.Stakeholders.Core.UseCases.StakeholderManagement;
+namespace Tutor.Stakeholders.Core.UseCases.Management;
 
 public class LearnerService : StakeholderService<Learner>, ILearnerService
 {
@@ -21,6 +21,8 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
 
     public Result<StakeholderAccountDto> Register(StakeholderAccountDto account)
     {
+        if (IsInvalidLearnerType(account.LearnerType)) return Result.Fail(FailureCode.InvalidArgument);
+        
         var learner = MapToDomain(account);
 
         return Register(
@@ -30,8 +32,15 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
             learner.LearnerType == LearnerType.Regular ? UserRole.Learner : UserRole.LearnerCommercial);
     }
 
+    private static bool IsInvalidLearnerType(string learnerType)
+    {
+        return learnerType != "Regular" && learnerType != "Commercial";
+    }
+
     public Result<List<StakeholderAccountDto>> BulkRegister(List<StakeholderAccountDto> accounts)
     {
+        if(HasMixedLearnerTypes(accounts)) return Result.Fail(FailureCode.InvalidArgument);
+
         var learners = MapToDomain(accounts);
 
         UnitOfWork.BeginTransaction();
@@ -56,6 +65,12 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
 
         UnitOfWork.Commit();
         return MapToDto(learners);
+    }
+
+    private static bool HasMixedLearnerTypes(List<StakeholderAccountDto> accounts)
+    {
+        var learnerTypes = accounts.Select(a => a.LearnerType).Distinct().ToList();
+        return learnerTypes.Count > 1 || IsInvalidLearnerType(learnerTypes[0]);
     }
 
     private List<User> CreateUserAccounts(List<StakeholderAccountDto> accounts, List<Learner> learners)

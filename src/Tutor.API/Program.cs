@@ -36,3 +36,9 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Required for automated tests
+namespace Tutor.API
+{
+    public partial class Program { }
+}

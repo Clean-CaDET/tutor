@@ -5,17 +5,18 @@ using Tutor.Stakeholders.API.Dtos;
 using Tutor.Stakeholders.Core.Domain;
 using Tutor.Stakeholders.Core.Domain.RepositoryInterfaces;
 
-namespace Tutor.Stakeholders.Core.UseCases.StakeholderManagement;
+namespace Tutor.Stakeholders.Core.UseCases.Management;
 
-public class StakeholderService<TDomain> : CrudService<StakeholderAccountDto, TDomain> where TDomain : Stakeholder
+public abstract class StakeholderService<TDomain> : CrudService<StakeholderAccountDto, TDomain> where TDomain : Stakeholder
 {
     private readonly IUserRepository _userRepository;
 
-    public StakeholderService(ICrudRepository<TDomain> crudRepository, IStakeholdersUnitOfWork unitOfWork, IMapper mapper, IUserRepository userRepository) 
+    protected StakeholderService(ICrudRepository<TDomain> crudRepository, IUnitOfWork unitOfWork, IMapper mapper, IUserRepository userRepository) 
         : base(crudRepository, unitOfWork, mapper)
     {
         _userRepository = userRepository;
     }
+
     public Result<StakeholderAccountDto> Register(StakeholderAccountDto entity, string username, string password, UserRole role)
     {
         UnitOfWork.BeginTransaction();

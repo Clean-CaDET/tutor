@@ -6,7 +6,7 @@ using Tutor.Stakeholders.API.Interfaces;
 using Tutor.Stakeholders.Core.Domain;
 using Tutor.Stakeholders.Core.Domain.RepositoryInterfaces;
 
-namespace Tutor.Stakeholders.Core.UseCases.StakeholderManagement;
+namespace Tutor.Stakeholders.Core.UseCases.Management;
 
 public class InstructorService : StakeholderService<Instructor>, IInstructorService
 {

@@ -1,0 +1,109 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
+using Tutor.API;
+using Tutor.API.Controllers.Stakeholders;
+using Tutor.BuildingBlocks.Core.UseCases;
+using Tutor.Stakeholders.API.Dtos;
+using Tutor.Stakeholders.API.Interfaces;
+
+namespace Tutor.Stakeholders.Tests.Integration.ManagementTests;
+
+[Collection("Sequential")]
+public class LearnerQueryTests : BaseWebIntegrationTest
+{
+    public LearnerQueryTests(StakeholdersTestFactory<Program> factory) : base(factory) { }
+
+    [Theory]
+    [MemberData(nameof(LearnerData))]
+    public void Retrieves_learners(string[] indexes, int expectedCount)
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+
+        var result = ((OkObjectResult)controller.GetSelected(indexes).Result)?.Value as PagedResult<StakeholderAccountDto>;
+
+        result.ShouldNotBeNull();
+        result.Results.Count.ShouldBe(expectedCount);
+        result.TotalCount.ShouldBe(expectedCount);
+    }
+
+    public static IEnumerable<object[]> LearnerData()
+    {
+        return new List<object[]>
+        {
+            new object[]
+            {
+                new[] { "SU-1-2021" },
+                1
+            },
+            new object[]
+            {
+                new[] { "SU-1-2021", "SU-2-2021", "SU-3-2021" },
+                3
+            },
+            new object[]
+            {
+                new[] { "SU-1-2021", "SU-1-2021", "SU-1-2021" },
+                1
+            },
+            new object[]
+            {
+                new[] { "SU-1-2021", "SU-222-2021" },
+                1
+            }
+        };
+    }
+
+    [Fact]
+    public void Retrieves_learners_with_bad_argument()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+
+        var result = (ObjectResult)controller.GetSelected(null).Result;
+
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(400);
+    }
+
+    /* TODO
+    [Fact]
+    public void Retrieves_learner_courses()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupLearnerController(scope);
+
+        var result = ((OkObjectResult)controller.GetEnrolledCourses(-1, 0, 0).Result)?.Value as PagedResult<CourseDto>;
+
+        result.ShouldNotBeNull();
+        result.Results.Count.ShouldBe(2);
+        result.TotalCount.ShouldBe(2);
+    }*/
+
+    [Fact]
+    public void Retrieves_paged_learners()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+
+        var result = ((OkObjectResult)controller.GetAll(0, 0).Result)?.Value as PagedResult<StakeholderAccountDto>;
+
+        result.ShouldNotBeNull();
+        result.Results.Count.ShouldBe(7);
+        result.TotalCount.ShouldBe(7);
+        foreach (var item in result.Results)
+        {
+            item.ShouldNotBeNull();
+            item.LearnerType.ShouldNotBeNull();
+        }
+    }
+
+    private static LearnerController CreateController(IServiceScope scope)
+    {
+        return new LearnerController(scope.ServiceProvider.GetRequiredService<ILearnerService>())
+        {
+            ControllerContext = BuildContext("0", "administrator")
+        };
+    }
+}

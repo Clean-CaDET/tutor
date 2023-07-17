@@ -6,8 +6,9 @@ using Tutor.BuildingBlocks.Infrastructure.Security;
 using Tutor.Stakeholders.API.Interfaces;
 using Tutor.Stakeholders.Core.Domain;
 using Tutor.Stakeholders.Core.Domain.RepositoryInterfaces;
+using Tutor.Stakeholders.Core.Mappers;
 using Tutor.Stakeholders.Core.UseCases;
-using Tutor.Stakeholders.Core.UseCases.StakeholderManagement;
+using Tutor.Stakeholders.Core.UseCases.Management;
 using Tutor.Stakeholders.Infrastructure.Authentication;
 using Tutor.Stakeholders.Infrastructure.Database;
 using Tutor.Stakeholders.Infrastructure.Database.Repositories;
@@ -18,7 +19,7 @@ public static class StakeholdersStartup
 {
     public static IServiceCollection ConfigureStakeholdersModule(this IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(StakeholdersStartup));
+        services.AddAutoMapper(typeof(StakeholderProfile).Assembly);
         SetupCore(services);
         SetupInfrastructure(services);
         return services;
