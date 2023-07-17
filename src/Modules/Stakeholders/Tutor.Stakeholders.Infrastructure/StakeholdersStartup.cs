@@ -14,10 +14,11 @@ using Tutor.Stakeholders.Infrastructure.Database.Repositories;
 
 namespace Tutor.Stakeholders.Infrastructure;
 
-public static class ModuleSetup
+public static class StakeholdersStartup
 {
     public static IServiceCollection ConfigureStakeholdersModule(this IServiceCollection services)
     {
+        services.AddAutoMapper(typeof(StakeholdersStartup));
         SetupCore(services);
         SetupInfrastructure(services);
         return services;
