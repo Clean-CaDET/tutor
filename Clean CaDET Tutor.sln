@@ -67,6 +67,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tutor.KnowledgeComponents.I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tutor.KnowledgeComponents.Tests", "src\Modules\KnowledgeComponents\Tutor.KnowledgeComponents.Tests\Tutor.KnowledgeComponents.Tests.csproj", "{1DF4DF9C-D14B-4C9A-81B7-06E61C537C87}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tutor.API", "src\Tutor.API\Tutor.API.csproj", "{11DB03BC-E62B-41E2-8472-CF1EF357B78C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -169,6 +171,10 @@ Global
 		{1DF4DF9C-D14B-4C9A-81B7-06E61C537C87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DF4DF9C-D14B-4C9A-81B7-06E61C537C87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DF4DF9C-D14B-4C9A-81B7-06E61C537C87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11DB03BC-E62B-41E2-8472-CF1EF357B78C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11DB03BC-E62B-41E2-8472-CF1EF357B78C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11DB03BC-E62B-41E2-8472-CF1EF357B78C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11DB03BC-E62B-41E2-8472-CF1EF357B78C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -204,6 +210,7 @@ Global
 		{92C5FC32-E048-4E2A-8653-23AE57A25145} = {CA1AA663-E420-4A18-9594-DF99B5FA4547}
 		{56B817E8-4E77-4AF6-913C-E89DEB749B0B} = {CA1AA663-E420-4A18-9594-DF99B5FA4547}
 		{1DF4DF9C-D14B-4C9A-81B7-06E61C537C87} = {CA1AA663-E420-4A18-9594-DF99B5FA4547}
+		{11DB03BC-E62B-41E2-8472-CF1EF357B78C} = {9F4AF7B2-748D-4257-9AD5-6FCFA418DAB0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {286C03E9-DD45-4225-B4CF-64C1440F0513}
