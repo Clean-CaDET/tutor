@@ -10,9 +10,9 @@ using Tutor.Stakeholders.API.Interfaces;
 namespace Tutor.Stakeholders.Tests.Integration;
 
 [Collection("Sequential")]
-public class LoginTests : BaseWebIntegrationTest
+public class AuthenticationTests : BaseWebIntegrationTest
 {
-    public LoginTests(StakeholdersTestFactory<Program> factory) : base(factory) { }
+    public AuthenticationTests(StakeholdersTestFactory<Program> factory) : base(factory) { }
 
     [Fact]
     public void Successfully_login()
@@ -88,8 +88,8 @@ public class LoginTests : BaseWebIntegrationTest
         learnerCommercialIdClaim.ShouldBeNull();
     }
 
-    private static UserController CreateController(IServiceScope scope)
+    private static AuthenticationController CreateController(IServiceScope scope)
     {
-        return new UserController(scope.ServiceProvider.GetRequiredService<IAuthenticationService>());
+        return new AuthenticationController(scope.ServiceProvider.GetRequiredService<IAuthenticationService>());
     }
 }

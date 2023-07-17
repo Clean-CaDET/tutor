@@ -5,11 +5,11 @@ using Tutor.Stakeholders.API.Interfaces;
 namespace Tutor.API.Controllers.Stakeholders;
 
 [Route("api/users")]
-public class UserController : BaseApiController
+public class AuthenticationController : BaseApiController
 {
     private readonly IAuthenticationService _authenticationService;
 
-    public UserController(IAuthenticationService authenticationService)
+    public AuthenticationController(IAuthenticationService authenticationService)
     {
         _authenticationService = authenticationService;
     }
