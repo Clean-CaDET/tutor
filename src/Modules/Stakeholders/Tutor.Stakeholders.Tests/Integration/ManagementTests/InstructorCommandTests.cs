@@ -2,9 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API;
-using Tutor.API.Controllers.Stakeholders;
+using Tutor.API.Controllers.Administrator.Stakeholders;
 using Tutor.Stakeholders.API.Dtos;
-using Tutor.Stakeholders.API.Interfaces;
+using Tutor.Stakeholders.API.Interfaces.Management;
 using Tutor.Stakeholders.Core.Domain;
 using Tutor.Stakeholders.Infrastructure.Database;
 

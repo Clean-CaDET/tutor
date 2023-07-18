@@ -9,22 +9,22 @@ namespace Tutor.Stakeholders.Core.UseCases.Management;
 
 public abstract class StakeholderService<TDomain> : CrudService<StakeholderAccountDto, TDomain> where TDomain : Stakeholder
 {
-    private readonly IUserRepository _userRepository;
+    protected readonly IUserRepository UserRepository;
 
     protected StakeholderService(ICrudRepository<TDomain> crudRepository, IUnitOfWork unitOfWork, IMapper mapper, IUserRepository userRepository) 
         : base(crudRepository, unitOfWork, mapper)
     {
-        _userRepository = userRepository;
+        UserRepository = userRepository;
     }
 
     public Result<StakeholderAccountDto> Register(StakeholderAccountDto entity, string username, string password, UserRole role)
     {
         UnitOfWork.BeginTransaction();
 
-        if (_userRepository.Exists(username))
+        if (UserRepository.Exists(username))
             return Result.Fail(FailureCode.DuplicateUsername);
 
-        var user = _userRepository.Register(username, password, role);
+        var user = UserRepository.Register(username, password, role);
         var result = UnitOfWork.Save();
         if (result.IsFailed)
         {
@@ -50,7 +50,7 @@ public abstract class StakeholderService<TDomain> : CrudService<StakeholderAccou
 
         stakeholder.IsArchived = archive;
 
-        var user = _userRepository.Get(stakeholder.UserId);
+        var user = UserRepository.Get(stakeholder.UserId);
         user.IsActive = !archive;
 
         var result = UnitOfWork.Save();
@@ -59,29 +59,13 @@ public abstract class StakeholderService<TDomain> : CrudService<StakeholderAccou
         return MapToDto(stakeholder);
     }
 
-    public override Result<StakeholderAccountDto> Update(StakeholderAccountDto entity)
-    {
-        var dbStakeholder = CrudRepository.Get(entity.Id);
-        if (dbStakeholder is null) return Result.Fail(FailureCode.NotFound);
-        var user = _userRepository.Get(dbStakeholder.UserId);
-        entity.UserId = user.Id;
-
-        CrudRepository.Update(dbStakeholder, MapToDomain(entity));
-        user.Username = entity.Email;
-
-        var result = UnitOfWork.Save();
-        if (result.IsFailed) return result;
-
-        return entity;
-    }
-
     public override Result Delete(int id)
     {
         var stakeholder = CrudRepository.Get(id);
         if (stakeholder is null) return Result.Fail(FailureCode.NotFound);
         CrudRepository.Delete(stakeholder);
-        var user = _userRepository.Get(stakeholder.UserId);
-        _userRepository.Delete(user);
+        var user = UserRepository.Get(stakeholder.UserId);
+        UserRepository.Delete(user);
 
         var result = UnitOfWork.Save();
         if (result.IsFailed) return result;

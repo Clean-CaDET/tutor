@@ -2,10 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API;
-using Tutor.API.Controllers.Stakeholders;
+using Tutor.API.Controllers.Administrator.Stakeholders;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Stakeholders.API.Dtos;
-using Tutor.Stakeholders.API.Interfaces;
+using Tutor.Stakeholders.API.Interfaces.Management;
 
 namespace Tutor.Stakeholders.Tests.Integration.ManagementTests;
 

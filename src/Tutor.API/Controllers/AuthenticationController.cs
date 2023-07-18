@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tutor.Stakeholders.API.Dtos;
 using Tutor.Stakeholders.API.Interfaces;
 
-namespace Tutor.API.Controllers.Stakeholders;
+namespace Tutor.API.Controllers;
 
 [Route("api/users")]
 public class AuthenticationController : BaseApiController

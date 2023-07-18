@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Stakeholders.API.Dtos;
-using Tutor.Stakeholders.API.Interfaces;
+using Tutor.Stakeholders.API.Interfaces.Management;
 
-namespace Tutor.API.Controllers.Stakeholders;
+namespace Tutor.API.Controllers.Administrator.Stakeholders;
 
 [Authorize(Policy = "administratorPolicy")]
 [Route("api/management/learners")]

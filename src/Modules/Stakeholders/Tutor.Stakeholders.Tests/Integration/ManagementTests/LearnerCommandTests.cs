@@ -2,9 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API;
-using Tutor.API.Controllers.Stakeholders;
+using Tutor.API.Controllers.Administrator.Stakeholders;
 using Tutor.Stakeholders.API.Dtos;
-using Tutor.Stakeholders.API.Interfaces;
+using Tutor.Stakeholders.API.Interfaces.Management;
 using Tutor.Stakeholders.Core.Domain;
 using Tutor.Stakeholders.Infrastructure.Database;
 
@@ -317,32 +317,33 @@ public class LearnerCommandTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<StakeholdersContext>();
-        var updatedEntity = new StakeholderAccountDto
+        var updatedLearner = new StakeholderAccountDto
         {
             Id = -2,
             Email = "mika@mikic.com",
-            Index = "mika@mikic.com",
+            Index = "XX-1-2023",
             Name = "mika",
             Surname = "mikic",
             Password = "123",
         };
         dbContext.Database.BeginTransaction();
 
-        var result = ((OkObjectResult)controller.Update(updatedEntity).Result)?.Value as StakeholderAccountDto;
+        var result = ((OkObjectResult)controller.Update(updatedLearner).Result)?.Value as StakeholderAccountDto;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-2);
-        result.Email.ShouldBe(updatedEntity.Email);
-        result.Name.ShouldBe(updatedEntity.Name);
-        result.Surname.ShouldBe(updatedEntity.Surname);
+        result.Index.ShouldBe(updatedLearner.Index);
+        result.Email.ShouldBe(updatedLearner.Email);
+        result.Name.ShouldBe(updatedLearner.Name);
+        result.Surname.ShouldBe(updatedLearner.Surname);
 
-        var storedEntity = dbContext.Learners.FirstOrDefault(i => i.Id == updatedEntity.Id);
-        storedEntity.ShouldNotBeNull();
-        var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == updatedEntity.Email);
+        var storedLearner = dbContext.Learners.FirstOrDefault(i => i.Id == updatedLearner.Id);
+        storedLearner.ShouldNotBeNull();
+        var storedAccount = dbContext.Users.FirstOrDefault(u => u.Username == updatedLearner.Index);
         storedAccount.ShouldNotBeNull();
-        var oldEntity = dbContext.Learners.FirstOrDefault(i => i.Name == "SU-2-2021");
-        oldEntity.ShouldBeNull();
+        var oldLearner = dbContext.Learners.FirstOrDefault(i => i.Name == "SU-2-2021");
+        oldLearner.ShouldBeNull();
     }
 
     [Fact]

@@ -2,7 +2,7 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Stakeholders.API.Dtos;
-using Tutor.Stakeholders.API.Interfaces;
+using Tutor.Stakeholders.API.Interfaces.Management;
 using Tutor.Stakeholders.Core.Domain;
 using Tutor.Stakeholders.Core.Domain.RepositoryInterfaces;
 
@@ -11,12 +11,10 @@ namespace Tutor.Stakeholders.Core.UseCases.Management;
 public class LearnerService : StakeholderService<Learner>, ILearnerService
 {
     private readonly ILearnerRepository _learnerRepository;
-    private readonly IUserRepository _userRepository;
     public LearnerService(IMapper mapper, ILearnerRepository learnerRepository, IStakeholdersUnitOfWork unitOfWork, IUserRepository userRepository)
         : base(learnerRepository, unitOfWork, mapper, userRepository)
     {
         _learnerRepository = learnerRepository;
-        _userRepository = userRepository;
     }
 
     public Result<StakeholderAccountDto> Register(StakeholderAccountDto account)
@@ -75,7 +73,7 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
 
     private List<User> CreateUserAccounts(List<StakeholderAccountDto> accounts, List<Learner> learners)
     {
-        return _userRepository.BulkRegister(
+        return UserRepository.BulkRegister(
             accounts.Select(a => a.Index).ToList(),
             accounts.Select(a => a.Password).ToList(),
             learners.First().LearnerType == LearnerType.Regular ? UserRole.Learner : UserRole.LearnerCommercial);
@@ -98,5 +96,21 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
         if (indexes == null) return Result.Fail(FailureCode.InvalidArgument);
         var result = _learnerRepository.GetByIndexes(indexes);
         return MapToDto(result);
+    }
+
+    public override Result<StakeholderAccountDto> Update(StakeholderAccountDto entity)
+    {
+        var dbStakeholder = CrudRepository.Get(entity.Id);
+        if (dbStakeholder is null) return Result.Fail(FailureCode.NotFound);
+        var user = UserRepository.Get(dbStakeholder.UserId);
+        entity.UserId = user.Id;
+
+        CrudRepository.Update(dbStakeholder, MapToDomain(entity));
+        user.Username = entity.Index;
+
+        var result = UnitOfWork.Save();
+        if (result.IsFailed) return result;
+
+        return entity;
     }
 }

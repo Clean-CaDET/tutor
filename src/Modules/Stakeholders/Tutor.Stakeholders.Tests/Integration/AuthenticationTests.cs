@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API;
-using Tutor.API.Controllers.Stakeholders;
+using Tutor.API.Controllers;
 using Tutor.Stakeholders.API.Dtos;
 using Tutor.Stakeholders.API.Interfaces;
 
