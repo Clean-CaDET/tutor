@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Stakeholders\Tutor.Stakeholders.API\Tutor.Stakeholders.API.csproj" />
+    <ProjectReference Include="..\Tutor.Courses.API\Tutor.Courses.API.csproj" />
+  </ItemGroup>
+
 </Project>

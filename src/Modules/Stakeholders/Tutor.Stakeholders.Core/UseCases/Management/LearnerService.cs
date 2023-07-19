@@ -98,19 +98,19 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
         return MapToDto(result);
     }
 
-    public override Result<StakeholderAccountDto> Update(StakeholderAccountDto entity)
+    public override Result<StakeholderAccountDto> Update(StakeholderAccountDto learner)
     {
-        var dbStakeholder = CrudRepository.Get(entity.Id);
+        var dbStakeholder = CrudRepository.Get(learner.Id);
         if (dbStakeholder is null) return Result.Fail(FailureCode.NotFound);
         var user = UserRepository.Get(dbStakeholder.UserId);
-        entity.UserId = user.Id;
+        learner.UserId = user.Id;
 
-        CrudRepository.Update(dbStakeholder, MapToDomain(entity));
-        user.Username = entity.Index;
+        var updatedLearner = CrudRepository.Update(dbStakeholder, MapToDomain(learner));
+        user.Username = learner.Index;
 
         var result = UnitOfWork.Save();
         if (result.IsFailed) return result;
 
-        return entity;
+        return MapToDto(updatedLearner);
     }
 }

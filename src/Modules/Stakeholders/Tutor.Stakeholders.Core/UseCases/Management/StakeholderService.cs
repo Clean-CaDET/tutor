@@ -43,6 +43,12 @@ public abstract class StakeholderService<TDomain> : CrudService<StakeholderAccou
         return registerResult;
     }
 
+    public Result<List<StakeholderAccountDto>> GetMany(List<int> stakeholderIds)
+    {
+        var stakeholders = CrudRepository.GetMany(stakeholderIds);
+        return MapToDto(stakeholders);
+    }
+
     public Result<StakeholderAccountDto> Archive(int id, bool archive)
     {
         var stakeholder = CrudRepository.Get(id);
