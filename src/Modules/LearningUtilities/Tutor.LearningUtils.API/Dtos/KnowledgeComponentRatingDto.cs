@@ -1,7 +1,7 @@
 ﻿
 namespace Tutor.LearningUtils.API.Dtos
 {
-    public class RatingDto
+    public class KnowledgeComponentRatingDto
     {
         public int LearnerId { get; set; }
         public int KnowledgeComponentId { get; set; }

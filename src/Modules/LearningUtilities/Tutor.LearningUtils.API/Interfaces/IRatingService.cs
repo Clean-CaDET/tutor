@@ -6,6 +6,6 @@ namespace Tutor.LearningUtils.API.Interfaces
 {
     public interface IRatingService
     {
-        Result<RatingDto> RateKnowledgeComponent(RatingDto kcRating);
+        Result<KnowledgeComponentRatingDto> RateKnowledgeComponent(KnowledgeComponentRatingDto kcKnowledgeComponentRating);
     }
 }

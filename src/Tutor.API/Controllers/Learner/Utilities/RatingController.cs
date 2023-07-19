@@ -19,10 +19,10 @@ namespace Tutor.API.Controllers.Learner.Utilities
         }
         
         [HttpPost]
-        public ActionResult<EmotionsFeedbackDto> RateKnowledgeComponent([FromBody] RatingDto kcRating)
+        public ActionResult<EmotionsFeedbackDto> RateKnowledgeComponent([FromBody] KnowledgeComponentRatingDto kcKnowledgeComponentRating)
         {
-            kcRating.LearnerId = User.LearnerId();
-            var result = _ratingService.RateKnowledgeComponent(kcRating);
+            kcKnowledgeComponentRating.LearnerId = User.LearnerId();
+            var result = _ratingService.RateKnowledgeComponent(kcKnowledgeComponentRating);
             return CreateResponse(result);
         }
     }
