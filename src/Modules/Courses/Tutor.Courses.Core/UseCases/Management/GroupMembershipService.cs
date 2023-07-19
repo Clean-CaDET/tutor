@@ -3,7 +3,6 @@ using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Interfaces.Management;
-using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 using Tutor.Stakeholders.API.Interfaces.Management;
 
@@ -26,8 +25,10 @@ public class GroupMembershipService: IGroupMembershipService
 
     public Result<List<LearnerDto>> GetGroupMembers(int groupId)
     {
-        var learnerIds = _groupRepository.GetLearnerIdsInGroup(groupId);
-        var result = _learnerService.GetMany(learnerIds);
+        var group = _groupRepository.Get(groupId);
+        if(group == null) return Result.Fail(FailureCode.NotFound);
+
+        var result = _learnerService.GetMany(group.LearnerIds.ToList());
 
         if (result.IsFailed) return Result.Fail(result.Errors);
         return result.Value.Select(_mapper.Map<LearnerDto>).ToList();
@@ -35,9 +36,11 @@ public class GroupMembershipService: IGroupMembershipService
 
     public Result CreateMembers(int groupId, List<int> learnerIds)
     {
-        var memberships = learnerIds.Select(l => new GroupMembership(l, groupId));
-        _groupRepository.CreateBulkMemberships(memberships);
+        var group = _groupRepository.Get(groupId);
+        if (group == null) return Result.Fail(FailureCode.NotFound);
 
+        group.AddMembers(learnerIds);
+        _groupRepository.Update(group);
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
         
@@ -46,11 +49,11 @@ public class GroupMembershipService: IGroupMembershipService
 
     public Result DeleteMember(int groupId, int learnerId)
     {
-        var membership = _groupRepository.GetGroupMembership(groupId, learnerId);
-        if (membership is null) return Result.Fail(FailureCode.NotFound);
+        var group = _groupRepository.Get(groupId);
+        if (group is null) return Result.Fail(FailureCode.NotFound);
 
-        _groupRepository.DeleteMember(membership);
-
+        group.RemoveMember(learnerId);
+        _groupRepository.Update(group);
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 

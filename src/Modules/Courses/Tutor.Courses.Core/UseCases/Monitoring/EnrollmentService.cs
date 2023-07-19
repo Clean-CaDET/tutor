@@ -1,59 +1,66 @@
-﻿using FluentResults;
+﻿using AutoMapper;
+using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
+using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Interfaces.Monitoring;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.Courses.Core.UseCases.Monitoring;
 
-public class EnrolledCoursesService : IEnrollmentService
+public class EnrollmentService : BaseService<UnitEnrollmentDto, UnitEnrollment>, IEnrollmentService
 {
     private readonly IEnrollmentRepository _enrollmentRepository;
     private readonly IOwnedCourseRepository _ownedCourseRepository;
-    private readonly IUnitRepository _unitRepository;
-    private readonly IKnowledgeMasteryRepository _knowledgeMasteryRepository;
+    private readonly ICrudRepository<KnowledgeUnit> _unitRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public EnrolledCoursesService(IEnrollmentRepository enrollmentRepository, IOwnedCourseRepository ownedCourseRepository, IKnowledgeMasteryRepository knowledgeMasteryRepository, IUnitOfWork unitOfWork, IUnitRepository unitRepository)
+    public EnrollmentService(IMapper mapper, IEnrollmentRepository enrollmentRepository, IOwnedCourseRepository ownedCourseRepository,
+        IUnitOfWork unitOfWork, ICrudRepository<KnowledgeUnit> unitRepository): base(mapper)
     {
         _enrollmentRepository = enrollmentRepository;
         _ownedCourseRepository = ownedCourseRepository;
         _unitRepository = unitRepository;
-        _knowledgeMasteryRepository = knowledgeMasteryRepository;
         _unitOfWork = unitOfWork;
     }
 
-    public Result<List<UnitEnrollment>> GetEnrollments(int unitId, int[] learnerIds, int instructorId)
+    public Result<List<UnitEnrollmentDto>> GetEnrollments(int unitId, int[] learnerIds, int instructorId)
     {
         if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
-        return _enrollmentRepository.GetEnrollments(unitId, learnerIds);
+        return MapToDto(_enrollmentRepository.GetEnrollments(unitId, learnerIds));
     }
 
-    public Result<List<UnitEnrollment>> BulkEnroll(int unitId, int[] learnerIds, DateTime start, int instructorId)
+    public Result<List<UnitEnrollmentDto>> BulkEnroll(int unitId, int[] learnerIds, DateTime start, int instructorId)
     {
-        if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
+        if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId))
+            return Result.Fail(FailureCode.Forbidden);
         
-        var unit = _unitRepository.GetUnitWithKcsAndAssessments(unitId);
-        
+        var unit = _unitRepository.Get(unitId);
+        if(unit == null) return Result.Fail(FailureCode.NotFound);
+
         var enrollments = learnerIds.Select(learnerId => Enroll(unit, start, learnerId)).ToList();
 
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 
-        return enrollments;
+        return MapToDto(enrollments);
     }
 
-    public Result<UnitEnrollment> Enroll(int unitId, int learnerId, DateTime start, int instructorId)
+    public Result<UnitEnrollmentDto> Enroll(int unitId, int learnerId, DateTime start, int instructorId)
     {
-        if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
+        if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId))
+            return Result.Fail(FailureCode.Forbidden);
 
-        var enrollment = Enroll(_unitRepository.GetUnitWithKcsAndAssessments(unitId), start, learnerId);
+        var unit = _unitRepository.Get(unitId);
+        if (unit == null) return Result.Fail(FailureCode.NotFound);
 
+
+        var enrollment = Enroll(unit, start, learnerId);
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 
-        return enrollment;
+        return MapToDto(enrollment);
     }
 
     private UnitEnrollment Enroll(KnowledgeUnit unit, DateTime start, int learnerId)
@@ -61,7 +68,6 @@ public class EnrolledCoursesService : IEnrollmentService
         var existingEnrollment = _enrollmentRepository.GetEnrollment(unit.Id, learnerId);
         if(existingEnrollment != null)
         {
-            // Maybe should throw exception instead?
             if (existingEnrollment.Status == EnrollmentStatus.Active) return existingEnrollment;
             
             existingEnrollment.Status = EnrollmentStatus.Active;
@@ -72,12 +78,12 @@ public class EnrolledCoursesService : IEnrollmentService
         var newEnrollment = new UnitEnrollment(learnerId, start, unit);
         _enrollmentRepository.Create(newEnrollment);
 
-        CreateMasteries(unit, learnerId);
+        //CreateMasteries(unit, learnerId);
 
         return newEnrollment;
     }
 
-    private void CreateMasteries(KnowledgeUnit unit, int learnerId)
+    /*private void CreateMasteries(KnowledgeUnit unit, int learnerId)
     {
         foreach (var kc in unit.KnowledgeComponents)
         {
@@ -87,7 +93,7 @@ public class EnrolledCoursesService : IEnrollmentService
             var kcMastery = new KnowledgeComponentMastery(learnerId, kc.Id, assessmentMasteries);
             _knowledgeMasteryRepository.Create(kcMastery);
         }
-    }
+    }*/ // TODO: Move to KC modules
 
     public Result Unenroll(int unitId, int learnerId, int instructorId)
     {
@@ -105,7 +111,7 @@ public class EnrolledCoursesService : IEnrollmentService
         return Result.Ok();
     }
 
-    public Result<List<UnitEnrollment>> BulkUnenroll(int unitId, int[] learnerIds, int instructorId)
+    public Result<List<UnitEnrollmentDto>> BulkUnenroll(int unitId, int[] learnerIds, int instructorId)
     {
         if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
@@ -119,6 +125,6 @@ public class EnrolledCoursesService : IEnrollmentService
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 
-        return enrollments;
+        return MapToDto(enrollments);
     }
 }
