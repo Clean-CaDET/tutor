@@ -26,7 +26,7 @@ public class LearnerController : BaseApiController
 
     // Post because of potential URL length limit violation with query params
     [HttpPost("selected")]
-    public ActionResult<PagedResult<StakeholderAccountDto>> GetSelected([FromBody] string[] indexes)
+    public ActionResult<PagedResult<StakeholderAccountDto>> GetByIndexes([FromBody] string[] indexes)
     {
         var result = _learnerService.GetByIndexes(indexes);
         return CreateResponse(result);

@@ -11,11 +11,11 @@ namespace Tutor.Courses.Core.UseCases.Management;
 public class CourseService : BaseService<CourseDto, Course>, ICourseService
 {
     private readonly ICourseRepository _courseRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ICoursesUnitOfWork _unitOfWork;
     private readonly ICourseOwnershipRepository _ownershipRepository;
     private readonly IEnrollmentRepository _enrollmentRepository;
 
-    public CourseService(IMapper mapper, ICourseRepository courseRepository, IUnitOfWork unitOfWork, ICourseOwnershipRepository ownershipRepository, IEnrollmentRepository enrollmentRepository) : base(mapper)
+    public CourseService(IMapper mapper, ICourseRepository courseRepository, ICoursesUnitOfWork unitOfWork, ICourseOwnershipRepository ownershipRepository, IEnrollmentRepository enrollmentRepository) : base(mapper)
     {
         _courseRepository = courseRepository;
         _unitOfWork = unitOfWork;
@@ -76,7 +76,7 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
         var course = _courseRepository.GetWithUnits(id);
         if (course == null) return Result.Fail(FailureCode.NotFound);
 
-        if (course.KnowledgeUnits.Count > 0)
+        if (course.KnowledgeUnits?.Count > 0)
         {
             return Result.Fail(FailureCode.Forbidden);
         }

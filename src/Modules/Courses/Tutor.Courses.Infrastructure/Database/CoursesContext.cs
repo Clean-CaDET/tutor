@@ -12,4 +12,17 @@ public class CoursesContext : DbContext
     public DbSet<CourseOwnership> CourseOwnerships { get; set; }
 
     public CoursesContext(DbContextOptions<CoursesContext> options) : base(options) {}
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.HasDefaultSchema("courses");
+
+        modelBuilder
+            .Entity<LearnerGroup>()
+            .Property(e => e.LearnerIds)
+            .HasConversion(
+                v => string.Join(",", v),
+                v => new HashSet<int>(
+                    v.Split(',', StringSplitOptions.None).Select(int.Parse)));
+    }
 }

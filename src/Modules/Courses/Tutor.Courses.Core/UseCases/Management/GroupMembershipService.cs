@@ -12,10 +12,10 @@ public class GroupMembershipService: IGroupMembershipService
 {
     private readonly IMapper _mapper;
     private readonly IGroupRepository _groupRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ICoursesUnitOfWork _unitOfWork;
     private readonly ILearnerService _learnerService;
 
-    public GroupMembershipService(IMapper mapper, IGroupRepository groupRepository, IUnitOfWork unitOfWork, ILearnerService learnerService)
+    public GroupMembershipService(IMapper mapper, IGroupRepository groupRepository, ICoursesUnitOfWork unitOfWork, ILearnerService learnerService)
     {
         _mapper = mapper;
         _groupRepository = groupRepository;

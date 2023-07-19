@@ -14,10 +14,10 @@ public class CourseOwnershipService : ICourseOwnershipService
     private readonly IMapper _mapper;
     private readonly ICourseOwnershipRepository _courseOwnershipRepository;
     private readonly ICourseRepository _courseRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ICoursesUnitOfWork _unitOfWork;
     private readonly IInstructorService _instructorService;
 
-    public CourseOwnershipService(IMapper mapper, ICourseOwnershipRepository courseOwnershipRepository, ICourseRepository courseRepository, IUnitOfWork unitOfWork, IInstructorService instructorService)
+    public CourseOwnershipService(IMapper mapper, ICourseOwnershipRepository courseOwnershipRepository, ICourseRepository courseRepository, ICoursesUnitOfWork unitOfWork, IInstructorService instructorService)
     {
         _mapper = mapper;
         _courseOwnershipRepository = courseOwnershipRepository;

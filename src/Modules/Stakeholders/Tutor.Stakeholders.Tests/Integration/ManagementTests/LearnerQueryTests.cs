@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using Tutor.API;
 using Tutor.API.Controllers.Administrator.Stakeholders;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Stakeholders.API.Dtos;
@@ -10,9 +9,9 @@ using Tutor.Stakeholders.API.Interfaces.Management;
 namespace Tutor.Stakeholders.Tests.Integration.ManagementTests;
 
 [Collection("Sequential")]
-public class LearnerQueryTests : BaseWebIntegrationTest
+public class LearnerQueryTests : BaseStakeholdersIntegrationTest
 {
-    public LearnerQueryTests(StakeholdersTestFactory<Program> factory) : base(factory) { }
+    public LearnerQueryTests(StakeholdersTestFactory factory) : base(factory) { }
 
     [Theory]
     [MemberData(nameof(LearnerData))]
@@ -21,7 +20,7 @@ public class LearnerQueryTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
 
-        var result = ((OkObjectResult)controller.GetSelected(indexes).Result)?.Value as PagedResult<StakeholderAccountDto>;
+        var result = ((OkObjectResult)controller.GetByIndexes(indexes).Result)?.Value as PagedResult<StakeholderAccountDto>;
 
         result.ShouldNotBeNull();
         result.Results.Count.ShouldBe(expectedCount);
@@ -61,7 +60,7 @@ public class LearnerQueryTests : BaseWebIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
 
-        var result = (ObjectResult)controller.GetSelected(null).Result;
+        var result = (ObjectResult)controller.GetByIndexes(null).Result;
 
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(400);

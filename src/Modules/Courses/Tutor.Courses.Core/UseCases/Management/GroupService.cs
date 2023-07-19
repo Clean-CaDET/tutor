@@ -12,7 +12,7 @@ public class GroupService: CrudService<GroupDto, LearnerGroup>, IGroupService
 {
     private readonly IGroupRepository _groupRepository;
 
-    public GroupService(IMapper mapper, IGroupRepository groupRepository, IUnitOfWork unitOfWork) : base(groupRepository, unitOfWork, mapper)
+    public GroupService(IMapper mapper, IGroupRepository groupRepository, ICoursesUnitOfWork unitOfWork) : base(groupRepository, unitOfWork, mapper)
     {
         _groupRepository = groupRepository;
     }

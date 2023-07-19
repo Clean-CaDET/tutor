@@ -12,9 +12,9 @@ public class OwnedCourseService : BaseService<CourseDto, Course>, IOwnedCoursesS
 {
     private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly ICourseRepository _courseRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ICoursesUnitOfWork _unitOfWork;
 
-    public OwnedCourseService(IMapper mapper, IOwnedCourseRepository ownedCourseRepository, ICourseRepository courseRepository, IUnitOfWork unitOfWork): base(mapper)
+    public OwnedCourseService(IMapper mapper, IOwnedCourseRepository ownedCourseRepository, ICourseRepository courseRepository, ICoursesUnitOfWork unitOfWork): base(mapper)
     {
         _ownedCourseRepository = ownedCourseRepository;
         _courseRepository = courseRepository;

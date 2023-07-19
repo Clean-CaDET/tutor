@@ -13,10 +13,10 @@ public class EnrollmentService : BaseService<UnitEnrollmentDto, UnitEnrollment>,
     private readonly IEnrollmentRepository _enrollmentRepository;
     private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly ICrudRepository<KnowledgeUnit> _unitRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ICoursesUnitOfWork _unitOfWork;
 
     public EnrollmentService(IMapper mapper, IEnrollmentRepository enrollmentRepository, IOwnedCourseRepository ownedCourseRepository,
-        IUnitOfWork unitOfWork, ICrudRepository<KnowledgeUnit> unitRepository): base(mapper)
+        ICoursesUnitOfWork unitOfWork, ICrudRepository<KnowledgeUnit> unitRepository): base(mapper)
     {
         _enrollmentRepository = enrollmentRepository;
         _ownedCourseRepository = ownedCourseRepository;

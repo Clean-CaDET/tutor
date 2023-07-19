@@ -13,7 +13,7 @@ public class UnitService : CrudService<KnowledgeUnitDto, KnowledgeUnit>, IUnitSe
     private readonly IOwnedCourseRepository _ownedCourseRepository;
 
     public UnitService(IMapper mapper, ICrudRepository<KnowledgeUnit> unitRepository,
-        IOwnedCourseRepository ownedCourseRepository, IUnitOfWork unitOfWork) : base(unitRepository, unitOfWork, mapper)
+        IOwnedCourseRepository ownedCourseRepository, ICoursesUnitOfWork unitOfWork) : base(unitRepository, unitOfWork, mapper)
     {
         _ownedCourseRepository = ownedCourseRepository;
     }

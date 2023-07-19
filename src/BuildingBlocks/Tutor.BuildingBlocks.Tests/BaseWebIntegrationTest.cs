@@ -1,15 +1,17 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Testing;
+using System.Security.Claims;
 using Tutor.API;
+using Xunit;
 
-namespace Tutor.Stakeholders.Tests;
+namespace Tutor.BuildingBlocks.Tests;
 
-public class BaseWebIntegrationTest : IClassFixture<StakeholdersTestFactory<Program>>
+public class BaseWebIntegrationTest<TTestFactory> : IClassFixture<TTestFactory> where TTestFactory : WebApplicationFactory<Program>
 {
-    protected StakeholdersTestFactory<Program> Factory { get; }
+    protected TTestFactory Factory { get; }
 
-    public BaseWebIntegrationTest(StakeholdersTestFactory<Program> factory)
+    public BaseWebIntegrationTest(TTestFactory factory)
     {
         Factory = factory;
     }

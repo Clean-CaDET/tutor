@@ -1,5 +1,4 @@
 ﻿using FluentResults;
-using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
 
 namespace Tutor.Courses.API.Interfaces.Management;
