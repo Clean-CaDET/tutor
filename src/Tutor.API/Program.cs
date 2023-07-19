@@ -49,3 +49,4 @@ namespace Tutor.API
 // TODO: Associations with some stakeholder classes were severed (e.g., course ownership)
 // TODO: Enrollment should generate mastery
 // TODO: Enrollment status je deactivated
+// TODO: DELETE operations need to be revisited because of modules.
