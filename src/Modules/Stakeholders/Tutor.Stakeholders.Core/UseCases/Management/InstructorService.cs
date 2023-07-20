@@ -23,19 +23,19 @@ public class InstructorService : StakeholderService<Instructor>, IInstructorServ
             UserRole.Instructor);
     }
 
-    public override Result<StakeholderAccountDto> Update(StakeholderAccountDto entity)
+    public override Result<StakeholderAccountDto> Update(StakeholderAccountDto instructor)
     {
-        var dbStakeholder = CrudRepository.Get(entity.Id);
+        var dbStakeholder = CrudRepository.Get(instructor.Id);
         if (dbStakeholder is null) return Result.Fail(FailureCode.NotFound);
         var user = UserRepository.Get(dbStakeholder.UserId);
-        entity.UserId = user.Id;
+        instructor.UserId = user.Id;
 
-        CrudRepository.Update(dbStakeholder, MapToDomain(entity));
-        user.Username = entity.Email;
+        var updatedInstructor = CrudRepository.Update(dbStakeholder, MapToDomain(instructor));
+        user.Username = instructor.Email;
 
         var result = UnitOfWork.Save();
         if (result.IsFailed) return result;
 
-        return entity;
+        return MapToDto(updatedInstructor);
     }
 }

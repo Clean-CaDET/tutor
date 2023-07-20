@@ -19,7 +19,7 @@ public abstract class CrudService<TDto, TDomain> : BaseService<TDto, TDomain> wh
         CrudRepository = crudRepository;
         UnitOfWork = unitOfWork;
     }
-
+    // TODO: Check if this service is being used properly. Up to now it returned tracked entities that could be and saved with UoW. This is no longer true.
     public Result<PagedResult<TDto>> GetPaged(int page, int pageSize)
     {
         var result = CrudRepository.GetPaged(page, pageSize);

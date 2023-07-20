@@ -42,3 +42,11 @@ namespace Tutor.API
 {
     public partial class Program { }
 }
+
+// TODO: CourseOwnership service was split into CourseOwnership and OwnedCourses. Check if everything is ok
+// TODO: LearnerGroupService was split into two.
+// TODO: EnrollmentService was split into Enrollment and EnrolledCourse service
+// TODO: Associations with some stakeholder classes were severed (e.g., course ownership)
+// TODO: Enrollment should generate mastery
+// TODO: Enrollment status je deactivated
+// TODO: DELETE operations need to be revisited because of modules.

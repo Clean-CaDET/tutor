@@ -19,7 +19,7 @@ public class CrudDatabaseRepository<TEntity, TDbContext> : ICrudRepository<TEnti
 
     public PagedResult<TEntity> GetPaged(int page, int pageSize)
     {
-        var task = _dbSet.OrderByDescending(e => e.Id).GetPaged(page, pageSize);
+        var task = _dbSet.GetPagedById(page, pageSize);
         task.Wait();
         return task.Result;
     }
@@ -27,6 +27,11 @@ public class CrudDatabaseRepository<TEntity, TDbContext> : ICrudRepository<TEnti
     public TEntity? Get(int id)
     {
         return _dbSet.Find(id);
+    }
+
+    public List<TEntity> GetMany(List<int> ids)
+    {
+        return _dbSet.Where(e => ids.Contains(e.Id)).ToList();
     }
 
     public TEntity Create(TEntity entity)

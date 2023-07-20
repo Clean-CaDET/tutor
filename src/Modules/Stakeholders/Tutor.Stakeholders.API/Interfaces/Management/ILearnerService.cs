@@ -10,6 +10,7 @@ public interface ILearnerService
     Result<List<StakeholderAccountDto>> BulkRegister(List<StakeholderAccountDto> accounts);
 
     Result<PagedResult<StakeholderAccountDto>> GetPaged(int page, int pageSize);
+    Result<List<StakeholderAccountDto>> GetMany(List<int> instructorIds);
     Result<PagedResult<StakeholderAccountDto>> GetByIndexes(string[] indexes);
 
     Result<StakeholderAccountDto> Update(StakeholderAccountDto learner);

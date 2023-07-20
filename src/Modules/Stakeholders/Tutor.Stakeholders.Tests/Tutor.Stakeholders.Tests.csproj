@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Tutor.BuildingBlocks.Tests\Tutor.BuildingBlocks.Tests.csproj" />
     <ProjectReference Include="..\..\..\Tutor.API\Tutor.API.csproj" />
   </ItemGroup>
 

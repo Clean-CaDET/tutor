@@ -6,6 +6,7 @@ public interface ICrudRepository<TEntity> where TEntity : Entity
 {
     PagedResult<TEntity> GetPaged(int page, int pageSize);
     TEntity? Get(int id);
+    List<TEntity> GetMany(List<int> ids);
     TEntity Create(TEntity entity);
     void BulkCreate(List<TEntity> entities);
     TEntity Update(TEntity entity);

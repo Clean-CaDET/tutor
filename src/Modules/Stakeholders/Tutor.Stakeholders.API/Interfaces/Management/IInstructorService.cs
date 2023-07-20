@@ -8,6 +8,7 @@ public interface IInstructorService
 {
     Result<StakeholderAccountDto> Register(StakeholderAccountDto account);
     Result<PagedResult<StakeholderAccountDto>> GetPaged(int page, int pageSize);
+    Result<List<StakeholderAccountDto>> GetMany(List<int> instructorIds);
     Result<StakeholderAccountDto> Update(StakeholderAccountDto entity);
     Result<StakeholderAccountDto> Archive(int id, bool archive);
     Result Delete(int id);

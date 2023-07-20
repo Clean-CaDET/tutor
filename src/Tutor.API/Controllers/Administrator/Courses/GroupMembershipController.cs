@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tutor.BuildingBlocks.Core.UseCases;
+using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Interfaces.Management;
-using Tutor.Stakeholders.API.Dtos;
 
 namespace Tutor.API.Controllers.Administrator.Courses;
 
@@ -19,9 +18,9 @@ public class GroupMembershipController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<PagedResult<StakeholderAccountDto>> GetMembers(int groupId, [FromQuery] int page, [FromQuery] int pageSize)
+    public ActionResult<List<LearnerDto>> GetMembers(int groupId, [FromQuery] int page, [FromQuery] int pageSize)
     {
-        var result = _membershipService.GetMembers(groupId, page, pageSize);
+        var result = _membershipService.GetGroupMembers(groupId);
         return CreateResponse(result);
     }
 

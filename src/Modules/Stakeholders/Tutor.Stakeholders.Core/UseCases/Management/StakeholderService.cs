@@ -11,7 +11,7 @@ public abstract class StakeholderService<TDomain> : CrudService<StakeholderAccou
 {
     protected readonly IUserRepository UserRepository;
 
-    protected StakeholderService(ICrudRepository<TDomain> crudRepository, IUnitOfWork unitOfWork, IMapper mapper, IUserRepository userRepository) 
+    protected StakeholderService(ICrudRepository<TDomain> crudRepository, IStakeholdersUnitOfWork unitOfWork, IMapper mapper, IUserRepository userRepository) 
         : base(crudRepository, unitOfWork, mapper)
     {
         UserRepository = userRepository;
@@ -41,6 +41,12 @@ public abstract class StakeholderService<TDomain> : CrudService<StakeholderAccou
 
         UnitOfWork.Commit();
         return registerResult;
+    }
+
+    public Result<List<StakeholderAccountDto>> GetMany(List<int> stakeholderIds)
+    {
+        var stakeholders = CrudRepository.GetMany(stakeholderIds);
+        return MapToDto(stakeholders);
     }
 
     public Result<StakeholderAccountDto> Archive(int id, bool archive)

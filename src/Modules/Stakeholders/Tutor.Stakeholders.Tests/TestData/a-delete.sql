@@ -1,3 +1,3 @@
-﻿DELETE FROM public."Learners";
-DELETE FROM public."Instructors";
-DELETE FROM public."Users";
+﻿DELETE FROM stakeholders."Learners";
+DELETE FROM stakeholders."Instructors";
+DELETE FROM stakeholders."Users";

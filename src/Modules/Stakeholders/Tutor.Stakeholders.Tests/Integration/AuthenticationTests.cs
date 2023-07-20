@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using Tutor.API;
 using Tutor.API.Controllers;
 using Tutor.Stakeholders.API.Dtos;
 using Tutor.Stakeholders.API.Interfaces;
@@ -10,9 +9,9 @@ using Tutor.Stakeholders.API.Interfaces;
 namespace Tutor.Stakeholders.Tests.Integration;
 
 [Collection("Sequential")]
-public class AuthenticationTests : BaseWebIntegrationTest
+public class AuthenticationTests : BaseStakeholdersIntegrationTest
 {
-    public AuthenticationTests(StakeholdersTestFactory<Program> factory) : base(factory) { }
+    public AuthenticationTests(StakeholdersTestFactory factory) : base(factory) { }
 
     [Fact]
     public void Successfully_login()

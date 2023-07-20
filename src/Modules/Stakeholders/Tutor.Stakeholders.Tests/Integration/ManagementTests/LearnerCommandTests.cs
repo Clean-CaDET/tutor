@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using Tutor.API;
 using Tutor.API.Controllers.Administrator.Stakeholders;
 using Tutor.Stakeholders.API.Dtos;
 using Tutor.Stakeholders.API.Interfaces.Management;
@@ -11,9 +10,9 @@ using Tutor.Stakeholders.Infrastructure.Database;
 namespace Tutor.Stakeholders.Tests.Integration.ManagementTests;
 
 [Collection("Sequential")]
-public class LearnerCommandTests : BaseWebIntegrationTest
+public class LearnerCommandTests : BaseStakeholdersIntegrationTest
 {
-    public LearnerCommandTests(StakeholdersTestFactory<Program> factory) : base(factory) { }
+    public LearnerCommandTests(StakeholdersTestFactory factory) : base(factory) { }
 
     [Fact]
     public void Registers()

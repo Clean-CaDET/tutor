@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Interfaces.Management;
 
@@ -18,9 +17,9 @@ public class GroupController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<PagedResult<GroupDto>> GetAll(int courseId, [FromQuery] int page, [FromQuery] int pageSize)
+    public ActionResult<List<GroupDto>> GetAll(int courseId)
     {
-        var result = _groupService.GetByCourse(courseId, page, pageSize);
+        var result = _groupService.GetByCourse(courseId);
         return CreateResponse(result);
     }
 
