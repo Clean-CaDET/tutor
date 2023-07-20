@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="UseCases" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Tutor.LearningUtils.API\Tutor.LearningUtils.API.csproj" />
   </ItemGroup>
 

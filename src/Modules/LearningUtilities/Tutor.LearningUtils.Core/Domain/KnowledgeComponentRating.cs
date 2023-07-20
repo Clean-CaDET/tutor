@@ -1,6 +1,8 @@
-﻿namespace Tutor.LearningUtils.Core.Domain;
+﻿using Tutor.BuildingBlocks.Core.Domain;
 
-public class KnowledgeComponentRating
+namespace Tutor.LearningUtils.Core.Domain;
+
+public class KnowledgeComponentRating : Entity
 {
     public int LearnerId { get; private set; }
     public int KnowledgeComponentId { get; private set; }

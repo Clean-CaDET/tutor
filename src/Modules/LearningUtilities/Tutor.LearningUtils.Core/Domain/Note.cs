@@ -1,6 +1,8 @@
-﻿namespace Tutor.LearningUtils.Core.Domain;
+﻿using Tutor.BuildingBlocks.Core.Domain;
 
-public class Note
+namespace Tutor.LearningUtils.Core.Domain;
+
+public class Note : Entity
 {
     public int LearnerId { get; set; }
     public int UnitId { get; set; }

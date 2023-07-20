@@ -1,6 +1,8 @@
-﻿namespace Tutor.LearningUtils.Core.Domain;
+﻿using Tutor.BuildingBlocks.Core.Domain;
 
-public class EmotionsFeedback
+namespace Tutor.LearningUtils.Core.Domain;
+
+public class EmotionsFeedback : Entity
 {
     public int Id { get; private set; }
     public int LearnerId { get; private set; }
