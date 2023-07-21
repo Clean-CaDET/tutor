@@ -41,10 +41,10 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
             .Include(ue => ue.KnowledgeUnit).ToList();
     }
 
-    public UnitEnrollment GetEnrollment(int unitId, int learnerId)
+    public UnitEnrollment? GetEnrollment(int unitId, int learnerId)
     {
         return _dbContext.UnitEnrollments
-            .First(e => e.KnowledgeUnit.Id == unitId && e.LearnerId == learnerId);
+            .FirstOrDefault(e => e.KnowledgeUnit.Id == unitId && e.LearnerId == learnerId);
     }
 
     public List<UnitEnrollment> GetEnrollments(int unitId, int[] learnerIds)

@@ -19,14 +19,14 @@ public class GroupMonitoringController : BaseApiController
     }
 
     [HttpGet("{courseId:int}/groups")]
-    public ActionResult<PagedResult<GroupDto>> GetCourseGroups(int courseId)
+    public ActionResult<List<GroupDto>> GetCourseGroups(int courseId)
     {
         var result = _groupMonitoringService.GetCourseGroups(User.InstructorId(), courseId);
         return CreateResponse(result);
     }
 
     [HttpGet("{courseId:int}/groups/{groupId:int}")]
-    public ActionResult<PagedResult<LearnerDto>> GetGroupLearners(int courseId, int groupId, [FromQuery] int page, [FromQuery] int pageSize)
+    public ActionResult<PagedResult<LearnerDto>> GetLearners(int courseId, int groupId, [FromQuery] int page, [FromQuery] int pageSize)
     {
         var result = _groupMonitoringService.GetLearners(User.InstructorId(), courseId, groupId, page, pageSize);
         return CreateResponse(result);
