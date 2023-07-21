@@ -1,4 +1,5 @@
-﻿using Tutor.Courses.Infrastructure;
+using Tutor.Courses.Infrastructure;
+using Tutor.LearningUtils.Infrastructure;
 using Tutor.Stakeholders.Infrastructure;
 
 namespace Tutor.API.Startup;
@@ -9,6 +10,7 @@ public static class ModulesConfiguration
     {
         services.ConfigureStakeholdersModule();
         services.ConfigureCoursesModule();
+        services.ConfigureLearningUtilitiesModule();
 
         return services;
     }
