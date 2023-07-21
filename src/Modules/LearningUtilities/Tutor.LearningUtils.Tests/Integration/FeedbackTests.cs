@@ -5,7 +5,6 @@ using Tutor.API.Controllers.Learner.Utilities;
 using Tutor.LearningUtils.API.Dtos.Feedback;
 using Tutor.LearningUtils.API.Interfaces;
 using Tutor.LearningUtils.Infrastructure.Database;
-using Xunit;
 
 namespace Tutor.LearningUtils.Tests.Integration;
 
@@ -20,7 +19,7 @@ public class FeedbackTests : BaseLearningUtilsIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupFeedbackController(scope);
-        var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilitiesContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilsContext>();
         dbContext.Database.BeginTransaction();
 
         var actualFeedback = ((OkObjectResult)controller.PostEmotionsFeedback(postedFeedback).Result).Value as EmotionsFeedbackDto;
@@ -40,7 +39,7 @@ public class FeedbackTests : BaseLearningUtilsIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupFeedbackController(scope);
-        var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilitiesContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilsContext>();
         dbContext.Database.BeginTransaction();
 
         var actualFeedback = ((OkObjectResult)controller.PostImprovementFeedback(postedFeedback).Result).Value as ImprovementFeedbackDto;

@@ -5,7 +5,6 @@ using Tutor.API.Controllers.Learner.Utilities;
 using Tutor.LearningUtils.API.Dtos;
 using Tutor.LearningUtils.API.Interfaces;
 using Tutor.LearningUtils.Infrastructure.Database;
-using Xunit;
 
 namespace Tutor.LearningUtils.Tests.Integration;
 
@@ -18,7 +17,7 @@ public class RatingTests : BaseLearningUtilsIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupRatingController(scope, "-2");
-        var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilitiesContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilsContext>();
         var tags = new[] {"Težina zadataka", "Jasnoća zadataka"};
         var kcRating = new KnowledgeComponentRatingDto { KnowledgeComponentId = -10, Rating = 5, Tags = tags};
         dbContext.Database.BeginTransaction();

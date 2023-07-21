@@ -5,10 +5,10 @@ using Tutor.API.Controllers.Learner.Utilities;
 using Tutor.LearningUtils.API.Dtos;
 using Tutor.LearningUtils.API.Interfaces;
 using Tutor.LearningUtils.Infrastructure.Database;
-using Xunit;
 
 namespace Tutor.LearningUtils.Tests.Integration;
 
+[Collection("Sequential")]
 public class NotesTests : BaseLearningUtilsIntegrationTest
 {
      public NotesTests(LearningUtilsTestFactory factory) : base(factory) {}
@@ -18,7 +18,7 @@ public class NotesTests : BaseLearningUtilsIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupNotesController(scope, "-2");
-        var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilitiesContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilsContext>();
         var noteDto = new NoteDto() { Text = "Test", UnitId = -1 };
         dbContext.Database.BeginTransaction();
 
@@ -32,7 +32,7 @@ public class NotesTests : BaseLearningUtilsIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupNotesController(scope, "-2");
-        var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilitiesContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilsContext>();
         dbContext.Database.BeginTransaction();
 
         var result = (OkResult)controller.Delete(-1);
@@ -45,7 +45,7 @@ public class NotesTests : BaseLearningUtilsIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupNotesController(scope, "-1");
-        var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilitiesContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilsContext>();
         dbContext.Database.BeginTransaction();
 
         var updatedEntity = new NoteDto() { Text = "Test update", Id = -2, UnitId = -1 };

@@ -5,9 +5,9 @@ namespace Tutor.LearningUtils.Infrastructure.Database.Repositories;
 
 public class RatingDatabaseRepository : IRatingRepository
 {
-    private readonly LearningUtilitiesContext _dbContext;
+    private readonly LearningUtilsContext _dbContext;
 
-    public RatingDatabaseRepository(LearningUtilitiesContext dbContext)
+    public RatingDatabaseRepository(LearningUtilsContext dbContext)
     {
         _dbContext = dbContext;
     }

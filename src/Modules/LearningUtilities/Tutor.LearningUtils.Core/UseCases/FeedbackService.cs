@@ -12,9 +12,9 @@ public class FeedbackService : IFeedbackService
     
     private readonly IMapper _mapper;
     private readonly IFeedbackRepository _repository;
-    private readonly ILearningUtilitiesUnitOfWork _unitOfWork;
+    private readonly ILearningUtilsUnitOfWork _unitOfWork;
 
-    public FeedbackService(IMapper mapper, IFeedbackRepository repository, ILearningUtilitiesUnitOfWork unitOfWork)
+    public FeedbackService(IMapper mapper, IFeedbackRepository repository, ILearningUtilsUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _repository = repository;

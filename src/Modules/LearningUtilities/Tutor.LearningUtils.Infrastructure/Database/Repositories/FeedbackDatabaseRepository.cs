@@ -5,9 +5,9 @@ namespace Tutor.LearningUtils.Infrastructure.Database.Repositories;
 
 public class FeedbackDatabaseRepository : IFeedbackRepository
 {
-    private readonly LearningUtilitiesContext _dbContext;
+    private readonly LearningUtilsContext _dbContext;
 
-    public FeedbackDatabaseRepository(LearningUtilitiesContext dbContext)
+    public FeedbackDatabaseRepository(LearningUtilsContext dbContext)
     {
         _dbContext = dbContext;
     }

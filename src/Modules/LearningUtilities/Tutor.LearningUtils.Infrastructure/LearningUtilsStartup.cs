@@ -13,9 +13,8 @@ using Tutor.LearningUtils.Infrastructure.Database.Repositories;
 
 namespace Tutor.LearningUtils.Infrastructure;
 
-public static class LearningUtilitiesStartup
+public static class LearningUtilsStartup
 {
-    //TODO Check if this is OK.
     public static IServiceCollection ConfigureLearningUtilitiesModule(this IServiceCollection services)
     {
         services.AddAutoMapper(typeof(FeedbackProfile).Assembly);
@@ -35,13 +34,13 @@ public static class LearningUtilitiesStartup
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
-        services.AddScoped(typeof(ICrudRepository<Note>), typeof(CrudDatabaseRepository<Note, LearningUtilitiesContext>));
+        services.AddScoped(typeof(ICrudRepository<Note>), typeof(CrudDatabaseRepository<Note, LearningUtilsContext>));
         services.AddScoped<INoteRepository, NoteDatabaseRepository>();
         services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
         services.AddScoped<IRatingRepository, RatingDatabaseRepository>();
 
-        services.AddScoped<ILearningUtilitiesUnitOfWork, LearningUtilitiesUnitOfWork>();
-        services.AddDbContext<LearningUtilitiesContext>(opt =>
+        services.AddScoped<ILearningUtilsUnitOfWork, LearningUtilsUnitOfWork>();
+        services.AddDbContext<LearningUtilsContext>(opt =>
             opt.UseNpgsql(CreateConnectionStringFromEnvironment()));
     }
 

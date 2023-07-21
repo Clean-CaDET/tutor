@@ -4,9 +4,9 @@ using Tutor.LearningUtils.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.LearningUtils.Infrastructure.Database.Repositories;
 
-public class NoteDatabaseRepository : CrudDatabaseRepository<Note, LearningUtilitiesContext>, INoteRepository
+public class NoteDatabaseRepository : CrudDatabaseRepository<Note, LearningUtilsContext>, INoteRepository
 {
-    public NoteDatabaseRepository(LearningUtilitiesContext dbContext): base(dbContext) {}
+    public NoteDatabaseRepository(LearningUtilsContext dbContext): base(dbContext) {}
     
     public List<Note> GetNotesByLearnerAndUnit(int learnerId, int unitId)
     {

@@ -2,7 +2,7 @@
 
 namespace Tutor.LearningUtils.Core.UseCases;
 
-public interface ILearningUtilitiesUnitOfWork : IUnitOfWork
+public interface ILearningUtilsUnitOfWork : IUnitOfWork
 {
     
 }

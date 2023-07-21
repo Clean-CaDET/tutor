@@ -3,7 +3,7 @@ using Tutor.LearningUtils.Infrastructure.Database;
 
 namespace Tutor.LearningUtils.Tests;
 
-public class LearningUtilsTestFactory : BaseTestFactory<LearningUtilitiesContext>
+public class LearningUtilsTestFactory : BaseTestFactory<LearningUtilsContext>
 {
     
 }
