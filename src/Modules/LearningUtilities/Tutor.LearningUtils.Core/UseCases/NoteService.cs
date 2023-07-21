@@ -14,7 +14,7 @@ public class NoteService : CrudService<NoteDto, Note>, INoteService
 
     private INoteRepository _noteRepository;
     
-    public NoteService(ICrudRepository<Note> crudRepository, IUnitOfWork unitOfWork, IMapper mapper, INoteRepository noteRepository) : base(crudRepository, unitOfWork, mapper)
+    public NoteService(ICrudRepository<Note> crudRepository, ILearningUtilitiesUnitOfWork unitOfWork, IMapper mapper, INoteRepository noteRepository) : base(crudRepository, unitOfWork, mapper)
     {
         _noteRepository = noteRepository;
     }

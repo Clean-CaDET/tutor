@@ -14,7 +14,7 @@ public class RatingService : IRatingService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     
-    public RatingService(IRatingRepository ratingRepository, IUnitOfWork unitOfWork, IMapper mapper)
+    public RatingService(IRatingRepository ratingRepository, ILearningUtilitiesUnitOfWork unitOfWork, IMapper mapper)
     {
         _ratingRepository = ratingRepository;
         _unitOfWork = unitOfWork;

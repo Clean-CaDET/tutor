@@ -1,7 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Tutor.BuildingBlocks.Core.UseCases;
+using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Security;
 using Tutor.LearningUtils.API.Interfaces;
+using Tutor.LearningUtils.Core.Domain;
 using Tutor.LearningUtils.Core.Domain.RepositoryInterfaces;
 using Tutor.LearningUtils.Core.Mappers;
 using Tutor.LearningUtils.Core.UseCases;
@@ -15,7 +18,6 @@ public static class LearningUtilitiesStartup
     //TODO Check if this is OK.
     public static IServiceCollection ConfigureLearningUtilitiesModule(this IServiceCollection services)
     {
-
         services.AddAutoMapper(typeof(FeedbackProfile).Assembly);
         services.AddAutoMapper(typeof(NoteProfile).Assembly);
         services.AddAutoMapper(typeof(RatingProfile).Assembly);
@@ -33,6 +35,7 @@ public static class LearningUtilitiesStartup
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
+        services.AddScoped(typeof(ICrudRepository<Note>), typeof(CrudDatabaseRepository<Note, LearningUtilitiesContext>));
         services.AddScoped<INoteRepository, NoteDatabaseRepository>();
         services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
         services.AddScoped<IRatingRepository, RatingDatabaseRepository>();
@@ -54,6 +57,5 @@ public static class LearningUtilitiesStartup
 
         return
             $"Server={server};Port={port};Database={database};User ID={user};Password={password};Integrated Security={integratedSecurity};Pooling={pooling};";
-
     }
 }
