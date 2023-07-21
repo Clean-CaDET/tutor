@@ -16,7 +16,7 @@ public class RatingTests : BaseLearningUtilsIntegrationTest
     public void Creates_new_rating()
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupRatingController(scope, "-2");
+        var controller = CreateController(scope, "-2");
         var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilsContext>();
         var tags = new[] {"Težina zadataka", "Jasnoća zadataka"};
         var kcRating = new KnowledgeComponentRatingDto { KnowledgeComponentId = -10, Rating = 5, Tags = tags};
@@ -30,7 +30,7 @@ public class RatingTests : BaseLearningUtilsIntegrationTest
         rating.Rating.ShouldBe(5);
     }
     
-    private static RatingController SetupRatingController(IServiceScope scope, string id)
+    private static RatingController CreateController(IServiceScope scope, string id)
     {
         return new RatingController(scope.ServiceProvider.GetRequiredService<IRatingService>())
         {

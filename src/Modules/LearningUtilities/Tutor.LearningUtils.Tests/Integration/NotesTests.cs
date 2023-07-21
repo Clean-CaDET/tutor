@@ -17,7 +17,7 @@ public class NotesTests : BaseLearningUtilsIntegrationTest
     public void Creates_new_note()
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupNotesController(scope, "-2");
+        var controller = CreateController(scope, "-2");
         var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilsContext>();
         var noteDto = new NoteDto() { Text = "Test", UnitId = -1 };
         dbContext.Database.BeginTransaction();
@@ -31,7 +31,7 @@ public class NotesTests : BaseLearningUtilsIntegrationTest
     public void Deletes_existing_note()
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupNotesController(scope, "-2");
+        var controller = CreateController(scope, "-2");
         var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilsContext>();
         dbContext.Database.BeginTransaction();
 
@@ -44,7 +44,7 @@ public class NotesTests : BaseLearningUtilsIntegrationTest
     public void Updates_existing_note()
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupNotesController(scope, "-1");
+        var controller = CreateController(scope, "-1");
         var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilsContext>();
         dbContext.Database.BeginTransaction();
 
@@ -61,13 +61,13 @@ public class NotesTests : BaseLearningUtilsIntegrationTest
     public void Gets_stored_notes()
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupNotesController(scope, "-1");
+        var controller = CreateController(scope, "-1");
 
         var notes = ((OkObjectResult)controller.GetLearnersNotes(-1).Result)?.Value as List<NoteDto>;
         notes.Count.ShouldBe(2);
     }
 
-    private static NoteController SetupNotesController(IServiceScope scope, string id)
+    private static NoteController CreateController(IServiceScope scope, string id)
     {
         return new NoteController(scope.ServiceProvider.GetRequiredService<INoteService>())
         {

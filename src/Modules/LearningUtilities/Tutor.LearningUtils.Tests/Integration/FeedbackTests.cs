@@ -18,7 +18,7 @@ public class FeedbackTests : BaseLearningUtilsIntegrationTest
     public void Stores_emotions_feedback(EmotionsFeedbackDto postedFeedback, EmotionsFeedbackDto expectedFeedback)
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupFeedbackController(scope);
+        var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilsContext>();
         dbContext.Database.BeginTransaction();
 
@@ -38,7 +38,7 @@ public class FeedbackTests : BaseLearningUtilsIntegrationTest
     public void Stores_tutor_improvement_feedback(ImprovementFeedbackDto postedFeedback, ImprovementFeedbackDto expectedFeedback)
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupFeedbackController(scope);
+        var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilsContext>();
         dbContext.Database.BeginTransaction();
 
@@ -55,7 +55,7 @@ public class FeedbackTests : BaseLearningUtilsIntegrationTest
         feedback.ContentComment.ShouldBe(expectedFeedback.ContentComment);
     }
 
-    private FeedbackController SetupFeedbackController(IServiceScope scope)
+    private static FeedbackController CreateController(IServiceScope scope)
     {
         return new FeedbackController(scope.ServiceProvider.GetRequiredService<IFeedbackService>())
         {
