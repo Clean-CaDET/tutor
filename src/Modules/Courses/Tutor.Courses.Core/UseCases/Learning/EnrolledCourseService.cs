@@ -8,11 +8,11 @@ using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.Courses.Core.UseCases.Learning;
 
-public class EnrolledCoursesService : BaseService<CourseDto, Course>, IEnrolledCoursesService
+public class EnrolledCourseService : BaseService<CourseDto, Course>, IEnrolledCourseService
 {
     private readonly IEnrollmentRepository _enrollmentRepository;
 
-    public EnrolledCoursesService(IMapper mapper, IEnrollmentRepository enrollmentRepository): base(mapper)
+    public EnrolledCourseService(IMapper mapper, IEnrollmentRepository enrollmentRepository): base(mapper)
     {
         _enrollmentRepository = enrollmentRepository;
     }

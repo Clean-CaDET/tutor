@@ -22,4 +22,16 @@ public class GroupService: CrudService<GroupDto, LearnerGroup>, IGroupService
         var result = _groupRepository.GetCourseGroups(courseId);
         return MapToDto(result);
     }
+
+    public Result<GroupDto> UpdateName(int groupId, string name)
+    {
+        var group = _groupRepository.Get(groupId);
+        if (group == null) return Result.Fail(FailureCode.NotFound);
+
+        group.Name = name;
+        _groupRepository.Update(group);
+        var result = UnitOfWork.Save();
+
+        return result.IsFailed ? result : MapToDto(group);
+    }
 }

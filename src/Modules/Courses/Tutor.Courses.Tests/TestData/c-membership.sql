@@ -1,21 +1,21 @@
 ﻿INSERT INTO courses."LearnerGroups"(
 	"Id", "Name", "CourseId", "LearnerIds")
-VALUES (-1, 'Test Group 1', -1, '-2, -3, -4, -5');
+VALUES (-1, 'Test Group 1', -1, '[-2, -3, -4, -5]');
 INSERT INTO courses."LearnerGroups"(
 	"Id", "Name", "CourseId", "LearnerIds")
-VALUES (-11, 'Test Group 2', -1, '-1');
+VALUES (-11, 'Test Group 2', -1, '[-1]');
 INSERT INTO courses."LearnerGroups"(
 	"Id", "Name", "CourseId", "LearnerIds")
-VALUES (-12, 'Test Group 3', -1, '');
+VALUES (-12, 'Test Group 3', -1, '[]');
 INSERT INTO courses."LearnerGroups"(
     "Id", "Name", "CourseId", "LearnerIds")
-VALUES (-2, 'Test Group', -2, '-1, -2, -3, -4, -5');
+VALUES (-2, 'Test Group', -2, '[-1, -2, -3, -4, -5]');
 INSERT INTO courses."LearnerGroups"(
     "Id", "Name", "CourseId", "LearnerIds")
-VALUES (-3, 'Test Group', -2, '-1, -2, -3, -4, -5');
+VALUES (-3, 'Test Group', -2, '[-1, -2, -3, -4, -5]');
 INSERT INTO courses."LearnerGroups"(
 	"Id", "Name", "CourseId", "LearnerIds")
-VALUES (-13, 'Archived Course Group 1', -5, '-1');
+VALUES (-13, 'Archived Course Group 1', -5, '[-1]');
 
 INSERT INTO courses."UnitEnrollments"(
 	"Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")

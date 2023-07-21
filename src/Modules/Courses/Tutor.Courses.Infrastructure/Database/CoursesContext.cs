@@ -17,12 +17,14 @@ public class CoursesContext : DbContext
     {
         modelBuilder.HasDefaultSchema("courses");
 
-        modelBuilder
+        /*modelBuilder
             .Entity<LearnerGroup>()
             .Property(e => e.LearnerIds)
             .HasConversion(
                 v => string.Join(",", v),
-                v => new HashSet<int>(
-                    v.Split(',', StringSplitOptions.None).Select(int.Parse)));
+                v => v.Equals("") ?
+                    new HashSet<int>() :
+                    new HashSet<int>(v.Split(',', StringSplitOptions.None).Select(int.Parse)));*/
+        modelBuilder.Entity<LearnerGroup>().Property(e => e.LearnerIds).HasColumnType("jsonb");
     }
 }

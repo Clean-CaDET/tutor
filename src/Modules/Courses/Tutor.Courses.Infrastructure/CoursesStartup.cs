@@ -34,10 +34,10 @@ public static class CoursesStartup
     
     private static void SetupCore(IServiceCollection services)
     {
-        services.AddScoped<IOwnedCoursesService, OwnedCourseService>();
+        services.AddScoped<IOwnedCourseService, OwnedCourseService>();
         services.AddScoped<IUnitService, UnitService>();
 
-        services.AddScoped<IEnrolledCoursesService, EnrolledCoursesService>();
+        services.AddScoped<IEnrolledCourseService, EnrolledCourseService>();
 
         services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
         services.AddScoped<ICourseService, CourseService>();

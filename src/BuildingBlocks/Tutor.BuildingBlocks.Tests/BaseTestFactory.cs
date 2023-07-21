@@ -10,7 +10,7 @@ using Tutor.BuildingBlocks.Infrastructure.Security;
 
 namespace Tutor.BuildingBlocks.Tests;
 
-public class BaseTestFactory<TDbContext> : WebApplicationFactory<Program> where TDbContext : DbContext
+public abstract class BaseTestFactory<TDbContext> : WebApplicationFactory<Program> where TDbContext : DbContext
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -50,16 +50,14 @@ public class BaseTestFactory<TDbContext> : WebApplicationFactory<Program> where 
         }
     }
 
-    private static ServiceProvider BuildServiceProvider(IServiceCollection services)
+    private ServiceProvider BuildServiceProvider(IServiceCollection services)
     {
-        var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<TDbContext>));
-        services.Remove(descriptor!);
-
-        services.AddDbContext<TDbContext>(opt => opt.UseNpgsql(CreateConnectionStringForTest()));
-        return services.BuildServiceProvider();
+        return ReplaceNeededDbContexts(services).BuildServiceProvider();
     }
 
-    private static string CreateConnectionStringForTest()
+    protected abstract IServiceCollection ReplaceNeededDbContexts(IServiceCollection services);
+
+    protected static Action<DbContextOptionsBuilder> SetupTestContext()
     {
         var server = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "localhost";
         var port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "5432";
@@ -69,7 +67,8 @@ public class BaseTestFactory<TDbContext> : WebApplicationFactory<Program> where 
         var integratedSecurity = Environment.GetEnvironmentVariable("DATABASE_INTEGRATED_SECURITY") ?? "false";
         var pooling = Environment.GetEnvironmentVariable("DATABASE_POOLING") ?? "true";
 
-        return
-            $"Server={server};Port={port};Database={database};User ID={user};Password={password};Integrated Security={integratedSecurity};Pooling={pooling};Include Error Detail=True";
+        var connectionString = $"Server={server};Port={port};Database={database};User ID={user};Password={password};Integrated Security={integratedSecurity};Pooling={pooling};Include Error Detail=True";
+
+        return opt => opt.UseNpgsql(connectionString);
     }
 }

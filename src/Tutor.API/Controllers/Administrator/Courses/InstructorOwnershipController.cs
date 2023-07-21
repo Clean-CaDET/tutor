@@ -11,18 +11,18 @@ namespace Tutor.API.Controllers.Administrator.Courses;
 public class InstructorOwnershipController : BaseApiController
 {
     private readonly ICourseOwnershipService _ownershipService;
-    private readonly IOwnedCoursesService _instructorOwnedCoursesService;
+    private readonly IOwnedCourseService _instructorOwnedCourseService;
 
-    public InstructorOwnershipController(ICourseOwnershipService ownershipService, IOwnedCoursesService instructorOwnedCoursesService)
+    public InstructorOwnershipController(ICourseOwnershipService ownershipService, IOwnedCourseService instructorOwnedCourseService)
     {
         _ownershipService = ownershipService;
-        _instructorOwnedCoursesService = instructorOwnedCoursesService;
+        _instructorOwnedCourseService = instructorOwnedCourseService;
     }
 
     [HttpGet]
     public ActionResult<List<CourseDto>> GetAll(int instructorId)
     {
-        var result = _instructorOwnedCoursesService.GetAll(instructorId);
+        var result = _instructorOwnedCourseService.GetAll(instructorId);
         return CreateResponse(result);
     }
 

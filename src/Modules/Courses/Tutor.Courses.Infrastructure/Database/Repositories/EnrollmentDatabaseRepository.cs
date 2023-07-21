@@ -18,8 +18,9 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
     public PagedResult<Course> GetEnrolledCourses(int learnerId, int page, int pageSize)
     {
         var task = _dbContext.LearnerGroups
-            .Where(lg => lg.LearnerIds.Any(id => id.Equals(learnerId)))
-            .Select(lg => lg.Course).Where(c => !c.IsArchived).Distinct().GetPaged(page, pageSize);
+            .Where(lg => EF.Functions.JsonContains(lg.LearnerIds, $"{learnerId}"))
+            .Select(lg => lg.Course).Where(c => !c.IsArchived)
+            .Distinct().GetPaged(page, pageSize);
         task.Wait();
         return task.Result;
     }
@@ -27,8 +28,9 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
     public Course? GetEnrolledCourse(int courseId, int learnerId)
     {
         return _dbContext.LearnerGroups
-            .Where(lg => lg.LearnerIds.Any(id => id.Equals(learnerId)))
-            .Select(lg => lg.Course).FirstOrDefault(c => c.Id == courseId && !c.IsArchived);
+            .Where(lg => EF.Functions.JsonContains(lg.LearnerIds, $"{learnerId}"))
+            .Select(lg => lg.Course)
+            .FirstOrDefault(c => c.Id == courseId && !c.IsArchived);
     }
 
     public List<UnitEnrollment> GetEnrolledUnits(int courseId, int learnerId)

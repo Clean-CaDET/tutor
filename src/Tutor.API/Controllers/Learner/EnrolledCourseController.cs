@@ -12,24 +12,24 @@ namespace Tutor.API.Controllers.Learner;
 public class EnrolledCourseController : BaseApiController
 {
     //TODO: Update routes when redesign is near finished
-    private readonly IEnrolledCoursesService _enrolledCoursesService;
+    private readonly IEnrolledCourseService _enrolledCourseService;
 
-    public EnrolledCourseController(IEnrolledCoursesService enrolledCoursesService)
+    public EnrolledCourseController(IEnrolledCourseService enrolledCourseService)
     {
-        _enrolledCoursesService = enrolledCoursesService;
+        _enrolledCourseService = enrolledCourseService;
     }
 
     [HttpGet]
     public ActionResult<PagedResult<CourseDto>> GetEnrolledCourses([FromQuery] int page, [FromQuery] int pageSize)
     {
-        var result = _enrolledCoursesService.GetAll(User.LearnerId(), page, pageSize);
+        var result = _enrolledCourseService.GetAll(User.LearnerId(), page, pageSize);
         return CreateResponse(result);
     }
 
     [HttpGet("{courseId:int}")]
     public ActionResult<CourseDto> GetCourseWithEnrolledAndActiveUnits(int courseId)
     {
-        var result = _enrolledCoursesService.GetWithActiveUnits(courseId, User.LearnerId());
+        var result = _enrolledCourseService.GetWithActiveUnits(courseId, User.LearnerId());
         return CreateResponse(result);
     }
 

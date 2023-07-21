@@ -8,7 +8,7 @@ using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.Courses.Core.UseCases.Authoring;
 
-public class OwnedCourseService : BaseService<CourseDto, Course>, IOwnedCoursesService
+public class OwnedCourseService : BaseService<CourseDto, Course>, IOwnedCourseService
 {
     private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly ICourseRepository _courseRepository;

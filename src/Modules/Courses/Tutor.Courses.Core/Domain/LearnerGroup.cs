@@ -4,10 +4,10 @@ namespace Tutor.Courses.Core.Domain;
 
 public class LearnerGroup : Entity
 {
-    public string Name { get; private set; }
-    public HashSet<int> LearnerIds { get; private set; }
+    public string Name { get; internal set; }
+    public HashSet<int> LearnerIds { get; private set; } = new();
     public int CourseId { get; private set; }
-    public Course Course { get; private set; }
+    public Course? Course { get; private set; }
 
     internal void AddMembers(List<int> learnerIds)
     {

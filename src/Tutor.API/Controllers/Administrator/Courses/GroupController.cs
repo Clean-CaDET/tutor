@@ -32,9 +32,9 @@ public class GroupController : BaseApiController
     }
 
     [HttpPut("{groupId:int}")]
-    public ActionResult<GroupDto> Update([FromBody] GroupDto group)
+    public ActionResult<GroupDto> Update(int groupId, [FromBody] string name)
     {
-        var result = _groupService.Update(group);
+        var result = _groupService.UpdateName(groupId, name);
         return CreateResponse(result);
     }
 

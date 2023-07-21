@@ -18,7 +18,7 @@ public class GroupMembershipController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<LearnerDto>> GetMembers(int groupId, [FromQuery] int page, [FromQuery] int pageSize)
+    public ActionResult<List<LearnerDto>> GetMembers(int groupId)
     {
         var result = _membershipService.GetGroupMembers(groupId);
         return CreateResponse(result);

@@ -9,9 +9,9 @@ using Tutor.Courses.Infrastructure.Database;
 namespace Tutor.Courses.Tests.Integration.Authoring;
 
 [Collection("Sequential")]
-public class OwnedCoursesTests : BaseCoursesIntegrationTest
+public class OwnedCourseTests : BaseCoursesIntegrationTest
 {
-    public OwnedCoursesTests(CoursesTestFactory factory) : base(factory) { }
+    public OwnedCourseTests(CoursesTestFactory factory) : base(factory) { }
 
     [Theory]
     [InlineData("-51", 1)]
@@ -19,7 +19,7 @@ public class OwnedCoursesTests : BaseCoursesIntegrationTest
     public void Retrieves_owned_courses(string instructorId, int expectedCourseCount)
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupOwnedCoursesController(scope, instructorId);
+        var controller = CreateController(scope, instructorId);
         var result = ((OkObjectResult)controller.GetOwnedCourses().Result)?.Value as List<CourseDto>;
 
         result.ShouldNotBeNull();
@@ -30,7 +30,7 @@ public class OwnedCoursesTests : BaseCoursesIntegrationTest
     public void Retrieves_owned_course_with_units()
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = SetupOwnedCoursesController(scope, "-51");
+        var controller = CreateController(scope, "-51");
 
         var result = ((OkObjectResult)controller.GetCourseWithUnits(-1).Result)?.Value as CourseDto;
 
@@ -44,7 +44,7 @@ public class OwnedCoursesTests : BaseCoursesIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<CoursesContext>();
-        var controller = SetupOwnedCoursesController(scope, "-51");
+        var controller = CreateController(scope, "-51");
         var updateCourse = new CourseDto
         {
             Id = -1,
@@ -66,9 +66,9 @@ public class OwnedCoursesTests : BaseCoursesIntegrationTest
         storedCourse.Description.ShouldBe(updateCourse.Description);
     }
 
-    private static OwnedCourseController SetupOwnedCoursesController(IServiceScope scope, string id)
+    private static OwnedCourseController CreateController(IServiceScope scope, string id)
     {
-        return new OwnedCourseController(scope.ServiceProvider.GetRequiredService<IOwnedCoursesService>())
+        return new OwnedCourseController(scope.ServiceProvider.GetRequiredService<IOwnedCourseService>())
         {
             ControllerContext = BuildContext(id, "instructor")
         };

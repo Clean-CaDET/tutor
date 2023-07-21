@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Interfaces.Management;
-using Tutor.Stakeholders.API.Dtos;
 
 namespace Tutor.API.Controllers.Administrator.Courses;
 
@@ -17,7 +17,7 @@ public class CourseOwnerController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<StakeholderAccountDto>> GetAll(int courseId)
+    public ActionResult<List<InstructorDto>> GetAll(int courseId)
     {
         var result = _ownershipService.GetOwners(courseId);
         return CreateResponse(result);

@@ -17,10 +17,10 @@ public class CourseDatabaseRepository : CrudDatabaseRepository<Course, CoursesCo
         return task.Result;
     }
 
-    public Course GetWithUnits(int courseId)
+    public Course? GetWithUnits(int courseId)
     {
         return DbContext.Courses
             .Include(c => c.KnowledgeUnits)
-            .First(c => c.Id == courseId);
+            .FirstOrDefault(c => c.Id == courseId);
     }
 }

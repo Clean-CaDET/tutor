@@ -10,31 +10,31 @@ namespace Tutor.API.Controllers.Instructor.Authoring;
 [Route("api/owned-courses")]
 public class OwnedCourseController : BaseApiController
 {
-    private readonly IOwnedCoursesService _ownedCoursesService;
+    private readonly IOwnedCourseService _ownedCourseService;
 
-    public OwnedCourseController(IOwnedCoursesService ownedCoursesService)
+    public OwnedCourseController(IOwnedCourseService ownedCourseService)
     {
-        _ownedCoursesService = ownedCoursesService;
+        _ownedCourseService = ownedCourseService;
     }
 
     [HttpGet]
     public ActionResult<List<CourseDto>> GetOwnedCourses()
     {
-        var result = _ownedCoursesService.GetAll(User.InstructorId());
+        var result = _ownedCourseService.GetAll(User.InstructorId());
         return CreateResponse(result);
     }
 
     [HttpGet("{courseId:int}")]
     public ActionResult<CourseDto> GetCourseWithUnits(int courseId)
     {
-        var result = _ownedCoursesService.GetWithUnits(courseId, User.InstructorId());
+        var result = _ownedCourseService.GetWithUnits(courseId, User.InstructorId());
         return CreateResponse(result);
     }
 
     [HttpPut("{id:int}")]
     public ActionResult<CourseDto> Update([FromBody] CourseDto course)
     {
-        var result = _ownedCoursesService.Update(course, User.InstructorId());
+        var result = _ownedCourseService.Update(course, User.InstructorId());
         return CreateResponse(result);
     }
 }
