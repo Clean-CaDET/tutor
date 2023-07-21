@@ -15,11 +15,5 @@ public class LearningUtilsContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("learningUtilities");
-
-        ConfigureLearningUtilities(modelBuilder);
-    }
-    
-    private static void ConfigureLearningUtilities(ModelBuilder modelBuilder)
-    {
     }
 }

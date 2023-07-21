@@ -16,15 +16,6 @@ public class CoursesContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("courses");
-
-        /*modelBuilder
-            .Entity<LearnerGroup>()
-            .Property(e => e.LearnerIds)
-            .HasConversion(
-                v => string.Join(",", v),
-                v => v.Equals("") ?
-                    new HashSet<int>() :
-                    new HashSet<int>(v.Split(',', StringSplitOptions.None).Select(int.Parse)));*/
         modelBuilder.Entity<LearnerGroup>().Property(e => e.LearnerIds).HasColumnType("jsonb");
     }
 }

@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Tutor.BuildingBlocks.Core.UseCases;
-using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Security;
 using Tutor.LearningUtils.API.Interfaces;
-using Tutor.LearningUtils.Core.Domain;
 using Tutor.LearningUtils.Core.Domain.RepositoryInterfaces;
 using Tutor.LearningUtils.Core.Mappers;
 using Tutor.LearningUtils.Core.UseCases;
@@ -34,7 +31,6 @@ public static class LearningUtilsStartup
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
-        services.AddScoped(typeof(ICrudRepository<Note>), typeof(CrudDatabaseRepository<Note, LearningUtilsContext>));
         services.AddScoped<INoteRepository, NoteDatabaseRepository>();
         services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
         services.AddScoped<IRatingRepository, RatingDatabaseRepository>();

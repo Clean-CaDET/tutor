@@ -12,9 +12,9 @@ namespace Tutor.LearningUtils.Core.UseCases;
 public class NoteService : CrudService<NoteDto, Note>, INoteService
 {
 
-    private INoteRepository _noteRepository;
+    private readonly INoteRepository _noteRepository;
     
-    public NoteService(ICrudRepository<Note> crudRepository, ILearningUtilsUnitOfWork unitOfWork, IMapper mapper, INoteRepository noteRepository) : base(crudRepository, unitOfWork, mapper)
+    public NoteService(ILearningUtilsUnitOfWork unitOfWork, IMapper mapper, INoteRepository noteRepository) : base(noteRepository, unitOfWork, mapper)
     {
         _noteRepository = noteRepository;
     }
@@ -26,8 +26,10 @@ public class NoteService : CrudService<NoteDto, Note>, INoteService
 
     public Result Delete(int noteId, int learnerId)
     {
-        var note = _noteRepository.Get(noteId);
-        return note.LearnerId != learnerId ? Result.Fail(FailureCode.Forbidden) : Delete(noteId);
+        var result = Get(noteId);
+        if(result.IsFailed) return Result.Fail(result.Errors);
+
+        return result.Value.LearnerId != learnerId ? Result.Fail(FailureCode.Forbidden) : Delete(noteId);
     }
 
     public Result<byte[]> GetNotesExport(int learnerId, int unitId)
