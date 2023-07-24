@@ -6,4 +6,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Tutor.KnowledgeComponents.API\Tutor.KnowledgeComponents.API.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Domain\" />
+    <Folder Include="Mappers\" />
+    <Folder Include="UseCases\Authoring\" />
+    <Folder Include="UseCases\Analysis\" />
+    <Folder Include="UseCases\Learning\" />
+    <Folder Include="UseCases\Monitoring\" />
+  </ItemGroup>
+
 </Project>

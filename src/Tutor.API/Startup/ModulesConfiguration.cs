@@ -1,4 +1,5 @@
 using Tutor.Courses.Infrastructure;
+using Tutor.KnowledgeComponents.Infrastructure;
 using Tutor.LearningUtils.Infrastructure;
 using Tutor.Stakeholders.Infrastructure;
 
@@ -11,6 +12,7 @@ public static class ModulesConfiguration
         services.ConfigureStakeholdersModule();
         services.ConfigureCoursesModule();
         services.ConfigureLearningUtilitiesModule();
+        services.ConfigureKnowledgeComponentsModule();
 
         return services;
     }

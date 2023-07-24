@@ -6,4 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Tutor.BuildingBlocks.Core\Tutor.BuildingBlocks.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dtos\" />
+    <Folder Include="Interfaces\Analysis\" />
+    <Folder Include="Interfaces\Authoring\" />
+    <Folder Include="Interfaces\Monitoring\" />
+    <Folder Include="Interfaces\Learning\" />
+  </ItemGroup>
+
 </Project>
