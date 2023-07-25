@@ -24,9 +24,8 @@ public static class CoursesStartup
 {
     public static IServiceCollection ConfigureCoursesModule(this IServiceCollection services)
     {
+        // Registers all profiles since it works on the assembly
         services.AddAutoMapper(typeof(CourseProfile).Assembly);
-        services.AddAutoMapper(typeof(GroupEnrollmentProfile).Assembly);
-        services.AddAutoMapper(typeof(StakeholdersProfile).Assembly);
         SetupCore(services);
         SetupInfrastructure(services);
         return services;

@@ -30,11 +30,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Integration\Analysis\" />
 	  <Folder Include="Integration\Learning\" />
 	  <Folder Include="Integration\Authoring\" />
 	  <Folder Include="Integration\Monitoring\" />
-	  <Folder Include="TestData\" />
 	</ItemGroup>
 
 </Project>

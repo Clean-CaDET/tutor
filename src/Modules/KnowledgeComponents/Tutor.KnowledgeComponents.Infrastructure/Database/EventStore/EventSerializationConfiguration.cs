@@ -22,7 +22,7 @@ public class EventSerializationConfiguration : DefaultJsonTypeInfoResolver
         {
             jsonTypeInfo.PolymorphismOptions = new JsonPolymorphismOptions
             {
-                TypeDiscriminatorPropertyName = "$type",
+                TypeDiscriminatorPropertyName = "$discriminator",
                 IgnoreUnrecognizedTypeDiscriminators = true,
                 UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FailSerialization,
                 DerivedTypes =

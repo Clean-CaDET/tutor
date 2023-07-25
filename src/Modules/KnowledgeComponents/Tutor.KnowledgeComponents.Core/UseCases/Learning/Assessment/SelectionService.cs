@@ -17,9 +17,11 @@ public class SelectionService : ISelectionService
     private readonly IKnowledgeMasteryRepository _knowledgeMasteryRepository;
     private readonly IAssessmentItemSelector _assessmentItemSelector;
     private readonly IAssessmentItemRepository _assessmentItemRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IKnowledgeComponentsUnitOfWork _unitOfWork;
 
-    public SelectionService(IMapper mapper, IAccessService accessService, IKnowledgeMasteryRepository knowledgeMasteryRepository, IAssessmentItemSelector assessmentItemSelector, IAssessmentItemRepository assessmentItemRepository, IUnitOfWork unitOfWork)
+    public SelectionService(IMapper mapper, IAccessService accessService,
+        IKnowledgeMasteryRepository knowledgeMasteryRepository, IAssessmentItemSelector assessmentItemSelector,
+        IAssessmentItemRepository assessmentItemRepository, IKnowledgeComponentsUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _accessService = accessService;

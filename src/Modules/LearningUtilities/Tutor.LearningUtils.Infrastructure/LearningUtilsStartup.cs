@@ -14,9 +14,8 @@ public static class LearningUtilsStartup
 {
     public static IServiceCollection ConfigureLearningUtilitiesModule(this IServiceCollection services)
     {
+        // Registers all profiles since it works on the assembly
         services.AddAutoMapper(typeof(FeedbackProfile).Assembly);
-        services.AddAutoMapper(typeof(NoteProfile).Assembly);
-        services.AddAutoMapper(typeof(RatingProfile).Assembly);
         SetupCore(services);
         SetupInfrastructure(services);
         return services;

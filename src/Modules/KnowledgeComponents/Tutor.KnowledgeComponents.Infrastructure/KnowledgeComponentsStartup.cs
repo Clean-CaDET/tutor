@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Infrastructure.Security;
+using Tutor.KnowledgeComponents.API.Interfaces;
 using Tutor.KnowledgeComponents.API.Interfaces.Analysis;
 using Tutor.KnowledgeComponents.API.Interfaces.Authoring;
 using Tutor.KnowledgeComponents.API.Interfaces.Learning;
@@ -36,14 +37,14 @@ public static class KnowledgeComponentsStartup
 
     private static void SetupAutoMapper(IServiceCollection services)
     {
+        // Registers all profiles since it works on the assembly
         services.AddAutoMapper(typeof(AnalyticsProfile).Assembly);
-        services.AddAutoMapper(typeof(AssessmentItemsProfile).Assembly);
-        services.AddAutoMapper(typeof(KnowledgeProfile).Assembly);
-        services.AddAutoMapper(typeof(MasteryProfile).Assembly);
     }
 
     private static void SetupCore(IServiceCollection services)
     {
+        services.AddScoped<IAccessService, AccessServices>();
+
         services.AddScoped<IAssessmentAnalysisService, AssessmentAnalysisService>();
         services.AddScoped<IKnowledgeAnalysisService, KnowledgeAnalysisService>();
 

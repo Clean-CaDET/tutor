@@ -22,7 +22,7 @@ public class KnowledgeComponentsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasDefaultSchema("knowledge-components");
+        modelBuilder.HasDefaultSchema("knowledgeComponents");
 
         ConfigureKnowledge(modelBuilder);
         ConfigureKnowledgeMastery(modelBuilder);

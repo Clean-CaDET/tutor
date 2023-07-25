@@ -18,9 +18,11 @@ public class EvaluationService : IEvaluationService
     private readonly IAssessmentItemRepository _assessmentItemRepository;
     private readonly IAccessService _accessService;
     private readonly IAssessmentFeedbackGenerator _assessmentFeedbackGenerator;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IKnowledgeComponentsUnitOfWork _unitOfWork;
 
-    public EvaluationService(IMapper mapper, IKnowledgeMasteryRepository knowledgeMasteryRepository, IAssessmentItemRepository assessmentItemRepository, IAccessService accessService, IUnitOfWork unitOfWork, IAssessmentFeedbackGenerator assessmentFeedbackGenerator)
+    public EvaluationService(IMapper mapper, IKnowledgeMasteryRepository knowledgeMasteryRepository,
+        IAssessmentItemRepository assessmentItemRepository, IAccessService accessService,
+        IKnowledgeComponentsUnitOfWork unitOfWork, IAssessmentFeedbackGenerator assessmentFeedbackGenerator)
     {
         _mapper = mapper;
         _knowledgeMasteryRepository = knowledgeMasteryRepository;

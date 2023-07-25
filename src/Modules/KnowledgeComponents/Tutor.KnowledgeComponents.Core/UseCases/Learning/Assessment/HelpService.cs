@@ -8,9 +8,9 @@ namespace Tutor.KnowledgeComponents.Core.UseCases.Learning.Assessment;
 public class HelpService : IHelpService
 {
     private readonly IKnowledgeMasteryRepository _knowledgeMasteryRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IKnowledgeComponentsUnitOfWork _unitOfWork;
 
-    public HelpService(IKnowledgeMasteryRepository knowledgeMasteryRepository, IUnitOfWork unitOfWork)
+    public HelpService(IKnowledgeMasteryRepository knowledgeMasteryRepository, IKnowledgeComponentsUnitOfWork unitOfWork)
     {
         _knowledgeMasteryRepository = knowledgeMasteryRepository;
         _unitOfWork = unitOfWork;
