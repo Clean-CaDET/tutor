@@ -2,7 +2,7 @@
 using System.Text.Json;
 using Tutor.BuildingBlocks.Core.EventSourcing;
 
-namespace Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.Postgres;
+namespace Tutor.KnowledgeComponents.Infrastructure.Database.EventStore;
 
 internal class PostgresEventQueryable : IEventQueryable
 {

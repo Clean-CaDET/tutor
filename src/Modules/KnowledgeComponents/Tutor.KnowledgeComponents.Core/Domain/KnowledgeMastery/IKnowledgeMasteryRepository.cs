@@ -1,5 +1,3 @@
-using Tutor.KnowledgeComponents.API.Dtos.KnowledgeMastery;
-
 namespace Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 
 public interface IKnowledgeMasteryRepository

@@ -2,16 +2,16 @@
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 
-namespace Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.Postgres;
+namespace Tutor.KnowledgeComponents.Infrastructure.Database.EventStore;
 
 public class PostgresStore : IEventStore
 {
-    private readonly EventContext _eventContext;
+    private readonly KnowledgeComponentsContext _eventContext;
     private readonly IEventSerializer _eventSerializer;
 
     public IEventQueryable Events => new PostgresEventQueryable(_eventContext.Events, _eventSerializer);
 
-    public PostgresStore(EventContext eventContext, IEventSerializer eventSerializer)
+    public PostgresStore(KnowledgeComponentsContext eventContext, IEventSerializer eventSerializer)
     {
         _eventContext = eventContext;
         _eventSerializer = eventSerializer;
@@ -41,7 +41,6 @@ public class PostgresStore : IEventStore
                 DomainEvent = _eventSerializer.Serialize(e)
             });
         _eventContext.Events.AddRange(eventsToSave);
-        _eventContext.SaveChanges();
         aggregate.ClearChanges();
     }
 }
