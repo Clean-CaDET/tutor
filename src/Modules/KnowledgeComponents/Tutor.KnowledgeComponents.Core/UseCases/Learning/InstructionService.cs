@@ -26,7 +26,7 @@ public class InstructionService : IInstructionService
         _unitOfWork = unitOfWork;
     }
 
-    public Result<List<InstructionalItemDto>> GetInstructionalItems(int kcId, int learnerId)
+    public Result<List<InstructionalItemDto>> GetByKc(int kcId, int learnerId)
     {
         if (!_accessService.IsEnrolledInKc(kcId, learnerId))
             return Result.Fail(FailureCode.NotEnrolledInUnit);

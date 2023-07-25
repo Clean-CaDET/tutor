@@ -3,7 +3,7 @@ using Tutor.KnowledgeComponents.API.Dtos.Knowledge.InstructionalItems;
 
 namespace Tutor.KnowledgeComponents.API.Interfaces.Authoring;
 
-public interface IInstructionService
+public interface IInstructionalItemsService
 {
     Result<List<InstructionalItemDto>> GetByKc(int kcId, int instructorId);
     Result<InstructionalItemDto> Create(InstructionalItemDto instruction, int instructorId);

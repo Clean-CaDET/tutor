@@ -54,3 +54,4 @@ namespace Tutor.API
 // TODO: KcRating should be moved from utilities to learning
 
 // TODO: Check if dahomey is used in Event Infrastructure // https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/polymorphism?pivots=dotnet-7-0
+// TODO: Check Event context and UoW behavior

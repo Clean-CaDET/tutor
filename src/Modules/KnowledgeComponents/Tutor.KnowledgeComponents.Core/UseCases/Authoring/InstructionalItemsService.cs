@@ -9,12 +9,12 @@ using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 
 namespace Tutor.KnowledgeComponents.Core.UseCases.Authoring;
 
-public class InstructionService : CrudService<InstructionalItemDto, InstructionalItem>, IInstructionService
+public class InstructionalItemsService : CrudService<InstructionalItemDto, InstructionalItem>, IInstructionalItemsService
 {
     private readonly IAccessService _accessService;
     private readonly IInstructionalItemRepository _instructionRepository;
 
-    public InstructionService(IMapper mapper, IInstructionalItemRepository instructionRepository, IAccessService accessService, IKnowledgeComponentsUnitOfWork unitOfWork): base(instructionRepository, unitOfWork, mapper)
+    public InstructionalItemsService(IMapper mapper, IInstructionalItemRepository instructionRepository, IAccessService accessService, IKnowledgeComponentsUnitOfWork unitOfWork): base(instructionRepository, unitOfWork, mapper)
     {
         _instructionRepository = instructionRepository;
         _accessService = accessService;

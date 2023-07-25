@@ -46,7 +46,7 @@ public class SelectionService : ISelectionService
         if (result.IsFailed) return result;
 
         var item = _assessmentItemRepository.GetDerivedAssessmentItem(assessmentItemId);
-        item.ClearFeedback();
+        item?.ClearFeedback();
 
         return _mapper.Map<AssessmentItemDto>(item);
     }

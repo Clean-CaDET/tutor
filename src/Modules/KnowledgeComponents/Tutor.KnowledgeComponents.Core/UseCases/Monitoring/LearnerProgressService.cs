@@ -1,4 +1,5 @@
-﻿using FluentResults;
+﻿using AutoMapper;
+using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeMastery;
 using Tutor.KnowledgeComponents.API.Interfaces;
@@ -9,11 +10,13 @@ namespace Tutor.KnowledgeComponents.Core.UseCases.Monitoring;
 
 public class LearnerProgressService : ILearnerProgressService
 {
+    private readonly IMapper _mapper;
     private readonly IKnowledgeMasteryRepository _masteryRepository;
     private readonly IAccessService _accessService;
 
-    public LearnerProgressService(IKnowledgeMasteryRepository masteryRepository, IAccessService accessService)
+    public LearnerProgressService(IMapper mapper, IKnowledgeMasteryRepository masteryRepository, IAccessService accessService)
     {
+        _mapper = mapper;
         _masteryRepository = masteryRepository;
         _accessService = accessService;
     }
@@ -24,6 +27,7 @@ public class LearnerProgressService : ILearnerProgressService
         if (!_accessService.IsUnitOwner(unitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        return _masteryRepository.GetByLearnersAndUnit(unitId, learnerIds);
+        return _masteryRepository.GetByLearnersAndUnit(unitId, learnerIds)
+            .Select(_mapper.Map<KnowledgeComponentMasteryDto>).ToList();
     }
 }
