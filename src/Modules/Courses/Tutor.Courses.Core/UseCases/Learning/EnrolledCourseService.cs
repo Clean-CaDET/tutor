@@ -36,4 +36,10 @@ public class EnrolledCourseService : BaseService<CourseDto, Course>, IEnrolledCo
 
         return MapToDto(course);
     }
+
+    public bool HasActiveEnrollment(int unitId, int learnerId)
+    {
+        var enrollment = _enrollmentRepository.GetEnrollment(unitId, learnerId);
+        return enrollment != null && enrollment.IsActive();
+    }
 }

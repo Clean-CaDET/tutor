@@ -7,16 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tutor.KnowledgeComponents.API\Tutor.KnowledgeComponents.API.csproj" />
+    <PackageReference Include="Quickenshtein" Version="1.5.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\" />
-    <Folder Include="Mappers\" />
-    <Folder Include="UseCases\Authoring\" />
-    <Folder Include="UseCases\Analysis\" />
-    <Folder Include="UseCases\Learning\" />
-    <Folder Include="UseCases\Monitoring\" />
+    <ProjectReference Include="..\..\Courses\Tutor.Courses.API\Tutor.Courses.API.csproj" />
+    <ProjectReference Include="..\Tutor.KnowledgeComponents.API\Tutor.KnowledgeComponents.API.csproj" />
   </ItemGroup>
 
 </Project>

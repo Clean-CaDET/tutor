@@ -50,3 +50,7 @@ namespace Tutor.API
 // TODO: Enrollment should generate mastery
 // TODO: Enrollment status je deactivated
 // TODO: DELETE operations need to be revisited because of modules.
+
+// TODO: KcRating should be moved from utilities to learning
+
+// TODO: Check if dahomey is used in Event Infrastructure // https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/polymorphism?pivots=dotnet-7-0

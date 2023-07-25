@@ -20,7 +20,7 @@ public class GroupMembershipController : BaseApiController
     [HttpGet]
     public ActionResult<List<LearnerDto>> GetMembers(int groupId)
     {
-        var result = _membershipService.GetGroupMembers(groupId);
+        var result = _membershipService.GetMembers(groupId);
         return CreateResponse(result);
     }
 

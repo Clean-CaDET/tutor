@@ -23,7 +23,15 @@ public class GroupMembershipService: IGroupMembershipService
         _learnerService = learnerService;
     }
 
-    public Result<List<LearnerDto>> GetGroupMembers(int groupId)
+    public Result<List<int>> GetMemberIds(int groupId)
+    {
+        var group = _groupRepository.Get(groupId);
+        if (group == null) return Result.Fail(FailureCode.NotFound);
+
+        return group.LearnerIds.ToList();
+    }
+
+    public Result<List<LearnerDto>> GetMembers(int groupId)
     {
         var group = _groupRepository.Get(groupId);
         if(group == null) return Result.Fail(FailureCode.NotFound);

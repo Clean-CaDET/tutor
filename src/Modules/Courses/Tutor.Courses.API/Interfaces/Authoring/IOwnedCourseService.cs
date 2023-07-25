@@ -8,4 +8,6 @@ public interface IOwnedCourseService
     Result<List<CourseDto>> GetAll(int instructorId);
     Result<CourseDto> GetWithUnits(int courseId, int instructorId);
     Result<CourseDto> Update(CourseDto course, int instructorId);
+    bool IsCourseOwner(int courseId, int instructorId);
+    bool IsUnitOwner(int unitId, int instructorId);
 }
