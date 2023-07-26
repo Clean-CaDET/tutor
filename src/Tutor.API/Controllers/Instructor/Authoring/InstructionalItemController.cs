@@ -8,11 +8,11 @@ namespace Tutor.API.Controllers.Instructor.Authoring;
 
 [Route("api/authoring/knowledge-components/{kcId:int}/instruction")]
 [Authorize(Policy = "instructorPolicy")]
-public class InstructionController : BaseApiController
+public class InstructionalItemController : BaseApiController
 {
     private readonly IInstructionalItemsService _instructionService;
 
-    public InstructionController(IInstructionalItemsService instructionService)
+    public InstructionalItemController(IInstructionalItemsService instructionService)
     {
         _instructionService = instructionService;
     }

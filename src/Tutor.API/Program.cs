@@ -55,3 +55,8 @@ namespace Tutor.API
 
 // TODO: Check if dahomey is used in Event Infrastructure // https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/polymorphism?pivots=dotnet-7-0
 // TODO: Check Event context and UoW behavior
+
+// TODO: Possibly need to configure JSON mapping for controller endpoints
+// TODO: Serilog
+
+// TODO: Proveri da li endpoint za formiranje KC stabla uzima u obzir da mu stize KC i KCM

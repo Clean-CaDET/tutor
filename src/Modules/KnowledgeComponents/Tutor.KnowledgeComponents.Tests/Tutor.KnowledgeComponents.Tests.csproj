@@ -29,10 +29,4 @@
 	  <ProjectReference Include="..\..\..\Tutor.API\Tutor.API.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Integration\Learning\" />
-	  <Folder Include="Integration\Authoring\" />
-	  <Folder Include="Integration\Monitoring\" />
-	</ItemGroup>
-
 </Project>
