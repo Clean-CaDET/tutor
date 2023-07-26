@@ -13,14 +13,14 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
     private readonly ICourseRepository _courseRepository;
     private readonly ICoursesUnitOfWork _unitOfWork;
     private readonly ICourseOwnershipRepository _ownershipRepository;
-    private readonly IEnrollmentRepository _enrollmentRepository;
+    private readonly IUnitEnrollmentRepository _unitEnrollmentRepository;
 
-    public CourseService(IMapper mapper, ICourseRepository courseRepository, ICoursesUnitOfWork unitOfWork, ICourseOwnershipRepository ownershipRepository, IEnrollmentRepository enrollmentRepository) : base(mapper)
+    public CourseService(IMapper mapper, ICourseRepository courseRepository, ICoursesUnitOfWork unitOfWork, ICourseOwnershipRepository ownershipRepository, IUnitEnrollmentRepository unitEnrollmentRepository) : base(mapper)
     {
         _courseRepository = courseRepository;
         _unitOfWork = unitOfWork;
         _ownershipRepository = ownershipRepository;
-        _enrollmentRepository = enrollmentRepository;
+        _unitEnrollmentRepository = unitEnrollmentRepository;
     }
 
     public Result<PagedResult<CourseDto>> GetAll(int page, int pageSize)
@@ -63,11 +63,11 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
 
     private void DeactivateEnrollments(int courseId)
     {
-        var enrollments = _enrollmentRepository.GetActiveEnrollmentsForCourse(courseId);
+        var enrollments = _unitEnrollmentRepository.GetActiveEnrollmentsForCourse(courseId);
         enrollments.ForEach(e =>
         {
             e.Status = EnrollmentStatus.Deactivated;
-            _enrollmentRepository.Update(e);
+            _unitEnrollmentRepository.Update(e);
         });
     }
 

@@ -431,7 +431,7 @@ public class LearnerCommandTests : BaseStakeholdersIntegrationTest
         storedLearner.ShouldBeNull();
         var storedAccount = dbContext.Users.FirstOrDefault(i => i.Id == learnerId);
         storedAccount.ShouldBeNull();
-        // TODO
+        // TODO: Examine endpoint for deletion
         // var unitEnrollment = dbContext.UnitEnrollments.FirstOrDefault(i => i.LearnerId == learnerId);
         // unitEnrollment.ShouldBeNull();
         // var groupMembership = dbContext.GroupMemberships.Include(i => i.Member).FirstOrDefault(i => i.Member.Id == learnerId);

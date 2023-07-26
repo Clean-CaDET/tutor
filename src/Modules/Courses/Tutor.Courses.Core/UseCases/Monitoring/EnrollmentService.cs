@@ -10,15 +10,15 @@ namespace Tutor.Courses.Core.UseCases.Monitoring;
 
 public class EnrollmentService : BaseService<UnitEnrollmentDto, UnitEnrollment>, IEnrollmentService
 {
-    private readonly IEnrollmentRepository _enrollmentRepository;
+    private readonly IUnitEnrollmentRepository _unitEnrollmentRepository;
     private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly ICrudRepository<KnowledgeUnit> _unitRepository;
     private readonly ICoursesUnitOfWork _unitOfWork;
 
-    public EnrollmentService(IMapper mapper, IEnrollmentRepository enrollmentRepository, IOwnedCourseRepository ownedCourseRepository,
+    public EnrollmentService(IMapper mapper, IUnitEnrollmentRepository unitEnrollmentRepository, IOwnedCourseRepository ownedCourseRepository,
         ICoursesUnitOfWork unitOfWork, ICrudRepository<KnowledgeUnit> unitRepository): base(mapper)
     {
-        _enrollmentRepository = enrollmentRepository;
+        _unitEnrollmentRepository = unitEnrollmentRepository;
         _ownedCourseRepository = ownedCourseRepository;
         _unitRepository = unitRepository;
         _unitOfWork = unitOfWork;
@@ -28,7 +28,7 @@ public class EnrollmentService : BaseService<UnitEnrollmentDto, UnitEnrollment>,
     {
         if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
-        return MapToDto(_enrollmentRepository.GetEnrollments(unitId, learnerIds));
+        return MapToDto(_unitEnrollmentRepository.GetEnrollments(unitId, learnerIds));
     }
 
     public Result<List<UnitEnrollmentDto>> BulkEnroll(int unitId, int[] learnerIds, DateTime start, int instructorId)
@@ -65,18 +65,18 @@ public class EnrollmentService : BaseService<UnitEnrollmentDto, UnitEnrollment>,
 
     private UnitEnrollment Enroll(KnowledgeUnit unit, DateTime start, int learnerId)
     {
-        var existingEnrollment = _enrollmentRepository.GetEnrollment(unit.Id, learnerId);
+        var existingEnrollment = _unitEnrollmentRepository.GetEnrollment(unit.Id, learnerId);
         if(existingEnrollment != null)
         {
             if (existingEnrollment.Status == EnrollmentStatus.Active) return existingEnrollment;
             
             existingEnrollment.Status = EnrollmentStatus.Active;
             existingEnrollment.Start = start;
-            return _enrollmentRepository.Update(existingEnrollment);
+            return _unitEnrollmentRepository.Update(existingEnrollment);
         }
 
         var newEnrollment = new UnitEnrollment(learnerId, start, unit);
-        _enrollmentRepository.Create(newEnrollment);
+        _unitEnrollmentRepository.Create(newEnrollment);
 
         //CreateMasteries(unit, learnerId);
 
@@ -99,11 +99,11 @@ public class EnrollmentService : BaseService<UnitEnrollmentDto, UnitEnrollment>,
     {
         if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
-        var enrollment = _enrollmentRepository.GetEnrollment(unitId, learnerId);
+        var enrollment = _unitEnrollmentRepository.GetEnrollment(unitId, learnerId);
         if (enrollment == null) return Result.Fail(FailureCode.NotFound);
 
         enrollment.Status = EnrollmentStatus.Deactivated;
-        _enrollmentRepository.Update(enrollment);
+        _unitEnrollmentRepository.Update(enrollment);
 
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
@@ -115,11 +115,11 @@ public class EnrollmentService : BaseService<UnitEnrollmentDto, UnitEnrollment>,
     {
         if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
-        var enrollments = _enrollmentRepository.GetEnrollments(unitId, learnerIds);
+        var enrollments = _unitEnrollmentRepository.GetEnrollments(unitId, learnerIds);
         enrollments.ForEach(e =>
         {
             e.Status = EnrollmentStatus.Deactivated;
-            _enrollmentRepository.Update(e);
+            _unitEnrollmentRepository.Update(e);
         });
 
         var result = _unitOfWork.Save();

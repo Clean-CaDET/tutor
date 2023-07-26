@@ -1,36 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Tutor.BuildingBlocks.Core.UseCases;
-using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.Courses.Infrastructure.Database.Repositories;
 
-public class EnrollmentDatabaseRepository : IEnrollmentRepository
+public class UnitEnrollmentDatabaseRepository : IUnitEnrollmentRepository
 {
     private readonly CoursesContext _dbContext;
 
-    public EnrollmentDatabaseRepository(CoursesContext dbContext)
+    public UnitEnrollmentDatabaseRepository(CoursesContext dbContext)
     {
         _dbContext = dbContext;
-    }
-
-    public PagedResult<Course> GetEnrolledCourses(int learnerId, int page, int pageSize)
-    {
-        var task = _dbContext.LearnerGroups
-            .Where(lg => EF.Functions.JsonContains(lg.LearnerIds, $"{learnerId}"))
-            .Select(lg => lg.Course).Where(c => !c.IsArchived)
-            .Distinct().GetPaged(page, pageSize);
-        task.Wait();
-        return task.Result;
-    }
-
-    public Course? GetEnrolledCourse(int courseId, int learnerId)
-    {
-        return _dbContext.LearnerGroups
-            .Where(lg => EF.Functions.JsonContains(lg.LearnerIds, $"{learnerId}"))
-            .Select(lg => lg.Course)
-            .FirstOrDefault(c => c.Id == courseId && !c.IsArchived);
     }
 
     public List<UnitEnrollment> GetEnrolledUnits(int courseId, int learnerId)
@@ -44,6 +24,7 @@ public class EnrollmentDatabaseRepository : IEnrollmentRepository
     public UnitEnrollment? GetEnrollment(int unitId, int learnerId)
     {
         return _dbContext.UnitEnrollments
+            .Include(ue => ue.KnowledgeUnit)
             .FirstOrDefault(e => e.KnowledgeUnit.Id == unitId && e.LearnerId == learnerId);
     }
 

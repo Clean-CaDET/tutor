@@ -66,20 +66,6 @@ public class LearnerQueryTests : BaseStakeholdersIntegrationTest
         result.StatusCode.ShouldBe(400);
     }
 
-    /* TODO
-    [Fact]
-    public void Retrieves_learner_courses()
-    {
-        using var scope = Factory.Services.CreateScope();
-        var controller = SetupLearnerController(scope);
-
-        var result = ((OkObjectResult)controller.GetEnrolledCourses(-1, 0, 0).Result)?.Value as PagedResult<CourseDto>;
-
-        result.ShouldNotBeNull();
-        result.Results.Count.ShouldBe(2);
-        result.TotalCount.ShouldBe(2);
-    }*/
-
     [Fact]
     public void Retrieves_paged_learners()
     {

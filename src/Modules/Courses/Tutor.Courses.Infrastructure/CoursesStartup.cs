@@ -51,7 +51,7 @@ public static class CoursesStartup
     {
         services.AddScoped<IOwnedCourseRepository, OwnedCourseDatabaseRepository>();
         services.AddScoped(typeof(ICrudRepository<KnowledgeUnit>), typeof(CrudDatabaseRepository<KnowledgeUnit, CoursesContext>));
-        services.AddScoped<IEnrollmentRepository, EnrollmentDatabaseRepository>();
+        services.AddScoped<IUnitEnrollmentRepository, UnitEnrollmentDatabaseRepository>();
         services.AddScoped<ICourseOwnershipRepository, CourseOwnershipDatabaseRepository>();
         services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
         services.AddScoped<IGroupRepository, GroupDatabaseRepository>();

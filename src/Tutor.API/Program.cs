@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿
+using Serilog;
 using Tutor.API.Startup;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -60,3 +61,10 @@ namespace Tutor.API
 // TODO: Serilog
 
 // TODO: Proveri da li endpoint za formiranje KC stabla uzima u obzir da mu stize KC i KCM
+
+// Check all usages of methods below
+// TODO: Check if CRUD service is being used properly. Up to now it returned tracked entities that could be and saved with UoW. This is no longer true.
+
+//TODO: Check all routes when redesign is near finished
+
+// TODO: Rework FailureCodes to make them extensible

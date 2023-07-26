@@ -29,7 +29,6 @@ public class UnitController : BaseApiController
     public ActionResult<KnowledgeUnitDto> Update(int courseId, [FromBody] KnowledgeUnitDto unit)
     {
         unit.CourseId = courseId;
-        // TODO: Reexamine this ID (also found in Admin group controller)
         var result = _unitService.Update(unit, User.InstructorId());
         return CreateResponse(result);
     }

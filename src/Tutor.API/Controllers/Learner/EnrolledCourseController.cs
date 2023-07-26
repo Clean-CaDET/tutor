@@ -11,7 +11,6 @@ namespace Tutor.API.Controllers.Learner;
 [Route("api/enrolled-courses")]
 public class EnrolledCourseController : BaseApiController
 {
-    //TODO: Update routes when redesign is near finished
     private readonly IEnrolledCourseService _enrolledCourseService;
 
     public EnrolledCourseController(IEnrolledCourseService enrolledCourseService)
