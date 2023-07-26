@@ -9,9 +9,9 @@ using Xunit;
 namespace Tutor.KnowledgeComponents.Tests.Integration.Monitoring;
 
 [Collection("Sequential")]
-public class LearnerProgressTests : BaseKnowledgeComponentsIntegrationTest
+public class LearnerMasteryQueryTests : BaseKnowledgeComponentsIntegrationTest
 {
-    public LearnerProgressTests(KnowledgeComponentsTestFactory factory) : base(factory) {}
+    public LearnerMasteryQueryTests(KnowledgeComponentsTestFactory factory) : base(factory) {}
     
     [Theory]
     [MemberData(nameof(TestData))]
@@ -49,10 +49,10 @@ public class LearnerProgressTests : BaseKnowledgeComponentsIntegrationTest
         };
     }
 
-    private static LearnerProgressController CreateController(IServiceScope scope, string id)
+    private static LearnerMasteryController CreateController(IServiceScope scope, string id)
     {
-        return new LearnerProgressController(
-            scope.ServiceProvider.GetRequiredService<ILearnerProgressService>())
+        return new LearnerMasteryController(
+            scope.ServiceProvider.GetRequiredService<ILearnerMasteryService>())
         {
             ControllerContext = BuildContext(id, "instructor")
         };

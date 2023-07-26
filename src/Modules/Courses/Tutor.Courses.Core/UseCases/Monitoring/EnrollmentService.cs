@@ -5,6 +5,7 @@ using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Interfaces.Monitoring;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
+using Tutor.KnowledgeComponents.API.Interfaces.Monitoring;
 
 namespace Tutor.Courses.Core.UseCases.Monitoring;
 
@@ -13,14 +14,16 @@ public class EnrollmentService : BaseService<UnitEnrollmentDto, UnitEnrollment>,
     private readonly IUnitEnrollmentRepository _unitEnrollmentRepository;
     private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly ICrudRepository<KnowledgeUnit> _unitRepository;
+    private readonly ILearnerMasteryService _learnerMasteryService;
     private readonly ICoursesUnitOfWork _unitOfWork;
 
     public EnrollmentService(IMapper mapper, IUnitEnrollmentRepository unitEnrollmentRepository, IOwnedCourseRepository ownedCourseRepository,
-        ICoursesUnitOfWork unitOfWork, ICrudRepository<KnowledgeUnit> unitRepository): base(mapper)
+        ICoursesUnitOfWork unitOfWork, ICrudRepository<KnowledgeUnit> unitRepository, ILearnerMasteryService learnerMasteryService): base(mapper)
     {
         _unitEnrollmentRepository = unitEnrollmentRepository;
         _ownedCourseRepository = ownedCourseRepository;
         _unitRepository = unitRepository;
+        _learnerMasteryService = learnerMasteryService;
         _unitOfWork = unitOfWork;
     }
 
@@ -35,15 +38,14 @@ public class EnrollmentService : BaseService<UnitEnrollmentDto, UnitEnrollment>,
     {
         if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
-        
         var unit = _unitRepository.Get(unitId);
-        if(unit == null) return Result.Fail(FailureCode.NotFound);
+        if(unit == null)
+            return Result.Fail(FailureCode.NotFound);
 
-        var enrollments = learnerIds.Select(learnerId => Enroll(unit, start, learnerId)).ToList();
+        var enrollments = Enroll(unit, start, learnerIds);
 
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
-
         return MapToDto(enrollments);
     }
 
@@ -51,49 +53,44 @@ public class EnrollmentService : BaseService<UnitEnrollmentDto, UnitEnrollment>,
     {
         if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
-
         var unit = _unitRepository.Get(unitId);
-        if (unit == null) return Result.Fail(FailureCode.NotFound);
+        if (unit == null)
+            return Result.Fail(FailureCode.NotFound);
 
+        var enrollment = Enroll(unit, start, new[] { learnerId })[0];
 
-        var enrollment = Enroll(unit, start, learnerId);
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
+
+        _learnerMasteryService.InitializeMasteries(unit.Id, learnerId);
 
         return MapToDto(enrollment);
     }
 
-    private UnitEnrollment Enroll(KnowledgeUnit unit, DateTime start, int learnerId)
+    private List<UnitEnrollment> Enroll(KnowledgeUnit unit, DateTime start, int[] learnerIds)
     {
-        var existingEnrollment = _unitEnrollmentRepository.GetEnrollment(unit.Id, learnerId);
-        if(existingEnrollment != null)
+        var enrollments = _unitEnrollmentRepository.GetEnrollments(unit.Id, learnerIds);
+        enrollments.ForEach(e =>
         {
-            if (existingEnrollment.Status == EnrollmentStatus.Active) return existingEnrollment;
-            
-            existingEnrollment.Status = EnrollmentStatus.Active;
-            existingEnrollment.Start = start;
-            return _unitEnrollmentRepository.Update(existingEnrollment);
-        }
+            e.Activate(start);
+            _unitEnrollmentRepository.Update(e);
+        });
+        if (learnerIds.Length == enrollments.Count) return enrollments;
 
+        var unenrolledLearners = learnerIds.Where(learnerId => enrollments.All(e => e.LearnerId != learnerId)).ToList();
+        enrollments.AddRange(unenrolledLearners.Select(learnerId => CreateNewEnrollment(unit, start, learnerId)).ToList());
+        _learnerMasteryService.InitializeMasteries(unit.Id, learnerIds);
+
+        return enrollments;
+    }
+
+    private UnitEnrollment CreateNewEnrollment(KnowledgeUnit unit, DateTime start, int learnerId)
+    {
         var newEnrollment = new UnitEnrollment(learnerId, start, unit);
         _unitEnrollmentRepository.Create(newEnrollment);
 
-        //CreateMasteries(unit, learnerId);
-
         return newEnrollment;
     }
-
-    /*private void CreateMasteries(KnowledgeUnit unit, int learnerId)
-    {
-        foreach (var kc in unit.KnowledgeComponents)
-        {
-            var assessmentMasteries = kc.AssessmentItems
-                .OrderBy(i => i.Order)
-                .Select(item => new AssessmentItemMastery(item.Id)).ToList();
-            var kcMastery = new KnowledgeComponentMastery(learnerId, kc.Id, assessmentMasteries);
-            _knowledgeMasteryRepository.Create(kcMastery);
-        }
-    }*/ // TODO: Move to KC modules
 
     public Result Unenroll(int unitId, int learnerId, int instructorId)
     {

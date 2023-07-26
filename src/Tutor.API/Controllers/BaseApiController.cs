@@ -9,7 +9,6 @@ public class BaseApiController : ControllerBase
 {
     protected ActionResult CreateErrorResponse(List<IError> errors)
     {
-        // TODO: Rework this to return error subcode with response and to make it extensible (so that each module can introduce failures)
         var code = 500;
         if (errors.Contains(FailureCode.InvalidAssessmentSubmission)) code = 400;
         if (errors.Contains(FailureCode.InvalidArgument)) code = 400;

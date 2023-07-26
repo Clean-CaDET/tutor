@@ -6,6 +6,7 @@ using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Interfaces.Monitoring;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Infrastructure.Database;
+using Tutor.KnowledgeComponents.Infrastructure.Database;
 
 namespace Tutor.Courses.Tests.Integration.Monitoring;
 
@@ -20,6 +21,11 @@ public class UnitEnrollmentCommandTests : BaseCoursesIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-51");
         var dbContext = scope.ServiceProvider.GetRequiredService<CoursesContext>();
+        dbContext.Database.BeginTransaction();
+        // TODO: Examine this situation
+        var secondaryDbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
+        secondaryDbContext.Database.BeginTransaction();
+
         var enrollmentRequest = new EnrollmentRequestDto
         {
             LearnerIds = new[] { -4, -5 },
@@ -43,6 +49,10 @@ public class UnitEnrollmentCommandTests : BaseCoursesIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-51");
         var dbContext = scope.ServiceProvider.GetRequiredService<CoursesContext>();
+        dbContext.Database.BeginTransaction();
+        // TODO: Examine this situation
+        var secondaryDbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
+        secondaryDbContext.Database.BeginTransaction();
         var enrollmentRequest = new EnrollmentRequestDto
         {
             LearnerIds = new[] { -1 }

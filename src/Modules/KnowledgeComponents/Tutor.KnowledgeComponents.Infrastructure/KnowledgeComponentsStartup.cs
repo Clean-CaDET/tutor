@@ -63,7 +63,7 @@ public static class KnowledgeComponentsStartup
         services.AddScoped<IHelpService, HelpService>();
         services.AddScoped<ISelectionService, SelectionService>();
 
-        services.AddScoped<ILearnerProgressService, LearnerProgressService>();
+        services.AddScoped<ILearnerMasteryService, LearnerMasteryService>();
 
         services.AddScoped<IAssessmentFeedbackGenerator, RuleAssessmentFeedbackGenerator>();
         services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();

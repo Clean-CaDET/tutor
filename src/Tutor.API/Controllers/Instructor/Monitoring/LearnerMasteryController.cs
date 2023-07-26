@@ -8,19 +8,19 @@ namespace Tutor.API.Controllers.Instructor.Monitoring;
 
 [Authorize(Policy = "instructorPolicy")]
 [Route("api/monitoring")]
-public class LearnerProgressController : BaseApiController
+public class LearnerMasteryController : BaseApiController
 {
-    private readonly ILearnerProgressService _progressService;
+    private readonly ILearnerMasteryService _masteryService;
 
-    public LearnerProgressController(ILearnerProgressService progressService)
+    public LearnerMasteryController(ILearnerMasteryService masteryService)
     {
-        _progressService = progressService;
+        _masteryService = masteryService;
     }
 
     [HttpGet("progress/{unitId:int}")]
     public ActionResult<List<KcmProgressDto>> GetLearnerProgress(int unitId, [FromBody] int[] learnerIds)
     {
-        var result = _progressService.GetProgress(unitId, learnerIds, User.InstructorId());
+        var result = _masteryService.GetProgress(unitId, learnerIds, User.InstructorId());
         return CreateResponse(result);
     }
 }
