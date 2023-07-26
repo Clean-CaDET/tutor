@@ -51,7 +51,7 @@ public class EvaluationService : IEvaluationService
         var result = RecordSubmission(kcMastery, assessmentItemId, domainSubmission, feedback.Value);
         if (result.IsFailed) return result;
 
-        return _mapper.Map<Result<FeedbackDto>>(feedback);
+        return _mapper.Map<FeedbackDto>(feedback.Value);
     }
 
     private Result RecordSubmission(KnowledgeComponentMastery kcMastery, int itemId, Submission submission, Feedback feedback)

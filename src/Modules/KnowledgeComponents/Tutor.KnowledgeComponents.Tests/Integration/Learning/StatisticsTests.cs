@@ -24,8 +24,8 @@ public class StatisticsTests : BaseKnowledgeComponentsIntegrationTest
         kcMasteryStatistics.ShouldNotBeNull();
         kcMasteryStatistics.IsSatisfied.ShouldBe(false);
         kcMasteryStatistics.Mastery.ShouldBe(0.5);
-        kcMasteryStatistics.TotalCount.ShouldBe(4);
-        kcMasteryStatistics.AttemptedCount.ShouldBe(4);
+        kcMasteryStatistics.TotalCount.ShouldBe(3);
+        kcMasteryStatistics.AttemptedCount.ShouldBe(3);
         kcMasteryStatistics.PassedCount.ShouldBe(0);
     }
 
@@ -35,7 +35,7 @@ public class StatisticsTests : BaseKnowledgeComponentsIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
 
-        var correctness = (double)((OkObjectResult)controller.GetMaxCorrectness(-134).Result).Value;
+        var correctness = (double)((OkObjectResult)controller.GetMaxCorrectness(-155).Result).Value;
 
         correctness.ShouldBe(0.75);
     }

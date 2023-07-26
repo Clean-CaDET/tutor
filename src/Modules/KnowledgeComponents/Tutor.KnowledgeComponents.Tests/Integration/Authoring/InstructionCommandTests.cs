@@ -25,16 +25,15 @@ public class InstructionCommandTests : BaseKnowledgeComponentsIntegrationTest
         {
             KnowledgeComponentId = -11,
             Order = 3,
+            Content = "ABC"
         };
         dbContext.Database.BeginTransaction();
 
-        var result = ((OkObjectResult)controller.Create(newEntity).Result)?.Value as List<InstructionalItemDto>;
+        var result = ((OkObjectResult)controller.Create(newEntity).Result)?.Value as InstructionalItemDto;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
-        result.ShouldNotBeEmpty();
-        result.Count.ShouldBe(1);
-        var storedEntity = dbContext.InstructionalItems.FirstOrDefault(i => i.Id == result[0].Id);
+        var storedEntity = dbContext.InstructionalItems.FirstOrDefault(i => i.Id == result.Id);
         storedEntity.ShouldNotBeNull();
         storedEntity.Order.ShouldBe(3);
     }
@@ -49,17 +48,16 @@ public class InstructionCommandTests : BaseKnowledgeComponentsIntegrationTest
         {
             Id = -101,
             KnowledgeComponentId = -10,
-            Content = "TT-1"
+            Content = "TT-1",
+            Order = 5
         };
         dbContext.Database.BeginTransaction();
 
-        var result = ((OkObjectResult)controller.Update(newEntity).Result)?.Value as List<InstructionalItemDto>;
+        var result = ((OkObjectResult)controller.Update(newEntity).Result)?.Value as InstructionalItemDto;
         
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
-        result.ShouldNotBeEmpty();
-        result.Count.ShouldBe(1);
-        var savedEntity = dbContext.InstructionalItems.FirstOrDefault(i => i.Id == result[0].Id);
+        var savedEntity = dbContext.InstructionalItems.FirstOrDefault(i => i.Id == result.Id);
         savedEntity.ShouldNotBeNull();
         ((Markdown)savedEntity).Content.ShouldBe(newEntity.Content);
     }
@@ -76,18 +74,22 @@ public class InstructionCommandTests : BaseKnowledgeComponentsIntegrationTest
                 Id = -101,
                 KnowledgeComponentId = -10,
                 Order = 2,
+                Content = "A"
             },
             new TextDto
             {
                 Id = -102,
                 KnowledgeComponentId = -10,
                 Order = 3,
+                Content = "B"
             },
             new ImageDto
             {
                 Id = -103,
                 KnowledgeComponentId = -10,
                 Order = 1,
+                Url = "C",
+                Caption = "C"
             }
         };
         dbContext.Database.BeginTransaction();

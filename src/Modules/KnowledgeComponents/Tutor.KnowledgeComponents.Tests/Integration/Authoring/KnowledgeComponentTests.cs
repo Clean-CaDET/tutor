@@ -64,6 +64,7 @@ public class KnowledgeComponentTests : BaseKnowledgeComponentsIntegrationTest
         {
             Id = -10,
             KnowledgeUnitId = -1,
+            Name = "TT-10",
             Code = "TT-10"
         };
         dbContext.Database.BeginTransaction();

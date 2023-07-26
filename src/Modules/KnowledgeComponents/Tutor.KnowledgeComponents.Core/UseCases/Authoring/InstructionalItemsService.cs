@@ -47,12 +47,13 @@ public class InstructionalItemsService : CrudService<InstructionalItemDto, Instr
 
     public Result<List<InstructionalItemDto>> UpdateOrdering(List<InstructionalItemDto> items, int instructorId)
     {
-        var kcId = items.Select(i => i.KnowledgeComponentId).ToList();
+        var kcId = items.Select(i => i.KnowledgeComponentId).Distinct().ToList();
         if (kcId.Count > 1 || !_accessService.IsKcOwner(kcId.First(), instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
         var updatedItems = items
             .Select(i => _instructionRepository.Update(MapToDomain(i)))
+            .OrderBy(i => i.Order)
             .ToList();
 
         var result = UnitOfWork.Save();

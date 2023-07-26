@@ -9,4 +9,5 @@ public interface IEnrolledCourseService
     Result<PagedResult<CourseDto>> GetAll(int learnerId, int page, int pageSize);
     Result<CourseDto> GetWithActiveUnits(int courseId, int learnerId);
     bool HasActiveEnrollment(int unitId, int learnerId);
+    Result<KnowledgeUnitDto> GetUnit(int unitId, int learnerId);
 }

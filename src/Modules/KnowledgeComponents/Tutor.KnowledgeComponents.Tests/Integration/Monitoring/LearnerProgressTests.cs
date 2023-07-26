@@ -9,13 +9,13 @@ using Xunit;
 namespace Tutor.KnowledgeComponents.Tests.Integration.Monitoring;
 
 [Collection("Sequential")]
-public class GroupMonitoringTests : BaseKnowledgeComponentsIntegrationTest
+public class LearnerProgressTests : BaseKnowledgeComponentsIntegrationTest
 {
-    public GroupMonitoringTests(KnowledgeComponentsTestFactory factory) : base(factory) {}
+    public LearnerProgressTests(KnowledgeComponentsTestFactory factory) : base(factory) {}
     
     [Theory]
     [MemberData(nameof(TestData))]
-    public void Retrieves_learner_progress(string userId, int[] learnerIds, int expectedProgressCount)
+    public void Retrieves_kc_progress(string userId, int[] learnerIds, int expectedProgressCount)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, userId);

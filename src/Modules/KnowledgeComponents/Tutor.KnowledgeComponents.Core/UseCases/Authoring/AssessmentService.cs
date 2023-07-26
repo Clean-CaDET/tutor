@@ -52,6 +52,7 @@ public class AssessmentService : CrudService<AssessmentItemDto, AssessmentItem>,
 
         var updatedItems = items
             .Select(i => _assessmentItemRepository.Update(MapToDomain(i)))
+            .OrderBy(a => a.Order)
             .ToList();
 
         var result = UnitOfWork.Save();

@@ -10,11 +10,15 @@ namespace Tutor.Courses.Core.UseCases.Learning;
 
 public class EnrolledCourseService : BaseService<CourseDto, Course>, IEnrolledCourseService
 {
+    private readonly IMapper _mapper;
     private readonly IEnrollmentRepository _enrollmentRepository;
+    private readonly ICrudRepository<KnowledgeUnit> _unitRepository;
 
-    public EnrolledCourseService(IMapper mapper, IEnrollmentRepository enrollmentRepository): base(mapper)
+    public EnrolledCourseService(IMapper mapper, IEnrollmentRepository enrollmentRepository, ICrudRepository<KnowledgeUnit> unitRepository) : base(mapper)
     {
+        _mapper = mapper;
         _enrollmentRepository = enrollmentRepository;
+        _unitRepository = unitRepository;
     }
 
     public Result<PagedResult<CourseDto>> GetAll(int learnerId, int page, int pageSize)
@@ -41,5 +45,13 @@ public class EnrolledCourseService : BaseService<CourseDto, Course>, IEnrolledCo
     {
         var enrollment = _enrollmentRepository.GetEnrollment(unitId, learnerId);
         return enrollment != null && enrollment.IsActive();
+    }
+
+    public Result<KnowledgeUnitDto> GetUnit(int unitId, int learnerId)
+    {
+        if(!HasActiveEnrollment(unitId, learnerId))
+            return Result.Fail(FailureCode.Forbidden);
+
+        return _mapper.Map<KnowledgeUnitDto>(_unitRepository.Get(unitId));
     }
 }

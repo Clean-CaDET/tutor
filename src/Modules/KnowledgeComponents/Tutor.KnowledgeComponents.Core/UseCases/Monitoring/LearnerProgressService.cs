@@ -21,13 +21,13 @@ public class LearnerProgressService : ILearnerProgressService
         _accessService = accessService;
     }
 
-    public Result<List<KnowledgeComponentMasteryDto>> GetProgress(int unitId, int[] learnerIds, int instructorId)
+    public Result<List<KcmProgressDto>> GetProgress(int unitId, int[] learnerIds, int instructorId)
     {
         if (learnerIds.Length == 0) return Result.Fail(FailureCode.NotFound);
         if (!_accessService.IsUnitOwner(unitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
         return _masteryRepository.GetByLearnersAndUnit(unitId, learnerIds)
-            .Select(_mapper.Map<KnowledgeComponentMasteryDto>).ToList();
+            .Select(_mapper.Map<KcmProgressDto>).ToList();
     }
 }

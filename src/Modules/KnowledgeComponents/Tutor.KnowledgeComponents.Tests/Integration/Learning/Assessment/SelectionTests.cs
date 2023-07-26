@@ -20,7 +20,7 @@ public class SelectionTests : BaseKnowledgeComponentsIntegrationTest
 
     [Theory]
     [MemberData(nameof(AssessmentItemRequest))]
-    public void Gets_suitable_assessment_event(int knowledgeComponentId, int expectedSuitableAssessmentItemId)
+    public void Gets_suitable_assessment_item(int knowledgeComponentId, int expectedSuitableAssessmentItemId)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
@@ -56,8 +56,8 @@ public class SelectionTests : BaseKnowledgeComponentsIntegrationTest
             },
             new object[]
             {
-                -13,
-                -134
+                -10,
+                -106
             }
         };
     }

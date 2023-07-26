@@ -36,7 +36,7 @@ public class EnrolledCourseController : BaseApiController
     [HttpGet("{courseId:int}/units/{unitId:int}")]
     public ActionResult<KnowledgeUnitDto> GetEnrolledAndActiveUnit(int unitId)
     {
-        //var result = _enrollmentService.GetUnit(unitId, User.LearnerId());
-        return CreateResponse(null);
+        var result = _enrolledCourseService.GetUnit(unitId, User.LearnerId());
+        return CreateResponse(result);
     }
 }

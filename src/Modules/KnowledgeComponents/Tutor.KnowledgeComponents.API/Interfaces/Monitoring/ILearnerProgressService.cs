@@ -5,5 +5,5 @@ namespace Tutor.KnowledgeComponents.API.Interfaces.Monitoring;
 
 public interface ILearnerProgressService
 {
-    Result<List<KnowledgeComponentMasteryDto>> GetProgress(int unitId, int[] learnerIds, int instructorId);
+    Result<List<KcmProgressDto>> GetProgress(int unitId, int[] learnerIds, int instructorId);
 }
