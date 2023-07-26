@@ -2,7 +2,7 @@
 using System.Text.Json;
 using Tutor.BuildingBlocks.Core.EventSourcing;
 
-namespace Tutor.KnowledgeComponents.Infrastructure.Database.EventStore;
+namespace Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.Postgres;
 
 internal class PostgresEventQueryable : IEventQueryable
 {
@@ -63,8 +63,8 @@ internal class PostgresEventQueryable : IEventQueryable
 
     private IEnumerable<DomainEvent> ApplyConditions()
     {
-        var events = EventSource.Select(e => e.DomainEvent);
-        foreach (var condition in Conditions)
+        IQueryable<JsonDocument> events = EventSource.Select(e => e.DomainEvent);
+        foreach (Expression<Func<JsonDocument, bool>> condition in Conditions)
         {
             events = events.Where(condition);
         }

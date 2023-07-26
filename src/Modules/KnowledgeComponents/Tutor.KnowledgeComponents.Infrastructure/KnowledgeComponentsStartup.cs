@@ -21,6 +21,8 @@ using Tutor.KnowledgeComponents.Core.UseCases.Learning.Assessment;
 using Tutor.KnowledgeComponents.Core.UseCases.Monitoring;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
 using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore;
+using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.DefaultEventSerializer;
+using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.Postgres;
 using Tutor.KnowledgeComponents.Infrastructure.Database.Repositories;
 
 namespace Tutor.KnowledgeComponents.Infrastructure;
@@ -77,7 +79,7 @@ public static class KnowledgeComponentsStartup
         services.AddScoped<IKnowledgeMasteryRepository, KnowledgeMasteryDatabaseRepository>();
 
         services.AddScoped<IEventStore, PostgresStore>();
-        services.AddScoped<IEventSerializer, DefaultEventSerializer>();
+        services.AddSingleton<IEventSerializer>(new DefaultEventSerializer(EventSerializationConfiguration.EventRelatedTypes));
 
         services.AddScoped<IKnowledgeComponentsUnitOfWork, KnowledgeComponentsUnitOfWork>();
         services.AddDbContext<KnowledgeComponentsContext>(opt =>

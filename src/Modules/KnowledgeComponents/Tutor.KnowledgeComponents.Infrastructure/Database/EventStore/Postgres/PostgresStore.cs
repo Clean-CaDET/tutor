@@ -2,7 +2,7 @@
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 
-namespace Tutor.KnowledgeComponents.Infrastructure.Database.EventStore;
+namespace Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.Postgres;
 
 public class PostgresStore : IEventStore
 {

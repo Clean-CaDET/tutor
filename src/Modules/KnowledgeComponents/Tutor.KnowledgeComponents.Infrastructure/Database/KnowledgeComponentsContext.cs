@@ -6,7 +6,7 @@ using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.MultiRespo
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.ShortAnswerQuestions;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.InstructionalItems;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
-using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore;
+using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.Postgres;
 
 namespace Tutor.KnowledgeComponents.Infrastructure.Database;
 

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Tutor.KnowledgeComponents.Infrastructure.Database.EventStore;
+namespace Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.Postgres;
 
 internal class StoredDomainEvent
 {

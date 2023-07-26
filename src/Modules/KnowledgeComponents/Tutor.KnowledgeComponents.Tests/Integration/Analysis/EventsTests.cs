@@ -22,12 +22,12 @@ public class EventsTests : BaseKnowledgeComponentsIntegrationTest
         var result = ((OkObjectResult)controller.GetAllEvents().Result).Value as List<DomainEvent>;
 
         result.ShouldNotBeNull();
-        result.Count.ShouldBe(103);
+        result.Count.ShouldBe(99);
     }
 
     [Theory]
     [InlineData(1, 60, 60)]
-    [InlineData(2, 60, 43)]
+    [InlineData(2, 60, 39)]
     public void Retrieves_subset_of_events(int page, int pageSize, int expectedEventCount)
     {
         using var scope = Factory.Services.CreateScope();
