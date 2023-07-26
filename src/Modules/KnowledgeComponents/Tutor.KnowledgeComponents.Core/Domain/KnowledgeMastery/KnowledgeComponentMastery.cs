@@ -41,6 +41,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         LearnerId = learnerId;
         KnowledgeComponentId = knowledgeComponentId;
         AssessmentItemMasteries = assessmentItemMasteries;
+        Causes(new KnowledgeComponentInitialized());
     }
 
     public override void Initialize()
@@ -177,7 +178,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         kcEvent.KnowledgeComponentId = KnowledgeComponentId;
         kcEvent.LearnerId = LearnerId;
 
-        SessionTracker.Apply(kcEvent);
+        SessionTracker?.Apply(kcEvent);
         When((dynamic)kcEvent);
     }
 

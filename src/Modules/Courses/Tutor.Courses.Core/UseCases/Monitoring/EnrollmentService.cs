@@ -62,8 +62,6 @@ public class EnrollmentService : BaseService<UnitEnrollmentDto, UnitEnrollment>,
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 
-        _learnerMasteryService.InitializeMasteries(unit.Id, learnerId);
-
         return MapToDto(enrollment);
     }
 

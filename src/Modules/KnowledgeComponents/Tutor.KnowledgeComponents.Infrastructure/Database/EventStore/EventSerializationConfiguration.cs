@@ -15,6 +15,7 @@ public static class EventSerializationConfiguration
         { typeof(AssessmentItemAnswered), "AssessmentItemAnswered" },
         { typeof(HintsRequested), "HintsRequested" },
         { typeof(SolutionRequested), "SolutionRequested" },
+        { typeof(KnowledgeComponentInitialized), "KnowledgeComponentInitialized" },
         { typeof(KnowledgeComponentStarted), "KnowledgeComponentStarted" },
         { typeof(KnowledgeComponentPassed), "KnowledgeComponentPassed" },
         { typeof(KnowledgeComponentCompleted), "KnowledgeComponentCompleted" },

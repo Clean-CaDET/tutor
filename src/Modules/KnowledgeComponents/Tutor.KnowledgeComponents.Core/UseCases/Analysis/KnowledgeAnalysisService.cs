@@ -36,7 +36,7 @@ public class KnowledgeAnalysisService : IKnowledgeAnalysisService
             .Where(e => e.RootElement.GetProperty("KnowledgeComponentId").GetInt32() == kcId)
             .ToList<KnowledgeComponentEvent>();
 
-        return CalculateStatistics(kcId, events, events.Select(e => e.LearnerId).Distinct().Count()); //TODO: Add KcRegistration event to catch completely inactive users
+        return CalculateStatistics(kcId, events, events.Select(e => e.LearnerId).Distinct().Count());
     }
 
     public Result<KcStatisticsDto> GetStatisticsForGroup(int kcId, int groupId, int instructorId)

@@ -70,6 +70,30 @@ public class UnitEnrollmentCommandTests : BaseCoursesIntegrationTest
     }
 
     [Fact]
+    public void Enrolls_single_and_creates_appropriate_masteries()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-51");
+        var dbContext = scope.ServiceProvider.GetRequiredService<CoursesContext>();
+        dbContext.Database.BeginTransaction();
+        var secondaryDbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
+        secondaryDbContext.Database.BeginTransaction();
+        var startingCount = secondaryDbContext.KcMasteries.Count();
+
+        var enrollmentRequest = new EnrollmentRequestDto
+        {
+            LearnerIds = new[] { -1 }
+        };
+
+        controller.Enroll(-1, enrollmentRequest);
+
+        dbContext.ChangeTracker.Clear();
+        secondaryDbContext.ChangeTracker.Clear();
+        var endingCount = secondaryDbContext.KcMasteries.Count();
+        endingCount.ShouldBe(startingCount+6);
+    }
+
+    [Fact]
     public void Unenrolls()
     {
         using var scope = Factory.Services.CreateScope();

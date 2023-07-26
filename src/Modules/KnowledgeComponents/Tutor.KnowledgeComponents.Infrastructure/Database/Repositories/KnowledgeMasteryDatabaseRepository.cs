@@ -64,6 +64,7 @@ public class KnowledgeMasteryDatabaseRepository : IKnowledgeMasteryRepository
     public void Create(KnowledgeComponentMastery kcMastery)
     {
         _dbContext.KcMasteries.Add(kcMastery);
+        _eventStore.Save(kcMastery);
     }
 
     public List<KnowledgeComponentMastery> GetByLearnersAndUnit(int unitId, int[] learnerIds)
