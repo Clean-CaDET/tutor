@@ -26,20 +26,6 @@ public class BaseArchitecturalTests
         ).Build();
     }
 
-    /*protected IEnumerable<Class> GetExaminedTypes(string assemblyName)
-    {
-        return Architecture.Assemblies
-            .Where(a => a.FullName.Contains(assemblyName))
-            .SelectMany(a => Architecture.Classes.Where(c => c.Assembly.Equals(a)));
-    }
-
-    protected IEnumerable<Class> GetForbiddenTypes(params string[] exemptAssemblyNames)
-    {
-        return Architecture.Assemblies
-            .Where(a => exemptAssemblyNames.All(n => !a.FullName.Contains(n)))
-            .SelectMany(a => Architecture.Classes.Where(c => c.Assembly.Equals(a)));
-    }*/
-
     protected IEnumerable<IType> GetExaminedTypes(string assemblyName)
     {
         return Architecture.Assemblies
