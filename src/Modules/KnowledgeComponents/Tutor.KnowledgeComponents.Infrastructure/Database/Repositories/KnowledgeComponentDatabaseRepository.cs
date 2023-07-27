@@ -14,12 +14,19 @@ public class KnowledgeComponentDatabaseRepository : CrudDatabaseRepository<Knowl
         return DbContext.KnowledgeComponents.Where(kc => kc.KnowledgeUnitId == unitId).ToList();
     }
 
-    public List<KnowledgeComponent> GetByUnitWithItems(int unitId)
+    public List<KnowledgeComponent> GetByUnitWithAssessments(int unitId)
     {
         return DbContext.KnowledgeComponents
             .Include(kc => kc.AssessmentItems)
-            .Include(kc => kc.InstructionalItems)
             .Where(kc => kc.KnowledgeUnitId == unitId).ToList();
+    }
+
+    public List<KnowledgeComponent> GetByUnitsWithItems(List<int> unitIds)
+    {
+        return DbContext.KnowledgeComponents
+            .Include(kc => kc.InstructionalItems)
+            .Include(kc => kc.AssessmentItems)
+            .Where(kc => unitIds.Contains(kc.KnowledgeUnitId)).ToList();
     }
 
     public List<KnowledgeComponent> GetRootKcs(List<int> unitIds)

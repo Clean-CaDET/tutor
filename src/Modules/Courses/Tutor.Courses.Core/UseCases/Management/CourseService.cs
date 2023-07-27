@@ -5,6 +5,7 @@ using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Interfaces.Management;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
+using Tutor.KnowledgeComponents.API.Interfaces.Authoring;
 
 namespace Tutor.Courses.Core.UseCases.Management;
 
@@ -14,13 +15,15 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
     private readonly ICoursesUnitOfWork _unitOfWork;
     private readonly ICourseOwnershipRepository _ownershipRepository;
     private readonly IUnitEnrollmentRepository _unitEnrollmentRepository;
+    private readonly IKnowledgeComponentService _kcService;
 
-    public CourseService(IMapper mapper, ICourseRepository courseRepository, ICoursesUnitOfWork unitOfWork, ICourseOwnershipRepository ownershipRepository, IUnitEnrollmentRepository unitEnrollmentRepository) : base(mapper)
+    public CourseService(IMapper mapper, ICourseRepository courseRepository, ICoursesUnitOfWork unitOfWork, ICourseOwnershipRepository ownershipRepository, IUnitEnrollmentRepository unitEnrollmentRepository, IKnowledgeComponentService kcService) : base(mapper)
     {
         _courseRepository = courseRepository;
         _unitOfWork = unitOfWork;
         _ownershipRepository = ownershipRepository;
         _unitEnrollmentRepository = unitEnrollmentRepository;
+        _kcService = kcService;
     }
 
     public Result<PagedResult<CourseDto>> GetAll(int page, int pageSize)
@@ -110,13 +113,32 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
 
         var clonedCourse = _courseRepository.Create(existingCourse.Clone());
 
-        // TODO: Kontaktiraj KC servis da klonira sta treba tamo na kraju
-        CloneOwnerships(clonedCourse, existingCourse.Id);
-
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 
+        if (clonedCourse.KnowledgeUnits?.Count > 0)
+        {
+            CloneKcs(existingCourse.KnowledgeUnits, clonedCourse.KnowledgeUnits);
+        }
+        CloneOwnerships(clonedCourse, existingCourse.Id);
+
+        result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+
         return MapToDto(clonedCourse);
+    }
+
+    private Result CloneKcs(List<KnowledgeUnit> existingUnits, List<KnowledgeUnit> clonedUnits)
+    {
+        var unitIdPairs = new List<Tuple<int, int>>();
+        existingUnits.ForEach(existingUnit =>
+        {
+            // TODO: Add unique constraint for unit and KC codes.
+            var clonedUnitId = clonedUnits.Find(c => c.Code == existingUnit.Code).Id;
+            unitIdPairs.Add(new Tuple<int, int>(existingUnit.Id, clonedUnitId));
+        });
+
+        return _kcService.CloneMany(unitIdPairs);
     }
 
     private void CloneOwnerships(Course course, int clonedCourseId)
@@ -124,21 +146,4 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
         var owners = _ownershipRepository.GetOwnerIds(clonedCourseId);
         owners.ForEach(o => _ownershipRepository.Create(new CourseOwnership(course, o)));
     }
-
-    /*private static void LinkKcParents(List<KnowledgeComponent> clonedKcs, List<KnowledgeComponent> oldKcs)
-    {
-            LinkKcParents(course.KnowledgeUnits.SelectMany(u => u.KnowledgeComponents).ToList(),
-            existingCourse.KnowledgeUnits.SelectMany(u => u.KnowledgeComponents).ToList());
-
-        foreach (var oldKc in oldKcs)
-        {
-            if(oldKc.ParentId == null || oldKc.ParentId == 0) continue;
-            
-            var oldKcParent = oldKcs.Find(kc => kc.Id == oldKc.ParentId);
-            var matchingKc = clonedKcs.Find(kc => kc.Code == oldKc.Code);
-            if(oldKcParent == null || matchingKc == null) continue;
-
-            matchingKc.ParentId = clonedKcs.Find(kc => kc.Code == oldKcParent.Code)?.Id;
-        }
-    }*/ // TODO: Move to KC module
 }

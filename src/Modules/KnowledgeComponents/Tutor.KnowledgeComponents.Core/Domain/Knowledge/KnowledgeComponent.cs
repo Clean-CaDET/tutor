@@ -15,4 +15,20 @@ public class KnowledgeComponent : Entity
     public int? ParentId { get; internal set; }
     public List<AssessmentItem>? AssessmentItems { get; private set; }
     public List<InstructionalItem>? InstructionalItems { get; private set; }
+
+    internal KnowledgeComponent Clone(int item2)
+    {
+        return new KnowledgeComponent
+        {
+            Code = Code,
+            Name = Name,
+            Description = Description,
+            Order = Order,
+            ExpectedDurationInMinutes = ExpectedDurationInMinutes,
+            KnowledgeUnitId = KnowledgeUnitId,
+            ParentId = ParentId,
+            InstructionalItems = InstructionalItems?.Select(i => i.Clone()).ToList(),
+            AssessmentItems = AssessmentItems?.Select(a => a.Clone()).ToList()
+        };
+    }
 }

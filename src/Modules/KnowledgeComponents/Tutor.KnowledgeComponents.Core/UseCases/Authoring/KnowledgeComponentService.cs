@@ -11,10 +11,12 @@ namespace Tutor.KnowledgeComponents.Core.UseCases.Authoring;
 
 public class KnowledgeComponentService : CrudService<KnowledgeComponentDto, KnowledgeComponent>, IKnowledgeComponentService
 {
+    private readonly IKnowledgeComponentRepository _kcRepository;
     private readonly IAccessService _accessService;
 
     public KnowledgeComponentService(IMapper mapper, IKnowledgeComponentRepository kcRepository, IAccessService accessService, IKnowledgeComponentsUnitOfWork unitOfWork) : base(kcRepository, unitOfWork, mapper)
     {
+        _kcRepository = kcRepository;
         _accessService = accessService;
     }
 
@@ -48,5 +50,52 @@ public class KnowledgeComponentService : CrudService<KnowledgeComponentDto, Know
             return Result.Fail(FailureCode.Forbidden);
 
         return Delete(id);
+    }
+
+    public Result CloneMany(List<Tuple<int, int>> unitIdPairs)
+    {
+        var oldKcs = _kcRepository.GetByUnitsWithItems(unitIdPairs.Select(u => u.Item1).ToList());
+
+        UnitOfWork.BeginTransaction();
+        
+        var result = CloneKcs(oldKcs, unitIdPairs);
+
+        if (result.IsFailed)
+        {
+            UnitOfWork.Rollback();
+            return result;
+        }
+
+        return result;
+    }
+
+    private Result CloneKcs(List<KnowledgeComponent> oldKcs, List<Tuple<int, int>> unitIdPairs)
+    {
+        var clonedKcs = oldKcs
+            .Select(kc => kc.Clone(
+                unitIdPairs.Find(pair => pair.Item1 == kc.KnowledgeUnitId).Item2))
+            .ToList();
+
+        clonedKcs = _kcRepository.BulkCreate(clonedKcs);
+        var result = UnitOfWork.Save();
+        if (result.IsFailed) return result;
+
+        LinkKcParents(clonedKcs, oldKcs);
+
+        return UnitOfWork.Save();
+    }
+
+    private static void LinkKcParents(List<KnowledgeComponent> clonedKcs, List<KnowledgeComponent> oldKcs)
+    {
+        foreach (var oldKc in oldKcs)
+        {
+            if (oldKc.ParentId == null || oldKc.ParentId == 0) continue;
+
+            var oldKcParent = oldKcs.Find(kc => kc.Id == oldKc.ParentId);
+            var matchingKc = clonedKcs.Find(kc => kc.Code == oldKc.Code);
+            if (oldKcParent == null || matchingKc == null) continue;
+
+            matchingKc.ParentId = clonedKcs.Find(kc => kc.Code == oldKcParent.Code)?.Id;
+        }
     }
 }

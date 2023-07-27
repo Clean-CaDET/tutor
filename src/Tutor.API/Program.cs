@@ -59,5 +59,6 @@ namespace Tutor.API
 // TODO: Rework FailureCodes to make them extensible
 // TODO: Rework BaseApiController to return error subcode with response and to make it extensible (so that each module can introduce failures)
 
-// TODO: Performance gain za enrollment
-// TODO: Isto za kloniranje KCova
+// TODO: Performance gain za enrollment pokazi
+// TODO: Pokazi problematiku internal APIa
+// TODO: Pokazi secondary db context u testovima

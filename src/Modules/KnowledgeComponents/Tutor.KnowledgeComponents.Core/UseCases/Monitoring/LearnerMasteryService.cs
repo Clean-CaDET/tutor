@@ -41,7 +41,7 @@ public class LearnerMasteryService : ILearnerMasteryService
 
     private void CreateMasteries(int unitId, int learnerId)
     {
-        var kcs = _kcRepository.GetByUnitWithItems(unitId);
+        var kcs = _kcRepository.GetByUnitWithAssessments(unitId);
         foreach (var kc in kcs)
         {
             var assessmentMasteries = kc.AssessmentItems?

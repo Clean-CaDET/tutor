@@ -5,8 +5,8 @@ namespace Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems;
 public abstract class AssessmentItem : Entity
 {
     public int KnowledgeComponentId { get; private set; }
-    public int Order { get; private set; }
-    public List<Hint>? Hints { get; private set; }
+    public int Order { get; protected set; }
+    public List<Hint>? Hints { get; protected set; }
 
     protected AssessmentItem() { }
 
@@ -25,4 +25,6 @@ public abstract class AssessmentItem : Entity
     protected abstract void ClearSolution();
 
     public abstract Evaluation Evaluate(Submission submission);
+
+    public abstract AssessmentItem Clone();
 }

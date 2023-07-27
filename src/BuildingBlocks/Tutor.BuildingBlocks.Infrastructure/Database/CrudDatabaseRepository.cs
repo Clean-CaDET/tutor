@@ -40,9 +40,10 @@ public class CrudDatabaseRepository<TEntity, TDbContext> : ICrudRepository<TEnti
         return entity;
     }
 
-    public void BulkCreate(List<TEntity> entities)
+    public List<TEntity> BulkCreate(List<TEntity> entities)
     {
         _dbSet.AddRange(entities);
+        return entities;
     }
 
     public TEntity Update(TEntity entity)
