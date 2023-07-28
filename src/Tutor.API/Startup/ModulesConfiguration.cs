@@ -1,6 +1,6 @@
 using Tutor.Courses.Infrastructure;
 using Tutor.KnowledgeComponents.Infrastructure;
-using Tutor.LanguageModel.Infrastructure;
+using Tutor.LmConversations.Infrastructure;
 using Tutor.LearningUtils.Infrastructure;
 using Tutor.Stakeholders.Infrastructure;
 
@@ -14,7 +14,7 @@ public static class ModulesConfiguration
         services.ConfigureCoursesModule();
         services.ConfigureLearningUtilitiesModule();
         services.ConfigureKnowledgeComponentsModule();
-        services.ConfigureLanguageModelModule();
+        services.ConfigureLmConversationsModule();
 
         return services;
     }
