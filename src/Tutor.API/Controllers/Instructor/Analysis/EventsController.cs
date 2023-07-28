@@ -6,11 +6,11 @@ using Tutor.BuildingBlocks.Core.UseCases;
 namespace Tutor.API.Controllers.Instructor.Analysis;
 
 [Authorize(Policy = "instructorPolicy")]
-[Route("api/events")]
+[Route("api/analysis/knowledge-components/events")]
 public class EventsController : BaseApiController
 {
     private readonly IEventStore _eventStore;
-
+    // Needs to be reworked
     public EventsController(IEventStore eventStore)
     {
         _eventStore = eventStore;

@@ -4,7 +4,6 @@ using Shouldly;
 using Tutor.API.Controllers.Instructor.Analysis;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.API.Interfaces.Analysis;
-using Xunit;
 
 namespace Tutor.KnowledgeComponents.Tests.Integration.Analysis;
 

@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using Tutor.API.Controllers.Learner.Utilities;
-using Tutor.LearningUtils.API.Dtos;
-using Tutor.LearningUtils.API.Interfaces;
-using Tutor.LearningUtils.Infrastructure.Database;
+using Tutor.API.Controllers.Learner;
+using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
+using Tutor.KnowledgeComponents.API.Interfaces.Analysis;
+using Tutor.KnowledgeComponents.Infrastructure.Database;
 
-namespace Tutor.LearningUtils.Tests.Integration;
+namespace Tutor.KnowledgeComponents.Tests.Integration.Analysis;
 
-public class RatingTests : BaseLearningUtilsIntegrationTest
+public class RatingTests : BaseKnowledgeComponentsIntegrationTest
 {
-    public RatingTests(LearningUtilsTestFactory factory) : base(factory) {}
+    public RatingTests(KnowledgeComponentsTestFactory factory) : base(factory) {}
     
     [Fact]
     public void Creates_new_rating()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
-        var dbContext = scope.ServiceProvider.GetRequiredService<LearningUtilsContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
         var tags = new[] {"Težina zadataka", "Jasnoća zadataka"};
         var kcRating = new KnowledgeComponentRatingDto { KnowledgeComponentId = -10, Rating = 5, Tags = tags};
         dbContext.Database.BeginTransaction();

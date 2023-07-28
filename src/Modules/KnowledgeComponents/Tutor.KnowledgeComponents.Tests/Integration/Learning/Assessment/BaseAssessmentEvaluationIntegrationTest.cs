@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Tutor.API.Controllers.Learner.Learning.Assessment;
 using Tutor.KnowledgeComponents.API.Interfaces.Learning.Assessment;
 

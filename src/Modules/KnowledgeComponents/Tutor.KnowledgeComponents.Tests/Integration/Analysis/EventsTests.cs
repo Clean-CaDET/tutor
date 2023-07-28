@@ -4,7 +4,6 @@ using Shouldly;
 using Tutor.API.Controllers.Instructor.Analysis;
 using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
-using Xunit;
 
 namespace Tutor.KnowledgeComponents.Tests.Integration.Analysis;
 

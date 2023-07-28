@@ -6,7 +6,6 @@ using Tutor.KnowledgeComponents.API.Dtos.Knowledge.InstructionalItems;
 using Tutor.KnowledgeComponents.API.Interfaces.Authoring;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.InstructionalItems;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
-using Xunit;
 
 namespace Tutor.KnowledgeComponents.Tests.Integration.Authoring;
 

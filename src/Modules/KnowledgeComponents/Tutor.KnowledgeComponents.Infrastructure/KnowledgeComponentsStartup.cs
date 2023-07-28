@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tutor.BuildingBlocks.Core.EventSourcing;
+using Tutor.BuildingBlocks.Core.UseCases;
+using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Security;
 using Tutor.KnowledgeComponents.API.Interfaces;
 using Tutor.KnowledgeComponents.API.Interfaces.Analysis;
@@ -9,6 +11,7 @@ using Tutor.KnowledgeComponents.API.Interfaces.Learning;
 using Tutor.KnowledgeComponents.API.Interfaces.Learning.Assessment;
 using Tutor.KnowledgeComponents.API.Interfaces.Monitoring;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
+using Tutor.KnowledgeComponents.Core.Domain.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.DomainServices;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.MoveOn;
@@ -49,6 +52,7 @@ public static class KnowledgeComponentsStartup
 
         services.AddScoped<IAssessmentAnalysisService, AssessmentAnalysisService>();
         services.AddScoped<IKnowledgeAnalysisService, KnowledgeAnalysisService>();
+        services.AddScoped<IRatingService, RatingService>();
 
         services.AddScoped<IAssessmentService, AssessmentService>();
         services.AddScoped<IInstructionalItemsService, InstructionalItemsService>();
@@ -72,6 +76,9 @@ public static class KnowledgeComponentsStartup
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
+        services.AddScoped(typeof(ICrudRepository<KnowledgeComponentRating>),
+            typeof(CrudDatabaseRepository<KnowledgeComponentRating, KnowledgeComponentsContext>));
+
         services.AddScoped<IAssessmentItemRepository, AssessmentItemDatabaseRepository>();
         services.AddScoped<IInstructionalItemRepository, InstructionalItemDatabaseRepository>();
         services.AddScoped<IKnowledgeComponentRepository, KnowledgeComponentDatabaseRepository>();

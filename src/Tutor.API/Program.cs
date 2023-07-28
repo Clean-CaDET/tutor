@@ -46,19 +46,17 @@ namespace Tutor.API
 
 
 // TODO: KcRating should be moved from utilities to learning
-// TODO: DELETE operations need to be revisited because of modules.
+// TODO: Check usages of CRUD service to ensure it is being used properly. Up to now it returned tracked entities that could be and saved with UoW. This is no longer true.
 
 // TODO: Possibly need to configure JSON mapping for controller endpoints
-// TODO: Serilog
 
-// Check all usages of methods below
-// TODO: Check if CRUD service is being used properly. Up to now it returned tracked entities that could be and saved with UoW. This is no longer true.
+// TODO: Serilog; Deploy - Eva
+// TODO: Front, Testing - Luka, Nikola
 
-//TODO: Check all routes when redesign is near finished
-
+// TODO: Performance za read enrollment pokazi
+// TODO: Pokazi secondary db context u testovima
+// TODO: Pokazi problematiku internal APIa
 // TODO: Rework FailureCodes to make them extensible
 // TODO: Rework BaseApiController to return error subcode with response and to make it extensible (so that each module can introduce failures)
-
-// TODO: Performance gain za enrollment pokazi
-// TODO: Pokazi problematiku internal APIa
-// TODO: Pokazi secondary db context u testovima
+// TODO: Check all routes when redesign is near finished
+// TODO: DELETE operations need to be revisited because of modules.

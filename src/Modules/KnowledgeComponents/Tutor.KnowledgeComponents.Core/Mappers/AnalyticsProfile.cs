@@ -10,5 +10,6 @@ public class AnalyticsProfile : Profile
     {
         CreateMap<KcStatistics, KcStatisticsDto>();
         CreateMap<AiStatistics, AiStatisticsDto>();
+        CreateMap<KnowledgeComponentRatingDto, KnowledgeComponentRating>().ReverseMap();
     }
 }

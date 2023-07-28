@@ -25,14 +25,12 @@ public static class LearningUtilsStartup
     {
         services.AddScoped<IFeedbackService, FeedbackService>();
         services.AddScoped<INoteService, NoteService>();
-        services.AddScoped<IRatingService, RatingService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
         services.AddScoped<INoteRepository, NoteDatabaseRepository>();
         services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
-        services.AddScoped<IRatingRepository, RatingDatabaseRepository>();
 
         services.AddScoped<ILearningUtilsUnitOfWork, LearningUtilsUnitOfWork>();
         services.AddDbContext<LearningUtilsContext>(opt =>

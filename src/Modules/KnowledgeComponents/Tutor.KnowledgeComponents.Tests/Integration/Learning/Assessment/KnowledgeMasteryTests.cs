@@ -2,7 +2,6 @@
 using Shouldly;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.MultiResponseQuestions;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
-using Xunit;
 
 namespace Tutor.KnowledgeComponents.Tests.Integration.Learning.Assessment;
 

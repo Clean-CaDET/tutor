@@ -4,7 +4,6 @@ using Shouldly;
 using Tutor.API.Controllers.Instructor.Monitoring;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeMastery;
 using Tutor.KnowledgeComponents.API.Interfaces.Monitoring;
-using Xunit;
 
 namespace Tutor.KnowledgeComponents.Tests.Integration.Monitoring;
 

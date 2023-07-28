@@ -5,6 +5,7 @@ using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.MultiChoic
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.ShortAnswerQuestions;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.InstructionalItems;
+using Tutor.KnowledgeComponents.Core.Domain.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.Postgres;
 
@@ -17,6 +18,7 @@ public class KnowledgeComponentsContext : DbContext
     public DbSet<InstructionalItem> InstructionalItems { get; set; }
     public DbSet<KnowledgeComponentMastery> KcMasteries { get; set; }
     internal DbSet<StoredDomainEvent> Events { get; private set; }
+    public DbSet<KnowledgeComponentRating> KnowledgeComponentRatings { get; set; }
 
     public KnowledgeComponentsContext(DbContextOptions<KnowledgeComponentsContext> options) : base(options) {}
 

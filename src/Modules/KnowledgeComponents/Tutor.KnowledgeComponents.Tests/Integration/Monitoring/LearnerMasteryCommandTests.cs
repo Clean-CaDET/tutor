@@ -7,7 +7,6 @@ using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 using Tutor.KnowledgeComponents.Core.UseCases;
 using Tutor.KnowledgeComponents.Core.UseCases.Monitoring;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
-using Xunit;
 
 namespace Tutor.KnowledgeComponents.Tests.Integration.Monitoring;
 

@@ -6,7 +6,6 @@ using Tutor.KnowledgeComponents.API.Dtos;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeMastery;
 using Tutor.KnowledgeComponents.API.Interfaces.Learning;
-using Xunit;
 
 namespace Tutor.KnowledgeComponents.Tests.Integration.Learning;
 

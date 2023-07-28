@@ -1,6 +1,6 @@
 ﻿using Tutor.BuildingBlocks.Core.Domain;
 
-namespace Tutor.LearningUtils.Core.Domain;
+namespace Tutor.KnowledgeComponents.Core.Domain.KnowledgeAnalytics;
 
 public class KnowledgeComponentRating : Entity
 {

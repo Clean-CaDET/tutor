@@ -7,7 +7,6 @@ using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.MultiResponse
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.ShortAnswerQuestions;
 using Tutor.KnowledgeComponents.API.Interfaces.Learning.Assessment;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
-using Xunit;
 
 namespace Tutor.KnowledgeComponents.Tests.Integration.Learning.Assessment;
 

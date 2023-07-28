@@ -4,7 +4,6 @@ using Shouldly;
 using Tutor.API.Controllers.Learner.Learning;
 using Tutor.KnowledgeComponents.API.Interfaces.Learning;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
-using Xunit;
 
 namespace Tutor.KnowledgeComponents.Tests.Integration.Learning;
 

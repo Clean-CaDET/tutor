@@ -7,7 +7,7 @@ using Tutor.Stakeholders.Infrastructure.Authentication;
 namespace Tutor.API.Controllers.Instructor.Analysis;
 
 [Authorize(Policy = "instructorPolicy")]
-[Route("api/analysis/{kcId:int}")]
+[Route("api/analysis/knowledge-components/{kcId:int}")]
 public class KnowledgeAnalysisController : BaseApiController
 {
     private readonly IKnowledgeAnalysisService _kcAnalysisService;
