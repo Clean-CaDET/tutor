@@ -44,10 +44,6 @@ namespace Tutor.API
     public partial class Program { }
 }
 
-
-// TODO: KcRating should be moved from utilities to learning
-// TODO: Check usages of CRUD service to ensure it is being used properly. Up to now it returned tracked entities that could be and saved with UoW. This is no longer true.
-
 // TODO: Possibly need to configure JSON mapping for controller endpoints
 
 // TODO: Serilog; Deploy - Eva

@@ -1,4 +1,5 @@
 using ArchUnitNET.xUnit;
+using Shouldly;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
 
 namespace Tutor.Architecture.Tests;
@@ -39,6 +40,22 @@ public class ModulesTests : BaseArchitecturalTests
         var rule = Types().That().Are(examinedTypes).Should().NotDependOnAny(forbiddenTypes);
 
         rule.Check(Architecture);
+    }
+
+    [Theory]
+    [MemberData(nameof(GetModules))]
+    public void Domain_namespaces_should_only_reference_themselves_and_core_building_blocks(string moduleName)
+    {
+        var allTypesFromCoreAssembly = GetExaminedTypes($"Tutor.{moduleName}.Core").ToList();
+        var domainTypes = allTypesFromCoreAssembly.Where(x => x.FullName.Contains(".Domain.")).ToList();
+        var nonDomainTypes = allTypesFromCoreAssembly.Where(x => !x.FullName.Contains(".Domain."));
+        var typesFromOtherAssemblies = GetForbiddenTypes("Tutor.BuildingBlocks.Core", $"Tutor.{moduleName}.Core");
+
+        var otherAssemblyRule = Types().That().Are(domainTypes).Should().NotDependOnAny(typesFromOtherAssemblies);
+        var sameAssemblyRule = Types().That().Are(domainTypes).Should().NotDependOnAny(nonDomainTypes);
+
+        otherAssemblyRule.Check(Architecture);
+        sameAssemblyRule.Check(Architecture);
     }
 
     public static IEnumerable<object[]> GetModules() => new List<object[]>
