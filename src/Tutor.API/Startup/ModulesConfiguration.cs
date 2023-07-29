@@ -1,6 +1,6 @@
 using Tutor.Courses.Infrastructure;
 using Tutor.KnowledgeComponents.Infrastructure;
-using Tutor.LmConversations.Infrastructure;
+using Tutor.LanguageModelConversations.Infrastructure;
 using Tutor.LearningUtils.Infrastructure;
 using Tutor.Stakeholders.Infrastructure;
 
