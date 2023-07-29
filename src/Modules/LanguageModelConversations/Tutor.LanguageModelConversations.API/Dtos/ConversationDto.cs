@@ -18,5 +18,5 @@ public class ConversationMessageDto
 public enum SenderType
 {
     Learner,
-    Lm
+    LanguageModel
 }

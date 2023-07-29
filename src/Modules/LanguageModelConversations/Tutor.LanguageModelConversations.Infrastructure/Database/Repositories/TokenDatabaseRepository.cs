@@ -14,22 +14,23 @@ public class TokenDatabaseRepository : ITokenRepository
         _dbContext = dbContext;
     }
 
-    public Token? GetByLearner(int learnerId)
+    public TokenWallet? GetByLearner(int learnerId)
     {
         return _dbContext.Tokens
             .Where(t => t.LearnerId == learnerId)
             .FirstOrDefault();
     }
 
-    public Token Create(Token token)
+    public TokenWallet Create(TokenWallet token)
     {
         _dbContext.Tokens.Add(token);
         return token;
     }
 
-    public Token UpdateIfExisting(Token token)
+    public TokenWallet UpdateIfExisting(TokenWallet token)
     {
-        if (_dbContext.Entry(token).State == EntityState.Added) return token;
+        if (_dbContext.Entry(token).State == EntityState.Added)
+            return token;
         _dbContext.Tokens.Update(token);
         return token;
     }

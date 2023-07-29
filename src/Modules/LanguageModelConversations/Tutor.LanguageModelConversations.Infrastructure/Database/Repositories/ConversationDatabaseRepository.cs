@@ -32,7 +32,8 @@ public class ConversationDatabaseRepository : IConversationRepository
 
     public Conversation UpdateIfExisting(Conversation conversation)
     {
-        if (_dbContext.Entry(conversation).State == EntityState.Added) return conversation;
+        if (_dbContext.Entry(conversation).State == EntityState.Added)
+            return conversation;
         _dbContext.Conversations.Update(conversation);
         return conversation;
     }

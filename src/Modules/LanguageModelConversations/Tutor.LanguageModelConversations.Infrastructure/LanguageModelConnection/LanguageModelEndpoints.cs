@@ -1,8 +1,8 @@
 ﻿namespace Tutor.LanguageModelConversations.Infrastructure.Http;
 
-public static class LmEndpoints
+public static class LanguageModelEndpoints
 {
-    // izvuci kao konfiguraciju
+    // TODO: izvuci kao konfiguraciju (docker varijabla?)
     public static readonly string BaseApi = "http://localhost:8080/api/";
     public static readonly string AskAiAboutLecture = "ask-ai-about-lecture";
     public static readonly string AskAiAboutTask = "ask-ai-about-task";

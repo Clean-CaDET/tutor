@@ -17,6 +17,16 @@ public class Conversation : Entity
     // samo se domenski model cuva u bazi
     public List<ConversationMessageDto> Messages { get; private set; }
 
+    // cuvamo domenske objekte u bazi
+    // imamo dto objekte za integraciju sa alek api
+    // imamo dto objekte za front
+    // alek_api -> domenski objekat -> front_dto
+    //      infra_konverter    core_konverter
+    //      ne mora biti pametan (cuvamo u bazi u obliku u kom moramo da posaljemo aleku, baza cuva objekte za tamo)
+    //                         mora biti pametam (cuvamo objekte koje umemo da prikazemo na frontu)
+    // umesto da oba budu pametna, nama je nebitno u kom obliku ce nam biti u bazi, ne menjamo ih nikako
+    //                         pametni konverter slozenih objekata + vec postojeci mapper kod
+
     public Conversation(int id, int learnerId, int contextId)
     {
         Id = id;

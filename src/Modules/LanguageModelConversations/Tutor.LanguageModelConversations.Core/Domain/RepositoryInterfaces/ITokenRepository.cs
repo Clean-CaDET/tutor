@@ -2,7 +2,7 @@
 
 public interface ITokenRepository
 {
-    Token? GetByLearner(int learnerId);
-    Token Create(Token token);
-    Token UpdateIfExisting(Token token);
+    TokenWallet? GetByLearner(int learnerId);
+    TokenWallet Create(TokenWallet token);
+    TokenWallet UpdateIfExisting(TokenWallet token);
 }

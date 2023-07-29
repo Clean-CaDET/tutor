@@ -3,9 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Learner;
 using Tutor.LanguageModelConversations.API.Dtos;
-using Tutor.LanguageModelConversations.API.Dtos.Integration.Response;
 using Tutor.LanguageModelConversations.API.Interfaces;
 using Tutor.LanguageModelConversations.Infrastructure.Database;
+using Tutor.LanguageModelConversations.Infrastructure.LanguageModelConnection.Response;
 
 namespace Tutor.LanguageModelConversations.Tests.Integration;
 

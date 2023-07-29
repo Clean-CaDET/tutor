@@ -36,7 +36,7 @@ public static class LanguageModelConversationsStartup
         services.AddScoped<IConversationRepository, ConversationDatabaseRepository>();
         services.AddScoped<ITokenRepository, TokenDatabaseRepository>();
 
-        services.AddScoped<ILmHttpSender, LmHttpSender>();
+        services.AddScoped<ILanguageModelConnector, LanguageModelConnector>();
 
         services.AddScoped<ILanguageModelConversationsUnitOfWork, LanguageModelConversationsUnitOfWork>();
         services.AddDbContext<LanguageModelConversationsContext>(opt =>

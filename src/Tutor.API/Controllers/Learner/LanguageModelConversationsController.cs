@@ -28,7 +28,7 @@ public class LanguageModelConversationsController : BaseApiController
     [HttpPost]
     public async Task<ActionResult<MessageResponse>> SendMessage([FromBody] MessageRequest messageRequest)
     {
-        var result = await _conversationService.SendMessage(messageRequest, User.LearnerId());
+        var result = await _conversationService.SendMessageAsync(messageRequest, User.LearnerId());
         return CreateResponse(result);
     }
 }

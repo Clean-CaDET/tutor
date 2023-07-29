@@ -1,8 +1,8 @@
 ﻿using Tutor.LanguageModelConversations.API.Dtos;
 
-namespace Tutor.LanguageModelConversations.Infrastructure.Http.Dtos;
+namespace Tutor.LanguageModelConversations.Infrastructure.LanguageModelConnection.Request;
 
-public class LmActionRequest
+public class LmActionDto
 {
     public string Text { get; set; }
     public ContextType Context { get; set; }

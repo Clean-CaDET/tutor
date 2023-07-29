@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Tutor.LanguageModelConversations.API.Dtos.Integration.Response;
+namespace Tutor.LanguageModelConversations.Infrastructure.LanguageModelConnection.Response;
 
-public class LmResponse
+public class LmDto
 {
     public List<LmMessageDto> Messages { get; set; }
     [JsonPropertyName("numOfTokens")]

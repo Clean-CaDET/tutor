@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Tutor.LanguageModelConversations.API.Dtos.Integration.Response;
+namespace Tutor.LanguageModelConversations.Infrastructure.LanguageModelConnection.Response;
 
-public class LmQaResponse : LmResponse
+public class LmQaDto : LmDto
 {
     [JsonPropertyName("response")]
     public List<LmQaDto> QuestionAnswers { get; set; }

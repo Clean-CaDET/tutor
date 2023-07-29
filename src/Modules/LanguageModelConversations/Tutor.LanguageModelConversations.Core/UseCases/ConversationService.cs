@@ -14,10 +14,10 @@ public class ConversationService : IConversationService
     private readonly IMapper _mapper;
     private readonly IConversationRepository _conversationRepository;
     private readonly ITokenRepository _tokenRepository;
-    private readonly ILmHttpSender _lmHttpSender;
+    private readonly ILanguageModelConnector _lmHttpSender;
     private readonly ILanguageModelConversationsUnitOfWork _unitOfWork;
 
-    public ConversationService(IMapper mapper, IConversationRepository conversationRepository, ITokenRepository tokenRepository, ILmHttpSender lmHttpSender, ILanguageModelConversationsUnitOfWork unitOfWork)
+    public ConversationService(IMapper mapper, IConversationRepository conversationRepository, ITokenRepository tokenRepository, ILanguageModelConnector lmHttpSender, ILanguageModelConversationsUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _conversationRepository = conversationRepository;
@@ -34,7 +34,7 @@ public class ConversationService : IConversationService
 
     // TODO: neophodno dodati endpoint u KC modulu koji ce dobavljati listu AI ili AI po id-u
 
-    public async Task<Result<MessageResponse>> SendMessage(MessageRequest message, int learnerId)
+    public async Task<Result<MessageResponse>> SendMessageAsync(MessageRequest message, int learnerId)
     {
         var conversation = _conversationRepository.Get(message.ConversationId);
         if (conversation != null)
@@ -51,7 +51,7 @@ public class ConversationService : IConversationService
         var learnerToken = _tokenRepository.GetByLearner(learnerId);
         if (learnerToken == null)
         {
-            learnerToken = new Token(learnerId);
+            learnerToken = new TokenWallet(learnerId);
             _tokenRepository.Create(learnerToken);
         }
         if (!learnerToken.ChechCount()) return Result.Fail(FailureCode.InsufficientResources);
