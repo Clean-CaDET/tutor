@@ -1,16 +1,15 @@
 ﻿using FluentResults;
 using Tutor.LanguageModelConversations.API.Dtos;
-using Tutor.LanguageModelConversations.API.Dtos.Integration.Response;
+using Tutor.LanguageModelConversations.Core.Domain;
 
 namespace Tutor.LanguageModelConversations.Core.UseCases;
 
-// ILmConnection -> preimenovati
 public interface ILanguageModelConnector
 {
-    Task<Result<LmResponse>> AskAiAboutLectureAsync(string lectureText, string newMessage, List<LmMessageDto>? previousMessages);
-    Task<Result<LmResponse>> AskAiAboutTaskAsync(string taskText, string newMessage, List<LmMessageDto>? previousMessages);
-    Task<Result<LmResponse>> SummarizeAsync(string lectureText);
-    Task<Result<LmKeywordResponse>> ExtractKeywordsAsync(string lectureText);
-    Task<Result<LmQaResponse>> GenerateLectureQuestionsAsync(string lectureText);
-    Task<Result<LmResponse>> GenerateSimilarTaskAsync(string text, ContextType context);
+    // TODO: bolje ime koje ima glagol u sebi
+    Task<Result<LanguageModelMessage>> TopicConversationAsync(string message, string text, ContextType context, List<LanguageModelMessage>? previousMessages);
+    Task<Result<LanguageModelMessage>> GenerateSimilarAsync(string text, ContextType context);
+    Task<Result<LanguageModelMessage>> SummarizeAsync(string text);
+    Task<Result<IEnumerable<LanguageModelMessage>>> ExtractKeywordsAsync(string text);
+    Task<Result<LanguageModelMessage>> GenerateQuestionsAsync(string text);
 }

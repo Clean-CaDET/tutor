@@ -1,8 +1,7 @@
 ﻿using FluentResults;
 using System.Net.Http.Json;
-using Tutor.LanguageModelConversations.Infrastructure.Http;
 
-namespace Tutor.LanguageModelConversations.Infrastructure.LanguageModelConnection;
+namespace Tutor.LanguageModelConversations.Infrastructure.LanguageModelConnector;
 
 public static class RequestHandler
 {

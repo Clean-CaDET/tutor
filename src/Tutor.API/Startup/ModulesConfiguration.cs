@@ -14,7 +14,7 @@ public static class ModulesConfiguration
         services.ConfigureCoursesModule();
         services.ConfigureLearningUtilitiesModule();
         services.ConfigureKnowledgeComponentsModule();
-        services.ConfigureLmConversationsModule();
+        services.ConfigureLanguageModelConversationsModule();
 
         return services;
     }

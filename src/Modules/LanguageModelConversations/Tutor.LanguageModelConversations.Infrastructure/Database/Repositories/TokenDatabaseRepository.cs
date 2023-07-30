@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 using Tutor.LanguageModelConversations.Core.Domain;
 using Tutor.LanguageModelConversations.Core.Domain.RepositoryInterfaces;
 
@@ -16,14 +15,14 @@ public class TokenDatabaseRepository : ITokenRepository
 
     public TokenWallet? GetByLearner(int learnerId)
     {
-        return _dbContext.Tokens
+        return _dbContext.TokenWallets
             .Where(t => t.LearnerId == learnerId)
             .FirstOrDefault();
     }
 
     public TokenWallet Create(TokenWallet token)
     {
-        _dbContext.Tokens.Add(token);
+        _dbContext.TokenWallets.Add(token);
         return token;
     }
 
@@ -31,7 +30,7 @@ public class TokenDatabaseRepository : ITokenRepository
     {
         if (_dbContext.Entry(token).State == EntityState.Added)
             return token;
-        _dbContext.Tokens.Update(token);
+        _dbContext.TokenWallets.Update(token);
         return token;
     }
 }

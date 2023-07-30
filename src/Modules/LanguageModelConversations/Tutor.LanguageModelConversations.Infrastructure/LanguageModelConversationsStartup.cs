@@ -6,8 +6,8 @@ using Tutor.LanguageModelConversations.Core.Domain.RepositoryInterfaces;
 using Tutor.LanguageModelConversations.Core.UseCases;
 using Tutor.LanguageModelConversations.Infrastructure.Database;
 using Tutor.LanguageModelConversations.Infrastructure.Database.Repositories;
-using Tutor.LanguageModelConversations.Infrastructure.Http;
 using Tutor.LanguageModelConversations.Core.Mappers;
+using Tutor.LanguageModelConversations.Infrastructure.LanguageModelConnector.Mappers;
 
 namespace Tutor.LanguageModelConversations.Infrastructure;
 
@@ -24,6 +24,7 @@ public static class LanguageModelConversationsStartup
     private static void SetupMappings(IServiceCollection services)
     {
         services.AddAutoMapper(typeof(ConversationProfile).Assembly);
+        services.AddAutoMapper(typeof(LanguageModelProfile).Assembly);
     }
 
     private static void SetupCore(IServiceCollection services)
@@ -36,7 +37,7 @@ public static class LanguageModelConversationsStartup
         services.AddScoped<IConversationRepository, ConversationDatabaseRepository>();
         services.AddScoped<ITokenRepository, TokenDatabaseRepository>();
 
-        services.AddScoped<ILanguageModelConnector, LanguageModelConnector>();
+        services.AddScoped<ILanguageModelConnector, LanguageModelConnector.LanguageModelConnector>();
 
         services.AddScoped<ILanguageModelConversationsUnitOfWork, LanguageModelConversationsUnitOfWork>();
         services.AddDbContext<LanguageModelConversationsContext>(opt =>
