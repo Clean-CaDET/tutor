@@ -44,15 +44,10 @@ namespace Tutor.API
     public partial class Program { }
 }
 
-// TODO: Rework FailureCodes to make them extensible
-// Prebaciti u API projekte specificine FailureCodove; Ugraditi code da BaseApiController bude generican
-
 // TODO: Check all routes when redesign is near finished
 
-// TODO: DELETE operations need to be revisited because of modules.
-// TODO: Block course deletion if Units exist
-
-// TODO: Ukloniti Database iz naziva repozitorijuma
-
 // TODO: Add unique constraint for unit and KC codes.
+// TODO: Handle constraint violations on create and update
+
+
 // TODO: Test for get learners endpoint

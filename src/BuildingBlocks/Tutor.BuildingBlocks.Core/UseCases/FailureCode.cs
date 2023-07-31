@@ -11,7 +11,7 @@ public static class FailureCode
         .WithMetadata("code", 400)
         .WithMetadata("subCode", "kc2");
     public static readonly IError DuplicateUsername = new Error("Duplicate username.")
-        .WithMetadata("code", 409)
+        .WithMetadata("code", 400)
         .WithMetadata("subCode", "s1");
 
     public static readonly IError InvalidArgument = new Error("Invalid data supplied.")

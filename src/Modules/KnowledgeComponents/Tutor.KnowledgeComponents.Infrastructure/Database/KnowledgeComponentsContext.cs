@@ -47,6 +47,8 @@ public class KnowledgeComponentsContext : DbContext
             .WithOne()
             .HasForeignKey(kc => kc.ParentId)
             .IsRequired(false);
+
+        modelBuilder.Entity<KnowledgeComponent>().HasIndex(kc => new { kc.KnowledgeUnitId, kc.Code }).IsUnique();
     }
 
     private static void ConfigureInstructionalItems(ModelBuilder modelBuilder)

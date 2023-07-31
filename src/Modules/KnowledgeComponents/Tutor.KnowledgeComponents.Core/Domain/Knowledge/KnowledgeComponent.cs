@@ -16,7 +16,7 @@ public class KnowledgeComponent : Entity
     public List<AssessmentItem>? AssessmentItems { get; private set; }
     public List<InstructionalItem>? InstructionalItems { get; private set; }
 
-    internal KnowledgeComponent Clone(int item2)
+    internal KnowledgeComponent Clone(int unitId)
     {
         return new KnowledgeComponent
         {
@@ -25,7 +25,7 @@ public class KnowledgeComponent : Entity
             Description = Description,
             Order = Order,
             ExpectedDurationInMinutes = ExpectedDurationInMinutes,
-            KnowledgeUnitId = KnowledgeUnitId,
+            KnowledgeUnitId = unitId,
             ParentId = ParentId,
             InstructionalItems = InstructionalItems?.Select(i => i.Clone()).ToList(),
             AssessmentItems = AssessmentItems?.Select(a => a.Clone()).ToList()

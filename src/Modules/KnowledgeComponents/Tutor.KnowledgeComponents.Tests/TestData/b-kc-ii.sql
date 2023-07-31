@@ -19,18 +19,18 @@ INSERT INTO "knowledgeComponents"."KnowledgeComponents"(
 
 INSERT INTO "knowledgeComponents"."KnowledgeComponents"(
 	"Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order")
-	VALUES (-21, 'Segmentiraj dugačke metode', '', -2, '', 1);
+	VALUES (-21, 'Segmentiraj dugačke metode', '', -2, 'F01', 1);
 INSERT INTO "knowledgeComponents"."KnowledgeComponents"(
 	"Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order")
-	VALUES (-211, 'Odredi semantičku svrhu metode', '', -2, '', 2);
+	VALUES (-211, 'Odredi semantičku svrhu metode', '', -2, 'F02', 2);
 
 
 INSERT INTO "knowledgeComponents"."KnowledgeComponents"(
     "Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order")
-VALUES (-31, 'Segmentiraj dugačke metode', '', -3, '', 1);
+VALUES (-31, 'Segmentiraj dugačke metode', '', -3, 'F01', 1);
 INSERT INTO "knowledgeComponents"."KnowledgeComponents"(
     "Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order")
-VALUES (-311, 'Odredi semantičku svrhu metode', '', -3, '', 2);
+VALUES (-311, 'Odredi semantičku svrhu metode', '', -3, 'F02', 2);
 
 INSERT INTO "knowledgeComponents"."InstructionalItems"(
     "Id", "KnowledgeComponentId", "Order", "ItemType", "Content")
@@ -61,4 +61,4 @@ VALUES (-311, -31, 1, 'Text', 'Imenovanje je proces određivanja i dodeljivanja 
 
 INSERT INTO "knowledgeComponents"."KnowledgeComponents"(
     "Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order")
-VALUES (-41, 'KC-4-4', '', -4, '', 2);
+VALUES (-41, 'KC-4-4', '', -4, 'KC-4-4', 2);

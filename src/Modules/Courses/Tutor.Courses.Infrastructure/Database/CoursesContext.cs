@@ -17,5 +17,7 @@ public class CoursesContext : DbContext
     {
         modelBuilder.HasDefaultSchema("courses");
         modelBuilder.Entity<LearnerGroup>().Property(e => e.LearnerIds).HasColumnType("jsonb");
+        
+        modelBuilder.Entity<KnowledgeUnit>().HasIndex(u => new { u.CourseId, u.Code }).IsUnique();
     }
 }
