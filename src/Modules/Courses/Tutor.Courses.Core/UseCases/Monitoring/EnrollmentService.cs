@@ -6,7 +6,6 @@ using Tutor.Courses.API.Public.Monitoring;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 using Tutor.KnowledgeComponents.API.Internal;
-using Tutor.KnowledgeComponents.API.Public.Monitoring;
 
 namespace Tutor.Courses.Core.UseCases.Monitoring;
 

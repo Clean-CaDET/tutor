@@ -2,35 +2,35 @@
     "Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order")
 	VALUES (-10, 'T-10', '', -1, 'N00', 1);
 INSERT INTO "knowledgeComponents"."KnowledgeComponents"(
-	"Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order")
-	VALUES (-11, 'Dodeli značajna imena identifikatorima', '', -1, 'N01', 2);
+	"Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order", "ParentId")
+	VALUES (-11, 'Dodeli značajna imena identifikatorima', '', -1, 'N01', 2, -10);
 INSERT INTO "knowledgeComponents"."KnowledgeComponents"(
-	"Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order")
-	VALUES (-12, 'Koristi ispravne tipove reči', '', -1, 'N02', 3);
+	"Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order", "ParentId")
+	VALUES (-12, 'Koristi ispravne tipove reči', '', -1, 'N02', 3, -10);
 INSERT INTO "knowledgeComponents"."KnowledgeComponents"(
-	"Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order")
-	VALUES (-13, 'Prati timske konvencije', '', -1, 'N03', 4);
+	"Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order", "ParentId")
+	VALUES (-13, 'Prati timske konvencije', '', -1, 'N03', 4, -10);
 INSERT INTO "knowledgeComponents"."KnowledgeComponents"(
-	"Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order")
-	VALUES (-14, 'Izbegavaj beznačajne reči', '', -1, 'N04', 5);
+	"Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order", "ParentId")
+	VALUES (-14, 'Izbegavaj beznačajne reči', '', -1, 'N04', 5, -10);
 INSERT INTO "knowledgeComponents"."KnowledgeComponents"(
-	"Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order")
-	VALUES (-15, 'Koristi terminologiju domena problema', '', -1, 'N05', 6);
+	"Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order", "ParentId")
+	VALUES (-15, 'Koristi terminologiju domena problema', '', -1, 'N05', 6, -10);
 
 INSERT INTO "knowledgeComponents"."KnowledgeComponents"(
 	"Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order")
 	VALUES (-21, 'Segmentiraj dugačke metode', '', -2, 'F01', 1);
 INSERT INTO "knowledgeComponents"."KnowledgeComponents"(
-	"Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order")
-	VALUES (-211, 'Odredi semantičku svrhu metode', '', -2, 'F02', 2);
+	"Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order", "ParentId")
+	VALUES (-211, 'Odredi semantičku svrhu metode', '', -2, 'F02', 2, -21);
 
 
 INSERT INTO "knowledgeComponents"."KnowledgeComponents"(
     "Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order")
 VALUES (-31, 'Segmentiraj dugačke metode', '', -3, 'F01', 1);
 INSERT INTO "knowledgeComponents"."KnowledgeComponents"(
-    "Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order")
-VALUES (-311, 'Odredi semantičku svrhu metode', '', -3, 'F02', 2);
+    "Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order", "ParentId")
+VALUES (-311, 'Odredi semantičku svrhu metode', '', -3, 'F02', 2, -31);
 
 INSERT INTO "knowledgeComponents"."InstructionalItems"(
     "Id", "KnowledgeComponentId", "Order", "ItemType", "Content")

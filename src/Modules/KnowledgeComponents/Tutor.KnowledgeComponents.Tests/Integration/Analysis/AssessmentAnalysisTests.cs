@@ -8,29 +8,26 @@ using Tutor.KnowledgeComponents.API.Public.Analysis;
 namespace Tutor.KnowledgeComponents.Tests.Integration.Analysis;
 
 [Collection("Sequential")]
-public class KnowledgeAnalysisTests : BaseKnowledgeComponentsIntegrationTest
+public class AssessmentAnalysisTests : BaseKnowledgeComponentsIntegrationTest
 {
-    public KnowledgeAnalysisTests(KnowledgeComponentsTestFactory factory) : base(factory) { }
+    public AssessmentAnalysisTests(KnowledgeComponentsTestFactory factory) : base(factory) { }
 
     [Theory]
     [InlineData("-51", -10)]
-    public void Retrieves_kc_statistics(string userId, int kcId)
+    public void Retrieves_ai_statistics(string userId, int kcId)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, userId);
 
-        var result = ((OkObjectResult)controller.GetStatistics(kcId).Result).Value as KcStatisticsDto;
+        var result = ((OkObjectResult)controller.GetStatistics(kcId).Result).Value as List<AiStatisticsDto>;
 
         result.ShouldNotBeNull();
-        result.TotalRegistered.ShouldBe(4);
-        result.TotalStarted.ShouldBe(4);
-        result.TotalCompleted.ShouldBe(4);
-        result.TotalPassed.ShouldBe(2);
+        result.Count.ShouldBe(1);
     }
 
     [Theory]
     [InlineData("-51", -3)]
-    public void Retrieves_kc_statistics_fails_instructor_not_course_owner(string userId, int unitId)
+    public void Retrieves_ai_statistics_fails_instructor_not_course_owner(string userId, int unitId)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, userId);
@@ -41,9 +38,9 @@ public class KnowledgeAnalysisTests : BaseKnowledgeComponentsIntegrationTest
         result.StatusCode.ShouldBe(403);
     }
 
-    private static KnowledgeAnalysisController CreateController(IServiceScope scope, string id)
+    private static AssessmentAnalysisController CreateController(IServiceScope scope, string id)
     {
-        return new KnowledgeAnalysisController(scope.ServiceProvider.GetRequiredService<IKnowledgeAnalysisService>())
+        return new AssessmentAnalysisController(scope.ServiceProvider.GetRequiredService<IAssessmentAnalysisService>())
         {
             ControllerContext = BuildContext(id, "instructor")
         };

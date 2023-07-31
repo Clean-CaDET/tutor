@@ -10,9 +10,21 @@ using Tutor.KnowledgeComponents.Infrastructure.Database;
 namespace Tutor.KnowledgeComponents.Tests.Integration.Authoring;
 
 [Collection("Sequential")]
-public class InstructionCommandTests : BaseKnowledgeComponentsIntegrationTest
+public class InstructionTests : BaseKnowledgeComponentsIntegrationTest
 {
-    public InstructionCommandTests(KnowledgeComponentsTestFactory factory) : base(factory) { }
+    public InstructionTests(KnowledgeComponentsTestFactory factory) : base(factory) { }
+
+    [Fact]
+    public void Gets_by_kc()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-51");
+
+        var result = ((OkObjectResult)controller.GetByKc(-10).Result)?.Value as List<InstructionalItemDto>;
+
+        result.ShouldNotBeNull();
+        result.Count.ShouldBe(3);
+    }
 
     [Fact]
     public void Creates()

@@ -18,7 +18,7 @@ public class InstructionalItemController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<InstructionalItemDto>> GetForKc(int kcId)
+    public ActionResult<List<InstructionalItemDto>> GetByKc(int kcId)
     {
         var result = _instructionService.GetByKc(kcId, User.InstructorId());
         return CreateResponse(result);

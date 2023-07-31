@@ -9,9 +9,9 @@ using Tutor.Courses.Infrastructure.Database;
 namespace Tutor.Courses.Tests.Integration.Management;
 
 [Collection("Sequential")]
-public class OwnershipTests : BaseCoursesIntegrationTest
+public class CourseOwnerTests : BaseCoursesIntegrationTest
 {
-    public OwnershipTests(CoursesTestFactory factory) : base(factory) { }
+    public CourseOwnerTests(CoursesTestFactory factory) : base(factory) { }
 
     [Fact]
     public void Gets_all()

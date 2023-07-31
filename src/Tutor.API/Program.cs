@@ -46,8 +46,4 @@ namespace Tutor.API
 
 // TODO: Check all routes when redesign is near finished
 
-// TODO: Add unique constraint for unit and KC codes.
-// TODO: Handle constraint violations on create and update
-
-
-// TODO: Test for get learners endpoint
+// TODO: Update events.sql for testing purposes and add extract only events related to a course
