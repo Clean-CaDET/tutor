@@ -46,7 +46,6 @@ namespace Tutor.API
 
 // TODO: Rework FailureCodes to make them extensible
 // Prebaciti u API projekte specificine FailureCodove; Ugraditi code da BaseApiController bude generican
-// TODO: Rework BaseApiController to return error subcode with response and to make it extensible (so that each module can introduce failures)
 
 // TODO: Check all routes when redesign is near finished
 
@@ -54,3 +53,6 @@ namespace Tutor.API
 // TODO: Block course deletion if Units exist
 
 // TODO: Ukloniti Database iz naziva repozitorijuma
+
+// TODO: Add unique constraint for unit and KC codes.
+// TODO: Test for get learners endpoint

@@ -134,7 +134,6 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
         var unitIdPairs = new List<Tuple<int, int>>();
         existingUnits.ForEach(existingUnit =>
         {
-            // TODO: Add unique constraint for unit and KC codes.
             var clonedUnitId = clonedUnits.Find(c => c.Code == existingUnit.Code).Id;
             unitIdPairs.Add(new Tuple<int, int>(existingUnit.Id, clonedUnitId));
         });

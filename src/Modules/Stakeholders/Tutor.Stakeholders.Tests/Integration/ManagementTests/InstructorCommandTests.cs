@@ -149,9 +149,6 @@ public class InstructorCommandTests : BaseStakeholdersIntegrationTest
         storedInstructor.ShouldBeNull();
         var storedAccount = dbContext.Users.FirstOrDefault(i => i.Id == -52);
         storedAccount.ShouldBeNull();
-        // TODO: What is the best practice here?
-        // var courseOwnerships = dbContext.CourseOwnerships.Where(c => c.InstructorId == -52);
-        // courseOwnerships.Count().ShouldBe(0);
     }
 
     [Fact]

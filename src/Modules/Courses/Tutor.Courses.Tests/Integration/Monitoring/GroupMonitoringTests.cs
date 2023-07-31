@@ -25,8 +25,6 @@ public class GroupMonitoringTests : BaseCoursesIntegrationTest
         result.Count.ShouldBe(expectedResult);
     }
 
-    //TODO: Test for get learners endpoint
-
     private static GroupMonitoringController CreateController(IServiceScope scope, string id)
     {
         return new GroupMonitoringController(scope.ServiceProvider.GetRequiredService<IGroupMonitoringService>())

@@ -22,7 +22,6 @@ public class UnitEnrollmentCommandTests : BaseCoursesIntegrationTest
         var controller = CreateController(scope, "-51");
         var dbContext = scope.ServiceProvider.GetRequiredService<CoursesContext>();
         dbContext.Database.BeginTransaction();
-        // TODO: Examine this situation
         var secondaryDbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
         secondaryDbContext.Database.BeginTransaction();
 
@@ -50,7 +49,6 @@ public class UnitEnrollmentCommandTests : BaseCoursesIntegrationTest
         var controller = CreateController(scope, "-51");
         var dbContext = scope.ServiceProvider.GetRequiredService<CoursesContext>();
         dbContext.Database.BeginTransaction();
-        // TODO: Examine this situation
         var secondaryDbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
         secondaryDbContext.Database.BeginTransaction();
         var enrollmentRequest = new EnrollmentRequestDto
