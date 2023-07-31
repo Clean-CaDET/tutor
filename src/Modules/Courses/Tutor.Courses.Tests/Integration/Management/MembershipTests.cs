@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Administrator.Courses;
+using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Public.Management;
 using Tutor.Courses.Infrastructure.Database;
@@ -19,10 +20,10 @@ public class MembershipTests : BaseCoursesIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
 
-        var result = ((OkObjectResult)controller.GetMembers(-1).Result)?.Value as List<LearnerDto>;
+        var result = ((OkObjectResult)controller.GetMembers(-1).Result)?.Value as PagedResult<LearnerDto>;
 
         result.ShouldNotBeNull();
-        result.Count.ShouldBe(4);
+        result.Results.Count.ShouldBe(4);
     }
 
     [Fact]
@@ -31,7 +32,15 @@ public class MembershipTests : BaseCoursesIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<CoursesContext>();
-        var learners = new List<int> { -1, -2 };
+        var firstLearner = new LearnerDto
+        {
+            Id = -1
+        };
+        var secondLearner = new LearnerDto
+        {
+            Id = -2
+        };
+        var learners = new List<LearnerDto> { firstLearner, secondLearner };
         dbContext.Database.BeginTransaction();
 
         var result = (OkResult)controller.CreateMembers(-3, learners);

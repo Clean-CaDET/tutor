@@ -20,6 +20,15 @@ public class KnowledgeComponentService : CrudService<KnowledgeComponentDto, Know
         _kcRepository = kcRepository;
         _accessService = accessService;
     }
+    
+    public Result<List<KnowledgeComponentDto>> GetByUnit(int unitId, int instructorId)
+    {
+        if(!_accessService.IsUnitOwner(unitId, instructorId))
+            return Result.Fail(FailureCode.Forbidden);
+
+        var result = _kcRepository.GetByUnit(unitId);
+        return MapToDto(result);
+    }
 
     public Result<KnowledgeComponentDto> Get(int id, int instructorId)
     {

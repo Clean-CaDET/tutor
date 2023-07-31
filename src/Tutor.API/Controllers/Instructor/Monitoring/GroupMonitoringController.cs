@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
@@ -22,7 +23,8 @@ public class GroupMonitoringController : BaseApiController
     public ActionResult<List<GroupDto>> GetCourseGroups(int courseId)
     {
         var result = _groupMonitoringService.GetCourseGroups(User.InstructorId(), courseId);
-        return CreateResponse(result);
+        var pagedResult = new PagedResult<GroupDto>(result.Value, result.Value.Count).ToResult();
+        return CreateResponse(pagedResult);
     }
 
     [HttpGet("{groupId:int}")]

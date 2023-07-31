@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Administrator.Courses;
+using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Public.Management;
 
@@ -18,10 +19,10 @@ public class GroupQueryTests : BaseCoursesIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
 
-        var result = ((OkObjectResult)controller.GetAll(-1).Result)?.Value as List<GroupDto>;
+        var result = ((OkObjectResult)controller.GetAll(-1).Result)?.Value as PagedResult<GroupDto>;
 
         result.ShouldNotBeNull();
-        result.Count.ShouldBe(3);
+        result.Results.Count.ShouldBe(3);
     }
 
     private static GroupController CreateController(IServiceScope scope)
