@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Tutor.Stakeholders.Core\Tutor.Stakeholders.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

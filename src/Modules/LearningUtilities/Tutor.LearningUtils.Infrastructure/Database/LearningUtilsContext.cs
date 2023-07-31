@@ -13,6 +13,6 @@ public class LearningUtilsContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasDefaultSchema("learningUtilities");
+        modelBuilder.HasDefaultSchema("learningUtils");
     }
 }
