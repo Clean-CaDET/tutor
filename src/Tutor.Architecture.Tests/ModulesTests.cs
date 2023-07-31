@@ -1,5 +1,4 @@
 using ArchUnitNET.xUnit;
-using Shouldly;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
 
 namespace Tutor.Architecture.Tests;
