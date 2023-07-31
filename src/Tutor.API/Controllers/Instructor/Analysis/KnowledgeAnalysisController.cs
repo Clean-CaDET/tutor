@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
-using Tutor.KnowledgeComponents.API.Interfaces.Analysis;
+using Tutor.KnowledgeComponents.API.Public.Analysis;
 using Tutor.Stakeholders.Infrastructure.Authentication;
 
 namespace Tutor.API.Controllers.Instructor.Analysis;
@@ -21,13 +21,6 @@ public class KnowledgeAnalysisController : BaseApiController
     public ActionResult<KcStatisticsDto> GetStatistics(int kcId)
     {
         var result = _kcAnalysisService.GetStatistics(kcId, User.InstructorId());
-        return CreateResponse(result);
-    }
-
-    [HttpGet("groups/{groupId:int}/")]
-    public ActionResult<KcStatisticsDto> GetStatisticsForGroup(int kcId, int groupId)
-    {
-        var result = _kcAnalysisService.GetStatisticsForGroup(kcId, groupId, User.InstructorId());
         return CreateResponse(result);
     }
 }

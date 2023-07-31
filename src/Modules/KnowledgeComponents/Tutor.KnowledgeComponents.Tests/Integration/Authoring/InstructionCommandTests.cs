@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Instructor.Authoring;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.InstructionalItems;
-using Tutor.KnowledgeComponents.API.Interfaces.Authoring;
+using Tutor.KnowledgeComponents.API.Public.Authoring;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.InstructionalItems;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
 

@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Instructor.Monitoring;
 using Tutor.Courses.API.Dtos;
-using Tutor.Courses.API.Interfaces.Monitoring;
+using Tutor.Courses.API.Public.Monitoring;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Infrastructure.Database;
 using Tutor.KnowledgeComponents.Infrastructure.Database;

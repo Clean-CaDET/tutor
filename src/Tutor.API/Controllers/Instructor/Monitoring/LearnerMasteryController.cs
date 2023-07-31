@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeMastery;
-using Tutor.KnowledgeComponents.API.Interfaces.Monitoring;
+using Tutor.KnowledgeComponents.API.Public.Monitoring;
 using Tutor.Stakeholders.Infrastructure.Authentication;
 
 namespace Tutor.API.Controllers.Instructor.Monitoring;

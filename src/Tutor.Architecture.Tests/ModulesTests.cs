@@ -57,6 +57,32 @@ public class ModulesTests : BaseArchitecturalTests
         sameAssemblyRule.Check(Architecture);
     }
 
+    [Theory]
+    [MemberData(nameof(GetModules))]
+    public void Services_should_not_reference_public_APIs_of_other_modules(string moduleName)
+    {
+        var allTypesFromCoreAssembly = GetExaminedTypes($"Tutor.{moduleName}.Core").ToList();
+        var useCaseTypes = allTypesFromCoreAssembly.Where(x => x.FullName.Contains(".UseCases.")).ToList();
+        var typesFromOtherAssemblies = GetForbiddenTypes("Tutor.API", $"Tutor.{moduleName}.API");
+        var publicApiTypesFromOtherAssemblies = typesFromOtherAssemblies.Where(x => x.FullName.Contains("API.Public"));
+
+        var rule = Types().That().Are(useCaseTypes).Should().NotDependOnAny(publicApiTypesFromOtherAssemblies);
+
+        rule.Check(Architecture);
+    }
+
+    [Fact]
+    public void Web_API_should_not_reference_internal_APIs_of_modules()
+    {
+        var apiTypes = GetExaminedTypes("Tutor.API").ToList();
+        var typesFromOtherAssemblies = GetForbiddenTypes("Tutor.API");
+        var internalApiTypes = typesFromOtherAssemblies.Where(x => x.FullName.Contains("API.Internal"));
+
+        var rule = Types().That().Are(apiTypes).Should().NotDependOnAny(internalApiTypes);
+
+        rule.Check(Architecture);
+    }
+
     public static IEnumerable<object[]> GetModules() => new List<object[]>
     {
         new object[]

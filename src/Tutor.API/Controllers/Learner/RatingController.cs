@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
-using Tutor.KnowledgeComponents.API.Interfaces.Analysis;
+using Tutor.KnowledgeComponents.API.Public.Analysis;
 using Tutor.LearningUtils.API.Dtos.Feedback;
 using Tutor.Stakeholders.Infrastructure.Authentication;
 

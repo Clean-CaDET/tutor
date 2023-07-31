@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Tutor.API.Controllers.Learner.Learning.Assessment;
-using Tutor.KnowledgeComponents.API.Interfaces.Learning.Assessment;
+using Tutor.KnowledgeComponents.API.Public.Learning.Assessment;
 
 namespace Tutor.KnowledgeComponents.Tests.Integration.Learning.Assessment;
 

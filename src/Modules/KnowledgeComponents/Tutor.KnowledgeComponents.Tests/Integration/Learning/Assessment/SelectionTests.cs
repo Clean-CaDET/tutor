@@ -5,7 +5,7 @@ using Tutor.API.Controllers.Learner.Learning.Assessment;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.MultiResponseQuestions;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.ShortAnswerQuestions;
-using Tutor.KnowledgeComponents.API.Interfaces.Learning.Assessment;
+using Tutor.KnowledgeComponents.API.Public.Learning.Assessment;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
 
 namespace Tutor.KnowledgeComponents.Tests.Integration.Learning.Assessment;

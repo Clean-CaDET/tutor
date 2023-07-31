@@ -4,7 +4,7 @@ using Shouldly;
 using Tutor.API.Controllers.Instructor.Authoring;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.MultiChoiceQuestions;
-using Tutor.KnowledgeComponents.API.Interfaces.Authoring;
+using Tutor.KnowledgeComponents.API.Public.Authoring;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.MultiChoiceQuestions;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
 

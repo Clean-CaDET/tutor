@@ -5,7 +5,7 @@ using Tutor.API.Controllers.Learner.Learning;
 using Tutor.KnowledgeComponents.API.Dtos;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeMastery;
-using Tutor.KnowledgeComponents.API.Interfaces.Learning;
+using Tutor.KnowledgeComponents.API.Public.Learning;
 
 namespace Tutor.KnowledgeComponents.Tests.Integration.Learning;
 

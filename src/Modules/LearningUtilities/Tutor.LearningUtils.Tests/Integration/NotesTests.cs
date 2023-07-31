@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Learner.Utilities;
 using Tutor.LearningUtils.API.Dtos;
-using Tutor.LearningUtils.API.Interfaces;
+using Tutor.LearningUtils.API.Public;
 using Tutor.LearningUtils.Infrastructure.Database;
 
 namespace Tutor.LearningUtils.Tests.Integration;

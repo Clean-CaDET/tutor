@@ -2,10 +2,10 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
-using Tutor.Courses.API.Interfaces.Management;
+using Tutor.Courses.API.Public.Management;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
-using Tutor.KnowledgeComponents.API.Interfaces;
-using Tutor.KnowledgeComponents.API.Interfaces.Analysis;
+using Tutor.KnowledgeComponents.API.Public;
+using Tutor.KnowledgeComponents.API.Public.Analysis;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events.KnowledgeComponentEvents;
@@ -15,14 +15,12 @@ namespace Tutor.KnowledgeComponents.Core.UseCases.Analysis;
 public class KnowledgeAnalysisService : IKnowledgeAnalysisService
 {
     private readonly IMapper _mapper;
-    private readonly IGroupMembershipService _groupService;
     private readonly IAccessService _accessService;
     private readonly IEventStore _eventStore;
 
-    public KnowledgeAnalysisService(IMapper mapper, IGroupMembershipService groupService, IAccessService accessService, IEventStore eventStore)
+    public KnowledgeAnalysisService(IMapper mapper, IAccessService accessService, IEventStore eventStore)
     {
         _mapper = mapper;
-        _groupService = groupService;
         _accessService = accessService;
         _eventStore = eventStore;
     }
@@ -37,21 +35,6 @@ public class KnowledgeAnalysisService : IKnowledgeAnalysisService
             .ToList<KnowledgeComponentEvent>();
 
         return CalculateStatistics(kcId, events, events.Select(e => e.LearnerId).Distinct().Count());
-    }
-
-    public Result<KcStatisticsDto> GetStatisticsForGroup(int kcId, int groupId, int instructorId)
-    {
-        if (!_accessService.IsKcOwner(kcId, instructorId))
-            return Result.Fail(FailureCode.Forbidden);
-
-        var learnerIds = _groupService.GetMemberIds(groupId).Value;
-        
-        var events = _eventStore.Events
-            .Where(e => e.RootElement.GetProperty("KnowledgeComponentId").GetInt32() == kcId)
-            .Where(e => learnerIds.Contains(e.RootElement.GetProperty("LearnerId").GetInt32()))
-            .ToList<KnowledgeComponentEvent>();
-
-        return CalculateStatistics(kcId, events, learnerIds.Count);
     }
 
     private KcStatisticsDto CalculateStatistics(int kcId, List<KnowledgeComponentEvent> events, int registeredCount)

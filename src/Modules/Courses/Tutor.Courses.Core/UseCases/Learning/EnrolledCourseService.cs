@@ -2,13 +2,14 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
-using Tutor.Courses.API.Interfaces.Learning;
+using Tutor.Courses.API.Internal;
+using Tutor.Courses.API.Public.Learning;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.Courses.Core.UseCases.Learning;
 
-public class EnrolledCourseService : BaseService<CourseDto, Course>, IEnrolledCourseService
+public class EnrolledCourseService : BaseService<CourseDto, Course>, IEnrolledCourseService, IEnrollmentValidator
 {
     private readonly IMapper _mapper;
     private readonly IUnitEnrollmentRepository _unitEnrollmentRepository;

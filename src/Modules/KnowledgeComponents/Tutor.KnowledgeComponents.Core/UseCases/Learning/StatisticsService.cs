@@ -2,8 +2,8 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeMastery;
-using Tutor.KnowledgeComponents.API.Interfaces;
-using Tutor.KnowledgeComponents.API.Interfaces.Learning;
+using Tutor.KnowledgeComponents.API.Public;
+using Tutor.KnowledgeComponents.API.Public.Learning;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 
 namespace Tutor.KnowledgeComponents.Core.UseCases.Learning;

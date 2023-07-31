@@ -2,14 +2,15 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeMastery;
-using Tutor.KnowledgeComponents.API.Interfaces;
-using Tutor.KnowledgeComponents.API.Interfaces.Monitoring;
+using Tutor.KnowledgeComponents.API.Internal;
+using Tutor.KnowledgeComponents.API.Public;
+using Tutor.KnowledgeComponents.API.Public.Monitoring;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 
 namespace Tutor.KnowledgeComponents.Core.UseCases.Monitoring;
 
-public class LearnerMasteryService : ILearnerMasteryService
+public class LearnerMasteryService : ILearnerMasteryService, IMasteryFactory
 {
     private readonly IMapper _mapper;
     private readonly IKnowledgeComponentRepository _kcRepository;
@@ -25,12 +26,6 @@ public class LearnerMasteryService : ILearnerMasteryService
         _masteryRepository = masteryRepository;
         _accessService = accessService;
         _unitOfWork = unitOfWork;
-    }
-
-    public Result InitializeMasteries(int unitId, int learnerId)
-    {
-        CreateMasteries(unitId, learnerId);
-        return _unitOfWork.Save();
     }
 
     public Result InitializeMasteries(int unitId, int[] learnerIds)

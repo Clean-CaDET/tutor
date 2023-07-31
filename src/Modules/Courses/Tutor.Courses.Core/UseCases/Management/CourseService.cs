@@ -2,10 +2,10 @@ using AutoMapper;
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
-using Tutor.Courses.API.Interfaces.Management;
+using Tutor.Courses.API.Public.Management;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
-using Tutor.KnowledgeComponents.API.Interfaces.Authoring;
+using Tutor.KnowledgeComponents.API.Internal;
 
 namespace Tutor.Courses.Core.UseCases.Management;
 
@@ -15,15 +15,16 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
     private readonly ICoursesUnitOfWork _unitOfWork;
     private readonly ICourseOwnershipRepository _ownershipRepository;
     private readonly IUnitEnrollmentRepository _unitEnrollmentRepository;
-    private readonly IKnowledgeComponentService _kcService;
+    private readonly IKnowledgeComponentCloner _kcCloner;
 
-    public CourseService(IMapper mapper, ICourseRepository courseRepository, ICoursesUnitOfWork unitOfWork, ICourseOwnershipRepository ownershipRepository, IUnitEnrollmentRepository unitEnrollmentRepository, IKnowledgeComponentService kcService) : base(mapper)
+    public CourseService(IMapper mapper, ICourseRepository courseRepository, ICoursesUnitOfWork unitOfWork,
+        ICourseOwnershipRepository ownershipRepository, IUnitEnrollmentRepository unitEnrollmentRepository, IKnowledgeComponentCloner kcCloner) : base(mapper)
     {
         _courseRepository = courseRepository;
         _unitOfWork = unitOfWork;
         _ownershipRepository = ownershipRepository;
         _unitEnrollmentRepository = unitEnrollmentRepository;
-        _kcService = kcService;
+        _kcCloner = kcCloner;
     }
 
     public Result<PagedResult<CourseDto>> GetAll(int page, int pageSize)
@@ -138,7 +139,7 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
             unitIdPairs.Add(new Tuple<int, int>(existingUnit.Id, clonedUnitId));
         });
 
-        return _kcService.CloneMany(unitIdPairs);
+        return _kcCloner.CloneMany(unitIdPairs);
     }
 
     private void CloneOwnerships(Course course, int clonedCourseId)

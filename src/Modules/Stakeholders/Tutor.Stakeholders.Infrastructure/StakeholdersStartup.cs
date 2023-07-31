@@ -3,8 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Security;
-using Tutor.Stakeholders.API.Interfaces;
-using Tutor.Stakeholders.API.Interfaces.Management;
+using Tutor.Stakeholders.API.Internal;
+using Tutor.Stakeholders.API.Public;
+using Tutor.Stakeholders.API.Public.Management;
 using Tutor.Stakeholders.Core.Domain;
 using Tutor.Stakeholders.Core.Domain.RepositoryInterfaces;
 using Tutor.Stakeholders.Core.Mappers;
@@ -29,7 +30,9 @@ public static class StakeholdersStartup
     private static void SetupCore(IServiceCollection services)
     {
         services.AddScoped<IInstructorService, InstructorService>();
+        services.AddScoped<IInternalInstructorService, InstructorService>();
         services.AddScoped<ILearnerService, LearnerService>();
+        services.AddScoped<IInternalLearnerService, LearnerService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
     }
 

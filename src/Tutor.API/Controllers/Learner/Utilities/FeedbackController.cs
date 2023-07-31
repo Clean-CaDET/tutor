@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.LearningUtils.API.Dtos.Feedback;
-using Tutor.LearningUtils.API.Interfaces;
+using Tutor.LearningUtils.API.Public;
 using Tutor.Stakeholders.Infrastructure.Authentication;
 
 namespace Tutor.API.Controllers.Learner.Utilities;

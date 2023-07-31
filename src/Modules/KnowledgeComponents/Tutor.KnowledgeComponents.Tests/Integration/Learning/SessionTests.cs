@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Learner.Learning;
-using Tutor.KnowledgeComponents.API.Interfaces.Learning;
+using Tutor.KnowledgeComponents.API.Public.Learning;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
 
 namespace Tutor.KnowledgeComponents.Tests.Integration.Learning;

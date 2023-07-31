@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
-using Tutor.KnowledgeComponents.API.Interfaces.Learning.Assessment;
+using Tutor.KnowledgeComponents.API.Public.Learning.Assessment;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 
 namespace Tutor.KnowledgeComponents.Core.UseCases.Learning.Assessment;

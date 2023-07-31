@@ -4,12 +4,13 @@ using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Security;
-using Tutor.KnowledgeComponents.API.Interfaces;
-using Tutor.KnowledgeComponents.API.Interfaces.Analysis;
-using Tutor.KnowledgeComponents.API.Interfaces.Authoring;
-using Tutor.KnowledgeComponents.API.Interfaces.Learning;
-using Tutor.KnowledgeComponents.API.Interfaces.Learning.Assessment;
-using Tutor.KnowledgeComponents.API.Interfaces.Monitoring;
+using Tutor.KnowledgeComponents.API.Internal;
+using Tutor.KnowledgeComponents.API.Public;
+using Tutor.KnowledgeComponents.API.Public.Analysis;
+using Tutor.KnowledgeComponents.API.Public.Authoring;
+using Tutor.KnowledgeComponents.API.Public.Learning;
+using Tutor.KnowledgeComponents.API.Public.Learning.Assessment;
+using Tutor.KnowledgeComponents.API.Public.Monitoring;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
@@ -57,6 +58,7 @@ public static class KnowledgeComponentsStartup
         services.AddScoped<IAssessmentService, AssessmentService>();
         services.AddScoped<IInstructionalItemsService, InstructionalItemsService>();
         services.AddScoped<IKnowledgeComponentService, KnowledgeComponentService>();
+        services.AddScoped<IKnowledgeComponentCloner, KnowledgeComponentService>();
 
         services.AddScoped<IInstructionService, InstructionService>();
         services.AddScoped<ISessionService, SessionService>();
@@ -68,6 +70,7 @@ public static class KnowledgeComponentsStartup
         services.AddScoped<ISelectionService, SelectionService>();
 
         services.AddScoped<ILearnerMasteryService, LearnerMasteryService>();
+        services.AddScoped<IMasteryFactory, LearnerMasteryService>();
 
         services.AddScoped<IAssessmentFeedbackGenerator, RuleAssessmentFeedbackGenerator>();
         services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();

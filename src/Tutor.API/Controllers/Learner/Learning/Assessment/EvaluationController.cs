@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeMastery;
-using Tutor.KnowledgeComponents.API.Interfaces.Learning.Assessment;
+using Tutor.KnowledgeComponents.API.Public.Learning.Assessment;
 using Tutor.Stakeholders.Infrastructure.Authentication;
 
 namespace Tutor.API.Controllers.Learner.Learning.Assessment;

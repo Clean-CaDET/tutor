@@ -2,14 +2,15 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge;
-using Tutor.KnowledgeComponents.API.Interfaces;
-using Tutor.KnowledgeComponents.API.Interfaces.Authoring;
+using Tutor.KnowledgeComponents.API.Internal;
+using Tutor.KnowledgeComponents.API.Public;
+using Tutor.KnowledgeComponents.API.Public.Authoring;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 
 namespace Tutor.KnowledgeComponents.Core.UseCases.Authoring;
 
-public class KnowledgeComponentService : CrudService<KnowledgeComponentDto, KnowledgeComponent>, IKnowledgeComponentService
+public class KnowledgeComponentService : CrudService<KnowledgeComponentDto, KnowledgeComponent>, IKnowledgeComponentService, IKnowledgeComponentCloner
 {
     private readonly IKnowledgeComponentRepository _kcRepository;
     private readonly IAccessService _accessService;

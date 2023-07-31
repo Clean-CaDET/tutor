@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tutor.BuildingBlocks.Infrastructure.Security;
-using Tutor.LearningUtils.API.Interfaces;
+using Tutor.LearningUtils.API.Public;
 using Tutor.LearningUtils.Core.Domain.RepositoryInterfaces;
 using Tutor.LearningUtils.Core.Mappers;
 using Tutor.LearningUtils.Core.UseCases;

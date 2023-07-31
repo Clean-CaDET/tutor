@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FluentResults;
 using Tutor.LearningUtils.API.Dtos.Feedback;
-using Tutor.LearningUtils.API.Interfaces;
+using Tutor.LearningUtils.API.Public;
 using Tutor.LearningUtils.Core.Domain;
 using Tutor.LearningUtils.Core.Domain.RepositoryInterfaces;
 

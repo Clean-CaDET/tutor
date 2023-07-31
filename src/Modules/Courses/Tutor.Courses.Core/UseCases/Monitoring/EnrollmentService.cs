@@ -2,10 +2,11 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
-using Tutor.Courses.API.Interfaces.Monitoring;
+using Tutor.Courses.API.Public.Monitoring;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
-using Tutor.KnowledgeComponents.API.Interfaces.Monitoring;
+using Tutor.KnowledgeComponents.API.Internal;
+using Tutor.KnowledgeComponents.API.Public.Monitoring;
 
 namespace Tutor.Courses.Core.UseCases.Monitoring;
 
@@ -14,16 +15,16 @@ public class EnrollmentService : BaseService<UnitEnrollmentDto, UnitEnrollment>,
     private readonly IUnitEnrollmentRepository _unitEnrollmentRepository;
     private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly ICrudRepository<KnowledgeUnit> _unitRepository;
-    private readonly ILearnerMasteryService _learnerMasteryService;
+    private readonly IMasteryFactory _masteryFactory;
     private readonly ICoursesUnitOfWork _unitOfWork;
 
     public EnrollmentService(IMapper mapper, IUnitEnrollmentRepository unitEnrollmentRepository, IOwnedCourseRepository ownedCourseRepository,
-        ICoursesUnitOfWork unitOfWork, ICrudRepository<KnowledgeUnit> unitRepository, ILearnerMasteryService learnerMasteryService): base(mapper)
+        ICoursesUnitOfWork unitOfWork, ICrudRepository<KnowledgeUnit> unitRepository, IMasteryFactory masteryFactory): base(mapper)
     {
         _unitEnrollmentRepository = unitEnrollmentRepository;
         _ownedCourseRepository = ownedCourseRepository;
         _unitRepository = unitRepository;
-        _learnerMasteryService = learnerMasteryService;
+        _masteryFactory = masteryFactory;
         _unitOfWork = unitOfWork;
     }
 
@@ -77,7 +78,7 @@ public class EnrollmentService : BaseService<UnitEnrollmentDto, UnitEnrollment>,
 
         var unenrolledLearners = learnerIds.Where(learnerId => enrollments.All(e => e.LearnerId != learnerId)).ToList();
         enrollments.AddRange(unenrolledLearners.Select(learnerId => CreateNewEnrollment(unit, start, learnerId)).ToList());
-        _learnerMasteryService.InitializeMasteries(unit.Id, learnerIds);
+        _masteryFactory.InitializeMasteries(unit.Id, learnerIds);
 
         return enrollments;
     }

@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Learner.Learning;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.InstructionalItems;
-using Tutor.KnowledgeComponents.API.Interfaces.Learning;
+using Tutor.KnowledgeComponents.API.Public.Learning;
 
 namespace Tutor.KnowledgeComponents.Tests.Integration.Learning;
 

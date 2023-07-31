@@ -4,7 +4,7 @@ using Shouldly;
 using Tutor.API.Controllers.Administrator.Courses;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
-using Tutor.Courses.API.Interfaces.Management;
+using Tutor.Courses.API.Public.Management;
 
 namespace Tutor.Courses.Tests.Integration.Management;
 

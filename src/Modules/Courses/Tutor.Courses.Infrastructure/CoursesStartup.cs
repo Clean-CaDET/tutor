@@ -3,10 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Security;
-using Tutor.Courses.API.Interfaces.Authoring;
-using Tutor.Courses.API.Interfaces.Learning;
-using Tutor.Courses.API.Interfaces.Management;
-using Tutor.Courses.API.Interfaces.Monitoring;
+using Tutor.Courses.API.Internal;
+using Tutor.Courses.API.Public.Authoring;
+using Tutor.Courses.API.Public.Learning;
+using Tutor.Courses.API.Public.Management;
+using Tutor.Courses.API.Public.Monitoring;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 using Tutor.Courses.Core.Mappers;
@@ -34,9 +35,11 @@ public static class CoursesStartup
     private static void SetupCore(IServiceCollection services)
     {
         services.AddScoped<IOwnedCourseService, OwnedCourseService>();
+        services.AddScoped<IOwnershipValidator, OwnedCourseService>();
         services.AddScoped<IUnitService, UnitService>();
 
         services.AddScoped<IEnrolledCourseService, EnrolledCourseService>();
+        services.AddScoped<IEnrollmentValidator, EnrolledCourseService>();
 
         services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
         services.AddScoped<ICourseService, CourseService>();

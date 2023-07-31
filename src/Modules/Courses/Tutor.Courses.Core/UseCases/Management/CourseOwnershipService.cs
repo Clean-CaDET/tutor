@@ -2,10 +2,10 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
-using Tutor.Courses.API.Interfaces.Management;
+using Tutor.Courses.API.Public.Management;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
-using Tutor.Stakeholders.API.Interfaces.Management;
+using Tutor.Stakeholders.API.Internal;
 
 namespace Tutor.Courses.Core.UseCases.Management;
 
@@ -15,9 +15,10 @@ public class CourseOwnershipService : ICourseOwnershipService
     private readonly ICourseOwnershipRepository _courseOwnershipRepository;
     private readonly ICourseRepository _courseRepository;
     private readonly ICoursesUnitOfWork _unitOfWork;
-    private readonly IInstructorService _instructorService;
+    private readonly IInternalInstructorService _instructorService;
 
-    public CourseOwnershipService(IMapper mapper, ICourseOwnershipRepository courseOwnershipRepository, ICourseRepository courseRepository, ICoursesUnitOfWork unitOfWork, IInstructorService instructorService)
+    public CourseOwnershipService(IMapper mapper, ICourseOwnershipRepository courseOwnershipRepository,
+        ICourseRepository courseRepository, ICoursesUnitOfWork unitOfWork, IInternalInstructorService instructorService)
     {
         _mapper = mapper;
         _courseOwnershipRepository = courseOwnershipRepository;

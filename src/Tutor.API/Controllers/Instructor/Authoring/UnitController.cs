@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.Courses.API.Dtos;
-using Tutor.Courses.API.Interfaces.Authoring;
+using Tutor.Courses.API.Public.Authoring;
 using Tutor.Stakeholders.Infrastructure.Authentication;
 
 namespace Tutor.API.Controllers.Instructor.Authoring;

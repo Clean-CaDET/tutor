@@ -3,7 +3,7 @@ using AutoMapper;
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.LearningUtils.API.Dtos;
-using Tutor.LearningUtils.API.Interfaces;
+using Tutor.LearningUtils.API.Public;
 using Tutor.LearningUtils.Core.Domain;
 using Tutor.LearningUtils.Core.Domain.RepositoryInterfaces;
 

@@ -2,13 +2,14 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Stakeholders.API.Dtos;
-using Tutor.Stakeholders.API.Interfaces.Management;
+using Tutor.Stakeholders.API.Internal;
+using Tutor.Stakeholders.API.Public.Management;
 using Tutor.Stakeholders.Core.Domain;
 using Tutor.Stakeholders.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.Stakeholders.Core.UseCases.Management;
 
-public class LearnerService : StakeholderService<Learner>, ILearnerService
+public class LearnerService : StakeholderService<Learner>, ILearnerService, IInternalLearnerService
 {
     private readonly ILearnerRepository _learnerRepository;
     public LearnerService(IMapper mapper, ILearnerRepository learnerRepository, IStakeholdersUnitOfWork unitOfWork, IUserRepository userRepository)
