@@ -11,5 +11,5 @@ public interface ICourseService
     Result<CourseDto> Update(CourseDto course);
     Result<CourseDto> Archive(int id, bool archive);
     Result Delete(int id);
-    Result<CourseDto> Clone(int courseId);
+    Result<CourseDto> Clone(int courseId, CourseDto newCourse);
 }

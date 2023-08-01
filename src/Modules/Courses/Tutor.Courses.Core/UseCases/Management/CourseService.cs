@@ -93,11 +93,11 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
         return Result.Ok();
     }
 
-    public Result<CourseDto> Clone(int courseId)
+    public Result<CourseDto> Clone(int courseId, CourseDto newCourse)
     {
         _unitOfWork.BeginTransaction();
 
-        var result = CloneCourse(courseId);
+        var result = CloneCourse(courseId, MapToDomain(newCourse));
         if (result.IsFailed)
         {
             _unitOfWork.Rollback();
@@ -108,11 +108,11 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
         return result;
     }
 
-    private Result<CourseDto> CloneCourse(int courseId)
+    private Result<CourseDto> CloneCourse(int courseId, Course newCourse)
     {
         var existingCourse = _courseRepository.GetWithUnits(courseId);
 
-        var clonedCourse = _courseRepository.Create(existingCourse.Clone());
+        var clonedCourse = _courseRepository.Create(existingCourse.Clone(newCourse));
 
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;

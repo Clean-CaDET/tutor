@@ -50,14 +50,22 @@ public class CourseCommandTests : BaseCoursesIntegrationTest
         var secondaryDbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
         var startingKcCount = secondaryDbContext.KnowledgeComponents.Count();
 
-        var result = ((OkObjectResult)controller.Clone(-2).Result)?.Value as CourseDto;
+        var newCourse = new CourseDto
+        {
+            Code = "TTT-2",
+            Name = "TestCourseClone2",
+            StartDate = DateTime.UnixEpoch
+        };
+
+        var result = ((OkObjectResult)controller.Clone(-2, newCourse).Result)?.Value as CourseDto;
 
         dbContext.ChangeTracker.Clear();
         secondaryDbContext.ChangeTracker.Clear();
 
         result.ShouldNotBeNull();
-        result.Name.ShouldBe("TestCourse2");
-        result.Code.ShouldBe("T-2");
+        result.Name.ShouldBe("TestCourseClone2");
+        result.Code.ShouldBe("TTT-2");
+        result.StartDate.ShouldBe(DateTime.UnixEpoch);
         result.KnowledgeUnits.Count.ShouldBe(1);
         var clonedCourse = dbContext.Courses.FirstOrDefault(c => c.Id == result.Id);
         clonedCourse.ShouldNotBeNull();

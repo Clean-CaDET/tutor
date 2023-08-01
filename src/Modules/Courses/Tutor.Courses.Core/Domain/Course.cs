@@ -11,14 +11,14 @@ public class Course : Entity
     public bool IsArchived { get; set; }
     public List<KnowledgeUnit>? KnowledgeUnits { get; internal set; }
 
-    internal Course Clone()
+    internal Course Clone(Course newCourse)
     {
         return new Course
         {
-            Code = Code,
-            Name = Name,
+            Code = newCourse.Code,
+            Name = newCourse.Name,
             Description = Description,
-            StartDate = DateTime.UtcNow,
+            StartDate = newCourse.StartDate,
             IsArchived = false,
             KnowledgeUnits = KnowledgeUnits?.Select(u => u.Clone()).ToList()
         };

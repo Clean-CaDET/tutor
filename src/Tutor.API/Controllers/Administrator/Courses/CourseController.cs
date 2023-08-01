@@ -31,9 +31,9 @@ public class CourseController : BaseApiController
     }
 
     [HttpPost("{id:int}/clone")]
-    public ActionResult<CourseDto> Clone(int id)
+    public ActionResult<CourseDto> Clone(int id, [FromBody] CourseDto course)
     {
-        var result = _courseService.Clone(id);
+        var result = _courseService.Clone(id, course);
         return CreateResponse(result);
     }
 
