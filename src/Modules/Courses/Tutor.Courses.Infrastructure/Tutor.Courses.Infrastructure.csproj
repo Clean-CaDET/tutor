@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -9,10 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Tutor.BuildingBlocks.Infrastructure\Tutor.BuildingBlocks.Infrastructure.csproj" />
     <ProjectReference Include="..\Tutor.Courses.Core\Tutor.Courses.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
