@@ -25,21 +25,21 @@ public class InstructionalItemController : BaseApiController
     }
 
     [HttpPost]
-    public ActionResult<List<InstructionalItemDto>> Create([FromBody] InstructionalItemDto item)
+    public ActionResult<InstructionalItemDto> Create([FromBody] InstructionalItemDto item)
     {
         var result = _instructionService.Create(item, User.InstructorId());
         return CreateResponse(result);
     }
 
     [HttpPut("{id:int}")]
-    public ActionResult<List<InstructionalItemDto>> Update([FromBody] InstructionalItemDto item)
+    public ActionResult<InstructionalItemDto> Update([FromBody] InstructionalItemDto item)
     {
         var result = _instructionService.Update(item, User.InstructorId());
         return CreateResponse(result);
     }
 
     [HttpPut("ordering")]
-    public ActionResult UpdateOrdering([FromBody] List<InstructionalItemDto> items)
+    public ActionResult<List<InstructionalItemDto>> UpdateOrdering([FromBody] List<InstructionalItemDto> items)
     {
         var result = _instructionService.UpdateOrdering(items, User.InstructorId());
         return CreateResponse(result);
