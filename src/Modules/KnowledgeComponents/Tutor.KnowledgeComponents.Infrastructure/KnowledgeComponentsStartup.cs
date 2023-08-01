@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
-using Tutor.BuildingBlocks.Infrastructure.Security;
 using Tutor.KnowledgeComponents.API.Internal;
 using Tutor.KnowledgeComponents.API.Public;
 using Tutor.KnowledgeComponents.API.Public.Analysis;
@@ -93,22 +92,7 @@ public static class KnowledgeComponentsStartup
 
         services.AddScoped<IKnowledgeComponentsUnitOfWork, KnowledgeComponentsUnitOfWork>();
         services.AddDbContext<KnowledgeComponentsContext>(opt =>
-            opt.UseNpgsql(CreateConnectionStringFromEnvironment(),
+            opt.UseNpgsql(DbConnectionStringBuilder.Build("knowledgeComponents"),
                 x => x.MigrationsHistoryTable("__EFMigrationsHistory", "knowledgeComponents")));
-    }
-
-    private static string CreateConnectionStringFromEnvironment()
-    {
-        var server = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "localhost";
-        var port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "5432";
-        var database = EnvironmentConnection.GetSecret("DATABASE_SCHEMA") ?? "tutor-v4";
-        var schema = EnvironmentConnection.GetSecret("DATABASE_SCHEMA_NAME") ?? "knowledgeComponents";
-        var user = EnvironmentConnection.GetSecret("DATABASE_USERNAME") ?? "postgres";
-        var password = EnvironmentConnection.GetSecret("DATABASE_PASSWORD") ?? "super";
-        var integratedSecurity = Environment.GetEnvironmentVariable("DATABASE_INTEGRATED_SECURITY") ?? "false";
-        var pooling = Environment.GetEnvironmentVariable("DATABASE_POOLING") ?? "true";
-
-        return
-            $"Server={server};Port={port};Database={database};SearchPath={schema};User ID={user};Password={password};Integrated Security={integratedSecurity};Pooling={pooling};";
     }
 }
