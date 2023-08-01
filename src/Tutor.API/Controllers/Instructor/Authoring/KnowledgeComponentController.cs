@@ -16,6 +16,13 @@ public class KnowledgeComponentController : BaseApiController
     {
         _kcService = kcService;
     }
+    
+    [HttpGet]
+    public ActionResult<List<KnowledgeComponentDto>> GetByUnit([FromQuery] int unitId)
+    {
+        var result = _kcService.GetByUnit(unitId, User.InstructorId());
+        return CreateResponse(result);
+    }
 
     [HttpGet("{id:int}")]
     public ActionResult<KnowledgeComponentDto> Get(int id)

@@ -1,3 +1,3 @@
-﻿DELETE FROM "learningUtilities"."EmotionsFeedbacks";
-DELETE FROM "learningUtilities"."ImprovementFeedbacks";
-DELETE FROM "learningUtilities"."Notes";
+﻿DELETE FROM "learningUtils"."EmotionsFeedbacks";
+DELETE FROM "learningUtils"."ImprovementFeedbacks";
+DELETE FROM "learningUtils"."Notes";

@@ -20,10 +20,10 @@ public class GroupMonitoringTests : BaseCoursesIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, instructorId);
-        var result = ((OkObjectResult)controller.GetCourseGroups(courseId).Result)?.Value as List<GroupDto>;
+        var result = ((OkObjectResult)controller.GetCourseGroups(courseId).Result)?.Value as PagedResult<GroupDto>;
 
         result.ShouldNotBeNull();
-        result.Count.ShouldBe(expectedResult);
+        result.Results.Count.ShouldBe(expectedResult);
     }
 
     [Theory]

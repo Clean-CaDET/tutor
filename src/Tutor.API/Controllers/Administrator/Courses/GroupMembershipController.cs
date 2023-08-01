@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Public.Management;
 
@@ -21,13 +23,14 @@ public class GroupMembershipController : BaseApiController
     public ActionResult<List<LearnerDto>> GetMembers(int groupId)
     {
         var result = _membershipService.GetMembers(groupId);
-        return CreateResponse(result);
+        var pagedResult = new PagedResult<LearnerDto>(result.Value, result.Value.Count).ToResult();
+        return CreateResponse(pagedResult);
     }
 
     [HttpPost("bulk")]
-    public ActionResult CreateMembers(int groupId, [FromBody] List<int> learnerIds)
+    public ActionResult CreateMembers(int groupId, [FromBody] List<LearnerDto> learners)
     {
-        var result = _membershipService.CreateMembers(groupId, learnerIds);
+        var result = _membershipService.CreateMembers(groupId, learners.Select(l => l.Id).ToList());
         return CreateResponse(result);
     }
 

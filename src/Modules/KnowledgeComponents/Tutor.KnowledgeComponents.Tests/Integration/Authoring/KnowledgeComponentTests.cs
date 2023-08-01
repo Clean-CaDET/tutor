@@ -14,6 +14,18 @@ public class KnowledgeComponentTests : BaseKnowledgeComponentsIntegrationTest
     public KnowledgeComponentTests(KnowledgeComponentsTestFactory factory) : base(factory) { }
 
     [Fact]
+    public void Gets_by_unit()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+
+        var result = ((OkObjectResult)controller.GetByUnit(-1).Result)?.Value as List<KnowledgeComponentDto>;
+
+        result.ShouldNotBeNull();
+        result.Count.ShouldBe(6);
+    }
+
+    [Fact]
     public void Gets()
     {
         using var scope = Factory.Services.CreateScope();
