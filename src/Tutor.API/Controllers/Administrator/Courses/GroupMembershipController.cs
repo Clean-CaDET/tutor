@@ -30,12 +30,7 @@ public class GroupMembershipController : BaseApiController
     [HttpPost("bulk")]
     public ActionResult CreateMembers(int groupId, [FromBody] List<LearnerDto> learners)
     {
-        var learnerIds = new List<int>();
-        learners.ForEach(learner =>
-        {
-            learnerIds.Add(learner.Id);
-        });
-        var result = _membershipService.CreateMembers(groupId, learnerIds);
+        var result = _membershipService.CreateMembers(groupId, learners.Select(l => l.Id).ToList());
         return CreateResponse(result);
     }
 
