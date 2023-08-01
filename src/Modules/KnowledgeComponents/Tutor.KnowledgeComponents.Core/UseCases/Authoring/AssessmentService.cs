@@ -46,7 +46,7 @@ public class AssessmentService : CrudService<AssessmentItemDto, AssessmentItem>,
 
     public Result<List<AssessmentItemDto>> UpdateOrdering(List<AssessmentItemDto> items, int instructorId)
     {
-        var kcId = items.Select(i => i.KnowledgeComponentId).ToList();
+        var kcId = items.Select(i => i.KnowledgeComponentId).Distinct().ToList();
         if (kcId.Count > 1 || !_accessService.IsKcOwner(kcId.First(), instructorId))
             return Result.Fail(FailureCode.Forbidden);
 

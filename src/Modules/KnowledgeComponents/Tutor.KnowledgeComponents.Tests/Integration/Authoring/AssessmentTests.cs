@@ -4,6 +4,7 @@ using Shouldly;
 using Tutor.API.Controllers.Instructor.Authoring;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.MultiChoiceQuestions;
+using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.MultiResponseQuestions;
 using Tutor.KnowledgeComponents.API.Public.Authoring;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.MultiChoiceQuestions;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
@@ -84,6 +85,57 @@ public class AssessmentTests : BaseKnowledgeComponentsIntegrationTest
         savedEntity.Feedback.ShouldBe(updatedEntity.Feedback);
         var oldEntity = dbContext.AssessmentItems.FirstOrDefault(i => ((Mcq)i).Feedback == "Feedback");
         oldEntity.ShouldBeNull();
+    }
+
+    [Fact]
+    public void Updates_ordering()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
+        var items = new List<AssessmentItemDto> {
+            new MrqDto
+            {
+                Id = -153,
+                KnowledgeComponentId = -15,
+                Order = 2,
+                Text = ""
+                
+            },
+            new MrqDto
+            {
+                Id = -155,
+                KnowledgeComponentId = -15,
+                Order = 3,
+                Text = ""
+            },
+            new MrqDto
+            {
+                Id = -156,
+                KnowledgeComponentId = -15,
+                Order = 1,
+                Text = ""
+            }
+        };
+        dbContext.Database.BeginTransaction();
+
+        var result = ((OkObjectResult)controller.UpdateOrdering(items).Result).Value as List<AssessmentItemDto>;
+
+        dbContext.ChangeTracker.Clear();
+        result.ShouldNotBeNull();
+        result.Count.ShouldBe(3);
+        result[0].Id.ShouldBe(-156);
+        result[1].Id.ShouldBe(-153);
+        result[2].Id.ShouldBe(-155);
+        var secondItem = dbContext.AssessmentItems.FirstOrDefault(i => i.Id == -153);
+        secondItem.ShouldNotBeNull();
+        secondItem.Order.ShouldBe(2);
+        var thirdItem = dbContext.AssessmentItems.FirstOrDefault(i => i.Id == -155);
+        thirdItem.ShouldNotBeNull();
+        thirdItem.Order.ShouldBe(3);
+        var firstItem = dbContext.AssessmentItems.FirstOrDefault(i => i.Id == -156);
+        firstItem.ShouldNotBeNull();
+        firstItem.Order.ShouldBe(1);
     }
 
     [Fact]

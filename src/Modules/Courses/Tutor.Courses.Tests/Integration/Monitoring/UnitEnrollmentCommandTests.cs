@@ -109,6 +109,25 @@ public class UnitEnrollmentCommandTests : BaseCoursesIntegrationTest
         enrollment[0].Status.ShouldBe(EnrollmentStatus.Deactivated);
     }
 
+    [Fact]
+    public void Unenrolls_in_bulk()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-51");
+        var dbContext = scope.ServiceProvider.GetRequiredService<CoursesContext>();
+
+        var result = controller.BulkUnenroll(-1, new[] {-4, -5});
+
+        dbContext.ChangeTracker.Clear();
+        result.ShouldNotBeNull();
+
+        var enrollments = dbContext.UnitEnrollments
+            .Where(e => e.KnowledgeUnit.Id == -1 && e.LearnerId == -4 || e.LearnerId == -5).ToList();
+        enrollments.Count.ShouldBe(2);
+        enrollments[0].Status.ShouldBe(EnrollmentStatus.Deactivated);
+        enrollments[1].Status.ShouldBe(EnrollmentStatus.Deactivated);
+    }
+
     private static UnitEnrollmentController CreateController(IServiceScope scope, string id)
     {
         return new UnitEnrollmentController(scope.ServiceProvider.GetRequiredService<IEnrollmentService>())

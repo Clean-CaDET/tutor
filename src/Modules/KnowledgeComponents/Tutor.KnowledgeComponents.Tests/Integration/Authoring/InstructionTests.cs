@@ -105,7 +105,7 @@ public class InstructionTests : BaseKnowledgeComponentsIntegrationTest
         };
         dbContext.Database.BeginTransaction();
 
-        var result = ((OkObjectResult)controller.UpdateOrdering(instructionalItems)).Value as List<InstructionalItemDto>;
+        var result = ((OkObjectResult)controller.UpdateOrdering(instructionalItems).Result).Value as List<InstructionalItemDto>;
         
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
