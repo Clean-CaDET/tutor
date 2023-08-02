@@ -76,6 +76,8 @@ public class KnowledgeComponentService : CrudService<KnowledgeComponentDto, Know
             return result;
         }
 
+        UnitOfWork.Commit();
+
         return result;
     }
 
