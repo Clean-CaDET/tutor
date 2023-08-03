@@ -60,7 +60,7 @@ public class LearnerQueryTests : BaseStakeholdersIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
 
-        var result = (ObjectResult)controller.GetByIndexes(null).Result;
+        var result = (ObjectResult)controller.GetByIndexes(new string[]{}).Result;
 
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(400);

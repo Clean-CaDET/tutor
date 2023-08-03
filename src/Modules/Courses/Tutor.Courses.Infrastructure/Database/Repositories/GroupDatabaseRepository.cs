@@ -22,7 +22,7 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup, Cour
             .Select(lg => lg.Course).Where(c => !c.IsArchived)
             .Distinct().GetPaged(page, pageSize);
         task.Wait();
-        return task.Result;
+        return task.Result!;
     }
 
     public Course? GetEnrolledCourse(int courseId, int learnerId)

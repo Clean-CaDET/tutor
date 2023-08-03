@@ -11,7 +11,7 @@ public class Saq : AssessmentItem
 
     protected override void ClearSolution()
     {
-        AcceptableAnswers = null;
+        AcceptableAnswers.Clear();
         Feedback = string.Empty;
     }
 

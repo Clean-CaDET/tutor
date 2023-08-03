@@ -26,7 +26,7 @@ public class DefaultEventSerializer : IEventSerializer
 
     public DomainEvent Deserialize(JsonDocument @event)
     {
-        return @event.Deserialize<DomainEvent>(_options);
+        return @event.Deserialize<DomainEvent>(_options)!;
     }
 
     public JsonDocument Serialize(DomainEvent @event)

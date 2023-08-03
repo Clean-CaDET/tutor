@@ -14,7 +14,7 @@ public class AiStatisticsDto
         return AiId.GetHashCode();
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj is not AiStatisticsDto other) return false;
         return AiId == other.AiId

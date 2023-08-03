@@ -75,7 +75,7 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService, IInt
     private List<User> CreateUserAccounts(List<StakeholderAccountDto> accounts, List<Learner> learners)
     {
         return UserRepository.BulkRegister(
-            accounts.Select(a => a.Index).ToList(),
+            accounts.Select(a => a.Index).ToList()!,
             accounts.Select(a => a.Password).ToList(),
             learners.First().LearnerType == LearnerType.Regular ? UserRole.Learner : UserRole.LearnerCommercial);
     }
@@ -94,7 +94,7 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService, IInt
 
     public Result<PagedResult<StakeholderAccountDto>> GetByIndexes(string[] indexes)
     {
-        if (indexes == null) return Result.Fail(FailureCode.InvalidArgument);
+        if (indexes == null || indexes.Length == 0) return Result.Fail(FailureCode.InvalidArgument);
         var result = _learnerRepository.GetByIndexes(indexes);
         return MapToDto(result);
     }
@@ -107,7 +107,7 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService, IInt
         learner.UserId = user.Id;
 
         var updatedLearner = CrudRepository.Update(dbStakeholder, MapToDomain(learner));
-        user.Username = learner.Index;
+        user.Username = learner.Index!;
 
         var result = UnitOfWork.Save();
         if (result.IsFailed) return result;
