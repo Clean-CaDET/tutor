@@ -22,8 +22,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Tutor.Infrastructure\Tutor.Infrastructure.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -22,8 +22,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Tutor.Web\Tutor.Web.csproj" />
-  </ItemGroup>
-
 </Project>
