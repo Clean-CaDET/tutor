@@ -122,7 +122,7 @@ public class UnitEnrollmentCommandTests : BaseCoursesIntegrationTest
         result.ShouldNotBeNull();
 
         var enrollments = dbContext.UnitEnrollments
-            .Where(e => e.KnowledgeUnit.Id == -1 && e.LearnerId == -4 || e.LearnerId == -5).ToList();
+            .Where(e => e.KnowledgeUnit.Id == -1 && (e.LearnerId == -4 || e.LearnerId == -5)).ToList();
         enrollments.Count.ShouldBe(2);
         enrollments[0].Status.ShouldBe(EnrollmentStatus.Deactivated);
         enrollments[1].Status.ShouldBe(EnrollmentStatus.Deactivated);

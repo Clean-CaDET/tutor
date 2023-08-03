@@ -100,7 +100,6 @@ public class AssessmentTests : BaseKnowledgeComponentsIntegrationTest
                 KnowledgeComponentId = -15,
                 Order = 2,
                 Text = ""
-                
             },
             new MrqDto
             {

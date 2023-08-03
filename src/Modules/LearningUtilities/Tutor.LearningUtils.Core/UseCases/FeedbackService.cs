@@ -9,7 +9,6 @@ namespace Tutor.LearningUtils.Core.UseCases;
 
 public class FeedbackService : IFeedbackService
 {
-    
     private readonly IMapper _mapper;
     private readonly IFeedbackRepository _repository;
     private readonly ILearningUtilsUnitOfWork _unitOfWork;

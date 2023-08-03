@@ -42,7 +42,3 @@ namespace Tutor.API
 {
     public partial class Program { }
 }
-
-// TODO: Check all routes when redesign is near finished
-
-// TODO: Update events.sql for testing purposes and add extract only events related to a course

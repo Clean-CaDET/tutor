@@ -11,7 +11,6 @@ namespace Tutor.LearningUtils.Core.UseCases;
 
 public class NoteService : CrudService<NoteDto, Note>, INoteService
 {
-
     private readonly INoteRepository _noteRepository;
     
     public NoteService(ILearningUtilsUnitOfWork unitOfWork, IMapper mapper, INoteRepository noteRepository) : base(noteRepository, unitOfWork, mapper)
