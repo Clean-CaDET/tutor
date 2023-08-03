@@ -56,7 +56,7 @@ public class EvaluationService : IEvaluationService
 
     private Result RecordSubmission(KnowledgeComponentMastery kcMastery, int itemId, Submission submission, Feedback feedback)
     {
-        if (feedback.FeedbackType == FeedbackType.Hint) kcMastery.RecordAssessmentItemHintRequest(itemId, feedback.Hint.Markdown);
+        if (feedback.FeedbackType == FeedbackType.Hint) kcMastery.RecordAssessmentItemHintRequest(itemId, feedback.Hint!.Markdown);
         kcMastery.RecordAssessmentItemAnswerSubmission(itemId, submission, feedback);
         _knowledgeMasteryRepository.Update(kcMastery);
         return _unitOfWork.Save();
