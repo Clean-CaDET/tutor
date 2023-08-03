@@ -1,8 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿namespace Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.MultiChoiceQuestions;
 
-namespace Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.MultiChoiceQuestions;
-
-[JsonDerivedType(typeof(McqDto), typeDiscriminator: "multiChoiceQuestion")]
 public class McqDto : AssessmentItemDto
 {
     public string Text { get; set; }

@@ -1,8 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿namespace Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.ShortAnswerQuestions;
 
-namespace Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.ShortAnswerQuestions;
-
-[JsonDerivedType(typeof(SaqDto), typeDiscriminator: "shortAnswerQuestion")]
 public class SaqDto : AssessmentItemDto
 {
     public string Text { get; set; }

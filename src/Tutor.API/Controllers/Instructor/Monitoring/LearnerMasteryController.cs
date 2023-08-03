@@ -17,7 +17,8 @@ public class LearnerMasteryController : BaseApiController
         _masteryService = masteryService;
     }
 
-    [HttpGet("progress/{unitId:int}")]
+    // POST because of int[] that can have 150 elements, making the query too long.
+    [HttpPost("progress/{unitId:int}")]
     public ActionResult<List<KcmProgressDto>> GetLearnerProgress(int unitId, [FromBody] int[] learnerIds)
     {
         var result = _masteryService.GetProgress(unitId, learnerIds, User.InstructorId());

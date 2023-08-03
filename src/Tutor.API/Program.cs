@@ -1,5 +1,4 @@
-﻿
-using Serilog;
+﻿using Serilog;
 using Tutor.API.Startup;
 
 var builder = WebApplication.CreateBuilder(args);
