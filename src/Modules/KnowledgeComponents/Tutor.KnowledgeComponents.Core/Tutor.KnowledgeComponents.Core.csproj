@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Quickenshtein" Version="1.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Courses\Tutor.Courses.API\Tutor.Courses.API.csproj" />
+    <ProjectReference Include="..\Tutor.KnowledgeComponents.API\Tutor.KnowledgeComponents.API.csproj" />
+  </ItemGroup>
+
+</Project>
