@@ -15,7 +15,9 @@ public class LanguageModelConnector : ILanguageModelConnector
     {
         _mapper = mapper;
     }
-
+    // TODO: razmotriti uvodjenje jos jedne metode koja ce raditi odabir dobre metode i mapiranje povratne vrednosti
+    // Pros: manje dupliranja koda, delegacija odabira poziva iz servisa u konektor
+    // Cons: nece biti pobrojane konkretne metode u interfejsu
     public async Task<Result<LanguageModelMessage>> TopicConversationAsync(string message, string text, ContextType context, List<LanguageModelMessage>? previousMessages)
     {
         var request = new Request.LanguageModelDto()
@@ -58,18 +60,23 @@ public class LanguageModelConnector : ILanguageModelConnector
         return null;
     }
 
-    public async Task<Result<IEnumerable<LanguageModelMessage>>> ExtractKeywordsAsync(string text)
+    public async Task<Result<List<LanguageModelMessage>>> ExtractKeywordsAsync(string text)
     {
         var request = new Request.LanguageModelDto()
         {
             Text = text
         };
         var response = await RequestHandler.PostAndReadAsync<Response.LanguageModelDto, Request.LanguageModelDto>(LanguageModelEndpoints.ExtractKeywords, request);
-        // vratiti premapirano
         if (response.IsFailed)
             return Result.Fail(response.Errors);
-        var nesto = _mapper.Map<IEnumerable<LanguageModelMessage>>(response.Value);
-        return (Result<IEnumerable<LanguageModelMessage>>)nesto;
+
+        var messages = _mapper.Map<List<LanguageModelMessage>>(response.Value);
+        messages.ForEach(message => message.MessageType = Core.Domain.MessageType.Predefined);
+        // totalno nepovezana vrednost sa domenskim modelom jedne poruke, vezana za ceo deo konverzacije
+        // ja bih vracala tuple ponovo ovde
+        // ili bih isla na out parametar za broj tokena, mozda je cistije
+        var tokensUsed = response.Value.TokensUsed;
+        return messages;
     }
 
     public async Task<Result<LanguageModelMessage>> GenerateQuestionsAsync(string text)

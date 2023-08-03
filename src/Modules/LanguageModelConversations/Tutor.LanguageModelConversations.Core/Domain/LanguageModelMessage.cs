@@ -6,7 +6,6 @@ public class LanguageModelMessage
     public string Content { get; set; }
     public SenderType SenderType { get; set; }
     public MessageType MessageType { get; set; }
-    public int TokensUsed { get; set; }
 }
 // na dva mesta ista enumeracija -> u api projektu i ovde, da li je bitno itno itno??? ???
 public enum SenderType
@@ -18,5 +17,7 @@ public enum SenderType
 public enum MessageType
 {
     OpenEnded,
+    // prosirivo
+    // TODO: da li cemo prikazati na frontu sta je zatrazio korisnik?
     Predefined
 }

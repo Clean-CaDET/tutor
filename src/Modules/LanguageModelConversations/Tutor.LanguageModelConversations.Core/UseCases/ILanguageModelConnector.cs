@@ -10,6 +10,6 @@ public interface ILanguageModelConnector
     Task<Result<LanguageModelMessage>> TopicConversationAsync(string message, string text, ContextType context, List<LanguageModelMessage>? previousMessages);
     Task<Result<LanguageModelMessage>> GenerateSimilarAsync(string text, ContextType context);
     Task<Result<LanguageModelMessage>> SummarizeAsync(string text);
-    Task<Result<IEnumerable<LanguageModelMessage>>> ExtractKeywordsAsync(string text);
+    Task<Result<List<LanguageModelMessage>>> ExtractKeywordsAsync(string text);
     Task<Result<LanguageModelMessage>> GenerateQuestionsAsync(string text);
 }
