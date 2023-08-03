@@ -8,7 +8,7 @@ public class BaseAssessmentEvaluationIntegrationTest : BaseKnowledgeComponentsIn
 {
     public BaseAssessmentEvaluationIntegrationTest(KnowledgeComponentsTestFactory factory) : base(factory) { }
 
-    protected EvaluationController CreateController(IServiceScope scope, string id)
+    protected static EvaluationController CreateController(IServiceScope scope, string id)
     {
         return new EvaluationController(scope.ServiceProvider.GetRequiredService<IEvaluationService>(),
             scope.ServiceProvider.GetRequiredService<IHelpService>())

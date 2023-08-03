@@ -210,11 +210,7 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
             throw new EventSourcingException("No mastery for assessment item with id: " + itemId + ". Were masteries created and loaded correctly?");
 
         assessmentMastery.Apply(@event);
-        UpdateMastery();
-    }
-
-    private void UpdateMastery()
-    {
+        
         Mastery = Math.Round(AssessmentItemMasteries.Sum(am => am.Mastery) / AssessmentItemMasteries.Count, 2);
         if (Mastery > 0.97) Mastery = 1; // Resolves rounding errors.
     }

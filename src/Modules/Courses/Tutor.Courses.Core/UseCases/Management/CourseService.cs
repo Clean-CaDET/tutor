@@ -40,9 +40,9 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
         return result.IsFailed ? result : MapToDto(createdCourse);
     }
 
-    public virtual Result<CourseDto> Update(CourseDto entity)
+    public virtual Result<CourseDto> Update(CourseDto course)
     {
-        var updatedCourse = _courseRepository.Update(MapToDomain(entity));
+        var updatedCourse = _courseRepository.Update(MapToDomain(course));
 
         var result = _unitOfWork.Save();
         return result.IsFailed ? result : MapToDto(updatedCourse);
@@ -129,7 +129,7 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
         return MapToDto(clonedCourse);
     }
 
-    private Result CloneKcs(List<KnowledgeUnit> existingUnits, List<KnowledgeUnit> clonedUnits)
+    private void CloneKcs(List<KnowledgeUnit> existingUnits, List<KnowledgeUnit> clonedUnits)
     {
         var unitIdPairs = new List<Tuple<int, int>>();
         existingUnits.ForEach(existingUnit =>
@@ -138,7 +138,7 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
             unitIdPairs.Add(new Tuple<int, int>(existingUnit.Id, clonedUnitId));
         });
 
-        return _kcCloner.CloneMany(unitIdPairs);
+        _kcCloner.CloneMany(unitIdPairs);
     }
 
     private void CloneOwnerships(Course course, int clonedCourseId)

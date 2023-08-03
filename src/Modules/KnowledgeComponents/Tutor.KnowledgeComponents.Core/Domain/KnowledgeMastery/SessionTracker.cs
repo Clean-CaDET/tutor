@@ -122,7 +122,7 @@ public class SessionTracker : EventSourcedEntity
         @event.MinutesToSatisfaction = DurationOfAllSessions.TotalMinutes - DurationOfAllPauses.TotalMinutes;
     }
 
-    private void When(KnowledgeComponentEvent @event)
+    private static void When(KnowledgeComponentEvent @event)
     {
         // LastActivity is no longer being recorded.
     }
