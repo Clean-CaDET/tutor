@@ -10,7 +10,7 @@ def defineLabels():
     module = getModule()
     useCaseGroup = getUcGroup()
     typeOfService = getTypeOfService()
-    mainEntityName = input("Enter the default name used for the generated classes: ").title().strip()
+    mainEntityName = input("Enter the default name used for the generated classes: ").strip()
     
     paths = {
         "controller": f"Tutor.API/Controllers/{role}/{useCaseGroup}/{mainEntityName}Controller.cs",
