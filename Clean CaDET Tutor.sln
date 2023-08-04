@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.BuildingBlocks.Core",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.BuildingBlocks.Infrastructure", "src\BuildingBlocks\Tutor.BuildingBlocks.Infrastructure\Tutor.BuildingBlocks.Infrastructure.csproj", "{E56D608D-14E3-407B-ABF6-26A491D96102}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LearningUtilities", "LearningUtilities", "{C7F26AD8-3168-480A-B888-9BE7077CD9F4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LearningUtils", "LearningUtils", "{C7F26AD8-3168-480A-B888-9BE7077CD9F4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.Courses.API", "src\Modules\Courses\Tutor.Courses.API\Tutor.Courses.API.csproj", "{D7D307E6-C1BF-49FE-9EAA-1DC45C7DC56A}"
 EndProject
@@ -37,13 +37,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.Stakeholders.Infrastr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.Stakeholders.Tests", "src\Modules\Stakeholders\Tutor.Stakeholders.Tests\Tutor.Stakeholders.Tests.csproj", "{65928478-B411-4053-8538-45C6C1C228DD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.LearningUtils.API", "src\Modules\LearningUtilities\Tutor.LearningUtils.API\Tutor.LearningUtils.API.csproj", "{BFDF196E-774D-4030-9B62-1E7D3441FB0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.LearningUtils.API", "src\Modules\LearningUtils\Tutor.LearningUtils.API\Tutor.LearningUtils.API.csproj", "{BFDF196E-774D-4030-9B62-1E7D3441FB0C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.LearningUtils.Core", "src\Modules\LearningUtilities\Tutor.LearningUtils.Core\Tutor.LearningUtils.Core.csproj", "{FD820D53-1384-4C1B-9A3F-34647CCB0AE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.LearningUtils.Core", "src\Modules\LearningUtils\Tutor.LearningUtils.Core\Tutor.LearningUtils.Core.csproj", "{FD820D53-1384-4C1B-9A3F-34647CCB0AE2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.LearningUtils.Infrastructure", "src\Modules\LearningUtilities\Tutor.LearningUtils.Infrastructure\Tutor.LearningUtils.Infrastructure.csproj", "{FFA4EE02-890C-4593-8C89-2BCDC6F06998}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.LearningUtils.Infrastructure", "src\Modules\LearningUtils\Tutor.LearningUtils.Infrastructure\Tutor.LearningUtils.Infrastructure.csproj", "{FFA4EE02-890C-4593-8C89-2BCDC6F06998}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.LearningUtils.Tests", "src\Modules\LearningUtilities\Tutor.LearningUtils.Tests\Tutor.LearningUtils.Tests.csproj", "{62747889-6CA6-45D8-8CA5-E16199CDACD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.LearningUtils.Tests", "src\Modules\LearningUtils\Tutor.LearningUtils.Tests\Tutor.LearningUtils.Tests.csproj", "{62747889-6CA6-45D8-8CA5-E16199CDACD4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.KnowledgeComponents.API", "src\Modules\KnowledgeComponents\Tutor.KnowledgeComponents.API\Tutor.KnowledgeComponents.API.csproj", "{B0D62F3B-5507-44B6-8B2F-10D64A91027C}"
 EndProject

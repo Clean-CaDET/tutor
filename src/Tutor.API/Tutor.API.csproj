@@ -23,8 +23,8 @@
     <ProjectReference Include="..\Modules\Courses\Tutor.Courses.Infrastructure\Tutor.Courses.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\KnowledgeComponents\Tutor.KnowledgeComponents.API\Tutor.KnowledgeComponents.API.csproj" />
     <ProjectReference Include="..\Modules\KnowledgeComponents\Tutor.KnowledgeComponents.Infrastructure\Tutor.KnowledgeComponents.Infrastructure.csproj" />
-    <ProjectReference Include="..\Modules\LearningUtilities\Tutor.LearningUtils.API\Tutor.LearningUtils.API.csproj" />
-    <ProjectReference Include="..\Modules\LearningUtilities\Tutor.LearningUtils.Infrastructure\Tutor.LearningUtils.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\LearningUtils\Tutor.LearningUtils.API\Tutor.LearningUtils.API.csproj" />
+    <ProjectReference Include="..\Modules\LearningUtils\Tutor.LearningUtils.Infrastructure\Tutor.LearningUtils.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Stakeholders\Tutor.Stakeholders.API\Tutor.Stakeholders.API.csproj" />
     <ProjectReference Include="..\Modules\Stakeholders\Tutor.Stakeholders.Infrastructure\Tutor.Stakeholders.Infrastructure.csproj" />
   </ItemGroup>
