@@ -22,4 +22,7 @@ public static class FailureCode
         .WithMetadata("code", 404);
     public static readonly IError Conflict = new Error("Database persistence conflict exception.")
         .WithMetadata("code", 409);
+
+    public static readonly IError Internal = new Error("Internal server error.")
+        .WithMetadata("code", 500);
 }

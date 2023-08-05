@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tutor.BuildingBlocks.Infrastructure.Database;
+using Tutor.BuildingBlocks.Infrastructure.Interceptors;
 using Tutor.LearningUtils.API.Public;
 using Tutor.LearningUtils.Core.Domain.RepositoryInterfaces;
 using Tutor.LearningUtils.Core.Mappers;
@@ -23,8 +24,8 @@ public static class LearningUtilsStartup
 
     private static void SetupCore(IServiceCollection services)
     {
-        services.AddScoped<IFeedbackService, FeedbackService>();
-        services.AddScoped<INoteService, NoteService>();
+        services.AddProxiedScoped<IFeedbackService, FeedbackService>();
+        services.AddProxiedScoped<INoteService, NoteService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)

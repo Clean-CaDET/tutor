@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
+using Tutor.BuildingBlocks.Infrastructure.Interceptors;
 using Tutor.Courses.API.Internal;
 using Tutor.Courses.API.Public.Authoring;
 using Tutor.Courses.API.Public.Learning;
@@ -33,20 +34,20 @@ public static class CoursesStartup
     
     private static void SetupCore(IServiceCollection services)
     {
-        services.AddScoped<IOwnedCourseService, OwnedCourseService>();
-        services.AddScoped<IOwnershipValidator, OwnedCourseService>();
-        services.AddScoped<IUnitService, UnitService>();
+        services.AddProxiedScoped<IOwnedCourseService, OwnedCourseService>();
+        services.AddProxiedScoped<IOwnershipValidator, OwnedCourseService>();
+        services.AddProxiedScoped<IUnitService, UnitService>();
 
-        services.AddScoped<IEnrolledCourseService, EnrolledCourseService>();
-        services.AddScoped<IEnrollmentValidator, EnrolledCourseService>();
+        services.AddProxiedScoped<IEnrolledCourseService, EnrolledCourseService>();
+        services.AddProxiedScoped<IEnrollmentValidator, EnrolledCourseService>();
 
-        services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
-        services.AddScoped<ICourseService, CourseService>();
-        services.AddScoped<IGroupMembershipService, GroupMembershipService>();
-        services.AddScoped<IGroupService, GroupService>();
+        services.AddProxiedScoped<ICourseOwnershipService, CourseOwnershipService>();
+        services.AddProxiedScoped<ICourseService, CourseService>();
+        services.AddProxiedScoped<IGroupMembershipService, GroupMembershipService>();
+        services.AddProxiedScoped<IGroupService, GroupService>();
 
-        services.AddScoped<IEnrollmentService, EnrollmentService>();
-        services.AddScoped<IGroupMonitoringService, GroupMonitoringService>();
+        services.AddProxiedScoped<IEnrollmentService, EnrollmentService>();
+        services.AddProxiedScoped<IGroupMonitoringService, GroupMonitoringService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)

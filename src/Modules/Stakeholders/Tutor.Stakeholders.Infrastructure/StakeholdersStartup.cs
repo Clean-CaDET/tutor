@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
+using Tutor.BuildingBlocks.Infrastructure.Interceptors;
 using Tutor.Stakeholders.API.Internal;
 using Tutor.Stakeholders.API.Public;
 using Tutor.Stakeholders.API.Public.Management;
@@ -28,11 +29,11 @@ public static class StakeholdersStartup
     
     private static void SetupCore(IServiceCollection services)
     {
-        services.AddScoped<IInstructorService, InstructorService>();
-        services.AddScoped<IInternalInstructorService, InstructorService>();
-        services.AddScoped<ILearnerService, LearnerService>();
-        services.AddScoped<IInternalLearnerService, LearnerService>();
-        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddProxiedScoped<IInstructorService, InstructorService>();
+        services.AddProxiedScoped<IInternalInstructorService, InstructorService>();
+        services.AddProxiedScoped<ILearnerService, LearnerService>();
+        services.AddProxiedScoped<IInternalLearnerService, LearnerService>();
+        services.AddProxiedScoped<IAuthenticationService, AuthenticationService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)

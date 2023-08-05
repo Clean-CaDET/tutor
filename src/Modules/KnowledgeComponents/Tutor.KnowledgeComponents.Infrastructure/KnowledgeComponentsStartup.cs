@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
+using Tutor.BuildingBlocks.Infrastructure.Interceptors;
 using Tutor.KnowledgeComponents.API.Internal;
 using Tutor.KnowledgeComponents.API.Public;
 using Tutor.KnowledgeComponents.API.Public.Analysis;
@@ -48,32 +49,32 @@ public static class KnowledgeComponentsStartup
 
     private static void SetupCore(IServiceCollection services)
     {
-        services.AddScoped<IAccessService, AccessServices>();
+        services.AddProxiedScoped<IAccessService, AccessServices>();
 
-        services.AddScoped<IAssessmentAnalysisService, AssessmentAnalysisService>();
-        services.AddScoped<IKnowledgeAnalysisService, KnowledgeAnalysisService>();
-        services.AddScoped<IRatingService, RatingService>();
+        services.AddProxiedScoped<IAssessmentAnalysisService, AssessmentAnalysisService>();
+        services.AddProxiedScoped<IKnowledgeAnalysisService, KnowledgeAnalysisService>();
+        services.AddProxiedScoped<IRatingService, RatingService>();
 
-        services.AddScoped<IAssessmentService, AssessmentService>();
-        services.AddScoped<IInstructionalItemsService, InstructionalItemsService>();
-        services.AddScoped<IKnowledgeComponentService, KnowledgeComponentService>();
-        services.AddScoped<IKnowledgeComponentCloner, KnowledgeComponentService>();
+        services.AddProxiedScoped<IAssessmentService, AssessmentService>();
+        services.AddProxiedScoped<IInstructionalItemsService, InstructionalItemsService>();
+        services.AddProxiedScoped<IKnowledgeComponentService, KnowledgeComponentService>();
+        services.AddProxiedScoped<IKnowledgeComponentCloner, KnowledgeComponentService>();
 
-        services.AddScoped<IInstructionService, InstructionService>();
-        services.AddScoped<ISessionService, SessionService>();
-        services.AddScoped<IStatisticsService, StatisticsService>();
-        services.AddScoped<IStructureService, StructureService>();
+        services.AddProxiedScoped<IInstructionService, InstructionService>();
+        services.AddProxiedScoped<ISessionService, SessionService>();
+        services.AddProxiedScoped<IStatisticsService, StatisticsService>();
+        services.AddProxiedScoped<IStructureService, StructureService>();
 
-        services.AddScoped<IEvaluationService, EvaluationService>();
-        services.AddScoped<IHelpService, HelpService>();
-        services.AddScoped<ISelectionService, SelectionService>();
+        services.AddProxiedScoped<IEvaluationService, EvaluationService>();
+        services.AddProxiedScoped<IHelpService, HelpService>();
+        services.AddProxiedScoped<ISelectionService, SelectionService>();
 
-        services.AddScoped<ILearnerMasteryService, LearnerMasteryService>();
-        services.AddScoped<IMasteryFactory, LearnerMasteryService>();
+        services.AddProxiedScoped<ILearnerMasteryService, LearnerMasteryService>();
+        services.AddProxiedScoped<IMasteryFactory, LearnerMasteryService>();
 
-        services.AddScoped<IAssessmentFeedbackGenerator, RuleAssessmentFeedbackGenerator>();
-        services.AddScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
-        services.AddScoped<IMoveOnCriteria, Passed>();
+        services.AddProxiedScoped<IAssessmentFeedbackGenerator, RuleAssessmentFeedbackGenerator>();
+        services.AddProxiedScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();
+        services.AddProxiedScoped<IMoveOnCriteria, Passed>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
