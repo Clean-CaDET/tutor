@@ -7,7 +7,7 @@ public static class InterceptorsConfiguration
 {
     public static IServiceCollection ConfigureInterceptors(this IServiceCollection services)
     {
-        services.AddSingleton(new ProxyGenerator());
+        services.AddSingleton<IProxyGenerator, ProxyGenerator>();
         services.AddScoped<IInterceptor, LoggingInterceptor>();
         return services;
     }
