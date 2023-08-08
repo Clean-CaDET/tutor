@@ -2,8 +2,8 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems;
-using Tutor.KnowledgeComponents.API.Interfaces;
-using Tutor.KnowledgeComponents.API.Interfaces.Learning.Assessment;
+using Tutor.KnowledgeComponents.API.Public;
+using Tutor.KnowledgeComponents.API.Public.Learning.Assessment;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.DomainServices;
@@ -17,9 +17,11 @@ public class SelectionService : ISelectionService
     private readonly IKnowledgeMasteryRepository _knowledgeMasteryRepository;
     private readonly IAssessmentItemSelector _assessmentItemSelector;
     private readonly IAssessmentItemRepository _assessmentItemRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IKnowledgeComponentsUnitOfWork _unitOfWork;
 
-    public SelectionService(IMapper mapper, IAccessService accessService, IKnowledgeMasteryRepository knowledgeMasteryRepository, IAssessmentItemSelector assessmentItemSelector, IAssessmentItemRepository assessmentItemRepository, IUnitOfWork unitOfWork)
+    public SelectionService(IMapper mapper, IAccessService accessService,
+        IKnowledgeMasteryRepository knowledgeMasteryRepository, IAssessmentItemSelector assessmentItemSelector,
+        IAssessmentItemRepository assessmentItemRepository, IKnowledgeComponentsUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _accessService = accessService;
@@ -46,7 +48,7 @@ public class SelectionService : ISelectionService
         if (result.IsFailed) return result;
 
         var item = _assessmentItemRepository.GetDerivedAssessmentItem(assessmentItemId);
-        item.ClearFeedback();
+        item?.ClearFeedback();
 
         return _mapper.Map<AssessmentItemDto>(item);
     }

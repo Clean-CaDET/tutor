@@ -2,9 +2,9 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
-using Tutor.Courses.API.Interfaces.Management;
+using Tutor.Courses.API.Public.Management;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
-using Tutor.Stakeholders.API.Interfaces.Management;
+using Tutor.Stakeholders.API.Internal;
 
 namespace Tutor.Courses.Core.UseCases.Management;
 
@@ -13,22 +13,15 @@ public class GroupMembershipService: IGroupMembershipService
     private readonly IMapper _mapper;
     private readonly IGroupRepository _groupRepository;
     private readonly ICoursesUnitOfWork _unitOfWork;
-    private readonly ILearnerService _learnerService;
+    private readonly IInternalLearnerService _learnerService;
 
-    public GroupMembershipService(IMapper mapper, IGroupRepository groupRepository, ICoursesUnitOfWork unitOfWork, ILearnerService learnerService)
+    public GroupMembershipService(IMapper mapper, IGroupRepository groupRepository,
+        ICoursesUnitOfWork unitOfWork, IInternalLearnerService learnerService)
     {
         _mapper = mapper;
         _groupRepository = groupRepository;
         _unitOfWork = unitOfWork;
         _learnerService = learnerService;
-    }
-
-    public Result<List<int>> GetMemberIds(int groupId)
-    {
-        var group = _groupRepository.Get(groupId);
-        if (group == null) return Result.Fail(FailureCode.NotFound);
-
-        return group.LearnerIds.ToList();
     }
 
     public Result<List<LearnerDto>> GetMembers(int groupId)

@@ -1,6 +1,5 @@
-﻿using Tutor.Courses.API.Interfaces.Authoring;
-using Tutor.Courses.API.Interfaces.Learning;
-using Tutor.KnowledgeComponents.API.Interfaces;
+﻿using Tutor.Courses.API.Internal;
+using Tutor.KnowledgeComponents.API.Public;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 
 namespace Tutor.KnowledgeComponents.Core.UseCases;
@@ -8,15 +7,15 @@ namespace Tutor.KnowledgeComponents.Core.UseCases;
 public class AccessServices : IAccessService
 {
     private readonly IKnowledgeComponentRepository _kcRepository;
-    private readonly IOwnedCourseService _ownedCourseService;
-    private readonly IEnrolledCourseService _enrolledCourseService;
+    private readonly IOwnershipValidator _ownedCourseService;
+    private readonly IEnrollmentValidator _enrollmentValidator;
 
-    public AccessServices(IKnowledgeComponentRepository kcRepository, IOwnedCourseService ownedCourseService,
-        IEnrolledCourseService enrolledCourseService)
+    public AccessServices(IKnowledgeComponentRepository kcRepository, IOwnershipValidator ownedCourseService,
+        IEnrollmentValidator enrollmentValidator)
     {
         _kcRepository = kcRepository;
         _ownedCourseService = ownedCourseService;
-        _enrolledCourseService = enrolledCourseService;
+        _enrollmentValidator = enrollmentValidator;
     }
 
     public bool IsKcOwner(int kcId, int instructorId)
@@ -33,11 +32,11 @@ public class AccessServices : IAccessService
     public bool IsEnrolledInKc(int kcId, int instructorId)
     {
         var kc = _kcRepository.Get(kcId);
-        return kc != null && _enrolledCourseService.HasActiveEnrollment(kc.KnowledgeUnitId, instructorId);
+        return kc != null && _enrollmentValidator.HasActiveEnrollment(kc.KnowledgeUnitId, instructorId);
     }
 
     public bool IsEnrolledInUnit(int unitId, int instructorId)
     {
-        return _enrolledCourseService.HasActiveEnrollment(unitId, instructorId);
+        return _enrollmentValidator.HasActiveEnrollment(unitId, instructorId);
     }
 }

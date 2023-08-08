@@ -1,6 +1,6 @@
-﻿using FluentResults;
+using FluentResults;
 using Microsoft.AspNetCore.Mvc;
-using Tutor.BuildingBlocks.Core.UseCases;
+using System.Text;
 
 namespace Tutor.API.Controllers;
 
@@ -9,17 +9,40 @@ public class BaseApiController : ControllerBase
 {
     protected ActionResult CreateErrorResponse(List<IError> errors)
     {
-        // TODO: Rework this to return error subcode with response and to make it extensible (so that each module can introduce failures)
         var code = 500;
-        if (errors.Contains(FailureCode.InvalidAssessmentSubmission)) code = 400;
-        if (errors.Contains(FailureCode.InvalidArgument)) code = 400;
-        if (errors.Contains(FailureCode.NotEnrolledInUnit)) code = 403;
-        if (errors.Contains(FailureCode.Forbidden)) code = 403;
-        if (errors.Contains(FailureCode.NotFound)) code = 404;
-        if (errors.Contains(FailureCode.Conflict)) code = 409;
-        if (errors.Contains(FailureCode.DuplicateUsername)) code = 400;
-        if (errors.Contains(FailureCode.InsufficientResources)) code = 402;
-        return Problem(statusCode: code, detail: string.Join(";", errors));
+        if (ContainsErrorCode(errors, 400)) code = 400;
+        if (ContainsErrorCode(errors, 403)) code = 403;
+        if (ContainsErrorCode(errors, 404)) code = 404;
+        if (ContainsErrorCode(errors, 409)) code = 409;
+        return CreateErrorObject(errors, code);
+    }
+
+    private static bool ContainsErrorCode(List<IError> errors, int code)
+    {
+        return errors.Any(e =>
+        {
+            e.Metadata.TryGetValue("code", out var errorCode);
+            if (errorCode == null) return false;
+            return (int)errorCode == code;
+        });
+    }
+
+    private ObjectResult CreateErrorObject(List<IError> errors, int code)
+    {
+        var sb = new StringBuilder();
+        foreach (var error in errors)
+        {
+            sb.Append(error);
+            error.Metadata.TryGetValue("subCode", out var subCode);
+            if(subCode != null)
+            {
+                sb.Append(';');
+                sb.Append(subCode);
+            }
+
+            sb.AppendLine();
+        }
+        return Problem(statusCode: code, detail: sb.ToString());
     }
 
     protected ActionResult CreateResponse(Result result)

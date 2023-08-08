@@ -24,4 +24,17 @@ public class Mcq : AssessmentItem
         var correctness = saqSubmission.Answer.Equals(CorrectAnswer) ? 1 : 0;
         return new McqEvaluation(correctness, CorrectAnswer, Feedback);
     }
+
+    public override AssessmentItem Clone()
+    {
+        return new Mcq
+        {
+            Text = Text,
+            PossibleAnswers = PossibleAnswers,
+            CorrectAnswer = CorrectAnswer,
+            Feedback = Feedback,
+            Order = Order,
+            Hints = Hints
+        };
+    }
 }

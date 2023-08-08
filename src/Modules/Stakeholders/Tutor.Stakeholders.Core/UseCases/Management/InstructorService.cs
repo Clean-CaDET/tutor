@@ -2,13 +2,14 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Stakeholders.API.Dtos;
-using Tutor.Stakeholders.API.Interfaces.Management;
+using Tutor.Stakeholders.API.Internal;
+using Tutor.Stakeholders.API.Public.Management;
 using Tutor.Stakeholders.Core.Domain;
 using Tutor.Stakeholders.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.Stakeholders.Core.UseCases.Management;
 
-public class InstructorService : StakeholderService<Instructor>, IInstructorService
+public class InstructorService : StakeholderService<Instructor>, IInstructorService, IInternalInstructorService
 {
     public InstructorService(IMapper mapper,
         ICrudRepository<Instructor> crudRepository, IStakeholdersUnitOfWork unitOfWork, IUserRepository userRepository)

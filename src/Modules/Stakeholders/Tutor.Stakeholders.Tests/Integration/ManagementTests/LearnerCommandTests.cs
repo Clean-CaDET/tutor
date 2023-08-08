@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Administrator.Stakeholders;
 using Tutor.Stakeholders.API.Dtos;
-using Tutor.Stakeholders.API.Interfaces.Management;
+using Tutor.Stakeholders.API.Public.Management;
 using Tutor.Stakeholders.Core.Domain;
 using Tutor.Stakeholders.Infrastructure.Database;
 
@@ -431,11 +431,6 @@ public class LearnerCommandTests : BaseStakeholdersIntegrationTest
         storedLearner.ShouldBeNull();
         var storedAccount = dbContext.Users.FirstOrDefault(i => i.Id == learnerId);
         storedAccount.ShouldBeNull();
-        // TODO
-        // var unitEnrollment = dbContext.UnitEnrollments.FirstOrDefault(i => i.LearnerId == learnerId);
-        // unitEnrollment.ShouldBeNull();
-        // var groupMembership = dbContext.GroupMemberships.Include(i => i.Member).FirstOrDefault(i => i.Member.Id == learnerId);
-        // groupMembership.ShouldBeNull();
     }
 
     private static LearnerController CreateController(IServiceScope scope)

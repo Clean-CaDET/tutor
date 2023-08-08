@@ -5,7 +5,7 @@ namespace Tutor.Courses.Core.Domain;
 public class UnitEnrollment : Entity
 {
     public int LearnerId { get; private set; }
-    public KnowledgeUnit KnowledgeUnit { get; private set; } //TODO: Analyze if this can be turned into ID without losing too much in repos
+    public KnowledgeUnit KnowledgeUnit { get; private set; }
     public DateTime Start { get; internal set; }
     public EnrollmentStatus Status { get; internal set; }
 
@@ -22,6 +22,14 @@ public class UnitEnrollment : Entity
     public bool IsActive()
     {
         return Status == EnrollmentStatus.Active && Start < DateTime.Now;
+    }
+
+    public void Activate(DateTime start)
+    {
+        if (Status == EnrollmentStatus.Active) return;
+
+        Status = EnrollmentStatus.Active;
+        Start = start;
     }
 }
 

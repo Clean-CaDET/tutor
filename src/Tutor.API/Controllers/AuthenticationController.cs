@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Tutor.Stakeholders.API.Dtos;
-using Tutor.Stakeholders.API.Interfaces;
+using Tutor.Stakeholders.API.Public;
 
 namespace Tutor.API.Controllers;
 

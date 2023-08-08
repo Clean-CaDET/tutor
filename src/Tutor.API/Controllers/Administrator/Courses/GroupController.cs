@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
-using Tutor.Courses.API.Interfaces.Management;
+using Tutor.Courses.API.Public.Management;
 
 namespace Tutor.API.Controllers.Administrator.Courses;
 
@@ -20,7 +22,8 @@ public class GroupController : BaseApiController
     public ActionResult<List<GroupDto>> GetAll(int courseId)
     {
         var result = _groupService.GetByCourse(courseId);
-        return CreateResponse(result);
+        var pagedResult = new PagedResult<GroupDto>(result.Value, result.Value.Count).ToResult();
+        return CreateResponse(pagedResult);
     }
 
     [HttpPost]
@@ -32,9 +35,9 @@ public class GroupController : BaseApiController
     }
 
     [HttpPut("{groupId:int}")]
-    public ActionResult<GroupDto> Update(int groupId, [FromBody] string name)
+    public ActionResult<GroupDto> Update(int groupId, [FromBody] GroupDto group)
     {
-        var result = _groupService.UpdateName(groupId, name);
+        var result = _groupService.UpdateName(groupId, group.Name);
         return CreateResponse(result);
     }
 

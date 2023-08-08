@@ -2,8 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Instructor.Monitoring;
+using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
-using Tutor.Courses.API.Interfaces.Monitoring;
+using Tutor.Courses.API.Public.Monitoring;
 
 namespace Tutor.Courses.Tests.Integration.Monitoring;
 
@@ -19,13 +20,23 @@ public class GroupMonitoringTests : BaseCoursesIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, instructorId);
-        var result = ((OkObjectResult)controller.GetCourseGroups(courseId).Result)?.Value as List<GroupDto>;
+        var result = ((OkObjectResult)controller.GetCourseGroups(courseId).Result)?.Value as PagedResult<GroupDto>;
 
         result.ShouldNotBeNull();
-        result.Count.ShouldBe(expectedResult);
+        result.Results.Count.ShouldBe(expectedResult);
     }
 
-    //TODO: Test for get learners endpoint
+    [Theory]
+    [InlineData("-51", -1, -1, 4)]
+    public void Retrieves_learners(string instructorId, int courseId, int groupId, int expectedCount)
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, instructorId);
+        var result = ((OkObjectResult)controller.GetLearners(courseId, groupId, 0, 0).Result)?.Value as PagedResult<LearnerDto>;
+
+        result.ShouldNotBeNull();
+        result.TotalCount.ShouldBe(expectedCount);
+    }
 
     private static GroupMonitoringController CreateController(IServiceScope scope, string id)
     {

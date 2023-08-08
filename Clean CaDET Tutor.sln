@@ -1,23 +1,9 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9F4AF7B2-748D-4257-9AD5-6FCFA418DAB0}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{DEABD4F3-02CA-48F5-AC4D-EAD7D288487C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.Core", "src\Tutor.Core\Tutor.Core.csproj", "{2280775A-7DE7-48B8-AEE9-1BAD0324072D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.Infrastructure", "src\Tutor.Infrastructure\Tutor.Infrastructure.csproj", "{0143170D-A6C5-4720-BACF-1FA6C8AEC7CB}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.Web", "src\Tutor.Web\Tutor.Web.csproj", "{2BBD321D-0F57-467A-9D1F-B983BB0A1C48}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.Web.Tests", "tests\Tutor.Web.Tests\Tutor.Web.Tests.csproj", "{C0B1180C-0C40-42E3-89BF-8ACAB6129BE8}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.Core.Tests", "tests\Tutor.Core.Tests\Tutor.Core.Tests.csproj", "{1FA5E855-7A5F-4AEF-A67F-FBF0E43C842A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.Infrastructure.Tests", "tests\Tutor.Infrastructure.Tests\Tutor.Infrastructure.Tests.csproj", "{696253CE-B3E3-4F67-8D41-ADD9C7760E71}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{DF5AF956-C799-4542-9BFD-69F1705CE5F0}"
 EndProject
@@ -33,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.BuildingBlocks.Core",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.BuildingBlocks.Infrastructure", "src\BuildingBlocks\Tutor.BuildingBlocks.Infrastructure\Tutor.BuildingBlocks.Infrastructure.csproj", "{E56D608D-14E3-407B-ABF6-26A491D96102}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LearningUtilities", "LearningUtilities", "{C7F26AD8-3168-480A-B888-9BE7077CD9F4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LearningUtils", "LearningUtils", "{C7F26AD8-3168-480A-B888-9BE7077CD9F4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.Courses.API", "src\Modules\Courses\Tutor.Courses.API\Tutor.Courses.API.csproj", "{D7D307E6-C1BF-49FE-9EAA-1DC45C7DC56A}"
 EndProject
@@ -51,13 +37,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.Stakeholders.Infrastr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.Stakeholders.Tests", "src\Modules\Stakeholders\Tutor.Stakeholders.Tests\Tutor.Stakeholders.Tests.csproj", "{65928478-B411-4053-8538-45C6C1C228DD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.LearningUtils.API", "src\Modules\LearningUtilities\Tutor.LearningUtils.API\Tutor.LearningUtils.API.csproj", "{BFDF196E-774D-4030-9B62-1E7D3441FB0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.LearningUtils.API", "src\Modules\LearningUtils\Tutor.LearningUtils.API\Tutor.LearningUtils.API.csproj", "{BFDF196E-774D-4030-9B62-1E7D3441FB0C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.LearningUtils.Core", "src\Modules\LearningUtilities\Tutor.LearningUtils.Core\Tutor.LearningUtils.Core.csproj", "{FD820D53-1384-4C1B-9A3F-34647CCB0AE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.LearningUtils.Core", "src\Modules\LearningUtils\Tutor.LearningUtils.Core\Tutor.LearningUtils.Core.csproj", "{FD820D53-1384-4C1B-9A3F-34647CCB0AE2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.LearningUtils.Infrastructure", "src\Modules\LearningUtilities\Tutor.LearningUtils.Infrastructure\Tutor.LearningUtils.Infrastructure.csproj", "{FFA4EE02-890C-4593-8C89-2BCDC6F06998}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.LearningUtils.Infrastructure", "src\Modules\LearningUtils\Tutor.LearningUtils.Infrastructure\Tutor.LearningUtils.Infrastructure.csproj", "{FFA4EE02-890C-4593-8C89-2BCDC6F06998}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.LearningUtils.Tests", "src\Modules\LearningUtilities\Tutor.LearningUtils.Tests\Tutor.LearningUtils.Tests.csproj", "{62747889-6CA6-45D8-8CA5-E16199CDACD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.LearningUtils.Tests", "src\Modules\LearningUtils\Tutor.LearningUtils.Tests\Tutor.LearningUtils.Tests.csproj", "{62747889-6CA6-45D8-8CA5-E16199CDACD4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.KnowledgeComponents.API", "src\Modules\KnowledgeComponents\Tutor.KnowledgeComponents.API\Tutor.KnowledgeComponents.API.csproj", "{B0D62F3B-5507-44B6-8B2F-10D64A91027C}"
 EndProject
@@ -70,6 +56,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.API", "src\Tutor.API\Tutor.API.csproj", "{11DB03BC-E62B-41E2-8472-CF1EF357B78C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.BuildingBlocks.Tests", "src\BuildingBlocks\Tutor.BuildingBlocks.Tests\Tutor.BuildingBlocks.Tests.csproj", "{8AA394AF-EEEC-4D43-BBC3-2076DF8ED89B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.Architecture.Tests", "src\Tutor.Architecture.Tests\Tutor.Architecture.Tests.csproj", "{9B3530C0-F1B0-4A47-B773-224112DCC753}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LanguageModelConversations", "LanguageModelConversations", "{EF4B98C8-9449-4C3E-8705-730F86ABA6FA}"
 EndProject
@@ -87,30 +75,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2280775A-7DE7-48B8-AEE9-1BAD0324072D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2280775A-7DE7-48B8-AEE9-1BAD0324072D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2280775A-7DE7-48B8-AEE9-1BAD0324072D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2280775A-7DE7-48B8-AEE9-1BAD0324072D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0143170D-A6C5-4720-BACF-1FA6C8AEC7CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0143170D-A6C5-4720-BACF-1FA6C8AEC7CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0143170D-A6C5-4720-BACF-1FA6C8AEC7CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0143170D-A6C5-4720-BACF-1FA6C8AEC7CB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2BBD321D-0F57-467A-9D1F-B983BB0A1C48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2BBD321D-0F57-467A-9D1F-B983BB0A1C48}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2BBD321D-0F57-467A-9D1F-B983BB0A1C48}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2BBD321D-0F57-467A-9D1F-B983BB0A1C48}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C0B1180C-0C40-42E3-89BF-8ACAB6129BE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C0B1180C-0C40-42E3-89BF-8ACAB6129BE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C0B1180C-0C40-42E3-89BF-8ACAB6129BE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C0B1180C-0C40-42E3-89BF-8ACAB6129BE8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1FA5E855-7A5F-4AEF-A67F-FBF0E43C842A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1FA5E855-7A5F-4AEF-A67F-FBF0E43C842A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1FA5E855-7A5F-4AEF-A67F-FBF0E43C842A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1FA5E855-7A5F-4AEF-A67F-FBF0E43C842A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{696253CE-B3E3-4F67-8D41-ADD9C7760E71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{696253CE-B3E3-4F67-8D41-ADD9C7760E71}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{696253CE-B3E3-4F67-8D41-ADD9C7760E71}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{696253CE-B3E3-4F67-8D41-ADD9C7760E71}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1BFB0F31-3C13-47F2-BF73-4EAD3EC90752}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1BFB0F31-3C13-47F2-BF73-4EAD3EC90752}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BFB0F31-3C13-47F2-BF73-4EAD3EC90752}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -191,6 +155,10 @@ Global
 		{8AA394AF-EEEC-4D43-BBC3-2076DF8ED89B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AA394AF-EEEC-4D43-BBC3-2076DF8ED89B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AA394AF-EEEC-4D43-BBC3-2076DF8ED89B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B3530C0-F1B0-4A47-B773-224112DCC753}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B3530C0-F1B0-4A47-B773-224112DCC753}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B3530C0-F1B0-4A47-B773-224112DCC753}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B3530C0-F1B0-4A47-B773-224112DCC753}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AACC3954-0A2A-4975-B547-E6FA20D88474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AACC3954-0A2A-4975-B547-E6FA20D88474}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AACC3954-0A2A-4975-B547-E6FA20D88474}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -212,12 +180,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{2280775A-7DE7-48B8-AEE9-1BAD0324072D} = {9F4AF7B2-748D-4257-9AD5-6FCFA418DAB0}
-		{0143170D-A6C5-4720-BACF-1FA6C8AEC7CB} = {9F4AF7B2-748D-4257-9AD5-6FCFA418DAB0}
-		{2BBD321D-0F57-467A-9D1F-B983BB0A1C48} = {9F4AF7B2-748D-4257-9AD5-6FCFA418DAB0}
-		{C0B1180C-0C40-42E3-89BF-8ACAB6129BE8} = {DEABD4F3-02CA-48F5-AC4D-EAD7D288487C}
-		{1FA5E855-7A5F-4AEF-A67F-FBF0E43C842A} = {DEABD4F3-02CA-48F5-AC4D-EAD7D288487C}
-		{696253CE-B3E3-4F67-8D41-ADD9C7760E71} = {DEABD4F3-02CA-48F5-AC4D-EAD7D288487C}
 		{DF5AF956-C799-4542-9BFD-69F1705CE5F0} = {9F4AF7B2-748D-4257-9AD5-6FCFA418DAB0}
 		{527F2EB3-AAC5-4D52-B127-DCDDFD775F09} = {9F4AF7B2-748D-4257-9AD5-6FCFA418DAB0}
 		{D92BAEF5-5593-4C7F-8408-263B169994F9} = {527F2EB3-AAC5-4D52-B127-DCDDFD775F09}
@@ -244,6 +206,7 @@ Global
 		{1DF4DF9C-D14B-4C9A-81B7-06E61C537C87} = {CA1AA663-E420-4A18-9594-DF99B5FA4547}
 		{11DB03BC-E62B-41E2-8472-CF1EF357B78C} = {9F4AF7B2-748D-4257-9AD5-6FCFA418DAB0}
 		{8AA394AF-EEEC-4D43-BBC3-2076DF8ED89B} = {DF5AF956-C799-4542-9BFD-69F1705CE5F0}
+		{9B3530C0-F1B0-4A47-B773-224112DCC753} = {9F4AF7B2-748D-4257-9AD5-6FCFA418DAB0}
 		{EF4B98C8-9449-4C3E-8705-730F86ABA6FA} = {527F2EB3-AAC5-4D52-B127-DCDDFD775F09}
 		{AACC3954-0A2A-4975-B547-E6FA20D88474} = {EF4B98C8-9449-4C3E-8705-730F86ABA6FA}
 		{5C09C0C4-7496-4411-8133-90C012EB77F8} = {EF4B98C8-9449-4C3E-8705-730F86ABA6FA}

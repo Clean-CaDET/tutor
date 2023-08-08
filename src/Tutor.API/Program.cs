@@ -10,6 +10,7 @@ builder.Services.ConfigureSwagger(builder.Configuration);
 const string corsPolicy = "_corsPolicy";
 builder.Services.ConfigureCors(corsPolicy);
 builder.Services.ConfigureAuth();
+builder.Services.ConfigureInterceptors();
 
 builder.Services.RegisterModules();
 
@@ -42,15 +43,3 @@ namespace Tutor.API
 {
     public partial class Program { }
 }
-
-// TODO: CourseOwnership service was split into CourseOwnership and OwnedCourses. Check if everything is ok
-// TODO: LearnerGroupService was split into two.
-// TODO: EnrollmentService was split into Enrollment and EnrolledCourse service
-// TODO: Associations with some stakeholder classes were severed (e.g., course ownership)
-// TODO: Enrollment should generate mastery
-// TODO: Enrollment status je deactivated
-// TODO: DELETE operations need to be revisited because of modules.
-
-// TODO: KcRating should be moved from utilities to learning
-
-// TODO: Check if dahomey is used in Event Infrastructure // https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/polymorphism?pivots=dotnet-7-0

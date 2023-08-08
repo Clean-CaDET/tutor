@@ -4,9 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Administrator.Courses;
 using Tutor.Courses.API.Dtos;
-using Tutor.Courses.API.Interfaces.Management;
+using Tutor.Courses.API.Public.Management;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Infrastructure.Database;
+using Tutor.KnowledgeComponents.Infrastructure.Database;
 
 namespace Tutor.Courses.Tests.Integration.Management;
 
@@ -38,6 +39,42 @@ public class CourseCommandTests : BaseCoursesIntegrationTest
         var storedEntity = dbContext.Courses.FirstOrDefault(i => i.Code == newEntity.Code);
         storedEntity.ShouldNotBeNull();
         storedEntity.Id.ShouldBe(result.Id);
+    }
+
+    [Fact]
+    public void Clones()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<CoursesContext>();
+        var secondaryDbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
+        var startingKcCount = secondaryDbContext.KnowledgeComponents.Count();
+
+        var newCourse = new CourseDto
+        {
+            Code = "TTT-2",
+            Name = "TestCourseClone2",
+            StartDate = DateTime.UnixEpoch
+        };
+
+        var result = ((OkObjectResult)controller.Clone(-2, newCourse).Result)?.Value as CourseDto;
+
+        dbContext.ChangeTracker.Clear();
+        secondaryDbContext.ChangeTracker.Clear();
+
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe("TestCourseClone2");
+        result.Code.ShouldBe("TTT-2");
+        result.StartDate.ShouldBe(DateTime.UnixEpoch);
+        result.KnowledgeUnits.Count.ShouldBe(1);
+        var clonedCourse = dbContext.Courses.FirstOrDefault(c => c.Id == result.Id);
+        clonedCourse.ShouldNotBeNull();
+        var units = dbContext.KnowledgeUnits.Where(u => u.CourseId == result.Id).ToList();
+        units.Count.ShouldBe(1);
+        var ownerships = dbContext.CourseOwnerships.Where(o => o.Course.Id == result.Id).ToList();
+        ownerships.Count.ShouldBe(1);
+        var endingKcCount = secondaryDbContext.KnowledgeComponents.Count();
+        endingKcCount.ShouldBe(startingKcCount + 2);
     }
 
     [Fact]

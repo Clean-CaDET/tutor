@@ -7,8 +7,8 @@ public class StakeholderAccountDto
     public string Email { get; set; }
     public string Name { get; set; }
     public string Surname { get; set; }
-    public string Index { get; set; }
+    public string? Index { get; set; }
     public bool IsArchived { get; set; }
     public string Password { get; set; }
-    public string LearnerType { get; set; }
+    public string? LearnerType { get; set; }
 }

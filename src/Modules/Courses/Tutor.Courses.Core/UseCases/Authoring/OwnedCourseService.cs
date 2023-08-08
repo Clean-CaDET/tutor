@@ -2,13 +2,14 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
-using Tutor.Courses.API.Interfaces.Authoring;
+using Tutor.Courses.API.Internal;
+using Tutor.Courses.API.Public.Authoring;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.Courses.Core.UseCases.Authoring;
 
-public class OwnedCourseService : BaseService<CourseDto, Course>, IOwnedCourseService
+public class OwnedCourseService : BaseService<CourseDto, Course>, IOwnedCourseService, IOwnershipValidator
 {
     private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly ICourseRepository _courseRepository;
@@ -46,11 +47,6 @@ public class OwnedCourseService : BaseService<CourseDto, Course>, IOwnedCourseSe
         if (result.IsFailed) return result;
 
         return MapToDto(updatedCourse);
-    }
-
-    public bool IsCourseOwner(int courseId, int instructorId)
-    {
-        return _ownedCourseRepository.IsCourseOwner(courseId, instructorId);
     }
 
     public bool IsUnitOwner(int unitId, int instructorId)

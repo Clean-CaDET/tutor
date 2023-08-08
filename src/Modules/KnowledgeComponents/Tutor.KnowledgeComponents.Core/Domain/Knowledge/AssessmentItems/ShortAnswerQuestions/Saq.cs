@@ -11,7 +11,7 @@ public class Saq : AssessmentItem
 
     protected override void ClearSolution()
     {
-        AcceptableAnswers = null;
+        AcceptableAnswers.Clear();
         Feedback = string.Empty;
     }
 
@@ -55,5 +55,18 @@ public class Saq : AssessmentItem
             }
         }
         return (double)matching / largerArray.Length;
+    }
+
+    public override AssessmentItem Clone()
+    {
+        return new Saq
+        {
+            Text = Text,
+            AcceptableAnswers = AcceptableAnswers,
+            Feedback = Feedback,
+            Tolerance = Tolerance,
+            Order = Order,
+            Hints = Hints
+        };
     }
 }

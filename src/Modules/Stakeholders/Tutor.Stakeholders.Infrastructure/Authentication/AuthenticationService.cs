@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Stakeholders.API.Dtos;
-using Tutor.Stakeholders.API.Interfaces;
+using Tutor.Stakeholders.API.Public;
 using Tutor.Stakeholders.Core.Domain;
 using Tutor.Stakeholders.Core.Domain.RepositoryInterfaces;
 

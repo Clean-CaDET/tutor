@@ -15,10 +15,10 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '7.0.x'
-      - name: Set up JDK 11
+      - name: Set up JDK 17
         uses: actions/setup-java@v1
         with:
-          java-version: 1.11
+          java-version: 1.17
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
@@ -47,6 +47,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Clean-CaDET_tutor" /o:"clean-cadet" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.exclusions="**/Migrations/**, **/*.sql"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"Clean-CaDET_tutor" /o:"clean-cadet" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.exclusions="**/Migrations/**, **/*.sql"
           dotnet build --no-incremental
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

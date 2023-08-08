@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge;
-using Tutor.KnowledgeComponents.API.Interfaces.Authoring;
+using Tutor.KnowledgeComponents.API.Public.Authoring;
 using Tutor.Stakeholders.Infrastructure.Authentication;
 
 namespace Tutor.API.Controllers.Instructor.Authoring;
@@ -15,6 +15,13 @@ public class KnowledgeComponentController : BaseApiController
     public KnowledgeComponentController(IKnowledgeComponentService kcService)
     {
         _kcService = kcService;
+    }
+    
+    [HttpGet]
+    public ActionResult<List<KnowledgeComponentDto>> GetByUnit([FromQuery] int unitId)
+    {
+        var result = _kcService.GetByUnit(unitId, User.InstructorId());
+        return CreateResponse(result);
     }
 
     [HttpGet("{id:int}")]

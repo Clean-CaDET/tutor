@@ -2,9 +2,9 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
-using Tutor.Courses.API.Interfaces.Monitoring;
+using Tutor.Courses.API.Public.Monitoring;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
-using Tutor.Stakeholders.API.Interfaces.Management;
+using Tutor.Stakeholders.API.Internal;
 
 namespace Tutor.Courses.Core.UseCases.Monitoring;
 
@@ -13,10 +13,10 @@ public class GroupMonitoringService : IGroupMonitoringService
     private readonly IMapper _mapper;
     private readonly IGroupRepository _groupRepository;
     private readonly IOwnedCourseRepository _ownedCourseRepository;
-    private readonly ILearnerService _learnerService;
+    private readonly IInternalLearnerService _learnerService;
 
     public GroupMonitoringService(IMapper mapper, IGroupRepository groupRepository, 
-        IOwnedCourseRepository ownedCourseRepository, ILearnerService learnerService)
+        IOwnedCourseRepository ownedCourseRepository, IInternalLearnerService learnerService)
     {
         _mapper = mapper;
         _groupRepository = groupRepository;

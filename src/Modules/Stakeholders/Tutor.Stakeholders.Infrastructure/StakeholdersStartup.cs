@@ -2,9 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
-using Tutor.BuildingBlocks.Infrastructure.Security;
-using Tutor.Stakeholders.API.Interfaces;
-using Tutor.Stakeholders.API.Interfaces.Management;
+using Tutor.BuildingBlocks.Infrastructure.Interceptors;
+using Tutor.Stakeholders.API.Internal;
+using Tutor.Stakeholders.API.Public;
+using Tutor.Stakeholders.API.Public.Management;
 using Tutor.Stakeholders.Core.Domain;
 using Tutor.Stakeholders.Core.Domain.RepositoryInterfaces;
 using Tutor.Stakeholders.Core.Mappers;
@@ -28,9 +29,11 @@ public static class StakeholdersStartup
     
     private static void SetupCore(IServiceCollection services)
     {
-        services.AddScoped<IInstructorService, InstructorService>();
-        services.AddScoped<ILearnerService, LearnerService>();
-        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddProxiedScoped<IInstructorService, InstructorService>();
+        services.AddProxiedScoped<IInternalInstructorService, InstructorService>();
+        services.AddProxiedScoped<ILearnerService, LearnerService>();
+        services.AddProxiedScoped<IInternalLearnerService, LearnerService>();
+        services.AddProxiedScoped<IAuthenticationService, AuthenticationService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -41,20 +44,7 @@ public static class StakeholdersStartup
 
         services.AddScoped<IStakeholdersUnitOfWork, StakeholdersUnitOfWork>();
         services.AddDbContext<StakeholdersContext>(opt =>
-            opt.UseNpgsql(CreateConnectionStringFromEnvironment()));
-    }
-
-    private static string CreateConnectionStringFromEnvironment()
-    {
-        var server = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "localhost";
-        var port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "5432";
-        var database = EnvironmentConnection.GetSecret("DATABASE_SCHEMA") ?? "tutor-v4";
-        var user = EnvironmentConnection.GetSecret("DATABASE_USERNAME") ?? "postgres";
-        var password = EnvironmentConnection.GetSecret("DATABASE_PASSWORD") ?? "super";
-        var integratedSecurity = Environment.GetEnvironmentVariable("DATABASE_INTEGRATED_SECURITY") ?? "false";
-        var pooling = Environment.GetEnvironmentVariable("DATABASE_POOLING") ?? "true";
-
-        return
-            $"Server={server};Port={port};Database={database};User ID={user};Password={password};Integrated Security={integratedSecurity};Pooling={pooling};";
+            opt.UseNpgsql(DbConnectionStringBuilder.Build("stakeholders"),
+                x => x.MigrationsHistoryTable("__EFMigrationsHistory", "stakeholders")));
     }
 }

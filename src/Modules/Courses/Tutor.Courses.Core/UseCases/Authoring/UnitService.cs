@@ -2,7 +2,7 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
-using Tutor.Courses.API.Interfaces.Authoring;
+using Tutor.Courses.API.Public.Authoring;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 

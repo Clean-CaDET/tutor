@@ -2,8 +2,8 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems;
-using Tutor.KnowledgeComponents.API.Interfaces;
-using Tutor.KnowledgeComponents.API.Interfaces.Authoring;
+using Tutor.KnowledgeComponents.API.Public;
+using Tutor.KnowledgeComponents.API.Public.Authoring;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 
@@ -46,12 +46,13 @@ public class AssessmentService : CrudService<AssessmentItemDto, AssessmentItem>,
 
     public Result<List<AssessmentItemDto>> UpdateOrdering(List<AssessmentItemDto> items, int instructorId)
     {
-        var kcId = items.Select(i => i.KnowledgeComponentId).ToList();
+        var kcId = items.Select(i => i.KnowledgeComponentId).Distinct().ToList();
         if (kcId.Count > 1 || !_accessService.IsKcOwner(kcId.First(), instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
         var updatedItems = items
             .Select(i => _assessmentItemRepository.Update(MapToDomain(i)))
+            .OrderBy(a => a.Order)
             .ToList();
 
         var result = UnitOfWork.Save();

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
-using Tutor.Courses.API.Interfaces.Learning;
+using Tutor.Courses.API.Public.Learning;
 using Tutor.Stakeholders.Infrastructure.Authentication;
 
 namespace Tutor.API.Controllers.Learner;
@@ -11,7 +11,6 @@ namespace Tutor.API.Controllers.Learner;
 [Route("api/enrolled-courses")]
 public class EnrolledCourseController : BaseApiController
 {
-    //TODO: Update routes when redesign is near finished
     private readonly IEnrolledCourseService _enrolledCourseService;
 
     public EnrolledCourseController(IEnrolledCourseService enrolledCourseService)
@@ -36,7 +35,7 @@ public class EnrolledCourseController : BaseApiController
     [HttpGet("{courseId:int}/units/{unitId:int}")]
     public ActionResult<KnowledgeUnitDto> GetEnrolledAndActiveUnit(int unitId)
     {
-        //var result = _enrollmentService.GetUnit(unitId, User.LearnerId());
-        return CreateResponse(null);
+        var result = _enrolledCourseService.GetUnit(unitId, User.LearnerId());
+        return CreateResponse(result);
     }
 }

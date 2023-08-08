@@ -2,8 +2,8 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.InstructionalItems;
-using Tutor.KnowledgeComponents.API.Interfaces;
-using Tutor.KnowledgeComponents.API.Interfaces.Learning;
+using Tutor.KnowledgeComponents.API.Public;
+using Tutor.KnowledgeComponents.API.Public.Learning;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 
@@ -26,7 +26,7 @@ public class InstructionService : IInstructionService
         _unitOfWork = unitOfWork;
     }
 
-    public Result<List<InstructionalItemDto>> GetInstructionalItems(int kcId, int learnerId)
+    public Result<List<InstructionalItemDto>> GetByKc(int kcId, int learnerId)
     {
         if (!_accessService.IsEnrolledInKc(kcId, learnerId))
             return Result.Fail(FailureCode.NotEnrolledInUnit);

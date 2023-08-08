@@ -4,7 +4,7 @@ using Shouldly;
 using Tutor.API.Controllers.Administrator.Stakeholders;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Stakeholders.API.Dtos;
-using Tutor.Stakeholders.API.Interfaces.Management;
+using Tutor.Stakeholders.API.Public.Management;
 
 namespace Tutor.Stakeholders.Tests.Integration.ManagementTests;
 
@@ -60,25 +60,11 @@ public class LearnerQueryTests : BaseStakeholdersIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
 
-        var result = (ObjectResult)controller.GetByIndexes(null).Result;
+        var result = (ObjectResult)controller.GetByIndexes(new string[]{}).Result;
 
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(400);
     }
-
-    /* TODO
-    [Fact]
-    public void Retrieves_learner_courses()
-    {
-        using var scope = Factory.Services.CreateScope();
-        var controller = SetupLearnerController(scope);
-
-        var result = ((OkObjectResult)controller.GetEnrolledCourses(-1, 0, 0).Result)?.Value as PagedResult<CourseDto>;
-
-        result.ShouldNotBeNull();
-        result.Results.Count.ShouldBe(2);
-        result.TotalCount.ShouldBe(2);
-    }*/
 
     [Fact]
     public void Retrieves_paged_learners()

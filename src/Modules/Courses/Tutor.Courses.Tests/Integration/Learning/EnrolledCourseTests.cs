@@ -4,7 +4,7 @@ using Shouldly;
 using Tutor.API.Controllers.Learner;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
-using Tutor.Courses.API.Interfaces.Learning;
+using Tutor.Courses.API.Public.Learning;
 
 namespace Tutor.Courses.Tests.Integration.Learning;
 
@@ -49,6 +49,18 @@ public class EnrolledCourseTests : BaseCoursesIntegrationTest
         var response = (ObjectResult)controller.GetCourseWithEnrolledAndActiveUnits(-5).Result;
 
         response.StatusCode.ShouldBe(403);
+    }
+
+    [Fact]
+    public void Retrieves_unit()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-2");
+
+        var unit = ((OkObjectResult)controller.GetEnrolledAndActiveUnit(-1).Result)?.Value as KnowledgeUnitDto;
+
+        unit.ShouldNotBeNull();
+        unit.Id.ShouldBe(-1);
     }
 
     private static EnrolledCourseController CreateController(IServiceScope scope, string id)

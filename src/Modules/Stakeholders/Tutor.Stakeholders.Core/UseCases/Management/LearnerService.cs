@@ -2,13 +2,14 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Stakeholders.API.Dtos;
-using Tutor.Stakeholders.API.Interfaces.Management;
+using Tutor.Stakeholders.API.Internal;
+using Tutor.Stakeholders.API.Public.Management;
 using Tutor.Stakeholders.Core.Domain;
 using Tutor.Stakeholders.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.Stakeholders.Core.UseCases.Management;
 
-public class LearnerService : StakeholderService<Learner>, ILearnerService
+public class LearnerService : StakeholderService<Learner>, ILearnerService, IInternalLearnerService
 {
     private readonly ILearnerRepository _learnerRepository;
     public LearnerService(IMapper mapper, ILearnerRepository learnerRepository, IStakeholdersUnitOfWork unitOfWork, IUserRepository userRepository)
@@ -74,7 +75,7 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
     private List<User> CreateUserAccounts(List<StakeholderAccountDto> accounts, List<Learner> learners)
     {
         return UserRepository.BulkRegister(
-            accounts.Select(a => a.Index).ToList(),
+            accounts.Select(a => a.Index).ToList()!,
             accounts.Select(a => a.Password).ToList(),
             learners.First().LearnerType == LearnerType.Regular ? UserRole.Learner : UserRole.LearnerCommercial);
     }
@@ -93,7 +94,7 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
 
     public Result<PagedResult<StakeholderAccountDto>> GetByIndexes(string[] indexes)
     {
-        if (indexes == null) return Result.Fail(FailureCode.InvalidArgument);
+        if (indexes == null || indexes.Length == 0) return Result.Fail(FailureCode.InvalidArgument);
         var result = _learnerRepository.GetByIndexes(indexes);
         return MapToDto(result);
     }
@@ -106,7 +107,7 @@ public class LearnerService : StakeholderService<Learner>, ILearnerService
         learner.UserId = user.Id;
 
         var updatedLearner = CrudRepository.Update(dbStakeholder, MapToDomain(learner));
-        user.Username = learner.Index;
+        user.Username = learner.Index!;
 
         var result = UnitOfWork.Save();
         if (result.IsFailed) return result;

@@ -39,4 +39,15 @@ public class Mrq : AssessmentItem
 
         return answerEvaluations;
     }
+
+    public override AssessmentItem Clone()
+    {
+        return new Mrq
+        {
+            Text = Text,
+            Items = Items.Select(i => new MrqItem(i.Text, i.IsCorrect, i.Feedback)).ToList(),
+            Order = Order,
+            Hints = Hints
+        };
+    }
 }

@@ -15,7 +15,7 @@ public class KcStatisticsDto
         return KcId.GetHashCode();
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj is not KcStatisticsDto other) return false;
         return KcId == other.KcId

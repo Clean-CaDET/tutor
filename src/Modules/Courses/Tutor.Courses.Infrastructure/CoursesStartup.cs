@@ -2,11 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
-using Tutor.BuildingBlocks.Infrastructure.Security;
-using Tutor.Courses.API.Interfaces.Authoring;
-using Tutor.Courses.API.Interfaces.Learning;
-using Tutor.Courses.API.Interfaces.Management;
-using Tutor.Courses.API.Interfaces.Monitoring;
+using Tutor.BuildingBlocks.Infrastructure.Interceptors;
+using Tutor.Courses.API.Internal;
+using Tutor.Courses.API.Public.Authoring;
+using Tutor.Courses.API.Public.Learning;
+using Tutor.Courses.API.Public.Management;
+using Tutor.Courses.API.Public.Monitoring;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 using Tutor.Courses.Core.Mappers;
@@ -24,9 +25,8 @@ public static class CoursesStartup
 {
     public static IServiceCollection ConfigureCoursesModule(this IServiceCollection services)
     {
+        // Registers all profiles since it works on the assembly
         services.AddAutoMapper(typeof(CourseProfile).Assembly);
-        services.AddAutoMapper(typeof(GroupEnrollmentProfile).Assembly);
-        services.AddAutoMapper(typeof(StakeholdersProfile).Assembly);
         SetupCore(services);
         SetupInfrastructure(services);
         return services;
@@ -34,45 +34,34 @@ public static class CoursesStartup
     
     private static void SetupCore(IServiceCollection services)
     {
-        services.AddScoped<IOwnedCourseService, OwnedCourseService>();
-        services.AddScoped<IUnitService, UnitService>();
+        services.AddProxiedScoped<IOwnedCourseService, OwnedCourseService>();
+        services.AddProxiedScoped<IOwnershipValidator, OwnedCourseService>();
+        services.AddProxiedScoped<IUnitService, UnitService>();
 
-        services.AddScoped<IEnrolledCourseService, EnrolledCourseService>();
+        services.AddProxiedScoped<IEnrolledCourseService, EnrolledCourseService>();
+        services.AddProxiedScoped<IEnrollmentValidator, EnrolledCourseService>();
 
-        services.AddScoped<ICourseOwnershipService, CourseOwnershipService>();
-        services.AddScoped<ICourseService, CourseService>();
-        services.AddScoped<IGroupMembershipService, GroupMembershipService>();
-        services.AddScoped<IGroupService, GroupService>();
+        services.AddProxiedScoped<ICourseOwnershipService, CourseOwnershipService>();
+        services.AddProxiedScoped<ICourseService, CourseService>();
+        services.AddProxiedScoped<IGroupMembershipService, GroupMembershipService>();
+        services.AddProxiedScoped<IGroupService, GroupService>();
 
-        services.AddScoped<IEnrollmentService, EnrollmentService>();
-        services.AddScoped<IGroupMonitoringService, GroupMonitoringService>();
+        services.AddProxiedScoped<IEnrollmentService, EnrollmentService>();
+        services.AddProxiedScoped<IGroupMonitoringService, GroupMonitoringService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
         services.AddScoped<IOwnedCourseRepository, OwnedCourseDatabaseRepository>();
         services.AddScoped(typeof(ICrudRepository<KnowledgeUnit>), typeof(CrudDatabaseRepository<KnowledgeUnit, CoursesContext>));
-        services.AddScoped<IEnrollmentRepository, EnrollmentDatabaseRepository>();
+        services.AddScoped<IUnitEnrollmentRepository, UnitEnrollmentDatabaseRepository>();
         services.AddScoped<ICourseOwnershipRepository, CourseOwnershipDatabaseRepository>();
         services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
         services.AddScoped<IGroupRepository, GroupDatabaseRepository>();
 
         services.AddScoped<ICoursesUnitOfWork, CoursesUnitOfWork>();
         services.AddDbContext<CoursesContext>(opt =>
-            opt.UseNpgsql(CreateConnectionStringFromEnvironment()));
-    }
-
-    private static string CreateConnectionStringFromEnvironment()
-    {
-        var server = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "localhost";
-        var port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "5432";
-        var database = EnvironmentConnection.GetSecret("DATABASE_SCHEMA") ?? "tutor-v4";
-        var user = EnvironmentConnection.GetSecret("DATABASE_USERNAME") ?? "postgres";
-        var password = EnvironmentConnection.GetSecret("DATABASE_PASSWORD") ?? "super";
-        var integratedSecurity = Environment.GetEnvironmentVariable("DATABASE_INTEGRATED_SECURITY") ?? "false";
-        var pooling = Environment.GetEnvironmentVariable("DATABASE_POOLING") ?? "true";
-
-        return
-            $"Server={server};Port={port};Database={database};User ID={user};Password={password};Integrated Security={integratedSecurity};Pooling={pooling};";
+            opt.UseNpgsql(DbConnectionStringBuilder.Build("courses"),
+                x => x.MigrationsHistoryTable("__EFMigrationsHistory", "courses")));
     }
 }
