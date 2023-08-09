@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
+using Tutor.KnowledgeComponents.API.Public.Learning;
+using Tutor.KnowledgeComponents.API.Public.Learning.Assessment;
 using Tutor.LanguageModelConversations.API.Dtos;
 using Tutor.LanguageModelConversations.API.Interfaces;
 using Tutor.LanguageModelConversations.Core.Domain;
@@ -14,14 +16,21 @@ public class ConversationService : IConversationService
     private readonly IConversationRepository _conversationRepository;
     private readonly ITokenWalletRepository _tokenWalletRepository;
     private readonly ILanguageModelConnector _languageModelConnector;
+    private readonly ILanguageModelConverter _languageModelConverter;
+    private readonly IInstructionService _instructionSelector;
+    private readonly ISelectionService _taskSelector;
     private readonly ILanguageModelConversationsUnitOfWork _unitOfWork;
 
-    public ConversationService(IMapper mapper, IConversationRepository conversationRepository, ITokenWalletRepository tokenWalletRepository, ILanguageModelConnector languageModelConnector, ILanguageModelConversationsUnitOfWork unitOfWork)
+    public ConversationService(IMapper mapper, IConversationRepository conversationRepository, ITokenWalletRepository tokenWalletRepository, 
+        ILanguageModelConnector languageModelConnector, ILanguageModelConverter languageModelConverter, IInstructionService instructionSelector, ISelectionService taskSelector, ILanguageModelConversationsUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _conversationRepository = conversationRepository;
         _tokenWalletRepository = tokenWalletRepository;
         _languageModelConnector = languageModelConnector;
+        _languageModelConverter = languageModelConverter;
+        _instructionSelector = instructionSelector;
+        _taskSelector = taskSelector;
         _unitOfWork = unitOfWork;
     }
 
@@ -31,26 +40,25 @@ public class ConversationService : IConversationService
         return result == null ? Result.Fail(FailureCode.NotFound) : _mapper.Map<ConversationDto>(result);
     }
 
-    // TODO: neophodno dodati endpoint u KC modulu koji ce dobavljati listu AI ili AI po id-u
-
     public async Task<Result<MessageResponse>> SendMessageAsync(MessageRequest message, int learnerId)
     {
-        var conversationResult = GetOrCreateConversation(message, learnerId);
-        if (conversationResult.IsFailed) return Result.Fail(conversationResult.Errors);
-        var conversation = conversationResult.Value;
-
         var tokenResult = GetOrCreateTokenWallet(message.CourseId, learnerId);
         if (tokenResult.IsFailed) return Result.Fail(tokenResult.Errors);
         var tokenWallet = tokenResult.Value;
 
         if (!tokenWallet.CheckAmount()) return Result.Fail(FailureCode.InsufficientResources);
 
-        // TODO: dobavi tekst konteksta kontaktiranjem kc modula (ako je taskId, onda AI, ako nije, onda List<II>)
-        string contextText;
-        if (message.TaskId == null) contextText = "ovo je lekcija, pera je zec";
-        else contextText = "ovo je zadatak, sta je zec";
+        var contextTextResult = GetContextText(message.ContextGroup, message.ContextId, message.TaskId, learnerId);
+        if (contextTextResult.IsFailed) return Result.Fail(contextTextResult.Errors);
 
-        var response = await ProcessMessageAsync(message, conversation, contextText);
+        var conversationResult = GetOrCreateConversation(message.ConversationId, message.ContextGroup, message.ContextId, learnerId);
+        if (conversationResult.IsFailed) return Result.Fail(conversationResult.Errors);
+        var conversation = conversationResult.Value;
+
+        // gore dobavljanje svega
+        // dole zapravo obrada
+
+        var response = await ProcessMessageAsync(message, conversation, contextTextResult.Value);
         if (response.IsFailed) return Result.Fail(response.Errors);
 
         conversation.AddMessages(response.Value.Messages);
@@ -64,9 +72,9 @@ public class ConversationService : IConversationService
         return _mapper.Map<MessageResponse>(conversation.Messages.Last());
     }
 
-    private Result<Conversation> GetOrCreateConversation(MessageRequest message, int learnerId)
+    private Result<Conversation> GetOrCreateConversation(int conversationId, int contextGroup, int contextId, int learnerId)
     {
-        var conversation = _conversationRepository.Get(message.ConversationId);
+        var conversation = _conversationRepository.Get(conversationId);
         if (conversation != null)
         {
             if (conversation.LearnerId != learnerId)
@@ -74,8 +82,7 @@ public class ConversationService : IConversationService
         }
         else
         {
-            // TODO: proveri da li learner sme da pristupi tom contextId (tom KC-u) -> kontaktiraj drugi modul
-            conversation = new Conversation(message.ConversationId, learnerId, message.ContextId);
+            conversation = new Conversation(conversationId, learnerId, (ContextGroup)contextGroup, contextId);
             _conversationRepository.Create(conversation);
         }
         return conversation;
@@ -83,14 +90,40 @@ public class ConversationService : IConversationService
 
     private Result<TokenWallet> GetOrCreateTokenWallet(int courseId, int learnerId)
     {
-        var tokenWallet = _tokenWalletRepository.GetByLearner(learnerId);
+        var tokenWallet = _tokenWalletRepository.GetByLearnerAndCourse(learnerId, courseId);
         if (tokenWallet == null)
         {
             // TODO: proveriti da li learner sme da pristupi course
+            // nema potrebe na ovom nivou jer nece moci da trosi te novce svakako
+            // a i bice migrirano kreiranje u drugi deo
             tokenWallet = new TokenWallet(learnerId, courseId);
             _tokenWalletRepository.Create(tokenWallet);
         }
         return tokenWallet;
+    }
+
+    private Result<string> GetContextText(int contextGroup, int contextId, int? taskId, int learnerId)
+    {
+        if ((ContextGroup)contextGroup != ContextGroup.KnowledgeComponent)
+            // Expand when LearningTasks are added
+            return Result.Fail(FailureCode.InvalidArgument);
+
+        string contextText;
+        if (taskId == null)
+        {
+            var instructionResult = _instructionSelector.GetByKc(contextId, learnerId);
+            if (instructionResult.IsFailed) return Result.Fail(instructionResult.Errors);
+            
+            contextText = _languageModelConverter.ConvertInstructionalItems(instructionResult.Value);
+        }
+        else
+        {
+            var assessmentResult = _taskSelector.SelectAssessmentItemById(contextId, (int)taskId, learnerId);
+            if (assessmentResult.IsFailed) return Result.Fail(assessmentResult.Errors);
+
+            contextText = _languageModelConverter.ConvertAssessmentItem(assessmentResult.Value);
+        }
+        return contextText;
     }
 
     private async Task<Result<ConversationSegment>> ProcessMessageAsync(MessageRequest messageRequest, Conversation conversaiton, string contextText)
@@ -103,8 +136,6 @@ public class ConversationService : IConversationService
         switch (messageType)
         {
             case MessageType.TopicConversation:
-                // TODO: uprostiti ako je moguce
-                // samo njemu treba ucitana konverzacija u tom momentu, ostalima ne treba
                 response = await _languageModelConnector.TopicConversationAsync(messageRequest.Message, contextText, context, conversaiton.Messages);
                 break;
             case MessageType.GenerateSimilar:

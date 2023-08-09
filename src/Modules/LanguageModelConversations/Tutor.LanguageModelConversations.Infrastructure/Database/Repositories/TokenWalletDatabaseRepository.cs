@@ -13,10 +13,10 @@ public class TokenWalletDatabaseRepository : ITokenWalletRepository
         _dbContext = dbContext;
     }
 
-    public TokenWallet? GetByLearner(int learnerId)
+    public TokenWallet? GetByLearnerAndCourse(int learnerId, int courseId)
     {
         return _dbContext.TokenWallets
-            .Where(t => t.LearnerId == learnerId)
+            .Where(t => t.LearnerId == learnerId && t.CourseId == courseId)
             .FirstOrDefault();
     }
 

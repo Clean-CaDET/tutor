@@ -6,4 +6,5 @@ namespace Tutor.KnowledgeComponents.API.Public.Learning.Assessment;
 public interface ISelectionService
 {
     Result<AssessmentItemDto> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId);
+    Result<AssessmentItemDto> SelectAssessmentItemById(int knowledgeComponentId, int assessmentItemId, int learnerId);
 }

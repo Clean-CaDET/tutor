@@ -52,4 +52,13 @@ public class SelectionService : ISelectionService
 
         return _mapper.Map<AssessmentItemDto>(item);
     }
+    public Result<AssessmentItemDto> SelectAssessmentItemById(int knowledgeComponentId, int assessmentItemId, int learnerId)
+    {
+        if (!_accessService.IsEnrolledInKc(knowledgeComponentId, learnerId))
+            return Result.Fail(FailureCode.NotEnrolledInUnit);
+
+        var item = _assessmentItemRepository.GetDerivedAssessmentItem(assessmentItemId);
+
+        return _mapper.Map<AssessmentItemDto>(item);
+    }
 }
