@@ -3,6 +3,7 @@ using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.LanguageModelConversations.API.Dtos;
 using Tutor.LanguageModelConversations.API.Interfaces;
+using Tutor.LanguageModelConversations.Core.Domain;
 using Tutor.LanguageModelConversations.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.LanguageModelConversations.Core.UseCases;
@@ -11,15 +12,15 @@ public class ConversationService : IConversationService
 {
     private readonly IMapper _mapper;
     private readonly IConversationRepository _conversationRepository;
-    private readonly ITokenRepository _tokenRepository;
+    private readonly ITokenWalletRepository _tokenWalletRepository;
     private readonly ILanguageModelConnector _languageModelConnector;
     private readonly ILanguageModelConversationsUnitOfWork _unitOfWork;
 
-    public ConversationService(IMapper mapper, IConversationRepository conversationRepository, ITokenRepository tokenRepository, ILanguageModelConnector languageModelConnector, ILanguageModelConversationsUnitOfWork unitOfWork)
+    public ConversationService(IMapper mapper, IConversationRepository conversationRepository, ITokenWalletRepository tokenWalletRepository, ILanguageModelConnector languageModelConnector, ILanguageModelConversationsUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _conversationRepository = conversationRepository;
-        _tokenRepository = tokenRepository;
+        _tokenWalletRepository = tokenWalletRepository;
         _languageModelConnector = languageModelConnector;
         _unitOfWork = unitOfWork;
     }
@@ -30,95 +31,98 @@ public class ConversationService : IConversationService
         return result == null ? Result.Fail(FailureCode.NotFound) : _mapper.Map<ConversationDto>(result);
     }
 
-    public async Task<int> Proba()
-    {
-        var nesto = await _languageModelConnector.ExtractKeywordsAsync("ovo je lekcija, pera je zec, mika je mis, lena je dinosaurus");
-        return 1;
-    }
-
     // TODO: neophodno dodati endpoint u KC modulu koji ce dobavljati listu AI ili AI po id-u
 
     public async Task<Result<MessageResponse>> SendMessageAsync(MessageRequest message, int learnerId)
     {
-        throw new NotImplementedException();
-        //var conversation = _conversationRepository.Get(message.ConversationId);
-        //if (conversation != null)
-        //{
-        //    if (conversation.LearnerId != learnerId) return Result.Fail(FailureCode.Forbidden);
-        //}
-        //else
-        //{
-        //    // TODO: proveri da li learner sme da pristupi tom contextId (tom KC-u) -> kontaktiraj drugi modul
-        //    conversation = new Conversation(message.ConversationId, learnerId, message.ContextId);
-        //    _conversationRepository.Create(conversation);
-        //}
+        var conversationResult = GetOrCreateConversation(message, learnerId);
+        if (conversationResult.IsFailed) return Result.Fail(conversationResult.Errors);
+        var conversation = conversationResult.Value;
 
-        //var learnerToken = _tokenRepository.GetByLearner(learnerId);
-        //if (learnerToken == null)
-        //{
-        //    learnerToken = new TokenWallet(learnerId);
-        //    _tokenRepository.Create(learnerToken);
-        //}
-        //if (!learnerToken.ChechCount()) return Result.Fail(FailureCode.InsufficientResources);
+        var tokenResult = GetOrCreateTokenWallet(message.CourseId, learnerId);
+        if (tokenResult.IsFailed) return Result.Fail(tokenResult.Errors);
+        var tokenWallet = tokenResult.Value;
 
-        //// TODO: dobavi tekst konteksta kontaktiranjem kc modula (ako je taskId, onda AI, ako nije, onda List<II>)
-        //string contextText;
-        //if (message.TaskId == null) contextText = "ovo je lekcija, pera je zec";
-        //else contextText = "ovo je zadatak, sta je zec";
+        if (!tokenWallet.CheckAmount()) return Result.Fail(FailureCode.InsufficientResources);
 
-        //// TODO: sredjivanje koda
-        //Result<LmResponse> result;
-        //LmResponse lmResponse;
-        //switch (message.Type)
-        //{
-        //    case MessageType.OpenEnded:
-        //        if (message.Message == null) return Result.Fail(FailureCode.InvalidArgument);
-        //        result = message.TaskId is null ?
-        //            await _lmHttpSender.AskAiAboutLectureAsync(contextText, message.Message, conversation.LmMessages)
-        //            : await _lmHttpSender.AskAiAboutTaskAsync(contextText, message.Message, conversation.LmMessages);
-        //        break;
-        //    case MessageType.SimilarTask:
-        //        var contextType = message.TaskId is null ? ContextType.Lecture : ContextType.Task;
-        //        result = await _lmHttpSender.GenerateSimilarTaskAsync(contextText, contextType);
-        //        break;
-        //    // TODO: poseban summarization repozitorijum
-        //    case MessageType.Summarize:
-        //        result = await _lmHttpSender.SummarizeAsync(contextText);
-        //        break;
-        //    case MessageType.LectureQuestions:
-        //        Result<LmQaResponse> qaResult = await _lmHttpSender.GenerateLectureQuestionsAsync(contextText);
-        //        result = qaResult.Map(v => v as LmResponse);
-        //        break;
-        //    case MessageType.Keywords:
-        //        Result<LmKeywordResponse> keywordResult = await _lmHttpSender.ExtractKeywordsAsync(contextText);
-        //        result = keywordResult.Map(v => v as LmResponse);
-        //        break;
-        //    default:
-        //        return Result.Fail(FailureCode.InvalidArgument);
-        //}
+        // TODO: dobavi tekst konteksta kontaktiranjem kc modula (ako je taskId, onda AI, ako nije, onda List<II>)
+        string contextText;
+        if (message.TaskId == null) contextText = "ovo je lekcija, pera je zec";
+        else contextText = "ovo je zadatak, sta je zec";
 
-        //if (result.IsFailed) return Result.Fail(result.Errors);
-        //lmResponse = result.Value;
-        //// TODO: previse komplikovana logika za samo preuzimanje broja koji unapred znamo da je 3 uvek (ako se ne menja tutor-ai koji mi kontrolisemo)
-        //// proveriti da li je neophodno
-        //conversation.AddLmMessages(lmResponse.Messages.TakeLast(3).ToList());
-        //learnerToken.ReduceCount(lmResponse.TokenNumber);
+        var response = await ProcessMessageAsync(message, conversation, contextText);
+        if (response.IsFailed) return Result.Fail(response.Errors);
 
-        //// TODO: proveriti
-        //// Da li je okej da saljemo json serijalizovan objekat na frontend stranu koji on deserijalizuje da bi prikazao poruku
-        //// (odgovor moze biti samo string ili lista objekata)
-        //// tako se salje kada se salju sve poruke
-        //// mozemo tako slati i ovde kada je nova poruka
-        //MessageResponse response = _mapper.Map<MessageResponse>(lmResponse);
-        //ConversationMessageDto responseMessage = _mapper.Map<ConversationMessageDto>(response);
-        //ConversationMessageDto requestMessage = _mapper.Map<ConversationMessageDto>(message);
-        //conversation.AddMessages(requestMessage, responseMessage);
+        conversation.AddMessages(response.Value.Messages);
+        tokenWallet.ReduceAmount(response.Value.TokensUsed);
 
-        //_conversationRepository.UpdateIfExisting(conversation);
-        //_tokenRepository.UpdateIfExisting(learnerToken);
-        //var dbResult = _unitOfWork.Save();
-        //if (dbResult.IsFailed) return dbResult;
+        _conversationRepository.UpdateIfExisting(conversation);
+        _tokenWalletRepository.UpdateIfExisting(tokenWallet);
+        var dbResult = _unitOfWork.Save();
+        if (dbResult.IsFailed) return dbResult;
 
-        //return response;
+        return _mapper.Map<MessageResponse>(conversation.Messages.Last());
+    }
+
+    private Result<Conversation> GetOrCreateConversation(MessageRequest message, int learnerId)
+    {
+        var conversation = _conversationRepository.Get(message.ConversationId);
+        if (conversation != null)
+        {
+            if (conversation.LearnerId != learnerId)
+                return Result.Fail(FailureCode.Forbidden);
+        }
+        else
+        {
+            // TODO: proveri da li learner sme da pristupi tom contextId (tom KC-u) -> kontaktiraj drugi modul
+            conversation = new Conversation(message.ConversationId, learnerId, message.ContextId);
+            _conversationRepository.Create(conversation);
+        }
+        return conversation;
+    }
+
+    private Result<TokenWallet> GetOrCreateTokenWallet(int courseId, int learnerId)
+    {
+        var tokenWallet = _tokenWalletRepository.GetByLearner(learnerId);
+        if (tokenWallet == null)
+        {
+            // TODO: proveriti da li learner sme da pristupi course
+            tokenWallet = new TokenWallet(learnerId, courseId);
+            _tokenWalletRepository.Create(tokenWallet);
+        }
+        return tokenWallet;
+    }
+
+    private async Task<Result<ConversationSegment>> ProcessMessageAsync(MessageRequest messageRequest, Conversation conversaiton, string contextText)
+    {
+        if (!Enum.TryParse(messageRequest.MessageType, out MessageType messageType))
+            return Result.Fail(FailureCode.InvalidArgument);
+        var context = messageRequest.TaskId == null ? ContextType.Lecture : ContextType.Task;
+
+        Result<ConversationSegment> response;
+        switch (messageType)
+        {
+            case MessageType.TopicConversation:
+                // TODO: uprostiti ako je moguce
+                // samo njemu treba ucitana konverzacija u tom momentu, ostalima ne treba
+                response = await _languageModelConnector.TopicConversationAsync(messageRequest.Message, contextText, context, conversaiton.Messages);
+                break;
+            case MessageType.GenerateSimilar:
+                response = await _languageModelConnector.GenerateSimilarAsync(contextText, context);
+                break;
+            case MessageType.Summarize:
+                // TODO: poseban repo za sumarizaciju
+                response = await _languageModelConnector.SummarizeAsync(contextText);
+                break;
+            case MessageType.ExtractKeywords:
+                response = await _languageModelConnector.ExtractKeywordsAsync(contextText);
+                break;
+            case MessageType.GenerateQuestions:
+                response = await _languageModelConnector.GenerateQuestionsAsync(contextText);
+                break;
+            default:
+                return Result.Fail(FailureCode.InvalidArgument);
+        }
+        return response;
     }
 }

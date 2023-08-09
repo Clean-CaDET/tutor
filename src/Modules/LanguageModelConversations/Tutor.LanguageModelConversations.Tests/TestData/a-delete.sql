@@ -1,2 +1,2 @@
 ﻿DELETE FROM "languageModelConversations"."Conversations";
-DELETE FROM "languageModelConversations"."Tokens";
+DELETE FROM "languageModelConversations"."TokenWallets";

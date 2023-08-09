@@ -5,15 +5,12 @@ namespace Tutor.LanguageModelConversations.Core.Domain;
 public class TokenWallet : Entity
 {
     // number of tokens allowed to go over
-    private static readonly decimal _threshold = 1000m;
+    private static readonly int _threshold = 1000;
     public int LearnerId { get; private set; }
-    // TODO: Da li odmah vezujemo za Learner i Course? -> nije problem rekla bih
-    // Sa fronta prosledjujemo i taj parametar
     public int CourseId { get; private set; }
     public int Amount { get; private set; }
 
     private TokenWallet() {}
-
     // kolicina tokena fiksna trenutno, admin moze da definise sa fronta
     // TODO: na kraju, odmah dodati polja za koja se prosledjuju odneklud kao konfiguracija
     // ili ne
@@ -26,7 +23,7 @@ public class TokenWallet : Entity
         Amount = 20000 * 10;
     }
 
-    public bool ChechAmount()
+    public bool CheckAmount()
     {
         return Amount >= _threshold;
     }

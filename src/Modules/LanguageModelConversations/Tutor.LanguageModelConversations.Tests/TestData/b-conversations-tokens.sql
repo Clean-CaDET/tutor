@@ -1,26 +1,11 @@
 ﻿INSERT INTO "languageModelConversations"."Conversations"(
-    "Id", "LearnerId", "ContextId", "LmMessages", "Messages")
-VALUES (-1, -1, -1, '[
-  {{
-    "Data": {{
-      "Content": "Sistemka poruka"
-    }},
-    "Type": "system"
-  }},
-  {{
-    "Data": {{
-      "Content": "Korisnicka poruka"
-    }},
-    "Type": "human"
-  }},
-  {{
-    "Data": {{
-      "Content": "Odgovor"
-    }},
-    "Type": "ai"
-  }}
-]', '[ {{ "Sender": 0, "Message": "Korisnicka poruka" }}, {{ "Sender": 1, "Message": "Odgovor" }} ]');
+    "Id", "LearnerId", "ContextId", "Messages")
+VALUES (-1, -1, -1, 
+'[ {{ "SenderType": 0, "MessageType": 0, "Content": "Sistemska poruka" }}, 
+{{ "SenderType": 1, "MessageType": 0, "Content": "Korisnicka poruka" }}, 
+{{ "SenderType": 2, "MessageType": 0, "Content": "Odgovor" }} ]'
+);
 
-INSERT INTO "languageModelConversations"."Tokens"(
-    "Id", "LearnerId", "Count")
-VALUES (-1, -1, 199300);
+INSERT INTO "languageModelConversations"."TokenWallets"(
+    "Id", "LearnerId", "CourseId", "Amount")
+VALUES (-1, -1, -1, 199300);

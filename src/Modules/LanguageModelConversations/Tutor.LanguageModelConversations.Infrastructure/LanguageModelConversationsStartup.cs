@@ -35,7 +35,7 @@ public static class LanguageModelConversationsStartup
     private static void SetupInfrastructure(IServiceCollection services)
     {
         services.AddScoped<IConversationRepository, ConversationDatabaseRepository>();
-        services.AddScoped<ITokenRepository, TokenDatabaseRepository>();
+        services.AddScoped<ITokenRepository, TokenWalletDatabaseRepository>();
 
         services.AddScoped<ILanguageModelConnector, LanguageModelConnector.LanguageModelConnector>();
 

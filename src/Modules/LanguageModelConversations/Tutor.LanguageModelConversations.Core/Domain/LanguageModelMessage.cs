@@ -2,22 +2,31 @@
 
 public class LanguageModelMessage
 {
-    // DONE: json serijalizovan u string ili string
-    public string Content { get; set; }
-    public SenderType SenderType { get; set; }
+    public string Content { get; private set; }
+    public SenderType SenderType { get; private set; }
     public MessageType MessageType { get; set; }
+
+    private LanguageModelMessage() {}
+    public LanguageModelMessage(string content, SenderType senderType)
+    {
+        Content = content;
+        SenderType = senderType;
+        MessageType = MessageType.TopicConversation;
+    }
 }
-// na dva mesta ista enumeracija -> u api projektu i ovde, da li je bitno itno itno??? ???
+
 public enum SenderType
 {
+    System,
     Learner,
     LanguageModel
 }
 
 public enum MessageType
 {
-    OpenEnded,
-    // prosirivo
-    // TODO: da li cemo prikazati na frontu sta je zatrazio korisnik?
-    Predefined
+    TopicConversation,
+    GenerateSimilar,
+    Summarize,
+    ExtractKeywords,
+    GenerateQuestions
 }

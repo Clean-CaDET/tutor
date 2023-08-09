@@ -5,11 +5,11 @@ namespace Tutor.LanguageModelConversations.Infrastructure.LanguageModelConnector
 public class LanguageModelMessageDto
 {
     public LanguageModelMessageDataDto Data { get; set; }
-    public SenderType Type { get; set; }
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public LanguageModelSenderType Type { get; set; }
 }
 
-[JsonConverter(typeof(JsonStringEnumConverter))]
-public enum SenderType
+public enum LanguageModelSenderType
 {
     System,
     Human,

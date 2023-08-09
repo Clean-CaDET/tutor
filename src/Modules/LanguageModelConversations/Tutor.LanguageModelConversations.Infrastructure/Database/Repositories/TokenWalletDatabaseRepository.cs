@@ -4,11 +4,11 @@ using Tutor.LanguageModelConversations.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.LanguageModelConversations.Infrastructure.Database.Repositories;
 
-public class TokenDatabaseRepository : ITokenRepository
+public class TokenWalletDatabaseRepository : ITokenWalletRepository
 {
     private readonly LanguageModelConversationsContext _dbContext;
 
-    public TokenDatabaseRepository(LanguageModelConversationsContext dbContext)
+    public TokenWalletDatabaseRepository(LanguageModelConversationsContext dbContext)
     {
         _dbContext = dbContext;
     }

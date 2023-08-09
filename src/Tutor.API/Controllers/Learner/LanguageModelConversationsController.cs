@@ -25,12 +25,12 @@ public class LanguageModelConversationsController : BaseApiController
         return CreateResponse(result);
     }
 
-    [HttpPost("test")]
-    public async void Proba()
-    {
-        await _conversationService.Proba();
-        return;
-    }
+    //[HttpPost("test")]
+    //public async void Proba()
+    //{
+    //    await _conversationService.Proba();
+    //    return;
+    //}
 
     [HttpPost]
     public async Task<ActionResult<MessageResponse>> SendMessage([FromBody] MessageRequest messageRequest)

@@ -9,6 +9,7 @@ public class Conversation : Entity
     public int ContextId { get; private set; }
     public List<LanguageModelMessage> Messages { get; private set; }
 
+    private Conversation() {}
     public Conversation(int id, int learnerId, int contextId)
     {
         Id = id;

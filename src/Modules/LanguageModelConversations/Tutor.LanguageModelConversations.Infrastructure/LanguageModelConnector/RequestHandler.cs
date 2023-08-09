@@ -7,7 +7,7 @@ public static class RequestHandler
 {
     private static readonly HttpClient _client = new()
     {
-        BaseAddress = new Uri(LanguageModelEndpoints.BaseApi)
+        BaseAddress = new Uri(LanguageModelConsts.BaseApi)
     };
 
     private static readonly string _error = "Connection error";

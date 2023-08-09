@@ -15,78 +15,67 @@ public class LanguageModelConnector : ILanguageModelConnector
     {
         _mapper = mapper;
     }
-    // TODO: razmotriti uvodjenje jos jedne metode koja ce raditi odabir dobre metode i mapiranje povratne vrednosti
-    // Pros: manje dupliranja koda, delegacija odabira poziva iz servisa u konektor
-    // Cons: nece biti pobrojane konkretne metode u interfejsu
-    public async Task<Result<LanguageModelMessage>> TopicConversationAsync(string message, string text, ContextType context, List<LanguageModelMessage>? previousMessages)
+
+    public async Task<Result<ConversationSegment>> TopicConversationAsync(string message, string text, ContextType context, List<LanguageModelMessage>? previousMessages)
     {
         var request = new Request.LanguageModelDto()
         {
             Message = message,
             Text = text,
             Context = context,
-            // mora maper ovde da se nekako pozove
-            // kako ja da pristupim maperu koji se injektuje u servis?
-            // ovo nije servis
-            // ali je klasa, tako da moze biti injektovana
-            // TODO: srediti mapiranje i prosledjivati prethodne poruke
-            //PreviousMessages = previousMessages
+            PreviousMessages = _mapper.Map<List<Response.LanguageModelMessageDto>>(previousMessages)
         };
-        var response = await RequestHandler.PostAndReadAsync<Response.LanguageModelDto, Request.LanguageModelDto>(LanguageModelEndpoints.TopicConversation, request);
-        // vratiti premapirano
-        return null;
+        return await ProcessLanguageModelRequestAsync(request, MessageType.TopicConversation);
     }
 
-    public async Task<Result<LanguageModelMessage>> GenerateSimilarAsync(string text, ContextType context)
+    public async Task<Result<ConversationSegment>> GenerateSimilarAsync(string text, ContextType context)
     {
         var request = new Request.LanguageModelDto()
         {
             Text = text,
-            Context = context
+            Context = context,
         };
-        var response = await RequestHandler.PostAndReadAsync<Response.LanguageModelDto, Request.LanguageModelDto>(LanguageModelEndpoints.GenerateSimilar, request);
-        // vratiti premapirano
-        return null;
+        return await ProcessLanguageModelRequestAsync(request, MessageType.GenerateSimilar);
     }
 
-    public async Task<Result<LanguageModelMessage>> SummarizeAsync(string text)
+    public async Task<Result<ConversationSegment>> SummarizeAsync(string text)
     {
         var request = new Request.LanguageModelDto()
         {
-            Text = text
+            Text = text,
         };
-        var response = await RequestHandler.PostAndReadAsync<Response.LanguageModelDto, Request.LanguageModelDto>(LanguageModelEndpoints.Summarize, request);
-        // vratiti premapirano
-        return null;
+        return await ProcessLanguageModelRequestAsync(request, MessageType.Summarize);
     }
 
-    public async Task<Result<List<LanguageModelMessage>>> ExtractKeywordsAsync(string text)
+    public async Task<Result<ConversationSegment>> ExtractKeywordsAsync(string text)
     {
         var request = new Request.LanguageModelDto()
         {
-            Text = text
+            Text = text,
         };
-        var response = await RequestHandler.PostAndReadAsync<Response.LanguageModelDto, Request.LanguageModelDto>(LanguageModelEndpoints.ExtractKeywords, request);
+        return await ProcessLanguageModelRequestAsync(request, MessageType.ExtractKeywords);
+    }
+
+    public async Task<Result<ConversationSegment>> GenerateQuestionsAsync(string text)
+    {
+        var request = new Request.LanguageModelDto()
+        {
+            Text = text,
+        };
+        return await ProcessLanguageModelRequestAsync(request, MessageType.GenerateQuestions);
+    }
+
+    private async Task<Result<ConversationSegment>> ProcessLanguageModelRequestAsync(Request.LanguageModelDto request, MessageType type)
+    {
+        var response = await RequestHandler.PostAndReadAsync<Response.LanguageModelDto, Request.LanguageModelDto>(LanguageModelConsts.Endpoints[type], request);
         if (response.IsFailed)
             return Result.Fail(response.Errors);
 
-        var messages = _mapper.Map<List<LanguageModelMessage>>(response.Value);
-        messages.ForEach(message => message.MessageType = Core.Domain.MessageType.Predefined);
-        // totalno nepovezana vrednost sa domenskim modelom jedne poruke, vezana za ceo deo konverzacije
-        // ja bih vracala tuple ponovo ovde
-        // ili bih isla na out parametar za broj tokena, mozda je cistije
-        var tokensUsed = response.Value.TokensUsed;
-        return messages;
-    }
+        var newMessages = response.Value.Messages.TakeLast(3);
+        var messages = _mapper.Map<List<LanguageModelMessage>>(newMessages);
+        messages.ForEach(message => message.MessageType = type);
 
-    public async Task<Result<LanguageModelMessage>> GenerateQuestionsAsync(string text)
-    {
-        var request = new Request.LanguageModelDto()
-        {
-            Text = text
-        };
-        var response = await RequestHandler.PostAndReadAsync<Response.LanguageModelDto, Request.LanguageModelDto>(LanguageModelEndpoints.GenerateQuestions, request);
-        // vratiti premapirano
-        return null;
+        var tokensUsed = response.Value.TokensUsed;
+        return new ConversationSegment(messages, tokensUsed);
     }
 }

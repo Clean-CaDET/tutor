@@ -8,25 +8,12 @@ public class ConversationProfile : Profile
 {
     public ConversationProfile() 
     {
-        CreateMap<ConversationDto, Conversation>();
-        CreateMap<Conversation, ConversationDto>();
+        CreateMap<LanguageModelMessage, MessageResponse>()
+            .ForMember(dest => dest.NewMessage, opt => opt.MapFrom(src => src.Content));
 
-        CreateMap<MessageRequest, ConversationMessageDto>()
-            .ForMember(dest => dest.Message, opt => opt.MapFrom(src => src.Message));
-        //CreateMap<MessageResponse, ConversationMessageDto>()
-        //    .ForMember(dest => dest.Message, opt => opt.MapFrom(src => ConversationMapping(src)));
+        CreateMap<LanguageModelMessage, ConversationMessageDto>()
+            .ForMember(dest => dest.Sender, opt => opt.MapFrom(src => src.SenderType));
+        CreateMap<Conversation, ConversationDto>()
+            .ForMember(dest => dest.Messages, opt => opt.MapFrom(src => src.Messages.Where(m => m.SenderType != SenderType.System)));
     }
-
-    //private static string ConversationMapping(MessageResponse source)
-    //{
-    //    if (source.QuestionAnswers != null)
-    //    {
-    //        return JsonSerializer.Serialize(source.QuestionAnswers);
-    //    }
-    //    if (source.Keywords != null)
-    //    {
-    //        return JsonSerializer.Serialize(source.Keywords);
-    //    }
-    //    return source.NewMessage;
-    //}
 }
