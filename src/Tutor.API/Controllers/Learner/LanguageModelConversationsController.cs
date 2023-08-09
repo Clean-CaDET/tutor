@@ -6,7 +6,7 @@ using Tutor.Stakeholders.Infrastructure.Authentication;
 
 namespace Tutor.API.Controllers.Learner;
 
-//[Authorize(Policy = "learnerPolicy")]
+[Authorize(Policy = "learnerPolicy")]
 [Route("api/lm-conversations")]
 [ApiController]
 public class LanguageModelConversationsController : BaseApiController
@@ -24,13 +24,6 @@ public class LanguageModelConversationsController : BaseApiController
         var result = _conversationService.Get(contextId, User.LearnerId());
         return CreateResponse(result);
     }
-
-    //[HttpPost("test")]
-    //public async void Proba()
-    //{
-    //    await _conversationService.Proba();
-    //    return;
-    //}
 
     [HttpPost]
     public async Task<ActionResult<MessageResponse>> SendMessage([FromBody] MessageRequest messageRequest)
