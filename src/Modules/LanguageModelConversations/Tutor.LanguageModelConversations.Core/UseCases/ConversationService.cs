@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Public.Learning;
@@ -15,18 +15,20 @@ public class ConversationService : IConversationService
     private readonly IMapper _mapper;
     private readonly IConversationRepository _conversationRepository;
     private readonly ITokenWalletRepository _tokenWalletRepository;
+    private readonly ISummarizationRepository _summarizationRepository;
     private readonly ILanguageModelConnector _languageModelConnector;
     private readonly ILanguageModelConverter _languageModelConverter;
     private readonly IInstructionService _instructionSelector;
     private readonly ISelectionService _taskSelector;
     private readonly ILanguageModelConversationsUnitOfWork _unitOfWork;
 
-    public ConversationService(IMapper mapper, IConversationRepository conversationRepository, ITokenWalletRepository tokenWalletRepository,
+    public ConversationService(IMapper mapper, IConversationRepository conversationRepository, ITokenWalletRepository tokenWalletRepository, ISummarizationRepository summarizationRepository, 
         ILanguageModelConnector languageModelConnector, ILanguageModelConverter languageModelConverter, IInstructionService instructionSelector, ISelectionService taskSelector, ILanguageModelConversationsUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _conversationRepository = conversationRepository;
         _tokenWalletRepository = tokenWalletRepository;
+        _summarizationRepository = summarizationRepository;
         _languageModelConnector = languageModelConnector;
         _languageModelConverter = languageModelConverter;
         _instructionSelector = instructionSelector;
@@ -54,9 +56,6 @@ public class ConversationService : IConversationService
         var conversationResult = GetOrCreateConversation(message.ConversationId, message.ContextGroup, message.ContextId, learnerId);
         if (conversationResult.IsFailed) return Result.Fail(conversationResult.Errors);
         var conversation = conversationResult.Value;
-
-        // gore dobavljanje svega
-        // dole zapravo obrada
 
         var response = await ProcessMessageAsync(message, conversation, contextTextResult.Value);
         if (response.IsFailed) return Result.Fail(response.Errors);
@@ -139,8 +138,7 @@ public class ConversationService : IConversationService
                 response = await _languageModelConnector.GenerateSimilarAsync(contextText, context);
                 break;
             case MessageType.Summarize:
-                // TODO: poseban repo za sumarizaciju
-                response = await _languageModelConnector.SummarizeAsync(contextText);
+                response = await ProcessSummarizationAsync(messageRequest.ContextId, messageRequest.ContextGroup, contextText);
                 break;
             case MessageType.ExtractKeywords:
                 response = await _languageModelConnector.ExtractKeywordsAsync(contextText);
@@ -151,6 +149,20 @@ public class ConversationService : IConversationService
             default:
                 return Result.Fail(FailureCode.InvalidArgument);
         }
+        return response;
+    }
+
+    private async Task<Result<ConversationSegment>> ProcessSummarizationAsync(int contextId, int contextGroup, string contextText)
+    {
+        var summarization = _summarizationRepository.GetByContextIdAndGroup(contextId, (ContextGroup)contextGroup);
+        if (summarization != null)
+            return new ConversationSegment(summarization.Messages, 0);
+
+        var response = await _languageModelConnector.SummarizeAsync(contextText);
+        if (response.IsFailed) return response;
+
+        summarization = new Summarization(contextId, (ContextGroup)contextGroup, response.Value.Messages);
+        _summarizationRepository.Create(summarization);
         return response;
     }
 }
