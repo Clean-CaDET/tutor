@@ -18,10 +18,10 @@ public class LanguageModelConversationsController : BaseApiController
         _conversationService = conversationService;
     }
 
-    [HttpGet("{contextId:int}")]
-    public ActionResult<ConversationDto> Get(int contextId)
+    [HttpGet("{contextGroup:int}/{contextId:int}")]
+    public ActionResult<ConversationDto> GetByContext(int contextGroup, int contextId)
     {
-        var result = _conversationService.Get(contextId, User.LearnerId());
+        var result = _conversationService.GetByContext(contextGroup, contextId, User.LearnerId());
         return CreateResponse(result);
     }
 

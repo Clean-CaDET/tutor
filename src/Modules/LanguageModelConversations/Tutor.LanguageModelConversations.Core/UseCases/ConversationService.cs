@@ -36,9 +36,9 @@ public class ConversationService : IConversationService
         _unitOfWork = unitOfWork;
     }
 
-    public Result<ConversationDto> Get(int contextId, int learnerId)
+    public Result<ConversationDto> GetByContext(int contextGroup, int contextId, int learnerId)
     {
-        var result = _conversationRepository.GetByLearnerAndContext(learnerId, contextId);
+        var result = _conversationRepository.GetByLearnerContextIdAndGroup(learnerId, contextId, (ContextGroup)contextGroup);
         return result == null ? Result.Fail(FailureCode.NotFound) : _mapper.Map<ConversationDto>(result);
     }
 
@@ -104,22 +104,18 @@ public class ConversationService : IConversationService
             // Expand when LearningTasks are added
             return Result.Fail(FailureCode.InvalidArgument);
 
-        string contextText;
         if (taskId == null)
         {
             var instructionResult = _instructionSelector.GetByKc(contextId, learnerId);
             if (instructionResult.IsFailed) return Result.Fail(instructionResult.Errors);
 
-            contextText = _languageModelConverter.ConvertInstructionalItems(instructionResult.Value);
+            return _languageModelConverter.ConvertInstructionalItems(instructionResult.Value);
         }
-        else
-        {
-            var assessmentResult = _taskSelector.SelectAssessmentItemById(contextId, (int)taskId, learnerId);
-            if (assessmentResult.IsFailed) return Result.Fail(assessmentResult.Errors);
 
-            contextText = _languageModelConverter.ConvertAssessmentItem(assessmentResult.Value);
-        }
-        return contextText;
+        var assessmentResult = _taskSelector.SelectAssessmentItemById(contextId, (int)taskId, learnerId);
+        if (assessmentResult.IsFailed) return Result.Fail(assessmentResult.Errors);
+
+        return _languageModelConverter.ConvertAssessmentItem(assessmentResult.Value);
     }
 
     private async Task<Result<ConversationSegment>> ProcessMessageAsync(MessageRequest messageRequest, Conversation conversaiton, string contextText)

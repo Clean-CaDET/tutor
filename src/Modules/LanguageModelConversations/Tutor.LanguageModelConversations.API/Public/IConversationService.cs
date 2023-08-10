@@ -5,6 +5,6 @@ namespace Tutor.LanguageModelConversations.API.Interfaces;
 
 public interface IConversationService
 {
-    Result<ConversationDto> Get(int contextId, int learnerId);
+    Result<ConversationDto> GetByContext(int contextGroup, int contextId, int learnerId);
     Task<Result<MessageResponse>> SendMessageAsync(MessageRequest message, int learnerId);
 }

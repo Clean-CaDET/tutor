@@ -18,10 +18,10 @@ public class ConversationDatabaseRepository : IConversationRepository
         return _dbContext.Conversations.Find(id);
     }
 
-    public Conversation? GetByLearnerAndContext(int learnerId, int contextId)
+    public Conversation? GetByLearnerContextIdAndGroup(int learnerId, int contextId, ContextGroup group)
     {
         return _dbContext.Conversations
-            .Where(c => c.LearnerId == learnerId && c.ContextId == contextId)
+            .Where(c => c.LearnerId == learnerId && c.ContextId == contextId && c.Group == group)
             .FirstOrDefault();
     }
     public Conversation Create(Conversation conversation)

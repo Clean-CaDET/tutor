@@ -59,6 +59,11 @@ public class SelectionService : ISelectionService
 
         var item = _assessmentItemRepository.GetDerivedAssessmentItem(assessmentItemId);
 
+        if (item == null)
+            return Result.Fail(FailureCode.NotFound);
+        if (item.KnowledgeComponentId != knowledgeComponentId)
+            return Result.Fail(FailureCode.Forbidden);
+
         return _mapper.Map<AssessmentItemDto>(item);
     }
 }

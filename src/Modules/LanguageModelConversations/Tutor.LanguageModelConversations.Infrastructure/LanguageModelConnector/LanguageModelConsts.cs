@@ -15,9 +15,9 @@ public static class LanguageModelConsts
         { MessageType.GenerateQuestions, "generate-questions" },
     };
 
-    public static readonly string TaskTitle = "# TEKST ZADATKA:\n";
-    public static readonly string TaskAnswerTitle = "## PONUĐENI ODGOVORI:\n";
-    public static readonly string TaskAnswer = "Izbor:";
-    public static readonly string TaskCorrectAnswer = "Odgovor: tačno.";
-    public static readonly string TaskIncorrectAnswer = "Odgovor: netačno.";
+    public static readonly string TaskTitle = "\n# TEKST ZADATKA:\n";
+    public static readonly string TaskAnswerTitle = "\n## PONUĐENI ODGOVORI:\n";
+    public static readonly string TaskAnswer = "\nIzbor: ";
+    public static readonly string TaskCorrectAnswer = "\nOdgovor: tačno. ";
+    public static readonly string TaskIncorrectAnswer = "\nOdgovor: netačno. ";
 }
