@@ -18,14 +18,14 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
     public void Retrieves_conversation()
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope, "-1");
+        var controller = CreateController(scope, "-2");
 
-        var result = ((OkObjectResult)controller.Get(-1).Result)?.Value as ConversationDto;
+        var result = ((OkObjectResult)controller.GetByContext(0, -11).Result)?.Value as ConversationDto;
 
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);
-        result.LearnerId.ShouldBe(-1);
-        result.ContextId.ShouldBe(-1);
+        result.LearnerId.ShouldBe(-2);
+        result.ContextId.ShouldBe(-11);
         result.Messages.ShouldNotBeNull();
         result.Messages.Count.ShouldBe(2);
         result.Messages[0].Sender.ShouldBe(SenderType.Learner.ToString());
@@ -38,9 +38,9 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
     public void Does_not_retrieves_conversation_invalid_context_id()
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope, "-1");
+        var controller = CreateController(scope, "-2");
 
-        var result = (ObjectResult)controller.Get(1).Result;
+        var result = (ObjectResult)controller.GetByContext(0, 1).Result;
 
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(404);
@@ -48,10 +48,10 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
 
     [Theory]
     [MemberData(nameof(NewConversationMessages))]
-    public async void Saves_new_conversation(string learnerId, MessageRequest messageRequest)
+    public async void Saves_new_conversation(MessageRequest messageRequest)
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope, learnerId);
+        var controller = CreateController(scope, "-2");
         var dbContext = scope.ServiceProvider.GetRequiredService<LanguageModelConversationsContext>();
         dbContext.Database.BeginTransaction();
 
@@ -64,7 +64,7 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
         result.NewMessage.ShouldNotBeNull();
         var storedConversation = dbContext.Conversations.SingleOrDefault(c => c.Id == messageRequest.ConversationId);
         storedConversation.ShouldNotBeNull();
-        storedConversation.LearnerId.ShouldBe(int.Parse(learnerId));
+        storedConversation.LearnerId.ShouldBe(int.Parse("-2"));
         storedConversation.ContextId.ShouldBe(messageRequest.ContextId);
         storedConversation.Messages.ShouldNotBeNull();
         storedConversation.Messages.Count.ShouldBe(3);
@@ -72,10 +72,10 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
 
     [Theory]
     [MemberData(nameof(UpdateConversationMessages))]
-    public async void Updates_existing_conversation(string learnerId, MessageRequest messageRequest)
+    public async void Updates_existing_conversation(MessageRequest messageRequest)
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope, learnerId);
+        var controller = CreateController(scope, "-2");
         var dbContext = scope.ServiceProvider.GetRequiredService<LanguageModelConversationsContext>();
         var storedConversation = dbContext.Conversations.SingleOrDefault(c => c.Id == messageRequest.ConversationId);
         storedConversation.ShouldNotBeNull();
@@ -91,11 +91,13 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
         result.NewMessage.ShouldNotBeNull();
         var updatedConversation = dbContext.Conversations.SingleOrDefault(c => c.Id == messageRequest.ConversationId);
         updatedConversation.ShouldNotBeNull();
-        updatedConversation.LearnerId.ShouldBe(int.Parse(learnerId));
+        updatedConversation.LearnerId.ShouldBe(int.Parse("-2"));
         updatedConversation.ContextId.ShouldBe(messageRequest.ContextId);
         updatedConversation.Messages.ShouldNotBeNull();
         updatedConversation.Messages.Count.ShouldBe(contentCount + 3);
     }
+
+    // TODO: dodati poseban test za sumarizaciju da je dobavi/ne dobavi iz baze (uz pisanje u bazu ako je ne dobavi
 
     private static LanguageModelConversationsController CreateController(IServiceScope scope, string id)
     {
@@ -109,39 +111,33 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
     {
         new object[]
         {
-            "1",
-            new MessageRequest { ConversationId = 1, CourseId = 1, ContextId = 1, MessageType = "GenerateQuestions" }
+            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "GenerateQuestions" }
         },
         new object[]
         {
-            "1",
-            new MessageRequest { ConversationId = 1, CourseId = 1, ContextId = 1, MessageType = "ExtractKeywords" }
+            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "ExtractKeywords" }
         },
         new object[]
         {
-            "1",
-            new MessageRequest { ConversationId = 1, CourseId = 1, ContextId = 1, MessageType = "Summarize" }
+            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "Summarize" }
         },
         new object[]
         {
-            "1",
-            new MessageRequest { ConversationId = 1, CourseId = 1, ContextId = 1, MessageType = "GenerateSimilar" }
+            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "GenerateSimilar" }
         },
         new object[]
         {
-            "1",
-            new MessageRequest { ConversationId = 1, CourseId = 1, ContextId = 1, MessageType = "GenerateSimilar", TaskId = 1 }
+            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "GenerateSimilar", TaskId = -153 }
         },
         new object[]
         {
-            "1",
-            new MessageRequest { ConversationId = 1, CourseId = 1, ContextId = 1, MessageType = "TopicConversation", Message = "new message" }
+            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "TopicConversation", Message = "new message" }
         },
         new object[]
         {
-            "1",
-            new MessageRequest { ConversationId = 1, CourseId = 1, ContextId = 1, MessageType = "TopicConversation", TaskId = 1, Message = "new message" }
+            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "TopicConversation", TaskId = -153, Message = "new message" }
         }
+        // TODO: dodati po jedan test slucaj za saq i mcq
     };
 
     public static IEnumerable<object[]> UpdateConversationMessages() => new List<object[]>
@@ -149,38 +145,31 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
 
         new object[]
         {
-            "-1",
-            new MessageRequest { ConversationId = -1, CourseId = 1, ContextId = -1, MessageType = "GenerateQuestions" }
+            new MessageRequest { ConversationId = -1, CourseId = -1, ContextId = -11, MessageType = "GenerateQuestions" }
         },
         new object[]
         {
-            "-1",
-            new MessageRequest { ConversationId = -1, CourseId = 1, ContextId = -1, MessageType = "ExtractKeywords" }
+            new MessageRequest { ConversationId = -1, CourseId = -1, ContextId = -11, MessageType = "ExtractKeywords" }
         },
         new object[]
         {
-            "-1",
-            new MessageRequest { ConversationId = -1, CourseId = 1, ContextId = -1, MessageType = "Summarize" }
+            new MessageRequest { ConversationId = -1, CourseId = -1, ContextId = -11, MessageType = "Summarize" }
         },
         new object[]
         {
-            "-1",
-            new MessageRequest { ConversationId = -1, CourseId = 1, ContextId = -1, MessageType = "GenerateSimilar" }
+            new MessageRequest { ConversationId = -1, CourseId = -1, ContextId = -11, MessageType = "GenerateSimilar" }
         },
         new object[]
         {
-            "-1",
-            new MessageRequest { ConversationId = -1, CourseId = 1, ContextId = -1, MessageType = "GenerateSimilar", TaskId = 1 }
+            new MessageRequest { ConversationId = -2, CourseId = -1, ContextId = -14, MessageType = "GenerateSimilar", TaskId = -144 }
         },
         new object[]
         {
-            "-1",
-            new MessageRequest { ConversationId = -1, CourseId = 1, ContextId = -1, MessageType = "TopicConversation", Message = "new message" }
+            new MessageRequest { ConversationId = -1, CourseId = -1, ContextId = -11, MessageType = "TopicConversation", Message = "new message" }
         },
         new object[]
         {
-            "-1",
-            new MessageRequest { ConversationId = -1, CourseId = 1, ContextId = -1, MessageType = "TopicConversation", TaskId = 1, Message = "new message" }
+            new MessageRequest { ConversationId = -2, CourseId = -1, ContextId = -14, MessageType = "TopicConversation", TaskId = -144, Message = "new message" }
         }
     };
 }
