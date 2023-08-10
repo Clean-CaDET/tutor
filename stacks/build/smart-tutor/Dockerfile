@@ -8,7 +8,7 @@ WORKDIR /app
  
 
 FROM mcr.microsoft.com/dotnet/sdk:${SDK_VERSION} as build
-ENV PROJECT=Tutor.Web
+ENV PROJECT=Tutor.API
 ARG SRC_URL=https://github.com/Clean-CaDET/tutor/archive/refs/heads/master.tar.gz
 WORKDIR /src
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -25,7 +25,7 @@ RUN dotnet restore "${PROJECT}/${PROJECT}.csproj" \
 
 
 FROM build AS publish
-ENV PROJECT=Tutor.Web
+ENV PROJECT=Tutor.API
 RUN dotnet publish "${PROJECT}/${PROJECT}.csproj" -c Release -o /app/publish
 
 
@@ -33,7 +33,7 @@ FROM base AS final
 ENV ASPNETCORE_URLS=http://*:$PORT
 COPY --from=publish /app .
 WORKDIR /app/publish
-CMD ["dotnet", "Tutor.Web.dll"]
+CMD ["dotnet", "Tutor.API.dll"]
 
 
 FROM build as migration-base
