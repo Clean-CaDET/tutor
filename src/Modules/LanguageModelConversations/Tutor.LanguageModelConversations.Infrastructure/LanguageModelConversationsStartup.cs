@@ -8,6 +8,8 @@ using Tutor.LanguageModelConversations.Infrastructure.Database;
 using Tutor.LanguageModelConversations.Infrastructure.Database.Repositories;
 using Tutor.LanguageModelConversations.Core.Mappers;
 using Tutor.LanguageModelConversations.Infrastructure.LanguageModelConnector.Mappers;
+using Tutor.LanguageModelConversations.Infrastructure.LanguageModelConnector;
+using Tutor.BuildingBlocks.Infrastructure.Interceptors;
 
 namespace Tutor.LanguageModelConversations.Infrastructure;
 
@@ -29,15 +31,17 @@ public static class LanguageModelConversationsStartup
 
     private static void SetupCore(IServiceCollection services)
     {
-        services.AddScoped<IConversationService, ConversationService>();
+        services.AddProxiedScoped<IConversationService, ConversationService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
         services.AddScoped<IConversationRepository, ConversationDatabaseRepository>();
         services.AddScoped<ITokenWalletRepository, TokenWalletDatabaseRepository>();
+        services.AddScoped<ISummarizationRepository, SummarizationDatabaseRepository>();
 
         services.AddScoped<ILanguageModelConnector, LanguageModelConnector.LanguageModelConnector>();
+        services.AddScoped<ILanguageModelConverter, LanguageModelConverter>();
 
         services.AddScoped<ILanguageModelConversationsUnitOfWork, LanguageModelConversationsUnitOfWork>();
         services.AddDbContext<LanguageModelConversationsContext>(opt =>
