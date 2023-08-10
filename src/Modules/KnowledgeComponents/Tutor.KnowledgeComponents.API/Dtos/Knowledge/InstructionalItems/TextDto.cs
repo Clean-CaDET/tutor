@@ -6,4 +6,9 @@ namespace Tutor.KnowledgeComponents.API.Dtos.Knowledge.InstructionalItems;
 public class TextDto : InstructionalItemDto
 {
     public string Content { get; set; }
+
+    public override string ToString()
+    {
+        return Content;
+    }
 }

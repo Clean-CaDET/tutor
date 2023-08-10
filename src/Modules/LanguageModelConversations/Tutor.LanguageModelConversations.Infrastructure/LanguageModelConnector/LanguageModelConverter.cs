@@ -1,4 +1,7 @@
 ﻿using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems;
+using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.MultiChoiceQuestions;
+using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.MultiResponseQuestions;
+using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.ShortAnswerQuestions;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.InstructionalItems;
 using Tutor.LanguageModelConversations.Core.UseCases;
 
@@ -8,33 +11,44 @@ public class LanguageModelConverter : ILanguageModelConverter
 {
     public string ConvertAssessmentItem(AssessmentItemDto assessmentItem)
     {
-        // AI to formatted string
-
-        // neophodno formatirati u obliku:
-        /*
-         * # TEKST ZADATKA:
-
-           Potrebno je napisati program koji:
-
-           ## PONUĐENI ODGOVORI:
-
-           Izbor: U 6. liniji treba obrnuti promenljive.
-           Odgovor: netačno.
-        */
-        throw new NotImplementedException();
+        // testirati sve sta se dobije
+        if (assessmentItem is SaqDto saq)
+        {
+            return LanguageModelConsts.TaskTitle + saq.Text +
+                LanguageModelConsts.TaskAnswerTitle +
+                LanguageModelConsts.TaskAnswer + string.Join(" ", saq.AcceptableAnswers) + 
+                LanguageModelConsts.TaskCorrectAnswer + saq.Feedback;
+        }
+        else if (assessmentItem is McqDto mcq)
+        {
+            var incorrectAnswers = mcq.PossibleAnswers.Where(a => a != mcq.CorrectAnswer).ToList();
+            return LanguageModelConsts.TaskTitle + mcq.Text +
+                LanguageModelConsts.TaskAnswerTitle +
+                string.Join("\n", incorrectAnswers.Select(a => LanguageModelConsts.TaskAnswer + a + LanguageModelConsts.TaskIncorrectAnswer)) +
+                LanguageModelConsts.TaskAnswer + mcq.CorrectAnswer + LanguageModelConsts.TaskCorrectAnswer +
+                LanguageModelConsts.TaskCorrectAnswer + mcq.Feedback;
+        }
+        else if (assessmentItem is MrqDto mrq)
+        {
+            var mrqItemsMap = mrq.Items.GroupBy(i => i.IsCorrect).ToDictionary(g => g.Key, g => g.ToList());
+            return LanguageModelConsts.TaskTitle + mrq.Text +
+                LanguageModelConsts.TaskAnswerTitle +
+                string.Join("\n", mrqItemsMap[false].Select(item => LanguageModelConsts.TaskAnswer + item.Text + LanguageModelConsts.TaskIncorrectAnswer + item.Feedback)) +
+                string.Join("\n", mrqItemsMap[true].Select(item => LanguageModelConsts.TaskAnswer + item.Text + LanguageModelConsts.TaskCorrectAnswer + item.Feedback));
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public string ConvertInstructionalItems(List<InstructionalItemDto> instructionalItems)
     {
-        // List<II> to formatted string
-
-        //foreach (var n in nesto)
-        //{
-        //    n.
-        //}
-        // prodji kroz sve ii i ucitaj Content (ako je text) ili Caption (ako je bilo sta drugo)
-        // hau d fak...
-        // moram ga pitati kog je tipa i onda na osnovu toga uzimati vrednost
-        throw new NotImplementedException();
+        // Pitanje: da li ovaj toString ne treba koristiti
+        // Ideja iza upotrebe: iskoristiti polimorfizam, svaka klasa naslednica zna na koji nacin da se predstavi
+        // Cons: specifican nacin predstavljanja, nije klasican toString
+        // (mozda prljamo kod klase necim sto nije njeno zaduzenje)
+        // Alternativa: isto kao za AI, proveravati po tipu i za svaki definisati
+        return string.Join("\n", instructionalItems.Select(item => item.ToString()));
     }
 }

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Public.Learning;
@@ -21,7 +21,7 @@ public class ConversationService : IConversationService
     private readonly ISelectionService _taskSelector;
     private readonly ILanguageModelConversationsUnitOfWork _unitOfWork;
 
-    public ConversationService(IMapper mapper, IConversationRepository conversationRepository, ITokenWalletRepository tokenWalletRepository, 
+    public ConversationService(IMapper mapper, IConversationRepository conversationRepository, ITokenWalletRepository tokenWalletRepository,
         ILanguageModelConnector languageModelConnector, ILanguageModelConverter languageModelConverter, IInstructionService instructionSelector, ISelectionService taskSelector, ILanguageModelConversationsUnitOfWork unitOfWork)
     {
         _mapper = mapper;
@@ -42,14 +42,14 @@ public class ConversationService : IConversationService
 
     public async Task<Result<MessageResponse>> SendMessageAsync(MessageRequest message, int learnerId)
     {
+        var contextTextResult = GetContextText(message.ContextGroup, message.ContextId, message.TaskId, learnerId);
+        if (contextTextResult.IsFailed) return Result.Fail(contextTextResult.Errors);
+
         var tokenResult = GetOrCreateTokenWallet(message.CourseId, learnerId);
         if (tokenResult.IsFailed) return Result.Fail(tokenResult.Errors);
         var tokenWallet = tokenResult.Value;
 
         if (!tokenWallet.CheckAmount()) return Result.Fail(FailureCode.InsufficientResources);
-
-        var contextTextResult = GetContextText(message.ContextGroup, message.ContextId, message.TaskId, learnerId);
-        if (contextTextResult.IsFailed) return Result.Fail(contextTextResult.Errors);
 
         var conversationResult = GetOrCreateConversation(message.ConversationId, message.ContextGroup, message.ContextId, learnerId);
         if (conversationResult.IsFailed) return Result.Fail(conversationResult.Errors);
@@ -93,9 +93,6 @@ public class ConversationService : IConversationService
         var tokenWallet = _tokenWalletRepository.GetByLearnerAndCourse(learnerId, courseId);
         if (tokenWallet == null)
         {
-            // TODO: proveriti da li learner sme da pristupi course
-            // nema potrebe na ovom nivou jer nece moci da trosi te novce svakako
-            // a i bice migrirano kreiranje u drugi deo
             tokenWallet = new TokenWallet(learnerId, courseId);
             _tokenWalletRepository.Create(tokenWallet);
         }
@@ -113,7 +110,7 @@ public class ConversationService : IConversationService
         {
             var instructionResult = _instructionSelector.GetByKc(contextId, learnerId);
             if (instructionResult.IsFailed) return Result.Fail(instructionResult.Errors);
-            
+
             contextText = _languageModelConverter.ConvertInstructionalItems(instructionResult.Value);
         }
         else

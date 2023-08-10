@@ -14,4 +14,10 @@ public static class LanguageModelConsts
         { MessageType.ExtractKeywords, "extract-keywords" },
         { MessageType.GenerateQuestions, "generate-questions" },
     };
+
+    public static readonly string TaskTitle = "# TEKST ZADATKA:\n";
+    public static readonly string TaskAnswerTitle = "## PONUĐENI ODGOVORI:\n";
+    public static readonly string TaskAnswer = "Izbor:";
+    public static readonly string TaskCorrectAnswer = "Odgovor: tačno.";
+    public static readonly string TaskIncorrectAnswer = "Odgovor: netačno.";
 }
