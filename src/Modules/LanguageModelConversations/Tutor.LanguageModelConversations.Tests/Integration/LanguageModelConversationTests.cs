@@ -46,6 +46,33 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
         result.StatusCode.ShouldBe(404);
     }
 
+    [Fact]
+    public async void Does_not_send_message_inssuficient_funds()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-3");
+        var dbContext = scope.ServiceProvider.GetRequiredService<LanguageModelConversationsContext>();
+        var tokenWalletAmountBefore = dbContext.TokenWallets.First(t => t.LearnerId == -3 && t.CourseId == -1).Amount;
+        var messageRequest = new MessageRequest
+        {
+            ConversationId = 1,
+            CourseId = -1,
+            ContextId = -15,
+            MessageType = "GenerateQuestions"
+        };
+        dbContext.Database.BeginTransaction();
+
+        var response = await controller.SendMessage(messageRequest);
+        var result = (ObjectResult)response.Result;
+
+        dbContext.ChangeTracker.Clear();
+
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(402);
+        var tokenWalletAmountAfter = dbContext.TokenWallets.First(t => t.LearnerId == -3 && t.CourseId == -1).Amount;
+        tokenWalletAmountAfter.ShouldBe(tokenWalletAmountBefore);
+    }
+
     [Theory]
     [MemberData(nameof(NewConversationMessages))]
     public async void Saves_new_conversation(MessageRequest messageRequest)
@@ -53,6 +80,9 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
         var dbContext = scope.ServiceProvider.GetRequiredService<LanguageModelConversationsContext>();
+        var conversation = dbContext.Conversations.SingleOrDefault(c => c.Id == messageRequest.ConversationId);
+        conversation.ShouldBeNull();
+        var tokenWalletAmountBefore = dbContext.TokenWallets.First(t => t.LearnerId == -2 && t.CourseId == messageRequest.CourseId).Amount;
         dbContext.Database.BeginTransaction();
 
         var response = await controller.SendMessage(messageRequest);
@@ -68,6 +98,8 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
         storedConversation.ContextId.ShouldBe(messageRequest.ContextId);
         storedConversation.Messages.ShouldNotBeNull();
         storedConversation.Messages.Count.ShouldBe(3);
+        var tokenWalletAmountAfter = dbContext.TokenWallets.First(t => t.LearnerId == -2 && t.CourseId == messageRequest.CourseId).Amount;
+        tokenWalletAmountAfter.ShouldBeLessThan(tokenWalletAmountBefore);
     }
 
     [Theory]
@@ -78,6 +110,7 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
         var controller = CreateController(scope, "-2");
         var dbContext = scope.ServiceProvider.GetRequiredService<LanguageModelConversationsContext>();
         var storedConversation = dbContext.Conversations.SingleOrDefault(c => c.Id == messageRequest.ConversationId);
+        var tokenWalletAmountBefore = dbContext.TokenWallets.First(t => t.LearnerId == -2 && t.CourseId == messageRequest.CourseId).Amount;
         storedConversation.ShouldNotBeNull();
         var contentCount = storedConversation.Messages.Count;
         dbContext.Database.BeginTransaction();
@@ -95,9 +128,67 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
         updatedConversation.ContextId.ShouldBe(messageRequest.ContextId);
         updatedConversation.Messages.ShouldNotBeNull();
         updatedConversation.Messages.Count.ShouldBe(contentCount + 3);
+        var tokenWalletAmountAfter = dbContext.TokenWallets.First(t => t.LearnerId == -2 && t.CourseId == messageRequest.CourseId).Amount;
+        tokenWalletAmountAfter.ShouldBeLessThan(tokenWalletAmountBefore);
     }
 
-    // TODO: dodati poseban test za sumarizaciju da je dobavi/ne dobavi iz baze (uz pisanje u bazu ako je ne dobavi
+    [Fact]
+    public async void Retrieves_stored_summarization()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-2");
+        var dbContext = scope.ServiceProvider.GetRequiredService<LanguageModelConversationsContext>();
+        var summarizationCountBefore = dbContext.Summarizations.Count();
+        var tokenWalletAmountBefore = dbContext.TokenWallets.First(t => t.LearnerId == -2 && t.CourseId == -1).Amount;
+        var messageRequest = new MessageRequest
+        {
+            ConversationId = 1,
+            CourseId = -1, 
+            ContextId = -10, 
+            MessageType = "Summarize"
+        };
+        dbContext.Database.BeginTransaction();
+
+        var response = await controller.SendMessage(messageRequest);
+        var result = ((OkObjectResult)response.Result)?.Value as MessageResponse;
+
+        dbContext.ChangeTracker.Clear();
+
+        result.ShouldNotBeNull();
+        result.NewMessage.ShouldNotBeNull();
+        dbContext.Summarizations.Count().ShouldBe(summarizationCountBefore);
+        var tokenWalletAmountAfter = dbContext.TokenWallets.First(t => t.LearnerId == -2 && t.CourseId == -1).Amount;
+        tokenWalletAmountAfter.ShouldBe(tokenWalletAmountBefore);
+    }
+
+    [Fact]
+    public async void Stores_new_summarization()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-2");
+        var dbContext = scope.ServiceProvider.GetRequiredService<LanguageModelConversationsContext>();
+        var summarizationCountBefore = dbContext.Summarizations.Count();
+        var tokenWalletAmountBefore = dbContext.TokenWallets.First(t => t.LearnerId == -2 && t.CourseId == -1).Amount;
+        var messageRequest = new MessageRequest
+        {
+            ConversationId = 1,
+            CourseId = -1,
+            ContextId = -14,
+            MessageType = "Summarize"
+        };
+        dbContext.Database.BeginTransaction();
+
+        var response = await controller.SendMessage(messageRequest);
+        var result = ((OkObjectResult)response.Result)?.Value as MessageResponse;
+
+        dbContext.ChangeTracker.Clear();
+
+        result.ShouldNotBeNull();
+        result.NewMessage.ShouldNotBeNull();
+        dbContext.Summarizations.Count().ShouldBe(summarizationCountBefore + 1);
+        var tokenWalletAmountAfter = dbContext.TokenWallets.First(t => t.LearnerId == -2 && t.CourseId == -1).Amount;
+        tokenWalletAmountAfter.ShouldBeLessThan(tokenWalletAmountBefore);
+    }
 
     private static LanguageModelConversationsController CreateController(IServiceScope scope, string id)
     {
@@ -131,13 +222,28 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
         },
         new object[]
         {
+            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -21, MessageType = "GenerateSimilar", TaskId = -212 }
+        },
+        new object[]
+        {
+            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -21, MessageType = "GenerateSimilar", TaskId = -10001 }
+        },
+        new object[]
+        {
             new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "TopicConversation", Message = "new message" }
         },
         new object[]
         {
             new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "TopicConversation", TaskId = -153, Message = "new message" }
+        },
+        new object[]
+        {
+            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -21, MessageType = "TopicConversation", TaskId = -212, Message = "new message" }
+        },
+        new object[]
+        {
+            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -21, MessageType = "TopicConversation", TaskId = -10001, Message = "new message" }
         }
-        // TODO: dodati po jedan test slucaj za saq i mcq
     };
 
     public static IEnumerable<object[]> UpdateConversationMessages() => new List<object[]>

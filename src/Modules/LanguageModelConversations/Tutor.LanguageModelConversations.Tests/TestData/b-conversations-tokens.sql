@@ -17,9 +17,13 @@ INSERT INTO "languageModelConversations"."TokenWallets"(
     "Id", "LearnerId", "CourseId", "Amount")
 VALUES (-1, -2, -1, 199300);
 
+INSERT INTO "languageModelConversations"."TokenWallets"(
+    "Id", "LearnerId", "CourseId", "Amount")
+VALUES (-2, -3, -1, 100);
+
 INSERT INTO "languageModelConversations"."Summarizations"(
     "Id", "ContextId", "Group", "Messages")
-VALUES (-1, -11, 0, 
+VALUES (-1, -10, 0, 
 '[ {{ "SenderType": 0, "MessageType": 0, "Content": "Sistemska poruka" }}, 
 {{ "SenderType": 1, "MessageType": 0, "Content": "Zatrazena sumarizacija" }}, 
 {{ "SenderType": 2, "MessageType": 0, "Content": "Sumarizacija" }} ]'
