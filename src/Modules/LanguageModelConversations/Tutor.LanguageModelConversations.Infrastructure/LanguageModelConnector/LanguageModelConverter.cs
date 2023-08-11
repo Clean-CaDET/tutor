@@ -11,7 +11,6 @@ public class LanguageModelConverter : ILanguageModelConverter
 {
     public string ConvertAssessmentItem(AssessmentItemDto assessmentItem)
     {
-        // testirati sve sta se dobije
         if (assessmentItem is SaqDto saq)
         {
             return LanguageModelConsts.TaskTitle + saq.Text +
@@ -25,8 +24,7 @@ public class LanguageModelConverter : ILanguageModelConverter
             return LanguageModelConsts.TaskTitle + mcq.Text +
                 LanguageModelConsts.TaskAnswerTitle +
                 string.Join("\n", incorrectAnswers.Select(a => LanguageModelConsts.TaskAnswer + a + LanguageModelConsts.TaskIncorrectAnswer)) +
-                LanguageModelConsts.TaskAnswer + mcq.CorrectAnswer + LanguageModelConsts.TaskCorrectAnswer +
-                LanguageModelConsts.TaskCorrectAnswer + mcq.Feedback;
+                LanguageModelConsts.TaskAnswer + mcq.CorrectAnswer + LanguageModelConsts.TaskCorrectAnswer + mcq.Feedback;
         }
         else if (assessmentItem is MrqDto mrq)
         {
