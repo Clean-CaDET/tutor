@@ -16,7 +16,7 @@ public static class FailureCode
 
     public static readonly IError InvalidArgument = new Error("Invalid data supplied.")
         .WithMetadata("code", 400);
-    public static readonly IError InsufficientResources = new Error("Insufficient resources to perform operation.")
+    public static readonly IError InsufficientFunds = new Error("Insufficient funds to perform operation.")
         .WithMetadata("code", 402);
     public static readonly IError Forbidden = new Error("Access to resource is restricted.")
         .WithMetadata("code", 403);

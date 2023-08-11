@@ -51,7 +51,7 @@ public class ConversationService : IConversationService
         if (tokenResult.IsFailed) return Result.Fail(tokenResult.Errors);
         var tokenWallet = tokenResult.Value;
 
-        if (!tokenWallet.CheckAmount()) return Result.Fail(FailureCode.InsufficientResources);
+        if (!tokenWallet.CheckAmount()) return Result.Fail(FailureCode.InsufficientFunds);
 
         var conversationResult = GetOrCreateConversation(message.ConversationId, message.ContextGroup, message.ContextId, learnerId);
         if (conversationResult.IsFailed) return Result.Fail(conversationResult.Errors);
