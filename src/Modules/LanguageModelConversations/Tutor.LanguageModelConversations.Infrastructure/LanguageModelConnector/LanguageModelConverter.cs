@@ -3,7 +3,7 @@ using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.MultiChoiceQu
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.MultiResponseQuestions;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.ShortAnswerQuestions;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.InstructionalItems;
-using Tutor.LanguageModelConversations.Core.UseCases;
+using Tutor.LanguageModelConversations.Core.UseCases.Integration;
 
 namespace Tutor.LanguageModelConversations.Infrastructure.LanguageModelConnector;
 

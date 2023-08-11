@@ -2,7 +2,7 @@
 using FluentResults;
 using Tutor.LanguageModelConversations.API.Dtos;
 using Tutor.LanguageModelConversations.Core.Domain;
-using Tutor.LanguageModelConversations.Core.UseCases;
+using Tutor.LanguageModelConversations.Core.UseCases.Integration;
 
 namespace Tutor.LanguageModelConversations.Infrastructure.LanguageModelConnector;
 

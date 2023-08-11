@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
-using Tutor.KnowledgeComponents.API.Public.Learning;
-using Tutor.KnowledgeComponents.API.Public.Learning.Assessment;
 using Tutor.LanguageModelConversations.API.Dtos;
 using Tutor.LanguageModelConversations.API.Interfaces;
 using Tutor.LanguageModelConversations.Core.Domain;
 using Tutor.LanguageModelConversations.Core.Domain.RepositoryInterfaces;
+using Tutor.LanguageModelConversations.Core.UseCases.Integration;
 
 namespace Tutor.LanguageModelConversations.Core.UseCases;
 
@@ -15,24 +14,18 @@ public class ConversationService : IConversationService
     private readonly IMapper _mapper;
     private readonly IConversationRepository _conversationRepository;
     private readonly ITokenWalletRepository _tokenWalletRepository;
-    private readonly ISummarizationRepository _summarizationRepository;
-    private readonly ILanguageModelConnector _languageModelConnector;
-    private readonly ILanguageModelConverter _languageModelConverter;
-    private readonly IInstructionService _instructionSelector;
-    private readonly ISelectionService _taskSelector;
+    private readonly IConversationProcessor _conversationProcessor;
+    private readonly IContextSelectionService _contextSelectionService;
     private readonly ILanguageModelConversationsUnitOfWork _unitOfWork;
 
-    public ConversationService(IMapper mapper, IConversationRepository conversationRepository, ITokenWalletRepository tokenWalletRepository, ISummarizationRepository summarizationRepository, 
-        ILanguageModelConnector languageModelConnector, ILanguageModelConverter languageModelConverter, IInstructionService instructionSelector, ISelectionService taskSelector, ILanguageModelConversationsUnitOfWork unitOfWork)
+    public ConversationService(IMapper mapper, IConversationRepository conversationRepository, ITokenWalletRepository tokenWalletRepository, IConversationProcessor conversationProcessor, 
+        IContextSelectionService contextSelectionService, ILanguageModelConversationsUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _conversationRepository = conversationRepository;
         _tokenWalletRepository = tokenWalletRepository;
-        _summarizationRepository = summarizationRepository;
-        _languageModelConnector = languageModelConnector;
-        _languageModelConverter = languageModelConverter;
-        _instructionSelector = instructionSelector;
-        _taskSelector = taskSelector;
+        _conversationProcessor = conversationProcessor;
+        _contextSelectionService = contextSelectionService;
         _unitOfWork = unitOfWork;
     }
 
@@ -44,7 +37,7 @@ public class ConversationService : IConversationService
 
     public async Task<Result<MessageResponseDto>> SendMessageAsync(MessageRequestDto message, int learnerId)
     {
-        var contextTextResult = GetContextText(message.ContextGroup, message.ContextId, message.TaskId, learnerId);
+        var contextTextResult = _contextSelectionService.GetContextText(message.ContextGroup, message.ContextId, message.TaskId, learnerId);
         if (contextTextResult.IsFailed) return Result.Fail(contextTextResult.Errors);
 
         var tokenResult = GetOrCreateTokenWallet(message.CourseId, learnerId);
@@ -57,7 +50,7 @@ public class ConversationService : IConversationService
         if (conversationResult.IsFailed) return Result.Fail(conversationResult.Errors);
         var conversation = conversationResult.Value;
 
-        var response = await ProcessMessageAsync(message, conversation, contextTextResult.Value);
+        var response = await _conversationProcessor.ProcessMessageAsync(message, conversation, contextTextResult.Value);
         if (response.IsFailed) return Result.Fail(response.Errors);
 
         conversation.AddMessages(response.Value.Messages);
@@ -96,69 +89,5 @@ public class ConversationService : IConversationService
             _tokenWalletRepository.Create(tokenWallet);
         }
         return tokenWallet;
-    }
-
-    private Result<string> GetContextText(int contextGroup, int contextId, int? taskId, int learnerId)
-    {
-        if ((ContextGroup)contextGroup != ContextGroup.KnowledgeComponent)
-            // Expand when LearningTasks are added
-            return Result.Fail(FailureCode.InvalidArgument);
-
-        if (taskId != null)
-        {
-            var assessmentResult = _taskSelector.SelectAssessmentItemById(contextId, (int)taskId, learnerId);
-            if (assessmentResult.IsFailed) return Result.Fail(assessmentResult.Errors);
-
-            return _languageModelConverter.ConvertAssessmentItem(assessmentResult.Value);
-        }
-
-        var instructionResult = _instructionSelector.GetByKc(contextId, learnerId);
-        if (instructionResult.IsFailed) return Result.Fail(instructionResult.Errors);
-
-        return _languageModelConverter.ConvertInstructionalItems(instructionResult.Value);
-    }
-
-    private async Task<Result<ConversationSegment>> ProcessMessageAsync(MessageRequestDto messageRequest, Conversation conversaiton, string contextText)
-    {
-        if (!Enum.TryParse(messageRequest.MessageType, out MessageType messageType))
-            return Result.Fail(FailureCode.InvalidArgument);
-        var context = messageRequest.TaskId == null ? ContextType.Lecture : ContextType.Task;
-
-        Result<ConversationSegment> response;
-        switch (messageType)
-        {
-            case MessageType.TopicConversation:
-                response = await _languageModelConnector.TopicConversationAsync(messageRequest.Message, contextText, context, conversaiton.Messages);
-                break;
-            case MessageType.GenerateSimilar:
-                response = await _languageModelConnector.GenerateSimilarAsync(contextText, context);
-                break;
-            case MessageType.Summarize:
-                response = await ProcessSummarizationAsync(messageRequest.ContextId, messageRequest.ContextGroup, contextText);
-                break;
-            case MessageType.ExtractKeywords:
-                response = await _languageModelConnector.ExtractKeywordsAsync(contextText);
-                break;
-            case MessageType.GenerateQuestions:
-                response = await _languageModelConnector.GenerateQuestionsAsync(contextText);
-                break;
-            default:
-                return Result.Fail(FailureCode.InvalidArgument);
-        }
-        return response;
-    }
-
-    private async Task<Result<ConversationSegment>> ProcessSummarizationAsync(int contextId, int contextGroup, string contextText)
-    {
-        var summarization = _summarizationRepository.GetByContextIdAndGroup(contextId, (ContextGroup)contextGroup);
-        if (summarization != null)
-            return new ConversationSegment(summarization.Messages, 0);
-
-        var response = await _languageModelConnector.SummarizeAsync(contextText);
-        if (response.IsFailed) return response;
-
-        summarization = new Summarization(contextId, (ContextGroup)contextGroup, response.Value.Messages);
-        _summarizationRepository.Create(summarization);
-        return response;
     }
 }

@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using Tutor.LanguageModelConversations.Core.Domain;
 
-namespace Tutor.LanguageModelConversations.Core.UseCases;
+namespace Tutor.LanguageModelConversations.Core.UseCases.Integration;
 
 public interface ILanguageModelConnector
 {

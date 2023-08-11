@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Tutor.BuildingBlocks.Infrastructure.Security;
 using Tutor.LanguageModelConversations.API.Interfaces;
 using Tutor.LanguageModelConversations.Core.Domain.RepositoryInterfaces;
 using Tutor.LanguageModelConversations.Core.UseCases;
@@ -11,6 +10,7 @@ using Tutor.LanguageModelConversations.Infrastructure.LanguageModelConnector.Map
 using Tutor.LanguageModelConversations.Infrastructure.LanguageModelConnector;
 using Tutor.BuildingBlocks.Infrastructure.Interceptors;
 using Tutor.BuildingBlocks.Infrastructure.Database;
+using Tutor.LanguageModelConversations.Core.UseCases.Integration;
 
 namespace Tutor.LanguageModelConversations.Infrastructure;
 
@@ -33,6 +33,8 @@ public static class LanguageModelConversationsStartup
     private static void SetupCore(IServiceCollection services)
     {
         services.AddProxiedScoped<IConversationService, ConversationService>();
+        services.AddProxiedScoped<IConversationProcessor, ConversationProcessor>();
+        services.AddProxiedScoped<IContextSelectionService, ContextSelectionService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
