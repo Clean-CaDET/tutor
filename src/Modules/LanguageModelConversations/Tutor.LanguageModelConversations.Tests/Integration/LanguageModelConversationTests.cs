@@ -248,7 +248,6 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
 
     public static IEnumerable<object[]> UpdateConversationMessages() => new List<object[]>
     {
-
         new object[]
         {
             new MessageRequestDto { ConversationId = -1, CourseId = -1, ContextId = -11, MessageType = "GenerateQuestions" }

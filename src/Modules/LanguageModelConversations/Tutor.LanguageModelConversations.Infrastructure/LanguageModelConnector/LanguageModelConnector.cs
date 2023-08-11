@@ -8,7 +8,6 @@ namespace Tutor.LanguageModelConversations.Infrastructure.LanguageModelConnector
 
 public class LanguageModelConnector : ILanguageModelConnector
 {
-
     private readonly IMapper _mapper;
 
     public LanguageModelConnector(IMapper mapper)
