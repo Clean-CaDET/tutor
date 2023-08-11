@@ -14,7 +14,7 @@ public class LanguageModelConverter : ILanguageModelConverter
         if (assessmentItem is SaqDto saq)
         {
             return LanguageModelConsts.TaskTitle + saq.Text +
-                LanguageModelConsts.TaskAnswerTitle +
+                LanguageModelConsts.TaskAnswersTitle +
                 LanguageModelConsts.TaskAnswer + string.Join(" ", saq.AcceptableAnswers) + 
                 LanguageModelConsts.TaskCorrectAnswer + saq.Feedback;
         }
@@ -22,7 +22,7 @@ public class LanguageModelConverter : ILanguageModelConverter
         {
             var incorrectAnswers = mcq.PossibleAnswers.Where(a => a != mcq.CorrectAnswer).ToList();
             return LanguageModelConsts.TaskTitle + mcq.Text +
-                LanguageModelConsts.TaskAnswerTitle +
+                LanguageModelConsts.TaskAnswersTitle +
                 string.Join("\n", incorrectAnswers.Select(a => LanguageModelConsts.TaskAnswer + a + LanguageModelConsts.TaskIncorrectAnswer)) +
                 LanguageModelConsts.TaskAnswer + mcq.CorrectAnswer + LanguageModelConsts.TaskCorrectAnswer + mcq.Feedback;
         }
@@ -30,7 +30,7 @@ public class LanguageModelConverter : ILanguageModelConverter
         {
             var mrqItemsMap = mrq.Items.GroupBy(i => i.IsCorrect).ToDictionary(g => g.Key, g => g.ToList());
             return LanguageModelConsts.TaskTitle + mrq.Text +
-                LanguageModelConsts.TaskAnswerTitle +
+                LanguageModelConsts.TaskAnswersTitle +
                 string.Join("\n", mrqItemsMap[false].Select(item => LanguageModelConsts.TaskAnswer + item.Text + LanguageModelConsts.TaskIncorrectAnswer + item.Feedback)) +
                 string.Join("\n", mrqItemsMap[true].Select(item => LanguageModelConsts.TaskAnswer + item.Text + LanguageModelConsts.TaskCorrectAnswer + item.Feedback));
         }

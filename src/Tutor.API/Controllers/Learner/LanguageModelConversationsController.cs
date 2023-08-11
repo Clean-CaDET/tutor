@@ -7,7 +7,7 @@ using Tutor.Stakeholders.Infrastructure.Authentication;
 namespace Tutor.API.Controllers.Learner;
 
 [Authorize(Policy = "learnerPolicy")]
-[Route("api/lm-conversations")]
+[Route("api/language-model-conversations")]
 [ApiController]
 public class LanguageModelConversationsController : BaseApiController
 {

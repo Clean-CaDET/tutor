@@ -104,18 +104,18 @@ public class ConversationService : IConversationService
             // Expand when LearningTasks are added
             return Result.Fail(FailureCode.InvalidArgument);
 
-        if (taskId == null)
+        if (taskId != null)
         {
-            var instructionResult = _instructionSelector.GetByKc(contextId, learnerId);
-            if (instructionResult.IsFailed) return Result.Fail(instructionResult.Errors);
+            var assessmentResult = _taskSelector.SelectAssessmentItemById(contextId, (int)taskId, learnerId);
+            if (assessmentResult.IsFailed) return Result.Fail(assessmentResult.Errors);
 
-            return _languageModelConverter.ConvertInstructionalItems(instructionResult.Value);
+            return _languageModelConverter.ConvertAssessmentItem(assessmentResult.Value);
         }
 
-        var assessmentResult = _taskSelector.SelectAssessmentItemById(contextId, (int)taskId, learnerId);
-        if (assessmentResult.IsFailed) return Result.Fail(assessmentResult.Errors);
+        var instructionResult = _instructionSelector.GetByKc(contextId, learnerId);
+        if (instructionResult.IsFailed) return Result.Fail(instructionResult.Errors);
 
-        return _languageModelConverter.ConvertAssessmentItem(assessmentResult.Value);
+        return _languageModelConverter.ConvertInstructionalItems(instructionResult.Value);
     }
 
     private async Task<Result<ConversationSegment>> ProcessMessageAsync(MessageRequestDto messageRequest, Conversation conversaiton, string contextText)

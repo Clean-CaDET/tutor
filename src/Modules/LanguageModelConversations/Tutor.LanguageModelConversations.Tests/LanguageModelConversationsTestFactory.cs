@@ -15,13 +15,13 @@ public class LanguageModelConversationsTestFactory : BaseTestFactory<LanguageMod
         services.Remove(descriptor!);
         services.AddDbContext<LanguageModelConversationsContext>(SetupTestContext());
 
-        descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<KnowledgeComponentsContext>));
-        services.Remove(descriptor!);
-        services.AddDbContext<KnowledgeComponentsContext>(SetupTestContext());
-
         descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<CoursesContext>));
         services.Remove(descriptor!);
         services.AddDbContext<CoursesContext>(SetupTestContext());
+
+        descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<KnowledgeComponentsContext>));
+        services.Remove(descriptor!);
+        services.AddDbContext<KnowledgeComponentsContext>(SetupTestContext());
 
         return services;
     }

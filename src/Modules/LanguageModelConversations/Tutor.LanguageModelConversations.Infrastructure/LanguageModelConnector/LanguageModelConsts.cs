@@ -16,7 +16,7 @@ public static class LanguageModelConsts
     };
 
     public static readonly string TaskTitle = "\n# TEKST ZADATKA:\n";
-    public static readonly string TaskAnswerTitle = "\n## PONUĐENI ODGOVORI:\n";
+    public static readonly string TaskAnswersTitle = "\n## PONUĐENI ODGOVORI:\n";
     public static readonly string TaskAnswer = "\nIzbor: ";
     public static readonly string TaskCorrectAnswer = "\nOdgovor: tačno. ";
     public static readonly string TaskIncorrectAnswer = "\nOdgovor: netačno. ";
