@@ -27,6 +27,7 @@ public class ConversationProcessor : IConversationProcessor
         switch (messageType)
         {
             case MessageType.TopicConversation:
+                if (messageRequest.Message == null) return Result.Fail(FailureCode.InvalidArgument);
                 response = await _languageModelConnector.TopicConversationAsync(messageRequest.Message, contextText, context, conversaiton.Messages);
                 break;
             case MessageType.GenerateSimilar:

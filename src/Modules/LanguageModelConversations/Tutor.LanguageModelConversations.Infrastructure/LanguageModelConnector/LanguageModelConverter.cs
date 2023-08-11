@@ -34,10 +34,7 @@ public class LanguageModelConverter : ILanguageModelConverter
                 string.Join("\n", mrqItemsMap[false].Select(item => LanguageModelConsts.TaskAnswer + item.Text + LanguageModelConsts.TaskIncorrectAnswer + item.Feedback)) +
                 string.Join("\n", mrqItemsMap[true].Select(item => LanguageModelConsts.TaskAnswer + item.Text + LanguageModelConsts.TaskCorrectAnswer + item.Feedback));
         }
-        else
-        {
-            return null;
-        }
+        return "";
     }
 
     public string ConvertInstructionalItems(List<InstructionalItemDto> instructionalItems)
