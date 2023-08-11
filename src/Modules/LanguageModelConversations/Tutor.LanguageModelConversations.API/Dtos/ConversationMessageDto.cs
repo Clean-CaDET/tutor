@@ -2,6 +2,6 @@
 public class ConversationMessageDto
 {
     public string Sender { get; set; }
-    // bitno za FE: serijalizovan dto objekat ili cist string ako je human poruka
+    // Content is serialized JSON or plain string
     public string Content { get; set; }
 }

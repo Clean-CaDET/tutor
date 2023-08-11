@@ -1,6 +1,6 @@
 ﻿namespace Tutor.LanguageModelConversations.API.Dtos;
 
-public class MessageResponse
+public class MessageResponseDto
 {
     public string NewMessage { get; set; }
 }

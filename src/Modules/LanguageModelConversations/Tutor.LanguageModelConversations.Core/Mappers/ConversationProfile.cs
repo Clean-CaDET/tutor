@@ -8,7 +8,7 @@ public class ConversationProfile : Profile
 {
     public ConversationProfile() 
     {
-        CreateMap<LanguageModelMessage, MessageResponse>()
+        CreateMap<LanguageModelMessage, MessageResponseDto>()
             .ForMember(dest => dest.NewMessage, opt => opt.MapFrom(src => src.Content));
 
         CreateMap<LanguageModelMessage, ConversationMessageDto>()

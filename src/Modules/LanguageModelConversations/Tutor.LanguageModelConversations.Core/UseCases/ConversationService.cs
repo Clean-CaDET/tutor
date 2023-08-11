@@ -42,7 +42,7 @@ public class ConversationService : IConversationService
         return result == null ? Result.Fail(FailureCode.NotFound) : _mapper.Map<ConversationDto>(result);
     }
 
-    public async Task<Result<MessageResponse>> SendMessageAsync(MessageRequest message, int learnerId)
+    public async Task<Result<MessageResponseDto>> SendMessageAsync(MessageRequestDto message, int learnerId)
     {
         var contextTextResult = GetContextText(message.ContextGroup, message.ContextId, message.TaskId, learnerId);
         if (contextTextResult.IsFailed) return Result.Fail(contextTextResult.Errors);
@@ -68,7 +68,7 @@ public class ConversationService : IConversationService
         var dbResult = _unitOfWork.Save();
         if (dbResult.IsFailed) return dbResult;
 
-        return _mapper.Map<MessageResponse>(conversation.Messages.Last());
+        return _mapper.Map<MessageResponseDto>(conversation.Messages.Last());
     }
 
     private Result<Conversation> GetOrCreateConversation(int conversationId, int contextGroup, int contextId, int learnerId)
@@ -118,7 +118,7 @@ public class ConversationService : IConversationService
         return _languageModelConverter.ConvertAssessmentItem(assessmentResult.Value);
     }
 
-    private async Task<Result<ConversationSegment>> ProcessMessageAsync(MessageRequest messageRequest, Conversation conversaiton, string contextText)
+    private async Task<Result<ConversationSegment>> ProcessMessageAsync(MessageRequestDto messageRequest, Conversation conversaiton, string contextText)
     {
         if (!Enum.TryParse(messageRequest.MessageType, out MessageType messageType))
             return Result.Fail(FailureCode.InvalidArgument);

@@ -53,7 +53,7 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
         var controller = CreateController(scope, "-3");
         var dbContext = scope.ServiceProvider.GetRequiredService<LanguageModelConversationsContext>();
         var tokenWalletAmountBefore = dbContext.TokenWallets.First(t => t.LearnerId == -3 && t.CourseId == -1).Amount;
-        var messageRequest = new MessageRequest
+        var messageRequest = new MessageRequestDto
         {
             ConversationId = 1,
             CourseId = -1,
@@ -75,7 +75,7 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
 
     [Theory]
     [MemberData(nameof(NewConversationMessages))]
-    public async void Saves_new_conversation(MessageRequest messageRequest)
+    public async void Saves_new_conversation(MessageRequestDto messageRequest)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
@@ -86,7 +86,7 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
         dbContext.Database.BeginTransaction();
 
         var response = await controller.SendMessage(messageRequest);
-        var result = ((OkObjectResult)response.Result)?.Value as MessageResponse;
+        var result = ((OkObjectResult)response.Result)?.Value as MessageResponseDto;
 
         dbContext.ChangeTracker.Clear();
 
@@ -104,7 +104,7 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
 
     [Theory]
     [MemberData(nameof(UpdateConversationMessages))]
-    public async void Updates_existing_conversation(MessageRequest messageRequest)
+    public async void Updates_existing_conversation(MessageRequestDto messageRequest)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
@@ -116,7 +116,7 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
         dbContext.Database.BeginTransaction();
 
         var response = await controller.SendMessage(messageRequest);
-        var result = ((OkObjectResult)response.Result)?.Value as MessageResponse;
+        var result = ((OkObjectResult)response.Result)?.Value as MessageResponseDto;
 
         dbContext.ChangeTracker.Clear();
 
@@ -140,7 +140,7 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
         var dbContext = scope.ServiceProvider.GetRequiredService<LanguageModelConversationsContext>();
         var summarizationCountBefore = dbContext.Summarizations.Count();
         var tokenWalletAmountBefore = dbContext.TokenWallets.First(t => t.LearnerId == -2 && t.CourseId == -1).Amount;
-        var messageRequest = new MessageRequest
+        var messageRequest = new MessageRequestDto
         {
             ConversationId = 1,
             CourseId = -1, 
@@ -150,7 +150,7 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
         dbContext.Database.BeginTransaction();
 
         var response = await controller.SendMessage(messageRequest);
-        var result = ((OkObjectResult)response.Result)?.Value as MessageResponse;
+        var result = ((OkObjectResult)response.Result)?.Value as MessageResponseDto;
 
         dbContext.ChangeTracker.Clear();
 
@@ -169,7 +169,7 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
         var dbContext = scope.ServiceProvider.GetRequiredService<LanguageModelConversationsContext>();
         var summarizationCountBefore = dbContext.Summarizations.Count();
         var tokenWalletAmountBefore = dbContext.TokenWallets.First(t => t.LearnerId == -2 && t.CourseId == -1).Amount;
-        var messageRequest = new MessageRequest
+        var messageRequest = new MessageRequestDto
         {
             ConversationId = 1,
             CourseId = -1,
@@ -179,7 +179,7 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
         dbContext.Database.BeginTransaction();
 
         var response = await controller.SendMessage(messageRequest);
-        var result = ((OkObjectResult)response.Result)?.Value as MessageResponse;
+        var result = ((OkObjectResult)response.Result)?.Value as MessageResponseDto;
 
         dbContext.ChangeTracker.Clear();
 
@@ -202,47 +202,47 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
     {
         new object[]
         {
-            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "GenerateQuestions" }
+            new MessageRequestDto { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "GenerateQuestions" }
         },
         new object[]
         {
-            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "ExtractKeywords" }
+            new MessageRequestDto { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "ExtractKeywords" }
         },
         new object[]
         {
-            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "Summarize" }
+            new MessageRequestDto { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "Summarize" }
         },
         new object[]
         {
-            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "GenerateSimilar" }
+            new MessageRequestDto { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "GenerateSimilar" }
         },
         new object[]
         {
-            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "GenerateSimilar", TaskId = -153 }
+            new MessageRequestDto { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "GenerateSimilar", TaskId = -153 }
         },
         new object[]
         {
-            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -21, MessageType = "GenerateSimilar", TaskId = -212 }
+            new MessageRequestDto { ConversationId = 1, CourseId = -1, ContextId = -21, MessageType = "GenerateSimilar", TaskId = -212 }
         },
         new object[]
         {
-            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -21, MessageType = "GenerateSimilar", TaskId = -10001 }
+            new MessageRequestDto { ConversationId = 1, CourseId = -1, ContextId = -21, MessageType = "GenerateSimilar", TaskId = -10001 }
         },
         new object[]
         {
-            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "TopicConversation", Message = "new message" }
+            new MessageRequestDto { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "TopicConversation", Message = "new message" }
         },
         new object[]
         {
-            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "TopicConversation", TaskId = -153, Message = "new message" }
+            new MessageRequestDto { ConversationId = 1, CourseId = -1, ContextId = -15, MessageType = "TopicConversation", TaskId = -153, Message = "new message" }
         },
         new object[]
         {
-            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -21, MessageType = "TopicConversation", TaskId = -212, Message = "new message" }
+            new MessageRequestDto { ConversationId = 1, CourseId = -1, ContextId = -21, MessageType = "TopicConversation", TaskId = -212, Message = "new message" }
         },
         new object[]
         {
-            new MessageRequest { ConversationId = 1, CourseId = -1, ContextId = -21, MessageType = "TopicConversation", TaskId = -10001, Message = "new message" }
+            new MessageRequestDto { ConversationId = 1, CourseId = -1, ContextId = -21, MessageType = "TopicConversation", TaskId = -10001, Message = "new message" }
         }
     };
 
@@ -251,31 +251,31 @@ public class LanguageModelConversationTests : BaseLanguageModelConversationsInte
 
         new object[]
         {
-            new MessageRequest { ConversationId = -1, CourseId = -1, ContextId = -11, MessageType = "GenerateQuestions" }
+            new MessageRequestDto { ConversationId = -1, CourseId = -1, ContextId = -11, MessageType = "GenerateQuestions" }
         },
         new object[]
         {
-            new MessageRequest { ConversationId = -1, CourseId = -1, ContextId = -11, MessageType = "ExtractKeywords" }
+            new MessageRequestDto { ConversationId = -1, CourseId = -1, ContextId = -11, MessageType = "ExtractKeywords" }
         },
         new object[]
         {
-            new MessageRequest { ConversationId = -1, CourseId = -1, ContextId = -11, MessageType = "Summarize" }
+            new MessageRequestDto { ConversationId = -1, CourseId = -1, ContextId = -11, MessageType = "Summarize" }
         },
         new object[]
         {
-            new MessageRequest { ConversationId = -1, CourseId = -1, ContextId = -11, MessageType = "GenerateSimilar" }
+            new MessageRequestDto { ConversationId = -1, CourseId = -1, ContextId = -11, MessageType = "GenerateSimilar" }
         },
         new object[]
         {
-            new MessageRequest { ConversationId = -2, CourseId = -1, ContextId = -14, MessageType = "GenerateSimilar", TaskId = -144 }
+            new MessageRequestDto { ConversationId = -2, CourseId = -1, ContextId = -14, MessageType = "GenerateSimilar", TaskId = -144 }
         },
         new object[]
         {
-            new MessageRequest { ConversationId = -1, CourseId = -1, ContextId = -11, MessageType = "TopicConversation", Message = "new message" }
+            new MessageRequestDto { ConversationId = -1, CourseId = -1, ContextId = -11, MessageType = "TopicConversation", Message = "new message" }
         },
         new object[]
         {
-            new MessageRequest { ConversationId = -2, CourseId = -1, ContextId = -14, MessageType = "TopicConversation", TaskId = -144, Message = "new message" }
+            new MessageRequestDto { ConversationId = -2, CourseId = -1, ContextId = -14, MessageType = "TopicConversation", TaskId = -144, Message = "new message" }
         }
     };
 }

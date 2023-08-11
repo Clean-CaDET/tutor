@@ -4,7 +4,7 @@ using Tutor.LanguageModelConversations.Infrastructure.LanguageModelConnector.Res
 
 namespace Tutor.LanguageModelConversations.Infrastructure.LanguageModelConnector.Request;
 
-// da li koristimo internal klase?
+// Question: Should we use internal classes for infrastructure?
 internal class LanguageModelDto
 {
     public string Text { get; set; }

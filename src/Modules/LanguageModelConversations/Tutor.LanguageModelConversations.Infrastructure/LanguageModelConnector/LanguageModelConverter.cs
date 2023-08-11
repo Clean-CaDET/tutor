@@ -42,11 +42,10 @@ public class LanguageModelConverter : ILanguageModelConverter
 
     public string ConvertInstructionalItems(List<InstructionalItemDto> instructionalItems)
     {
-        // Pitanje: da li ovaj toString ne treba koristiti
-        // Ideja iza upotrebe: iskoristiti polimorfizam, svaka klasa naslednica zna na koji nacin da se predstavi
-        // Cons: specifican nacin predstavljanja, nije klasican toString
-        // (mozda prljamo kod klase necim sto nije njeno zaduzenje)
-        // Alternativa: isto kao za AI, proveravati po tipu i za svaki definisati
+        // Question: Should toString be used in this case?
+        // Here we rely on polymorphism, but the toString is specific
+        // So it could be additional code that makes the class dirty
+        // Alternatively, we could do the same thing as with AIs
         return string.Join("\n", instructionalItems.Select(item => item.ToString()));
     }
 }

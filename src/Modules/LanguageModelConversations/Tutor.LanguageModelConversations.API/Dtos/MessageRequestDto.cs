@@ -1,7 +1,6 @@
 ﻿namespace Tutor.LanguageModelConversations.API.Dtos;
 
-// TODO: imenovanje -> izbacili smo request i response, smisliti kako ce se drugacije zvati ili staviti u request/response foldere
-public class MessageRequest
+public class MessageRequestDto
 {
     public int ConversationId { get; set; }
     public int CourseId { get; set; }
