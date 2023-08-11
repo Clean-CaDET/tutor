@@ -22,7 +22,7 @@ public class ContextSelectionService : IContextSelectionService
     public Result<string> GetContextText(int contextGroup, int contextId, int? taskId, int learnerId)
     {
         if ((ContextGroup)contextGroup != ContextGroup.KnowledgeComponent)
-            // Expand when LearningTasks are added
+            // Expand when LearningTasks are added (e.g. extract _languageModelConverter to base class and create subclasses for each context group)
             return Result.Fail(FailureCode.InvalidArgument);
 
         if (taskId != null)

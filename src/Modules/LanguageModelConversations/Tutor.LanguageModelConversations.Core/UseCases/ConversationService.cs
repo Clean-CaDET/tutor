@@ -64,6 +64,17 @@ public class ConversationService : IConversationService
         return _mapper.Map<MessageResponseDto>(conversation.Messages.Last());
     }
 
+    private Result<TokenWallet> GetOrCreateTokenWallet(int courseId, int learnerId)
+    {
+        var tokenWallet = _tokenWalletRepository.GetByLearnerAndCourse(learnerId, courseId);
+        if (tokenWallet == null)
+        {
+            tokenWallet = new TokenWallet(learnerId, courseId);
+            _tokenWalletRepository.Create(tokenWallet);
+        }
+        return tokenWallet;
+    }
+
     private Result<Conversation> GetOrCreateConversation(int conversationId, int contextGroup, int contextId, int learnerId)
     {
         var conversation = _conversationRepository.Get(conversationId);
@@ -78,16 +89,5 @@ public class ConversationService : IConversationService
             _conversationRepository.Create(conversation);
         }
         return conversation;
-    }
-
-    private Result<TokenWallet> GetOrCreateTokenWallet(int courseId, int learnerId)
-    {
-        var tokenWallet = _tokenWalletRepository.GetByLearnerAndCourse(learnerId, courseId);
-        if (tokenWallet == null)
-        {
-            tokenWallet = new TokenWallet(learnerId, courseId);
-            _tokenWalletRepository.Create(tokenWallet);
-        }
-        return tokenWallet;
     }
 }
