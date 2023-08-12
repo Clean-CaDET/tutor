@@ -8,7 +8,7 @@ WORKDIR /app
  
 
 FROM mcr.microsoft.com/dotnet/sdk:${SDK_VERSION} as build
-ENV PROJECT=Tutor.Web
+ENV PROJECT=Tutor.API
 ARG SRC_URL=https://github.com/Clean-CaDET/tutor/archive/refs/heads/master.tar.gz
 WORKDIR /src
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -25,7 +25,7 @@ RUN dotnet restore "${PROJECT}/${PROJECT}.csproj" \
 
 
 FROM build AS publish
-ENV PROJECT=Tutor.Web
+ENV PROJECT=Tutor.API
 RUN dotnet publish "${PROJECT}/${PROJECT}.csproj" -c Release -o /app/publish
 
 
@@ -33,7 +33,7 @@ FROM base AS final
 ENV ASPNETCORE_URLS=http://*:$PORT
 COPY --from=publish /app .
 WORKDIR /app/publish
-CMD ["dotnet", "Tutor.Web.dll"]
+CMD ["dotnet", "Tutor.API.dll"]
 
 
 FROM build as migration-base
@@ -49,40 +49,59 @@ RUN PATH="$PATH:/root/.dotnet/tools"; \
 
 FROM migration-base AS execute-migration
 
-ENV STARTUP_PROJECT=Tutor.Web
-ENV TARGET_PROJECT=Tutor.Infrastructure
+ENV STARTUP_PROJECT=Tutor.API
 ENV MIGRATION=init
+ENV DATABASE_SCHEMA=""
 ENV DATABASE_HOST=""
 ENV DATABASE_PASSWORD=""
 ENV DATABASE_USERNAME=""
-ENV DATABASE_SCHEMA=""
+
+ENV STAKEHOLDERS_TARGET_PROJECT=Tutor.Stakeholders.Infrastructure
+
+ENV LEARNING_UTILS_TARGET_PROJECT=Tutor.LearningUtils.Infrastructure
+
+ENV KNOWLEDGE_COMPONENTS_TARGET_PROJECT=Tutor.KnowledgeComponents.Infrastructure
+
+ENV COURSES_TARGET_PROJECT=Tutor.Courses.Infrastructure
 
 CMD PATH="$PATH:/root/.dotnet/tools"; \
-    dotnet-ef migrations add "${MIGRATION}-tutor" \
+    dotnet-ef migrations add "${MIGRATION}-stakeholders" \
         -s "${STARTUP_PROJECT}/${STARTUP_PROJECT}.csproj"\
-        -p "${TARGET_PROJECT}/${TARGET_PROJECT}.csproj" \
-        -c "TutorContext" \
+        -p "Modules/Stakeholders/${STAKEHOLDERS_TARGET_PROJECT}/${STAKEHOLDERS_TARGET_PROJECT}.csproj" \
+        -c "StakeholdersContext" \
         --configuration Release && \
-    dotnet-ef database update "${MIGRATION}-tutor" \
+    dotnet-ef database update "${MIGRATION}-stakeholders" \
         -s "${STARTUP_PROJECT}/${STARTUP_PROJECT}.csproj"\
-        -p "${TARGET_PROJECT}/${TARGET_PROJECT}.csproj" \
-        -c "TutorContext" \
+        -p "Modules/Stakeholders/${STAKEHOLDERS_TARGET_PROJECT}/${STAKEHOLDERS_TARGET_PROJECT}.csproj" \
+        -c "StakeholdersContext" \
         --configuration Release && \
-    dotnet-ef migrations add "${MIGRATION}-event" \
+    dotnet-ef migrations add "${MIGRATION}-learningUtils" \
         -s "${STARTUP_PROJECT}/${STARTUP_PROJECT}.csproj"\
-        -p "${TARGET_PROJECT}/${TARGET_PROJECT}.csproj" \
-        -c "EventContext" \
+        -p "Modules/LearningUtilities/${LEARNING_UTILS_TARGET_PROJECT}/${LEARNING_UTILS_TARGET_PROJECT}.csproj" \
+        -c "LearningUtilsContext" \
         --configuration Release && \
-    dotnet-ef database update "${MIGRATION}-event" \
+    dotnet-ef database update "${MIGRATION}-learningUtils" \
         -s "${STARTUP_PROJECT}/${STARTUP_PROJECT}.csproj"\
-        -p "${TARGET_PROJECT}/${TARGET_PROJECT}.csproj" \
-        -c "EventContext" \
-        --configuration Release
-
-
-FROM migration-base AS generate-schema
-RUN PATH="$PATH:/root/.dotnet/tools"; \
-    dotnet-ef dbcontext script \
+        -p "Modules/LearningUtilities/${LEARNING_UTILS_TARGET_PROJECT}/${LEARNING_UTILS_TARGET_PROJECT}.csproj" \
+        -c "LearningUtilsContext" \
+        --configuration Release && \
+    dotnet-ef migrations add "${MIGRATION}-knowledgeComponents" \
         -s "${STARTUP_PROJECT}/${STARTUP_PROJECT}.csproj"\
-        -p "${TARGET_PROJECT}/${TARGET_PROJECT}.csproj" \
-        -o sql/init.sql
+        -p "Modules/KnowledgeComponents/${KNOWLEDGE_COMPONENTS_TARGET_PROJECT}/${KNOWLEDGE_COMPONENTS_TARGET_PROJECT}.csproj" \
+        -c "KnowledgeComponentsContext" \
+        --configuration Release && \
+    dotnet-ef database update "${MIGRATION}-knowledgeComponents" \
+        -s "${STARTUP_PROJECT}/${STARTUP_PROJECT}.csproj"\
+        -p "Modules/KnowledgeComponents/${KNOWLEDGE_COMPONENTS_TARGET_PROJECT}/${KNOWLEDGE_COMPONENTS_TARGET_PROJECT}.csproj" \
+        -c "KnowledgeComponentsContext" \
+        --configuration Release && \
+    dotnet-ef migrations add "${MIGRATION}-courses" \
+        -s "${STARTUP_PROJECT}/${STARTUP_PROJECT}.csproj"\
+        -p "Modules/Courses/${COURSES_TARGET_PROJECT}/${COURSES_TARGET_PROJECT}.csproj" \
+        -c "CoursesContext" \
+        --configuration Release && \
+    dotnet-ef database update "${MIGRATION}-courses" \
+        -s "${STARTUP_PROJECT}/${STARTUP_PROJECT}.csproj"\
+        -p "Modules/Courses/${COURSES_TARGET_PROJECT}/${COURSES_TARGET_PROJECT}.csproj" \
+        -c "CoursesContext" \
+        --configuration Release && \
