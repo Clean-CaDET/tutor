@@ -8,6 +8,7 @@ using Tutor.Courses.API.Public.Learning;
 
 namespace Tutor.Courses.Tests.Integration.Learning;
 
+[Collection("Sequential")]
 public class EnrolledCourseTests : BaseCoursesIntegrationTest
 {
     public EnrolledCourseTests(CoursesTestFactory factory) : base(factory) { }

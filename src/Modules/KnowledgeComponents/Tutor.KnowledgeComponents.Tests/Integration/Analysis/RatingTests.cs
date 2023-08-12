@@ -8,6 +8,7 @@ using Tutor.KnowledgeComponents.Infrastructure.Database;
 
 namespace Tutor.KnowledgeComponents.Tests.Integration.Analysis;
 
+[Collection("Sequential")]
 public class RatingTests : BaseKnowledgeComponentsIntegrationTest
 {
     public RatingTests(KnowledgeComponentsTestFactory factory) : base(factory) {}
