@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems;
+using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.CodeCompletionQuestions;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.MultiChoiceQuestions;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.MultiResponseQuestions;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems.ShortAnswerQuestions;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems;
+using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.CodeCompletionQuestions;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.MultiChoiceQuestions;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.ShortAnswerQuestions;
@@ -46,6 +48,13 @@ public class AssessmentItemsProfile : Profile
         CreateMap<MrqItemEvaluation, MrqItemEvaluationDto>()
             .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.FullItem.Text))
             .ForMember(dest => dest.Feedback, opt => opt.MapFrom(src => src.FullItem.Feedback));
+        #endregion
+
+        #region
+        CreateMap<Ccq, CcqDto>().ReverseMap();
+        CreateMap<CcqItem, CcqItemDto>().ReverseMap();
+        CreateMap<CcqSubmissionDto, CcqSubmission>();
+        CreateMap<CcqEvaluation, CcqEvaluationDto>();
         #endregion
     }
 }
