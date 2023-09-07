@@ -2,6 +2,6 @@
 
 public class CcqEvaluationDto : EvaluationDto
 {
-    public List<string> AcceptableAnswers { get; set; }
+    public List<CcqItemDto> Items { get; set; }
     public string Feedback { get; set; }
 }

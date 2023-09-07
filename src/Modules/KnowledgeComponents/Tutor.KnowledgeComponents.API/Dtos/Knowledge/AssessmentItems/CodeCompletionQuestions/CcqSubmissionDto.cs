@@ -2,5 +2,5 @@
 
 public class CcqSubmissionDto : SubmissionDto
 {
-    public string[] Answers { get; set; }
+    public CcqItemDto[] Items { get; set; }
 }

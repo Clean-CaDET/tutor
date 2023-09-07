@@ -24,16 +24,13 @@ public class Ccq : AssessmentItem
     private CcqEvaluation EvaluateCcq(CcqSubmission ccqSubmission)
     {
         var correctItems = 0.0;
-        for (var i = 0; i < ccqSubmission.Answers.Length; i++)
+        foreach (var submittedItem in ccqSubmission.Items)
         {
-            var item = Items.Find(a => a.Order == i + 1) ?? throw new ArgumentException("Invalid submission for item order: " + (i+1));
-            if (IsCorrectItemSubmission(item, ccqSubmission.Answers[i])) correctItems++;
+            var item = Items.Find(a => a.Order == submittedItem.Order) ?? throw new ArgumentException("Invalid submission for item order: " + submittedItem.Order);
+            if (IsCorrectItemSubmission(item, submittedItem.Answer)) correctItems++;
         }
 
-        return new CcqEvaluation(
-            correctItems / Items.Count,
-            Items.Select(a => a.Answer).ToList(),
-            Feedback);
+        return new CcqEvaluation(correctItems / Items.Count, Items, Feedback);
     }
 
     private static bool IsCorrectItemSubmission(CcqItem item, string submission)

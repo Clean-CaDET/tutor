@@ -2,17 +2,17 @@
 
 public class CcqEvaluation : Evaluation
 {
-    public List<string> AcceptableAnswers { get; }
+    public List<CcqItem> Items { get; }
     public string Feedback { get; set; }
-    public CcqEvaluation(double correctnessLevel, List<string> acceptableAnswers, string feedback) : base(correctnessLevel)
+    public CcqEvaluation(double correctnessLevel, List<CcqItem> items, string feedback) : base(correctnessLevel)
     {
-        AcceptableAnswers = acceptableAnswers;
+        Items = items;
         Feedback = feedback;
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        yield return AcceptableAnswers;
+        yield return Items;
         yield return Feedback;
     }
 }
