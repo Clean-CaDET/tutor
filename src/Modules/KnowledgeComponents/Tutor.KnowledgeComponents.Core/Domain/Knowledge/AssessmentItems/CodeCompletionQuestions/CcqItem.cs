@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using Tutor.BuildingBlocks.Core.Domain;
 
 namespace Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.CodeCompletionQuestions;
@@ -30,5 +31,14 @@ public class CcqItem : ValueObject
     public void HideAnswer()
     {
         Answer = string.Empty;
+    }
+
+    public bool IsCorrect(string submission)
+    {
+        if (!IgnoreSpace) return submission.Equals(Answer);
+
+        submission = Regex.Replace(submission, @"\s", "");
+        var answer= Regex.Replace(Answer, @"\s", "");
+        return submission.Equals(answer);
     }
 }

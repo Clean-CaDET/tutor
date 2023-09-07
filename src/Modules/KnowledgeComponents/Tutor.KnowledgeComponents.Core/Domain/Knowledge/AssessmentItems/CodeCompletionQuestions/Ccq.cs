@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.CodeCompletionQuestions;
+﻿namespace Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.CodeCompletionQuestions;
 
 public class Ccq : AssessmentItem
 {
@@ -27,19 +25,10 @@ public class Ccq : AssessmentItem
         foreach (var submittedItem in ccqSubmission.Items)
         {
             var item = Items.Find(a => a.Order == submittedItem.Order) ?? throw new ArgumentException("Invalid submission for item order: " + submittedItem.Order);
-            if (IsCorrectItemSubmission(item, submittedItem.Answer)) correctItems++;
+            if (item.IsCorrect(submittedItem.Answer)) correctItems++;
         }
 
         return new CcqEvaluation(correctItems / Items.Count, Items, Feedback);
-    }
-
-    private static bool IsCorrectItemSubmission(CcqItem item, string submission)
-    {
-        if (!item.IgnoreSpace) return submission.Equals(item.Answer);
-
-        submission = Regex.Replace(submission, @"\s", "");
-        var answer= Regex.Replace(item.Answer, @"\s", "");
-        return submission.Equals(answer);
     }
 
     public override AssessmentItem Clone()
