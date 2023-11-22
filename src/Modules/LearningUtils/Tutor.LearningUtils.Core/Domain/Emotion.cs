@@ -9,4 +9,3 @@ public class Emotion : Entity
     public DateTime TimeStamp { get; private set; } = DateTime.Now.ToUniversalTime();
     public string EmotionValue { get; set; } //U nedostatku inspiracije za imenovanje
 }
-
