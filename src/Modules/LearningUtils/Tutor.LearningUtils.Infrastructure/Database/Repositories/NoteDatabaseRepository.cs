@@ -11,7 +11,6 @@ public class NoteDatabaseRepository : CrudDatabaseRepository<Note, LearningUtils
     public List<Note> GetNotesByLearnerAndUnit(int learnerId, int unitId)
     {
         return DbContext.Notes
-            .Where(e => e.LearnerId == learnerId && e.UnitId == unitId)
-            .ToList();
+            .Where(e => e.LearnerId == learnerId && e.UnitId == unitId).ToList();
     }
 }
