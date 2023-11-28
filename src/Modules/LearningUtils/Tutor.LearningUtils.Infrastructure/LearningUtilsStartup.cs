@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Interceptors;
 using Tutor.LearningUtils.API.Public;
+using Tutor.LearningUtils.Core.Domain;
 using Tutor.LearningUtils.Core.Domain.RepositoryInterfaces;
 using Tutor.LearningUtils.Core.Mappers;
 using Tutor.LearningUtils.Core.UseCases;
@@ -34,6 +36,7 @@ public static class LearningUtilsStartup
         services.AddScoped<IFeedbackRepository, FeedbackDatabaseRepository>();
 
         services.AddScoped<ILearningUtilsUnitOfWork, LearningUtilsUnitOfWork>();
+        services.AddScoped(typeof(ICrudRepository<Emotion>), typeof(CrudDatabaseRepository<Emotion, LearningUtilsContext>));
         services.AddDbContext<LearningUtilsContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("learningUtils"),
                 x => x.MigrationsHistoryTable("__EFMigrationsHistory", "learningUtils")));
