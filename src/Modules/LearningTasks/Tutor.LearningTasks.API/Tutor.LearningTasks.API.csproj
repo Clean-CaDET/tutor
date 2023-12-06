@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\BuildingBlocks\Tutor.BuildingBlocks.Core\Tutor.BuildingBlocks.Core.csproj" />
+    <Folder Include="Dtos\" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\" />
-    <Folder Include="Interfaces\" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Tutor.BuildingBlocks.Core\Tutor.BuildingBlocks.Core.csproj" />
   </ItemGroup>
 
 </Project>

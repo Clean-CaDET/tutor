@@ -61,13 +61,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tutor.Architecture.Tests", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LearningTasks", "LearningTasks", "{22D2A76F-4D48-4F9E-AE3A-A913692DA705}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tutor.LearningTasks.API", "Tutor.LearningTasks.API\Tutor.LearningTasks.API.csproj", "{39AD1E17-8964-4D83-8183-9505FBB0F38A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tutor.LearningTasks.API", "src\Modules\LearningTasks\Tutor.LearningTasks.API\Tutor.LearningTasks.API.csproj", "{39AD1E17-8964-4D83-8183-9505FBB0F38A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tutor.LearningTasks.Core", "Tutor.LearningTasks.Core\Tutor.LearningTasks.Core.csproj", "{504B8249-E207-4537-B9E8-671A03D2E556}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tutor.LearningTasks.Core", "src\Modules\LearningTasks\Tutor.LearningTasks.Core\Tutor.LearningTasks.Core.csproj", "{504B8249-E207-4537-B9E8-671A03D2E556}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tutor.LearningTasks.Infrastructure", "Tutor.LearningTasks.Infrastructure\Tutor.LearningTasks.Infrastructure.csproj", "{F1D7A68B-6AF6-478C-84E5-74C53A88B07F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tutor.LearningTasks.Infrastructure", "src\Modules\LearningTasks\Tutor.LearningTasks.Infrastructure\Tutor.LearningTasks.Infrastructure.csproj", "{F1D7A68B-6AF6-478C-84E5-74C53A88B07F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tutor.LearningTasks.Tests", "Tutor.LearningTasks.Tests\Tutor.LearningTasks.Tests.csproj", "{599C84E8-CFE0-48D7-A730-788F46CB9CE4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tutor.LearningTasks.Tests", "src\Modules\LearningTasks\Tutor.LearningTasks.Tests\Tutor.LearningTasks.Tests.csproj", "{599C84E8-CFE0-48D7-A730-788F46CB9CE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

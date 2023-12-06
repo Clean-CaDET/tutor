@@ -22,13 +22,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\BuildingBlocks\Tutor.BuildingBlocks.Tests\Tutor.BuildingBlocks.Tests.csproj" />
-    <ProjectReference Include="..\src\Tutor.API\Tutor.API.csproj" />
+    <Folder Include="Integration\" />
+    <Folder Include="TestData\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Integration\" />
-    <Folder Include="TestData\" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Tutor.BuildingBlocks.Tests\Tutor.BuildingBlocks.Tests.csproj" />
+    <ProjectReference Include="..\..\..\Tutor.API\Tutor.API.csproj" />
   </ItemGroup>
 
 </Project>
