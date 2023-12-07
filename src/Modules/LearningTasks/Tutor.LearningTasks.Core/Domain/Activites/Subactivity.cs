@@ -6,4 +6,10 @@ public class Subactivity : Entity
 {
     public string Order { get; private set; }
     public Activity Activity { get; private set; }
+
+    public Subactivity(string order, Activity activity)
+    {
+        Order = order;
+        Activity = activity;
+    }
 }

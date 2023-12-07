@@ -10,5 +10,15 @@ public class LearningTask : AggregateRoot
     public DomainModel? DomainModel { get; private set; }
     public List<CaseStudy>? CaseStudies { get; private set; }
     public List<Step>? Steps { get; private set; }
+
+    public LearningTask(string name, string description, bool isTemplate, DomainModel? domainModel, List<CaseStudy>? caseStudies, List<Step>? steps)
+    {
+        Name = name;
+        Description = description;
+        this.isTemplate = isTemplate;
+        DomainModel = domainModel;
+        CaseStudies = caseStudies;
+        Steps = steps;
+    }
 }
 

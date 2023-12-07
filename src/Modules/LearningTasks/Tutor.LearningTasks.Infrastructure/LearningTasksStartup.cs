@@ -11,14 +11,4 @@ public static class LearningTasksStartup
         //SetupInfrastructure(services);
         return services;
     }
-
-    private static void SetupInfrastructure(IServiceCollection services)
-    {
-        throw new NotImplementedException();
-    }
-
-    private static void SetupCore(IServiceCollection services)
-    {
-        throw new NotImplementedException();
-    }
 }

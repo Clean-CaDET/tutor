@@ -5,5 +5,9 @@ namespace Tutor.LearningTasks.Core.Domain.Activites;
 public class Example : Entity
 {
     public string Description { get; private set; }
-    // TODO: add InstructionalItems
+
+    public Example(string description)
+    {
+        Description = description;
+    }
 }
