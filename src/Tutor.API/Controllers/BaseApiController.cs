@@ -1,4 +1,4 @@
-﻿using FluentResults;
+using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
@@ -11,6 +11,7 @@ public class BaseApiController : ControllerBase
     {
         var code = 500;
         if (ContainsErrorCode(errors, 400)) code = 400;
+        if (ContainsErrorCode(errors, 402)) code = 402;
         if (ContainsErrorCode(errors, 403)) code = 403;
         if (ContainsErrorCode(errors, 404)) code = 404;
         if (ContainsErrorCode(errors, 409)) code = 409;

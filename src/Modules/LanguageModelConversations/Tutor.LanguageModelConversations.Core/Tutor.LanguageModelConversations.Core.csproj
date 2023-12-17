@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\KnowledgeComponents\Tutor.KnowledgeComponents.API\Tutor.KnowledgeComponents.API.csproj" />
+    <ProjectReference Include="..\Tutor.LanguageModelConversations.API\Tutor.LanguageModelConversations.API.csproj" />
+  </ItemGroup>
+
+</Project>
