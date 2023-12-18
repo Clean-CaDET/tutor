@@ -5,11 +5,11 @@ namespace Tutor.LearningTasks.Core.Domain.Activites;
 public class Standard : Entity
 {
     public string Description { get; private set; }
-    public int maxPoints { get; private set; }
+    public int MaxPoints { get; private set; }
 
     public Standard(string description, int maxPoints)
     {
         Description = description;
-        this.maxPoints = maxPoints;
+        MaxPoints = maxPoints;
     }
 }
