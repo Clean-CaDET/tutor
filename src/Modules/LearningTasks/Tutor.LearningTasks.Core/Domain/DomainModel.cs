@@ -2,15 +2,18 @@
 
 namespace Tutor.LearningTasks.Core.Domain;
 
-public class DomainModel : Entity
+public class DomainModel : ValueObject
 {
     public string DetailInfo { get; private set; }
-    public int LearningTaskId { get; private set; }
 
-    public DomainModel(string detailInfo, int learningTaskId)
+    public DomainModel(string detailInfo)
     {
         DetailInfo = detailInfo;
-        LearningTaskId = learningTaskId;
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return DetailInfo;
     }
 }
 

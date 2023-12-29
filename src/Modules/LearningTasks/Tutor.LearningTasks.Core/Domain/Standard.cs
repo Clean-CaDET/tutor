@@ -1,6 +1,6 @@
 ﻿using Tutor.BuildingBlocks.Core.Domain;
 
-namespace Tutor.LearningTasks.Core.Domain.Activites;
+namespace Tutor.LearningTasks.Core.Domain;
 
 public class Standard : Entity
 {
@@ -13,3 +13,4 @@ public class Standard : Entity
         MaxPoints = maxPoints;
     }
 }
+

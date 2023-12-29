@@ -2,14 +2,20 @@
 
 namespace Tutor.LearningTasks.Core.Domain.Activites;
 
-public class Subactivity : Entity
+public class Subactivity : ValueObject
 {
     public int Order { get; private set; }
-    public Activity Activity { get; private set; }
+    public int ChildId { get; private set; }
 
-    public Subactivity(int order, Activity activity)
+    public Subactivity(int order, int childId)
     {
         Order = order;
-        Activity = activity;
+        ChildId = childId;
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Order;
+        yield return ChildId;
     }
 }
