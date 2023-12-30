@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Courses\Tutor.Courses.API\Tutor.Courses.API.csproj" />
     <ProjectReference Include="..\Tutor.LearningTasks.API\Tutor.LearningTasks.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\RepositoryInterfaces\" />
     <Folder Include="Mappers\" />
   </ItemGroup>
 

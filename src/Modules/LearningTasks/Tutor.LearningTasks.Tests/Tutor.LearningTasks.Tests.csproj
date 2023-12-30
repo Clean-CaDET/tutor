@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Integration\" />
-    <Folder Include="TestData\" />
   </ItemGroup>
 
   <ItemGroup>

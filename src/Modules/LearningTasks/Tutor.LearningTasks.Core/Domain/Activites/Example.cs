@@ -6,6 +6,8 @@ public class Example : Entity
 {
     public string Description { get; private set; }
 
+    private Example() { }
+
     public Example(string description)
     {
         Description = description;
