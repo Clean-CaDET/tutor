@@ -41,6 +41,14 @@ public class ActivityController : BaseApiController
         return CreateResponse(result);
     }
 
+    [HttpPut]
+    public ActionResult<ActivityDto> Update(int courseId, [FromBody] ActivityDto activity)
+    {
+        activity.CourseId = courseId;
+        var result = _activityService.Update(activity, User.InstructorId());
+        return CreateResponse(result);
+    }
+
     [HttpDelete("{id:int}")]
     public ActionResult Delete(int courseId, int id)
     {

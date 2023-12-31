@@ -18,7 +18,7 @@ public class LearningTasksContext : DbContext
         modelBuilder.Entity<Activity>()
             .HasMany(a => a.Examples)
             .WithOne()
-            .HasForeignKey("ActivityId");
+            .HasForeignKey(e => e.ActivityId);
 
         modelBuilder.Entity<Activity>().Property(a => a.Subactivities).HasColumnType("jsonb");
     }

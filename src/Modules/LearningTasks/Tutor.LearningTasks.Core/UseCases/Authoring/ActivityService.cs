@@ -13,16 +13,14 @@ public class ActivityService : CrudService<ActivityDto, Activity>, IActivityServ
 {
     private readonly IActivityRepository _activityRepository;
     private readonly IExampleRepository _exampleRepository;
-    private readonly IMapper _mapper;
     private readonly IAccessServices _accessServices;
 
-    public ActivityService(IActivityRepository activityRepository, IExampleRepository exampleRepository, IAccessServices accessService,
+    public ActivityService(IActivityRepository activityRepository, IExampleRepository exampleRepository, IAccessServices accessServices,
         ILearningTasksUnitOfWork unitOfWork, IMapper mapper) : base(activityRepository, unitOfWork, mapper)
     {
         _activityRepository = activityRepository;
         _exampleRepository = exampleRepository;
-        _mapper = mapper;
-        _accessServices = accessService;
+        _accessServices = accessServices;
     }
 
     public Result<ActivityDto> GetWithExamples(int id)
@@ -44,15 +42,26 @@ public class ActivityService : CrudService<ActivityDto, Activity>, IActivityServ
         if (activity.Subactivities?.Any(subactivity => Get(subactivity.ChildId).IsFailed) == true)
             return Result.Fail(FailureCode.NotFound);
 
-        SaveExamples(activity.Examples);
-
         return Create(activity);
     }
 
-    private void SaveExamples(List<ExampleDto>? examples)
+    public Result<ActivityDto> Update(ActivityDto activity, int instructorId)
     {
-        if(examples != null)
-            _exampleRepository.BulkCreate(examples.Select(_mapper.Map<ExampleDto, Example>).ToList());
+        if (!_accessServices.IsCourseOwner(activity.CourseId, instructorId))
+            return Result.Fail(FailureCode.Forbidden);
+
+        if (activity.Subactivities?.Any(subactivity => Get(subactivity.ChildId).IsFailed) == true)
+            return Result.Fail(FailureCode.NotFound);
+        
+        DeleteOldExamples(activity.Id);
+
+        return Update(activity);
+    }
+
+    private void DeleteOldExamples(int activityId)
+    {
+        List<Example> examples = _exampleRepository.GetActivityExamples(activityId);
+        examples.ForEach(_exampleRepository.Delete);
     }
 
     public Result Delete(int id, int courseId, int instructorId)

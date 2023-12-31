@@ -3,4 +3,7 @@ using Tutor.LearningTasks.Core.Domain.Activites;
 
 namespace Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 
-public interface IExampleRepository : ICrudRepository<Example> { }
+public interface IExampleRepository : ICrudRepository<Example> 
+{
+    List<Example> GetActivityExamples(int activityId);
+}

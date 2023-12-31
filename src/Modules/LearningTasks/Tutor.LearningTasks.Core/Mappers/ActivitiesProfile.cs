@@ -17,5 +17,4 @@ public class ActivitiesProfile : Profile
         CreateMap<SubactivityDto, Subactivity>();
         CreateMap<Subactivity, SubactivityDto>();
     }
-
 }

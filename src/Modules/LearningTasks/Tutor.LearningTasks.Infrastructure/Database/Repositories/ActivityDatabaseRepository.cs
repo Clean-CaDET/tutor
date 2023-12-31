@@ -9,11 +9,9 @@ public class ActivityDatabaseRepository : CrudDatabaseRepository<Activity, Learn
 {
     public ActivityDatabaseRepository(LearningTasksContext dbContext) : base(dbContext) {}
 
-    public Activity? GetWithExamples(int id)
+    public Activity GetWithExamples(int id)
     {
-        return DbContext.Activities
-             .Include(a => a.Examples)
-             .FirstOrDefault(a => a.Id == id);
+        return DbContext.Activities.Include(a => a.Examples).First(a => a.Id == id);
     }
 
     public List<Activity> GetCourseActivitiesWithExamples(int courseId)
