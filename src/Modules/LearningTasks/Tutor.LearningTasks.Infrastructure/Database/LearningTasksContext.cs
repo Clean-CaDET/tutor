@@ -1,26 +1,27 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tutor.LearningTasks.Core.Domain.Activites;
 
-namespace Tutor.LearningTasks.Infrastructure.Database;
-
-public class LearningTasksContext : DbContext
+namespace Tutor.LearningTasks.Infrastructure.Database
 {
-    public DbSet<Activity> Activities { get; set; }
-    public DbSet<Example> Examples { get; set; }
-
-    public LearningTasksContext(DbContextOptions<LearningTasksContext> options) : base(options) { }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    public class LearningTasksContext : DbContext
     {
-        modelBuilder.HasDefaultSchema("learningTasks");
-        modelBuilder.Entity<Activity>().Property(a => a.Guidance).HasColumnType("jsonb");
+        public DbSet<Activity> Activities { get; set; }
+        public DbSet<Example> Examples { get; set; }
 
-        modelBuilder.Entity<Activity>()
-            .HasMany(a => a.Examples)
-            .WithOne()
-            .HasForeignKey(e => e.ActivityId);
+        public LearningTasksContext(DbContextOptions<LearningTasksContext> options) : base(options) { }
 
-        modelBuilder.Entity<Activity>().Property(a => a.Subactivities).HasColumnType("jsonb");
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.HasDefaultSchema("learningTasks");
+            modelBuilder.Entity<Activity>().Property(a => a.Guidance).HasColumnType("jsonb");
+
+            modelBuilder.Entity<Activity>()
+                .HasMany(a => a.Examples)
+                .WithOne()
+                .HasForeignKey(e => e.ActivityId);
+
+            modelBuilder.Entity<Activity>().Property(a => a.Subactivities).HasColumnType("jsonb");
+        }
     }
 }
 

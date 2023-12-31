@@ -1,19 +1,20 @@
 ﻿using Tutor.BuildingBlocks.Core.Domain;
 
-namespace Tutor.LearningTasks.Core.Domain;
-
-public class DomainModel : ValueObject
+namespace Tutor.LearningTasks.Core.Domain
 {
-    public string DetailInfo { get; private set; }
-
-    public DomainModel(string detailInfo)
+    public class DomainModel : ValueObject
     {
-        DetailInfo = detailInfo;
-    }
+        public string DetailInfo { get; private set; }
 
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return DetailInfo;
+        public DomainModel(string detailInfo)
+        {
+            DetailInfo = detailInfo;
+        }
+
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return DetailInfo;
+        }
     }
 }
 
