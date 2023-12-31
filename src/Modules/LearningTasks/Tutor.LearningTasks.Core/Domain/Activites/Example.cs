@@ -4,7 +4,7 @@ namespace Tutor.LearningTasks.Core.Domain.Activites;
 
 public class Example : Entity
 {
-    public string Description { get; private set; }
+    public string? Description { get; private set; }
     public int ActivityId { get; private set; }
 
     private Example() { }

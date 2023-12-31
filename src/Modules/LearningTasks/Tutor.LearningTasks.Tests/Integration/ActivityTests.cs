@@ -20,7 +20,9 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
 
-        var result = ((OkObjectResult) controller.Get(-1).Result).Value as ActivityDto;
+        var actionResult = controller.Get(-1).Result;
+        var okObjectResult = actionResult as OkObjectResult;
+        var result = okObjectResult?.Value as ActivityDto;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
@@ -47,7 +49,9 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
 
-        var result = ((OkObjectResult) controller.GetByCourse(-1).Result).Value as List<ActivityDto>;
+        var actionResult = controller.GetByCourse(-1).Result;
+        var okObjectResult = actionResult as OkObjectResult;
+        var result = okObjectResult?.Value as List<ActivityDto>;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
@@ -69,7 +73,9 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         };
         dbContext.Database.BeginTransaction();
 
-        var result = ((OkObjectResult) controller.Create(-1, newEntity).Result).Value as ActivityDto;
+        var actionResult = controller.Create(-1, newEntity).Result;
+        var okObjectResult = actionResult as OkObjectResult;
+        var result = okObjectResult?.Value as ActivityDto;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
@@ -106,11 +112,12 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         };
         dbContext.Database.BeginTransaction();
 
-        ActionResult<ActivityDto> result = controller.Create(-2, newEntity).Result;
+        var actionResult = controller.Create(-2, newEntity).Result;
+        var objectResult = actionResult as ObjectResult;
 
         dbContext.ChangeTracker.Clear();
-        result.ShouldNotBeNull();
-        (result.Result as ObjectResult)?.StatusCode.ShouldBe(403);
+        objectResult.ShouldNotBeNull();
+        objectResult.StatusCode.ShouldBe(403);
     }
 
     [Fact]
@@ -128,11 +135,12 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         };
         dbContext.Database.BeginTransaction();
 
-        ActionResult<ActivityDto>? result = controller.Create(-1, newEntity).Result;
+        var actionResult = controller.Create(-1, newEntity).Result;
+        var objectResult = actionResult as ObjectResult;
 
         dbContext.ChangeTracker.Clear();
-        result.ShouldNotBeNull();
-        (result.Result as ObjectResult)?.StatusCode.ShouldBe(404);
+        objectResult.ShouldNotBeNull();
+        objectResult.StatusCode.ShouldBe(404);
     }
 
     [Fact]
@@ -152,7 +160,9 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         };
         dbContext.Database.BeginTransaction();
 
-        var result = ((OkObjectResult) controller.Update(-1, newEntity).Result).Value as ActivityDto;
+        var actionResult = controller.Update(-1, newEntity).Result;
+        var okObjectResult = actionResult as OkObjectResult;
+        var result = okObjectResult?.Value as ActivityDto;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
@@ -196,11 +206,12 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         };
         dbContext.Database.BeginTransaction();
 
-        ActionResult<ActivityDto> result = controller.Update(-2, newEntity).Result;
+        var actionResult = controller.Update(-2, newEntity).Result;
+        var objectResult = actionResult as ObjectResult;
 
         dbContext.ChangeTracker.Clear();
-        result.ShouldNotBeNull();
-        (result.Result as ObjectResult)?.StatusCode.ShouldBe(403);
+        objectResult.ShouldNotBeNull();
+        objectResult.StatusCode.ShouldBe(403);
         var storedEntity = dbContext.Activities.Include(a => a.Examples).FirstOrDefault(i => i.Id == newEntity.Id);
         storedEntity.ShouldNotBeNull();
         storedEntity.Name.ShouldNotBe("test");
@@ -222,11 +233,12 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         };
         dbContext.Database.BeginTransaction();
 
-        ActionResult<ActivityDto> result = controller.Update(-1, newEntity).Result;
+        var actionResult = controller.Update(-1, newEntity).Result;
+        var objectResult = actionResult as ObjectResult;
 
         dbContext.ChangeTracker.Clear();
-        result.ShouldNotBeNull();
-        (result.Result as ObjectResult)?.StatusCode.ShouldBe(404);
+        objectResult.ShouldNotBeNull();
+        objectResult.StatusCode.ShouldBe(404);
         var storedEntity = dbContext.Activities.Include(a => a.Examples).FirstOrDefault(i => i.Id == newEntity.Id);
         storedEntity.ShouldNotBeNull();
         storedEntity.Name.ShouldNotBe("test");
