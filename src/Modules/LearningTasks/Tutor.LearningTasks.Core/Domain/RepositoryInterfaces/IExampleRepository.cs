@@ -1,5 +1,5 @@
 ﻿using Tutor.BuildingBlocks.Core.UseCases;
-using Tutor.LearningTasks.Core.Domain.Activites;
+using Tutor.LearningTasks.Core.Domain.Activities;
 
 namespace Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 

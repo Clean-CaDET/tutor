@@ -1,6 +1,6 @@
 ﻿using Tutor.BuildingBlocks.Core.Domain;
 
-namespace Tutor.LearningTasks.Core.Domain.Activites;
+namespace Tutor.LearningTasks.Core.Domain.Activities;
 
 public class Subactivity : ValueObject
 {

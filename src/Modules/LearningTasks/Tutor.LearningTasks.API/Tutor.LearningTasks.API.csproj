@@ -13,10 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dtos\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Tutor.BuildingBlocks.Core\Tutor.BuildingBlocks.Core.csproj" />
   </ItemGroup>
 

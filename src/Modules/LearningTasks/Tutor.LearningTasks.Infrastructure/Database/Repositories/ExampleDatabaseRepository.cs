@@ -1,5 +1,5 @@
 ﻿using Tutor.BuildingBlocks.Infrastructure.Database;
-using Tutor.LearningTasks.Core.Domain.Activites;
+using Tutor.LearningTasks.Core.Domain.Activities;
 using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.LearningTasks.Infrastructure.Database.Repositories;

@@ -4,7 +4,7 @@ using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.LearningTasks.API.Dtos.Activities;
 using Tutor.LearningTasks.API.Public;
 using Tutor.LearningTasks.API.Public.Authoring;
-using Tutor.LearningTasks.Core.Domain.Activites;
+using Tutor.LearningTasks.Core.Domain.Activities;
 using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.LearningTasks.Core.UseCases.Authoring;
