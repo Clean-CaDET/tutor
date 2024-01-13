@@ -48,6 +48,9 @@ public class CrudDatabaseRepository<TEntity, TDbContext> : ICrudRepository<TEnti
 
     public TEntity Update(TEntity entity)
     {
+        var existingEntity = _dbSet.FirstOrDefault(e => e.Id == entity.Id);
+        if (existingEntity != null)
+            _dbSet.Remove(existingEntity);
         DbContext.Update(entity);
         return entity;
     }

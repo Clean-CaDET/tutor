@@ -12,14 +12,12 @@ namespace Tutor.LearningTasks.Core.UseCases.Authoring;
 public class ActivityService : CrudService<ActivityDto, Activity>, IActivityService
 {
     private readonly IActivityRepository _activityRepository;
-    private readonly IExampleRepository _exampleRepository;
     private readonly IAccessServices _accessServices;
 
-    public ActivityService(IActivityRepository activityRepository, IExampleRepository exampleRepository, IAccessServices accessServices,
+    public ActivityService(IActivityRepository activityRepository, IAccessServices accessServices,
         ILearningTasksUnitOfWork unitOfWork, IMapper mapper) : base(activityRepository, unitOfWork, mapper)
     {
         _activityRepository = activityRepository;
-        _exampleRepository = exampleRepository;
         _accessServices = accessServices;
     }
 
@@ -52,16 +50,11 @@ public class ActivityService : CrudService<ActivityDto, Activity>, IActivityServ
 
         if (activity.Subactivities?.Any(subactivity => Get(subactivity.ChildId).IsFailed) == true)
             return Result.Fail(FailureCode.NotFound);
-        
-        DeleteOldExamples(activity.Id);
 
-        return Update(activity);
-    }
+        Activity existingActivity = _activityRepository.GetWithExamples(activity.Id);
+        existingActivity = MapToDomain(activity);
 
-    private void DeleteOldExamples(int activityId)
-    {
-        List<Example> examples = _exampleRepository.GetActivityExamples(activityId);
-        examples.ForEach(_exampleRepository.Delete);
+        return Update(MapToDto(existingActivity));
     }
 
     public Result Delete(int id, int courseId, int instructorId)
