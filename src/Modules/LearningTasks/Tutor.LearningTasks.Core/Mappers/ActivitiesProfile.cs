@@ -8,13 +8,9 @@ public class ActivitiesProfile : Profile
 {
     public ActivitiesProfile()
     {
-        CreateMap<ActivityDto, Activity>();
-        CreateMap<Activity, ActivityDto>();
-        CreateMap<GuidanceDto, Guidance>();
-        CreateMap<Guidance, GuidanceDto>();
-        CreateMap<ExampleDto, Example>();
-        CreateMap<Example, ExampleDto>();
-        CreateMap<SubactivityDto, Subactivity>();
-        CreateMap<Subactivity, SubactivityDto>();
+        CreateMap<ActivityDto, Activity>().ReverseMap();
+        CreateMap<GuidanceDto, Guidance>().ReverseMap();
+        CreateMap<ExampleDto, Example>().ReverseMap();
+        CreateMap<SubactivityDto, Subactivity>().ReverseMap();
     }
 }

@@ -4,15 +4,15 @@ namespace Tutor.LearningTasks.Core.Domain;
 
 public class DomainModel : ValueObject
 {
-    public string DetailInfo { get; private set; }
-
-    public DomainModel(string detailInfo)
+    public string Description { get; private set; }
+    
+    public DomainModel(string description)
     {
-        DetailInfo = detailInfo;
+        Description = description;
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        yield return DetailInfo;
+        yield return Description;
     }
 }

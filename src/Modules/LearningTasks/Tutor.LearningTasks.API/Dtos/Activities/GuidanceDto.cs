@@ -2,5 +2,5 @@
 
 public class GuidanceDto
 {
-    public required string DetailInfo { get; set; }
+    public required string Description { get; set; }
 }

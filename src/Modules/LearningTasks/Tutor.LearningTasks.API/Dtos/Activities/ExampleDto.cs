@@ -2,6 +2,6 @@
 
 public class ExampleDto
 {
-    public int Id { get; set; }
+    public required string Code { get; set; }
     public required string Description { get; set; }
 }

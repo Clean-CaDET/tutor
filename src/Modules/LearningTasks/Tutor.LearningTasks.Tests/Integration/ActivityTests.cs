@@ -29,7 +29,7 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         result.Id.ShouldBe(-1);
         result.Name.ShouldBe("Activity1");
         result.CourseId.ShouldBe(-1);
-        result.Guidance.DetailInfo.ShouldBe("detailInfo1");
+        result.Guidance.Description.ShouldBe("description1");
         result.Subactivities.ShouldNotBeNull();
         result.Subactivities.Count.ShouldBe(2);
         result.Subactivities[0].Order.ShouldBe(1);
@@ -38,7 +38,9 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         result.Subactivities[1].ChildId.ShouldBe(-4);
         result.Examples.ShouldNotBeNull();
         result.Examples.Count.ShouldBe(2);
+        result.Examples[0].Code.ShouldBe("C1A1E1");
         result.Examples[0].Description.ShouldBe("Description1");
+        result.Examples[1].Code.ShouldBe("C1A1E2");
         result.Examples[1].Description.ShouldBe("Description2");
     }
 
@@ -67,9 +69,9 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         var newEntity = new ActivityDto
         {
             Name = "test",
-            Guidance = new GuidanceDto { DetailInfo = "detailInfo" },
+            Guidance = new GuidanceDto { Description = "description" },
             Subactivities = new List<SubactivityDto> { new SubactivityDto { ChildId = -6, Order = 1 } },
-            Examples = new List<ExampleDto> { new ExampleDto { Description = "test" } }
+            Examples = new List<ExampleDto> { new ExampleDto { Code = "C1A8E1", Description = "test" } }
         };
         dbContext.Database.BeginTransaction();
 
@@ -81,19 +83,21 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         result.ShouldNotBeNull();
         result.Name.ShouldBe(newEntity.Name);
         result.CourseId.ShouldBe(newEntity.CourseId);
-        result.Guidance.DetailInfo.ShouldBe(newEntity.Guidance.DetailInfo);
+        result.Guidance.Description.ShouldBe(newEntity.Guidance.Description);
         result.Subactivities.ShouldNotBeNull();
         result.Subactivities.Count.ShouldBe(1);
         result.Subactivities[0].Order.ShouldBe(newEntity.Subactivities[0].Order);
         result.Subactivities[0].ChildId.ShouldBe(newEntity.Subactivities[0].ChildId);
         result.Examples.ShouldNotBeNull();
         result.Examples.Count.ShouldBe(1);
+        result.Examples[0].Code.ShouldBe(newEntity.Examples[0].Code);
         result.Examples[0].Description.ShouldBe(newEntity.Examples[0].Description);
-        var storedEntity = dbContext.Activities.Include(a => a.Examples).FirstOrDefault(i => i.Id == result.Id);
+        var storedEntity = dbContext.Activities.FirstOrDefault(i => i.Id == result.Id);
         storedEntity.ShouldNotBeNull();
         storedEntity.Name.ShouldBe(newEntity.Name);
         storedEntity.Examples.ShouldNotBeNull();
         storedEntity.Examples.Count.ShouldBe(1);
+        storedEntity.Examples[0].Code.ShouldBe(result.Examples[0].Code);
         storedEntity.Examples[0].Description.ShouldBe(result.Examples[0].Description);
     }
 
@@ -106,9 +110,9 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         var newEntity = new ActivityDto
         {
             Name = "test",
-            Guidance = new GuidanceDto { DetailInfo = "detailInfo" },
+            Guidance = new GuidanceDto { Description = "detailInfo" },
             Subactivities = new List<SubactivityDto> { new SubactivityDto { ChildId = -6, Order = 1 } },
-            Examples = new List<ExampleDto> { new ExampleDto { Description = "test" } }
+            Examples = new List<ExampleDto> { new ExampleDto { Code = "C1A9E2", Description = "test" } }
         };
         dbContext.Database.BeginTransaction();
 
@@ -129,9 +133,9 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         var newEntity = new ActivityDto
         {
             Name = "test",
-            Guidance = new GuidanceDto { DetailInfo = "detailInfo" },
+            Guidance = new GuidanceDto { Description = "detailInfo" },
             Subactivities = new List<SubactivityDto> { new SubactivityDto { ChildId = 0, Order = 1 } },
-            Examples = new List<ExampleDto> { new ExampleDto { Description = "test" } }
+            Examples = new List<ExampleDto> { new ExampleDto { Code = "C1A10E2", Description = "test" } }
         };
         dbContext.Database.BeginTransaction();
 
@@ -153,10 +157,10 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         {
             Id = -1,
             Name = "test2",
-            Guidance = new GuidanceDto { DetailInfo = "detailInfo2" },
+            Guidance = new GuidanceDto { Description = "detailInfo2" },
             Subactivities = new List<SubactivityDto> { new SubactivityDto { ChildId = -6, Order = 1 } },
-            Examples = new List<ExampleDto> { new ExampleDto { Id = -1, Description = "NewDescription1" }, 
-                new ExampleDto { Description = "NewDescription"} }
+            Examples = new List<ExampleDto> { new ExampleDto { Code = "C1A1E2", Description = "NewDescription1" }, 
+                new ExampleDto { Code = "C1A1E3", Description = "NewDescription"} }
         };
         dbContext.Database.BeginTransaction();
 
@@ -169,14 +173,14 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         result.Id.ShouldBe(-1);
         result.Name.ShouldBe(newEntity.Name);
         result.CourseId.ShouldBe(newEntity.CourseId);
-        result.Guidance.DetailInfo.ShouldBe(newEntity.Guidance.DetailInfo);
+        result.Guidance.Description.ShouldBe(newEntity.Guidance.Description);
         result.Subactivities.ShouldNotBeNull();
         result.Subactivities.Count.ShouldBe(1);
         result.Examples.ShouldNotBeNull();
         result.Examples.Count.ShouldBe(2);
         result.Examples[0].Description.ShouldBe(newEntity.Examples[0].Description);
         result.Examples[1].Description.ShouldBe(newEntity.Examples[1].Description);
-        var storedEntity = dbContext.Activities.Include(a => a.Examples).FirstOrDefault(i => i.Id == result.Id);
+        var storedEntity = dbContext.Activities.FirstOrDefault(i => i.Id == result.Id);
         storedEntity.ShouldNotBeNull();
         storedEntity.Name.ShouldBe(result.Name);
         storedEntity.Subactivities.ShouldNotBeNull();
@@ -185,8 +189,9 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         storedEntity.Subactivities[0].Order.ShouldBe(result.Subactivities[0].Order);
         storedEntity.Examples.ShouldNotBeNull();
         storedEntity.Examples.Count.ShouldBe(2);
-        storedEntity.Examples[0].Id.ShouldBe(-1);
+        storedEntity.Examples[0].Code.ShouldBe("C1A1E2");
         storedEntity.Examples[0].Description.ShouldBe(result.Examples[0].Description);
+        storedEntity.Examples[1].Code.ShouldBe("C1A1E3");
         storedEntity.Examples[1].Description.ShouldBe(result.Examples[1].Description);
     }
 
@@ -200,9 +205,9 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         {
             Id = -7,
             Name = "test",
-            Guidance = new GuidanceDto { DetailInfo = "detailInfo" },
+            Guidance = new GuidanceDto { Description = "detailInfo" },
             Subactivities = new List<SubactivityDto> { new SubactivityDto { ChildId = -6, Order = 1 } },
-            Examples = new List<ExampleDto> { new ExampleDto { Description = "test" } }
+            Examples = new List<ExampleDto> { new ExampleDto { Code = "C2A7E1", Description = "test" } }
         };
         dbContext.Database.BeginTransaction();
 
@@ -212,7 +217,7 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         dbContext.ChangeTracker.Clear();
         objectResult.ShouldNotBeNull();
         objectResult.StatusCode.ShouldBe(403);
-        var storedEntity = dbContext.Activities.Include(a => a.Examples).FirstOrDefault(i => i.Id == newEntity.Id);
+        var storedEntity = dbContext.Activities.FirstOrDefault(i => i.Id == newEntity.Id);
         storedEntity.ShouldNotBeNull();
         storedEntity.Name.ShouldNotBe("test");
     }
@@ -227,9 +232,9 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         {
             Id = -1,
             Name = "test",
-            Guidance = new GuidanceDto { DetailInfo = "detailInfo" },
+            Guidance = new GuidanceDto { Description = "detailInfo" },
             Subactivities = new List<SubactivityDto> { new SubactivityDto { ChildId = 0, Order = 1 } },
-            Examples = new List<ExampleDto> { new ExampleDto { Description = "test" } }
+            Examples = new List<ExampleDto> { new ExampleDto { Code = "C1A1E1", Description = "test" } }
         };
         dbContext.Database.BeginTransaction();
 
@@ -239,7 +244,7 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         dbContext.ChangeTracker.Clear();
         objectResult.ShouldNotBeNull();
         objectResult.StatusCode.ShouldBe(404);
-        var storedEntity = dbContext.Activities.Include(a => a.Examples).FirstOrDefault(i => i.Id == newEntity.Id);
+        var storedEntity = dbContext.Activities.FirstOrDefault(i => i.Id == newEntity.Id);
         storedEntity.ShouldNotBeNull();
         storedEntity.Name.ShouldNotBe("test");
     }

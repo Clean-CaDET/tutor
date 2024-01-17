@@ -5,6 +5,5 @@ namespace Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 
 public interface IActivityRepository : ICrudRepository<Activity>
 {
-    Activity GetWithExamples(int id);
-    List<Activity> GetCourseActivitiesWithExamples(int courseId);
+    List<Activity> GetCourseActivities(int courseId);
 }

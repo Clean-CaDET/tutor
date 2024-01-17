@@ -4,15 +4,15 @@ namespace Tutor.LearningTasks.Core.Domain.Activities;
 
 public class Guidance : ValueObject
 {
-    public string DetailInfo { get; private set; }
+    public string Description { get; private set; }
 
-    public Guidance(string detailInfo)
+    public Guidance(string description)
     {
-        DetailInfo = detailInfo;
+        Description = description;
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        yield return DetailInfo;
+        yield return Description;
     }
 }

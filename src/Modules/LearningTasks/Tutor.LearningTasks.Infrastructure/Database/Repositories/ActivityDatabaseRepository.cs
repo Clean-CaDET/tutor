@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Tutor.BuildingBlocks.Infrastructure.Database;
+﻿using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.LearningTasks.Core.Domain.Activities;
 using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 
@@ -9,16 +8,8 @@ public class ActivityDatabaseRepository : CrudDatabaseRepository<Activity, Learn
 {
     public ActivityDatabaseRepository(LearningTasksContext dbContext) : base(dbContext) {}
 
-    public Activity GetWithExamples(int id)
+    public List<Activity> GetCourseActivities(int courseId)
     {
-        return DbContext.Activities.Include(a => a.Examples).First(a => a.Id == id);
-    }
-
-    public List<Activity> GetCourseActivitiesWithExamples(int courseId)
-    {
-        var activitiesWithExamples = DbContext.Activities
-            .Include(a => a.Examples)
-            .ToList();
-        return activitiesWithExamples.Where(a => a.CourseId == courseId).ToList();
+        return DbContext.Activities.Where(a => a.CourseId == courseId).ToList();
     }
 }

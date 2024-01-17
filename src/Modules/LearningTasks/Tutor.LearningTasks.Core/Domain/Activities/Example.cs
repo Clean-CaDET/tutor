@@ -2,16 +2,20 @@
 
 namespace Tutor.LearningTasks.Core.Domain.Activities;
 
-public class Example : Entity
+public class Example : ValueObject
 {
-    public string? Description { get; private set; }
-    public int ActivityId { get; private set; }
+    public string Code { get; private set; }
+    public string Description { get; private set; }
 
-    private Example() { }
-
-    public Example(string description, int activityId)
+    public Example(string code, string description)
     {
+        Code = code;
         Description = description;
-        ActivityId = activityId;
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Code;
+        yield return Description;
     }
 }

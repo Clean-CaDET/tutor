@@ -21,14 +21,9 @@ public class ActivityService : CrudService<ActivityDto, Activity>, IActivityServ
         _accessServices = accessServices;
     }
 
-    public Result<ActivityDto> GetWithExamples(int id)
+    public Result<List<ActivityDto>> GetByCourse(int courseId)
     {
-        return MapToDto(_activityRepository.GetWithExamples(id));
-    }
-
-    public Result<List<ActivityDto>> GetWithExamplesByCourse(int courseId)
-    {
-        List<Activity> activities = _activityRepository.GetCourseActivitiesWithExamples(courseId);
+        List<Activity> activities = _activityRepository.GetCourseActivities(courseId);
         return MapToDto(activities);
     }
 
@@ -37,7 +32,7 @@ public class ActivityService : CrudService<ActivityDto, Activity>, IActivityServ
         if (!_accessServices.IsCourseOwner(activity.CourseId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        if (activity.Subactivities?.Any(subactivity => Get(subactivity.ChildId).IsFailed) == true)
+        if (activity.Subactivities?.Any(subactivity => base.Get(subactivity.ChildId).IsFailed) == true)
             return Result.Fail(FailureCode.NotFound);
 
         return Create(activity);
@@ -48,18 +43,15 @@ public class ActivityService : CrudService<ActivityDto, Activity>, IActivityServ
         if (!_accessServices.IsCourseOwner(activity.CourseId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        if (activity.Subactivities?.Any(subactivity => Get(subactivity.ChildId).IsFailed) == true)
+        if (activity.Subactivities?.Any(subactivity => base.Get(subactivity.ChildId).IsFailed) == true)
             return Result.Fail(FailureCode.NotFound);
 
-        Activity existingActivity = _activityRepository.GetWithExamples(activity.Id);
-        existingActivity = MapToDomain(activity);
-
-        return Update(MapToDto(existingActivity));
+        return Update(activity);
     }
 
     public Result Delete(int id, int courseId, int instructorId)
     {
-        bool isSubactivity = GetWithExamplesByCourse(courseId).Value.Any(activity => 
+        bool isSubactivity = GetByCourse(courseId).Value.Any(activity => 
         activity.Subactivities?.Any(subactivity => subactivity.ChildId == id) == true);
         if(isSubactivity)
             return Result.Fail(FailureCode.InvalidArgument);

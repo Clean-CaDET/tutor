@@ -20,7 +20,7 @@ public class ActivityController : BaseApiController
     [HttpGet("{id:int}")]
     public ActionResult<ActivityDto> Get(int id)
     {
-        var result = _activityService.GetWithExamples(id);
+        var result = _activityService.Get(id);
         if(result == null)
             return NotFound(result);
         return CreateResponse(result);
@@ -29,7 +29,7 @@ public class ActivityController : BaseApiController
     [HttpGet]
     public ActionResult<List<ActivityDto>> GetByCourse(int courseId)
     {
-        var result = _activityService.GetWithExamplesByCourse(courseId);
+        var result = _activityService.GetByCourse(courseId);
         return CreateResponse(result);
     }
 
