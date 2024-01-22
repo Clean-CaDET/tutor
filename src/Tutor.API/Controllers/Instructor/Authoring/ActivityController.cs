@@ -20,9 +20,7 @@ public class ActivityController : BaseApiController
     [HttpGet("{id:int}")]
     public ActionResult<ActivityDto> Get(int id)
     {
-        var result = _activityService.Get(id);
-        if(result == null)
-            return NotFound(result);
+        var result = _activityService.Get(id); 
         return CreateResponse(result);
     }
 
@@ -30,6 +28,13 @@ public class ActivityController : BaseApiController
     public ActionResult<List<ActivityDto>> GetByCourse(int courseId)
     {
         var result = _activityService.GetByCourse(courseId);
+        return CreateResponse(result);
+    }
+
+    [HttpGet("{id:int}/subactivities")]
+    public ActionResult<List<ActivityDto>> GetSubactivities(int id)
+    {
+        var result = _activityService.GetSubactivities(id);
         return CreateResponse(result);
     }
 

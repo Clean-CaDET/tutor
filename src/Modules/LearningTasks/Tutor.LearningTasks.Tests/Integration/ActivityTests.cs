@@ -61,6 +61,24 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
     }
 
     [Fact]
+    public void GetSubactivities()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+
+        var actionResult = controller.GetSubactivities(-1).Result;
+        var okObjectResult = actionResult as OkObjectResult;
+        var result = okObjectResult?.Value as List<ActivityDto>;
+
+        dbContext.ChangeTracker.Clear();
+        result.ShouldNotBeNull();
+        result.Count.ShouldBe(2);
+        result[0].Id.ShouldBe(-3);
+        result[1].Id.ShouldBe(-4);
+    }
+
+    [Fact]
     public void Creates()
     {
         using var scope = Factory.Services.CreateScope();

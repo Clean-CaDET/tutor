@@ -27,12 +27,21 @@ public class ActivityService : CrudService<ActivityDto, Activity>, IActivityServ
         return MapToDto(activities);
     }
 
+    public Result<List<ActivityDto>> GetSubactivities(int id)
+    {
+        if (Get(id).IsFailed)
+            return Result.Fail(FailureCode.NotFound);
+
+        List<Activity> activities = _activityRepository.GetSubactivities(id);
+        return MapToDto(activities);
+    }
+
     public Result<ActivityDto> Create(ActivityDto activity, int instructorId)
     {
         if (!_accessServices.IsCourseOwner(activity.CourseId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        if (activity.Subactivities?.Any(subactivity => base.Get(subactivity.ChildId).IsFailed) == true)
+        if (activity.Subactivities?.Any(subactivity => Get(subactivity.ChildId).IsFailed) == true)
             return Result.Fail(FailureCode.NotFound);
 
         return Create(activity);
@@ -43,7 +52,7 @@ public class ActivityService : CrudService<ActivityDto, Activity>, IActivityServ
         if (!_accessServices.IsCourseOwner(activity.CourseId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        if (activity.Subactivities?.Any(subactivity => base.Get(subactivity.ChildId).IsFailed) == true)
+        if (activity.Subactivities?.Any(subactivity => Get(subactivity.ChildId).IsFailed) == true)
             return Result.Fail(FailureCode.NotFound);
 
         return Update(activity);
