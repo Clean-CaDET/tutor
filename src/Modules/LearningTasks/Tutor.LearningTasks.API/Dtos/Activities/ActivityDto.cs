@@ -3,6 +3,7 @@
 public class ActivityDto
 {
     public int Id { get; set; }
+    public required string Code { get; set; }
     public int CourseId { get; set; }
     public required string Name { get; set; } 
     public required GuidanceDto Guidance { get; set; }

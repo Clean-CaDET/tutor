@@ -31,13 +31,6 @@ public class ActivityController : BaseApiController
         return CreateResponse(result);
     }
 
-    [HttpGet("{id:int}/subactivities")]
-    public ActionResult<List<ActivityDto>> GetSubactivities(int id)
-    {
-        var result = _activityService.GetSubactivities(id);
-        return CreateResponse(result);
-    }
-
     [HttpPost]
     public ActionResult<ActivityDto> Create(int courseId, [FromBody] ActivityDto activity)
     {

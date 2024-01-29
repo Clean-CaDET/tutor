@@ -12,10 +12,4 @@ public class ActivityDatabaseRepository : CrudDatabaseRepository<Activity, Learn
     {
         return DbContext.Activities.Where(a => a.CourseId == courseId).ToList();
     }
-
-    public List<Activity> GetSubactivities(int activityId)
-    {
-        var activity = Get(activityId);
-        return DbContext.Activities.Where(a => activity.Subactivities.Select(sa => sa.ChildId).Contains(a.Id)).ToList();
-    }
 }

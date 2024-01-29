@@ -27,15 +27,6 @@ public class ActivityService : CrudService<ActivityDto, Activity>, IActivityServ
         return MapToDto(activities);
     }
 
-    public Result<List<ActivityDto>> GetSubactivities(int id)
-    {
-        if (Get(id).IsFailed)
-            return Result.Fail(FailureCode.NotFound);
-
-        List<Activity> activities = _activityRepository.GetSubactivities(id);
-        return MapToDto(activities);
-    }
-
     public Result<ActivityDto> Create(ActivityDto activity, int instructorId)
     {
         if (!_accessServices.IsCourseOwner(activity.CourseId, instructorId))

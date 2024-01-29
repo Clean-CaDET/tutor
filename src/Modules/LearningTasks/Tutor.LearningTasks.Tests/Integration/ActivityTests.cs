@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Instructor.Authoring;
@@ -27,6 +26,7 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);
+        result.Code.ShouldBe("C1-A1");
         result.Name.ShouldBe("Activity1");
         result.CourseId.ShouldBe(-1);
         result.Guidance.Description.ShouldBe("description1");
@@ -61,24 +61,6 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
     }
 
     [Fact]
-    public void GetSubactivities()
-    {
-        using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope);
-        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
-
-        var actionResult = controller.GetSubactivities(-1).Result;
-        var okObjectResult = actionResult as OkObjectResult;
-        var result = okObjectResult?.Value as List<ActivityDto>;
-
-        dbContext.ChangeTracker.Clear();
-        result.ShouldNotBeNull();
-        result.Count.ShouldBe(2);
-        result[0].Id.ShouldBe(-3);
-        result[1].Id.ShouldBe(-4);
-    }
-
-    [Fact]
     public void Creates()
     {
         using var scope = Factory.Services.CreateScope();
@@ -86,6 +68,7 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
         var newEntity = new ActivityDto
         {
+            Code = "C1-A8",
             Name = "test",
             Guidance = new GuidanceDto { Description = "description" },
             Subactivities = new List<SubactivityDto> { new SubactivityDto { ChildId = -6, Order = 1 } },
@@ -99,6 +82,7 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
+        result.Code.ShouldBe(newEntity.Code);
         result.Name.ShouldBe(newEntity.Name);
         result.CourseId.ShouldBe(newEntity.CourseId);
         result.Guidance.Description.ShouldBe(newEntity.Guidance.Description);
@@ -120,6 +104,30 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
     }
 
     [Fact]
+    public void Creates_with_existing_value_for_code()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+        var newEntity = new ActivityDto
+        {
+            Code = "C1-A1",
+            Name = "test",
+            Guidance = new GuidanceDto { Description = "description" },
+            Subactivities = new List<SubactivityDto> { new SubactivityDto { ChildId = -6, Order = 1 } },
+            Examples = new List<ExampleDto> { new ExampleDto { Code = "C1A8E1", Description = "test" } }
+        };
+        dbContext.Database.BeginTransaction();
+
+        var actionResult = controller.Create(-1, newEntity).Result;
+        var objectResult = actionResult as ObjectResult;
+
+        dbContext.ChangeTracker.Clear();
+        objectResult.ShouldNotBeNull();
+        objectResult.StatusCode.ShouldBe(409);
+    }
+
+    [Fact]
     public void Wrong_instructor_creates_activity_returns_forbidden()
     {
         using var scope = Factory.Services.CreateScope();
@@ -127,6 +135,7 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
         var newEntity = new ActivityDto
         {
+            Code = "C1-A9",
             Name = "test",
             Guidance = new GuidanceDto { Description = "detailInfo" },
             Subactivities = new List<SubactivityDto> { new SubactivityDto { ChildId = -6, Order = 1 } },
@@ -150,6 +159,7 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
         var newEntity = new ActivityDto
         {
+            Code = "C1-A10",
             Name = "test",
             Guidance = new GuidanceDto { Description = "detailInfo" },
             Subactivities = new List<SubactivityDto> { new SubactivityDto { ChildId = 0, Order = 1 } },
@@ -174,6 +184,7 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         var newEntity = new ActivityDto
         {
             Id = -1,
+            Code = "C1-A1",
             Name = "test2",
             Guidance = new GuidanceDto { Description = "detailInfo2" },
             Subactivities = new List<SubactivityDto> { new SubactivityDto { ChildId = -6, Order = 1 } },
@@ -189,6 +200,7 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);
+        result.Code.ShouldBe(newEntity.Code);
         result.Name.ShouldBe(newEntity.Name);
         result.CourseId.ShouldBe(newEntity.CourseId);
         result.Guidance.Description.ShouldBe(newEntity.Guidance.Description);
@@ -222,6 +234,7 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         var newEntity = new ActivityDto
         {
             Id = -7,
+            Code = "C2-A7",
             Name = "test",
             Guidance = new GuidanceDto { Description = "detailInfo" },
             Subactivities = new List<SubactivityDto> { new SubactivityDto { ChildId = -6, Order = 1 } },
@@ -249,6 +262,7 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         var newEntity = new ActivityDto
         {
             Id = -1,
+            Code = "C1-A1",
             Name = "test",
             Guidance = new GuidanceDto { Description = "detailInfo" },
             Subactivities = new List<SubactivityDto> { new SubactivityDto { ChildId = 0, Order = 1 } },
