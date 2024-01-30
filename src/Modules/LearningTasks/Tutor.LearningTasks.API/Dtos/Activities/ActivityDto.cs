@@ -8,5 +8,6 @@ public class ActivityDto
     public required string Name { get; set; } 
     public required GuidanceDto Guidance { get; set; }
     public List<ExampleDto>? Examples { get; set; }
+    public List<ActivityStandardDto>? Standards { get; set; }
     public List<SubactivityDto>? Subactivities { get; set; }
 }

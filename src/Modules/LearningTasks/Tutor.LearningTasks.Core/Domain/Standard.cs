@@ -4,10 +4,11 @@ namespace Tutor.LearningTasks.Core.Domain;
 
 public class Standard : Entity
 {
+    public string Name { get; private set; }
     public string Description { get; private set; }
     public int MaxPoints { get; private set; }
 
-    public Standard(string description, int maxPoints)
+    public Standard(string name, string description, int maxPoints)
     {
         Description = description;
         MaxPoints = maxPoints;
