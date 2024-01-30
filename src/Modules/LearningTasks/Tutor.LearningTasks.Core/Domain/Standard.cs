@@ -10,6 +10,7 @@ public class Standard : Entity
 
     public Standard(string name, string description, int maxPoints)
     {
+        Name = name;
         Description = description;
         MaxPoints = maxPoints;
     }
