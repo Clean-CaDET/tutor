@@ -48,7 +48,6 @@ public class AssessmentAnalysisService : IAssessmentAnalysisService
         return aiIds.Select(aiId => _mapper.Map<AiStatisticsDto>(_calculator.Calculate(aiId, sortedAiEvents))).ToList();
     }
 
-
     public Result<List<SubmissionCountDto>> Get5MostFrequentWrongSubmissions(int kcId, int aiId, int instructorId)
     {
         if (!_accessService.IsKcOwner(kcId, instructorId))
