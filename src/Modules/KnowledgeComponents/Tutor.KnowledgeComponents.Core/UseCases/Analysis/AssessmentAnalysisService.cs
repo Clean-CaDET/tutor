@@ -2,6 +2,7 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
+using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.API.Public;
 using Tutor.KnowledgeComponents.API.Public.Analysis;
@@ -16,12 +17,14 @@ public class AssessmentAnalysisService : IAssessmentAnalysisService
     private readonly IMapper _mapper;
     private readonly IAccessService _accessService;
     private readonly IEventStore _eventStore;
+    private readonly AssessmentStatisticsCalculator _calculator;
 
     public AssessmentAnalysisService(IMapper mapper, IAccessService accessService, IEventStore eventStore)
     {
         _mapper = mapper;
         _accessService = accessService;
         _eventStore = eventStore;
+        _calculator = new AssessmentStatisticsCalculator();
     }
 
     public Result<List<AiStatisticsDto>> GetStatistics(int kcId, int instructorId)
@@ -42,53 +45,34 @@ public class AssessmentAnalysisService : IAssessmentAnalysisService
             .OrderBy(e => e.TimeStamp).ToList();
         var aiIds = sortedAiEvents.Select(e => e.AssessmentItemId).Distinct();
 
-        return aiIds.Select(aiId => _mapper.Map<AiStatisticsDto>(CreateAiStatistic(aiId, sortedAiEvents))).ToList();
+        return aiIds.Select(aiId => _mapper.Map<AiStatisticsDto>(_calculator.Calculate(aiId, sortedAiEvents))).ToList();
     }
 
-    private static AiStatistics CreateAiStatistic(int aiId, List<AssessmentItemEvent> events)
+    public Result<List<SubmissionCountDto>> Get5MostFrequentWrongSubmissions(int kcId, int aiId, int instructorId)
     {
-        var eventsGroupedByLearner = events
-            .Where(e => e.AssessmentItemId == aiId)
-            .GroupBy(e => e.LearnerId)
+        if (!_accessService.IsKcOwner(kcId, instructorId))
+            return Result.Fail(FailureCode.Forbidden);
+
+        var aiAnswers = _eventStore.Events.Where(e =>
+                e.RootElement.GetProperty("$discriminator").GetString() == "AssessmentItemAnswered" &&
+                e.RootElement.GetProperty("AssessmentItemId").GetInt32() == aiId)
+            .ToList<AssessmentItemAnswered>();
+
+        var incorrectSubmissions = aiAnswers
+            .Where(answer => !answer.Feedback.Evaluation.Correct)
+            .Select(answer => answer.Submission).ToList();
+
+        var commonIncorrectSubmission = incorrectSubmissions
+            .GroupBy(submission => submission)
+            .Select(groupedSubmissions => new SubmissionCountDto
+            {
+                Count = groupedSubmissions.Count(),
+                Submission = _mapper.Map<SubmissionDto>(groupedSubmissions.Key)
+            })
+            .OrderByDescending(x => x.Count)
+            .Take(5)
             .ToList();
 
-        var minutesToCompletion = eventsGroupedByLearner
-            .Select(CalculateCompletionTime).Where(completionTime => completionTime != 0).ToList();
-        
-        var attemptsToPass = eventsGroupedByLearner
-            .Select(CalculateAttemptsToPass).Where(completionTime => completionTime != 0).ToList();
-
-        return new AiStatistics
-        {
-            AiId = aiId,
-            KcId = events.First().KnowledgeComponentId,
-            MinutesToCompletion = minutesToCompletion,
-            AttemptsToPass = attemptsToPass
-        };
-    }
-
-    private static double CalculateCompletionTime(IEnumerable<AssessmentItemEvent> events)
-    {
-        var aiEvents = events.ToList();
-        var firstAiCompletion = aiEvents.OfType<AssessmentItemAnswered>().FirstOrDefault();
-
-        if (firstAiCompletion == null) return 0;
-
-        return CalculateMinuteDifference(firstAiCompletion, aiEvents.First());
-    }
-
-    private static int CalculateAttemptsToPass(IEnumerable<AssessmentItemEvent> events)
-    {
-        var aiEvents = events.ToList();
-        var firstAiPass = aiEvents.OfType<AssessmentItemAnswered>().FirstOrDefault(e => e.Feedback.Evaluation.Correct);
-
-        if (firstAiPass == null) return 0;
-
-        return aiEvents.OfType<AssessmentItemAnswered>().Count(e => e.TimeStamp <= firstAiPass.TimeStamp);
-    }
-
-    private static double CalculateMinuteDifference(DomainEvent secondEvent, DomainEvent firstEvent)
-    {
-        return Math.Round((secondEvent.TimeStamp - firstEvent.TimeStamp).TotalMinutes, 2);
+        return commonIncorrectSubmission;
     }
 }

@@ -23,4 +23,11 @@ public class AssessmentAnalysisController : BaseApiController
         var result = _assessmentAnalysisService.GetStatistics(kcId, User.InstructorId());
         return CreateResponse(result);
     }
+
+    [HttpGet("{aiId:int}")]
+    public ActionResult<List<SubmissionCountDto>> GetCommonIncorrectSubmissions(int kcId, int aiId)
+    {
+        var result = _assessmentAnalysisService.Get5MostFrequentWrongSubmissions(kcId, aiId, User.InstructorId());
+        return CreateResponse(result);
+    }
 }
