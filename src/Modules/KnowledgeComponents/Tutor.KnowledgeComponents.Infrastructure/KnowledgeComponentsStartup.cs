@@ -52,6 +52,7 @@ public static class KnowledgeComponentsStartup
         services.AddProxiedScoped<IAccessService, AccessServices>();
 
         services.AddProxiedScoped<IAssessmentAnalysisService, AssessmentAnalysisService>();
+        services.AddProxiedScoped<IMisconceptionAnalysisService, MisconceptionAnalysisService>();
         services.AddProxiedScoped<IKnowledgeAnalysisService, KnowledgeAnalysisService>();
         services.AddProxiedScoped<IRatingService, RatingService>();
 
