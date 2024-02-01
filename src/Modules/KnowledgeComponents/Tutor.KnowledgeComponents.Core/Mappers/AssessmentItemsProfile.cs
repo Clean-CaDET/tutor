@@ -19,6 +19,7 @@ public class AssessmentItemsProfile : Profile
         CreateMap<AssessmentItem, AssessmentItemDto>().IncludeAllDerived()
             .ForMember(dest => dest.Hints, opt => opt.MapFrom(src => src.Hints.Select(h => h.Markdown)));
         CreateMap<SubmissionDto, Submission>().IncludeAllDerived();
+        CreateMap<Submission, SubmissionDto>().IncludeAllDerived();
         CreateMap<Evaluation, EvaluationDto>().IncludeAllDerived();
         
         CreateMap<Feedback, FeedbackDto>()
@@ -28,13 +29,13 @@ public class AssessmentItemsProfile : Profile
         #region Short answer question
         CreateMap<Saq, SaqDto>().ReverseMap();
         CreateMap<SaqEvaluation, SaqEvaluationDto>();
-        CreateMap<SaqSubmissionDto, SaqSubmission>();
+        CreateMap<SaqSubmissionDto, SaqSubmission>().ReverseMap();
         #endregion
 
         #region Multiple choice question
         CreateMap<Mcq, McqDto>().ReverseMap();
         CreateMap<McqEvaluation, McqEvaluationDto>();
-        CreateMap<McqSubmissionDto, McqSubmission>();
+        CreateMap<McqSubmissionDto, McqSubmission>().ReverseMap();
         #endregion
 
         #region Multiple response question
@@ -42,6 +43,9 @@ public class AssessmentItemsProfile : Profile
         CreateMap<MrqItem, MrqItemDto>().ReverseMap();
         CreateMap<MrqSubmissionDto, MrqSubmission>()
             .ForMember(dest => dest.SubmittedAnswers, opt => opt.MapFrom(src => src.Answers.Select(a => a.Text)));
+        CreateMap<MrqSubmission, MrqSubmissionDto>()
+            .ForMember(dest => dest.Answers,
+                opt => opt.MapFrom(src => src.SubmittedAnswers.Select(a => new MrqItemDto { Text = a })));
         CreateMap<MrqEvaluation, MrqEvaluationDto>();
         CreateMap<MrqItemEvaluation, MrqItemEvaluationDto>()
             .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.FullItem.Text))

@@ -2,6 +2,7 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
+using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.API.Public;
 using Tutor.KnowledgeComponents.API.Public.Analysis;
@@ -45,5 +46,34 @@ public class AssessmentAnalysisService : IAssessmentAnalysisService
         var aiIds = sortedAiEvents.Select(e => e.AssessmentItemId).Distinct();
 
         return aiIds.Select(aiId => _mapper.Map<AiStatisticsDto>(_calculator.Calculate(aiId, sortedAiEvents))).ToList();
+    }
+
+
+    public Result<List<SubmissionCountDto>> Get5MostFrequentWrongSubmissions(int kcId, int aiId, int instructorId)
+    {
+        if (!_accessService.IsKcOwner(kcId, instructorId))
+            return Result.Fail(FailureCode.Forbidden);
+
+        var aiAnswers = _eventStore.Events.Where(e =>
+                e.RootElement.GetProperty("$discriminator").GetString() == "AssessmentItemAnswered" &&
+                e.RootElement.GetProperty("AssessmentItemId").GetInt32() == aiId)
+            .ToList<AssessmentItemAnswered>();
+
+        var incorrectSubmissions = aiAnswers
+            .Where(answer => !answer.Feedback.Evaluation.Correct)
+            .Select(answer => answer.Submission).ToList();
+
+        var commonIncorrectSubmission = incorrectSubmissions
+            .GroupBy(submission => submission)
+            .Select(groupedSubmissions => new SubmissionCountDto
+            {
+                Count = groupedSubmissions.Count(),
+                Submission = _mapper.Map<SubmissionDto>(groupedSubmissions.Key)
+            })
+            .OrderByDescending(x => x.Count)
+            .Take(5)
+            .ToList();
+
+        return commonIncorrectSubmission;
     }
 }

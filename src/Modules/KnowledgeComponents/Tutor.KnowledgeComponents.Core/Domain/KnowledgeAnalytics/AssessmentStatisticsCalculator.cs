@@ -21,7 +21,7 @@ public class AssessmentStatisticsCalculator
         return new AiStatistics
         {
             AiId = aiId,
-            KcId = events.First().KnowledgeComponentId,
+            KcId = eventsGroupedByLearner.First().First().KnowledgeComponentId,
             MinutesToCompletion = minutesToCompletion,
             AttemptsToPass = attemptsToPass
         };
