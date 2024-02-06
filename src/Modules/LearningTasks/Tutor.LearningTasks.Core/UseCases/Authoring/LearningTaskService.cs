@@ -60,9 +60,7 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
         if(existingLearningTask == null)
             return Result.Fail(FailureCode.NotFound);
 
-        existingLearningTask.Update(MapToDomain(learningTask));
-
-        return Update(existingLearningTask);
+        return Update(existingLearningTask, MapToDomain(learningTask));
     }
 
     public Result Delete(int id, int unitId, int instructorId)

@@ -58,13 +58,6 @@ public class CrudDatabaseRepository<TEntity, TDbContext> : ICrudRepository<TEnti
         return entity;
     }
 
-    public TEntity ApplyChanges(TEntity entity)
-    {
-        DbContext.Entry(entity).State = EntityState.Modified;
-        DbContext.SaveChanges();
-        return entity;
-    }
-
     public void Delete(TEntity entity)
     {
         _dbSet.Remove(entity);

@@ -51,13 +51,13 @@ public class ActivityService : CrudService<ActivityDto, Activity>, IActivityServ
 
     public Result Delete(int id, int courseId, int instructorId)
     {
+        if (!_accessServices.IsCourseOwner(courseId, instructorId))
+            return Result.Fail(FailureCode.Forbidden);
+
         bool isSubactivity = GetByCourse(courseId).Value.Exists(activity => 
         activity.Subactivities?.Exists(subactivity => subactivity.ChildId == id) == true);
         if(isSubactivity)
             return Result.Fail(FailureCode.InvalidArgument);
-        
-        if (!_accessServices.IsCourseOwner(courseId, instructorId))
-            return Result.Fail(FailureCode.Forbidden);
 
         return Delete(id);
     }
