@@ -11,8 +11,4 @@
     <ProjectReference Include="..\Tutor.LearningTasks.API\Tutor.LearningTasks.API.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Mappers\" />
-  </ItemGroup>
-
 </Project>

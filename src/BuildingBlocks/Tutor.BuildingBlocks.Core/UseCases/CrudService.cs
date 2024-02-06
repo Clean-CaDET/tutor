@@ -40,6 +40,19 @@ public abstract class CrudService<TDto, TDomain> : BaseService<TDto, TDomain> wh
         return result.IsFailed ? result : MapToDto(createdEntity);
     }
 
+    /// <summary>
+    /// Updates an existing domain entity directly. 
+    /// This method is intended for cases where an existing domain entity has been retrieved and requires a direct update.
+    /// After applying changes to the provided domain entity, it saves the updated entity to the database.
+    /// </summary>
+    public virtual Result<TDto> Update(TDomain entity)
+    {
+        var updatedEntity = CrudRepository.ApplyChanges(entity);
+
+        var result = UnitOfWork.Save();
+        return result.IsFailed ? result : MapToDto(updatedEntity);
+    }
+
     public virtual Result<TDto> Update(TDto entity)
     {
         var updatedEntity = CrudRepository.Update(MapToDomain(entity));

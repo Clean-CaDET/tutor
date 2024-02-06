@@ -31,12 +31,14 @@ public static class LearningTasksStartup
     private static void SetupCore(IServiceCollection services)
     {
         services.AddProxiedScoped<IActivityService, ActivityService>();
+        services.AddProxiedScoped<ILearningTaskService, LearningTaskService>();
         services.AddProxiedScoped<IAccessServices, AccessServices>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
         services.AddScoped<IActivityRepository, ActivityDatabaseRepository>();
+        services.AddScoped<ILearningTaskRepository, LearningTaskDatabaseRepository>();
         services.AddScoped<ILearningTasksUnitOfWork, LearningTasksUnitOfWork>();
         services.AddDbContext<LearningTasksContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("learningTasks"),

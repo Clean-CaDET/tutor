@@ -32,7 +32,7 @@ public class ActivityService : CrudService<ActivityDto, Activity>, IActivityServ
         if (!_accessServices.IsCourseOwner(activity.CourseId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        if (activity.Subactivities?.Any(subactivity => Get(subactivity.ChildId).IsFailed) == true)
+        if (activity.Subactivities?.Exists(subactivity => Get(subactivity.ChildId).IsFailed) == true)
             return Result.Fail(FailureCode.NotFound);
 
         return Create(activity);
@@ -43,7 +43,7 @@ public class ActivityService : CrudService<ActivityDto, Activity>, IActivityServ
         if (!_accessServices.IsCourseOwner(activity.CourseId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        if (activity.Subactivities?.Any(subactivity => Get(subactivity.ChildId).IsFailed) == true)
+        if (activity.Subactivities?.Exists(subactivity => Get(subactivity.ChildId).IsFailed) == true)
             return Result.Fail(FailureCode.NotFound);
 
         return Update(activity);
@@ -51,8 +51,8 @@ public class ActivityService : CrudService<ActivityDto, Activity>, IActivityServ
 
     public Result Delete(int id, int courseId, int instructorId)
     {
-        bool isSubactivity = GetByCourse(courseId).Value.Any(activity => 
-        activity.Subactivities?.Any(subactivity => subactivity.ChildId == id) == true);
+        bool isSubactivity = GetByCourse(courseId).Value.Exists(activity => 
+        activity.Subactivities?.Exists(subactivity => subactivity.ChildId == id) == true);
         if(isSubactivity)
             return Result.Fail(FailureCode.InvalidArgument);
         

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Tutor.LearningTasks.API.Dtos.Activities;
-using Tutor.LearningTasks.Core.Domain;
 using Tutor.LearningTasks.Core.Domain.Activities;
 
 namespace Tutor.LearningTasks.Core.Mappers;

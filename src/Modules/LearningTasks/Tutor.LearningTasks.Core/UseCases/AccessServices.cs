@@ -16,4 +16,9 @@ public class AccessServices : IAccessServices
     {
         return _ownedCourseService.IsCourseOwner(courseId, instructorId);
     }
+
+    public bool IsUnitOwner(int unitId, int instructorId)
+    {
+        return _ownedCourseService.IsUnitOwner(unitId, instructorId);
+    }
 }

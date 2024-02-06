@@ -1,6 +1,6 @@
 ﻿using Tutor.BuildingBlocks.Core.Domain;
 
-namespace Tutor.LearningTasks.Core.Domain;
+namespace Tutor.LearningTasks.Core.Domain.LearningTasks;
 
 public class SubmissionFormat : ValueObject
 {
