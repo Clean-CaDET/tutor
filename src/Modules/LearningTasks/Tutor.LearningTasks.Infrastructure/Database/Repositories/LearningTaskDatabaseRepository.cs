@@ -12,7 +12,7 @@ public class LearningTaskDatabaseRepository : CrudDatabaseRepository<LearningTas
     public new LearningTask? Get(int id)
     {
         return DbContext.LearningTasks.Where(l => l.Id == id)
-            .Include(l => l.Steps)
+            .Include(l => l.Steps!)
                 .ThenInclude(s => s.Standards)
             .FirstOrDefault();
     }
@@ -20,7 +20,7 @@ public class LearningTaskDatabaseRepository : CrudDatabaseRepository<LearningTas
     public List<LearningTask> GetUnitLearningTasks(int unitId)
     {
         return DbContext.LearningTasks.Where(l => l.UnitId == unitId)
-            .Include(l => l.Steps)
+            .Include(l => l.Steps!)
                 .ThenInclude(s => s.Standards)
             .ToList();
     }
