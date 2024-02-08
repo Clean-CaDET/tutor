@@ -32,9 +32,6 @@ public class ActivityService : CrudService<ActivityDto, Activity>, IActivityServ
         if (!_accessServices.IsCourseOwner(activity.CourseId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        if (activity.Subactivities?.Exists(subactivity => Get(subactivity.ChildId).IsFailed) == true)
-            return Result.Fail(FailureCode.NotFound);
-
         return Create(activity);
     }
 
@@ -42,9 +39,6 @@ public class ActivityService : CrudService<ActivityDto, Activity>, IActivityServ
     {
         if (!_accessServices.IsCourseOwner(activity.CourseId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
-
-        if (activity.Subactivities?.Exists(subactivity => Get(subactivity.ChildId).IsFailed) == true)
-            return Result.Fail(FailureCode.NotFound);
 
         return Update(activity);
     }

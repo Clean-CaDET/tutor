@@ -170,30 +170,6 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
     }
 
     [Fact]
-    public void Creates_with_unexisting_subactivities()
-    {
-        using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope);
-        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
-        var newEntity = new ActivityDto
-        {
-            Code = "C1-A10",
-            Name = "test",
-            Guidance = new GuidanceDto { Description = "detailInfo" },
-            Examples = new List<ExampleDto> { new ExampleDto { Code = "C1A10E2", Description = "test" } },
-            Subactivities = new List<SubactivityDto> { new SubactivityDto { ChildId = 0, Order = 1 } }
-        };
-        dbContext.Database.BeginTransaction();
-
-        var actionResult = controller.Create(-1, newEntity).Result;
-        var objectResult = actionResult as ObjectResult;
-
-        dbContext.ChangeTracker.Clear();
-        objectResult.ShouldNotBeNull();
-        objectResult.StatusCode.ShouldBe(404);
-    }
-
-    [Fact]
     public void Updates()
     {
         using var scope = Factory.Services.CreateScope();
@@ -277,34 +253,6 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         dbContext.ChangeTracker.Clear();
         objectResult.ShouldNotBeNull();
         objectResult.StatusCode.ShouldBe(403);
-        var storedEntity = dbContext.Activities.FirstOrDefault(i => i.Id == newEntity.Id);
-        storedEntity.ShouldNotBeNull();
-        storedEntity.Name.ShouldNotBe("test");
-    }
-
-    [Fact]
-    public void Updates_with_unexisting_subactivities()
-    {
-        using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope);
-        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
-        var newEntity = new ActivityDto
-        {
-            Id = -1,
-            Code = "C1-A1",
-            Name = "test",
-            Guidance = new GuidanceDto { Description = "detailInfo" },
-            Examples = new List<ExampleDto> { new ExampleDto { Code = "C1A1E1", Description = "test" } },
-            Subactivities = new List<SubactivityDto> { new SubactivityDto { ChildId = 0, Order = 1 } }
-        };
-        dbContext.Database.BeginTransaction();
-
-        var actionResult = controller.Update(-1, newEntity).Result;
-        var objectResult = actionResult as ObjectResult;
-
-        dbContext.ChangeTracker.Clear();
-        objectResult.ShouldNotBeNull();
-        objectResult.StatusCode.ShouldBe(404);
         var storedEntity = dbContext.Activities.FirstOrDefault(i => i.Id == newEntity.Id);
         storedEntity.ShouldNotBeNull();
         storedEntity.Name.ShouldNotBe("test");

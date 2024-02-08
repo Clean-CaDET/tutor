@@ -40,14 +40,6 @@ public abstract class CrudService<TDto, TDomain> : BaseService<TDto, TDomain> wh
         return result.IsFailed ? result : MapToDto(createdEntity);
     }
 
-    public virtual Result<TDto> Update(TDomain storedEntity, TDomain entity)
-    {
-        var updatedEntity = CrudRepository.Update(storedEntity, entity);
-
-        var result = UnitOfWork.Save();
-        return result.IsFailed ? result : MapToDto(updatedEntity);
-    }
-
     public virtual Result<TDto> Update(TDto entity)
     {
         var updatedEntity = CrudRepository.Update(MapToDomain(entity));

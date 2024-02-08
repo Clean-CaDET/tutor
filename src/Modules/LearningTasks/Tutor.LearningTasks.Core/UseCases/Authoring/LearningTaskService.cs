@@ -12,14 +12,12 @@ namespace Tutor.LearningTasks.Core.UseCases.Authoring;
 public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, ILearningTaskService
 {
     private readonly ILearningTaskRepository _learningTaskRepository;
-    private readonly IActivityRepository _activityRepository;
     private readonly IAccessServices _accessServices;
 
-    public LearningTaskService(ILearningTaskRepository learningTaskRepository, IActivityRepository activityRepository,
-        IAccessServices accessServices, ILearningTasksUnitOfWork unitOfWork, IMapper mapper) : base(learningTaskRepository, unitOfWork, mapper)
+    public LearningTaskService(ILearningTaskRepository learningTaskRepository, IAccessServices accessServices,
+        ILearningTasksUnitOfWork unitOfWork, IMapper mapper) : base(learningTaskRepository, unitOfWork, mapper)
     {
         _learningTaskRepository = learningTaskRepository;
-        _activityRepository = activityRepository;
         _accessServices = accessServices;
     }
 
@@ -42,9 +40,6 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
         if (!_accessServices.IsUnitOwner(learningTask.UnitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        if(learningTask.Steps?.Exists(step => _activityRepository.Get(step.ActivityId) == null) == true)
-            return Result.Fail(FailureCode.NotFound);
-
         return Create(learningTask);
     }
 
@@ -53,14 +48,7 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
         if (!_accessServices.IsUnitOwner(learningTask.UnitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        if (learningTask.Steps?.Exists(step => _activityRepository.Get(step.ActivityId) == null) == true)
-            return Result.Fail(FailureCode.NotFound);
-
-        LearningTask? existingLearningTask = _learningTaskRepository.Get(learningTask.Id);
-        if(existingLearningTask == null)
-            return Result.Fail(FailureCode.NotFound);
-
-        return Update(existingLearningTask, MapToDomain(learningTask));
+        return Update(learningTask);
     }
 
     public Result Delete(int id, int unitId, int instructorId)
