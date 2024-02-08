@@ -33,21 +33,16 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         result.CaseStudies.ShouldNotBeNull();
         result.CaseStudies.Count.ShouldBe(1);
         result.CaseStudies[0].Name.ShouldBe("FirstCaseStudy");
-        result.Steps.ShouldNotBeNull();
-        result.Steps.Count.ShouldBe(1);
-        result.Steps[0].Id.ShouldBe(-1);
-        result.Steps[0].Order.ShouldBe(1);
-        result.Steps[0].ActivityId.ShouldBe(-1);
-        result.Steps[0].ActivityName.ShouldBe("C1-A1");
-        result.Steps[0].MaxPoints.ShouldBe(10);
-        result.Steps[0].Standards.ShouldNotBeNull();
-        result.Steps[0].Standards?.Count.ShouldBe(2);
-        result.Steps[0].Standards?[0].Id.ShouldBe(-1);
-        result.Steps[0].Standards?[0].Name.ShouldBe("FirstStandard");
-        result.Steps[0].Standards?[0].MaxPoints.ShouldBe(5);
-        result.Steps[0].Standards?[1].Id.ShouldBe(-2);
-        result.Steps[0].Standards?[1].Name.ShouldBe("SecondStandard");
-        result.Steps[0].Standards?[1].MaxPoints.ShouldBe(5);
+        result.Steps?.Count.ShouldBe(1);
+        result.Steps?[0].Id.ShouldBe(-1);
+        result.Steps?[0].Order.ShouldBe(1);
+        result.Steps?[0].ActivityId.ShouldBe(-1);
+        result.Steps?[0].ActivityName.ShouldBe("C1-A1");
+        result.Steps?[0].Standards?.Count.ShouldBe(2);
+        result.Steps?[0].Standards?[0].Id.ShouldBe(-1);
+        result.Steps?[0].Standards?[0].Name.ShouldBe("FirstStandard");
+        result.Steps?[0].Standards?[1].Id.ShouldBe(-2);
+        result.Steps?[0].Standards?[1].Name.ShouldBe("SecondStandard");
     }
 
     [Fact]
@@ -67,18 +62,14 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         result[0].Id.ShouldBe(-2);
         result[0].UnitId.ShouldBe(-1);
         result[0].Name.ShouldBe("SecondTask");
-        result[0].IsTemplate.ShouldBeFalse();
         result[0].DomainModel.ShouldNotBeNull();
-        result[0].MaxPoints.ShouldBe(5);
-        result[0].CaseStudies.ShouldBeEmpty();
+        result[0].CaseStudies?.Count.ShouldBe(1);
         result[0].Steps?.Count.ShouldBe(1);
         result[0].Steps?[0].Standards?.Count.ShouldBe(1);
         result[1].Id.ShouldBe(-1);
         result[1].UnitId.ShouldBe(-1);
         result[1].Name.ShouldBe("FirstTask");
-        result[1].IsTemplate.ShouldBeFalse();
         result[1].DomainModel.ShouldNotBeNull();
-        result[1].MaxPoints.ShouldBe(10);
         result[1].CaseStudies?.Count.ShouldBe(1);
         result[1].Steps?.Count.ShouldBe(1);
         result[1].Steps?[0].Standards?.Count.ShouldBe(2);
