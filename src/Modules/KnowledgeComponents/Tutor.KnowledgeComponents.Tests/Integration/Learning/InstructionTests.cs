@@ -19,7 +19,7 @@ public class InstructionTests : BaseKnowledgeComponentsIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
 
-        var items = ((OkObjectResult)controller.GetInstructionalItems(knowledgeComponentId).Result)?.Value as List<InstructionalItemDto>;
+        var items = ((OkObjectResult)controller.GetInstructionalItems(knowledgeComponentId, "D1").Result)?.Value as List<InstructionalItemDto>;
 
         items.ShouldNotBeNull();
         items.Count.ShouldBe(expectedIEsCount);

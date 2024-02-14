@@ -2,4 +2,5 @@
 
 public class AssessmentItemSelected : AssessmentItemEvent
 {
+    public string? AppClientId { get; set; }
 }

@@ -24,11 +24,12 @@ public class AssessmentItemMastery : EventSourcedEntity
         AssessmentItemId = itemId;
     }
 
-    public void RecordSelection()
+    public void RecordSelection(string appClientId)
     {
         Causes(new AssessmentItemSelected()
         {
             AssessmentItemId = AssessmentItemId,
+            AppClientId = appClientId
         });
     }
 
@@ -49,12 +50,6 @@ public class AssessmentItemMastery : EventSourcedEntity
             AssessmentItemId = AssessmentItemId,
             Hint = hint
         });
-        return Result.Ok();
-    }
-
-    public Result RecordSolutionRequest()
-    {
-        Causes(new SolutionRequested());
         return Result.Ok();
     }
 

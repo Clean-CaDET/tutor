@@ -2,4 +2,5 @@
 
 public class InstructionalItemsSelected : KnowledgeComponentEvent
 {
+    public string? AppClientId { get; set; }
 }
