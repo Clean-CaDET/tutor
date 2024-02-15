@@ -31,7 +31,7 @@ public class SelectionService : ISelectionService
         _unitOfWork = unitOfWork;
     }
 
-    public Result<AssessmentItemDto> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId)
+    public Result<AssessmentItemDto> SelectSuitableAssessmentItem(int knowledgeComponentId, int learnerId, string appClientId)
     {
         if (!_accessService.IsEnrolledInKc(knowledgeComponentId, learnerId))
             return Result.Fail(FailureCode.NotEnrolledInUnit);
@@ -42,7 +42,7 @@ public class SelectionService : ISelectionService
 
         var assessmentItemId = _assessmentItemSelector.SelectSuitableAssessmentItemId(kcMastery.AssessmentItemMasteries, kcMastery.IsPassed);
 
-        kcMastery.RecordAssessmentItemSelection(assessmentItemId);
+        kcMastery.RecordAssessmentItemSelection(assessmentItemId, appClientId);
         _knowledgeMasteryRepository.Update(kcMastery);
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;

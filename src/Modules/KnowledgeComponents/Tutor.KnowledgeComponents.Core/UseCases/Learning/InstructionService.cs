@@ -26,7 +26,7 @@ public class InstructionService : IInstructionService
         _unitOfWork = unitOfWork;
     }
 
-    public Result<List<InstructionalItemDto>> GetByKc(int kcId, int learnerId)
+    public Result<List<InstructionalItemDto>> GetByKc(int kcId, int learnerId, string appClientId)
     {
         if (!_accessService.IsEnrolledInKc(kcId, learnerId))
             return Result.Fail(FailureCode.NotEnrolledInUnit);
@@ -34,16 +34,16 @@ public class InstructionService : IInstructionService
         var instruction = _instructionRepository.GetByKc(kcId);
         if (instruction == null) return Result.Fail(FailureCode.NotFound);
 
-        RecordInstructionalItemSelection(kcId, learnerId);
+        RecordInstructionalItemSelection(kcId, learnerId, appClientId);
 
         return instruction.OrderBy(i => i.Order)
             .Select(_mapper.Map<InstructionalItemDto>).ToList();
     }
 
-    private void RecordInstructionalItemSelection(int knowledgeComponentId, int learnerId)
+    private void RecordInstructionalItemSelection(int knowledgeComponentId, int learnerId, string appClientId)
     {
         var kcMastery = _knowledgeMasteryRepository.GetBare(knowledgeComponentId, learnerId);
-        kcMastery.RecordInstructionalItemSelection();
+        kcMastery.RecordInstructionalItemSelection(appClientId);
         _knowledgeMasteryRepository.Update(kcMastery);
         _unitOfWork.Save();
     }

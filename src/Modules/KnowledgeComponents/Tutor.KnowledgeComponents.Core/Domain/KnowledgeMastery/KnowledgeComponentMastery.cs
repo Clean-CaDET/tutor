@@ -84,20 +84,23 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         if (!SessionTracker.HasUnfinishedSession) LaunchSession();
     }
 
-    public Result RecordInstructionalItemSelection()
+    public Result RecordInstructionalItemSelection(string appClientId)
     {
         JoinOrLaunchSession();
-        Causes(new InstructionalItemsSelected());
+        Causes(new InstructionalItemsSelected
+        {
+            AppClientId = appClientId
+        });
         return Result.Ok();
     }
 
-    public Result RecordAssessmentItemSelection(int assessmentItemId)
+    public Result RecordAssessmentItemSelection(int assessmentItemId, string appClientId)
     {
         var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
         if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
 
         JoinOrLaunchSession();
-        aim.RecordSelection();
+        aim.RecordSelection(appClientId);
 
         return Result.Ok();
     }
@@ -145,15 +148,6 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
 
         JoinOrLaunchSession();
         return aim.RecordHintRequest(hint);
-    }
-
-    public Result RecordAssessmentItemSolutionRequest(int assessmentItemId)
-    {
-        var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
-        if (aim == null) return NoAssessmentItemWithId(assessmentItemId);
-
-        JoinOrLaunchSession();
-        return aim.RecordSolutionRequest();
     }
 
     private static Result NoAssessmentItemWithId(int assessmentItemId)
