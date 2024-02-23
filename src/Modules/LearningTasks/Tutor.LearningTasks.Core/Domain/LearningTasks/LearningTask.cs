@@ -13,6 +13,18 @@ public class LearningTask : AggregateRoot
     public List<Step>? Steps { get; private set; }
     public double MaxPoints {  get; private set; }
 
+    public void Update(LearningTask learningTask)
+    {
+        UnitId = learningTask.UnitId;
+        Name = learningTask.Name;
+        Description = learningTask.Description;
+        IsTemplate = learningTask.IsTemplate;
+        DomainModel = learningTask.DomainModel;
+        CaseStudies = learningTask.CaseStudies;
+        Steps = learningTask.Steps;
+        MaxPoints = Steps?.Sum(s => s.MaxPoints) ?? 0;
+    }
+
     public void CalculateMaxPoints()
     {
         MaxPoints = Steps?.Sum(s => s.MaxPoints) ?? 0;

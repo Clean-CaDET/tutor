@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Instructor.Authoring;
@@ -63,7 +64,6 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         result[0].UnitId.ShouldBe(-1);
         result[0].Name.ShouldBe("SecondTask");
         result[0].DomainModel.ShouldNotBeNull();
-        result[0].CaseStudies?.Count.ShouldBe(1);
         result[0].Steps?.Count.ShouldBe(1);
         result[0].Steps?[0].Standards?.Count.ShouldBe(1);
         result[1].Id.ShouldBe(-1);
@@ -174,7 +174,7 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
             Description = "New description",
             IsTemplate = false,
             DomainModel = new DomainModelDto { Description = "New domain model description" },
-            CaseStudies = new List<CaseStudyDto> { new CaseStudyDto { Id = -2, Name = "New name", Description = "New description" } },
+            CaseStudies = new List<CaseStudyDto> { new CaseStudyDto { Name = "New name", Description = "New description" } },
             Steps = new List<StepDto> { new StepDto { Id = -3, Order = 1, ActivityId = -3, ActivityName = "C1-A3",
             SubmissionFormat = new SubmissionFormatDto() {SubmissionGuidelines = "New guidlnes", AnswerValidation = "New validation rules"},
             Standards = new List<StandardDto>() { new StandardDto { Id = -4, Name = "New name", Description = "New description", MaxPoints = 5 } }
@@ -220,6 +220,23 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         var resultStandard = resultStandards[0];
         var newEntityStandard = newEntityStandards[0];
         resultStandard.MaxPoints.ShouldBe(newEntityStandard.MaxPoints);
+
+        var storedEntity = dbContext.LearningTasks.Where(l => l.Id == result.Id).Include(l => l.Steps!)
+                .ThenInclude(s => s.Standards).FirstOrDefault();
+        storedEntity.ShouldNotBeNull();
+        storedEntity.Id.ShouldBe(newEntity.Id);
+        storedEntity.Name.ShouldBe(newEntity.Name);
+        storedEntity.IsTemplate.ShouldBe(newEntity.IsTemplate);
+        storedEntity.DomainModel.ShouldNotBeNull();
+        storedEntity.DomainModel.Description.ShouldBe(newEntity.DomainModel.Description);
+        storedEntity.CaseStudies.ShouldNotBeNull();
+        storedEntity.CaseStudies.Count.ShouldBe(1);
+        storedEntity.CaseStudies[0].Name.ShouldBe(newEntity.CaseStudies[0].Name);
+        storedEntity.CaseStudies[0].Description.ShouldBe(newEntity.CaseStudies[0].Description);
+        storedEntity.MaxPoints.ShouldBe(5);
+        storedEntity.Steps.ShouldNotBeNull();
+        storedEntity.Steps.Count.ShouldBe(1);
+        storedEntity.Steps?[0].MaxPoints.ShouldBe(5);
     }
 
     [Fact]
@@ -235,7 +252,7 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
             Description = "New description",
             IsTemplate = false,
             DomainModel = new DomainModelDto { Description = "New domain model description" },
-            CaseStudies = new List<CaseStudyDto> { new CaseStudyDto { Id = -2, Name = "New name", Description = "New description" } },
+            CaseStudies = new List<CaseStudyDto> { new CaseStudyDto { Name = "New name", Description = "New description" } },
             Steps = new List<StepDto> { new StepDto { Id = -3, Order = 1, ActivityId = -3, ActivityName = "C1-A3",
             SubmissionFormat = new SubmissionFormatDto() {SubmissionGuidelines = "New guidlnes", AnswerValidation = "New validation rules"},
             Standards = new List<StandardDto>() { new StandardDto { Id = -4, Name = "New name", Description = "New description", MaxPoints = 5 } }

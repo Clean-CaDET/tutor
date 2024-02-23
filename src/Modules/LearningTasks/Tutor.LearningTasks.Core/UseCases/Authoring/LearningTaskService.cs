@@ -48,7 +48,13 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
         if (!_accessServices.IsUnitOwner(learningTask.UnitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        return Update(learningTask);
+        LearningTask? existingLearningTask = _learningTaskRepository.Get(learningTask.Id);
+        if (existingLearningTask == null)
+            return Result.Fail(FailureCode.NotFound);
+
+        existingLearningTask.Update(MapToDomain(learningTask));
+
+        return Update(existingLearningTask);
     }
 
     public Result Delete(int id, int unitId, int instructorId)
