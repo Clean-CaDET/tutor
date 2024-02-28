@@ -18,9 +18,9 @@ public class SelectionController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<AssessmentItemDto> GetSuitableAssessmentItem(int kcId)
+    public ActionResult<AssessmentItemDto> GetSuitableAssessmentItem(int kcId, [FromQuery] string aId = "")
     {
-        var result = _assessmentSelectionService.SelectSuitableAssessmentItem(kcId, User.LearnerId());
+        var result = _assessmentSelectionService.SelectSuitableAssessmentItem(kcId, User.LearnerId(), aId);
         return CreateResponse(result);
     }
 }

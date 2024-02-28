@@ -5,5 +5,5 @@ namespace Tutor.KnowledgeComponents.API.Public.Learning;
 
 public interface IInstructionService
 {
-    Result<List<InstructionalItemDto>> GetByKc(int kcId, int learnerId);
+    Result<List<InstructionalItemDto>> GetByKc(int kcId, int learnerId, string appClientId);
 }

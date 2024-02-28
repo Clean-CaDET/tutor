@@ -17,9 +17,9 @@ public class InstructionController : BaseApiController
     }
 
     [HttpGet("knowledge-component/{knowledgeComponentId:int}/instructional-items/")]
-    public ActionResult<List<InstructionalItemDto>> GetInstructionalItems(int knowledgeComponentId)
+    public ActionResult<List<InstructionalItemDto>> GetInstructionalItems(int knowledgeComponentId, [FromQuery] string aId = "")
     {
-        var result = _instructionService.GetByKc(knowledgeComponentId, User.LearnerId());
+        var result = _instructionService.GetByKc(knowledgeComponentId, User.LearnerId(), aId);
         return CreateResponse(result);
     }
 }

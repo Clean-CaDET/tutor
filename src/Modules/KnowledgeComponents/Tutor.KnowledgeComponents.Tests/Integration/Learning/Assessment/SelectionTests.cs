@@ -25,7 +25,7 @@ public class SelectionTests : BaseKnowledgeComponentsIntegrationTest
         var controller = CreateController(scope, "-2");
 
         var actualSuitableAssessmentItem =
-            ((OkObjectResult) controller.GetSuitableAssessmentItem(knowledgeComponentId).Result)?.Value as AssessmentItemDto;
+            ((OkObjectResult) controller.GetSuitableAssessmentItem(knowledgeComponentId, "M1").Result)?.Value as AssessmentItemDto;
         actualSuitableAssessmentItem.ShouldNotBeNull();
             
         actualSuitableAssessmentItem.Id.ShouldBe(expectedSuitableAssessmentItemId);
@@ -69,7 +69,7 @@ public class SelectionTests : BaseKnowledgeComponentsIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
         dbContext.Database.BeginTransaction();
 
-        var item = ((OkObjectResult)controller.GetSuitableAssessmentItem(-15).Result)?.Value as MrqDto;
+        var item = ((OkObjectResult)controller.GetSuitableAssessmentItem(-15, "M1").Result)?.Value as MrqDto;
         
         item.ShouldNotBeNull();
         item.Id.ShouldBe(-153);
@@ -84,7 +84,7 @@ public class SelectionTests : BaseKnowledgeComponentsIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
         dbContext.Database.BeginTransaction();
 
-        var response = controller.GetSuitableAssessmentItem(-21).Result;
+        var response = controller.GetSuitableAssessmentItem(-21, "M1").Result;
         
         var item = ((OkObjectResult)response)?.Value as SaqDto;
         item.ShouldNotBeNull();
