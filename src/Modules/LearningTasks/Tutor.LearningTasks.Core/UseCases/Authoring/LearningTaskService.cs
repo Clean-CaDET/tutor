@@ -21,16 +21,19 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
         _accessServices = accessServices;
     }
 
-    public new Result<LearningTaskDto> Get(int id)
+    public new Result<LearningTaskDto> Get(int id, int unitId,  int instructorId)
     {
-        LearningTask? learningTask = _learningTaskRepository.Get(id);
-        if(learningTask == null)
-            return Result.Fail(FailureCode.NotFound);
-        return MapToDto(learningTask);
+        if (!_accessServices.IsUnitOwner(unitId, instructorId))
+            return Result.Fail(FailureCode.Forbidden);
+
+       return Get(id);
     }
 
-    public Result<List<LearningTaskDto>> GetByUnit(int unitId)
+    public Result<List<LearningTaskDto>> GetByUnit(int unitId, int instructorId)
     {
+        if (!_accessServices.IsUnitOwner(unitId, instructorId))
+            return Result.Fail(FailureCode.Forbidden);
+
         List<LearningTask> learningTasks = _learningTaskRepository.GetUnitLearningTasks(unitId);
         return MapToDto(learningTasks);
     }

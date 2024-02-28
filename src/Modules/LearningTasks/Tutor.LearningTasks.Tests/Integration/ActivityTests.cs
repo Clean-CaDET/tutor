@@ -13,13 +13,13 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
     public ActivityTests(LearningTasksTestFactory factory) : base(factory) { }
 
     [Fact]
-    public void GetById()
+    public void Gets()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
 
-        var actionResult = controller.Get(-1).Result;
+        var actionResult = controller.Get(-1, -1).Result;
         var okObjectResult = actionResult as OkObjectResult;
         var result = okObjectResult?.Value as ActivityDto;
 
@@ -51,7 +51,22 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
     }
 
     [Fact]
-    public void GetByCourse()
+    public void Wrong_instructor_gets_returns_forbidden()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+
+        var actionResult = controller.Get(-2, -7).Result;
+        var objectResult = actionResult as ObjectResult;
+
+        dbContext.ChangeTracker.Clear();
+        objectResult.ShouldNotBeNull();
+        objectResult.StatusCode.ShouldBe(403);
+    }
+
+    [Fact]
+    public void Gets_by_course()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
@@ -64,6 +79,21 @@ public class ActivityTests : BaseLearningTasksIntegrationTest
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Count.ShouldBe(6);
+    }
+
+    [Fact]
+    public void Wrong_instructor_gets_by_course()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+
+        var actionResult = controller.GetByCourse(-2).Result;
+        var objectResult = actionResult as ObjectResult;
+
+        dbContext.ChangeTracker.Clear();
+        objectResult.ShouldNotBeNull();
+        objectResult.StatusCode.ShouldBe(403);
     }
 
     [Fact]

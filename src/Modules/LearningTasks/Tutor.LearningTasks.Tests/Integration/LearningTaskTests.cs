@@ -14,13 +14,13 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
     public LearningTaskTests(LearningTasksTestFactory factory) : base(factory) { }
 
     [Fact]
-    public void GetById()
+    public void Gets()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
 
-        var actionResult = controller.Get(-1).Result;
+        var actionResult = controller.Get(-1, -1).Result;
         var okObjectResult = actionResult as OkObjectResult;
         var result = okObjectResult?.Value as LearningTaskDto;
 
@@ -47,7 +47,22 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
     }
 
     [Fact]
-    public void GetByUnit()
+    public void Wrong_instructor_gets_returns_forbidden()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+
+        var actionResult = controller.Get(-3, -5).Result;
+        var objectResult = actionResult as ObjectResult;
+
+        dbContext.ChangeTracker.Clear();
+        objectResult.ShouldNotBeNull();
+        objectResult.StatusCode.ShouldBe(403);
+    }
+
+    [Fact]
+    public void Gets_by_unit()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
@@ -73,6 +88,21 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         result[1].CaseStudies?.Count.ShouldBe(1);
         result[1].Steps?.Count.ShouldBe(1);
         result[1].Steps?[0].Standards?.Count.ShouldBe(2);
+    }
+
+    [Fact]
+    public void Wrong_instructor_gets_by_unit()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+
+        var actionResult = controller.GetByUnit(-3).Result;
+        var objectResult = actionResult as ObjectResult;
+
+        dbContext.ChangeTracker.Clear();
+        objectResult.ShouldNotBeNull();
+        objectResult.StatusCode.ShouldBe(403);
     }
 
     [Fact]

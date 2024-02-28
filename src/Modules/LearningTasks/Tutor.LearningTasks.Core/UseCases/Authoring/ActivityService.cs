@@ -21,8 +21,19 @@ public class ActivityService : CrudService<ActivityDto, Activity>, IActivityServ
         _accessServices = accessServices;
     }
 
-    public Result<List<ActivityDto>> GetByCourse(int courseId)
+    public Result<ActivityDto> Get(int id, int courseId, int instructorId)
     {
+        if (!_accessServices.IsCourseOwner(courseId, instructorId))
+            return Result.Fail(FailureCode.Forbidden);
+
+        return Get(id);
+    }
+
+    public Result<List<ActivityDto>> GetByCourse(int courseId, int instructorId)
+    {
+        if (!_accessServices.IsCourseOwner(courseId, instructorId))
+            return Result.Fail(FailureCode.Forbidden);
+
         List<Activity> activities = _activityRepository.GetCourseActivities(courseId);
         return MapToDto(activities);
     }
@@ -48,7 +59,7 @@ public class ActivityService : CrudService<ActivityDto, Activity>, IActivityServ
         if (!_accessServices.IsCourseOwner(courseId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        bool isSubactivity = GetByCourse(courseId).Value.Exists(activity => 
+        bool isSubactivity = GetByCourse(courseId, instructorId).Value.Exists(activity => 
         activity.Subactivities?.Exists(subactivity => subactivity.ChildId == id) == true);
         if(isSubactivity)
             return Result.Fail(FailureCode.InvalidArgument);

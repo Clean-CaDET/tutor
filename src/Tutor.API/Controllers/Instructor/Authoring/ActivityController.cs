@@ -18,16 +18,16 @@ public class ActivityController : BaseApiController
     }
 
     [HttpGet("{id:int}")]
-    public ActionResult<ActivityDto> Get(int id)
+    public ActionResult<ActivityDto> Get(int courseId, int id)
     {
-        var result = _activityService.Get(id); 
+        var result = _activityService.Get(id, courseId, User.InstructorId()); 
         return CreateResponse(result);
     }
 
     [HttpGet]
     public ActionResult<List<ActivityDto>> GetByCourse(int courseId)
     {
-        var result = _activityService.GetByCourse(courseId);
+        var result = _activityService.GetByCourse(courseId, User.InstructorId());
         return CreateResponse(result);
     }
 

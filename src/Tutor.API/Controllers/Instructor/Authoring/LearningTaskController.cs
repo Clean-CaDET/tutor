@@ -18,16 +18,16 @@ public class LearningTaskController : BaseApiController
     }
 
     [HttpGet("{id:int}")]
-    public ActionResult<LearningTaskDto> Get(int id)
+    public ActionResult<LearningTaskDto> Get(int unitId, int id)
     {
-        var result = _learningTaskService.Get(id);
+        var result = _learningTaskService.Get(id, unitId, User.InstructorId());
         return CreateResponse(result);
     }
 
     [HttpGet]
     public ActionResult<LearningTaskDto> GetByUnit(int unitId)
     {
-        var result = _learningTaskService.GetByUnit(unitId);
+        var result = _learningTaskService.GetByUnit(unitId, User.InstructorId());
         return CreateResponse(result);
     }
 
