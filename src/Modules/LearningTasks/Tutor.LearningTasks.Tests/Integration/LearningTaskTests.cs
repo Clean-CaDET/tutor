@@ -31,9 +31,6 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         result.Name.ShouldBe("FirstTask");
         result.IsTemplate.ShouldBeFalse();
         result.MaxPoints.ShouldBe(10);
-        result.CaseStudies.ShouldNotBeNull();
-        result.CaseStudies.Count.ShouldBe(1);
-        result.CaseStudies[0].Name.ShouldBe("FirstCaseStudy");
         result.Steps?.Count.ShouldBe(1);
         result.Steps?[0].Id.ShouldBe(-1);
         result.Steps?[0].Order.ShouldBe(1);
@@ -78,14 +75,11 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         result[0].Id.ShouldBe(-2);
         result[0].UnitId.ShouldBe(-1);
         result[0].Name.ShouldBe("SecondTask");
-        result[0].DomainModel.ShouldNotBeNull();
         result[0].Steps?.Count.ShouldBe(1);
         result[0].Steps?[0].Standards?.Count.ShouldBe(1);
         result[1].Id.ShouldBe(-1);
         result[1].UnitId.ShouldBe(-1);
         result[1].Name.ShouldBe("FirstTask");
-        result[1].DomainModel.ShouldNotBeNull();
-        result[1].CaseStudies?.Count.ShouldBe(1);
         result[1].Steps?.Count.ShouldBe(1);
         result[1].Steps?[0].Standards?.Count.ShouldBe(2);
     }
@@ -116,8 +110,6 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
             Name = "New learning task",
             Description = "Some task description",
             IsTemplate = false,
-            DomainModel = new DomainModelDto { Description = "Domain model description" },
-            CaseStudies = new List<CaseStudyDto> { new CaseStudyDto { Name = "Case study name", Description = "Some description" } },
             Steps = new List<StepDto> { new StepDto { Order = 1, ActivityId = -3, ActivityName = "C1-A3",
             SubmissionFormat = new SubmissionFormatDto() {SubmissionGuidelines = "Guidlnes", AnswerValidation = "Validation rules"},
             Standards = new List<StandardDto>() { new StandardDto { Name = "Standard name", Description = "Standard description", MaxPoints = 5 } }
@@ -133,12 +125,6 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         result.ShouldNotBeNull();
         result.Name.ShouldBe(newEntity.Name);
         result.IsTemplate.ShouldBe(newEntity.IsTemplate);
-        result.DomainModel.ShouldNotBeNull();
-        result.DomainModel.Description.ShouldBe(newEntity.DomainModel.Description);
-        result.CaseStudies.ShouldNotBeNull();
-        result.CaseStudies.Count.ShouldBe(1);
-        result.CaseStudies[0].Name.ShouldBe(newEntity.CaseStudies[0].Name);
-        result.CaseStudies[0].Description.ShouldBe(newEntity.CaseStudies[0].Description);
         result.MaxPoints.ShouldBe(5);
 
         result.Steps.ShouldNotBeNull();
@@ -174,8 +160,6 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
             Name = "New learning task",
             Description = "Some task description",
             IsTemplate = false,
-            DomainModel = new DomainModelDto { Description = "Domain model description" },
-            CaseStudies = new List<CaseStudyDto> { new CaseStudyDto { Name = "Case study name", Description = "Some description" } },
             Steps = new List<StepDto> { new StepDto { Order = 1, ActivityId = -3, ActivityName = "C1-A3",
             SubmissionFormat = new SubmissionFormatDto() {SubmissionGuidelines = "Guidlnes", AnswerValidation = "Validation rules"},
             Standards = new List<StandardDto>() { new StandardDto { Name = "Standard name", Description = "Standard description", MaxPoints = 5 } }
@@ -203,8 +187,6 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
             Name = "New name",
             Description = "New description",
             IsTemplate = false,
-            DomainModel = new DomainModelDto { Description = "New domain model description" },
-            CaseStudies = new List<CaseStudyDto> { new CaseStudyDto { Name = "New name", Description = "New description" } },
             Steps = new List<StepDto> { new StepDto { Id = -3, Order = 1, ActivityId = -3, ActivityName = "C1-A3",
             SubmissionFormat = new SubmissionFormatDto() {SubmissionGuidelines = "New guidlnes", AnswerValidation = "New validation rules"},
             Standards = new List<StandardDto>() { new StandardDto { Id = -4, Name = "New name", Description = "New description", MaxPoints = 5 } }
@@ -221,12 +203,6 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         result.Id.ShouldBe(newEntity.Id);
         result.Name.ShouldBe(newEntity.Name);
         result.IsTemplate.ShouldBe(newEntity.IsTemplate);
-        result.DomainModel.ShouldNotBeNull();
-        result.DomainModel.Description.ShouldBe(newEntity.DomainModel.Description);
-        result.CaseStudies.ShouldNotBeNull();
-        result.CaseStudies.Count.ShouldBe(1);
-        result.CaseStudies[0].Name.ShouldBe(newEntity.CaseStudies[0].Name);
-        result.CaseStudies[0].Description.ShouldBe(newEntity.CaseStudies[0].Description);
         result.MaxPoints.ShouldBe(5);
 
         result.Steps.ShouldNotBeNull();
@@ -257,12 +233,6 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         storedEntity.Id.ShouldBe(newEntity.Id);
         storedEntity.Name.ShouldBe(newEntity.Name);
         storedEntity.IsTemplate.ShouldBe(newEntity.IsTemplate);
-        storedEntity.DomainModel.ShouldNotBeNull();
-        storedEntity.DomainModel.Description.ShouldBe(newEntity.DomainModel.Description);
-        storedEntity.CaseStudies.ShouldNotBeNull();
-        storedEntity.CaseStudies.Count.ShouldBe(1);
-        storedEntity.CaseStudies[0].Name.ShouldBe(newEntity.CaseStudies[0].Name);
-        storedEntity.CaseStudies[0].Description.ShouldBe(newEntity.CaseStudies[0].Description);
         storedEntity.MaxPoints.ShouldBe(5);
         storedEntity.Steps.ShouldNotBeNull();
         storedEntity.Steps.Count.ShouldBe(1);
@@ -281,8 +251,6 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
             Name = "New name",
             Description = "New description",
             IsTemplate = false,
-            DomainModel = new DomainModelDto { Description = "New domain model description" },
-            CaseStudies = new List<CaseStudyDto> { new CaseStudyDto { Name = "New name", Description = "New description" } },
             Steps = new List<StepDto> { new StepDto { Id = -3, Order = 1, ActivityId = -3, ActivityName = "C1-A3",
             SubmissionFormat = new SubmissionFormatDto() {SubmissionGuidelines = "New guidlnes", AnswerValidation = "New validation rules"},
             Standards = new List<StandardDto>() { new StandardDto { Id = -4, Name = "New name", Description = "New description", MaxPoints = 5 } }

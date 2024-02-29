@@ -7,8 +7,6 @@ public class LearningTaskDto
     public required string Name { get; set; }
     public required string Description { get; set; }
     public bool IsTemplate { get; set; }
-    public DomainModelDto? DomainModel { get; set; }
-    public List<CaseStudyDto>? CaseStudies { get; set; }
     public List<StepDto>? Steps { get; set; }
     public double MaxPoints { get; set; }
 }

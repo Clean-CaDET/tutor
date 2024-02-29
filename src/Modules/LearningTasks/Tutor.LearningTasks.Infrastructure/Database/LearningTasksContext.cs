@@ -22,8 +22,6 @@ public class LearningTasksContext : DbContext
         modelBuilder.Entity<Activity>().Property(a => a.Subactivities).HasColumnType("jsonb");
         modelBuilder.Entity<Activity>().HasIndex(a => new { a.CourseId, a.Code }).IsUnique();
 
-        modelBuilder.Entity<LearningTask>().Property(l => l.DomainModel).HasColumnType("jsonb");
-        modelBuilder.Entity<LearningTask>().Property(l => l.CaseStudies).HasColumnType("jsonb");
         modelBuilder.Entity<LearningTask>()
             .HasMany(l => l.Steps)
             .WithOne()

@@ -8,8 +8,6 @@ public class LearningTask : AggregateRoot
     public string? Name { get; private set; }
     public string? Description { get; private set; }
     public bool IsTemplate { get; private set; }
-    public DomainModel? DomainModel { get; private set; }
-    public List<CaseStudy>? CaseStudies { get; private set; }
     public List<Step>? Steps { get; private set; }
     public double MaxPoints {  get; private set; }
 
@@ -19,8 +17,6 @@ public class LearningTask : AggregateRoot
         Name = learningTask.Name;
         Description = learningTask.Description;
         IsTemplate = learningTask.IsTemplate;
-        DomainModel = learningTask.DomainModel;
-        CaseStudies = learningTask.CaseStudies;
         Steps = learningTask.Steps;
         MaxPoints = Steps?.Sum(s => s.MaxPoints) ?? 0;
     }

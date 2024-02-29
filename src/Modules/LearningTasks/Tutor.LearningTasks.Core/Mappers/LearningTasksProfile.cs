@@ -10,8 +10,6 @@ public class LearningTasksProfile : Profile
     {
         CreateMap<LearningTaskDto, LearningTask>()
             .AfterMap((src, dest) => dest.CalculateMaxPoints()).ReverseMap();
-        CreateMap<DomainModelDto, DomainModel>().ReverseMap();
-        CreateMap<CaseStudyDto, CaseStudy>().ReverseMap();
         CreateMap<StepDto, Step>()
             .AfterMap((src, dest) => dest.CalculateMaxPoints()).ReverseMap();
         CreateMap<StandardDto, Standard>().ReverseMap();
