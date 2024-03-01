@@ -28,11 +28,12 @@ public class GroupMonitoringTests : BaseCoursesIntegrationTest
 
     [Theory]
     [InlineData("-51", -1, -1, 4)]
+    [InlineData("-51", -1, 0, 5)]
     public void Retrieves_learners(string instructorId, int courseId, int groupId, int expectedCount)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, instructorId);
-        var result = ((OkObjectResult)controller.GetLearners(courseId, groupId, 0, 0).Result)?.Value as PagedResult<LearnerDto>;
+        var result = ((OkObjectResult)controller.GetLearners(courseId, groupId, 1, 2).Result)?.Value as PagedResult<LearnerDto>;
 
         result.ShouldNotBeNull();
         result.TotalCount.ShouldBe(expectedCount);

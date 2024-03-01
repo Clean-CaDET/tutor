@@ -63,16 +63,16 @@ public class GroupMonitoringService : IGroupMonitoringService
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToList();
-        return CreateResult(learnerIds);
+        return CreateResult(learnerIds, allLearnerIds.Count);
     }
 
-    private Result<PagedResult<LearnerDto>> CreateResult(List<int> learnerIds)
+    private Result<PagedResult<LearnerDto>> CreateResult(List<int> learnerIds, int totalCount = 0)
     {
         var learners = _learnerService.GetMany(learnerIds);
         var learnerDtos = learners.Value
             .Select(_mapper.Map<LearnerDto>)
             .OrderByDescending(l => l.Id)
             .ToList();
-        return new PagedResult<LearnerDto>(learnerDtos, learnerDtos.Count);
+        return new PagedResult<LearnerDto>(learnerDtos, totalCount == 0 ? learnerDtos.Count : totalCount);
     }
 }
