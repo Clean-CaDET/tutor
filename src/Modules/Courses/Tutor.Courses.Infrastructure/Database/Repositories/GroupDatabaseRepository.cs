@@ -12,7 +12,10 @@ public class GroupDatabaseRepository : CrudDatabaseRepository<LearnerGroup, Cour
 
     public List<LearnerGroup> GetCourseGroups(int courseId)
     {
-        return DbContext.LearnerGroups.Where(g => g.CourseId == courseId).ToList();
+        return DbContext.LearnerGroups
+            .Where(g => g.CourseId == courseId)
+            .OrderBy(g => g.Name)
+            .ToList();
     }
 
     public PagedResult<Course> GetEnrolledCourses(int learnerId, int page, int pageSize)
