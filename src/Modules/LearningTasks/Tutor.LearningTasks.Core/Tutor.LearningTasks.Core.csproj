@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="UseCases\Authoring\ActivityService.cs~RFbd2fa4.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Courses\Tutor.Courses.API\Tutor.Courses.API.csproj" />
     <ProjectReference Include="..\Tutor.LearningTasks.API\Tutor.LearningTasks.API.csproj" />
   </ItemGroup>

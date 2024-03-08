@@ -2,11 +2,15 @@
 
 namespace Tutor.LearningTasks.Core.Domain.LearningTasks;
 
-public class Step : Entity
+public class Activity : Entity
 {
-    public int Order { get; private set; }
-    public int ActivityId { get; private set; }
-    public string? ActivityName { get; private set; }
+    public int UnitId { get; private set; }
+    public int ParentId { get; private set; }
+    public int Order {  get; private set; }
+    public string? Code { get; private set; }
+    public string? Name { get; private set; }
+    public string? Guidance { get; private set; }
+    public List<Example>? Examples { get; private set; }
     public SubmissionFormat? SubmissionFormat { get; private set; }
     public List<Standard>? Standards { get; private set; }
     public double MaxPoints { get; private set; }

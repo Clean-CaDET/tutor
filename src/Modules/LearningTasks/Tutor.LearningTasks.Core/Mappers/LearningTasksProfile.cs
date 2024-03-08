@@ -6,13 +6,14 @@ namespace Tutor.LearningTasks.Core.Mappers;
 
 public class LearningTasksProfile : Profile
 {
-    public LearningTasksProfile() 
+    public LearningTasksProfile()
     {
+        CreateMap<ActivityDto, Activity>()
+            .AfterMap((src, dest) => dest.CalculateMaxPoints()).ReverseMap();
+        CreateMap<ExampleDto, Example>().ReverseMap();
+        CreateMap<SubmissionFormatDto, SubmissionFormat>().ReverseMap();
+        CreateMap<StandardDto, Standard>().ReverseMap();
         CreateMap<LearningTaskDto, LearningTask>()
             .AfterMap((src, dest) => dest.CalculateMaxPoints()).ReverseMap();
-        CreateMap<StepDto, Step>()
-            .AfterMap((src, dest) => dest.CalculateMaxPoints()).ReverseMap();
-        CreateMap<StandardDto, Standard>().ReverseMap();
-        CreateMap<SubmissionFormatDto, SubmissionFormat>().ReverseMap();
     }
 }

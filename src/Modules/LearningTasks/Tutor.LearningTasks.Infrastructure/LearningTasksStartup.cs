@@ -25,7 +25,7 @@ public static class LearningTasksStartup
 
     private static void SetupAutoMapper(IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(ActivitiesProfile).Assembly);
+        services.AddAutoMapper(typeof(LearningTasksProfile).Assembly);
     }
 
     private static void SetupCore(IServiceCollection services)
@@ -37,7 +37,6 @@ public static class LearningTasksStartup
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
-        services.AddScoped<IActivityRepository, ActivityDatabaseRepository>();
         services.AddScoped<ILearningTaskRepository, LearningTaskDatabaseRepository>();
         services.AddScoped<ILearningTasksUnitOfWork, LearningTasksUnitOfWork>();
         services.AddDbContext<LearningTasksContext>(opt =>
