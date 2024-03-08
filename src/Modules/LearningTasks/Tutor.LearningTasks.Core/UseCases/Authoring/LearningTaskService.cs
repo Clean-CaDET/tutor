@@ -21,7 +21,7 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
         _accessServices = accessServices;
     }
 
-    public new Result<LearningTaskDto> Get(int id, int unitId,  int instructorId)
+    public Result<LearningTaskDto> Get(int id, int unitId,  int instructorId)
     {
         if (!_accessServices.IsUnitOwner(unitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);

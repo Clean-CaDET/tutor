@@ -4,7 +4,7 @@ using Tutor.LearningTasks.API.Dtos.LearningTasks;
 using Tutor.LearningTasks.API.Public.Authoring;
 using Tutor.Stakeholders.Infrastructure.Authentication;
 
-namespace Tutor.API.Controllers.Instructor.Authoring;
+namespace Tutor.API.Controllers.Instructor.Authoring.LearningTasks;
 
 [Authorize(Policy = "instructorPolicy")]
 [Route("api/authoring/units/{unitId:int}/learning-tasks")]
@@ -40,7 +40,7 @@ public class LearningTaskController : BaseApiController
     }
 
     [HttpPut]
-    public ActionResult<LearningTaskDto> Update(int unitId,  LearningTaskDto learningTask)
+    public ActionResult<LearningTaskDto> Update(int unitId, LearningTaskDto learningTask)
     {
         learningTask.UnitId = unitId;
         var result = _learningTaskService.Update(learningTask, User.InstructorId());

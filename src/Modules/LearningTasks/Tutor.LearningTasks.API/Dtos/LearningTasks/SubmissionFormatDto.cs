@@ -2,6 +2,6 @@
 
 public class SubmissionFormatDto
 {
-    public required string SubmissionGuidelines { get; set; }
-    public required string AnswerValidation { get; set; }
+    public required string Guidelines { get; set; }
+    public string? AnswerValidation { get; set; }
 }
