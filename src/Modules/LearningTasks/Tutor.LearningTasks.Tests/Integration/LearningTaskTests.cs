@@ -167,8 +167,7 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
                 SubmissionFormat = new SubmissionFormatDto { Guidelines = "guidlanes", AnswerValidation = "validation1" },
                 Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
 
-            },
-            new ActivityDto
+            }, new ActivityDto
             {
                 Order = 2,
                 Code = "U1-LT2-A1",
@@ -177,7 +176,6 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
                 Examples = new List<ExampleDto> { new ExampleDto { Code = "U1-LT2-A1-E1", Url = "test" } },
                 SubmissionFormat = new SubmissionFormatDto { Guidelines = "guidlanes", AnswerValidation = "validation1" },
                 Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
-
             }}
         };
         dbContext.Database.BeginTransaction();
@@ -312,8 +310,7 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
                 SubmissionFormat = new SubmissionFormatDto { Guidelines = "guidlanes", AnswerValidation = "validation1" },
                 Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
 
-            },
-            new ActivityDto
+            }, new ActivityDto
             {
                 Order = 2,
                 Code = "U1-LT2-A1",
