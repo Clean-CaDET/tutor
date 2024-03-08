@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using Tutor.API.Controllers.Instructor.Authoring.LearningTasks;
+using Tutor.API.Controllers.Instructor.Authoring;
 using Tutor.LearningTasks.API.Dtos.LearningTasks;
 using Tutor.LearningTasks.API.Public.Authoring;
 using Tutor.LearningTasks.Infrastructure.Database;
@@ -101,12 +101,12 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
         var newEntity = new LearningTaskDto
-            {
-                Name = "New learning task",
-                Description = "Some task description",
-                IsTemplate = false,
-                Steps = new List<ActivityDto> { new ActivityDto
-            {
+        {
+            Name = "New learning task",
+            Description = "Some task description",
+            IsTemplate = false,
+            Steps = new List<ActivityDto> { new ActivityDto
+        {
                 Order = 1,
                 Code = "U1-A1",
                 Name = "test",
@@ -144,6 +144,50 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         var resultStandard = resultStandards[0];
         var newEntityStandard = newEntityStandards[0];
         resultStandard.MaxPoints.ShouldBe(newEntityStandard.MaxPoints);
+    }
+
+    [Fact]
+    public void Creates_with_steps_that_have_same_value_for_code()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+        var newEntity = new LearningTaskDto
+        {
+            Name = "New learning task",
+            Description = "Some task description",
+            IsTemplate = false,
+            Steps = new List<ActivityDto> { new ActivityDto
+            {
+                Order = 1,
+                Code = "U1-LT2-A1",
+                Name = "test",
+                Guidance = "guidance",
+                Examples = new List<ExampleDto> { new ExampleDto { Code = "U1-LT2-A1-E1", Url = "test" } },
+                SubmissionFormat = new SubmissionFormatDto { Guidelines = "guidlanes", AnswerValidation = "validation1" },
+                Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
+
+            },
+            new ActivityDto
+            {
+                Order = 2,
+                Code = "U1-LT2-A1",
+                Name = "test",
+                Guidance = "guidance",
+                Examples = new List<ExampleDto> { new ExampleDto { Code = "U1-LT2-A1-E1", Url = "test" } },
+                SubmissionFormat = new SubmissionFormatDto { Guidelines = "guidlanes", AnswerValidation = "validation1" },
+                Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
+
+            }}
+        };
+        dbContext.Database.BeginTransaction();
+
+        var actionResult = controller.Create(-1, newEntity).Result;
+        var objectResult = actionResult as ObjectResult;
+
+        dbContext.ChangeTracker.Clear();
+        objectResult.ShouldNotBeNull();
+        objectResult.StatusCode.ShouldBe(409);
     }
 
     [Fact]
@@ -244,6 +288,50 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         storedEntity.Steps.ShouldNotBeNull();
         storedEntity.Steps.Count.ShouldBe(1);
         storedEntity.Steps?[0].MaxPoints.ShouldBe(10);
+    }
+
+    [Fact]
+    public void Updates_with_steps_that_have_same_value_for_code()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+        var newEntity = new LearningTaskDto
+        {
+            Id = -2,
+            Name = "Learning task",
+            Description = "Some task description",
+            IsTemplate = false,
+            Steps = new List<ActivityDto> { new ActivityDto
+            {
+                Order = 1,
+                Code = "U1-LT2-A1",
+                Name = "test",
+                Guidance = "guidance",
+                Examples = new List<ExampleDto> { new ExampleDto { Code = "U1-LT2-A1-E1", Url = "test" } },
+                SubmissionFormat = new SubmissionFormatDto { Guidelines = "guidlanes", AnswerValidation = "validation1" },
+                Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
+
+            },
+            new ActivityDto
+            {
+                Order = 2,
+                Code = "U1-LT2-A1",
+                Name = "test",
+                Guidance = "guidance",
+                Examples = new List<ExampleDto> { new ExampleDto { Code = "U1-LT2-A1-E1", Url = "test" } },
+                SubmissionFormat = new SubmissionFormatDto { Guidelines = "guidlanes", AnswerValidation = "validation1" },
+                Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
+            }}
+        };
+        dbContext.Database.BeginTransaction();
+
+        var actionResult = controller.Update(-1, newEntity).Result;
+        var objectResult = actionResult as ObjectResult;
+
+        dbContext.ChangeTracker.Clear();
+        objectResult.ShouldNotBeNull();
+        objectResult.StatusCode.ShouldBe(409);
     }
 
     [Fact]

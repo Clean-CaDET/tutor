@@ -3,7 +3,7 @@
 public class ActivityDto
 {
     public int Id { get; set; }
-    public int UnitId { get; set; }
+    public int LearningTaskId { get; set; }
     public int ParentId { get; set; }
     public int Order { get; set; }
     public required string Code { get; set; }

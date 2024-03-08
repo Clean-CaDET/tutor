@@ -16,7 +16,7 @@ public class LearningTasksContext : DbContext
         modelBuilder.Entity<LearningTask>()
             .HasMany(l => l.Steps)
             .WithOne()
-            .HasForeignKey("LearningTaskId")
+            .HasForeignKey(s => s.LearningTaskId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
 
@@ -29,6 +29,6 @@ public class LearningTasksContext : DbContext
             .HasForeignKey("ActivityId")
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
-        modelBuilder.Entity<Activity>().HasIndex(a => new { a.UnitId, a.Code }).IsUnique();
+        modelBuilder.Entity<Activity>().HasIndex(a => new { a.LearningTaskId, a.Code }).IsUnique();
     }
 }
