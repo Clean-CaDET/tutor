@@ -3,6 +3,6 @@
 public class SubmissionFormatDto
 {
     public required string Type { get; set; }
-    public string? AnswerValidation { get; set; }
+    public string? ValidationRule { get; set; }
     public required string Guidelines { get; set; }
 }

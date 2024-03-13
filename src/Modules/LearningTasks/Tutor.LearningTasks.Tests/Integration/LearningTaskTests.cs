@@ -113,7 +113,7 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
                 Name = "test",
                 Guidance = "guidance",
                 Examples = new List<ExampleDto> { new ExampleDto { Code = "U1A1E1", Url = "test" } },
-                SubmissionFormat = new SubmissionFormatDto {  Type = "Link", AnswerValidation = "validation1", Guidelines = "guidlanes"},
+                SubmissionFormat = new SubmissionFormatDto {  Type = "Link", ValidationRule = "validation1", Guidelines = "guidlanes"},
                 Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description" , MaxPoints = 10} },
             } }
         };
@@ -135,7 +135,7 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         var newEntityStep = newEntity.Steps[0];
         resultStep.Order.ShouldBe(newEntityStep.Order);
         resultStep.SubmissionFormat?.Type.ShouldBe(newEntityStep.SubmissionFormat?.Type);
-        resultStep.SubmissionFormat?.AnswerValidation.ShouldBe(newEntityStep.SubmissionFormat?.AnswerValidation);
+        resultStep.SubmissionFormat?.ValidationRule.ShouldBe(newEntityStep.SubmissionFormat?.ValidationRule);
         resultStep.MaxPoints.ShouldBe(10);
 
         var resultStandards = resultStep.Standards;
@@ -166,7 +166,7 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
                 Name = "test",
                 Guidance = "guidance",
                 Examples = new List<ExampleDto> { new ExampleDto { Code = "U1-LT2-A1-E1", Url = "test" } },
-                SubmissionFormat = new SubmissionFormatDto {Type = "Link", AnswerValidation = "validation", Guidelines = "guidlanes"},
+                SubmissionFormat = new SubmissionFormatDto {Type = "Link", ValidationRule = "validation", Guidelines = "guidlanes"},
                 Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
 
             }, new ActivityDto
@@ -176,7 +176,7 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
                 Name = "test",
                 Guidance = "guidance",
                 Examples = new List<ExampleDto> { new ExampleDto { Code = "U1-LT2-A1-E1", Url = "test" } },
-                SubmissionFormat = new SubmissionFormatDto {Type = "Link", AnswerValidation = "validation", Guidelines = "guidlanes"},
+                SubmissionFormat = new SubmissionFormatDto {Type = "Link", ValidationRule = "validation", Guidelines = "guidlanes"},
                 Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
             }}
         };
@@ -208,7 +208,7 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
                 Name = "test",
                 Guidance = "guidance",
                 Examples = new List<ExampleDto> { new ExampleDto { Code = "U1A1E1", Url = "test" } },
-                SubmissionFormat = new SubmissionFormatDto {Type = "Link", AnswerValidation = "validation", Guidelines = "guidlanes"},
+                SubmissionFormat = new SubmissionFormatDto {Type = "Link", ValidationRule = "validation", Guidelines = "guidlanes"},
                 Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description" , MaxPoints = 10} },
             } }
         };
@@ -242,7 +242,7 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
                 Name = "test",
                 Guidance = "guidance",
                 Examples = new List<ExampleDto> { new ExampleDto { Code = "Code1", Url = "test" } },
-                SubmissionFormat = new SubmissionFormatDto {Type = "Code", AnswerValidation = "validation", Guidelines = "guidlanes"},
+                SubmissionFormat = new SubmissionFormatDto {Type = "Code", ValidationRule = "validation", Guidelines = "guidlanes"},
                 Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description" , MaxPoints = 10} },
             } }
         };
@@ -267,7 +267,7 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         resultStep.Order.ShouldBe(newEntityStep.Order);
         resultStep.SubmissionFormat.ShouldNotBeNull();
         resultStep.SubmissionFormat.Type.ShouldBe(newEntityStep.SubmissionFormat?.Type);
-        resultStep.SubmissionFormat.AnswerValidation.ShouldBe(newEntityStep.SubmissionFormat?.AnswerValidation);
+        resultStep.SubmissionFormat.ValidationRule.ShouldBe(newEntityStep.SubmissionFormat?.ValidationRule);
         resultStep.MaxPoints.ShouldBe(10);
 
         var resultStandards = resultStep.Standards;
@@ -310,7 +310,7 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
                 Name = "test",
                 Guidance = "guidance",
                 Examples = new List<ExampleDto> { new ExampleDto { Code = "U1-LT2-A1-E1", Url = "test" } },
-                SubmissionFormat = new SubmissionFormatDto {Type = "Link", AnswerValidation = "validation", Guidelines = "guidlanes"},
+                SubmissionFormat = new SubmissionFormatDto {Type = "Link", ValidationRule = "validation", Guidelines = "guidlanes"},
                 Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
 
             }, new ActivityDto
@@ -320,7 +320,7 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
                 Name = "test",
                 Guidance = "guidance",
                 Examples = new List<ExampleDto> { new ExampleDto { Code = "U1-LT2-A1-E1", Url = "test" } },
-                SubmissionFormat = new SubmissionFormatDto {Type = "Link", AnswerValidation = "validation", Guidelines = "guidlanes"},
+                SubmissionFormat = new SubmissionFormatDto {Type = "Link", ValidationRule = "validation", Guidelines = "guidlanes"},
                 Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
             }}
         };
@@ -354,7 +354,7 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
                 Name = "test",
                 Guidance = "guidance",
                 Examples = new List<ExampleDto> { new ExampleDto { Code = "Code1", Url = "test" } },
-                SubmissionFormat = new SubmissionFormatDto {Type = "Link", AnswerValidation = "validation", Guidelines = "guidlanes"},
+                SubmissionFormat = new SubmissionFormatDto {Type = "Link", ValidationRule = "validation", Guidelines = "guidlanes"},
                 Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description" , MaxPoints = 10} },
             } }
         };
