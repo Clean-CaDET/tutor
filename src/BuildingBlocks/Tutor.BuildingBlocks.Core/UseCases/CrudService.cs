@@ -55,10 +55,16 @@ public abstract class CrudService<TDto, TDomain> : BaseService<TDto, TDomain> wh
     /// </summary>
     public virtual Result<TDto> Update(TDomain entity)
     {
-        var updatedEntity = CrudRepository.UpdateWithAssociatedEntites(entity);
-
+        try
+        {
+            CrudRepository.UpdateWithAssociatedEntites(entity);
+        } 
+        catch (Exception)
+        {
+            return Result.Fail(FailureCode.Conflict);
+        }
         var result = UnitOfWork.Save();
-        return result.IsFailed ? result : MapToDto(updatedEntity);
+        return result.IsFailed ? result : MapToDto(entity);
     }
 
     public virtual Result Delete(int id)

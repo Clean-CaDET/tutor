@@ -30,7 +30,6 @@ public static class LearningTasksStartup
 
     private static void SetupCore(IServiceCollection services)
     {
-        services.AddProxiedScoped<IActivityService, ActivityService>();
         services.AddProxiedScoped<ILearningTaskService, LearningTaskService>();
         services.AddProxiedScoped<IAccessServices, AccessServices>();
     }

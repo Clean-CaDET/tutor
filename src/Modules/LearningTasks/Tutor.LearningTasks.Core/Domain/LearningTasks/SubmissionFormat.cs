@@ -4,18 +4,26 @@ namespace Tutor.LearningTasks.Core.Domain.LearningTasks;
 
 public class SubmissionFormat : ValueObject
 {
+    public SubmissionType Type { get; private set; }
+    public string ValidationRule { get; private set; }
     public string Guidelines { get; private set; }
-    public string AnswerValidation { get; private set; }
 
-    public SubmissionFormat(string guidelines, string answerValidation)
+    public SubmissionFormat(SubmissionType type, string validationRule, string guidelines)
     {
-        Guidelines = guidelines;
-        AnswerValidation = answerValidation;
+        Type = type;
+        ValidationRule = validationRule;
+        Guidelines = guidelines;        
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
+        yield return Type;
+        yield return ValidationRule;
         yield return Guidelines;
-        yield return AnswerValidation;
     }
+}
+
+public enum SubmissionType
+{
+    Text, Link, Code
 }

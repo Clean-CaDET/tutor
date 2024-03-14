@@ -4,7 +4,7 @@ using Tutor.LearningTasks.API.Dtos.LearningTasks;
 using Tutor.LearningTasks.API.Public.Authoring;
 using Tutor.Stakeholders.Infrastructure.Authentication;
 
-namespace Tutor.API.Controllers.Instructor.Authoring.LearningTasks;
+namespace Tutor.API.Controllers.Instructor.Authoring;
 
 [Authorize(Policy = "instructorPolicy")]
 [Route("api/authoring/units/{unitId:int}/learning-tasks")]

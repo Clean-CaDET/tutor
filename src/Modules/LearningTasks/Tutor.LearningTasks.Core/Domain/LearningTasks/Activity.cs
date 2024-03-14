@@ -4,8 +4,8 @@ namespace Tutor.LearningTasks.Core.Domain.LearningTasks;
 
 public class Activity : Entity
 {
-    public int UnitId { get; private set; }
     public int ParentId { get; private set; }
+    public int LearningTaskId { get; private set; }
     public int Order {  get; private set; }
     public string? Code { get; private set; }
     public string? Name { get; private set; }

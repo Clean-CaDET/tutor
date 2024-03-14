@@ -26,32 +26,4 @@ public class LearningTask : AggregateRoot
     {
         MaxPoints = Steps?.Sum(s => s.MaxPoints) ?? 0;
     }
-
-    public void AddStep(Activity newStep)
-    {
-        newStep.CalculateMaxPoints();
-        Steps?.Add(newStep);
-        CalculateMaxPoints();
-    }
-
-    public Activity? GetStep(string code)
-    {
-        return Steps?.Find(s => s.Code == code);
-    }
-
-    public void UpdateStep(Activity step)
-    {
-        if (Steps == null) return;
-        step.CalculateMaxPoints();
-        int index = Steps.FindIndex(s => s.Id == step.Id);
-        if (index == -1) return;
-        Steps[index] = step;
-        CalculateMaxPoints();
-    }
-
-    public void RemoveStep(int id)
-    {
-        Steps?.RemoveAll(s => s.Id == id);
-        CalculateMaxPoints();
-    }
 }
