@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Interceptors;
+using Tutor.LearningTasks.API.Internal;
 using Tutor.LearningTasks.API.Public.Authoring;
 using Tutor.LearningTasks.Core.UseCases.Authoring;
 using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
@@ -31,6 +32,7 @@ public static class LearningTasksStartup
     private static void SetupCore(IServiceCollection services)
     {
         services.AddProxiedScoped<ILearningTaskService, LearningTaskService>();
+        services.AddProxiedScoped<ILearningTaskCloner, LearningTaskService>();
         services.AddProxiedScoped<IAccessServices, AccessServices>();
     }
 

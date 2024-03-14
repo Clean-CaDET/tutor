@@ -17,11 +17,19 @@ public class LearningTaskDatabaseRepository : CrudDatabaseRepository<LearningTas
             .FirstOrDefault();
     }
 
-    public List<LearningTask> GetUnitLearningTasks(int unitId)
+    public List<LearningTask> GetForUnit(int unitId)
     {
         return DbContext.LearningTasks.Where(l => l.UnitId == unitId)
             .Include(l => l.Steps!)
                 .ThenInclude(s => s.Standards)
             .ToList();
+    }
+
+    public List<LearningTask> GetForUnits(List<int> unitIds)
+    {
+        return DbContext.LearningTasks.Where(t => unitIds.Contains(t.UnitId))
+                .Include(l => l.Steps!)
+                    .ThenInclude(s => s.Standards)
+                .ToList();
     }
 }

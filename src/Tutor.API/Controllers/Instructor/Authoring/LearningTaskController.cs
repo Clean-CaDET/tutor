@@ -39,6 +39,14 @@ public class LearningTaskController : BaseApiController
         return CreateResponse(result);
     }
 
+    [HttpPost("clone")]
+    public ActionResult<LearningTaskDto> Clone(int unitId, [FromBody] LearningTaskDto taskHeader)
+    {
+        taskHeader.UnitId = unitId;
+        var result = _learningTaskService.Clone(taskHeader, User.InstructorId());
+        return CreateResponse(result);
+    }
+
     [HttpPut]
     public ActionResult<LearningTaskDto> Update(int unitId, LearningTaskDto learningTask)
     {

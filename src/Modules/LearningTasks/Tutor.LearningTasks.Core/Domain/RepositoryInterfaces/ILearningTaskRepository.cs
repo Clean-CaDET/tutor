@@ -6,5 +6,6 @@ namespace Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 public interface ILearningTaskRepository : ICrudRepository<LearningTask>
 {
     new LearningTask? Get(int id);
-    List<LearningTask> GetUnitLearningTasks(int unitId);
+    List<LearningTask> GetForUnit(int unitId);
+    List<LearningTask> GetForUnits(List<int> unitIds);
 }

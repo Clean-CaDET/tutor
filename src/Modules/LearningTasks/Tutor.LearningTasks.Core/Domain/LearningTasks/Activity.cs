@@ -4,7 +4,7 @@ namespace Tutor.LearningTasks.Core.Domain.LearningTasks;
 
 public class Activity : Entity
 {
-    public int ParentId { get; private set; }
+    public int ParentId { get; internal set; }
     public int LearningTaskId { get; private set; }
     public int Order {  get; private set; }
     public string? Code { get; private set; }
@@ -18,5 +18,24 @@ public class Activity : Entity
     public void CalculateMaxPoints()
     {
         MaxPoints = Standards?.Sum(s => s.MaxPoints) ?? 0;
+    }
+
+    public Activity Clone()
+    {
+        return new Activity
+        {
+            Code = Code,
+            Name = Name,
+            Order = Order,
+            Guidance = Guidance,
+            Examples = Examples, // VOs can be directly referenced
+            SubmissionFormat = SubmissionFormat,
+            Standards = Standards?.Select(s =>
+            {
+                var standard = new Standard();
+                standard.Update(s);
+                return standard;
+            }).ToList()
+        };
     }
 }
