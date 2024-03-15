@@ -223,6 +223,76 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
     }
 
     [Fact]
+    public void Clones()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+        var newEntity = new LearningTaskDto
+        {
+            Id = -5,
+            Name = "New learning task",
+            Description = "Some task description",
+            IsTemplate = false
+        };
+
+        var actionResult = controller.Clone(-2, newEntity).Result;
+        var okObjectResult = actionResult as OkObjectResult;
+        var result = okObjectResult?.Value as LearningTaskDto;
+
+        dbContext.ChangeTracker.Clear();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(newEntity.Name);
+        result.Description.ShouldBe(newEntity.Description);
+        result.IsTemplate.ShouldBe(newEntity.IsTemplate);
+        result.MaxPoints.ShouldBe(10);
+        result.Steps?.Count().ShouldBe(2);
+        result.Steps?[1].Code.ShouldBe("U3-LT5-A1");
+        result.Steps?[0].Code.ShouldBe("U3-LT5-A11");
+        result.Steps?[0].ParentId.ShouldBe(result.Steps[1].Id);
+        result.Steps?[1].Standards?.Count().ShouldBe(1);
+        result.Steps?[0].Standards?.Count().ShouldBe(1);
+
+        result.Steps.ShouldNotBeNull();
+        result.Steps.Count.ShouldBe(2);
+        var task = dbContext.LearningTasks.Where(l => l.Id == result.Id)
+            .Include(l => l.Steps!).ThenInclude(s => s.Standards).FirstOrDefault();
+        task.ShouldNotBeNull();
+        task.Name.ShouldBe(newEntity.Name);
+        result.Description.ShouldBe(newEntity.Description);
+        result.IsTemplate.ShouldBe(newEntity.IsTemplate);
+        task.MaxPoints.ShouldBe(10);
+        task.Steps?.Count().ShouldBe(2);
+        task.Steps?[1].Code.ShouldBe("U3-LT5-A1");
+        task.Steps?[0].Code.ShouldBe("U3-LT5-A11");
+        task.Steps?[0].ParentId.ShouldBe(task.Steps[1].Id);
+        task.Steps?[1].Standards?.Count().ShouldBe(1);
+        task.Steps?[0].Standards?.Count().ShouldBe(1);
+    }
+
+    [Fact]
+    public void Wrong_instructor_clones_learning_task_returns_forbidden()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+        var newEntity = new LearningTaskDto
+        {
+            Id = -2,
+            Name = "New learning task",
+            Description = "Some task description",
+            IsTemplate = false
+        };
+
+        var actionResult = controller.Clone(-3, newEntity).Result;
+        var objectResult = actionResult as ObjectResult;
+
+        dbContext.ChangeTracker.Clear();
+        objectResult.ShouldNotBeNull();
+        objectResult.StatusCode.ShouldBe(403);
+    }
+
+    [Fact]
     public void Updates()
     {
         using var scope = Factory.Services.CreateScope();

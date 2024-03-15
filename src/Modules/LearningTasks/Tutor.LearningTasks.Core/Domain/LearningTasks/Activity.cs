@@ -35,7 +35,8 @@ public class Activity : Entity
                 var standard = new Standard();
                 standard.Update(s);
                 return standard;
-            }).ToList()
-        };
+            }).ToList(),
+            MaxPoints = Standards?.Sum(s => s.MaxPoints) ?? 0
+    };
     }
 }

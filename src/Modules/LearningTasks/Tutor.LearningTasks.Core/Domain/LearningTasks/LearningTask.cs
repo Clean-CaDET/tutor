@@ -42,8 +42,9 @@ public class LearningTask : AggregateRoot
             Description = Description,
             UnitId = newUnitId,
             IsTemplate = IsTemplate,
-            Steps = Steps?.Select(a => a.Clone()).ToList()
-        };
+            Steps = Steps?.Select(a => a.Clone()).ToList(),
+            MaxPoints = Steps?.Sum(s => s.MaxPoints) ?? 0
+    };
     }
 
     public void LinkActivityParents(LearningTask oldTask)
