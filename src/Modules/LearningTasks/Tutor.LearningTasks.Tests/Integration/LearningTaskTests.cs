@@ -246,12 +246,12 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         result.Description.ShouldBe(newEntity.Description);
         result.IsTemplate.ShouldBe(newEntity.IsTemplate);
         result.MaxPoints.ShouldBe(10);
-        result.Steps?.Count().ShouldBe(2);
+        result.Steps?.Count.ShouldBe(2);
         result.Steps?[1].Code.ShouldBe("U3-LT5-A1");
         result.Steps?[0].Code.ShouldBe("U3-LT5-A11");
         result.Steps?[0].ParentId.ShouldBe(result.Steps[1].Id);
-        result.Steps?[1].Standards?.Count().ShouldBe(1);
-        result.Steps?[0].Standards?.Count().ShouldBe(1);
+        result.Steps?[1].Standards?.Count.ShouldBe(1);
+        result.Steps?[0].Standards?.Count.ShouldBe(1);
 
         result.Steps.ShouldNotBeNull();
         result.Steps.Count.ShouldBe(2);
@@ -262,12 +262,12 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         result.Description.ShouldBe(newEntity.Description);
         result.IsTemplate.ShouldBe(newEntity.IsTemplate);
         task.MaxPoints.ShouldBe(10);
-        task.Steps?.Count().ShouldBe(2);
+        task.Steps?.Count.ShouldBe(2);
         task.Steps?[1].Code.ShouldBe("U3-LT5-A1");
         task.Steps?[0].Code.ShouldBe("U3-LT5-A11");
         task.Steps?[0].ParentId.ShouldBe(task.Steps[1].Id);
-        task.Steps?[1].Standards?.Count().ShouldBe(1);
-        task.Steps?[0].Standards?.Count().ShouldBe(1);
+        task.Steps?[1].Standards?.Count.ShouldBe(1);
+        task.Steps?[0].Standards?.Count.ShouldBe(1);
     }
 
     [Fact]

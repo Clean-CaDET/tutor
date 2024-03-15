@@ -83,13 +83,14 @@ public class CourseCommandTests : BaseCoursesIntegrationTest
         tasks.ShouldNotBeNull();
         tasks[0].Name.ShouldBe("FifthTask");
         tasks[0].MaxPoints.ShouldBe(10);
-        tasks?.Count().ShouldBe(1);
-        tasks[0]?.Steps?.Count().ShouldBe(2);
+        tasks.Count.ShouldBe(1);
+        tasks[0]?.Steps?.Count.ShouldBe(2);
         tasks[0]?.Steps?[1].Code.ShouldBe("U3-LT5-A1");
         tasks[0]?.Steps?[0].Code.ShouldBe("U3-LT5-A11");
-        tasks[0].Steps?[0].ParentId.ShouldBe(tasks[0].Steps[1].Id);
-        tasks[0]?.Steps?[1].Standards?.Count().ShouldBe(1);
-        tasks[0]?.Steps?[0].Standards?.Count().ShouldBe(1);
+        int parentId = tasks[0]?.Steps?[1].Id ?? 0;
+        tasks[0].Steps?[0].ParentId.ShouldBe(parentId);
+        tasks[0]?.Steps?[1].Standards?.Count.ShouldBe(1);
+        tasks[0]?.Steps?[0].Standards?.Count.ShouldBe(1);
     }
 
     [Fact]
