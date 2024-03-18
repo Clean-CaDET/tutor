@@ -31,13 +31,14 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         result.Name.ShouldBe("FourthTask");
         result.IsTemplate.ShouldBeFalse();
         result.MaxPoints.ShouldBe(10);
-        result.Steps?.Count.ShouldBe(1);
-        result.Steps?[0].Id.ShouldBe(-5);
-        result.Steps?[0].Order.ShouldBe(1);
-        result.Steps?[0].SubmissionFormat?.Type.ShouldBe("Link");
-        result.Steps?[0].Standards?.Count.ShouldBe(1);
-        result.Steps?[0].Standards?[0].Id.ShouldBe(-5);
-        result.Steps?[0].Standards?[0].Name.ShouldBe("Standard");
+        result.Steps.ShouldNotBeNull();
+        result.Steps.Count.ShouldBe(1);
+        result.Steps[0].Id.ShouldBe(-5);
+        result.Steps[0].Order.ShouldBe(1);
+        result.Steps[0].SubmissionFormat?.Type.ShouldBe("Link");
+        result.Steps[0].Standards?.Count.ShouldBe(1);
+        result.Steps[0].Standards?[0].Id.ShouldBe(-5);
+        result.Steps[0].Standards?[0].Name.ShouldBe("Standard");
     }
 
     [Fact]
@@ -106,15 +107,15 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
             Name = "New learning task",
             Description = "Some task description",
             IsTemplate = false,
-            Steps = new List<ActivityDto> { new ActivityDto
-        {
+            Steps = new List<ActivityDto> { new()
+            {
                 Order = 1,
                 Code = "U1-A1",
                 Name = "test",
                 Guidance = "guidance",
-                Examples = new List<ExampleDto> { new ExampleDto { Code = "U1A1E1", Url = "test" } },
+                Examples = new List<ExampleDto> { new() { Code = "U1A1E1", Url = "test" } },
                 SubmissionFormat = new SubmissionFormatDto {  Type = "Link", ValidationRule = "validation1", Guidelines = "guidlanes"},
-                Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description" , MaxPoints = 10} },
+                Standards = new List<StandardDto> { new() { Name = "Standard", Description = "Standard description" , MaxPoints = 10} },
             } }
         };
         dbContext.Database.BeginTransaction();
@@ -159,25 +160,24 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
             Name = "New learning task",
             Description = "Some task description",
             IsTemplate = false,
-            Steps = new List<ActivityDto> { new ActivityDto
+            Steps = new List<ActivityDto> { new()
             {
                 Order = 1,
                 Code = "U1-LT2-A1",
                 Name = "test",
                 Guidance = "guidance",
-                Examples = new List<ExampleDto> { new ExampleDto { Code = "U1-LT2-A1-E1", Url = "test" } },
+                Examples = new List<ExampleDto> { new() { Code = "U1-LT2-A1-E1", Url = "test" } },
                 SubmissionFormat = new SubmissionFormatDto {Type = "Link", ValidationRule = "validation", Guidelines = "guidlanes"},
-                Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
-
-            }, new ActivityDto
+                Standards = new List<StandardDto> { new() { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
+            }, new()
             {
                 Order = 2,
                 Code = "U1-LT2-A1",
                 Name = "test",
                 Guidance = "guidance",
-                Examples = new List<ExampleDto> { new ExampleDto { Code = "U1-LT2-A1-E1", Url = "test" } },
+                Examples = new List<ExampleDto> { new() { Code = "U1-LT2-A1-E1", Url = "test" } },
                 SubmissionFormat = new SubmissionFormatDto {Type = "Link", ValidationRule = "validation", Guidelines = "guidlanes"},
-                Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
+                Standards = new List<StandardDto> { new() { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
             }}
         };
         dbContext.Database.BeginTransaction();
@@ -201,15 +201,15 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
             Name = "New learning task",
             Description = "Some task description",
             IsTemplate = false,
-            Steps = new List<ActivityDto> { new ActivityDto
+            Steps = new List<ActivityDto> { new()
             {
                 Order = 1,
                 Code = "U1-A1",
                 Name = "test",
                 Guidance = "guidance",
-                Examples = new List<ExampleDto> { new ExampleDto { Code = "U1A1E1", Url = "test" } },
+                Examples = new List<ExampleDto> { new() { Code = "U1A1E1", Url = "test" } },
                 SubmissionFormat = new SubmissionFormatDto {Type = "Link", ValidationRule = "validation", Guidelines = "guidlanes"},
-                Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description" , MaxPoints = 10} },
+                Standards = new List<StandardDto> { new() { Name = "Standard", Description = "Standard description" , MaxPoints = 10} },
             } }
         };
         dbContext.Database.BeginTransaction();
@@ -241,26 +241,12 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         var result = okObjectResult?.Value as LearningTaskDto;
 
         dbContext.ChangeTracker.Clear();
-        result.ShouldNotBeNull();
-        result.Name.ShouldBe(newEntity.Name);
-        result.Description.ShouldBe(newEntity.Description);
-        result.IsTemplate.ShouldBe(newEntity.IsTemplate);
-        result.MaxPoints.ShouldBe(10);
-        result.Steps?.Count.ShouldBe(2);
-        result.Steps?[1].Code.ShouldBe("U3-LT5-A1");
-        result.Steps?[0].Code.ShouldBe("U3-LT5-A11");
-        result.Steps?[0].ParentId.ShouldBe(result.Steps[1].Id);
-        result.Steps?[1].Standards?.Count.ShouldBe(1);
-        result.Steps?[0].Standards?.Count.ShouldBe(1);
+        AssertResultIsCorrect(result, newEntity);
 
-        result.Steps.ShouldNotBeNull();
-        result.Steps.Count.ShouldBe(2);
         var task = dbContext.LearningTasks.Where(l => l.Id == result.Id)
             .Include(l => l.Steps!).ThenInclude(s => s.Standards).FirstOrDefault();
         task.ShouldNotBeNull();
         task.Name.ShouldBe(newEntity.Name);
-        result.Description.ShouldBe(newEntity.Description);
-        result.IsTemplate.ShouldBe(newEntity.IsTemplate);
         task.MaxPoints.ShouldBe(10);
         task.Steps?.Count.ShouldBe(2);
         task.Steps?[1].Code.ShouldBe("U3-LT5-A1");
@@ -268,6 +254,24 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         task.Steps?[0].ParentId.ShouldBe(task.Steps[1].Id);
         task.Steps?[1].Standards?.Count.ShouldBe(1);
         task.Steps?[0].Standards?.Count.ShouldBe(1);
+    }
+
+    private static void AssertResultIsCorrect(LearningTaskDto? result, LearningTaskDto newEntity)
+    {
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(newEntity.Name);
+        result.Description.ShouldBe(newEntity.Description);
+        result.IsTemplate.ShouldBe(newEntity.IsTemplate);
+        result.MaxPoints.ShouldBe(10);
+        result.Steps.ShouldNotBeNull();
+        result.Steps.Count.ShouldBe(2);
+        result.Steps[1].Code.ShouldBe("U3-LT5-A1");
+        result.Steps[0].Code.ShouldBe("U3-LT5-A11");
+        result.Steps[0].ParentId.ShouldBe(result.Steps[1].Id);
+        result.Steps[1].Standards?.Count.ShouldBe(1);
+        result.Steps[0].Standards?.Count.ShouldBe(1);
+        result.Description.ShouldBe(newEntity.Description);
+        result.IsTemplate.ShouldBe(newEntity.IsTemplate);
     }
 
     [Fact]
@@ -304,16 +308,16 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
             Name = "Learning task",
             Description = "Some task description",
             IsTemplate = false,
-            Steps = new List<ActivityDto> { new ActivityDto
+            Steps = new List<ActivityDto> { new()
             {
                 Id = -1,
                 Order = 1,
                 Code = "U1-A1",
                 Name = "test",
                 Guidance = "guidance",
-                Examples = new List<ExampleDto> { new ExampleDto { Code = "Code1", Url = "test" } },
+                Examples = new List<ExampleDto> { new() { Code = "Code1", Url = "test" } },
                 SubmissionFormat = new SubmissionFormatDto {Type = "Code", ValidationRule = "validation", Guidelines = "guidlanes"},
-                Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description" , MaxPoints = 10} },
+                Standards = new List<StandardDto> { new() { Name = "Standard", Description = "Standard description" , MaxPoints = 10} },
             } }
         };
         dbContext.Database.BeginTransaction();
@@ -373,25 +377,25 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
             Name = "Learning task",
             Description = "Some task description",
             IsTemplate = false,
-            Steps = new List<ActivityDto> { new ActivityDto
+            Steps = new List<ActivityDto> { new()
             {
                 Order = 1,
                 Code = "U1-LT2-A1",
                 Name = "test",
                 Guidance = "guidance",
-                Examples = new List<ExampleDto> { new ExampleDto { Code = "U1-LT2-A1-E1", Url = "test" } },
+                Examples = new List<ExampleDto> { new() { Code = "U1-LT2-A1-E1", Url = "test" } },
                 SubmissionFormat = new SubmissionFormatDto {Type = "Link", ValidationRule = "validation", Guidelines = "guidlanes"},
-                Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
+                Standards = new List<StandardDto> { new() { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
 
-            }, new ActivityDto
+            }, new()
             {
                 Order = 2,
                 Code = "U1-LT2-A1",
                 Name = "test",
                 Guidance = "guidance",
-                Examples = new List<ExampleDto> { new ExampleDto { Code = "U1-LT2-A1-E1", Url = "test" } },
+                Examples = new List<ExampleDto> { new() { Code = "U1-LT2-A1-E1", Url = "test" } },
                 SubmissionFormat = new SubmissionFormatDto {Type = "Link", ValidationRule = "validation", Guidelines = "guidlanes"},
-                Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
+                Standards = new List<StandardDto> { new() { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
             }}
         };
         dbContext.Database.BeginTransaction();
@@ -416,16 +420,16 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
             Name = "New name",
             Description = "Some task description",
             IsTemplate = false,
-            Steps = new List<ActivityDto> { new ActivityDto
+            Steps = new List<ActivityDto> { new()
             {
                 Id = -5,
                 Order = 1,
                 Code = "U1-A1",
                 Name = "test",
                 Guidance = "guidance",
-                Examples = new List<ExampleDto> { new ExampleDto { Code = "Code1", Url = "test" } },
+                Examples = new List<ExampleDto> { new() { Code = "Code1", Url = "test" } },
                 SubmissionFormat = new SubmissionFormatDto {Type = "Link", ValidationRule = "validation", Guidelines = "guidlanes"},
-                Standards = new List<StandardDto> { new StandardDto { Name = "Standard", Description = "Standard description" , MaxPoints = 10} },
+                Standards = new List<StandardDto> { new() { Name = "Standard", Description = "Standard description" , MaxPoints = 10} },
             } }
         };
         dbContext.Database.BeginTransaction();

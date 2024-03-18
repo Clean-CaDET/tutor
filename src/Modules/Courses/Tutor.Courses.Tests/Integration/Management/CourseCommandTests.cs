@@ -69,7 +69,7 @@ public class CourseCommandTests : BaseCoursesIntegrationTest
         result.Name.ShouldBe("TestCourseClone2");
         result.Code.ShouldBe("TTT-2");
         result.StartDate.ShouldBe(DateTime.UnixEpoch);
-        result.KnowledgeUnits.Count.ShouldBe(1);
+        result.KnowledgeUnits?.Count.ShouldBe(1);
         var clonedCourse = dbContext.Courses.FirstOrDefault(c => c.Id == result.Id);
         clonedCourse.ShouldNotBeNull();
         var units = dbContext.KnowledgeUnits.Where(u => u.CourseId == result.Id).ToList();
@@ -78,19 +78,24 @@ public class CourseCommandTests : BaseCoursesIntegrationTest
         ownerships.Count.ShouldBe(1);
         var endingKcCount = secondaryDbContext.KnowledgeComponents.Count();
         endingKcCount.ShouldBe(startingKcCount + 2);
-        var tasks = tasksDbContext.LearningTasks.Where(l => l.UnitId == units[0].Id)
+        AssertTasksCloned(tasksDbContext, units[0].Id);
+    }
+
+    private static void AssertTasksCloned(LearningTasksContext tasksDbContext, int unitId)
+    {
+        var tasks = tasksDbContext.LearningTasks.Where(l => l.UnitId == unitId)
             .Include(l => l.Steps!).ThenInclude(s => s.Standards).ToList();
         tasks.ShouldNotBeNull();
         tasks[0].Name.ShouldBe("FifthTask");
         tasks[0].MaxPoints.ShouldBe(10);
         tasks.Count.ShouldBe(1);
-        tasks[0]?.Steps?.Count.ShouldBe(2);
-        tasks[0]?.Steps?[1].Code.ShouldBe("U3-LT5-A1");
-        tasks[0]?.Steps?[0].Code.ShouldBe("U3-LT5-A11");
-        int parentId = tasks[0]?.Steps?[1].Id ?? 0;
+        tasks[0].Steps?.Count.ShouldBe(2);
+        tasks[0].Steps?[1].Code.ShouldBe("U3-LT5-A1");
+        tasks[0].Steps?[0].Code.ShouldBe("U3-LT5-A11");
+        var parentId = tasks[0].Steps?[1].Id ?? 0;
         tasks[0].Steps?[0].ParentId.ShouldBe(parentId);
-        tasks[0]?.Steps?[1].Standards?.Count.ShouldBe(1);
-        tasks[0]?.Steps?[0].Standards?.Count.ShouldBe(1);
+        tasks[0].Steps?[1].Standards?.Count.ShouldBe(1);
+        tasks[0].Steps?[0].Standards?.Count.ShouldBe(1);
     }
 
     [Fact]
