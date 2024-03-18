@@ -243,7 +243,7 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         dbContext.ChangeTracker.Clear();
         AssertResultIsCorrect(result, newEntity);
 
-        var task = dbContext.LearningTasks.Where(l => l.Id == result.Id)
+        var task = dbContext.LearningTasks.Where(l => l.Id == result!.Id)
             .Include(l => l.Steps!).ThenInclude(s => s.Standards).FirstOrDefault();
         task.ShouldNotBeNull();
         task.Name.ShouldBe(newEntity.Name);
@@ -386,7 +386,6 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
                 Examples = new List<ExampleDto> { new() { Code = "U1-LT2-A1-E1", Url = "test" } },
                 SubmissionFormat = new SubmissionFormatDto {Type = "Link", ValidationRule = "validation", Guidelines = "guidlanes"},
                 Standards = new List<StandardDto> { new() { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
-
             }, new()
             {
                 Order = 2,

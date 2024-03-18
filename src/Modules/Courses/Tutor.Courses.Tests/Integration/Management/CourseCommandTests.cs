@@ -8,6 +8,7 @@ using Tutor.Courses.API.Public.Management;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Infrastructure.Database;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
+using Tutor.LearningTasks.Core.Domain.LearningTasks;
 using Tutor.LearningTasks.Infrastructure.Database;
 
 namespace Tutor.Courses.Tests.Integration.Management;
@@ -78,17 +79,19 @@ public class CourseCommandTests : BaseCoursesIntegrationTest
         ownerships.Count.ShouldBe(1);
         var endingKcCount = secondaryDbContext.KnowledgeComponents.Count();
         endingKcCount.ShouldBe(startingKcCount + 2);
-        AssertTasksCloned(tasksDbContext, units[0].Id);
-    }
-
-    private static void AssertTasksCloned(LearningTasksContext tasksDbContext, int unitId)
-    {
+        int unitId = units[0].Id;
         var tasks = tasksDbContext.LearningTasks.Where(l => l.UnitId == unitId)
             .Include(l => l.Steps!).ThenInclude(s => s.Standards).ToList();
+        AssertTaskCorrectlyCloned(tasks);
+    }
+
+    private static void AssertTaskCorrectlyCloned(List<LearningTask> tasks)
+    {
         tasks.ShouldNotBeNull();
+        tasks.Count.ShouldBe(1);
         tasks[0].Name.ShouldBe("FifthTask");
         tasks[0].MaxPoints.ShouldBe(10);
-        tasks.Count.ShouldBe(1);
+        tasks[0].Steps.ShouldNotBeNull();
         tasks[0].Steps?.Count.ShouldBe(2);
         tasks[0].Steps?[1].Code.ShouldBe("U3-LT5-A1");
         tasks[0].Steps?[0].Code.ShouldBe("U3-LT5-A11");
