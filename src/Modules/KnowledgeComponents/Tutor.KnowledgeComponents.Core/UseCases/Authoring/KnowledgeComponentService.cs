@@ -85,14 +85,20 @@ public class KnowledgeComponentService : CrudService<KnowledgeComponentDto, Know
     {
         var clonedKcs = oldKcs
             .Select(kc => kc.Clone(
-                unitIdPairs.Find(pair => pair.Item1 == kc.KnowledgeUnitId).Item2))
+                unitIdPairs.Find(pair => pair.Item1 == kc.KnowledgeUnitId)!.Item2))
             .ToList();
 
         clonedKcs = _kcRepository.BulkCreate(clonedKcs);
         var result = UnitOfWork.Save();
         if (result.IsFailed) return result;
 
-        LinkKcParents(clonedKcs, oldKcs);
+        foreach (var pair in unitIdPairs)
+        {
+            LinkKcParents(
+                clonedKcs.FindAll(kc => kc.KnowledgeUnitId == pair.Item2),
+                oldKcs.FindAll(kc => kc.KnowledgeUnitId == pair.Item1)
+            );
+        }
 
         return UnitOfWork.Save();
     }

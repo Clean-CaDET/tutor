@@ -54,6 +54,7 @@ public class GroupMonitoringService : IGroupMonitoringService
         var groups = _groupRepository.GetCourseGroups(courseId);
         var allLearnerIds = groups
             .SelectMany(g => g.LearnerIds)
+            .Distinct()
             .ToList();
 
         if (allLearnerIds.Count <= pageSize) return CreateResult(allLearnerIds);
