@@ -101,5 +101,9 @@ public class ModulesTests : BaseArchitecturalTests
         {
             "LearningUtils"
         },
+        new object[]
+        {
+            "LearningTasks"
+        }
     };
 }

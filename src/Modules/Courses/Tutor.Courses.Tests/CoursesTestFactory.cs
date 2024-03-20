@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Tutor.BuildingBlocks.Tests;
 using Tutor.Courses.Infrastructure.Database;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
+using Tutor.LearningTasks.Infrastructure.Database;
 using Tutor.Stakeholders.Infrastructure.Database;
 
 namespace Tutor.Courses.Tests;
@@ -18,6 +19,10 @@ public class CoursesTestFactory : BaseTestFactory<CoursesContext>
         descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<KnowledgeComponentsContext>));
         services.Remove(descriptor!);
         services.AddDbContext<KnowledgeComponentsContext>(SetupTestContext());
+
+        descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<LearningTasksContext>));
+        services.Remove(descriptor!);
+        services.AddDbContext<LearningTasksContext>(SetupTestContext());
 
         descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<StakeholdersContext>));
         services.Remove(descriptor!);

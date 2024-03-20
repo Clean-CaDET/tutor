@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\KnowledgeComponents\Tutor.KnowledgeComponents.API\Tutor.KnowledgeComponents.API.csproj" />
+    <ProjectReference Include="..\..\LearningTasks\Tutor.LearningTasks.API\Tutor.LearningTasks.API.csproj" />
     <ProjectReference Include="..\..\Stakeholders\Tutor.Stakeholders.API\Tutor.Stakeholders.API.csproj" />
     <ProjectReference Include="..\Tutor.Courses.API\Tutor.Courses.API.csproj" />
   </ItemGroup>

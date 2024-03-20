@@ -8,6 +8,8 @@ using Tutor.Courses.API.Public.Management;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Infrastructure.Database;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
+using Tutor.LearningTasks.Core.Domain.LearningTasks;
+using Tutor.LearningTasks.Infrastructure.Database;
 
 namespace Tutor.Courses.Tests.Integration.Management;
 
@@ -48,6 +50,7 @@ public class CourseCommandTests : BaseCoursesIntegrationTest
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<CoursesContext>();
         var secondaryDbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
+        var tasksDbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
         var startingKcCount = secondaryDbContext.KnowledgeComponents.Count();
 
         var newCourse = new CourseDto
@@ -61,12 +64,13 @@ public class CourseCommandTests : BaseCoursesIntegrationTest
 
         dbContext.ChangeTracker.Clear();
         secondaryDbContext.ChangeTracker.Clear();
+        tasksDbContext.ChangeTracker.Clear();
 
         result.ShouldNotBeNull();
         result.Name.ShouldBe("TestCourseClone2");
         result.Code.ShouldBe("TTT-2");
         result.StartDate.ShouldBe(DateTime.UnixEpoch);
-        result.KnowledgeUnits.Count.ShouldBe(1);
+        result.KnowledgeUnits?.Count.ShouldBe(1);
         var clonedCourse = dbContext.Courses.FirstOrDefault(c => c.Id == result.Id);
         clonedCourse.ShouldNotBeNull();
         var units = dbContext.KnowledgeUnits.Where(u => u.CourseId == result.Id).ToList();
@@ -75,6 +79,26 @@ public class CourseCommandTests : BaseCoursesIntegrationTest
         ownerships.Count.ShouldBe(1);
         var endingKcCount = secondaryDbContext.KnowledgeComponents.Count();
         endingKcCount.ShouldBe(startingKcCount + 2);
+        int unitId = units[0].Id;
+        var tasks = tasksDbContext.LearningTasks.Where(l => l.UnitId == unitId)
+            .Include(l => l.Steps!).ThenInclude(s => s.Standards).ToList();
+        AssertTaskCorrectlyCloned(tasks);
+    }
+
+    private static void AssertTaskCorrectlyCloned(List<LearningTask> tasks)
+    {
+        tasks.ShouldNotBeNull();
+        tasks.Count.ShouldBe(1);
+        tasks[0].Name.ShouldBe("FifthTask");
+        tasks[0].MaxPoints.ShouldBe(10);
+        tasks[0].Steps.ShouldNotBeNull();
+        tasks[0].Steps?.Count.ShouldBe(2);
+        tasks[0].Steps?[1].Code.ShouldBe("U3-LT5-A1");
+        tasks[0].Steps?[0].Code.ShouldBe("U3-LT5-A11");
+        var parentId = tasks[0].Steps?[1].Id ?? 0;
+        tasks[0].Steps?[0].ParentId.ShouldBe(parentId);
+        tasks[0].Steps?[1].Standards?.Count.ShouldBe(1);
+        tasks[0].Steps?[0].Standards?.Count.ShouldBe(1);
     }
 
     [Fact]

@@ -1,4 +1,5 @@
 ﻿using Tutor.BuildingBlocks.Core.Domain;
+using FluentResults;
 
 namespace Tutor.BuildingBlocks.Core.UseCases;
 
@@ -11,5 +12,6 @@ public interface ICrudRepository<TEntity> where TEntity : Entity
     List<TEntity> BulkCreate(List<TEntity> entities);
     TEntity Update(TEntity entity);
     TEntity Update(TEntity storedEntity, TEntity entity);
+    TEntity UpdateWithAssociatedEntites(TEntity entity);
     void Delete(TEntity entity);
 }
