@@ -11,7 +11,6 @@ namespace Tutor.API.Controllers.Learner.Learning;
 [Route("api/learning/units/{unitId:int}/learning-tasks/{taskId:int}")]
 public class TaskProgressController : BaseApiController
 {
-
     private readonly ITaskProgressService _taskProgressService;
 
     public TaskProgressController(ITaskProgressService taskProgressService)

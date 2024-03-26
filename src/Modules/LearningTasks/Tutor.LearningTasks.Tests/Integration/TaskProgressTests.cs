@@ -72,7 +72,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
         result.TotalScore.ShouldBe(0);
         result.StepProgresses.ShouldNotBeNull();
         result.StepProgresses.Count.ShouldBe(1);
-        result.StepProgresses[0].ShouldNotBeNull();;
+        result.StepProgresses[0].ShouldNotBeNull();
         result.StepProgresses[0].Answer.ShouldBeNull();
         result.StepProgresses[0].Status.ShouldBe("Initilized");
         result.StepProgresses[0].StepId.ShouldBe(-5);
@@ -84,7 +84,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
         storedTask.TotalScore.ShouldBe(0);
         storedTask.StepProgresses.ShouldNotBeNull();
         storedTask.StepProgresses.Count.ShouldBe(1);
-        result.StepProgresses[0].ShouldNotBeNull(); ;
+        result.StepProgresses[0].ShouldNotBeNull();
         storedTask.StepProgresses[0].Answer.ShouldBeNull();
         storedTask.StepProgresses[0].StepId.ShouldBe(-5);
     }
