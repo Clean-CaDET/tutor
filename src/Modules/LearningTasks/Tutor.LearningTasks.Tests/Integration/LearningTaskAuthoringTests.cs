@@ -9,9 +9,9 @@ using Tutor.LearningTasks.Infrastructure.Database;
 
 namespace Tutor.LearningTasks.Tests.Integration;
 
-public class LearningTaskTests : BaseLearningTasksIntegrationTest
+public class LearningTaskAuthoringTests : BaseLearningTasksIntegrationTest
 {
-    public LearningTaskTests(LearningTasksTestFactory factory) : base(factory) { }
+    public LearningTaskAuthoringTests(LearningTasksTestFactory factory) : base(factory) { }
 
     [Fact]
     public void Gets()

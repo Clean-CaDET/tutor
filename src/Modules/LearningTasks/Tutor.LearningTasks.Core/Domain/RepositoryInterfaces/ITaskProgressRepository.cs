@@ -1,0 +1,10 @@
+﻿using Tutor.BuildingBlocks.Core.UseCases;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
+
+namespace Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
+
+public interface ITaskProgressRepository : ICrudRepository<TaskProgress>
+{
+    new TaskProgress? Get(int id);
+    TaskProgress? GetByTaskIdAndLearnerId(int taskId, int learnerId);
+}
