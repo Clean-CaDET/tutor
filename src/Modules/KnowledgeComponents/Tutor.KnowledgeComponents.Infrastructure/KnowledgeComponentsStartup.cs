@@ -87,6 +87,8 @@ public static class KnowledgeComponentsStartup
         services.AddScoped<IInstructionalItemRepository, InstructionalItemDatabaseRepository>();
         services.AddScoped<IKnowledgeComponentRepository, KnowledgeComponentDatabaseRepository>();
 
+        services.AddScoped<IKcRatingRepository, KcRatingDatabaseRepository>();
+
         services.AddScoped<IKnowledgeMasteryRepository, KnowledgeMasteryDatabaseRepository>();
 
         services.AddScoped<IEventStore, PostgresStore>();
