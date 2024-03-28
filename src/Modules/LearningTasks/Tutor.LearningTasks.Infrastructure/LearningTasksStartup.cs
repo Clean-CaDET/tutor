@@ -11,6 +11,8 @@ using Tutor.LearningTasks.Core.UseCases;
 using Tutor.LearningTasks.Infrastructure.Database;
 using Tutor.LearningTasks.Core.Mappers;
 using Tutor.LearningTasks.API.Public;
+using Tutor.LearningTasks.API.Public.Learning;
+using Tutor.LearningTasks.Core.UseCases.Learning;
 
 namespace Tutor.LearningTasks.Infrastructure;
 
@@ -33,12 +35,15 @@ public static class LearningTasksStartup
     {
         services.AddProxiedScoped<ILearningTaskService, LearningTaskService>();
         services.AddProxiedScoped<ILearningTaskCloner, LearningTaskService>();
+        services.AddProxiedScoped<ITaskService, TaskService>();
+        services.AddProxiedScoped<ITaskProgressService, TaskProgressService>();
         services.AddProxiedScoped<IAccessServices, AccessServices>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
         services.AddScoped<ILearningTaskRepository, LearningTaskDatabaseRepository>();
+        services.AddScoped<ITaskProgressRepository, TaskProgressDatabaseRepository>();
         services.AddScoped<ILearningTasksUnitOfWork, LearningTasksUnitOfWork>();
         services.AddDbContext<LearningTasksContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("learningTasks"),
