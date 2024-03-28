@@ -41,6 +41,7 @@ public class MisconceptionAnalysisService : IMisconceptionAnalysisService
             .ToList<KnowledgeComponentEvent>();
 
         return CalculateStatistics(events)
+            .Where(e => e.AttemptsToPass.Count > 0)
             .OrderByDescending(e => e.AttemptsToPass.Average())
             .Take(10)
             .ToList();

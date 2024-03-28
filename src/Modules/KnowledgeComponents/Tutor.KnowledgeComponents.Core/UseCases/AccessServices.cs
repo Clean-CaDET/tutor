@@ -29,14 +29,14 @@ public class AccessServices : IAccessService
         return _ownedCourseService.IsUnitOwner(unitId, instructorId);
     }
 
-    public bool IsEnrolledInKc(int kcId, int instructorId)
+    public bool IsEnrolledInKc(int kcId, int learnerId)
     {
         var kc = _kcRepository.Get(kcId);
-        return kc != null && _enrollmentValidator.HasActiveEnrollment(kc.KnowledgeUnitId, instructorId);
+        return kc != null && _enrollmentValidator.HasActiveEnrollment(kc.KnowledgeUnitId, learnerId);
     }
 
-    public bool IsEnrolledInUnit(int unitId, int instructorId)
+    public bool IsEnrolledInUnit(int unitId, int learnerId)
     {
-        return _enrollmentValidator.HasActiveEnrollment(unitId, instructorId);
+        return _enrollmentValidator.HasActiveEnrollment(unitId, learnerId);
     }
 }
