@@ -13,11 +13,22 @@ public class TaskProgress : AggregateRoot
 
     public TaskProgress() { }
 
-    public TaskProgress(int learningTaskId, int learnerId)
+    public TaskProgress(List<Activity> steps, int learningTaskId, int learnerId)
     {
         Status = TaskStatus.Initilized;
         LearningTaskId = learningTaskId;
         LearnerId = learnerId;
+        CreateStepProgresses(steps);
+    }
+
+    private void CreateStepProgresses(List<Activity> steps)
+    {
+        StepProgresses = new List<StepProgress>();
+        foreach (var step in steps)
+        {
+            if (step.ParentId == 0)
+                StepProgresses.Add(new StepProgress(step.Id, LearnerId));
+        }
     }
 
     public void SubmitAnswer(int stepId, string answer)
@@ -34,18 +45,9 @@ public class TaskProgress : AggregateRoot
     public void ViewStep(int stepId)
     {
         StepProgress? stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
-        if (stepProgress != null && stepProgress.Status == StepStatus.Initilized)
+        if (stepProgress != null)
         {
             stepProgress.MarkAsViewed();
-        }
-    }
-
-    public void CreateStepProgresses(List<Activity> steps)
-    {
-        StepProgresses = new List<StepProgress>();
-        foreach (var step in steps)
-        {
-            StepProgresses.Add(new StepProgress(step.Id, LearnerId));
         }
     }
 }

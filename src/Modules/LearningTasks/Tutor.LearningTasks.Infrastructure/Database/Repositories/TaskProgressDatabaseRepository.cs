@@ -16,7 +16,7 @@ public class TaskProgressDatabaseRepository : CrudDatabaseRepository<TaskProgres
             .FirstOrDefault();
     }
 
-    public TaskProgress? GetByTaskIdAndLearnerId(int taskId, int learnerId)
+    public TaskProgress? GetByTaskAndLearner(int taskId, int learnerId)
     {
         return DbContext.TaskProgresses.Where(p => p.LearningTaskId == taskId && p.LearnerId == learnerId)
             .Include(p => p.StepProgresses!)

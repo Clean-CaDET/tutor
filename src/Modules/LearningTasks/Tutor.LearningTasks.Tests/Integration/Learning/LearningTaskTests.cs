@@ -6,11 +6,11 @@ using Tutor.LearningTasks.API.Dtos.LearningTasks;
 using Tutor.LearningTasks.API.Public.Learning;
 using Tutor.LearningTasks.Infrastructure.Database;
 
-namespace Tutor.LearningTasks.Tests.Integration;
+namespace Tutor.LearningTasks.Tests.Integration.Learning;
 
-public class LearningTaskLearningTests : BaseLearningTasksIntegrationTest
+public class LearningTaskTests : BaseLearningTasksIntegrationTest
 {
-    public LearningTaskLearningTests(LearningTasksTestFactory factory) : base(factory) { }
+    public LearningTaskTests(LearningTasksTestFactory factory) : base(factory) { }
 
     [Fact]
     public void Gets()
@@ -41,7 +41,7 @@ public class LearningTaskLearningTests : BaseLearningTasksIntegrationTest
     }
 
     [Fact]
-    public void Wrong_learner_gets_returns_forbidden()
+    public void Fails_to_get_task_for_unenrolled_learner()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
@@ -56,7 +56,7 @@ public class LearningTaskLearningTests : BaseLearningTasksIntegrationTest
     }
 
     [Fact]
-    public void Gets_returns_not_found()
+    public void Fails_to_get_missing_task()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);

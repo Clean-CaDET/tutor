@@ -7,11 +7,11 @@ using Tutor.LearningTasks.API.Dtos.LearningTasks;
 using Tutor.LearningTasks.API.Public.Authoring;
 using Tutor.LearningTasks.Infrastructure.Database;
 
-namespace Tutor.LearningTasks.Tests.Integration;
+namespace Tutor.LearningTasks.Tests.Integration.Authoring;
 
-public class LearningTaskAuthoringTests : BaseLearningTasksIntegrationTest
+public class LearningTaskTests : BaseLearningTasksIntegrationTest
 {
-    public LearningTaskAuthoringTests(LearningTasksTestFactory factory) : base(factory) { }
+    public LearningTaskTests(LearningTasksTestFactory factory) : base(factory) { }
 
     [Fact]
     public void Gets()

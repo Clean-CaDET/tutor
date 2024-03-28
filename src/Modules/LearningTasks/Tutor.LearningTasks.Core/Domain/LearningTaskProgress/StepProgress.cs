@@ -26,7 +26,10 @@ public class StepProgress : Entity
 
     public void MarkAsViewed()
     {
-        Status = StepStatus.Viewed;
+        if(Status == StepStatus.Initilized)
+        {
+            Status = StepStatus.Viewed;
+        }
     }
 }
 

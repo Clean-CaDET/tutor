@@ -7,7 +7,7 @@ using Tutor.LearningTasks.API.Dtos.LearningTaskProgress;
 using Tutor.LearningTasks.API.Public.Learning;
 using Tutor.LearningTasks.Infrastructure.Database;
 
-namespace Tutor.LearningTasks.Tests.Integration;
+namespace Tutor.LearningTasks.Tests.Integration.Learning;
 
 public class TaskProgressTests : BaseLearningTasksIntegrationTest
 {
@@ -40,7 +40,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
     }
 
     [Fact]
-    public void Wrong_learner_gets_returns_forbidden()
+    public void Fails_to_get_task_progress_for_unenrolled_learner()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
@@ -90,7 +90,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
     }
 
     [Fact]
-    public void Creates_returns_not_found_for_unexisting_learning_task()
+    public void Fails_to_create_task_progress_for_missing_task()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
@@ -105,7 +105,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
     }
 
     [Fact]
-    public void Views_answered_step_should_not_change_status()
+    public void Fails_to_change_step_status_for_view_answered_step()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
@@ -128,7 +128,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
     }
 
     [Fact]
-    public void Views_initilized_step_should_change_status()
+    public void Viewing_initialized_step_changes_step_progress_status()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
@@ -151,7 +151,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
     }
 
     [Fact]
-    public void Wrong_learner_views_step_returns_forbidden()
+    public void Fails_to_view_step_for_unenrolled_learner()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
@@ -197,7 +197,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
     }
 
     [Fact]
-    public void Wrong_learner_submits_answer_returns_forbidden()
+    public void Fails_to_submit_answer_for_unenrolled_learner()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
@@ -218,7 +218,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
     }
 
     [Fact]
-    public void Submits_answer_for_unexisting_learning_task()
+    public void Fails_to_submit_answer_for_missing_task()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);

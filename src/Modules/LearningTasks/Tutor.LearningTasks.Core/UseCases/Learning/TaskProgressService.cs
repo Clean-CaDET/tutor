@@ -29,7 +29,7 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
         if(!_accessServices.IsEnrolledInUnit(unitId, learnerId)) 
             return Result.Fail(FailureCode.Forbidden);
 
-        TaskProgress? taskProgress = _progressRepository.GetByTaskIdAndLearnerId(taskId, learnerId);
+        TaskProgress? taskProgress = _progressRepository.GetByTaskAndLearner(taskId, learnerId);
         if(taskProgress == null)
         {
             return Create(taskId, learnerId);
@@ -43,34 +43,41 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
         if (learningTask == null)
             return Result.Fail(FailureCode.NotFound);
 
-        TaskProgress taskProgress = new(learningTask.Id, learnerId);
-        taskProgress.CreateStepProgresses(learningTask.Steps!);
+        TaskProgress taskProgress = new(learningTask.Steps!, learningTask.Id, learnerId);
         return Create(MapToDto(taskProgress));
     }
 
     public Result<TaskProgressDto> ViewStep(int unitId, int id, int stepId, int learnerId)
     {
-        if (!_accessServices.IsEnrolledInUnit(unitId, learnerId))
-            return Result.Fail(FailureCode.Forbidden);
+        Result<TaskProgress> result = GetTaskProgress(unitId, learnerId, id);
+        if (result.IsFailed)
+            return result.ToResult();
 
-        TaskProgress? taskProgress = _progressRepository.Get(id);
-        if (taskProgress == null)
-            return Result.Fail(FailureCode.NotFound);
-
+        TaskProgress taskProgress = result.Value;
         taskProgress.ViewStep(stepId);
         return Update(taskProgress);
     }
 
     public Result<TaskProgressDto> SubmitAnswer(int unitId, int id, StepProgressDto stepProgress, int learnerId)
     {
+        Result<TaskProgress> result = GetTaskProgress(unitId, learnerId, id);
+        if (result.IsFailed)
+            return result.ToResult();
+
+        TaskProgress taskProgress = result.Value;
+        taskProgress.SubmitAnswer(stepProgress.StepId, stepProgress.Answer!);
+        return Update(taskProgress);
+    }
+
+    private Result<TaskProgress> GetTaskProgress(int unitId, int learnerId, int progressId)
+    {
         if (!_accessServices.IsEnrolledInUnit(unitId, learnerId))
             return Result.Fail(FailureCode.Forbidden);
 
-        TaskProgress? taskProgress = _progressRepository.Get(id);
+        TaskProgress? taskProgress = _progressRepository.Get(progressId);
         if (taskProgress == null)
             return Result.Fail(FailureCode.NotFound);
 
-        taskProgress.SubmitAnswer(stepProgress.StepId, stepProgress.Answer!);
-        return Update(taskProgress);
+        return Result.Ok(taskProgress);
     }
 }

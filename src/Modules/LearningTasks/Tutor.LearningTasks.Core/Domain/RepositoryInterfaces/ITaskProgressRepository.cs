@@ -6,5 +6,5 @@ namespace Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 public interface ITaskProgressRepository : ICrudRepository<TaskProgress>
 {
     new TaskProgress? Get(int id);
-    TaskProgress? GetByTaskIdAndLearnerId(int taskId, int learnerId);
+    TaskProgress? GetByTaskAndLearner(int taskId, int learnerId);
 }
