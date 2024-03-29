@@ -21,7 +21,7 @@ public class RatingController : BaseApiController
     public ActionResult<EmotionsFeedbackDto> RateKnowledgeComponent([FromBody] KnowledgeComponentRatingDto kcKnowledgeComponentRating)
     {
         kcKnowledgeComponentRating.LearnerId = User.LearnerId();
-        var result = _ratingService.Create(kcKnowledgeComponentRating);
+        var result = _ratingService.Create(kcKnowledgeComponentRating, kcKnowledgeComponentRating.LearnerId);
         return CreateResponse(result);
     }
 }
