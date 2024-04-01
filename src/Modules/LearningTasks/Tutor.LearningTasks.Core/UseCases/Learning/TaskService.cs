@@ -33,5 +33,14 @@ namespace Tutor.LearningTasks.Core.UseCases.Learning
 
             return _mapper.Map<LearningTaskDto>(learningTask);
         }
+
+        public Result<List<LearningTaskDto>> GetByUnit(int unitId, int learnerId)
+        {
+            if (!_accessServices.IsEnrolledInUnit(unitId, learnerId))
+                return Result.Fail(FailureCode.Forbidden);
+
+            List<LearningTask> learningTasks = _taskRepository.GetForUnit(unitId);
+            return learningTasks.Select(_mapper.Map<LearningTaskDto>).ToList();
+        }
     }
 }
