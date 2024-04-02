@@ -6,4 +6,5 @@ using Tutor.LearningTasks.API.Dtos.LearningTasks;
 public interface ITaskService
 {
     Result<LearningTaskDto> Get(int id, int unitId, int learnerId);
+    Result<List<LearningTaskDto>> GetByUnit(int unitId, int learnerId);
 }

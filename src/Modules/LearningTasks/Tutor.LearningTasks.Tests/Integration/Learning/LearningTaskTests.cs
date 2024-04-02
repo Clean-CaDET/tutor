@@ -70,6 +70,46 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
         objectResult.StatusCode.ShouldBe(404);
     }
 
+    [Fact]
+    public void Gets_by_unit()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+
+        var actionResult = controller.GetByUnit(-1).Result;
+        var okObjectResult = actionResult as OkObjectResult;
+        var result = okObjectResult?.Value as List<LearningTaskDto>;
+
+        dbContext.ChangeTracker.Clear();
+        result.ShouldNotBeNull();
+        result.Count.ShouldBe(2);
+        result[0].Id.ShouldBe(-2);
+        result[0].UnitId.ShouldBe(-1);
+        result[0].Name.ShouldBe("SecondTask");
+        result[0].Steps?.Count.ShouldBe(2);
+        result[0].Steps?[0].Standards?.Count.ShouldBe(1);
+        result[1].Id.ShouldBe(-1);
+        result[1].UnitId.ShouldBe(-1);
+        result[1].Name.ShouldBe("FirstTask");
+        result[1].Steps?.Count.ShouldBe(0);
+    }
+
+    [Fact]
+    public void Fails_to_get_tasks_by_unit_for_unenrolled_learner()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+
+        var actionResult = controller.GetByUnit(-3).Result;
+        var objectResult = actionResult as ObjectResult;
+
+        dbContext.ChangeTracker.Clear();
+        objectResult.ShouldNotBeNull();
+        objectResult.StatusCode.ShouldBe(403);
+    }
+
     private static LearningTaskController CreateController(IServiceScope scope)
     {
         return new LearningTaskController(scope.ServiceProvider.GetRequiredService<ITaskService>())
