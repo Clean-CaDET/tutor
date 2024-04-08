@@ -4,7 +4,6 @@ using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.LearningTasks.API.Dtos.LearningTasks;
 using Tutor.LearningTasks.API.Public;
 using Tutor.LearningTasks.API.Public.Learning;
-using Tutor.LearningTasks.Core.Domain.LearningTasks;
 using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.LearningTasks.Core.UseCases.Learning
@@ -27,7 +26,7 @@ namespace Tutor.LearningTasks.Core.UseCases.Learning
             if (!_accessServices.IsEnrolledInUnit(unitId, learnerId))
                 return Result.Fail(FailureCode.Forbidden);
 
-            LearningTask? learningTask = _taskRepository.Get(id);
+            var learningTask = _taskRepository.Get(id);
             if(learningTask == null)
                 return Result.Fail(FailureCode.NotFound);
 
@@ -39,7 +38,7 @@ namespace Tutor.LearningTasks.Core.UseCases.Learning
             if (!_accessServices.IsEnrolledInUnit(unitId, learnerId))
                 return Result.Fail(FailureCode.Forbidden);
 
-            List<LearningTask> learningTasks = _taskRepository.GetForUnit(unitId);
+            var learningTasks = _taskRepository.GetNonTemplateByUnit(unitId);
             return learningTasks.Select(_mapper.Map<LearningTaskDto>).ToList();
         }
     }

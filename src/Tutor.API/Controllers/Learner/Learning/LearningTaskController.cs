@@ -25,9 +25,9 @@ public class LearningTaskController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<LearningTaskDto>> GetByUnit(int unitid)
+    public ActionResult<List<LearningTaskDto>> GetByUnit(int unitId)
     {
-        var result = _taskService.GetByUnit(unitid, User.LearnerId());
+        var result = _taskService.GetByUnit(unitId, User.LearnerId());
         return CreateResponse(result);
     }
 }

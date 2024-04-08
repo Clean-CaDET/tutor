@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.LearningTasks.Core.Domain.LearningTasks;
 using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
@@ -11,25 +12,32 @@ public class LearningTaskDatabaseRepository : CrudDatabaseRepository<LearningTas
 
     public new LearningTask? Get(int id)
     {
-        return DbContext.LearningTasks.Where(l => l.Id == id)
-            .Include(l => l.Steps!)
+        return DbContext.LearningTasks.Where(t => t.Id == id)
+            .Include(t => t.Steps!)
                 .ThenInclude(s => s.Standards)
             .FirstOrDefault();
     }
 
-    public List<LearningTask> GetForUnit(int unitId)
+    public List<LearningTask> GetByUnit(int unitId)
     {
-        return DbContext.LearningTasks.Where(l => l.UnitId == unitId)
-            .Include(l => l.Steps!)
-                .ThenInclude(s => s.Standards)
-            .ToList();
+        return GetTasksWhere(t => t.UnitId == unitId);
     }
 
-    public List<LearningTask> GetForUnits(List<int> unitIds)
+    public List<LearningTask> GetNonTemplateByUnit(int unitId)
     {
-        return DbContext.LearningTasks.Where(t => unitIds.Contains(t.UnitId))
-                .Include(l => l.Steps!)
-                    .ThenInclude(s => s.Standards)
-                .ToList();
+        return GetTasksWhere(t => t.UnitId == unitId && !t.IsTemplate);
+    }
+
+    public List<LearningTask> GetByUnits(List<int> unitIds)
+    {
+        return GetTasksWhere(t => unitIds.Contains(t.UnitId));
+    }
+
+    private List<LearningTask> GetTasksWhere(Expression<Func<LearningTask, bool>> expression)
+    {
+        return DbContext.LearningTasks.Where(expression)
+            .Include(t => t.Steps!)
+            .ThenInclude(s => s.Standards)
+            .ToList();
     }
 }

@@ -3,7 +3,7 @@
 	VALUES (-1, -1, 'FirstTask', 'FirstDescription', false, 0, 1);
 INSERT INTO "learningTasks"."LearningTasks"(
     "Id", "UnitId", "Name", "Description", "IsTemplate", "MaxPoints", "Order")
-	VALUES (-2, -1, 'SecondTask', 'SecondDescription', false, 20, 2);
+	VALUES (-2, -1, 'SecondTask', 'SecondDescription', true, 20, 2);
 INSERT INTO "learningTasks"."LearningTasks"(
     "Id", "UnitId", "Name", "Description", "IsTemplate", "MaxPoints", "Order")
 	VALUES (-3, -2, 'ThirdTask', 'ThirdDescription', false, 10, 3);

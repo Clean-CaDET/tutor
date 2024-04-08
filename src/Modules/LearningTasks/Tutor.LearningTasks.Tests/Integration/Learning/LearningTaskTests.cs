@@ -83,16 +83,11 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
-        result.Count.ShouldBe(2);
-        result[0].Id.ShouldBe(-2);
+        result.Count.ShouldBe(1);
+        result[0].Id.ShouldBe(-1);
         result[0].UnitId.ShouldBe(-1);
-        result[0].Name.ShouldBe("SecondTask");
-        result[0].Steps?.Count.ShouldBe(2);
-        result[0].Steps?[0].Standards?.Count.ShouldBe(1);
-        result[1].Id.ShouldBe(-1);
-        result[1].UnitId.ShouldBe(-1);
-        result[1].Name.ShouldBe("FirstTask");
-        result[1].Steps?.Count.ShouldBe(0);
+        result[0].Name.ShouldBe("FirstTask");
+        result[0].Steps?.Count.ShouldBe(0);
     }
 
     [Fact]

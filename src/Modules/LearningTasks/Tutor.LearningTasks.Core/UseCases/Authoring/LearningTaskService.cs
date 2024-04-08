@@ -35,7 +35,7 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
         if (!_accessServices.IsUnitOwner(unitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        List<LearningTask> learningTasks = _taskRepository.GetForUnit(unitId);
+        List<LearningTask> learningTasks = _taskRepository.GetByUnit(unitId);
         return MapToDto(learningTasks);
     }
 
@@ -107,7 +107,7 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
     
     public Result CloneMany(List<Tuple<int, int>> unitIdPairs)
     {
-        var oldTasks = _taskRepository.GetForUnits(unitIdPairs.Select(u => u.Item1).ToList());
+        var oldTasks = _taskRepository.GetByUnits(unitIdPairs.Select(u => u.Item1).ToList());
 
         UnitOfWork.BeginTransaction();
 
