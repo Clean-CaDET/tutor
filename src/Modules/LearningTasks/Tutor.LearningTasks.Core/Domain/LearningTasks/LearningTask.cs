@@ -23,11 +23,12 @@ public class LearningTask : AggregateRoot
         MaxPoints = Steps?.Sum(s => s.MaxPoints) ?? 0;
     }
 
-    public void UpdateHeader(string name, string description, bool isTemplate)
+    public void UpdateHeader(string name, string description, bool isTemplate, int order)
     {
         Name = name;
         Description = description;
         IsTemplate = isTemplate;
+        Order = order;
     }
 
     public void CalculateMaxPoints()

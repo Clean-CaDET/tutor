@@ -70,7 +70,7 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
     private Result<LearningTaskDto> CloneTask(LearningTaskDto taskHeader, LearningTask oldTask)
     {
         var clonedTask = oldTask.Clone(taskHeader.UnitId);
-        clonedTask.UpdateHeader(taskHeader.Name, taskHeader.Description, taskHeader.IsTemplate);
+        clonedTask.UpdateHeader(taskHeader.Name, taskHeader.Description, taskHeader.IsTemplate, taskHeader.Order);
 
         clonedTask = _taskRepository.Create(clonedTask);
         var result = UnitOfWork.Save();
