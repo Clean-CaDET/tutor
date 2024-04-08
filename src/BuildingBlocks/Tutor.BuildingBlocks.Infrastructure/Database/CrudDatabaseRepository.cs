@@ -64,7 +64,7 @@ public class CrudDatabaseRepository<TEntity, TDbContext> : ICrudRepository<TEnti
     /// especially when associated entities are present.
     /// After applying changes to the provided entity, the method saves the updated entity with associated entities to the database.
     /// </summary>
-    public TEntity UpdateWithAssociatedEntites(TEntity entity)
+    public TEntity UpdateWithAssociatedEntities(TEntity entity)
     {
         DbContext.Entry(entity).State = EntityState.Modified;
         DbContext.SaveChanges();

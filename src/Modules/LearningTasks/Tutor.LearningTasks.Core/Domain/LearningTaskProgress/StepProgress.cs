@@ -13,7 +13,7 @@ public class StepProgress : Entity
 
     public StepProgress(int stepId, int learnerId)
     {
-        Status = StepStatus.Initilized;
+        Status = StepStatus.Initialized;
         StepId = stepId;
         LearnerId = learnerId;
     }
@@ -26,7 +26,7 @@ public class StepProgress : Entity
 
     public void MarkAsViewed()
     {
-        if(Status == StepStatus.Initilized)
+        if(Status == StepStatus.Initialized)
         {
             Status = StepStatus.Viewed;
         }
@@ -35,5 +35,5 @@ public class StepProgress : Entity
 
 public enum StepStatus
 {
-    Initilized, Viewed, Answered, Graded
+    Initialized, Viewed, Answered, Graded
 }

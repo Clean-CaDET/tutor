@@ -5,17 +5,17 @@ namespace Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
 
 public class TaskProgress : AggregateRoot
 {
+    public int LearningTaskId { get; private set; }
+    public int LearnerId { get; private set; }
     public double TotalScore { get; private set; }
     public TaskStatus Status { get; private set; }
     public List<StepProgress>? StepProgresses { get; private set; }
-    public int LearningTaskId { get; private set; }
-    public int LearnerId { get; private set; }
 
     public TaskProgress() { }
 
     public TaskProgress(List<Activity> steps, int learningTaskId, int learnerId)
     {
-        Status = TaskStatus.Initilized;
+        Status = TaskStatus.Initialized;
         LearningTaskId = learningTaskId;
         LearnerId = learnerId;
         CreateStepProgresses(steps);
@@ -33,26 +33,22 @@ public class TaskProgress : AggregateRoot
 
     public void SubmitAnswer(int stepId, string answer)
     {
-        StepProgress? stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
-        if (stepProgress != null)
-              stepProgress.SubmitAnswer(answer);
+        var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
+        stepProgress?.SubmitAnswer(answer);
 
-        bool allStepsAnswered = StepProgresses!.All(s => s.Status == StepStatus.Answered);
+        var allStepsAnswered = StepProgresses!.All(s => s.Status == StepStatus.Answered);
         if (allStepsAnswered)
             Status = TaskStatus.Completed;
     }
 
     public void ViewStep(int stepId)
     {
-        StepProgress? stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
-        if (stepProgress != null)
-        {
-            stepProgress.MarkAsViewed();
-        }
+        var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
+        stepProgress?.MarkAsViewed();
     }
 }
 
 public enum TaskStatus
 {
-    Initilized, Completed, Graded
+    Initialized, Assigned, Completed, Graded
 }

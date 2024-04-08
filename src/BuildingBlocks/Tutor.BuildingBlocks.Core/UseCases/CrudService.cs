@@ -57,11 +57,11 @@ public abstract class CrudService<TDto, TDomain> : BaseService<TDto, TDomain> wh
     {
         try
         {
-            CrudRepository.UpdateWithAssociatedEntites(entity);
+            CrudRepository.UpdateWithAssociatedEntities(entity);
         } 
-        catch (Exception)
+        catch (Exception e)
         {
-            return Result.Fail(FailureCode.Conflict);
+            return Result.Fail(FailureCode.Conflict).WithError(e.Message);
         }
         var result = UnitOfWork.Save();
         return result.IsFailed ? result : MapToDto(entity);

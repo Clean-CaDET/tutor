@@ -28,7 +28,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);
         result.LearningTaskId.ShouldBe(-3);
-        result.Status.ShouldBe("Initilized");
+        result.Status.ShouldBe("Initialized");
         result.TotalScore.ShouldBe(0);
         result.StepProgresses.ShouldNotBeNull();
         result.StepProgresses.Count.ShouldBe(1);
@@ -68,13 +68,13 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.LearningTaskId.ShouldBe(-4);
-        result.Status.ShouldBe("Initilized");
+        result.Status.ShouldBe("Initialized");
         result.TotalScore.ShouldBe(0);
         result.StepProgresses.ShouldNotBeNull();
         result.StepProgresses.Count.ShouldBe(1);
         result.StepProgresses[0].ShouldNotBeNull();
         result.StepProgresses[0].Answer.ShouldBeNull();
-        result.StepProgresses[0].Status.ShouldBe("Initilized");
+        result.StepProgresses[0].Status.ShouldBe("Initialized");
         result.StepProgresses[0].StepId.ShouldBe(-5);
 
         var storedTask = dbContext.TaskProgresses.Where(p => p.LearningTaskId == result.LearningTaskId && p.LearnerId == -3)

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Tutor.BuildingBlocks.Core.Domain;
+﻿using Tutor.BuildingBlocks.Core.Domain;
 
 namespace Tutor.LearningTasks.Core.Domain.LearningTasks;
 
@@ -8,6 +7,7 @@ public class LearningTask : AggregateRoot
     public int UnitId { get; private set; }
     public string? Name { get; private set; }
     public string? Description { get; private set; }
+    public int Order { get; private set; }
     public bool IsTemplate { get; private set; }
     public List<Activity>? Steps { get; private set; }
     public double MaxPoints { get; private set; }
@@ -17,6 +17,7 @@ public class LearningTask : AggregateRoot
         UnitId = learningTask.UnitId;
         Name = learningTask.Name;
         Description = learningTask.Description;
+        Order = learningTask.Order;
         IsTemplate = learningTask.IsTemplate;
         Steps = learningTask.Steps;
         MaxPoints = Steps?.Sum(s => s.MaxPoints) ?? 0;
@@ -42,6 +43,7 @@ public class LearningTask : AggregateRoot
             Description = Description,
             UnitId = newUnitId,
             IsTemplate = IsTemplate,
+            Order = Order,
             Steps = Steps?.Select(a => a.Clone()).ToList(),
             MaxPoints = Steps?.Sum(s => s.MaxPoints) ?? 0
     };
