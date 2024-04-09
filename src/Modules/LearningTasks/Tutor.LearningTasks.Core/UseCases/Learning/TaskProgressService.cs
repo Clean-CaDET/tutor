@@ -5,7 +5,6 @@ using Tutor.LearningTasks.API.Dtos.LearningTaskProgress;
 using Tutor.LearningTasks.API.Public;
 using Tutor.LearningTasks.API.Public.Learning;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
-using Tutor.LearningTasks.Core.Domain.LearningTasks;
 using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.LearningTasks.Core.UseCases.Learning;
@@ -29,19 +28,20 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
         if(!_accessServices.IsEnrolledInUnit(unitId, learnerId)) 
             return Result.Fail(FailureCode.Forbidden);
 
-        TaskProgress? taskProgress = _progressRepository.GetByTaskAndLearner(taskId, learnerId);
+        var taskProgress = _progressRepository.GetByTaskAndLearner(taskId, learnerId);
         if(taskProgress == null)
-        {
             return Create(taskId, learnerId);
-        }
+
         return MapToDto(taskProgress);
     }
 
     private Result<TaskProgressDto> Create(int taskId, int learnerId)
     {
-        LearningTask? learningTask = _taskRepository.Get(taskId);
+        var learningTask = _taskRepository.Get(taskId);
         if (learningTask == null)
             return Result.Fail(FailureCode.NotFound);
+        if (learningTask.IsTemplate)
+            return Result.Fail(FailureCode.Forbidden);
 
         TaskProgress taskProgress = new(learningTask.Steps!, learningTask.Id, learnerId);
         return Create(MapToDto(taskProgress));
@@ -49,22 +49,22 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
 
     public Result<TaskProgressDto> ViewStep(int unitId, int id, int stepId, int learnerId)
     {
-        Result<TaskProgress> result = GetTaskProgress(unitId, learnerId, id);
+        var result = GetTaskProgress(unitId, learnerId, id);
         if (result.IsFailed)
             return result.ToResult();
 
-        TaskProgress taskProgress = result.Value;
+        var taskProgress = result.Value;
         taskProgress.ViewStep(stepId);
         return Update(taskProgress);
     }
 
     public Result<TaskProgressDto> SubmitAnswer(int unitId, int id, StepProgressDto stepProgress, int learnerId)
     {
-        Result<TaskProgress> result = GetTaskProgress(unitId, learnerId, id);
+        var result = GetTaskProgress(unitId, learnerId, id);
         if (result.IsFailed)
             return result.ToResult();
 
-        TaskProgress taskProgress = result.Value;
+        var taskProgress = result.Value;
         taskProgress.SubmitAnswer(stepProgress.StepId, stepProgress.Answer!);
         return Update(taskProgress);
     }
@@ -74,7 +74,7 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
         if (!_accessServices.IsEnrolledInUnit(unitId, learnerId))
             return Result.Fail(FailureCode.Forbidden);
 
-        TaskProgress? taskProgress = _progressRepository.Get(progressId);
+        var taskProgress = _progressRepository.Get(progressId);
         if (taskProgress == null)
             return Result.Fail(FailureCode.NotFound);
 

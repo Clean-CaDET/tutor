@@ -14,7 +14,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
     public TaskProgressTests(LearningTasksTestFactory factory) : base(factory) { }
 
     [Fact]
-    public void Gets()
+    public void Creates_progress_on_get()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
@@ -37,6 +37,18 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
         result.StepProgresses[0].Answer.ShouldBe("SomeAnswer");
         result.StepProgresses[0].Status.ShouldBe("Answered");
         result.StepProgresses[0].StepId.ShouldBe(-4);
+    }
+
+    [Fact]
+    public void Fails_to_create_progress_for_template()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+
+        var result = controller.GetOrCreate(-2, -2).Result as ObjectResult;
+
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(403);
     }
 
     [Fact]

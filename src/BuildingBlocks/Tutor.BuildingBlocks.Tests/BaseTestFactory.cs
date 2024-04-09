@@ -47,6 +47,7 @@ public abstract class BaseTestFactory<TDbContext> : WebApplicationFactory<Progra
         catch (Exception ex)
         {
             logger.LogError(ex, "An error occurred seeding the database with test data. Error: {Message}", ex.Message);
+            throw;
         }
     }
 
