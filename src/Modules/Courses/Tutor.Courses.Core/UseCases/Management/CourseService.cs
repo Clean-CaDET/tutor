@@ -6,6 +6,7 @@ using Tutor.Courses.API.Public.Management;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 using Tutor.KnowledgeComponents.API.Internal;
+using Tutor.LearningTasks.API.Internal;
 
 namespace Tutor.Courses.Core.UseCases.Management;
 
@@ -16,15 +17,18 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
     private readonly ICourseOwnershipRepository _ownershipRepository;
     private readonly IUnitEnrollmentRepository _unitEnrollmentRepository;
     private readonly IKnowledgeComponentCloner _kcCloner;
+    private readonly ILearningTaskCloner _taskCloner;
 
     public CourseService(IMapper mapper, ICourseRepository courseRepository, ICoursesUnitOfWork unitOfWork,
-        ICourseOwnershipRepository ownershipRepository, IUnitEnrollmentRepository unitEnrollmentRepository, IKnowledgeComponentCloner kcCloner) : base(mapper)
+        ICourseOwnershipRepository ownershipRepository, IUnitEnrollmentRepository unitEnrollmentRepository,
+        IKnowledgeComponentCloner kcCloner, ILearningTaskCloner taskCloner) : base(mapper)
     {
         _courseRepository = courseRepository;
         _unitOfWork = unitOfWork;
         _ownershipRepository = ownershipRepository;
         _unitEnrollmentRepository = unitEnrollmentRepository;
         _kcCloner = kcCloner;
+        _taskCloner = taskCloner;
     }
 
     public Result<PagedResult<CourseDto>> GetAll(int page, int pageSize)
@@ -111,15 +115,18 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
     private Result<CourseDto> CloneCourse(int courseId, Course newCourse)
     {
         var existingCourse = _courseRepository.GetWithUnits(courseId);
+        if (existingCourse == null) return Result.Fail(FailureCode.NotFound);
 
         var clonedCourse = _courseRepository.Create(existingCourse.Clone(newCourse));
 
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
 
-        if (clonedCourse.KnowledgeUnits?.Count > 0)
+        if (clonedCourse.KnowledgeUnits?.Count > 0 && existingCourse.KnowledgeUnits?.Count > 0)
         {
-            CloneKcs(existingCourse.KnowledgeUnits, clonedCourse.KnowledgeUnits);
+            var unitIdPairs = PairOldAndClonedUnits(existingCourse.KnowledgeUnits, clonedCourse.KnowledgeUnits);
+            _kcCloner.CloneMany(unitIdPairs);
+            _taskCloner.CloneMany(unitIdPairs);
         }
         CloneOwnerships(clonedCourse, existingCourse.Id);
 
@@ -129,16 +136,17 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
         return MapToDto(clonedCourse);
     }
 
-    private void CloneKcs(List<KnowledgeUnit> existingUnits, List<KnowledgeUnit> clonedUnits)
+    private static List<Tuple<int, int>> PairOldAndClonedUnits(List<KnowledgeUnit> existingUnits, List<KnowledgeUnit> clonedUnits)
     {
         var unitIdPairs = new List<Tuple<int, int>>();
         existingUnits.ForEach(existingUnit =>
         {
-            var clonedUnitId = clonedUnits.Find(c => c.Code == existingUnit.Code).Id;
-            unitIdPairs.Add(new Tuple<int, int>(existingUnit.Id, clonedUnitId));
+            var clonedUnit = clonedUnits.Find(c => c.Code == existingUnit.Code);
+            if (clonedUnit == null)
+                throw new InvalidOperationException("Unit with code " + existingUnit.Code + " was not cloned");
+            unitIdPairs.Add(new Tuple<int, int>(existingUnit.Id, clonedUnit.Id));
         });
-
-        _kcCloner.CloneMany(unitIdPairs);
+        return unitIdPairs;
     }
 
     private void CloneOwnerships(Course course, int clonedCourseId)

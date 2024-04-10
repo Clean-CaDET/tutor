@@ -51,9 +51,23 @@ public class CrudDatabaseRepository<TEntity, TDbContext> : ICrudRepository<TEnti
         DbContext.Update(entity);
         return entity;
     }
+
     public TEntity Update(TEntity storedEntity, TEntity entity)
     {
         DbContext.Entry(storedEntity).CurrentValues.SetValues(entity);
+        return entity;
+    }
+
+    /// <summary>
+    /// Method for directly updating an existing entity.
+    /// This method is intended for cases where it's necessary to perform a direct update of an entity that has already been loaded, 
+    /// especially when associated entities are present.
+    /// After applying changes to the provided entity, the method saves the updated entity with associated entities to the database.
+    /// </summary>
+    public TEntity UpdateWithAssociatedEntities(TEntity entity)
+    {
+        DbContext.Entry(entity).State = EntityState.Modified;
+        DbContext.SaveChanges();
         return entity;
     }
 
