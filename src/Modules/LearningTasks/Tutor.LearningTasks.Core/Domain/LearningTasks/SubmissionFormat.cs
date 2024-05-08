@@ -25,5 +25,5 @@ public class SubmissionFormat : ValueObject
 
 public enum SubmissionType
 {
-    Text, Link, Code
+    Text, Link, Code, GitPR, GitCommit, TrelloCard
 }
