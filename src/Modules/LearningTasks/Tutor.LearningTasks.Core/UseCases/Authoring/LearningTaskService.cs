@@ -24,32 +24,27 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
 
     public Result<LearningTaskDto> Get(int id, int unitId,  int instructorId)
     {
-        if (!_accessServices.IsUnitOwner(unitId, instructorId))
-            return Result.Fail(FailureCode.Forbidden);
-
+        if (!IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
         return Get(id);
     }
 
     public Result<List<LearningTaskDto>> GetByUnit(int unitId, int instructorId)
     {
-        if (!_accessServices.IsUnitOwner(unitId, instructorId))
-            return Result.Fail(FailureCode.Forbidden);
+        if (!IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
-        List<LearningTask> learningTasks = _taskRepository.GetByUnit(unitId);
+        var learningTasks = _taskRepository.GetByUnit(unitId);
         return MapToDto(learningTasks);
     }
 
     public Result<LearningTaskDto> Create(LearningTaskDto learningTask, int instructorId)
     {
-        if (!_accessServices.IsUnitOwner(learningTask.UnitId, instructorId))
-            return Result.Fail(FailureCode.Forbidden);
-
+        if (!IsUnitOwner(learningTask.UnitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
         return Create(learningTask);
     }
 
     public Result<LearningTaskDto> Clone(LearningTaskDto taskHeader, int instructorId)
     {
-        if (!_accessServices.IsUnitOwner(taskHeader.UnitId, instructorId))
+        if (!IsUnitOwner(taskHeader.UnitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
         var oldTask = _taskRepository.Get(taskHeader.Id);
@@ -65,6 +60,19 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
         UnitOfWork.Commit();
 
         return result;
+    }
+
+    public Result Move(int taskId, int destinationUnitId, int instructorId)
+    {
+        if (!IsUnitOwner(destinationUnitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
+
+        var task = _taskRepository.Get(taskId);
+        if (task == null) return Result.Fail(FailureCode.NotFound);
+        if (!IsUnitOwner(task.UnitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
+
+        task.UnitId = destinationUnitId;
+        _taskRepository.Update(task);
+        return UnitOfWork.Save();
     }
 
     private Result<LearningTaskDto> CloneTask(LearningTaskDto taskHeader, LearningTask oldTask)
@@ -85,12 +93,10 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
 
     public Result<LearningTaskDto> Update(LearningTaskDto learningTask, int instructorId)
     {
-        if (!_accessServices.IsUnitOwner(learningTask.UnitId, instructorId))
-            return Result.Fail(FailureCode.Forbidden);
+        if (!IsUnitOwner(learningTask.UnitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
-        LearningTask? existingLearningTask = _taskRepository.Get(learningTask.Id);
-        if (existingLearningTask == null)
-            return Result.Fail(FailureCode.NotFound);
+        var existingLearningTask = _taskRepository.Get(learningTask.Id);
+        if (existingLearningTask == null) return Result.Fail(FailureCode.NotFound);
 
         existingLearningTask.Update(MapToDomain(learningTask));
 
@@ -99,12 +105,15 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
 
     public Result Delete(int id, int unitId, int instructorId)
     {
-        if(!_accessServices.IsUnitOwner(unitId, instructorId))
-            return Result.Fail(FailureCode.Forbidden);
-
+        if(!IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
         return Delete(id);
     }
-    
+
+    private bool IsUnitOwner(int unitId, int instructorId)
+    {
+        return _accessServices.IsUnitOwner(unitId, instructorId);
+    }
+
     public Result CloneMany(List<Tuple<int, int>> unitIdPairs)
     {
         var oldTasks = _taskRepository.GetByUnits(unitIdPairs.Select(u => u.Item1).ToList());
