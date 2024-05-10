@@ -4,7 +4,7 @@ namespace Tutor.LearningTasks.Core.Domain.LearningTasks;
 
 public class LearningTask : AggregateRoot
 {
-    public int UnitId { get; private set; }
+    public int UnitId { get; internal set; }
     public string? Name { get; private set; }
     public string? Description { get; private set; }
     public int Order { get; private set; }

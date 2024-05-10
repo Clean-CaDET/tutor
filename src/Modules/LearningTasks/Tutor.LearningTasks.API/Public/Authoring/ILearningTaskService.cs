@@ -9,6 +9,7 @@ public interface ILearningTaskService
     Result<List<LearningTaskDto>> GetByUnit(int unitId, int instructorId);
     Result<LearningTaskDto> Create(LearningTaskDto learningTask, int instructorId);
     Result<LearningTaskDto> Clone(LearningTaskDto taskHeader, int instructorId);
+    Result Move(int taskId, int destinationUnitId, int instructorId);
     Result<LearningTaskDto> Update(LearningTaskDto learningTask, int instructorId);
     Result Delete(int id, int unitId, int instructorId);
 }

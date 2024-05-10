@@ -55,6 +55,13 @@ public class LearningTaskController : BaseApiController
         return CreateResponse(result);
     }
 
+    [HttpPatch("{id:int}/move")]
+    public ActionResult Move(int unitId, int id, [FromBody] int destinationUnitId)
+    {
+        var result = _learningTaskService.Move(id, destinationUnitId, User.InstructorId());
+        return CreateResponse(result);
+    }
+
     [HttpDelete("{id:int}")]
     public ActionResult Delete(int unitId, int id)
     {
