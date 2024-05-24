@@ -9,6 +9,7 @@ using Tutor.LearningTasks.Infrastructure.Database;
 
 namespace Tutor.LearningTasks.Tests.Integration.Authoring;
 
+[Collection("Sequential")]
 public class LearningTaskCommandTests : BaseLearningTasksIntegrationTest
 {
     public LearningTaskCommandTests(LearningTasksTestFactory factory) : base(factory) { }
