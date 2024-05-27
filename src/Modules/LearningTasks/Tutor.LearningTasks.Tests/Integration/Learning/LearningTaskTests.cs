@@ -8,6 +8,7 @@ using Tutor.LearningTasks.Infrastructure.Database;
 
 namespace Tutor.LearningTasks.Tests.Integration.Learning;
 
+[Collection("Sequential")]
 public class LearningTaskTests : BaseLearningTasksIntegrationTest
 {
     public LearningTaskTests(LearningTasksTestFactory factory) : base(factory) { }

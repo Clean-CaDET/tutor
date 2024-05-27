@@ -6,6 +6,8 @@ public class KnowledgeUnitDto
     public int CourseId { get; set; }
     public string Code { get; set; }
     public string Name { get; set; }
-    public string Description { get; set; }
+    public string? Introduction { get; set; }
+    public string? Goals { get; set; }
+    public string? Guidelines { get; set; }
     public int Order { get; set; }
 }
