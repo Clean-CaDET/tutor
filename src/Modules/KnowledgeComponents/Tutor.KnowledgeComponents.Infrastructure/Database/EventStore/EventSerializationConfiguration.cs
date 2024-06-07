@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.CodeCompletionQuestions;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.MultiChoiceQuestions;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.ShortAnswerQuestions;
@@ -32,11 +33,13 @@ public static class EventSerializationConfiguration
         { typeof(MrqSubmission), "MrqSubmission" },
         { typeof(SaqSubmission), "SaqSubmission" },
         { typeof(McqSubmission), "McqSubmission"},
+        { typeof(CcqSubmission), "CcqSubmission"},
         #endregion
         #region Evaluations
         { typeof(MrqEvaluation), "MrqEvaluation" },
         { typeof(SaqEvaluation), "SaqEvaluation" },
-        { typeof(McqEvaluation), "McqEvaluation"}
+        { typeof(McqEvaluation), "McqEvaluation"},
+        { typeof(CcqEvaluation), "CcqEvaluation"}
         #endregion
     }.ToImmutableDictionary();
 }

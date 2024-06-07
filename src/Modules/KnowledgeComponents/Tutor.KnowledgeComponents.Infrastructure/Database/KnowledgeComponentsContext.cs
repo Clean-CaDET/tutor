@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems;
+using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.CodeCompletionQuestions;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.MultiChoiceQuestions;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.MultiResponseQuestions;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.ShortAnswerQuestions;
@@ -79,6 +80,8 @@ public class KnowledgeComponentsContext : DbContext
             .Property(item => item.Hints).HasColumnType("jsonb");
 
         modelBuilder.Entity<Mrq>().ToTable("MultiResponseQuestions")
+            .Property(m => m.Items).HasColumnType("jsonb");
+        modelBuilder.Entity<Ccq>().ToTable("CodeCompletionQuestions")
             .Property(m => m.Items).HasColumnType("jsonb");
         modelBuilder.Entity<Mcq>().ToTable("MultiChoiceQuestions");
         modelBuilder.Entity<Saq>().ToTable("ShortAnswerQuestions");

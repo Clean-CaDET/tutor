@@ -123,3 +123,6 @@ INSERT INTO "knowledgeComponents"."AssessmentItemMasteries"(
 INSERT INTO "knowledgeComponents"."KcMasteries"(
     "Id", "Mastery", "KnowledgeComponentId", "LearnerId", "IsPassed", "IsSatisfied", "IsCompleted", "IsStarted")
 VALUES (-411, 1.0, -41, -4, true, true, true, true);
+INSERT INTO "knowledgeComponents"."AssessmentItemMasteries"(
+	"Id", "AssessmentItemId", "Mastery", "SubmissionCount", "KnowledgeComponentMasteryId", "LastSubmissionTime", "HintRequestCount")
+	VALUES (-4411, -41, 0.0, 0, -411, null, 0);
