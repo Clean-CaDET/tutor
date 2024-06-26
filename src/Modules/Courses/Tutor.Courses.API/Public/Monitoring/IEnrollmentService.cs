@@ -5,9 +5,7 @@ namespace Tutor.Courses.API.Public.Monitoring;
 
 public interface IEnrollmentService
 {
-    Result<List<UnitEnrollmentDto>> GetEnrollments(int unitId, int[] learnerIds, int instructorId);
-    Result<List<UnitEnrollmentDto>> BulkEnroll(int unitId, int[] learnerIds, DateTime start, int instructorId);
-    Result<UnitEnrollmentDto> Enroll(int unitId, int learnerId, DateTime start, int instructorId);
-    Result Unenroll(int unitId, int learnerId, int instructorId);
-    Result<List<UnitEnrollmentDto>> BulkUnenroll(int unitId, int[] learnerIds, int instructorId);
+    Result<List<EnrollmentDto>> GetEnrollments(EnrollmentFilterDto unitAndLearnerIds, int instructorId);
+    Result<List<EnrollmentDto>> BulkEnroll(int unitId, int[] learnerIds, EnrollmentDto newEnrollment, int instructorId);
+    Result<List<EnrollmentDto>> BulkUnenroll(int unitId, int[] learnerIds, int instructorId);
 }
