@@ -6,5 +6,5 @@ public class EnrollmentDto
     public int LearnerId { get; set; }
     public DateTime AvailableFrom { get; set; }
     public DateTime? BestBefore { get; set; }
-    public string Status { get; set; }
+    public string? Status { get; set; }
 }
