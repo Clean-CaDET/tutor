@@ -11,9 +11,12 @@ public class GroupEnrollmentProfile : Profile
         CreateMap<LearnerGroup, GroupDto>();
         CreateMap<GroupDto, LearnerGroup>();
 
-        CreateMap<UnitEnrollment, UnitEnrollmentDto>()
-            .ForMember(dest => dest.Status, 
+        CreateMap<UnitEnrollment, EnrollmentDto>()
+            .ForMember(dest => dest.Status,
                 opt => opt.MapFrom(
-                    src => Enum.GetName(src.Status)));
+                    src => Enum.GetName(src.Status)))
+            .ForMember(dest => dest.AvailableFrom, 
+                opt => opt.MapFrom(
+                    src => src.Start));
     }
 }

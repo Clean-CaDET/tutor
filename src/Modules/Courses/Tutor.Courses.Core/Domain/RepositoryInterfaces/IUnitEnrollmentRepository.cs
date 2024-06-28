@@ -2,10 +2,12 @@
 
 public interface IUnitEnrollmentRepository
 {
-    List<UnitEnrollment> GetEnrolledUnits(int courseId, int learnerId);
-    UnitEnrollment? GetEnrollment(int unitId, int learnerId);
-    List<UnitEnrollment> GetEnrollments(int unitId, int[] learnerIds);
+    UnitEnrollment? Get(int unitId, int learnerId);
+    List<UnitEnrollment> GetMany(int unitId, int[] learnerIds);
+    List<UnitEnrollment> GetMany(int[] unitIds, int[] learnerIds);
     UnitEnrollment Create(UnitEnrollment newEnrollment);
     UnitEnrollment Update(UnitEnrollment enrollment);
     List<UnitEnrollment> GetActiveEnrollmentsForCourse(int courseId);
+
+    List<UnitEnrollment> GetEnrolledUnits(int courseId, int learnerId);
 }

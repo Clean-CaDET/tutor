@@ -13,13 +13,19 @@ public class UnitEnrollmentQueryTests : BaseCoursesIntegrationTest
     public UnitEnrollmentQueryTests(CoursesTestFactory factory) : base(factory) {}
     
     [Theory]
-    [InlineData("-51", -1, new[] {-1, -2, -3, -4, -5}, 4)]
-    [InlineData("-51", -2, new[] {-1, -2, -3, -4, -5}, 2)]
-    public void Gets_enrollments(string instructorId, int unitId, int[] learnerIds, int expectedEnrollmentCount)
+    [InlineData("-51", new[] { -1 }, new[] {-1, -2, -3, -4, -5}, 4)]
+    [InlineData("-51", new[] { -2 }, new[] {-1, -2, -3, -4, -5}, 2)]
+    public void Gets_enrollments(string instructorId, int[] unitIds, int[] learnerIds, int expectedEnrollmentCount)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, instructorId);
-        var result = ((OkObjectResult)controller.GetEnrollments(unitId, learnerIds).Result)?.Value as List<UnitEnrollmentDto>;
+        var enrollmentFilter = new EnrollmentFilterDto
+        {
+            LearnerIds = learnerIds,
+            UnitIds = unitIds
+        };
+
+        var result = ((OkObjectResult)controller.GetEnrollments(enrollmentFilter).Result!).Value as List<EnrollmentDto>;
 
         result.ShouldNotBeNull();
         result.Count.ShouldBe(expectedEnrollmentCount);
