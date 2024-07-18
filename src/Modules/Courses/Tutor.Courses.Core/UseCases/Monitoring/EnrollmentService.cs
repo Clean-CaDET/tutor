@@ -9,7 +9,7 @@ using Tutor.KnowledgeComponents.API.Internal;
 
 namespace Tutor.Courses.Core.UseCases.Monitoring;
 
-public class EnrollmentService : BaseService<UnitEnrollmentDto, UnitEnrollment>, IEnrollmentService
+public class EnrollmentService : BaseService<EnrollmentDto, UnitEnrollment>, IEnrollmentService
 {
     private readonly IUnitEnrollmentRepository _unitEnrollmentRepository;
     private readonly IOwnedCourseRepository _ownedCourseRepository;
@@ -27,14 +27,13 @@ public class EnrollmentService : BaseService<UnitEnrollmentDto, UnitEnrollment>,
         _unitOfWork = unitOfWork;
     }
 
-    public Result<List<UnitEnrollmentDto>> GetEnrollments(int unitId, int[] learnerIds, int instructorId)
+    public Result<List<EnrollmentDto>> GetEnrollments(EnrollmentFilterDto unitAndLearnerIds, int instructorId)
     {
-        if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
-
-        return MapToDto(_unitEnrollmentRepository.GetEnrollments(unitId, learnerIds));
+        return MapToDto(_unitEnrollmentRepository
+            .GetMany(unitAndLearnerIds.UnitIds, unitAndLearnerIds.LearnerIds));
     }
 
-    public Result<List<UnitEnrollmentDto>> BulkEnroll(int unitId, int[] learnerIds, DateTime start, int instructorId)
+    public Result<List<EnrollmentDto>> BulkEnroll(int unitId, int[] learnerIds, EnrollmentDto newEnrollment, int instructorId)
     {
         if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
@@ -42,75 +41,47 @@ public class EnrollmentService : BaseService<UnitEnrollmentDto, UnitEnrollment>,
         if(unit == null)
             return Result.Fail(FailureCode.NotFound);
 
-        var enrollments = Enroll(unit, start, learnerIds);
+        var enrollments = Enroll(unit, newEnrollment, learnerIds);
 
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
         return MapToDto(enrollments);
     }
 
-    public Result<UnitEnrollmentDto> Enroll(int unitId, int learnerId, DateTime start, int instructorId)
+    private List<UnitEnrollment> Enroll(KnowledgeUnit unit, EnrollmentDto newEnrollment, int[] learnerIds)
     {
-        if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId))
-            return Result.Fail(FailureCode.Forbidden);
-        var unit = _unitRepository.Get(unitId);
-        if (unit == null)
-            return Result.Fail(FailureCode.NotFound);
-
-        var enrollment = Enroll(unit, start, new[] { learnerId })[0];
-
-        var result = _unitOfWork.Save();
-        if (result.IsFailed) return result;
-
-        return MapToDto(enrollment);
-    }
-
-    private List<UnitEnrollment> Enroll(KnowledgeUnit unit, DateTime start, int[] learnerIds)
-    {
-        var enrollments = _unitEnrollmentRepository.GetEnrollments(unit.Id, learnerIds);
+        var enrollments = _unitEnrollmentRepository.GetMany(unit.Id, learnerIds);
         enrollments.ForEach(e =>
         {
-            e.Activate(start);
+            e.Activate(newEnrollment.AvailableFrom, newEnrollment.BestBefore);
             _unitEnrollmentRepository.Update(e);
         });
         if (learnerIds.Length == enrollments.Count) return enrollments;
 
         var unenrolledLearners = learnerIds.Where(learnerId => enrollments.All(e => e.LearnerId != learnerId)).ToList();
-        enrollments.AddRange(unenrolledLearners.Select(learnerId => CreateNewEnrollment(unit, start, learnerId)).ToList());
+        enrollments.AddRange(CreateNewEnrollments(unenrolledLearners, unit, newEnrollment));
+        
         _masteryFactory.InitializeMasteries(unit.Id, learnerIds);
 
         return enrollments;
     }
 
-    private UnitEnrollment CreateNewEnrollment(KnowledgeUnit unit, DateTime start, int learnerId)
+    private List<UnitEnrollment> CreateNewEnrollments(List<int> learners, KnowledgeUnit unit, EnrollmentDto enrollment)
     {
-        var newEnrollment = new UnitEnrollment(learnerId, start, unit);
-        _unitEnrollmentRepository.Create(newEnrollment);
+        return learners.Select(learnerId =>
+        {
+            var newEnrollment = new UnitEnrollment(learnerId, enrollment.AvailableFrom, enrollment.BestBefore, unit);
+            _unitEnrollmentRepository.Create(newEnrollment);
 
-        return newEnrollment;
+            return newEnrollment;
+        }).ToList();
     }
 
-    public Result Unenroll(int unitId, int learnerId, int instructorId)
+    public Result<List<EnrollmentDto>> BulkUnenroll(int unitId, int[] learnerIds, int instructorId)
     {
         if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
-        var enrollment = _unitEnrollmentRepository.GetEnrollment(unitId, learnerId);
-        if (enrollment == null) return Result.Fail(FailureCode.NotFound);
-
-        enrollment.Status = EnrollmentStatus.Deactivated;
-        _unitEnrollmentRepository.Update(enrollment);
-
-        var result = _unitOfWork.Save();
-        if (result.IsFailed) return result;
-
-        return Result.Ok();
-    }
-
-    public Result<List<UnitEnrollmentDto>> BulkUnenroll(int unitId, int[] learnerIds, int instructorId)
-    {
-        if (!_ownedCourseRepository.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
-
-        var enrollments = _unitEnrollmentRepository.GetEnrollments(unitId, learnerIds);
+        var enrollments = _unitEnrollmentRepository.GetMany(unitId, learnerIds);
         enrollments.ForEach(e =>
         {
             e.Status = EnrollmentStatus.Deactivated;

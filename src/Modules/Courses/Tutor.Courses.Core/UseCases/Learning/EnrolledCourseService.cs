@@ -44,13 +44,13 @@ public class EnrolledCourseService : BaseService<CourseDto, Course>, IEnrolledCo
 
     public bool HasActiveEnrollment(int unitId, int learnerId)
     {
-        var enrollment = _unitEnrollmentRepository.GetEnrollment(unitId, learnerId);
+        var enrollment = _unitEnrollmentRepository.Get(unitId, learnerId);
         return enrollment != null && enrollment.IsActive();
     }
 
     public Result<KnowledgeUnitDto> GetUnit(int unitId, int learnerId)
     {
-        var enrollment = _unitEnrollmentRepository.GetEnrollment(unitId, learnerId);
+        var enrollment = _unitEnrollmentRepository.Get(unitId, learnerId);
         if(enrollment == null || !enrollment.IsActive())
             return Result.Fail(FailureCode.Forbidden);
 

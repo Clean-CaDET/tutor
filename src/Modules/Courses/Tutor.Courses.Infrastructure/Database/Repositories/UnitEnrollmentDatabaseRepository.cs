@@ -13,25 +13,24 @@ public class UnitEnrollmentDatabaseRepository : IUnitEnrollmentRepository
         _dbContext = dbContext;
     }
 
-    public List<UnitEnrollment> GetEnrolledUnits(int courseId, int learnerId)
-    {
-        return _dbContext.UnitEnrollments
-            .Where(ue => ue.LearnerId.Equals(learnerId)
-                         && ue.KnowledgeUnit.CourseId.Equals(courseId))
-            .Include(ue => ue.KnowledgeUnit).ToList();
-    }
-
-    public UnitEnrollment? GetEnrollment(int unitId, int learnerId)
+    public UnitEnrollment? Get(int unitId, int learnerId)
     {
         return _dbContext.UnitEnrollments
             .Include(ue => ue.KnowledgeUnit)
             .FirstOrDefault(e => e.KnowledgeUnit.Id == unitId && e.LearnerId == learnerId);
     }
 
-    public List<UnitEnrollment> GetEnrollments(int unitId, int[] learnerIds)
+    public List<UnitEnrollment> GetMany(int unitId, int[] learnerIds)
     {
         return _dbContext.UnitEnrollments
             .Where(e => e.KnowledgeUnit.Id == unitId && learnerIds.Contains(e.LearnerId))
+            .ToList();
+    }
+
+    public List<UnitEnrollment> GetMany(int[] unitIds, int[] learnerIds)
+    {
+        return _dbContext.UnitEnrollments
+            .Where(e => unitIds.Contains(e.KnowledgeUnitId) && learnerIds.Contains(e.LearnerId))
             .ToList();
     }
 
@@ -51,5 +50,13 @@ public class UnitEnrollmentDatabaseRepository : IUnitEnrollmentRepository
     {
         return _dbContext.UnitEnrollments
             .Where(ue => ue.KnowledgeUnit.CourseId.Equals(courseId) && ue.Status == EnrollmentStatus.Active).ToList();
+    }
+
+    public List<UnitEnrollment> GetEnrolledUnits(int courseId, int learnerId)
+    {
+        return _dbContext.UnitEnrollments
+            .Where(ue => ue.LearnerId.Equals(learnerId)
+                         && ue.KnowledgeUnit.CourseId.Equals(courseId))
+            .Include(ue => ue.KnowledgeUnit).ToList();
     }
 }
