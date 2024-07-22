@@ -63,19 +63,19 @@ public class TaskProgress : EventSourcedAggregateRoot
         return Result.Ok();
     }
 
-    public Result SubmissionOpened(int stepId)
+    public Result OpenSubmission(int stepId)
     {
         Causes(new SubmissionOpened(stepId));
         return Result.Ok();
     }
 
-    public Result GuidanceOpened(int stepId)
+    public Result OpenGuidance(int stepId)
     {
         Causes(new GuidanceOpened(stepId));
         return Result.Ok();
     }
 
-    public Result ExampleOpened(int stepId)
+    public Result OpenExample(int stepId)
     {
         Causes(new ExampleOpened(stepId));
         return Result.Ok();

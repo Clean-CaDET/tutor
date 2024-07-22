@@ -32,6 +32,10 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
         if(taskProgress == null)
             return Create(taskId, learnerId);
 
+        taskProgress.TaskOpened();
+        _progressRepository.UpdateEvent(taskProgress);
+        UnitOfWork.Save();
+
         return MapToDto(taskProgress);
     }
 
@@ -44,6 +48,9 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
             return Result.Fail(FailureCode.Forbidden);
 
         TaskProgress taskProgress = new(learningTask.Steps!, learningTask.Id, learnerId);
+        taskProgress.TaskOpened();
+        _progressRepository.UpdateEvent(taskProgress);
+
         return Create(MapToDto(taskProgress));
     }
 
@@ -55,6 +62,8 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
 
         var taskProgress = result.Value;
         taskProgress.ViewStep(stepId);
+        _progressRepository.UpdateEvent(taskProgress);
+
         return Update(taskProgress);
     }
 
@@ -66,7 +75,48 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
 
         var taskProgress = result.Value;
         taskProgress.SubmitAnswer(stepProgress.StepId, stepProgress.Answer!);
+        _progressRepository.UpdateEvent(taskProgress);
+
         return Update(taskProgress);
+    }
+
+    public Result OpenSubmission(int unitId, int id, int stepId, int learnerId)
+    {
+        var result = GetTaskProgress(unitId, learnerId, id);
+        if (result.IsFailed)
+            return result.ToResult();
+
+        var taskProgress = result.Value;
+        taskProgress.OpenSubmission(stepId);
+        _progressRepository.UpdateEvent(taskProgress);
+
+        return UnitOfWork.Save();
+    }
+
+    public Result OpenGuidance(int unitId, int id, int stepId, int learnerId)
+    {
+        var result = GetTaskProgress(unitId, learnerId, id);
+        if (result.IsFailed)
+            return result.ToResult();
+
+        var taskProgress = result.Value;
+        taskProgress.OpenGuidance(stepId);
+        _progressRepository.UpdateEvent(taskProgress);
+
+        return UnitOfWork.Save();
+    }
+
+    public Result OpenExample(int unitId, int id, int stepId, int learnerId)
+    {
+        var result = GetTaskProgress(unitId, learnerId, id);
+        if (result.IsFailed)
+            return result.ToResult();
+
+        var taskProgress = result.Value;
+        taskProgress.OpenExample(stepId);
+        _progressRepository.UpdateEvent(taskProgress);
+
+        return UnitOfWork.Save();
     }
 
     private Result<TaskProgress> GetTaskProgress(int unitId, int learnerId, int progressId)

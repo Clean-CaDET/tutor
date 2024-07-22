@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using FluentResults;
-using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.API.Public;
 using Tutor.KnowledgeComponents.API.Public.Analysis;
+using Tutor.KnowledgeComponents.Core.Domain.EventSourcing;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events;
@@ -16,11 +16,11 @@ public class MisconceptionAnalysisService : IMisconceptionAnalysisService
 {
     private readonly IMapper _mapper;
     private readonly IAccessService _accessService;
-    private readonly IEventStore _eventStore;
+    private readonly IKnowledgeComponentEventStore _eventStore;
     private readonly IKnowledgeComponentRepository _kcRepository;
     private readonly AssessmentStatisticsCalculator _calculator;
 
-    public MisconceptionAnalysisService(IMapper mapper, IAccessService accessService, IEventStore eventStore, IKnowledgeComponentRepository kcRepository)
+    public MisconceptionAnalysisService(IMapper mapper, IAccessService accessService, IKnowledgeComponentEventStore eventStore, IKnowledgeComponentRepository kcRepository)
     {
         _mapper = mapper;
         _accessService = accessService;

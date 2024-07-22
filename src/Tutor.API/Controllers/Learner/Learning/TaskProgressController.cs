@@ -42,18 +42,21 @@ public class TaskProgressController : BaseApiController
     [HttpPost("{id:int}/step/{stepId:int}/open-submission")]
     public ActionResult OpenSubmission(int unitId, int id, int stepId)
     {
-        throw new NotImplementedException();
+        var result = _taskProgressService.OpenSubmission(unitId, id, stepId, User.LearnerId());
+        return CreateResponse(result);
     }
 
     [HttpPost("{id:int}/step/{stepId:int}/open-guidance")]
     public ActionResult OpenGuidance(int unitId, int id, int stepId)
     {
-        throw new NotImplementedException();
+        var result = _taskProgressService.OpenGuidance(unitId, id, stepId, User.LearnerId());
+        return CreateResponse(result);
     }
 
     [HttpPost("{id:int}/step/{stepId:int}/open-example")]
     public ActionResult OpenExample(int unitId, int id, int stepId)
     {
-        throw new NotImplementedException();
+        var result = _taskProgressService.OpenExample(unitId, id, stepId, User.LearnerId());
+        return CreateResponse(result);
     }
 }

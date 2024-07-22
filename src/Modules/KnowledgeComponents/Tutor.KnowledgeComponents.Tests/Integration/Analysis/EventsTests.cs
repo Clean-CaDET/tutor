@@ -5,6 +5,7 @@ using Shouldly;
 using System.Text.Json;
 using Tutor.API.Controllers.Instructor.Analysis;
 using Tutor.BuildingBlocks.Core.EventSourcing;
+using Tutor.KnowledgeComponents.Core.Domain.EventSourcing;
 using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore;
 using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.DefaultEventSerializer;
 
@@ -56,7 +57,7 @@ public class EventsTests : BaseKnowledgeComponentsIntegrationTest
 
     private static EventsController CreateController(IServiceScope scope, string id)
     {
-        return new EventsController(scope.ServiceProvider.GetRequiredService<IEventStore>())
+        return new EventsController(scope.ServiceProvider.GetRequiredService<IKnowledgeComponentEventStore>())
         {
             ControllerContext = BuildContext(id, "instructor")
         };

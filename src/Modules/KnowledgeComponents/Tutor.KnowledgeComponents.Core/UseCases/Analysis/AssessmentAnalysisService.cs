@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using FluentResults;
-using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.API.Public;
 using Tutor.KnowledgeComponents.API.Public.Analysis;
+using Tutor.KnowledgeComponents.Core.Domain.EventSourcing;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events.AssessmentItemEvents;
@@ -16,10 +16,10 @@ public class AssessmentAnalysisService : IAssessmentAnalysisService
 {
     private readonly IMapper _mapper;
     private readonly IAccessService _accessService;
-    private readonly IEventStore _eventStore;
+    private readonly IKnowledgeComponentEventStore _eventStore;
     private readonly AssessmentStatisticsCalculator _calculator;
 
-    public AssessmentAnalysisService(IMapper mapper, IAccessService accessService, IEventStore eventStore)
+    public AssessmentAnalysisService(IMapper mapper, IAccessService accessService, IKnowledgeComponentEventStore eventStore)
     {
         _mapper = mapper;
         _accessService = accessService;

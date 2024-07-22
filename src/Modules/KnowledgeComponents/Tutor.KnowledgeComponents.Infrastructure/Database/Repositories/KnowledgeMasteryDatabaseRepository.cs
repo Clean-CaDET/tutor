@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Tutor.BuildingBlocks.Core.EventSourcing;
+using Tutor.KnowledgeComponents.Core.Domain.EventSourcing;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.MoveOn;
 
@@ -8,10 +8,10 @@ namespace Tutor.KnowledgeComponents.Infrastructure.Database.Repositories;
 public class KnowledgeMasteryDatabaseRepository : IKnowledgeMasteryRepository
 {
     private readonly KnowledgeComponentsContext _dbContext;
-    private readonly IEventStore _eventStore;
+    private readonly IKnowledgeComponentEventStore _eventStore;
     private readonly IMoveOnCriteria _moveOnCriteria;
 
-    public KnowledgeMasteryDatabaseRepository(KnowledgeComponentsContext dbContext, IEventStore eventStore, IMoveOnCriteria moveOnCriteria)
+    public KnowledgeMasteryDatabaseRepository(KnowledgeComponentsContext dbContext, IKnowledgeComponentEventStore eventStore, IMoveOnCriteria moveOnCriteria)
     {
         _dbContext = dbContext;
         _eventStore = eventStore;

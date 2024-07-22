@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Interceptors;
@@ -11,6 +10,7 @@ using Tutor.KnowledgeComponents.API.Public.Authoring;
 using Tutor.KnowledgeComponents.API.Public.Learning;
 using Tutor.KnowledgeComponents.API.Public.Learning.Assessment;
 using Tutor.KnowledgeComponents.API.Public.Monitoring;
+using Tutor.KnowledgeComponents.Core.Domain.EventSourcing;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
@@ -91,8 +91,8 @@ public static class KnowledgeComponentsStartup
 
         services.AddScoped<IKnowledgeMasteryRepository, KnowledgeMasteryDatabaseRepository>();
 
-        services.AddScoped<IEventStore, PostgresStore>();
-        services.AddSingleton<IEventSerializer>(new DefaultEventSerializer(EventSerializationConfiguration.EventRelatedTypes));
+        services.AddScoped<IKnowledgeComponentEventStore, PostgresStore>();
+        services.AddSingleton<IKnowledgeComponentEventSerializer>(new DefaultEventSerializerT(EventSerializationConfiguration.EventRelatedTypes));
 
         services.AddScoped<IKnowledgeComponentsUnitOfWork, KnowledgeComponentsUnitOfWork>();
         services.AddDbContext<KnowledgeComponentsContext>(opt =>

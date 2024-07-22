@@ -250,6 +250,42 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
         objectResult.StatusCode.ShouldBe(404);
     }
 
+    [Fact]
+    public void OpenSubmission()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+        
+        var result = controller.OpenSubmission(-2, -2, -4);
+
+        result.ShouldBeOfType<OkResult>();
+    }
+
+    [Fact]
+    public void OpenGuidance()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+
+        var result = controller.OpenGuidance(-2, -2, -4);
+
+        result.ShouldBeOfType<OkResult>();
+    }
+
+    [Fact]
+    public void OpenExample()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+
+        var result = controller.OpenExample(-2, -2, -4);
+
+        result.ShouldBeOfType<OkResult>();
+    }
+
     private static TaskProgressController CreateController(IServiceScope scope)
     {
         return new TaskProgressController(scope.ServiceProvider.GetRequiredService<ITaskProgressService>())

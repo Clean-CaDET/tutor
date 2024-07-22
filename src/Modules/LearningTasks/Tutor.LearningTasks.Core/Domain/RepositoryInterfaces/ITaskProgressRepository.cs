@@ -7,4 +7,6 @@ public interface ITaskProgressRepository : ICrudRepository<TaskProgress>
 {
     new TaskProgress? Get(int id);
     TaskProgress? GetByTaskAndLearner(int taskId, int learnerId);
+
+    void UpdateEvent(TaskProgress taskProgress);
 }

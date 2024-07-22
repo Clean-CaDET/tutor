@@ -2,14 +2,15 @@
 using System.Collections.Immutable;
 using System.Text.Json;
 using Tutor.BuildingBlocks.Core.EventSourcing;
+using Tutor.KnowledgeComponents.Core.Domain.EventSourcing;
 
 namespace Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.DefaultEventSerializer;
 
-public class DefaultEventSerializer : IEventSerializer
+public class DefaultEventSerializerT : IKnowledgeComponentEventSerializer
 {
     private readonly JsonSerializerOptions _options;
 
-    public DefaultEventSerializer(IImmutableDictionary<Type, string> eventRelatedTypes, string discriminatorMemberName)
+    public DefaultEventSerializerT(IImmutableDictionary<Type, string> eventRelatedTypes, string discriminatorMemberName)
     {
         _options = new JsonSerializerOptions();
         _options.SetupExtensions();
@@ -22,7 +23,7 @@ public class DefaultEventSerializer : IEventSerializer
         }
     }
 
-    public DefaultEventSerializer(IImmutableDictionary<Type, string> eventRelatedTypes) : this(eventRelatedTypes, "$discriminator") { }
+    public DefaultEventSerializerT(IImmutableDictionary<Type, string> eventRelatedTypes) : this(eventRelatedTypes, "$discriminator") { }
 
     public DomainEvent Deserialize(JsonDocument @event)
     {

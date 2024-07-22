@@ -1,17 +1,18 @@
 ﻿using System.Linq.Expressions;
 using System.Text.Json;
 using Tutor.BuildingBlocks.Core.EventSourcing;
+using Tutor.LearningTasks.Core.Domain.EventSourcing;
 
 namespace Tutor.LearningTasks.Infrastructure.Database.EventStore.Postgres;
 
-internal class PostgresEventQueryable : IEventQueryable
+internal class PostgresEventQueryable : ILearningTaskEventQueryable
 {
-    private readonly IEventSerializer _serializer;
+    private readonly ILearningTaskEventSerializer _serializer;
 
     private IQueryable<StoredDomainEvent> EventSource { get; init; }
     private IEnumerable<Expression<Func<JsonDocument, bool>>> Conditions { get; init; }
 
-    public PostgresEventQueryable(IQueryable<StoredDomainEvent> eventSource, IEventSerializer serializer)
+    public PostgresEventQueryable(IQueryable<StoredDomainEvent> eventSource, ILearningTaskEventSerializer serializer)
     {
         EventSource = eventSource;
         Conditions = new List<Expression<Func<JsonDocument, bool>>>();
@@ -27,7 +28,7 @@ internal class PostgresEventQueryable : IEventQueryable
         _serializer = parent._serializer;
     }
 
-    public IEventQueryable After(DateTime moment)
+    public ILearningTaskEventQueryable After(DateTime moment)
     {
         return new PostgresEventQueryable(this)
         {
@@ -35,7 +36,7 @@ internal class PostgresEventQueryable : IEventQueryable
         };
     }
 
-    public IEventQueryable Before(DateTime moment)
+    public ILearningTaskEventQueryable Before(DateTime moment)
     {
         return new PostgresEventQueryable(this)
         {
@@ -43,7 +44,7 @@ internal class PostgresEventQueryable : IEventQueryable
         };
     }
 
-    public IEventQueryable Where(Expression<Func<JsonDocument, bool>> condition)
+    public ILearningTaskEventQueryable Where(Expression<Func<JsonDocument, bool>> condition)
     {
         return new PostgresEventQueryable(this)
         {

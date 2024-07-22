@@ -1,17 +1,18 @@
 ﻿using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
+using Tutor.KnowledgeComponents.Core.Domain.EventSourcing;
 
 namespace Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.Postgres;
 
-public class PostgresStore : IEventStore
+public class PostgresStore : IKnowledgeComponentEventStore
 {
     private readonly KnowledgeComponentsContext _eventContext;
-    private readonly IEventSerializer _eventSerializer;
+    private readonly IKnowledgeComponentEventSerializer _eventSerializer;
 
-    public IEventQueryable Events => new PostgresEventQueryable(_eventContext.Events, _eventSerializer);
+    public IKnowledgeComponentEventQueryable Events => new PostgresEventQueryable(_eventContext.Events, _eventSerializer);
 
-    public PostgresStore(KnowledgeComponentsContext eventContext, IEventSerializer eventSerializer)
+    public PostgresStore(KnowledgeComponentsContext eventContext, IKnowledgeComponentEventSerializer eventSerializer)
     {
         _eventContext = eventContext;
         _eventSerializer = eventSerializer;

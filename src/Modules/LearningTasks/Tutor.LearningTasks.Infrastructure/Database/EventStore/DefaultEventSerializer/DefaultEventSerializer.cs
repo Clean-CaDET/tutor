@@ -2,10 +2,11 @@
 using System.Collections.Immutable;
 using System.Text.Json;
 using Tutor.BuildingBlocks.Core.EventSourcing;
+using Tutor.LearningTasks.Core.Domain.EventSourcing;
 
 namespace Tutor.LearningTasks.Infrastructure.Database.EventStore.DefaultEventSerializer;
 
-public class DefaultEventSerializer : IEventSerializer
+public class DefaultEventSerializer : ILearningTaskEventSerializer
 {
     private readonly JsonSerializerOptions _options;
 
