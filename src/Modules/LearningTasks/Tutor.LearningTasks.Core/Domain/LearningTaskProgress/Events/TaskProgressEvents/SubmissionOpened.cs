@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskProgressEvents
+namespace Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskProgressEvents;
+
+public class SubmissionOpened : TaskProgresskEvent
 {
-    internal class SubmissionOpened
+    public SubmissionOpened(int stepId)
     {
+        StepId = stepId;
     }
+    public int StepId { get; private set; }
 }
+
