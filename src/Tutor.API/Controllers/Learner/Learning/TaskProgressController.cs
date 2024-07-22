@@ -38,4 +38,22 @@ public class TaskProgressController : BaseApiController
         var result = _taskProgressService.SubmitAnswer(unitId, id, stepProgress, User.LearnerId());
         return CreateResponse(result);
     }
+
+    [HttpPost("{id:int}/step/{stepId:int}/open-submission")]
+    public ActionResult OpenSubmission(int unitId, int id, int stepId)
+    {
+        throw new NotImplementedException();
+    }
+
+    [HttpPost("{id:int}/step/{stepId:int}/open-guidance")]
+    public ActionResult OpenGuidance(int unitId, int id, int stepId)
+    {
+        throw new NotImplementedException();
+    }
+
+    [HttpPost("{id:int}/step/{stepId:int}/open-example")]
+    public ActionResult OpenExample(int unitId, int id, int stepId)
+    {
+        throw new NotImplementedException();
+    }
 }
