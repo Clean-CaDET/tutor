@@ -1,9 +1,12 @@
-﻿using Tutor.BuildingBlocks.Core.Domain;
+﻿using FluentResults;
+using Tutor.BuildingBlocks.Core.EventSourcing;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskProgressEvents;
 using Tutor.LearningTasks.Core.Domain.LearningTasks;
 
 namespace Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
 
-public class TaskProgress : AggregateRoot
+public class TaskProgress : EventSourcedAggregateRoot
 {
     public int LearningTaskId { get; private set; }
     public int LearnerId { get; private set; }
@@ -35,16 +38,61 @@ public class TaskProgress : AggregateRoot
     {
         var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
         stepProgress?.SubmitAnswer(answer);
+        Causes(new StepSubmitted(stepId));
 
         var allStepsAnswered = StepProgresses!.All(s => s.Status == StepStatus.Answered);
         if (allStepsAnswered)
+        {
             Status = TaskStatus.Completed;
+            Causes(new TaskCompleted());
+        }
     }
 
     public void ViewStep(int stepId)
     {
         var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
         stepProgress?.MarkAsViewed();
+
+        Causes(new StepOpened(stepId));
+        Causes(new SubmissionOpened(stepId));
+    }
+
+    public Result TaskOpened()
+    {
+        Causes(new TaskOpened());
+        return Result.Ok();
+    }
+
+    public Result SubmissionOpened(int stepId)
+    {
+        Causes(new SubmissionOpened(stepId));
+        return Result.Ok();
+    }
+
+    public Result GuidanceOpened(int stepId)
+    {
+        Causes(new GuidanceOpened(stepId));
+        return Result.Ok();
+    }
+
+    public Result ExampleOpened(int stepId)
+    {
+        Causes(new ExampleOpened(stepId));
+        return Result.Ok();
+    }
+
+    protected override void Apply(DomainEvent @event)
+    {
+        if (@event is not TaskProgresskEvent kcEvent) throw new EventSourcingException("Unexpected event type: " + @event.GetType());
+
+        kcEvent.LearningTaskId = LearningTaskId;
+        kcEvent.LearnerId = LearnerId;
+
+        When((dynamic)kcEvent);
+    }
+
+    private static void When(TaskProgresskEvent @event)
+    {
     }
 }
 
