@@ -27,6 +27,7 @@ public static class EventSerializationConfiguration
         { typeof(SessionPaused), "SessionPaused"},
         { typeof(SessionContinued), "SessionContinued"},
         { typeof(InstructionalItemsSelected), "InstructionalItemsSelected" },
+        { typeof(AssessmentItemsReviewed), "AssessmentItemsReviewed" },
         { typeof(EncouragingMessageSent), "EncouragingMessageSent" },
         #region Submissions
         { typeof(MrqSubmission), "MrqSubmission" },

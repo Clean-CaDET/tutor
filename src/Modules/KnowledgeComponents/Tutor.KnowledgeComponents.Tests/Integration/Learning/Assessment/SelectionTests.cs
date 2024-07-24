@@ -31,14 +31,6 @@ public class SelectionTests : BaseKnowledgeComponentsIntegrationTest
         actualSuitableAssessmentItem.Id.ShouldBe(expectedSuitableAssessmentItemId);
     }
 
-    private static SelectionController CreateController(IServiceScope scope, string id)
-    {
-        return new SelectionController(scope.ServiceProvider.GetRequiredService<ISelectionService>())
-        {
-            ControllerContext = BuildContext(id, "learner")
-        };
-    }
-
     public static IEnumerable<object[]> AssessmentItemRequest()
     {
         return new List<object[]>
@@ -59,6 +51,31 @@ public class SelectionTests : BaseKnowledgeComponentsIntegrationTest
                 -106
             }
         };
+    }
+
+    [Fact]
+    public void Gets_all_assessment_items()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-4");
+
+        var actualItems =
+            ((OkObjectResult)controller.GetAssessmentItems(-41, "M1").Result)?.Value as List<AssessmentItemDto>;
+
+        actualItems.ShouldNotBeNull();
+        actualItems.Count.ShouldBe(1);
+    }
+
+    [Fact]
+    public void Fails_to_get_assessment_items_for_unsatisfied_kc()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-2");
+
+        var response = (ObjectResult)controller.GetAssessmentItems(-15, "M1").Result;
+
+        response.ShouldNotBeNull();
+        response.StatusCode.ShouldBe(403);
     }
 
     [Fact]
@@ -90,5 +107,13 @@ public class SelectionTests : BaseKnowledgeComponentsIntegrationTest
         item.ShouldNotBeNull();
         item.Id.ShouldBe(-212);
         item.AcceptableAnswers.ShouldBeEmpty();
+    }
+
+    private static SelectionController CreateController(IServiceScope scope, string id)
+    {
+        return new SelectionController(scope.ServiceProvider.GetRequiredService<ISelectionService>())
+        {
+            ControllerContext = BuildContext(id, "learner")
+        };
     }
 }
