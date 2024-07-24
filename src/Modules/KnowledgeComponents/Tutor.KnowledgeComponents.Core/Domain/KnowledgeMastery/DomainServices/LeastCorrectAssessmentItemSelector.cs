@@ -6,10 +6,15 @@ public class LeastCorrectAssessmentItemSelector : IAssessmentItemSelector
     {
         if (assessmentMasteries == null || assessmentMasteries.Count == 0) throw new ArgumentException("Empty AI mastery list.");
 
-        if (isPassed) return FindItemWithOldestAttempt(assessmentMasteries);
+        if (isPassed)
+        {
+            var minimumCorrectnessItem = assessmentMasteries.MinBy(am => am.Mastery);
+            return minimumCorrectnessItem.IsPassed ? FindItemWithOldestAttempt(assessmentMasteries) : minimumCorrectnessItem.AssessmentItemId;
+        }
 
-        if (HasPreviousSubmissions(assessmentMasteries)) assessmentMasteries = RemoveLastSubmitted(assessmentMasteries);
-        
+        if (OneIsNotPassed(assessmentMasteries)) return FindMinCorrectnessItem(assessmentMasteries);
+
+        if (AnyWereAttempted(assessmentMasteries)) assessmentMasteries = RemoveLastSubmitted(assessmentMasteries);
         var itemWithoutSubmission = FindItemWithoutSubmissions(assessmentMasteries);
         return itemWithoutSubmission != 0 ? itemWithoutSubmission : FindMinCorrectnessItem(assessmentMasteries);
     }
@@ -20,17 +25,20 @@ public class LeastCorrectAssessmentItemSelector : IAssessmentItemSelector
         return noSubmissionItem != 0 ? noSubmissionItem : assessmentMasteries.MinBy(am => am.LastSubmissionTime).AssessmentItemId;
     }
 
-    private static bool HasPreviousSubmissions(List<AssessmentItemMastery> assessmentMasteries)
+    private static bool OneIsNotPassed(List<AssessmentItemMastery> assessmentMasteries)
+    {
+        return assessmentMasteries.Count(a => !a.IsPassed) == 1;
+    }
+
+    private static bool AnyWereAttempted(List<AssessmentItemMastery> assessmentMasteries)
     {
         return assessmentMasteries.Count > 1 && assessmentMasteries.Any(m => m.LastSubmissionTime != null);
     }
 
     private static List<AssessmentItemMastery> RemoveLastSubmitted(List<AssessmentItemMastery> assessmentMasteries)
     {
-        var retVal = new List<AssessmentItemMastery>(assessmentMasteries);
-        var lastSubmitted = retVal.MaxBy(am => am.LastSubmissionTime);
-        retVal.Remove(lastSubmitted);
-        return retVal;
+        var lastSubmitted = assessmentMasteries.MaxBy(am => am.LastSubmissionTime);
+        return assessmentMasteries.Where(a => a.AssessmentItemId != lastSubmitted.AssessmentItemId).ToList();
     }
 
     private static int FindItemWithoutSubmissions(List<AssessmentItemMastery> assessmentMasteries)

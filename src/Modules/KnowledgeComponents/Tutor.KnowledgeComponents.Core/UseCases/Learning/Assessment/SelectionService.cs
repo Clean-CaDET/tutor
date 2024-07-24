@@ -40,7 +40,7 @@ public class SelectionService : ISelectionService
         if(kcMastery == null)
             return Result.Fail(FailureCode.NotFound);
 
-        var assessmentItemId = _assessmentItemSelector.SelectSuitableAssessmentItemId(kcMastery.AssessmentItemMasteries, kcMastery.IsPassed);
+        var assessmentItemId = _assessmentItemSelector.SelectSuitableAssessmentItemId(kcMastery.AssessmentItemMasteries.OrderBy(m => m.Id).ToList(), kcMastery.IsPassed);
 
         kcMastery.RecordAssessmentItemSelection(assessmentItemId, appClientId);
         _knowledgeMasteryRepository.Update(kcMastery);

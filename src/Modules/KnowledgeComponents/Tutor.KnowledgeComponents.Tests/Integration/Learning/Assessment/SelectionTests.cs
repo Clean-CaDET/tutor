@@ -48,7 +48,7 @@ public class SelectionTests : BaseKnowledgeComponentsIntegrationTest
             new object[]
             {
                 -10,
-                -106
+                -107
             }
         };
     }
@@ -105,7 +105,7 @@ public class SelectionTests : BaseKnowledgeComponentsIntegrationTest
         
         var item = ((OkObjectResult)response)?.Value as SaqDto;
         item.ShouldNotBeNull();
-        item.Id.ShouldBe(-212);
+        item.Id.ShouldBe(-214);
         item.AcceptableAnswers.ShouldBeEmpty();
     }
 
