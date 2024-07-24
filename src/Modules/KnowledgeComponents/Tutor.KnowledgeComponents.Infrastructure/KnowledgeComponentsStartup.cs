@@ -92,7 +92,7 @@ public static class KnowledgeComponentsStartup
         services.AddScoped<IKnowledgeMasteryRepository, KnowledgeMasteryDatabaseRepository>();
 
         services.AddScoped<IKnowledgeComponentEventStore, PostgresStore>();
-        services.AddSingleton<IKnowledgeComponentEventSerializer>(new DefaultEventSerializerT(EventSerializationConfiguration.EventRelatedTypes));
+        services.AddSingleton<IKnowledgeComponentEventSerializer>(new DefaultEventSerializer(EventSerializationConfiguration.EventRelatedTypes));
 
         services.AddScoped<IKnowledgeComponentsUnitOfWork, KnowledgeComponentsUnitOfWork>();
         services.AddDbContext<KnowledgeComponentsContext>(opt =>

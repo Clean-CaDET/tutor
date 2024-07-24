@@ -286,6 +286,42 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
         result.ShouldBeOfType<OkResult>();
     }
 
+    [Fact]
+    public void PlayExampleVideo()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+
+        var result = controller.PlayExampleVideo(-2, -2, -4);
+
+        result.ShouldBeOfType<OkResult>();
+    }
+
+    [Fact]
+    public void StopExampleVideo()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+
+        var result = controller.PauseExampleVideo(-2, -2, -4);
+
+        result.ShouldBeOfType<OkResult>();
+    }
+
+    [Fact]
+    public void FinishExampleVideo()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
+
+        var result = controller.FinishExampleVideo(-2, -2, -4);
+
+        result.ShouldBeOfType<OkResult>();
+    }
+
     private static TaskProgressController CreateController(IServiceScope scope)
     {
         return new TaskProgressController(scope.ServiceProvider.GetRequiredService<ITaskProgressService>())

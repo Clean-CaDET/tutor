@@ -81,6 +81,24 @@ public class TaskProgress : EventSourcedAggregateRoot
         return Result.Ok();
     }
 
+    public Result PlayExampleVideo(int stepId)
+    {
+        Causes(new ExampleVideoPlayed(stepId));
+        return Result.Ok();
+    }
+
+    public Result PauseExampleVideo(int stepId)
+    {
+        Causes(new ExampleVideoPaused(stepId));
+        return Result.Ok();
+    }
+
+    public Result FinishExampleVideo(int stepId)
+    {
+        Causes(new ExampleVideoFinished(stepId));
+        return Result.Ok();
+    }
+
     protected override void Apply(DomainEvent @event)
     {
         if (@event is not TaskProgresskEvent kcEvent) throw new EventSourcingException("Unexpected event type: " + @event.GetType());

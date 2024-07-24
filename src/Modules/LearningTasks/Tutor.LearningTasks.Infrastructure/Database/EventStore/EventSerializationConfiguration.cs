@@ -12,6 +12,9 @@ public static class EventSerializationConfiguration
         { typeof(SubmissionOpened), "SubmissionOpened" },
         { typeof(GuidanceOpened), "GuidanceOpened" },
         { typeof(ExampleOpened), "ExampleOpened" },
+        { typeof(ExampleVideoPlayed), "ExampleVideoPlayed" },
+        { typeof(ExampleVideoPaused), "ExampleVideoPaused" },
+        { typeof(ExampleVideoFinished), "ExampleVideoFinished" },
         { typeof(StepSubmitted), "StepSubmitted" },
         { typeof(TaskCompleted), "TaskCompleted" }
     }.ToImmutableDictionary();

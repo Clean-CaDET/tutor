@@ -119,6 +119,45 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
         return UnitOfWork.Save();
     }
 
+    public Result PlayExampleVideo(int unitId, int id, int stepId, int learnerId)
+    {
+        var result = GetTaskProgress(unitId, learnerId, id);
+        if (result.IsFailed)
+            return result.ToResult();
+
+        var taskProgress = result.Value;
+        taskProgress.PlayExampleVideo(stepId);
+        _progressRepository.UpdateEvent(taskProgress);
+
+        return UnitOfWork.Save();
+    }
+
+    public Result PauseExampleVideo(int unitId, int id, int stepId, int learnerId)
+    {
+        var result = GetTaskProgress(unitId, learnerId, id);
+        if (result.IsFailed)
+            return result.ToResult();
+
+        var taskProgress = result.Value;
+        taskProgress.PauseExampleVideo(stepId);
+        _progressRepository.UpdateEvent(taskProgress);
+
+        return UnitOfWork.Save();
+    }
+
+    public Result FinishExampleVideo(int unitId, int id, int stepId, int learnerId)
+    {
+        var result = GetTaskProgress(unitId, learnerId, id);
+        if (result.IsFailed)
+            return result.ToResult();
+
+        var taskProgress = result.Value;
+        taskProgress.FinishExampleVideo(stepId);
+        _progressRepository.UpdateEvent(taskProgress);
+
+        return UnitOfWork.Save();
+    }
+
     private Result<TaskProgress> GetTaskProgress(int unitId, int learnerId, int progressId)
     {
         if (!_accessServices.IsEnrolledInUnit(unitId, learnerId))

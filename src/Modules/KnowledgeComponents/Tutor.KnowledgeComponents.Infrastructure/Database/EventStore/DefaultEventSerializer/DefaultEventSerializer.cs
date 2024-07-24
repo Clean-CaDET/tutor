@@ -6,11 +6,11 @@ using Tutor.KnowledgeComponents.Core.Domain.EventSourcing;
 
 namespace Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.DefaultEventSerializer;
 
-public class DefaultEventSerializerT : IKnowledgeComponentEventSerializer
+public class DefaultEventSerializer : IKnowledgeComponentEventSerializer
 {
     private readonly JsonSerializerOptions _options;
 
-    public DefaultEventSerializerT(IImmutableDictionary<Type, string> eventRelatedTypes, string discriminatorMemberName)
+    public DefaultEventSerializer(IImmutableDictionary<Type, string> eventRelatedTypes, string discriminatorMemberName)
     {
         _options = new JsonSerializerOptions();
         _options.SetupExtensions();
@@ -23,7 +23,7 @@ public class DefaultEventSerializerT : IKnowledgeComponentEventSerializer
         }
     }
 
-    public DefaultEventSerializerT(IImmutableDictionary<Type, string> eventRelatedTypes) : this(eventRelatedTypes, "$discriminator") { }
+    public DefaultEventSerializer(IImmutableDictionary<Type, string> eventRelatedTypes) : this(eventRelatedTypes, "$discriminator") { }
 
     public DomainEvent Deserialize(JsonDocument @event)
     {
