@@ -111,6 +111,7 @@ public class TaskProgress : EventSourcedAggregateRoot
 
     private static void When(TaskProgresskEvent @event)
     {
+        // No additional actions are required for all events.
     }
 }
 
