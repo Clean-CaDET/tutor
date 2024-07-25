@@ -28,9 +28,8 @@ public class TaskProgressDatabaseRepository : CrudDatabaseRepository<TaskProgres
             .Include(p => p.StepProgresses!)
             .FirstOrDefault();
     }
-    public void UpdateEvent(TaskProgress taskProgress)
+    public void UpdateEvents(TaskProgress taskProgress)
     {
-        DbContext.TaskProgresses.Attach(taskProgress);
         _eventStore.Save(taskProgress);
     }
 }

@@ -13,7 +13,6 @@ using Tutor.LearningTasks.Core.Mappers;
 using Tutor.LearningTasks.API.Public;
 using Tutor.LearningTasks.API.Public.Learning;
 using Tutor.LearningTasks.Core.UseCases.Learning;
-using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.LearningTasks.Infrastructure.Database.EventStore.Postgres;
 using Tutor.LearningTasks.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.LearningTasks.Infrastructure.Database.EventStore;

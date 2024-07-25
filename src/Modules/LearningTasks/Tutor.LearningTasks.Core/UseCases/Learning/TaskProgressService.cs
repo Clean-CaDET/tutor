@@ -33,7 +33,7 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
             return Create(taskId, learnerId);
 
         taskProgress.TaskOpened();
-        _progressRepository.UpdateEvent(taskProgress);
+        _progressRepository.UpdateEvents(taskProgress);
         UnitOfWork.Save();
 
         return MapToDto(taskProgress);
@@ -49,7 +49,7 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
 
         TaskProgress taskProgress = new(learningTask.Steps!, learningTask.Id, learnerId);
         taskProgress.TaskOpened();
-        _progressRepository.UpdateEvent(taskProgress);
+        _progressRepository.UpdateEvents(taskProgress);
 
         return Create(MapToDto(taskProgress));
     }
@@ -62,7 +62,7 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
 
         var taskProgress = result.Value;
         taskProgress.ViewStep(stepId);
-        _progressRepository.UpdateEvent(taskProgress);
+        _progressRepository.UpdateEvents(taskProgress);
 
         return Update(taskProgress);
     }
@@ -75,7 +75,7 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
 
         var taskProgress = result.Value;
         taskProgress.SubmitAnswer(stepProgress.StepId, stepProgress.Answer!);
-        _progressRepository.UpdateEvent(taskProgress);
+        _progressRepository.UpdateEvents(taskProgress);
 
         return Update(taskProgress);
     }
@@ -88,7 +88,7 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
 
         var taskProgress = result.Value;
         taskProgress.OpenSubmission(stepId);
-        _progressRepository.UpdateEvent(taskProgress);
+        _progressRepository.UpdateEvents(taskProgress);
 
         return UnitOfWork.Save();
     }
@@ -101,7 +101,7 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
 
         var taskProgress = result.Value;
         taskProgress.OpenGuidance(stepId);
-        _progressRepository.UpdateEvent(taskProgress);
+        _progressRepository.UpdateEvents(taskProgress);
 
         return UnitOfWork.Save();
     }
@@ -114,7 +114,7 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
 
         var taskProgress = result.Value;
         taskProgress.OpenExample(stepId);
-        _progressRepository.UpdateEvent(taskProgress);
+        _progressRepository.UpdateEvents(taskProgress);
 
         return UnitOfWork.Save();
     }
@@ -127,7 +127,7 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
 
         var taskProgress = result.Value;
         taskProgress.PlayExampleVideo(stepId);
-        _progressRepository.UpdateEvent(taskProgress);
+        _progressRepository.UpdateEvents(taskProgress);
 
         return UnitOfWork.Save();
     }
@@ -140,7 +140,7 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
 
         var taskProgress = result.Value;
         taskProgress.PauseExampleVideo(stepId);
-        _progressRepository.UpdateEvent(taskProgress);
+        _progressRepository.UpdateEvents(taskProgress);
 
         return UnitOfWork.Save();
     }
@@ -153,7 +153,7 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
 
         var taskProgress = result.Value;
         taskProgress.FinishExampleVideo(stepId);
-        _progressRepository.UpdateEvent(taskProgress);
+        _progressRepository.UpdateEvents(taskProgress);
 
         return UnitOfWork.Save();
     }
