@@ -30,6 +30,7 @@ public class TaskProgressDatabaseRepository : CrudDatabaseRepository<TaskProgres
     }
     public void UpdateEvents(TaskProgress taskProgress)
     {
+        DbContext.TaskProgresses.Attach(taskProgress);
         _eventStore.Save(taskProgress);
     }
 }
