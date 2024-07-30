@@ -21,7 +21,7 @@ public class UnitProgressRatingTests : BaseCoursesIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<CoursesContext>();
         var kcRating = new UnitProgressRatingDto
         {
-            KnowledgeUnitId = -1, CompletedKcIds = new int[] {}, CompletedTaskIds = new int[] { }, Feedback = "{\"learnerProgress\":2,\"instructionClarity\":2,\"assessmentClarity\":2,\"taskChallenge\":\"0\",\"comment\":\"Super je.\"}"
+            KnowledgeUnitId = -1, CompletedKcIds = Array.Empty<int>(), CompletedTaskIds = Array.Empty<int>(), Feedback = "{\"learnerProgress\":2,\"instructionClarity\":2,\"assessmentClarity\":2,\"taskChallenge\":\"0\",\"comment\":\"Super je.\"}"
         };
         dbContext.Database.BeginTransaction();
 

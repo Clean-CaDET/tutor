@@ -26,8 +26,8 @@ public class UnitFeedbackRequestorTests
               new Tuple<int, int>(6, 3),
               new List<UnitProgressRating>
               {
-                  new(new [] {1, 2, 3}, new int[]{}, DateTime.UtcNow - TimeSpan.FromHours(2), false),
-                  new(new int[] {}, new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1), false)
+                  new(new [] {1, 2, 3}, Array.Empty<int>(), DateTime.UtcNow - TimeSpan.FromHours(2), false),
+                  new(Array.Empty<int>(), new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1), false)
               },
               false,
               false
@@ -38,8 +38,8 @@ public class UnitFeedbackRequestorTests
                 new Tuple<int, int>(6, 3),
                 new List<UnitProgressRating>
                 {
-                    new(new [] {1, 2, 3}, new int[]{}, DateTime.UtcNow - TimeSpan.FromHours(2), false),
-                    new(new int[] {}, new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1), false)
+                    new(new [] {1, 2, 3}, Array.Empty<int>(), DateTime.UtcNow - TimeSpan.FromHours(2), false),
+                    new(Array.Empty<int>(), new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1), false)
                 },
                 false,
                 false
@@ -50,8 +50,8 @@ public class UnitFeedbackRequestorTests
                 new Tuple<int, int>(6, 3),
                 new List<UnitProgressRating>
                 {
-                    new(new [] {1, 2, 3}, new int[]{}, DateTime.UtcNow - TimeSpan.FromHours(2), false),
-                    new(new int[] {}, new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1), false)
+                    new(new [] {1, 2, 3}, Array.Empty<int>(), DateTime.UtcNow - TimeSpan.FromHours(2), false),
+                    new(Array.Empty<int>(), new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1), false)
                 },
                 true,
                 false
@@ -62,8 +62,8 @@ public class UnitFeedbackRequestorTests
                 new Tuple<int, int>(6, 4),
                 new List<UnitProgressRating>
                 {
-                    new(new [] {1, 2, 3}, new int[]{}, DateTime.UtcNow - TimeSpan.FromHours(2), false),
-                    new(new int[] {}, new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1), false)
+                    new(new [] {1, 2, 3}, Array.Empty<int>(), DateTime.UtcNow - TimeSpan.FromHours(2), false),
+                    new(Array.Empty<int>(), new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1), false)
                 },
                 true,
                 true
@@ -74,8 +74,8 @@ public class UnitFeedbackRequestorTests
                 new Tuple<int, int>(6, 5),
                 new List<UnitProgressRating>
                 {
-                    new(new [] {1, 2, 3}, new int[]{}, DateTime.UtcNow - TimeSpan.FromHours(2), false),
-                    new(new int[] {}, new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1), false)
+                    new(new [] {1, 2, 3}, Array.Empty<int>(), DateTime.UtcNow - TimeSpan.FromHours(2), false),
+                    new(Array.Empty<int>(), new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1), false)
                 },
                 false,
                 true
@@ -86,8 +86,8 @@ public class UnitFeedbackRequestorTests
                 new Tuple<int, int>(6, 4),
                 new List<UnitProgressRating>
                 {
-                    new(new [] {1, 2, 3}, new int[]{}, DateTime.UtcNow - TimeSpan.FromHours(2), false),
-                    new(new int[] {}, new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1.5), false)
+                    new(new [] {1, 2, 3}, Array.Empty<int>(), DateTime.UtcNow - TimeSpan.FromHours(2), false),
+                    new(Array.Empty<int>(), new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1.5), false)
                 },
                 false,
                 true
@@ -98,8 +98,8 @@ public class UnitFeedbackRequestorTests
                 new Tuple<int, int>(6, 3),
                 new List<UnitProgressRating>
                 {
-                    new(new [] {1, 2, 3}, new int[]{}, DateTime.UtcNow - TimeSpan.FromHours(2), false),
-                    new(new int[] {}, new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1.5), false)
+                    new(new [] {1, 2, 3}, Array.Empty<int>(), DateTime.UtcNow - TimeSpan.FromHours(2), false),
+                    new(Array.Empty<int>(), new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1.5), false)
                 },
                 true,
                 false
@@ -110,8 +110,8 @@ public class UnitFeedbackRequestorTests
                 new Tuple<int, int>(6, 4),
                 new List<UnitProgressRating>
                 {
-                    new(new [] {1, 2, 3}, new int[]{}, DateTime.UtcNow - TimeSpan.FromHours(2), false),
-                    new(new int[] {}, new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(0.5), false)
+                    new(new [] {1, 2, 3}, Array.Empty<int>(), DateTime.UtcNow - TimeSpan.FromHours(2), false),
+                    new(Array.Empty<int>(), new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(0.5), false)
                 },
                 false,
                 false
@@ -122,8 +122,8 @@ public class UnitFeedbackRequestorTests
                 new Tuple<int, int>(6, 4),
                 new List<UnitProgressRating>
                 {
-                    new(new [] {1, 2, 3}, new int[]{}, DateTime.UtcNow - TimeSpan.FromHours(2), false),
-                    new(new int[] {}, new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(0.5), false)
+                    new(new [] {1, 2, 3}, Array.Empty<int>(), DateTime.UtcNow - TimeSpan.FromHours(2), false),
+                    new(Array.Empty<int>(), new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(0.5), false)
                 },
                 true,
                 true
@@ -134,8 +134,8 @@ public class UnitFeedbackRequestorTests
                 new Tuple<int, int>(6, 6),
                 new List<UnitProgressRating>
                 {
-                    new(new [] {1, 2, 3}, new int[]{}, DateTime.UtcNow - TimeSpan.FromHours(2), false),
-                    new(new int[] {}, new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1), false),
+                    new(new [] {1, 2, 3}, Array.Empty<int>(), DateTime.UtcNow - TimeSpan.FromHours(2), false),
+                    new(Array.Empty<int>(), new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1), false),
                     new(new [] {4, 5}, new []{4, 5}, DateTime.UtcNow - TimeSpan.FromHours(0.1), false)
                 },
                 false,
@@ -147,8 +147,8 @@ public class UnitFeedbackRequestorTests
                 new Tuple<int, int>(6, 6),
                 new List<UnitProgressRating>
                 {
-                    new(new [] {1, 2, 3}, new int[]{}, DateTime.UtcNow - TimeSpan.FromHours(2), false),
-                    new(new int[] {}, new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1), false),
+                    new(new [] {1, 2, 3}, Array.Empty<int>(), DateTime.UtcNow - TimeSpan.FromHours(2), false),
+                    new(Array.Empty<int>(), new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1), false),
                     new(new [] {4, 5}, new []{4, 5, 6}, DateTime.UtcNow - TimeSpan.FromHours(0.1), false)
                 },
                 true,
@@ -160,8 +160,8 @@ public class UnitFeedbackRequestorTests
                 new Tuple<int, int>(6, 6),
                 new List<UnitProgressRating>
                 {
-                    new(new [] {1, 2, 3}, new int[]{}, DateTime.UtcNow - TimeSpan.FromHours(2), false),
-                    new(new int[] {}, new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1), false),
+                    new(new [] {1, 2, 3}, Array.Empty<int>(), DateTime.UtcNow - TimeSpan.FromHours(2), false),
+                    new(Array.Empty<int>(), new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(1), false),
                     new(new [] {4, 5, 6}, new []{4, 5}, DateTime.UtcNow - TimeSpan.FromHours(0.1), false)
                 },
                 false,
@@ -173,8 +173,8 @@ public class UnitFeedbackRequestorTests
                 new Tuple<int, int>(6, 6),
                 new List<UnitProgressRating>
                 {
-                    new(new [] {1, 2, 3}, new int[]{}, DateTime.UtcNow - TimeSpan.FromHours(4), false),
-                    new(new int[] {}, new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(3), false),
+                    new(new [] {1, 2, 3}, Array.Empty<int>(), DateTime.UtcNow - TimeSpan.FromHours(4), false),
+                    new(Array.Empty<int>(), new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(3), false),
                     new(new [] {4, 5, 6}, new []{4, 5, 6}, DateTime.UtcNow - TimeSpan.FromHours(2), false)
                 },
                 false,
@@ -186,9 +186,9 @@ public class UnitFeedbackRequestorTests
                 new Tuple<int, int>(6, 4),
                 new List<UnitProgressRating>
                 {
-                    new(new [] {1, 2, 3}, new int[]{}, DateTime.UtcNow - TimeSpan.FromHours(4), false),
-                    new(new int[] {}, new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(3), false),
-                    new(new [] {4}, new int[]{}, DateTime.UtcNow - TimeSpan.FromHours(0.1), true)
+                    new(new [] {1, 2, 3}, Array.Empty<int>(), DateTime.UtcNow - TimeSpan.FromHours(4), false),
+                    new(Array.Empty<int>(), new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(3), false),
+                    new(new [] {4}, Array.Empty<int>(), DateTime.UtcNow - TimeSpan.FromHours(0.1), true)
                 },
                 false,
                 true
@@ -199,10 +199,10 @@ public class UnitFeedbackRequestorTests
                 new Tuple<int, int>(6, 4),
                 new List<UnitProgressRating>
                 {
-                    new(new [] {1, 2, 3}, new int[]{}, DateTime.UtcNow - TimeSpan.FromHours(4), false),
-                    new(new int[] {}, new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(3), false),
-                    new(new [] {4}, new int[]{}, DateTime.UtcNow - TimeSpan.FromHours(0.2), true),
-                    new(new int[] {}, new []{4}, DateTime.UtcNow - TimeSpan.FromHours(0.1), true)
+                    new(new [] {1, 2, 3}, Array.Empty<int>(), DateTime.UtcNow - TimeSpan.FromHours(4), false),
+                    new(Array.Empty<int>(), new []{1, 2, 3}, DateTime.UtcNow - TimeSpan.FromHours(3), false),
+                    new(new [] {4}, Array.Empty<int>(), DateTime.UtcNow - TimeSpan.FromHours(0.2), true),
+                    new(Array.Empty<int>(), new []{4}, DateTime.UtcNow - TimeSpan.FromHours(0.1), true)
                 },
                 false,
                 false

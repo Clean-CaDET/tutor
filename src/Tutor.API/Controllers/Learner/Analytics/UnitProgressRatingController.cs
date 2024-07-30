@@ -26,7 +26,6 @@ public class UnitProgressRatingController : BaseApiController
     [HttpPost]
     public ActionResult<UnitProgressRatingDto> Rate([FromBody] UnitProgressRatingDto rating)
     {
-
         var result = _ratingService.Create(rating, User.LearnerId());
         return CreateResponse(result);
     }
