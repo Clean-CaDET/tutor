@@ -12,5 +12,8 @@ public class CourseProfile : Profile
         CreateMap<Course, CourseDto>();
         CreateMap<KnowledgeUnit, KnowledgeUnitDto>();
         CreateMap<KnowledgeUnitDto, KnowledgeUnit>();
+
+        CreateMap<UnitProgressRatingDto, UnitProgressRating>().ReverseMap();
+        CreateMap<UnitFeedbackRequest, UnitFeedbackRequestDto>();
     }
 }
