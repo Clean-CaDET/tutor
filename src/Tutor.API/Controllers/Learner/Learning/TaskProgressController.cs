@@ -61,23 +61,23 @@ public class TaskProgressController : BaseApiController
     }
 
     [HttpPost("{id:int}/step/{stepId:int}/play-video")]
-    public ActionResult PlayExampleVideo(int unitId, int id, int stepId)
+    public ActionResult PlayExampleVideo(int unitId, int id, int stepId, [FromQuery] string videoUrl)
     {
-        var result = _taskProgressService.PlayExampleVideo(unitId, id, stepId, User.LearnerId());
+        var result = _taskProgressService.PlayExampleVideo(unitId, id, stepId, User.LearnerId(), videoUrl);
         return CreateResponse(result);
     }
 
     [HttpPost("{id:int}/step/{stepId:int}/pause-video")]
-    public ActionResult PauseExampleVideo(int unitId, int id, int stepId)
+    public ActionResult PauseExampleVideo(int unitId, int id, int stepId, [FromQuery] string videoUrl)
     {
-        var result = _taskProgressService.PauseExampleVideo(unitId, id, stepId, User.LearnerId());
+        var result = _taskProgressService.PauseExampleVideo(unitId, id, stepId, User.LearnerId(), videoUrl);
         return CreateResponse(result);
     }
 
     [HttpPost("{id:int}/step/{stepId:int}/finish-video")]
-    public ActionResult FinishExampleVideo(int unitId, int id, int stepId)
+    public ActionResult FinishExampleVideo(int unitId, int id, int stepId, [FromQuery] string videoUrl)
     {
-        var result = _taskProgressService.FinishExampleVideo(unitId, id, stepId, User.LearnerId());
+        var result = _taskProgressService.FinishExampleVideo(unitId, id, stepId, User.LearnerId(), videoUrl);
         return CreateResponse(result);
     }
 }

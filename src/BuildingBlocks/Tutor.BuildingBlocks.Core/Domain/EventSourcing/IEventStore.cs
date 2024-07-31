@@ -7,5 +7,5 @@ public interface IEventStore<TEvent> where TEvent : DomainEvent
 {
     void Save(EventSourcedAggregateRoot aggregate);
     IEventQueryable<TEvent> Events { get; }
-    Task<PagedResult<DomainEvent>> GetEventsAsync(int page, int pageSize);
+    Task<PagedResult<TEvent>> GetEventsAsync(int page, int pageSize);
 }

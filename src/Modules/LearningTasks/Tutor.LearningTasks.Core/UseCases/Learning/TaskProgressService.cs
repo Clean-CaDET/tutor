@@ -82,77 +82,61 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
 
     public Result OpenSubmission(int unitId, int id, int stepId, int learnerId)
     {
-        var result = GetTaskProgress(unitId, learnerId, id);
-        if (result.IsFailed)
-            return result.ToResult();
-
-        var taskProgress = result.Value;
-        taskProgress.OpenSubmission(stepId);
-        _progressRepository.UpdateEvents(taskProgress);
-
-        return UnitOfWork.Save();
+        return HandleNonStateChangingEvent(unitId, id, stepId, learnerId,
+            (taskProgress, step) => taskProgress.OpenSubmission(step));
     }
 
     public Result OpenGuidance(int unitId, int id, int stepId, int learnerId)
     {
-        var result = GetTaskProgress(unitId, learnerId, id);
-        if (result.IsFailed)
-            return result.ToResult();
-
-        var taskProgress = result.Value;
-        taskProgress.OpenGuidance(stepId);
-        _progressRepository.UpdateEvents(taskProgress);
-
-        return UnitOfWork.Save();
+        return HandleNonStateChangingEvent(unitId, id, stepId, learnerId,
+            (taskProgress, step) => taskProgress.OpenGuidance(step));
     }
 
     public Result OpenExample(int unitId, int id, int stepId, int learnerId)
     {
-        var result = GetTaskProgress(unitId, learnerId, id);
-        if (result.IsFailed)
-            return result.ToResult();
-
-        var taskProgress = result.Value;
-        taskProgress.OpenExample(stepId);
-        _progressRepository.UpdateEvents(taskProgress);
-
-        return UnitOfWork.Save();
+        return HandleNonStateChangingEvent(unitId, id, stepId, learnerId,
+            (taskProgress, step) => taskProgress.OpenExample(step));
     }
 
-    public Result PlayExampleVideo(int unitId, int id, int stepId, int learnerId)
+    public Result PlayExampleVideo(int unitId, int id, int stepId, int learnerId, string videoUrl)
+    {
+        return HandeVideoEvent(unitId, id, stepId, learnerId, videoUrl,
+             (taskProgress, stepId, videoUrl) => taskProgress.PlayExampleVideo(stepId, videoUrl));
+    }
+
+    public Result PauseExampleVideo(int unitId, int id, int stepId, int learnerId, string videoUrl)
+    {
+        return HandeVideoEvent(unitId, id, stepId, learnerId, videoUrl,
+             (taskProgress, stepId, videoUrl) => taskProgress.PauseExampleVideo(stepId, videoUrl));
+    }
+
+    public Result FinishExampleVideo(int unitId, int id, int stepId, int learnerId, string videoUrl)
+    {
+        return HandeVideoEvent(unitId, id, stepId, learnerId,videoUrl,
+            (taskProgress, stepId, videoUrl) => taskProgress.FinishExampleVideo(stepId, videoUrl));
+    }
+
+    private Result HandeVideoEvent(int unitId, int id, int stepId, int learnerId, string videoUrl, Action<TaskProgress, int, string> action)
     {
         var result = GetTaskProgress(unitId, learnerId, id);
         if (result.IsFailed)
             return result.ToResult();
 
         var taskProgress = result.Value;
-        taskProgress.PlayExampleVideo(stepId);
+        action(taskProgress, stepId, videoUrl);
         _progressRepository.UpdateEvents(taskProgress);
 
         return UnitOfWork.Save();
     }
 
-    public Result PauseExampleVideo(int unitId, int id, int stepId, int learnerId)
+    private Result HandleNonStateChangingEvent(int unitId, int id, int stepId, int learnerId, Action<TaskProgress, int> action)
     {
         var result = GetTaskProgress(unitId, learnerId, id);
         if (result.IsFailed)
             return result.ToResult();
 
         var taskProgress = result.Value;
-        taskProgress.PauseExampleVideo(stepId);
-        _progressRepository.UpdateEvents(taskProgress);
-
-        return UnitOfWork.Save();
-    }
-
-    public Result FinishExampleVideo(int unitId, int id, int stepId, int learnerId)
-    {
-        var result = GetTaskProgress(unitId, learnerId, id);
-        if (result.IsFailed)
-            return result.ToResult();
-
-        var taskProgress = result.Value;
-        taskProgress.FinishExampleVideo(stepId);
+        action(taskProgress, stepId);
         _progressRepository.UpdateEvents(taskProgress);
 
         return UnitOfWork.Save();

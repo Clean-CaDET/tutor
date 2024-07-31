@@ -11,7 +11,7 @@ public interface ITaskProgressService
     Result OpenSubmission(int unitId, int id, int stepId, int learnerId);
     Result OpenGuidance(int unitId, int id, int stepId, int learnerId);
     Result OpenExample(int unitId, int id, int stepId, int learnerId);
-    Result PlayExampleVideo(int unitId, int id, int stepId, int learnerId);
-    Result PauseExampleVideo(int unitId, int id, int stepId, int learnerId);
-    Result FinishExampleVideo(int unitId, int id, int stepId, int learnerId);
+    Result PlayExampleVideo(int unitId, int id, int stepId, int learnerId, string videoUrl);
+    Result PauseExampleVideo(int unitId, int id, int stepId, int learnerId, string videoUrl);
+    Result FinishExampleVideo(int unitId, int id, int stepId, int learnerId, string videoUrl);
 }

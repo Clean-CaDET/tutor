@@ -44,9 +44,4 @@ public class PostgresStore<TEvent> : IEventStore<TEvent> where TEvent : DomainEv
         _eventContext.Events.AddRange(eventsToSave);
         aggregate.ClearChanges();
     }
-
-    Task<PagedResult<DomainEvent>> IEventStore<TEvent>.GetEventsAsync(int page, int pageSize)
-    {
-        throw new NotImplementedException();
-    }
 }

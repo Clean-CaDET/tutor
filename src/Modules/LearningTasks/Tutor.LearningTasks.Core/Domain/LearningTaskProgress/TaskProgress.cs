@@ -36,23 +36,17 @@ public class TaskProgress : EventSourcedAggregateRoot
 
     public void SubmitAnswer(int stepId, string answer)
     {
-        var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
-        stepProgress?.SubmitAnswer(answer);
-        Causes(new StepSubmitted(stepId));
+        Causes(new StepSubmitted(stepId, answer));
 
         var allStepsAnswered = StepProgresses!.All(s => s.Status == StepStatus.Answered);
         if (allStepsAnswered)
         {
-            Status = TaskStatus.Completed;
             Causes(new TaskCompleted());
         }
     }
 
     public void ViewStep(int stepId)
     {
-        var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
-        stepProgress?.MarkAsViewed();
-
         Causes(new StepOpened(stepId));
         Causes(new SubmissionOpened(stepId));
     }
@@ -81,21 +75,21 @@ public class TaskProgress : EventSourcedAggregateRoot
         return Result.Ok();
     }
 
-    public Result PlayExampleVideo(int stepId)
+    public Result PlayExampleVideo(int stepId, string videoUrl)
     {
-        Causes(new ExampleVideoPlayed(stepId));
+        Causes(new ExampleVideoPlayed(stepId, videoUrl));
         return Result.Ok();
     }
 
-    public Result PauseExampleVideo(int stepId)
+    public Result PauseExampleVideo(int stepId, string videoUrl)
     {
-        Causes(new ExampleVideoPaused(stepId));
+        Causes(new ExampleVideoPaused(stepId, videoUrl));
         return Result.Ok();
     }
 
-    public Result FinishExampleVideo(int stepId)
+    public Result FinishExampleVideo(int stepId, string videoUrl)
     {
-        Causes(new ExampleVideoFinished(stepId));
+        Causes(new ExampleVideoFinished(stepId, videoUrl));
         return Result.Ok();
     }
 
@@ -109,9 +103,32 @@ public class TaskProgress : EventSourcedAggregateRoot
         When((dynamic)kcEvent);
     }
 
+    private void When(StepSubmitted @event)
+    {
+        var stepId = @event.StepId;
+        var answer = @event.Answer;
+
+        var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
+        stepProgress?.SubmitAnswer(answer);
+    }
+
+    private void When(TaskCompleted @event)
+    {
+        Status = TaskStatus.Completed;
+    }
+
+    private void When(StepOpened @event)
+    {
+        var stepId = @event.StepId;
+
+        var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
+        stepProgress?.MarkAsViewed();
+    }
+
     private static void When(TaskProgressEvent @event)
     {
-        // No additional actions are required for all events.
+        // No additional actions are required for TaskOpened, SubmissionOpened, GuidanceOpened, ExampleOpened
+        // ExampleVideoPlayed, ExampleVideoPaused, ExampleVideoFinished.
     }
 }
 

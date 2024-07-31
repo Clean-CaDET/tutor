@@ -293,7 +293,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
 
-        var result = controller.PlayExampleVideo(-2, -2, -4);
+        var result = controller.PlayExampleVideo(-2, -2, -4, "videoUrl");
 
         result.ShouldBeOfType<OkResult>();
     }
@@ -305,7 +305,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
 
-        var result = controller.PauseExampleVideo(-2, -2, -4);
+        var result = controller.PauseExampleVideo(-2, -2, -4, "videoUrl");
 
         result.ShouldBeOfType<OkResult>();
     }
@@ -317,7 +317,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
 
-        var result = controller.FinishExampleVideo(-2, -2, -4);
+        var result = controller.FinishExampleVideo(-2, -2, -4, "videoUrl");
 
         result.ShouldBeOfType<OkResult>();
     }
