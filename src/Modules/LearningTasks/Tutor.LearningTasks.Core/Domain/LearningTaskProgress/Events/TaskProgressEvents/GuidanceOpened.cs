@@ -1,7 +1,6 @@
-﻿
-namespace Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskProgressEvents;
+﻿namespace Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskProgressEvents;
 
-public class GuidanceOpened : TaskProgresskEvent
+public class GuidanceOpened : TaskProgressEvent
 {
     public GuidanceOpened(int stepId)
     {

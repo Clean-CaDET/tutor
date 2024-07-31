@@ -1,6 +1,6 @@
 ﻿namespace Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskProgressEvents;
 
-public class ExampleVideoPlayed : TaskProgresskEvent
+public class ExampleVideoPlayed : TaskProgressEvent
 {
     public ExampleVideoPlayed(int stepId)
     {

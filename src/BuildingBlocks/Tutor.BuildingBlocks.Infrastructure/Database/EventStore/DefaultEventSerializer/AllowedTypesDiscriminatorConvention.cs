@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.DefaultEventSerializer;
+namespace Tutor.BuildingBlocks.Infrastructure.Database.EventStore.DefaultEventSerializer;
 
 /// <summary>
 /// Implements a Dahomey.Json discriminator policy, where the discriminator value is defined 

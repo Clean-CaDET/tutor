@@ -1,7 +1,6 @@
-﻿
-namespace Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskProgressEvents;
+﻿namespace Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskProgressEvents;
 
-public class StepSubmitted : TaskProgresskEvent
+public class StepSubmitted : TaskProgressEvent
 {
     public StepSubmitted(int stepId)
     {

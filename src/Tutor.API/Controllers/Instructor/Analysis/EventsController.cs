@@ -2,21 +2,21 @@
 using Dahomey.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Core.EventSourcing;
-using Tutor.KnowledgeComponents.Core.Domain.EventSourcing;
+using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore;
-using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.DefaultEventSerializer;
 
 namespace Tutor.API.Controllers.Instructor.Analysis;
 
 [Authorize(Policy = "instructorPolicy")]
 [Route("api/analysis/knowledge-components/events")]
-public class EventsController : BaseApiController
+public class EventsController<TEvent> : BaseApiController where TEvent : DomainEvent
 {
-    private readonly IKnowledgeComponentEventStore _eventStore;
+    private readonly IEventStore<TEvent> _eventStore;
     // Needs to be reworked and expanded into a service.
     // The main issue is that we are tied to Dahomey until https://github.com/dotnet/runtime/issues/73693 is resolved.
-    public EventsController(IKnowledgeComponentEventStore eventStore)
+    public EventsController(IEventStore<TEvent> eventStore)
     {
         _eventStore = eventStore;
     }

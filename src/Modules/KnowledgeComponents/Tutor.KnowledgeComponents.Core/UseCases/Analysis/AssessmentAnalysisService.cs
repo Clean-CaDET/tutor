@@ -1,25 +1,25 @@
 ﻿using AutoMapper;
 using FluentResults;
+using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.AssessmentItems;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.API.Public;
 using Tutor.KnowledgeComponents.API.Public.Analysis;
-using Tutor.KnowledgeComponents.Core.Domain.EventSourcing;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events.AssessmentItemEvents;
 
 namespace Tutor.KnowledgeComponents.Core.UseCases.Analysis;
 
-public class AssessmentAnalysisService : IAssessmentAnalysisService
+public class AssessmentAnalysisService<TEvent> : IAssessmentAnalysisService where TEvent : KnowledgeComponentEvent
 {
     private readonly IMapper _mapper;
     private readonly IAccessService _accessService;
-    private readonly IKnowledgeComponentEventStore _eventStore;
+    private readonly IEventStore<TEvent> _eventStore;
     private readonly AssessmentStatisticsCalculator _calculator;
 
-    public AssessmentAnalysisService(IMapper mapper, IAccessService accessService, IKnowledgeComponentEventStore eventStore)
+    public AssessmentAnalysisService(IMapper mapper, IAccessService accessService, IEventStore<TEvent> eventStore)
     {
         _mapper = mapper;
         _accessService = accessService;
@@ -34,12 +34,12 @@ public class AssessmentAnalysisService : IAssessmentAnalysisService
 
         var events = _eventStore.Events
             .Where(e => e.RootElement.GetProperty("KnowledgeComponentId").GetInt32() == kcId)
-            .ToList<KnowledgeComponentEvent>();
+            .ToList<TEvent>();
 
         return CalculateStatistics(events);
     }
 
-    private List<AiStatisticsDto> CalculateStatistics(List<KnowledgeComponentEvent> events)
+    private List<AiStatisticsDto> CalculateStatistics(List<TEvent> events)
     {
         var sortedAiEvents = events.OfType<AssessmentItemEvent>()
             .OrderBy(e => e.TimeStamp).ToList();
@@ -56,7 +56,7 @@ public class AssessmentAnalysisService : IAssessmentAnalysisService
         var aiAnswers = _eventStore.Events.Where(e =>
                 e.RootElement.GetProperty("$discriminator").GetString() == "AssessmentItemAnswered" &&
                 e.RootElement.GetProperty("AssessmentItemId").GetInt32() == aiId)
-            .ToList<AssessmentItemAnswered>();
+            .ToList<TEvent>() as List<AssessmentItemAnswered>;
 
         var incorrectSubmissions = aiAnswers
             .Where(answer => !answer.Feedback.Evaluation.Correct)

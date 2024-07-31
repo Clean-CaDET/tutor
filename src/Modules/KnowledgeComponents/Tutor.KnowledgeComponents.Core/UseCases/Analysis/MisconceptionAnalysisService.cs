@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using FluentResults;
+using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.API.Public;
 using Tutor.KnowledgeComponents.API.Public.Analysis;
-using Tutor.KnowledgeComponents.Core.Domain.EventSourcing;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events;
@@ -12,15 +12,15 @@ using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events.AssessmentIt
 
 namespace Tutor.KnowledgeComponents.Core.UseCases.Analysis;
 
-public class MisconceptionAnalysisService : IMisconceptionAnalysisService
+public class MisconceptionAnalysisService<TEvent> : IMisconceptionAnalysisService where TEvent : KnowledgeComponentEvent
 {
     private readonly IMapper _mapper;
     private readonly IAccessService _accessService;
-    private readonly IKnowledgeComponentEventStore _eventStore;
+    private readonly IEventStore<TEvent> _eventStore;
     private readonly IKnowledgeComponentRepository _kcRepository;
     private readonly AssessmentStatisticsCalculator _calculator;
 
-    public MisconceptionAnalysisService(IMapper mapper, IAccessService accessService, IKnowledgeComponentEventStore eventStore, IKnowledgeComponentRepository kcRepository)
+    public MisconceptionAnalysisService(IMapper mapper, IAccessService accessService, IEventStore<TEvent> eventStore, IKnowledgeComponentRepository kcRepository)
     {
         _mapper = mapper;
         _accessService = accessService;
@@ -38,7 +38,7 @@ public class MisconceptionAnalysisService : IMisconceptionAnalysisService
 
         var events = _eventStore.Events
             .Where(e => kcIds.Contains(e.RootElement.GetProperty("KnowledgeComponentId").GetInt32()))
-            .ToList<KnowledgeComponentEvent>();
+            .ToList<TEvent>();
 
         return CalculateStatistics(events)
             .Where(e => e.AttemptsToPass.Count > 0)
@@ -47,7 +47,7 @@ public class MisconceptionAnalysisService : IMisconceptionAnalysisService
             .ToList();
     }
 
-    private List<AiStatisticsDto> CalculateStatistics(List<KnowledgeComponentEvent> events)
+    private List<AiStatisticsDto> CalculateStatistics(List<TEvent> events)
     {
         var sortedAiEvents = events.OfType<AssessmentItemEvent>()
             .OrderBy(e => e.TimeStamp).ToList();

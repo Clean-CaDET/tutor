@@ -1,29 +1,29 @@
-﻿using Tutor.BuildingBlocks.Core.EventSourcing;
+﻿using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
+using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
-using Tutor.LearningTasks.Core.Domain.EventSourcing;
 
 namespace Tutor.LearningTasks.Infrastructure.Database.EventStore.Postgres;
 
-public class PostgresStore : ILearningTaskEventStore
+public class PostgresStore<TEvent> : IEventStore<TEvent> where TEvent : DomainEvent
 {
     private readonly LearningTasksContext _eventContext;
-    private readonly ILearningTaskEventSerializer _eventSerializer;
+    private readonly IEventSerializer<TEvent> _eventSerializer;
 
-    public ILearningTaskEventQueryable Events => new PostgresEventQueryable(_eventContext.Events, _eventSerializer);
+    public IEventQueryable<TEvent> Events => new PostgresEventQueryable<TEvent>(_eventContext.Events, _eventSerializer);
 
-    public PostgresStore(LearningTasksContext eventContext, ILearningTaskEventSerializer eventSerializer)
+    public PostgresStore(LearningTasksContext eventContext, IEventSerializer<TEvent> eventSerializer)
     {
         _eventContext = eventContext;
         _eventSerializer = eventSerializer;
     }
 
-    public async Task<PagedResult<DomainEvent>> GetEventsAsync(int page, int pageSize)
+    public async Task<PagedResult<TEvent>> GetEventsAsync(int page, int pageSize)
     {
         var storedEvents = await _eventContext.Events
             .GetPaged(page, pageSize);
 
-        return new PagedResult<DomainEvent>(
+        return new PagedResult<TEvent>(
             storedEvents.Results.Select(e => _eventSerializer.Deserialize(e.DomainEvent)).ToList(),
             storedEvents.TotalCount);
     }
@@ -39,9 +39,14 @@ public class PostgresStore : ILearningTaskEventStore
                 AggregateType = aggregateType,
                 AggregateId = aggregate.Id,
                 TimeStamp = e.TimeStamp.ToUniversalTime(),
-                DomainEvent = _eventSerializer.Serialize(e)
+                DomainEvent = _eventSerializer.Serialize((TEvent)e)
             });
         _eventContext.Events.AddRange(eventsToSave);
         aggregate.ClearChanges();
+    }
+
+    Task<PagedResult<DomainEvent>> IEventStore<TEvent>.GetEventsAsync(int page, int pageSize)
+    {
+        throw new NotImplementedException();
     }
 }

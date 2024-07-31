@@ -1,12 +1,12 @@
 ﻿using Dahomey.Json;
 using System.Collections.Immutable;
 using System.Text.Json;
+using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Core.EventSourcing;
-using Tutor.LearningTasks.Core.Domain.EventSourcing;
 
-namespace Tutor.LearningTasks.Infrastructure.Database.EventStore.DefaultEventSerializer;
+namespace Tutor.BuildingBlocks.Infrastructure.Database.EventStore.DefaultEventSerializer;
 
-public class DefaultEventSerializer : ILearningTaskEventSerializer
+public class DefaultEventSerializer<TEvent> : IEventSerializer<TEvent> where TEvent : DomainEvent
 {
     private readonly JsonSerializerOptions _options;
 
@@ -25,13 +25,13 @@ public class DefaultEventSerializer : ILearningTaskEventSerializer
 
     public DefaultEventSerializer(IImmutableDictionary<Type, string> eventRelatedTypes) : this(eventRelatedTypes, "$discriminator") { }
 
-    public DomainEvent Deserialize(JsonDocument @event)
-    {
-        return @event.Deserialize<DomainEvent>(_options)!;
-    }
-
-    public JsonDocument Serialize(DomainEvent @event)
+    public JsonDocument Serialize(TEvent @event)
     {
         return JsonSerializer.SerializeToDocument(@event, _options);
+    }
+
+    public TEvent Deserialize(JsonDocument @event)
+    {
+        return @event.Deserialize<TEvent>(_options)!;
     }
 }

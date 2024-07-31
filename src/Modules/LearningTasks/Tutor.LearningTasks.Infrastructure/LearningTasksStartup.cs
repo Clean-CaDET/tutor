@@ -13,10 +13,11 @@ using Tutor.LearningTasks.Core.Mappers;
 using Tutor.LearningTasks.API.Public;
 using Tutor.LearningTasks.API.Public.Learning;
 using Tutor.LearningTasks.Core.UseCases.Learning;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events;
+using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.LearningTasks.Infrastructure.Database.EventStore.Postgres;
-using Tutor.LearningTasks.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.LearningTasks.Infrastructure.Database.EventStore;
-using Tutor.LearningTasks.Core.Domain.EventSourcing;
+using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.DefaultEventSerializer;
 
 namespace Tutor.LearningTasks.Infrastructure;
 
@@ -47,10 +48,9 @@ public static class LearningTasksStartup
     private static void SetupInfrastructure(IServiceCollection services)
     {
         services.AddScoped<ILearningTaskRepository, LearningTaskDatabaseRepository>();
-        services.AddScoped<ITaskProgressRepository, TaskProgressDatabaseRepository>();
-
-        services.AddScoped<ILearningTaskEventStore, PostgresStore>();
-        services.AddSingleton<ILearningTaskEventSerializer>(new DefaultEventSerializer(EventSerializationConfiguration.EventRelatedTypes));
+        services.AddScoped<ITaskProgressRepository, TaskProgressDatabaseRepository<TaskProgressEvent>>();
+        services.AddScoped(typeof(IEventStore<TaskProgressEvent>), typeof(PostgresStore<TaskProgressEvent>));
+        services.AddSingleton<IEventSerializer<TaskProgressEvent>>(new DefaultEventSerializer<TaskProgressEvent>(EventSerializationConfiguration.EventRelatedTypes));
 
         services.AddScoped<ILearningTasksUnitOfWork, LearningTasksUnitOfWork>();
         services.AddDbContext<LearningTasksContext>(opt =>

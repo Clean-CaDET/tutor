@@ -1,18 +1,18 @@
 ﻿using System.Linq.Expressions;
 using System.Text.Json;
+using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Core.EventSourcing;
-using Tutor.KnowledgeComponents.Core.Domain.EventSourcing;
 
 namespace Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.Postgres;
 
-internal class PostgresEventQueryable : IKnowledgeComponentEventQueryable
+internal class PostgresEventQueryable<TEvent> : IEventQueryable<TEvent> where TEvent : DomainEvent
 {
-    private readonly IKnowledgeComponentEventSerializer _serializer;
+    private readonly IEventSerializer<TEvent> _serializer;
 
     private IQueryable<StoredDomainEvent> EventSource { get; init; }
     private IEnumerable<Expression<Func<JsonDocument, bool>>> Conditions { get; init; }
 
-    public PostgresEventQueryable(IQueryable<StoredDomainEvent> eventSource, IKnowledgeComponentEventSerializer serializer)
+    public PostgresEventQueryable(IQueryable<StoredDomainEvent> eventSource, IEventSerializer<TEvent> serializer)
     {
         EventSource = eventSource;
         Conditions = new List<Expression<Func<JsonDocument, bool>>>();
@@ -20,7 +20,7 @@ internal class PostgresEventQueryable : IKnowledgeComponentEventQueryable
         _serializer = serializer;
     }
 
-    private PostgresEventQueryable(PostgresEventQueryable parent)
+    private PostgresEventQueryable(PostgresEventQueryable<TEvent> parent)
     {
         EventSource = parent.EventSource;
         Conditions = parent.Conditions;
@@ -28,41 +28,41 @@ internal class PostgresEventQueryable : IKnowledgeComponentEventQueryable
         _serializer = parent._serializer;
     }
 
-    public IKnowledgeComponentEventQueryable After(DateTime moment)
+    public IEventQueryable<TEvent> After(DateTime moment)
     {
-        return new PostgresEventQueryable(this)
+        return new PostgresEventQueryable<TEvent>(this)
         {
             EventSource = EventSource.Where(e => e.TimeStamp >= moment.ToUniversalTime())
         };
     }
 
-    public IKnowledgeComponentEventQueryable Before(DateTime moment)
+    public IEventQueryable<TEvent> Before(DateTime moment)
     {
-        return new PostgresEventQueryable(this)
+        return new PostgresEventQueryable<TEvent>(this)
         {
             EventSource = EventSource.Where(e => e.TimeStamp <= moment.ToUniversalTime())
         };
     }
 
-    public IKnowledgeComponentEventQueryable Where(Expression<Func<JsonDocument, bool>> condition)
+    public IEventQueryable<TEvent> Where(Expression<Func<JsonDocument, bool>> condition)
     {
-        return new PostgresEventQueryable(this)
+        return new PostgresEventQueryable<TEvent>(this)
         {
             Conditions = Conditions.Append(condition)
         };
     }
 
-    public List<DomainEvent> ToList()
+    public List<TEvent> ToList()
     {
         return ApplyConditions().ToList();
     }
 
-    public List<T> ToList<T>() where T : DomainEvent
+    public List<T> ToList<T>() where T : TEvent
     {
         return ApplyConditions().OfType<T>().ToList();
     }
 
-    private IEnumerable<DomainEvent> ApplyConditions()
+    private IEnumerable<TEvent> ApplyConditions()
     {
         IQueryable<JsonDocument> events = EventSource.Select(e => e.DomainEvent);
         foreach (Expression<Func<JsonDocument, bool>> condition in Conditions)

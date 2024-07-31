@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
+using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.BuildingBlocks.Infrastructure.Interceptors;
 using Tutor.KnowledgeComponents.API.Internal;
 using Tutor.KnowledgeComponents.API.Public;
@@ -10,11 +12,11 @@ using Tutor.KnowledgeComponents.API.Public.Authoring;
 using Tutor.KnowledgeComponents.API.Public.Learning;
 using Tutor.KnowledgeComponents.API.Public.Learning.Assessment;
 using Tutor.KnowledgeComponents.API.Public.Monitoring;
-using Tutor.KnowledgeComponents.Core.Domain.EventSourcing;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.DomainServices;
+using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.MoveOn;
 using Tutor.KnowledgeComponents.Core.Mappers;
 using Tutor.KnowledgeComponents.Core.UseCases;
@@ -25,7 +27,6 @@ using Tutor.KnowledgeComponents.Core.UseCases.Learning.Assessment;
 using Tutor.KnowledgeComponents.Core.UseCases.Monitoring;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
 using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore;
-using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.Postgres;
 using Tutor.KnowledgeComponents.Infrastructure.Database.Repositories;
 
@@ -51,9 +52,9 @@ public static class KnowledgeComponentsStartup
     {
         services.AddProxiedScoped<IAccessService, AccessServices>();
 
-        services.AddProxiedScoped<IAssessmentAnalysisService, AssessmentAnalysisService>();
-        services.AddProxiedScoped<IMisconceptionAnalysisService, MisconceptionAnalysisService>();
-        services.AddProxiedScoped<IKnowledgeAnalysisService, KnowledgeAnalysisService>();
+        services.AddProxiedScoped<IAssessmentAnalysisService, AssessmentAnalysisService<KnowledgeComponentEvent>>();
+        services.AddProxiedScoped<IMisconceptionAnalysisService, MisconceptionAnalysisService<KnowledgeComponentEvent>>();
+        services.AddProxiedScoped<IKnowledgeAnalysisService, KnowledgeAnalysisService<KnowledgeComponentEvent>>();
         services.AddProxiedScoped<IRatingService, RatingService>();
 
         services.AddProxiedScoped<IAssessmentService, AssessmentService>();
@@ -89,10 +90,9 @@ public static class KnowledgeComponentsStartup
 
         services.AddScoped<IKcRatingRepository, KcRatingDatabaseRepository>();
 
-        services.AddScoped<IKnowledgeMasteryRepository, KnowledgeMasteryDatabaseRepository>();
-
-        services.AddScoped<IKnowledgeComponentEventStore, PostgresStore>();
-        services.AddSingleton<IKnowledgeComponentEventSerializer>(new DefaultEventSerializer(EventSerializationConfiguration.EventRelatedTypes));
+        services.AddScoped<IKnowledgeMasteryRepository, KnowledgeMasteryDatabaseRepository<KnowledgeComponentEvent>>();
+        services.AddScoped(typeof(IEventStore<KnowledgeComponentEvent>), typeof(PostgresStore<KnowledgeComponentEvent>));
+        services.AddSingleton<IEventSerializer<KnowledgeComponentEvent>>(new DefaultEventSerializer<KnowledgeComponentEvent>(EventSerializationConfiguration.EventRelatedTypes));
 
         services.AddScoped<IKnowledgeComponentsUnitOfWork, KnowledgeComponentsUnitOfWork>();
         services.AddDbContext<KnowledgeComponentsContext>(opt =>

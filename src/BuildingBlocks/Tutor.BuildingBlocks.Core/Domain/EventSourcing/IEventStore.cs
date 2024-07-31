@@ -1,11 +1,11 @@
 ﻿using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
 
-namespace Tutor.LearningTasks.Core.Domain.EventSourcing;
+namespace Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 
-public interface ILearningTaskEventStore
+public interface IEventStore<TEvent> where TEvent : DomainEvent
 {
     void Save(EventSourcedAggregateRoot aggregate);
-    ILearningTaskEventQueryable Events { get; }
+    IEventQueryable<TEvent> Events { get; }
     Task<PagedResult<DomainEvent>> GetEventsAsync(int page, int pageSize);
 }

@@ -101,7 +101,7 @@ public class TaskProgress : EventSourcedAggregateRoot
 
     protected override void Apply(DomainEvent @event)
     {
-        if (@event is not TaskProgresskEvent kcEvent) throw new EventSourcingException("Unexpected event type: " + @event.GetType());
+        if (@event is not TaskProgressEvent kcEvent) throw new EventSourcingException("Unexpected event type: " + @event.GetType());
 
         kcEvent.LearningTaskId = LearningTaskId;
         kcEvent.LearnerId = LearnerId;
@@ -109,7 +109,7 @@ public class TaskProgress : EventSourcedAggregateRoot
         When((dynamic)kcEvent);
     }
 
-    private static void When(TaskProgresskEvent @event)
+    private static void When(TaskProgressEvent @event)
     {
         // No additional actions are required for all events.
     }

@@ -1,8 +1,5 @@
 ﻿using Serilog;
 using Tutor.API.Startup;
-using Tutor.BuildingBlocks.Core.EventSourcing;
-using Tutor.KnowledgeComponents.Core.Domain.EventSourcing;
-using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.Postgres;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +11,6 @@ builder.Services.ConfigureSwagger(builder.Configuration);
 const string corsPolicy = "_corsPolicy";
 builder.Services.ConfigureCors(corsPolicy);
 builder.Services.ConfigureAuth();
-builder.Services.AddScoped<IKnowledgeComponentEventStore, PostgresStore>();
 
 builder.Services.RegisterModules();
 
