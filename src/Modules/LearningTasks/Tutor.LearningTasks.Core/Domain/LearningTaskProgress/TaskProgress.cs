@@ -27,7 +27,7 @@ public class TaskProgress : AggregateRoot
         foreach (var step in steps)
         {
             if (step.ParentId == 0)
-                StepProgresses.Add(new StepProgress(step.Id, LearnerId));
+                StepProgresses.Add(new StepProgress(step.Id, LearnerId, step.Standards!));
         }
     }
 
@@ -35,16 +35,29 @@ public class TaskProgress : AggregateRoot
     {
         var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
         stepProgress?.SubmitAnswer(answer);
-
-        var allStepsAnswered = StepProgresses!.All(s => s.Status == StepStatus.Answered);
-        if (allStepsAnswered)
-            Status = TaskStatus.Completed;
+        Status = StepProgresses!.TrueForAll(s => s.Status == StepStatus.Answered) ? TaskStatus.Completed : Status;
     }
 
     public void ViewStep(int stepId)
     {
         var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
         stepProgress?.MarkAsViewed();
+    }
+
+    public void SubmitGrade(int stepId, List<StandardEvaluation> evaluations, string comment)
+    {
+        var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
+        stepProgress?.SubmitGrade(evaluations, comment);
+        CalculateTotalScore();
+        Status = StepProgresses!.TrueForAll(s => s.Status == StepStatus.Graded) ? TaskStatus.Graded : Status;
+    }
+
+    private void CalculateTotalScore()
+    {
+        foreach(var stepProgress in StepProgresses!)
+        {
+            TotalScore += stepProgress.Evaluations!.Sum(e => e.Points);
+        }
     }
 }
 

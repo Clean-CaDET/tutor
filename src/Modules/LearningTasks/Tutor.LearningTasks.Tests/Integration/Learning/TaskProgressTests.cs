@@ -9,6 +9,7 @@ using Tutor.LearningTasks.Infrastructure.Database;
 
 namespace Tutor.LearningTasks.Tests.Integration.Learning;
 
+[Collection("Sequential")]
 public class TaskProgressTests : BaseLearningTasksIntegrationTest
 {
     public TaskProgressTests(LearningTasksTestFactory factory) : base(factory) { }
@@ -28,7 +29,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);
         result.LearningTaskId.ShouldBe(-3);
-        result.Status.ShouldBe("Initialized");
+        result.Status.ShouldBe("Assigned");
         result.TotalScore.ShouldBe(0);
         result.StepProgresses.ShouldNotBeNull();
         result.StepProgresses.Count.ShouldBe(1);

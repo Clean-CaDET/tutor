@@ -1,4 +1,5 @@
-﻿using Tutor.BuildingBlocks.Core.UseCases;
+﻿using FluentResults;
+using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
 
 namespace Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;

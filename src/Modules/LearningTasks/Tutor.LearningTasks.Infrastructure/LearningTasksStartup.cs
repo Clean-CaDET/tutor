@@ -13,6 +13,8 @@ using Tutor.LearningTasks.Core.Mappers;
 using Tutor.LearningTasks.API.Public;
 using Tutor.LearningTasks.API.Public.Learning;
 using Tutor.LearningTasks.Core.UseCases.Learning;
+using Tutor.LearningTasks.API.Public.Monitoring;
+using Tutor.LearningTasks.Core.UseCases.Monitoring;
 
 namespace Tutor.LearningTasks.Infrastructure;
 
@@ -38,6 +40,7 @@ public static class LearningTasksStartup
         services.AddProxiedScoped<ITaskService, TaskService>();
         services.AddProxiedScoped<ITaskProgressService, TaskProgressService>();
         services.AddProxiedScoped<IAccessServices, AccessServices>();
+        services.AddProxiedScoped<IGradingService, GradingService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)

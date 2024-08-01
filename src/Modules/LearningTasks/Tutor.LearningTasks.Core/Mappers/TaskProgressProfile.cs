@@ -10,5 +10,6 @@ public class TaskProgressProfile : Profile
     {
         CreateMap<TaskProgressDto, TaskProgress>().ReverseMap();
         CreateMap<StepProgressDto, StepProgress>().ReverseMap();
+        CreateMap<StandardEvaluationDto, StandardEvaluation>().ReverseMap();
     }
 }

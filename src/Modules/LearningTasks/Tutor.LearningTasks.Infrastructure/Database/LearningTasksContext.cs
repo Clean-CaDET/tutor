@@ -33,6 +33,7 @@ public class LearningTasksContext : DbContext
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<Activity>().HasIndex(a => new { a.LearningTaskId, a.Code }).IsUnique();
+        modelBuilder.Entity<StepProgress>().Property(s => s.Evaluations).HasColumnType("jsonb");
 
         modelBuilder.Entity<TaskProgress>()
             .HasMany(t => t.StepProgresses)
