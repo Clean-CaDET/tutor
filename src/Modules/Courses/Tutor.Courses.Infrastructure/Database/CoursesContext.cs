@@ -22,10 +22,13 @@ public class CoursesContext : DbContext
         modelBuilder.Entity<UnitProgressRating>().Property(e => e.Feedback).HasColumnType("jsonb");
         
         modelBuilder.Entity<KnowledgeUnit>().HasIndex(u => new { u.CourseId, u.Code }).IsUnique();
-
         modelBuilder.Entity<CourseImage>()
             .HasOne<Course>()
             .WithMany()
             .HasForeignKey(i => i.CourseId);
+        modelBuilder.Entity<UnitProgressRating>()
+            .HasOne<KnowledgeUnit>()
+            .WithMany()
+            .HasForeignKey(p => p.KnowledgeUnitId);
     }
 }
