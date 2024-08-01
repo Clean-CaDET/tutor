@@ -41,5 +41,11 @@ public class LearningTasksContext : DbContext
             .HasForeignKey("TaskProgressId")
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<LearningTask>()
+            .HasMany<TaskProgress>()
+            .WithOne()
+            .HasForeignKey(tp => tp.LearningTaskId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
