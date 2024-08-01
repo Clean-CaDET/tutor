@@ -11,19 +11,19 @@ namespace Tutor.API.Controllers.Instructor.Authoring;
 [Authorize(Policy = "instructorPolicy")]
 public class CourseImageController : BaseApiController
 {
-    private readonly IWebHostEnvironment _env;
     private readonly IImageService _imageService;
+    private readonly string _uploadsFolder;
 
-    public CourseImageController(IWebHostEnvironment env, IImageService imageService)
+    public CourseImageController(IImageService imageService, IConfiguration configuration)
     {
-        _env = env;
         _imageService = imageService;
+        _uploadsFolder = configuration.GetValue<string>("ImageUploadFolder") ?? "";
     }
 
     [HttpGet]
-    public ActionResult<List<CourseImageDto>> Get(int courseId)
+    public ActionResult<List<CourseImageDto>> GetAll(int courseId)
     {
-        var result = _imageService.Get(courseId, User.InstructorId());
+        var result = _imageService.GetAll(courseId, User.InstructorId());
         return CreateResponse(result);
     }
 
@@ -36,7 +36,7 @@ public class CourseImageController : BaseApiController
 
         var imageBytes = await ConvertToByteArrayAsync(image!);
 
-        var result = await _imageService.UploadAsync(courseId, image.FileName, imageBytes, _env.WebRootPath, User.InstructorId());
+        var result = await _imageService.UploadAsync(courseId, image!.FileName, imageBytes, _uploadsFolder, User.InstructorId());
         return CreateResponse(result);
     }
 
@@ -44,12 +44,15 @@ public class CourseImageController : BaseApiController
     {
         if(image == null || image.Length == 0) return 1;
 
-        const long maxFileSize = 10 * 1024 * 1024; // 10 MB
-        if (image.Length > maxFileSize) return 2;
-
         var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
         var fileExtension = Path.GetExtension(image.FileName).ToLowerInvariant();
-        if (!allowedExtensions.Contains(fileExtension)) return 3;
+        if (!allowedExtensions.Contains(fileExtension)) return 2;
+
+        const long maxGifSize = 5 * 1024 * 1024; // 5 MB
+        if (fileExtension.Equals(".gif") && image.Length > maxGifSize) return 3;
+
+        const long maxImgSize = 512 * 1024; // 512 KB
+        if (!fileExtension.Equals(".gif") && image.Length > maxImgSize) return 4;
 
         return 0;
     }

@@ -23,7 +23,20 @@ public class ImageService : IImageService
         _mapper = mapper;
     }
 
-    public Result<List<CourseImageDto>> Get(int courseId, int instructorId)
+    public Result<string> Get(int courseId, string fileName, string uploadsFolder)
+    {
+        var filePath = Path.Combine(GetBaseFolder(courseId, uploadsFolder), fileName);
+
+        if (!File.Exists(filePath)) return Result.Fail(FailureCode.NotFound);
+        return filePath;
+    }
+
+    private static string GetBaseFolder(int courseId, string rootPath)
+    {
+        return Path.Combine(rootPath, "courses", courseId.ToString());
+    }
+
+    public Result<List<CourseImageDto>> GetAll(int courseId, int instructorId)
     {
         if (!_ownedCourseRepository.IsCourseOwner(courseId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
@@ -38,12 +51,11 @@ public class ImageService : IImageService
             return Result.Fail(FailureCode.Forbidden);
 
         imageFileName = SanitizeFileName(imageFileName);
-        var relativeFolder = Path.Combine("uploads", "courses", courseId.ToString());
-        
-        var filePath = CreateUploadPath(imageFileName, Path.Combine(rootPath, relativeFolder));
+
+        var filePath = CreateUploadPath(imageFileName, GetBaseFolder(courseId, rootPath));
         await File.WriteAllBytesAsync(filePath, imageBytes);
 
-        var image = new CourseImage(courseId, imageFileName, filePath, Path.Combine(relativeFolder, imageFileName));
+        var image = new CourseImage(courseId, imageFileName, filePath);
 
         var savedImage = _imageRepository.Create(image);
         var result = _unitOfWork.Save();
@@ -87,6 +99,8 @@ public class ImageService : IImageService
         var image = _imageRepository.Get(id);
         if(image == null || image.CourseId != courseId)
             return Result.Fail(FailureCode.InvalidArgument);
+
+        File.Delete(image.FilePath);
 
         _imageRepository.Delete(image);
         return _unitOfWork.Save();
