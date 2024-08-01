@@ -3,9 +3,9 @@ using System.Text.Json;
 using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Core.EventSourcing;
 
-namespace Tutor.LearningTasks.Infrastructure.Database.EventStore.Postgres;
+namespace Tutor.BuildingBlocks.Infrastructure.Database.EventStore.Postgres;
 
-internal class PostgresEventQueryable<TEvent> : IEventQueryable<TEvent> where TEvent : DomainEvent
+public class PostgresEventQueryable<TEvent> : IEventQueryable<TEvent> where TEvent : DomainEvent
 {
     private readonly IEventSerializer<TEvent> _serializer;
 

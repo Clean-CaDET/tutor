@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.Postgres;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.MultiChoiceQuestions;
@@ -7,7 +8,6 @@ using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.ShortAnswe
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.InstructionalItems;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
-using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.Postgres;
 
 namespace Tutor.KnowledgeComponents.Infrastructure.Database;
 

@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
 
-namespace Tutor.LearningTasks.Infrastructure.Database.EventStore.Postgres;
+namespace Tutor.BuildingBlocks.Infrastructure.Database.EventStore.Postgres;
 
-internal class StoredDomainEvent
+public class StoredDomainEvent
 {
     public int Id { get; set; }
     public string AggregateType { get; set; }

@@ -2,6 +2,7 @@
 using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
+using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.Postgres;
 
 namespace Tutor.LearningTasks.Infrastructure.Database.EventStore.Postgres;
 
