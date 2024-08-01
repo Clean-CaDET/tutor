@@ -7,9 +7,9 @@ public class UnitProgressRating : Entity
     public int LearnerId { get; private set; }
     public int KnowledgeUnitId { get; private set; }
     public DateTime Created { get; private set; } = DateTime.UtcNow;
-    public int[]? CompletedKcIds { get; private set; }
-    public int[]? CompletedTaskIds { get; private set; }
-    public string? Feedback { get; private set; }
+    public int[] CompletedKcIds { get; private set; } = Array.Empty<int>();
+    public int[] CompletedTaskIds { get; private set; } = Array.Empty<int>();
+    public string Feedback { get; private set; } = "";
     public bool IsLearnerInitiated { get; private set; }
 
     private UnitProgressRating() {}
