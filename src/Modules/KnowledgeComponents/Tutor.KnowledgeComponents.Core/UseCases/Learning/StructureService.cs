@@ -4,6 +4,7 @@ using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Dtos;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeMastery;
+using Tutor.KnowledgeComponents.API.Internal;
 using Tutor.KnowledgeComponents.API.Public;
 using Tutor.KnowledgeComponents.API.Public.Learning;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge;
@@ -12,7 +13,7 @@ using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 
 namespace Tutor.KnowledgeComponents.Core.UseCases.Learning;
 
-public class StructureService : IStructureService
+public class StructureService : IStructureService, IKnowledgeMasteryQuerier
 {
     private readonly IMapper _mapper;
     private readonly IKnowledgeMasteryRepository _knowledgeMasteryRepository;
@@ -79,5 +80,14 @@ public class StructureService : IStructureService
         if (kc == null) return Result.Fail(FailureCode.NotFound);
 
         return _mapper.Map<KnowledgeComponentDto>(kc);
+    }
+
+    public Result<Tuple<int, int>> CountTotalAndSatisfied(int unitId, int learnerId)
+    {
+        var kcs = _knowledgeComponentRepository.GetByUnit(unitId);
+        var kcIds = kcs.Select(kc => kc.Id).ToList();
+        var masteries = _knowledgeMasteryRepository.GetBareByKcs(kcIds, learnerId);
+
+        return new Tuple<int, int>(masteries.Count, masteries.Count(m => m.IsSatisfied));
     }
 }

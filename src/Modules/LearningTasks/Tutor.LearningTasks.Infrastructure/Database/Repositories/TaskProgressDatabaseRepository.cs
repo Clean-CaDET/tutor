@@ -23,7 +23,7 @@ public class TaskProgressDatabaseRepository<TEvent> : CrudDatabaseRepository<Tas
             .FirstOrDefault();
     }
 
-    public TaskProgress? GetByTaskAndLearner(int taskId, int learnerId)
+    public TaskProgress? GetByTask(int taskId, int learnerId)
     {
         return DbContext.TaskProgresses.Where(p => p.LearningTaskId == taskId && p.LearnerId == learnerId)
             .Include(p => p.StepProgresses!)
@@ -33,5 +33,12 @@ public class TaskProgressDatabaseRepository<TEvent> : CrudDatabaseRepository<Tas
     {
         DbContext.TaskProgresses.Attach(taskProgress);
         _eventStore.Save(taskProgress);
+    }
+
+    public List<TaskProgress> GetByTasks(List<int> taskIds, int learnerId)
+    {
+        return DbContext.TaskProgresses
+            .Where(p => p.LearnerId == learnerId && taskIds.Contains(p.LearningTaskId))
+            .ToList();
     }
 }

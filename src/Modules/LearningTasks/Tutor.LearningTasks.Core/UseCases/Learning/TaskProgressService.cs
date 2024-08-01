@@ -2,14 +2,16 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.LearningTasks.API.Dtos.LearningTaskProgress;
+using Tutor.LearningTasks.API.Internal;
 using Tutor.LearningTasks.API.Public;
 using Tutor.LearningTasks.API.Public.Learning;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
 using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
+using TaskStatus = Tutor.LearningTasks.Core.Domain.LearningTaskProgress.TaskStatus;
 
 namespace Tutor.LearningTasks.Core.UseCases.Learning;
 
-public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, ITaskProgressService
+public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, ITaskProgressService, ITaskProgressQuerier
 {
     private readonly ITaskProgressRepository _progressRepository;
     private readonly IAccessServices _accessServices;
@@ -28,7 +30,7 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
         if(!_accessServices.IsEnrolledInUnit(unitId, learnerId)) 
             return Result.Fail(FailureCode.Forbidden);
 
-        var taskProgress = _progressRepository.GetByTaskAndLearner(taskId, learnerId);
+        var taskProgress = _progressRepository.GetByTask(taskId, learnerId);
         if(taskProgress == null)
             return Create(taskId, learnerId);
 
@@ -152,5 +154,14 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
             return Result.Fail(FailureCode.NotFound);
 
         return Result.Ok(taskProgress);
+    }
+
+    public Result<Tuple<int, int>> CountTotalAndCompleted(int unitId, int learnerId)
+    {
+        var tasks = _taskRepository.GetNonTemplateByUnit(unitId);
+        var taskIds = tasks.Select(task => task.Id).ToList();
+        var progresses = _progressRepository.GetByTasks(taskIds, learnerId);
+
+        return new Tuple<int, int>(tasks.Count, progresses.Count(p => p.Status == TaskStatus.Completed));
     }
 }

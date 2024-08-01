@@ -61,7 +61,7 @@ public class EnrollmentService : BaseService<EnrollmentDto, UnitEnrollment>, IEn
         var unenrolledLearners = learnerIds.Where(learnerId => enrollments.All(e => e.LearnerId != learnerId)).ToList();
         enrollments.AddRange(CreateNewEnrollments(unenrolledLearners, unit, newEnrollment));
         
-        _masteryFactory.InitializeMasteries(unit.Id, learnerIds);
+        _masteryFactory.InitializeMasteries(unit.Id, unenrolledLearners.ToArray());
 
         return enrollments;
     }

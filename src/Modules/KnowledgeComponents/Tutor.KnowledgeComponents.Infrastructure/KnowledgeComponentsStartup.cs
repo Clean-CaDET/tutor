@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
-using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.BuildingBlocks.Infrastructure.Interceptors;
@@ -13,7 +12,6 @@ using Tutor.KnowledgeComponents.API.Public.Learning;
 using Tutor.KnowledgeComponents.API.Public.Learning.Assessment;
 using Tutor.KnowledgeComponents.API.Public.Monitoring;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
-using Tutor.KnowledgeComponents.Core.Domain.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.DomainServices;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events;
@@ -55,7 +53,6 @@ public static class KnowledgeComponentsStartup
         services.AddProxiedScoped<IAssessmentAnalysisService, AssessmentAnalysisService<KnowledgeComponentEvent>>();
         services.AddProxiedScoped<IMisconceptionAnalysisService, MisconceptionAnalysisService<KnowledgeComponentEvent>>();
         services.AddProxiedScoped<IKnowledgeAnalysisService, KnowledgeAnalysisService<KnowledgeComponentEvent>>();
-        services.AddProxiedScoped<IRatingService, RatingService>();
 
         services.AddProxiedScoped<IAssessmentService, AssessmentService>();
         services.AddProxiedScoped<IInstructionalItemsService, InstructionalItemsService>();
@@ -66,6 +63,7 @@ public static class KnowledgeComponentsStartup
         services.AddProxiedScoped<ISessionService, SessionService>();
         services.AddProxiedScoped<IStatisticsService, StatisticsService>();
         services.AddProxiedScoped<IStructureService, StructureService>();
+        services.AddProxiedScoped<IKnowledgeMasteryQuerier, StructureService>();
 
         services.AddProxiedScoped<IEvaluationService, EvaluationService>();
         services.AddProxiedScoped<IHelpService, HelpService>();
@@ -81,14 +79,9 @@ public static class KnowledgeComponentsStartup
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
-        services.AddScoped(typeof(ICrudRepository<KnowledgeComponentRating>),
-            typeof(CrudDatabaseRepository<KnowledgeComponentRating, KnowledgeComponentsContext>));
-
         services.AddScoped<IAssessmentItemRepository, AssessmentItemDatabaseRepository>();
         services.AddScoped<IInstructionalItemRepository, InstructionalItemDatabaseRepository>();
         services.AddScoped<IKnowledgeComponentRepository, KnowledgeComponentDatabaseRepository>();
-
-        services.AddScoped<IKcRatingRepository, KcRatingDatabaseRepository>();
 
         services.AddScoped<IKnowledgeMasteryRepository, KnowledgeMasteryDatabaseRepository<KnowledgeComponentEvent>>();
         services.AddScoped(typeof(IEventStore<KnowledgeComponentEvent>), typeof(PostgresStore<KnowledgeComponentEvent>));

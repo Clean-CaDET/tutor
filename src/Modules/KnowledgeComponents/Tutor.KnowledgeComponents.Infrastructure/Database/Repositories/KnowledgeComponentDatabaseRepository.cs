@@ -35,4 +35,9 @@ public class KnowledgeComponentDatabaseRepository : CrudDatabaseRepository<Knowl
             .Where(kc => kc.ParentId == null && unitIds.Contains(kc.KnowledgeUnitId))
             .ToList();
     }
+
+    public int CountByUnit(int unitId)
+    {
+        return DbContext.KnowledgeComponents.Count(kc => kc.KnowledgeUnitId == unitId);
+    }
 }

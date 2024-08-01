@@ -7,7 +7,7 @@ public class CourseOwnership : Entity
     public Course Course { get; private set; }
     public int InstructorId { get; private set; }
 
-    private CourseOwnership() {}
+    private CourseOwnership() { }
 
     public CourseOwnership(Course course, int instructorId)
     {

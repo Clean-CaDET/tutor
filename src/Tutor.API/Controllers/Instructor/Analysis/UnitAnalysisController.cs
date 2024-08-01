@@ -11,25 +11,16 @@ namespace Tutor.API.Controllers.Instructor.Analysis;
 public class UnitAnalysisController : BaseApiController
 {
     private readonly IMisconceptionAnalysisService _misconceptionService;
-    private readonly IRatingService _kcRatingService;
 
-    public UnitAnalysisController(IMisconceptionAnalysisService misconceptionService, IRatingService kcRatingService)
+    public UnitAnalysisController(IMisconceptionAnalysisService misconceptionService)
     {
         _misconceptionService = misconceptionService;
-        _kcRatingService = kcRatingService;
     }
 
     [HttpGet]
     public ActionResult<List<AiStatisticsDto>> GetTop10MisconceivedAssessments(int unitId)
     {
         var result = _misconceptionService.GetTop10MisconceivedAssessments(unitId, User.InstructorId());
-        return CreateResponse(result);
-    }
-
-    [HttpGet("knowledge-components/ratings")]
-    public ActionResult<List<AiStatisticsDto>> GetKcRatings(int unitId)
-    {
-        var result = _kcRatingService.GetByUnit(unitId, User.InstructorId());
         return CreateResponse(result);
     }
 }
