@@ -8,11 +8,10 @@ public class CourseProfile : Profile
 {
     public CourseProfile()
     {
-        CreateMap<CourseDto, Course>();
-        CreateMap<Course, CourseDto>();
-        CreateMap<KnowledgeUnit, KnowledgeUnitDto>();
-        CreateMap<KnowledgeUnitDto, KnowledgeUnit>();
+        CreateMap<CourseDto, Course>().ReverseMap();
+        CreateMap<KnowledgeUnitDto, KnowledgeUnit>().ReverseMap();
 
+        CreateMap<CourseImage, CourseImageDto>();
         CreateMap<UnitProgressRatingDto, UnitProgressRating>().ReverseMap();
         CreateMap<UnitFeedbackRequest, UnitFeedbackRequestDto>();
     }

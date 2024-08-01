@@ -45,6 +45,7 @@ public static class CoursesStartup
 
         services.AddProxiedScoped<ICourseOwnershipService, CourseOwnershipService>();
         services.AddProxiedScoped<ICourseService, CourseService>();
+        services.AddProxiedScoped<IImageService, ImageService>();
         services.AddProxiedScoped<IGroupMembershipService, GroupMembershipService>();
         services.AddProxiedScoped<IGroupService, GroupService>();
 
@@ -61,6 +62,7 @@ public static class CoursesStartup
         services.AddScoped<IUnitEnrollmentRepository, UnitEnrollmentDatabaseRepository>();
         services.AddScoped<ICourseOwnershipRepository, CourseOwnershipDatabaseRepository>();
         services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
+        services.AddScoped<IImageRepository, ImageDatabaseRepository>();
         services.AddScoped<IGroupRepository, GroupDatabaseRepository>();
         
         services.AddScoped<IUnitProgressRatingRepository, UnitProgressRatingRepository>();

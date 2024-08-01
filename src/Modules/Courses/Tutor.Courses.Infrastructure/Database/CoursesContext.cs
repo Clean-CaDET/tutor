@@ -6,6 +6,7 @@ namespace Tutor.Courses.Infrastructure.Database;
 public class CoursesContext : DbContext
 {
     public DbSet<Course> Courses { get; set; }
+    public DbSet<CourseImage> CourseImages { get; set; }
     public DbSet<KnowledgeUnit> KnowledgeUnits { get; set; }
     public DbSet<LearnerGroup> LearnerGroups { get; set; }
     public DbSet<UnitEnrollment> UnitEnrollments { get; set; }
@@ -21,5 +22,10 @@ public class CoursesContext : DbContext
         modelBuilder.Entity<UnitProgressRating>().Property(e => e.Feedback).HasColumnType("jsonb");
         
         modelBuilder.Entity<KnowledgeUnit>().HasIndex(u => new { u.CourseId, u.Code }).IsUnique();
+
+        modelBuilder.Entity<CourseImage>()
+            .HasOne<Course>()
+            .WithMany()
+            .HasForeignKey(i => i.CourseId);
     }
 }
