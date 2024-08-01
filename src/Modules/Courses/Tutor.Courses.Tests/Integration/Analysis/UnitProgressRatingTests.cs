@@ -25,7 +25,7 @@ public class UnitProgressRatingTests : BaseCoursesIntegrationTest
         };
         dbContext.Database.BeginTransaction();
 
-        var result = ((OkObjectResult)controller.Rate(kcRating).Result)?.Value as UnitProgressRatingDto;
+        var result = ((OkObjectResult)controller.Rate(kcRating).Result!).Value as UnitProgressRatingDto;
         var rating = dbContext.UnitProgressRating.FirstOrDefault();
 
         result.ShouldNotBeNull();
