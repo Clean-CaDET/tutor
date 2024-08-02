@@ -1,17 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
-using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events;
 using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.LearningTasks.Infrastructure.Database.Repositories;
 
-public class TaskProgressDatabaseRepository<TEvent> : CrudDatabaseRepository<TaskProgress, LearningTasksContext>, ITaskProgressRepository where TEvent : DomainEvent
+public class TaskProgressDatabaseRepository : CrudDatabaseRepository<TaskProgress, LearningTasksContext>, ITaskProgressRepository
 {
-    private readonly IEventStore<TEvent> _eventStore;
+    private readonly IEventStore<TaskProgressEvent> _eventStore;
 
-    public TaskProgressDatabaseRepository(LearningTasksContext dbContext, IEventStore<TEvent> eventStore) : base(dbContext)
+    public TaskProgressDatabaseRepository(LearningTasksContext dbContext, IEventStore<TaskProgressEvent> eventStore) : base(dbContext)
     {
         _eventStore = eventStore;
     }

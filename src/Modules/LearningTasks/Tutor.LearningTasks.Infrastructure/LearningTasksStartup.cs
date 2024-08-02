@@ -49,7 +49,7 @@ public static class LearningTasksStartup
     private static void SetupInfrastructure(IServiceCollection services)
     {
         services.AddScoped<ILearningTaskRepository, LearningTaskDatabaseRepository>();
-        services.AddScoped<ITaskProgressRepository, TaskProgressDatabaseRepository<TaskProgressEvent>>();
+        services.AddScoped<ITaskProgressRepository, TaskProgressDatabaseRepository>();
         services.AddScoped(typeof(IEventStore<TaskProgressEvent>), typeof(PostgresStore<TaskProgressEvent>));
         services.AddSingleton<IEventSerializer<TaskProgressEvent>>(new DefaultEventSerializer<TaskProgressEvent>(EventSerializationConfiguration.EventRelatedTypes));
 
