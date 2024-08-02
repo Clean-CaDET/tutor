@@ -4,16 +4,16 @@ using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.Postgres;
 
-namespace Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.Postgres;
+namespace Tutor.LearningTasks.Infrastructure.Database.EventStore.Postgres;
 
 public class PostgresStore<TEvent> : IEventStore<TEvent> where TEvent : DomainEvent
 {
-    private readonly KnowledgeComponentsContext _eventContext;
+    private readonly LearningTasksContext _eventContext;
     private readonly IEventSerializer<TEvent> _eventSerializer;
 
     public IEventQueryable<TEvent> Events => new PostgresEventQueryable<TEvent>(_eventContext.Events, _eventSerializer);
 
-    public PostgresStore(KnowledgeComponentsContext eventContext, IEventSerializer<TEvent> eventSerializer)
+    public PostgresStore(LearningTasksContext eventContext, IEventSerializer<TEvent> eventSerializer)
     {
         _eventContext = eventContext;
         _eventSerializer = eventSerializer;

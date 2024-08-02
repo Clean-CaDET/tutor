@@ -25,6 +25,7 @@ public class SubmissionSaqTests : BaseAssessmentEvaluationIntegrationTest
 
         feedback.ShouldNotBeNull();
         feedback.Evaluation.CorrectnessLevel.ShouldBe(expectedEvaluation.CorrectnessLevel);
+        VerifyEventGenerated(dbContext, "AssessmentItemAnswered");
     }
 
     public static IEnumerable<object[]> SaqSubmissions()

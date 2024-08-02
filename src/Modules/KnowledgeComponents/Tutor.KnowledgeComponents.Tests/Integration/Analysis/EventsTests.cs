@@ -4,9 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Text.Json;
 using Tutor.API.Controllers.Instructor.Analysis;
+using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Core.EventSourcing;
+using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.DefaultEventSerializer;
+using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events;
 using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore;
-using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.DefaultEventSerializer;
 
 namespace Tutor.KnowledgeComponents.Tests.Integration.Analysis;
 
@@ -56,7 +58,7 @@ public class EventsTests : BaseKnowledgeComponentsIntegrationTest
 
     private static EventsController CreateController(IServiceScope scope, string id)
     {
-        return new EventsController(scope.ServiceProvider.GetRequiredService<IEventStore>())
+        return new EventsController(scope.ServiceProvider.GetRequiredService<IEventStore<KnowledgeComponentEvent>>())
         {
             ControllerContext = BuildContext(id, "instructor")
         };

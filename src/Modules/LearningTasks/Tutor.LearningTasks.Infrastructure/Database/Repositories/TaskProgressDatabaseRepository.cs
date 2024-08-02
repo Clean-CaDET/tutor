@@ -1,13 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events;
 using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.LearningTasks.Infrastructure.Database.Repositories;
 
 public class TaskProgressDatabaseRepository : CrudDatabaseRepository<TaskProgress, LearningTasksContext>, ITaskProgressRepository
 {
-    public TaskProgressDatabaseRepository(LearningTasksContext dbContext) : base(dbContext) {}
+    private readonly IEventStore<TaskProgressEvent> _eventStore;
+
+    public TaskProgressDatabaseRepository(LearningTasksContext dbContext, IEventStore<TaskProgressEvent> eventStore) : base(dbContext)
+    {
+        _eventStore = eventStore;
+    }
 
     public new TaskProgress? Get(int id)
     {
@@ -21,6 +28,11 @@ public class TaskProgressDatabaseRepository : CrudDatabaseRepository<TaskProgres
         return DbContext.TaskProgresses.Where(p => p.LearningTaskId == taskId && p.LearnerId == learnerId)
             .Include(p => p.StepProgresses!)
             .FirstOrDefault();
+    }
+    public void UpdateEvents(TaskProgress taskProgress)
+    {
+        DbContext.TaskProgresses.Attach(taskProgress);
+        _eventStore.Save(taskProgress);
     }
 
     public List<TaskProgress> GetByTasks(List<int> taskIds, int learnerId)

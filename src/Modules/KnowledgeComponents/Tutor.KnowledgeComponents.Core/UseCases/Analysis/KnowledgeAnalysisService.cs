@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FluentResults;
-using Tutor.BuildingBlocks.Core.EventSourcing;
+using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.API.Public;
@@ -15,9 +15,9 @@ public class KnowledgeAnalysisService : IKnowledgeAnalysisService
 {
     private readonly IMapper _mapper;
     private readonly IAccessService _accessService;
-    private readonly IEventStore _eventStore;
+    private readonly IEventStore<KnowledgeComponentEvent> _eventStore;
 
-    public KnowledgeAnalysisService(IMapper mapper, IAccessService accessService, IEventStore eventStore)
+    public KnowledgeAnalysisService(IMapper mapper, IAccessService accessService, IEventStore<KnowledgeComponentEvent> eventStore)
     {
         _mapper = mapper;
         _accessService = accessService;

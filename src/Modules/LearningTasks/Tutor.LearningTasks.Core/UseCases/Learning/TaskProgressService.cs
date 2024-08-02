@@ -34,6 +34,10 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
         if(taskProgress == null)
             return Create(taskId, learnerId);
 
+        taskProgress.TaskOpened();
+        _progressRepository.UpdateEvents(taskProgress);
+        UnitOfWork.Save();
+
         return MapToDto(taskProgress);
     }
 
@@ -46,6 +50,9 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
             return Result.Fail(FailureCode.Forbidden);
 
         TaskProgress taskProgress = new(learningTask.Steps!, learningTask.Id, learnerId);
+        taskProgress.TaskOpened();
+        _progressRepository.UpdateEvents(taskProgress);
+
         return Create(MapToDto(taskProgress));
     }
 
@@ -57,6 +64,8 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
 
         var taskProgress = result.Value;
         taskProgress.ViewStep(stepId);
+        _progressRepository.UpdateEvents(taskProgress);
+
         return Update(taskProgress);
     }
 
@@ -68,7 +77,58 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
 
         var taskProgress = result.Value;
         taskProgress.SubmitAnswer(stepProgress.StepId, stepProgress.Answer!);
+        _progressRepository.UpdateEvents(taskProgress);
+
         return Update(taskProgress);
+    }
+
+    public Result OpenSubmission(int unitId, int id, int stepId, int learnerId)
+    {
+        return HandleNonStateChangingEvent(unitId, id, learnerId,
+            taskProgress => taskProgress.OpenSubmission(stepId));
+    }
+
+    public Result OpenGuidance(int unitId, int id, int stepId, int learnerId)
+    {
+        return HandleNonStateChangingEvent(unitId, id, learnerId,
+            taskProgress => taskProgress.OpenGuidance(stepId));
+    }
+
+    public Result OpenExample(int unitId, int id, int stepId, int learnerId)
+    {
+        return HandleNonStateChangingEvent(unitId, id, learnerId,
+            taskProgress => taskProgress.OpenExample(stepId));
+    }
+
+    public Result PlayExampleVideo(int unitId, int id, int stepId, int learnerId, string videoUrl)
+    {
+        return HandleNonStateChangingEvent(unitId, id, learnerId,
+            taskProgress => taskProgress.PlayExampleVideo(stepId, videoUrl));
+    }
+
+    public Result PauseExampleVideo(int unitId, int id, int stepId, int learnerId, string videoUrl)
+    {
+        return HandleNonStateChangingEvent(unitId, id, learnerId,
+            taskProgress => taskProgress.PauseExampleVideo(stepId, videoUrl));
+    }
+
+    public Result FinishExampleVideo(int unitId, int id, int stepId, int learnerId, string videoUrl)
+    {
+        return HandleNonStateChangingEvent(unitId, id, learnerId,
+            taskProgress => taskProgress.FinishExampleVideo(stepId, videoUrl));
+    }
+
+    private Result HandleNonStateChangingEvent(int unitId, int id, int learnerId, Action<TaskProgress> action)
+    {
+        var result = GetTaskProgress(unitId, learnerId, id);
+        if (result.IsFailed)
+            return result.ToResult();
+
+        var taskProgress = result.Value;
+        action(taskProgress);
+        _progressRepository.UpdateEvents(taskProgress);
+
+        return UnitOfWork.Save();
     }
 
     private Result<TaskProgress> GetTaskProgress(int unitId, int learnerId, int progressId)

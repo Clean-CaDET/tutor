@@ -25,6 +25,7 @@ public class SubmissionMrqTests : BaseAssessmentEvaluationIntegrationTest
 
         actualEvaluation.ShouldNotBeNull();
         actualEvaluation.Evaluation.CorrectnessLevel.ShouldBe(expectedEvaluation.CorrectnessLevel);
+        VerifyEventGenerated(dbContext, "AssessmentItemAnswered");
     }
 
     public static IEnumerable<object[]> MrqSubmissions()

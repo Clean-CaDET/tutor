@@ -1,17 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.MoveOn;
 
 namespace Tutor.KnowledgeComponents.Infrastructure.Database.Repositories;
 
-public class KnowledgeMasteryDatabaseRepository : IKnowledgeMasteryRepository
+public class KnowledgeMasteryDatabaseRepository<TEvent> : IKnowledgeMasteryRepository where TEvent : DomainEvent
 {
     private readonly KnowledgeComponentsContext _dbContext;
-    private readonly IEventStore _eventStore;
+    private readonly IEventStore<TEvent> _eventStore;
     private readonly IMoveOnCriteria _moveOnCriteria;
 
-    public KnowledgeMasteryDatabaseRepository(KnowledgeComponentsContext dbContext, IEventStore eventStore, IMoveOnCriteria moveOnCriteria)
+    public KnowledgeMasteryDatabaseRepository(KnowledgeComponentsContext dbContext, IEventStore<TEvent> eventStore, IMoveOnCriteria moveOnCriteria)
     {
         _dbContext = dbContext;
         _eventStore = eventStore;

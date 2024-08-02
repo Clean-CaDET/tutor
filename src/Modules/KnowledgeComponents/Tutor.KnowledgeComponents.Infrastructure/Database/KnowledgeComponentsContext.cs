@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.Postgres;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.MultiChoiceQuestions;
@@ -6,7 +7,6 @@ using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.MultiRespo
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.ShortAnswerQuestions;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.InstructionalItems;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
-using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.Postgres;
 
 namespace Tutor.KnowledgeComponents.Infrastructure.Database;
 
@@ -16,7 +16,7 @@ public class KnowledgeComponentsContext : DbContext
     public DbSet<AssessmentItem> AssessmentItems { get; set; }
     public DbSet<InstructionalItem> InstructionalItems { get; set; }
     public DbSet<KnowledgeComponentMastery> KcMasteries { get; set; }
-    internal DbSet<StoredDomainEvent> Events { get; private set; }
+    public DbSet<StoredDomainEvent> Events { get; set; }
 
     public KnowledgeComponentsContext(DbContextOptions<KnowledgeComponentsContext> options) : base(options) {}
 
