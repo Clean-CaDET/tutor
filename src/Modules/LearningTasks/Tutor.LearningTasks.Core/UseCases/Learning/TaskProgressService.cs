@@ -84,61 +84,48 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
 
     public Result OpenSubmission(int unitId, int id, int stepId, int learnerId)
     {
-        return HandleNonStateChangingEvent(unitId, id, stepId, learnerId,
-            (taskProgress, step) => taskProgress.OpenSubmission(step));
+        return HandleNonStateChangingEvent(unitId, id, learnerId,
+            taskProgress => taskProgress.OpenSubmission(stepId));
     }
 
     public Result OpenGuidance(int unitId, int id, int stepId, int learnerId)
     {
-        return HandleNonStateChangingEvent(unitId, id, stepId, learnerId,
-            (taskProgress, step) => taskProgress.OpenGuidance(step));
+        return HandleNonStateChangingEvent(unitId, id, learnerId,
+            taskProgress => taskProgress.OpenGuidance(stepId));
     }
 
     public Result OpenExample(int unitId, int id, int stepId, int learnerId)
     {
-        return HandleNonStateChangingEvent(unitId, id, stepId, learnerId,
-            (taskProgress, step) => taskProgress.OpenExample(step));
+        return HandleNonStateChangingEvent(unitId, id, learnerId,
+            taskProgress => taskProgress.OpenExample(stepId));
     }
 
     public Result PlayExampleVideo(int unitId, int id, int stepId, int learnerId, string videoUrl)
     {
-        return HandeVideoEvent(unitId, id, stepId, learnerId, videoUrl,
-             (taskProgress, stepId, videoUrl) => taskProgress.PlayExampleVideo(stepId, videoUrl));
+        return HandleNonStateChangingEvent(unitId, id, learnerId,
+            taskProgress => taskProgress.PlayExampleVideo(stepId, videoUrl));
     }
 
     public Result PauseExampleVideo(int unitId, int id, int stepId, int learnerId, string videoUrl)
     {
-        return HandeVideoEvent(unitId, id, stepId, learnerId, videoUrl,
-             (taskProgress, stepId, videoUrl) => taskProgress.PauseExampleVideo(stepId, videoUrl));
+        return HandleNonStateChangingEvent(unitId, id, learnerId,
+            taskProgress => taskProgress.PauseExampleVideo(stepId, videoUrl));
     }
 
     public Result FinishExampleVideo(int unitId, int id, int stepId, int learnerId, string videoUrl)
     {
-        return HandeVideoEvent(unitId, id, stepId, learnerId,videoUrl,
-            (taskProgress, stepId, videoUrl) => taskProgress.FinishExampleVideo(stepId, videoUrl));
+        return HandleNonStateChangingEvent(unitId, id, learnerId,
+            taskProgress => taskProgress.FinishExampleVideo(stepId, videoUrl));
     }
 
-    private Result HandeVideoEvent(int unitId, int id, int stepId, int learnerId, string videoUrl, Action<TaskProgress, int, string> action)
+    private Result HandleNonStateChangingEvent(int unitId, int id, int learnerId, Action<TaskProgress> action)
     {
         var result = GetTaskProgress(unitId, learnerId, id);
         if (result.IsFailed)
             return result.ToResult();
 
         var taskProgress = result.Value;
-        action(taskProgress, stepId, videoUrl);
-        _progressRepository.UpdateEvents(taskProgress);
-
-        return UnitOfWork.Save();
-    }
-
-    private Result HandleNonStateChangingEvent(int unitId, int id, int stepId, int learnerId, Action<TaskProgress, int> action)
-    {
-        var result = GetTaskProgress(unitId, learnerId, id);
-        if (result.IsFailed)
-            return result.ToResult();
-
-        var taskProgress = result.Value;
-        action(taskProgress, stepId);
+        action(taskProgress);
         _progressRepository.UpdateEvents(taskProgress);
 
         return UnitOfWork.Save();
