@@ -50,9 +50,9 @@ public static class KnowledgeComponentsStartup
     {
         services.AddProxiedScoped<IAccessService, AccessServices>();
 
-        services.AddProxiedScoped<IAssessmentAnalysisService, AssessmentAnalysisService<KnowledgeComponentEvent>>();
-        services.AddProxiedScoped<IMisconceptionAnalysisService, MisconceptionAnalysisService<KnowledgeComponentEvent>>();
-        services.AddProxiedScoped<IKnowledgeAnalysisService, KnowledgeAnalysisService<KnowledgeComponentEvent>>();
+        services.AddProxiedScoped<IAssessmentAnalysisService, AssessmentAnalysisService>();
+        services.AddProxiedScoped<IMisconceptionAnalysisService, MisconceptionAnalysisService>();
+        services.AddProxiedScoped<IKnowledgeAnalysisService, KnowledgeAnalysisService>();
 
         services.AddProxiedScoped<IAssessmentService, AssessmentService>();
         services.AddProxiedScoped<IInstructionalItemsService, InstructionalItemsService>();

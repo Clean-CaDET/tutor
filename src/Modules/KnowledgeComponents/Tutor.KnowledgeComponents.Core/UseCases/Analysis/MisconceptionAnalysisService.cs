@@ -12,15 +12,15 @@ using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events.AssessmentIt
 
 namespace Tutor.KnowledgeComponents.Core.UseCases.Analysis;
 
-public class MisconceptionAnalysisService<TEvent> : IMisconceptionAnalysisService where TEvent : KnowledgeComponentEvent
+public class MisconceptionAnalysisService : IMisconceptionAnalysisService
 {
     private readonly IMapper _mapper;
     private readonly IAccessService _accessService;
-    private readonly IEventStore<TEvent> _eventStore;
+    private readonly IEventStore<KnowledgeComponentEvent> _eventStore;
     private readonly IKnowledgeComponentRepository _kcRepository;
     private readonly AssessmentStatisticsCalculator _calculator;
 
-    public MisconceptionAnalysisService(IMapper mapper, IAccessService accessService, IEventStore<TEvent> eventStore, IKnowledgeComponentRepository kcRepository)
+    public MisconceptionAnalysisService(IMapper mapper, IAccessService accessService, IEventStore<KnowledgeComponentEvent> eventStore, IKnowledgeComponentRepository kcRepository)
     {
         _mapper = mapper;
         _accessService = accessService;
@@ -38,7 +38,7 @@ public class MisconceptionAnalysisService<TEvent> : IMisconceptionAnalysisServic
 
         var events = _eventStore.Events
             .Where(e => kcIds.Contains(e.RootElement.GetProperty("KnowledgeComponentId").GetInt32()))
-            .ToList<TEvent>();
+            .ToList<KnowledgeComponentEvent>();
 
         return CalculateStatistics(events)
             .Where(e => e.AttemptsToPass.Count > 0)
@@ -47,7 +47,7 @@ public class MisconceptionAnalysisService<TEvent> : IMisconceptionAnalysisServic
             .ToList();
     }
 
-    private List<AiStatisticsDto> CalculateStatistics(List<TEvent> events)
+    private List<AiStatisticsDto> CalculateStatistics(List<KnowledgeComponentEvent> events)
     {
         var sortedAiEvents = events.OfType<AssessmentItemEvent>()
             .OrderBy(e => e.TimeStamp).ToList();

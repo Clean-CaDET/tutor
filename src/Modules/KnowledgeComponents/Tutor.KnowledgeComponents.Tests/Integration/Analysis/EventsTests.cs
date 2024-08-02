@@ -56,9 +56,9 @@ public class EventsTests : BaseKnowledgeComponentsIntegrationTest
         events.Count.ShouldBe(0);
     }
 
-    private static EventsController<KnowledgeComponentEvent> CreateController(IServiceScope scope, string id)
+    private static EventsController CreateController(IServiceScope scope, string id)
     {
-        return new EventsController<KnowledgeComponentEvent>(scope.ServiceProvider.GetRequiredService<IEventStore<KnowledgeComponentEvent>>())
+        return new EventsController(scope.ServiceProvider.GetRequiredService<IEventStore<KnowledgeComponentEvent>>())
         {
             ControllerContext = BuildContext(id, "instructor")
         };
