@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Learner.Learning.Assessment;
@@ -23,12 +24,14 @@ public class SelectionTests : BaseKnowledgeComponentsIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
+        var dbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
 
         var actualSuitableAssessmentItem =
             ((OkObjectResult) controller.GetSuitableAssessmentItem(knowledgeComponentId, "M1").Result)?.Value as AssessmentItemDto;
         actualSuitableAssessmentItem.ShouldNotBeNull();
             
         actualSuitableAssessmentItem.Id.ShouldBe(expectedSuitableAssessmentItemId);
+        VerifyEventGenerated(dbContext, "AssessmentItemSelected");
     }
 
     public static IEnumerable<object[]> AssessmentItemRequest()

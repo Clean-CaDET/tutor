@@ -22,10 +22,7 @@ public class TaskProgressEventsTests : BaseLearningTasksIntegrationTest
         var result = controller.OpenSubmission(-2, -2, -4);
 
         result.ShouldBeOfType<OkResult>();
-        var generatedEvent = dbContext.Events.OrderBy(e => e.TimeStamp).LastOrDefault();
-        generatedEvent.ShouldNotBeNull();
-        generatedEvent.TimeStamp.ShouldBeInRange(DateTime.UtcNow.AddMinutes(-1), DateTime.UtcNow);
-        generatedEvent.DomainEvent.RootElement.GetProperty("$discriminator").GetString().ShouldBe("SubmissionOpened");
+        VerifyEventGenerated(dbContext, "SubmissionOpened");
     }
 
     [Fact]
@@ -38,10 +35,7 @@ public class TaskProgressEventsTests : BaseLearningTasksIntegrationTest
         var result = controller.OpenGuidance(-2, -2, -4);
 
         result.ShouldBeOfType<OkResult>();
-        var generatedEvent = dbContext.Events.OrderBy(e => e.TimeStamp).LastOrDefault();
-        generatedEvent.ShouldNotBeNull();
-        generatedEvent.TimeStamp.ShouldBeInRange(DateTime.UtcNow.AddMinutes(-1), DateTime.UtcNow);
-        generatedEvent.DomainEvent.RootElement.GetProperty("$discriminator").GetString().ShouldBe("GuidanceOpened");
+        VerifyEventGenerated(dbContext, "GuidanceOpened");
     }
 
     [Fact]
@@ -54,10 +48,7 @@ public class TaskProgressEventsTests : BaseLearningTasksIntegrationTest
         var result = controller.OpenExample(-2, -2, -4);
 
         result.ShouldBeOfType<OkResult>();
-        var generatedEvent = dbContext.Events.OrderBy(e => e.TimeStamp).LastOrDefault();
-        generatedEvent.ShouldNotBeNull();
-        generatedEvent.TimeStamp.ShouldBeInRange(DateTime.UtcNow.AddMinutes(-1), DateTime.UtcNow);
-        generatedEvent.DomainEvent.RootElement.GetProperty("$discriminator").GetString().ShouldBe("ExampleOpened");
+        VerifyEventGenerated(dbContext, "ExampleOpened");
     }
 
     [Fact]
@@ -70,10 +61,7 @@ public class TaskProgressEventsTests : BaseLearningTasksIntegrationTest
         var result = controller.PlayExampleVideo(-2, -2, -4, "videoUrl");
 
         result.ShouldBeOfType<OkResult>();
-        var generatedEvent = dbContext.Events.OrderBy(e => e.TimeStamp).LastOrDefault();
-        generatedEvent.ShouldNotBeNull();
-        generatedEvent.TimeStamp.ShouldBeInRange(DateTime.UtcNow.AddMinutes(-1), DateTime.UtcNow);
-        generatedEvent.DomainEvent.RootElement.GetProperty("$discriminator").GetString().ShouldBe("ExampleVideoPlayed");
+        VerifyEventGenerated(dbContext, "ExampleVideoPlayed");
     }
 
     [Fact]
@@ -86,10 +74,7 @@ public class TaskProgressEventsTests : BaseLearningTasksIntegrationTest
         var result = controller.PauseExampleVideo(-2, -2, -4, "videoUrl");
 
         result.ShouldBeOfType<OkResult>();
-        var generatedEvent = dbContext.Events.OrderBy(e => e.TimeStamp).LastOrDefault();
-        generatedEvent.ShouldNotBeNull();
-        generatedEvent.TimeStamp.ShouldBeInRange(DateTime.UtcNow.AddMinutes(-1), DateTime.UtcNow);
-        generatedEvent.DomainEvent.RootElement.GetProperty("$discriminator").GetString().ShouldBe("ExampleVideoPaused");
+        VerifyEventGenerated(dbContext, "ExampleVideoPaused");
     }
 
     [Fact]
@@ -102,10 +87,7 @@ public class TaskProgressEventsTests : BaseLearningTasksIntegrationTest
         var result = controller.FinishExampleVideo(-2, -2, -4, "videoUrl");
 
         result.ShouldBeOfType<OkResult>();
-        var generatedEvent = dbContext.Events.OrderBy(e => e.TimeStamp).LastOrDefault();
-        generatedEvent.ShouldNotBeNull();
-        generatedEvent.TimeStamp.ShouldBeInRange(DateTime.UtcNow.AddMinutes(-1), DateTime.UtcNow);
-        generatedEvent.DomainEvent.RootElement.GetProperty("$discriminator").GetString().ShouldBe("ExampleVideoFinished");
+        VerifyEventGenerated(dbContext, "ExampleVideoFinished");
     }
 
     private static TaskProgressController CreateController(IServiceScope scope)
@@ -114,5 +96,13 @@ public class TaskProgressEventsTests : BaseLearningTasksIntegrationTest
         {
             ControllerContext = BuildContext("-3", "learner")
         };
+    }
+
+    private static void VerifyEventGenerated(LearningTasksContext dbContext, string eventType)
+    {
+        var generatedEvent = dbContext.Events.OrderBy(e => e.TimeStamp).LastOrDefault();
+        generatedEvent.ShouldNotBeNull();
+        generatedEvent.TimeStamp.ShouldBeInRange(DateTime.UtcNow.AddMinutes(-1), DateTime.UtcNow);
+        generatedEvent.DomainEvent.RootElement.GetProperty("$discriminator").GetString().ShouldBe(eventType);
     }
 }

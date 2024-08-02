@@ -16,7 +16,7 @@ public class KnowledgeComponentsContext : DbContext
     public DbSet<AssessmentItem> AssessmentItems { get; set; }
     public DbSet<InstructionalItem> InstructionalItems { get; set; }
     public DbSet<KnowledgeComponentMastery> KcMasteries { get; set; }
-    internal DbSet<StoredDomainEvent> Events { get; private set; }
+    public DbSet<StoredDomainEvent> Events { get; set; }
 
     public KnowledgeComponentsContext(DbContextOptions<KnowledgeComponentsContext> options) : base(options) {}
 

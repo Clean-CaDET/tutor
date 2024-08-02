@@ -4,6 +4,7 @@ using Shouldly;
 using Tutor.API.Controllers.Learner.Learning;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.InstructionalItems;
 using Tutor.KnowledgeComponents.API.Public.Learning;
+using Tutor.KnowledgeComponents.Infrastructure.Database;
 
 namespace Tutor.KnowledgeComponents.Tests.Integration.Learning;
 
@@ -14,15 +15,17 @@ public class InstructionTests : BaseKnowledgeComponentsIntegrationTest
 
     [Theory]
     [MemberData(nameof(InstructionalItems))]
-    public void Retrieves_instructional_events(int knowledgeComponentId, int expectedIEsCount)
+    public void Retrieves_instructional_items(int knowledgeComponentId, int expectedIEsCount)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
+        var dbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
 
         var items = ((OkObjectResult)controller.GetInstructionalItems(knowledgeComponentId, "D1").Result)?.Value as List<InstructionalItemDto>;
 
         items.ShouldNotBeNull();
         items.Count.ShouldBe(expectedIEsCount);
+        VerifyEventGenerated(dbContext, "InstructionalItemsSelected");
     }
 
     public static IEnumerable<object[]> InstructionalItems()

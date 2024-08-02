@@ -2,7 +2,6 @@
 using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.Postgres;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
 using Tutor.LearningTasks.Core.Domain.LearningTasks;
-using Tutor.LearningTasks.Infrastructure.Database.EventStore.Postgres;
 
 namespace Tutor.LearningTasks.Infrastructure.Database;
 
@@ -13,7 +12,7 @@ public class LearningTasksContext : DbContext
     public DbSet<Standard> Standards { get; set; }
     public DbSet<TaskProgress> TaskProgresses { get; set; }
     public DbSet<StepProgress> StepProgresses { get; set; }
-    public DbSet<StoredDomainEvent> Events { get; private set; }
+    public DbSet<StoredDomainEvent> Events { get; set; }
 
     public LearningTasksContext(DbContextOptions<LearningTasksContext> options) : base(options) { }
 

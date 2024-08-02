@@ -12,7 +12,7 @@ public class KnowledgeMasteryTests : BaseAssessmentEvaluationIntegrationTest
 
     [Theory]
     [MemberData(nameof(MrqSubmission))]
-    public void Updates_Kc_Mastery(int learnerId, int assessmentItemId, MrqSubmissionDto submission, double expectedKcMastery)
+    public void Updates_Kc_Mastery(int learnerId, int assessmentItemId, MrqSubmissionDto submission, double expectedKcMastery, string expectedFinalEvent)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, learnerId.ToString());
@@ -27,6 +27,7 @@ public class KnowledgeMasteryTests : BaseAssessmentEvaluationIntegrationTest
         var actualKcMastery = dbContext.KcMasteries.FirstOrDefault(kcm => kcm.LearnerId == learnerId
                                                                           && kcm.KnowledgeComponentId == knowledgeComponent.Id);
         actualKcMastery.Mastery.ShouldBe(expectedKcMastery);
+        VerifyEventGenerated(dbContext, expectedFinalEvent);
     }
 
     public static IEnumerable<object[]> MrqSubmission()
@@ -45,7 +46,8 @@ public class KnowledgeMasteryTests : BaseAssessmentEvaluationIntegrationTest
                         new() {Text = "-1065"}
                     }
                 },
-                0.5
+                0.5,
+                "AssessmentItemAnswered"
             },
             new object[]
             {
@@ -59,7 +61,8 @@ public class KnowledgeMasteryTests : BaseAssessmentEvaluationIntegrationTest
                         new() {Text = "-1065"}
                     }
                 },
-                0.5
+                0.5,
+                "AssessmentItemAnswered"
             },
             new object[]
             {
@@ -74,7 +77,8 @@ public class KnowledgeMasteryTests : BaseAssessmentEvaluationIntegrationTest
                         new() {Text = "-1074"}
                     }
                 },
-                0.5
+                0.5,
+                "KnowledgeComponentCompleted"
             },
             new object[]
             {
@@ -88,7 +92,8 @@ public class KnowledgeMasteryTests : BaseAssessmentEvaluationIntegrationTest
                         new() {Text = "-1074"}
                     }
                 },
-                0.8
+                0.8,
+                "AssessmentItemAnswered"
             },
             new object[]
             {
@@ -102,7 +107,8 @@ public class KnowledgeMasteryTests : BaseAssessmentEvaluationIntegrationTest
                         new() {Text = "-1075"}
                     }
                 },
-                1.0
+                1.0,
+                "KnowledgeComponentSatisfied"
             },
             new object[]
             {
@@ -116,7 +122,8 @@ public class KnowledgeMasteryTests : BaseAssessmentEvaluationIntegrationTest
                         new() {Text = "-1065"}
                     }
                 },
-                0.5
+                0.5,
+                "AssessmentItemAnswered"
             },
             new object[]
             {
@@ -130,7 +137,8 @@ public class KnowledgeMasteryTests : BaseAssessmentEvaluationIntegrationTest
                         new() {Text = "-1065"}
                     }
                 },
-                0.5
+                0.5,
+                "AssessmentItemAnswered"
             },
             new object[]
             {
@@ -145,7 +153,8 @@ public class KnowledgeMasteryTests : BaseAssessmentEvaluationIntegrationTest
                         new() {Text = "-1074"}
                     }
                 },
-                0.5
+                0.5,
+                "KnowledgeComponentCompleted"
             },
             new object[]
             {
@@ -159,7 +168,8 @@ public class KnowledgeMasteryTests : BaseAssessmentEvaluationIntegrationTest
                         new() {Text = "-1074"}
                     }
                 },
-                0.8
+                0.8,
+                "AssessmentItemAnswered"
             },
             new object[]
             {
@@ -173,7 +183,8 @@ public class KnowledgeMasteryTests : BaseAssessmentEvaluationIntegrationTest
                         new() {Text = "-1075"}
                     }
                 },
-                1.0
+                1.0,
+                "KnowledgeComponentSatisfied"
             }
         };
     }

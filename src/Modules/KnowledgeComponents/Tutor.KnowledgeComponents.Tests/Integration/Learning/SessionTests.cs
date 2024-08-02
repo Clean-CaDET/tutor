@@ -25,20 +25,7 @@ public class SessionTests : BaseKnowledgeComponentsIntegrationTest
 
         launchResult.ShouldBeOfType<OkResult>();
         terminationResult.ShouldBeOfType<OkResult>();
-    }
-
-    [Fact]
-    public void Termination_fails_without_active_session()
-    {
-        using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope, "-2");
-        var dbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
-        dbContext.Database.BeginTransaction();
-
-        var terminationResult = (ObjectResult)controller.TerminateSession(-15);
-
-        terminationResult.ShouldNotBeNull();
-        terminationResult.StatusCode.ShouldBe(500);
+        VerifyEventGenerated(dbContext, "SessionTerminated");
     }
     
     [Fact]
@@ -54,8 +41,10 @@ public class SessionTests : BaseKnowledgeComponentsIntegrationTest
 
         launchResult.ShouldBeOfType<OkResult>();
         pauseResult.ShouldBeOfType<OkResult>();
+        // VerifyEventGenerated(dbContext, "SessionPaused");
+        // Does not work since Paused changes the timestamp to some minutes earlier (making Launched occur last).
     }
-    
+
     [Fact]
     public void Launch_pause_continue_session()
     {
@@ -71,6 +60,7 @@ public class SessionTests : BaseKnowledgeComponentsIntegrationTest
         launchResult.ShouldBeOfType<OkResult>();
         pauseResult.ShouldBeOfType<OkResult>();
         continueResult.ShouldBeOfType<OkResult>();
+        VerifyEventGenerated(dbContext, "SessionContinued");
     }
     
     [Fact]
@@ -90,6 +80,7 @@ public class SessionTests : BaseKnowledgeComponentsIntegrationTest
         pauseResult.ShouldBeOfType<OkResult>();
         continueResult.ShouldBeOfType<OkResult>();
         terminateResult.ShouldBeOfType<OkResult>();
+        VerifyEventGenerated(dbContext, "SessionTerminated");
     }
     
     [Fact]
@@ -109,6 +100,7 @@ public class SessionTests : BaseKnowledgeComponentsIntegrationTest
         pauseResult.ShouldBeOfType<OkResult>();
         continueResult.ShouldBeOfType<OkResult>();
         abandonResult.ShouldBeOfType<OkResult>();
+        VerifyEventGenerated(dbContext, "SessionAbandoned");
     }
     
     [Fact]
@@ -126,6 +118,7 @@ public class SessionTests : BaseKnowledgeComponentsIntegrationTest
         launchResult.ShouldBeOfType<OkResult>();
         pauseResult.ShouldBeOfType<OkResult>();
         abandonResult.ShouldBeOfType<OkResult>();
+        VerifyEventGenerated(dbContext, "SessionAbandoned");
     }
     
     [Fact]
@@ -143,6 +136,7 @@ public class SessionTests : BaseKnowledgeComponentsIntegrationTest
         launchResult.ShouldBeOfType<OkResult>();
         pauseResult.ShouldBeOfType<OkResult>();
         terminateResult.ShouldBeOfType<OkResult>();
+        VerifyEventGenerated(dbContext, "SessionTerminated");
     }
     
     [Fact]
@@ -157,8 +151,24 @@ public class SessionTests : BaseKnowledgeComponentsIntegrationTest
 
         pauseResult.ShouldNotBeNull();
         pauseResult.ShouldBeOfType<OkResult>();
+        // VerifyEventGenerated(dbContext, "SessionPaused");
+        // Does not work since Paused changes the timestamp to some minutes earlier (making Launched occur last).
     }
-    
+
+    [Fact]
+    public void Termination_fails_without_active_session()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-2");
+        var dbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
+        dbContext.Database.BeginTransaction();
+
+        var terminationResult = (ObjectResult)controller.TerminateSession(-15);
+
+        terminationResult.ShouldNotBeNull();
+        terminationResult.StatusCode.ShouldBe(500);
+    }
+
     [Fact]
     public void Continue_fails_without_active_pause()
     {
