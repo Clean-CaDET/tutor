@@ -2,7 +2,7 @@
 
 namespace Tutor.Courses.Core.Domain;
 
-public class UnitFeedbackRequestor
+public static class UnitFeedbackRequestor
 {
     public static Result<UnitFeedbackRequest> ShouldRequestFeedback(Tuple<int, int> kcMasteryCount, Tuple<int, int> taskProgressCount, List<UnitProgressRating> ratings)
     {
