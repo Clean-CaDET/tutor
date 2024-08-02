@@ -8,7 +8,7 @@ public class BaseKnowledgeComponentsIntegrationTest : BaseWebIntegrationTest<Kno
 {
     public BaseKnowledgeComponentsIntegrationTest(KnowledgeComponentsTestFactory factory) : base(factory) { }
 
-    protected void VerifyEventGenerated(KnowledgeComponentsContext dbContext, string eventType)
+    protected static void VerifyEventGenerated(KnowledgeComponentsContext dbContext, string eventType)
     {
         var generatedEvent = dbContext.Events.OrderBy(e => e.TimeStamp).LastOrDefault();
         generatedEvent.ShouldNotBeNull();
