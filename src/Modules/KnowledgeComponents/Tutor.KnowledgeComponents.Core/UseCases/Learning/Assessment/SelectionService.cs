@@ -40,7 +40,7 @@ public class SelectionService : ISelectionService
         if(kcMastery == null)
             return Result.Fail(FailureCode.NotFound);
 
-        var assessmentItemId = _assessmentItemSelector.SelectSuitableAssessmentItemId(kcMastery.AssessmentItemMasteries, kcMastery.IsPassed);
+        var assessmentItemId = _assessmentItemSelector.SelectSuitableAssessmentItemId(kcMastery.AssessmentItemMasteries.OrderBy(m => m.Id).ToList(), kcMastery.IsPassed);
 
         kcMastery.RecordAssessmentItemSelection(assessmentItemId, appClientId);
         _knowledgeMasteryRepository.Update(kcMastery);
@@ -51,5 +51,25 @@ public class SelectionService : ISelectionService
         item?.ClearFeedback();
 
         return _mapper.Map<AssessmentItemDto>(item);
+    }
+
+    public Result<List<AssessmentItemDto>> GetAssessmentItems(int kcId, int learnerId, string appClientId)
+    {
+        if (!_accessService.IsEnrolledInKc(kcId, learnerId))
+            return Result.Fail(FailureCode.NotEnrolledInUnit);
+
+        var kcMastery = _knowledgeMasteryRepository.GetFull(kcId, learnerId);
+        if (kcMastery == null)
+            return Result.Fail(FailureCode.NotFound);
+        if(!kcMastery.IsSatisfied)
+            return Result.Fail(FailureCode.Forbidden);
+
+        kcMastery.RecordAssessmentItemsReviewed(appClientId);
+        _knowledgeMasteryRepository.Update(kcMastery);
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+
+        var items = _assessmentItemRepository.GetDerivedAssessmentItemsForKc(kcId);
+        return items.OrderBy(i => i.Order).Select(_mapper.Map<AssessmentItemDto>).ToList();
     }
 }

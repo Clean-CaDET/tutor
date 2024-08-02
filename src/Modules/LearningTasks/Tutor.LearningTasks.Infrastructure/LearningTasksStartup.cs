@@ -13,6 +13,11 @@ using Tutor.LearningTasks.Core.Mappers;
 using Tutor.LearningTasks.API.Public;
 using Tutor.LearningTasks.API.Public.Learning;
 using Tutor.LearningTasks.Core.UseCases.Learning;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events;
+using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
+using Tutor.LearningTasks.Infrastructure.Database.EventStore.Postgres;
+using Tutor.LearningTasks.Infrastructure.Database.EventStore;
+using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.DefaultEventSerializer;
 
 namespace Tutor.LearningTasks.Infrastructure;
 
@@ -33,10 +38,11 @@ public static class LearningTasksStartup
 
     private static void SetupCore(IServiceCollection services)
     {
-        services.AddProxiedScoped<ILearningTaskService, LearningTaskService>();
-        services.AddProxiedScoped<ILearningTaskCloner, LearningTaskService>();
+        services.AddProxiedScoped<ILearningTaskService, LearningTaskProgressService>();
+        services.AddProxiedScoped<ILearningTaskCloner, LearningTaskProgressService>();
         services.AddProxiedScoped<ITaskService, TaskService>();
         services.AddProxiedScoped<ITaskProgressService, TaskProgressService>();
+        services.AddProxiedScoped<ITaskProgressQuerier, TaskProgressService>();
         services.AddProxiedScoped<IAccessServices, AccessServices>();
     }
 
@@ -44,6 +50,9 @@ public static class LearningTasksStartup
     {
         services.AddScoped<ILearningTaskRepository, LearningTaskDatabaseRepository>();
         services.AddScoped<ITaskProgressRepository, TaskProgressDatabaseRepository>();
+        services.AddScoped(typeof(IEventStore<TaskProgressEvent>), typeof(PostgresStore<TaskProgressEvent>));
+        services.AddSingleton<IEventSerializer<TaskProgressEvent>>(new DefaultEventSerializer<TaskProgressEvent>(EventSerializationConfiguration.EventRelatedTypes));
+
         services.AddScoped<ILearningTasksUnitOfWork, LearningTasksUnitOfWork>();
         services.AddDbContext<LearningTasksContext>(opt =>
             opt.UseNpgsql(DbConnectionStringBuilder.Build("learningTasks"),

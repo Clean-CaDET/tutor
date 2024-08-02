@@ -24,6 +24,15 @@ public class AssessmentItemMastery : EventSourcedEntity
         AssessmentItemId = itemId;
     }
 
+    public AssessmentItemMastery(int assessmentItemId, double mastery, int submissionCount, DateTime? lastSubmissionTime, int hintRequestCount)
+    {
+        AssessmentItemId = assessmentItemId;
+        Mastery = mastery;
+        SubmissionCount = submissionCount;
+        LastSubmissionTime = lastSubmissionTime;
+        HintRequestCount = hintRequestCount;
+    }
+
     public void RecordSelection(string appClientId)
     {
         Causes(new AssessmentItemSelected()

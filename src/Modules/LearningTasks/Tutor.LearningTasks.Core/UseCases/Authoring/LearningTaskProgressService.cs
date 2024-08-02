@@ -10,12 +10,12 @@ using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.LearningTasks.Core.UseCases.Authoring;
 
-public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, ILearningTaskService, ILearningTaskCloner
+public class LearningTaskProgressService : CrudService<LearningTaskDto, LearningTask>, ILearningTaskService, ILearningTaskCloner
 {
     private readonly ILearningTaskRepository _taskRepository;
     private readonly IAccessServices _accessServices;
 
-    public LearningTaskService(ILearningTaskRepository taskRepository, IAccessServices accessServices,
+    public LearningTaskProgressService(ILearningTaskRepository taskRepository, IAccessServices accessServices,
         ILearningTasksUnitOfWork unitOfWork, IMapper mapper) : base(taskRepository, unitOfWork, mapper)
     {
         _taskRepository = taskRepository;

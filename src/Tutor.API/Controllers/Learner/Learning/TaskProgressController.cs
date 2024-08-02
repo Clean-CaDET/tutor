@@ -38,4 +38,46 @@ public class TaskProgressController : BaseApiController
         var result = _taskProgressService.SubmitAnswer(unitId, id, stepProgress, User.LearnerId());
         return CreateResponse(result);
     }
+
+    [HttpPost("{id:int}/step/{stepId:int}/open-submission")]
+    public ActionResult OpenSubmission(int unitId, int id, int stepId)
+    {
+        var result = _taskProgressService.OpenSubmission(unitId, id, stepId, User.LearnerId());
+        return CreateResponse(result);
+    }
+
+    [HttpPost("{id:int}/step/{stepId:int}/open-guidance")]
+    public ActionResult OpenGuidance(int unitId, int id, int stepId)
+    {
+        var result = _taskProgressService.OpenGuidance(unitId, id, stepId, User.LearnerId());
+        return CreateResponse(result);
+    }
+
+    [HttpPost("{id:int}/step/{stepId:int}/open-example")]
+    public ActionResult OpenExample(int unitId, int id, int stepId)
+    {
+        var result = _taskProgressService.OpenExample(unitId, id, stepId, User.LearnerId());
+        return CreateResponse(result);
+    }
+
+    [HttpPost("{id:int}/step/{stepId:int}/play-video")]
+    public ActionResult PlayExampleVideo(int unitId, int id, int stepId, [FromQuery] string videoUrl)
+    {
+        var result = _taskProgressService.PlayExampleVideo(unitId, id, stepId, User.LearnerId(), videoUrl);
+        return CreateResponse(result);
+    }
+
+    [HttpPost("{id:int}/step/{stepId:int}/pause-video")]
+    public ActionResult PauseExampleVideo(int unitId, int id, int stepId, [FromQuery] string videoUrl)
+    {
+        var result = _taskProgressService.PauseExampleVideo(unitId, id, stepId, User.LearnerId(), videoUrl);
+        return CreateResponse(result);
+    }
+
+    [HttpPost("{id:int}/step/{stepId:int}/finish-video")]
+    public ActionResult FinishExampleVideo(int unitId, int id, int stepId, [FromQuery] string videoUrl)
+    {
+        var result = _taskProgressService.FinishExampleVideo(unitId, id, stepId, User.LearnerId(), videoUrl);
+        return CreateResponse(result);
+    }
 }

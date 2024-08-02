@@ -27,7 +27,7 @@ public class JwtGenerator
             new(ClaimTypes.Role, role)
         };
             
-        var jwt = CreateToken(claims, 60);
+        var jwt = CreateToken(claims, 120);
         authenticationResponse.Id = userId;
         authenticationResponse.AccessToken = jwt;
         authenticationResponse.RefreshToken = GenerateRefreshToken();
@@ -52,7 +52,7 @@ public class JwtGenerator
 
     private string GenerateRefreshToken()
     {
-        return CreateToken(new List<Claim>(), 1440);
+        return CreateToken(new List<Claim>(), 4320);
     }
 
     public Result<AuthenticationTokensDto> RefreshToken(AuthenticationTokensDto authenticationTokens)

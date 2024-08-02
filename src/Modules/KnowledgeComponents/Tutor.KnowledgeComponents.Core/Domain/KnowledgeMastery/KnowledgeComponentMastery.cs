@@ -94,6 +94,16 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         return Result.Ok();
     }
 
+    public Result RecordAssessmentItemsReviewed(string appClientId)
+    {
+        JoinOrLaunchSession();
+        Causes(new AssessmentItemsReviewed
+        {
+            AppClientId = appClientId
+        });
+        return Result.Ok();
+    }
+
     public Result RecordAssessmentItemSelection(int assessmentItemId, string appClientId)
     {
         var aim = AssessmentItemMasteries.Find(aim => aim.AssessmentItemId == assessmentItemId);
