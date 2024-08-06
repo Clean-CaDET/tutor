@@ -10,6 +10,7 @@ using Tutor.LearningTasks.Infrastructure.Database;
 
 namespace Tutor.LearningTasks.Tests.Integration.Monitoring;
 
+[Collection("Sequential")]
 public class TaskGradingTests : BaseLearningTasksIntegrationTest
 {
     public TaskGradingTests(LearningTasksTestFactory factory) : base(factory) { }
@@ -60,11 +61,11 @@ public class TaskGradingTests : BaseLearningTasksIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
 
-        var actionResult = controller.GetByUnitAndLearner(-2, -3).Result;
-        var okObjectResult = actionResult as OkObjectResult;
-        var result = okObjectResult?.Value as List<TaskProgressDto>;
+        var actionResult = controller.GetByUnitAndLearner(-2, -3).Result as OkObjectResult;
+        var result = actionResult!.Value as List<TaskProgressDto>;
 
         result.ShouldNotBeNull();
+        result = result.OrderBy(p => p.Id).ToList();
         result.Count.ShouldBe(5);
         result[0].Id.ShouldBe(-5);
         result[0].StepProgresses?.Count.ShouldBe(1);

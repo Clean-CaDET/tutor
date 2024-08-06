@@ -4,6 +4,7 @@ using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Interceptors;
 using Tutor.Courses.API.Internal;
+using Tutor.Courses.API.Public.Analysis;
 using Tutor.Courses.API.Public.Authoring;
 using Tutor.Courses.API.Public.Learning;
 using Tutor.Courses.API.Public.Management;
@@ -12,6 +13,7 @@ using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 using Tutor.Courses.Core.Mappers;
 using Tutor.Courses.Core.UseCases;
+using Tutor.Courses.Core.UseCases.Analysis;
 using Tutor.Courses.Core.UseCases.Authoring;
 using Tutor.Courses.Core.UseCases.Learning;
 using Tutor.Courses.Core.UseCases.Management;
@@ -48,6 +50,8 @@ public static class CoursesStartup
 
         services.AddProxiedScoped<IEnrollmentService, EnrollmentService>();
         services.AddProxiedScoped<IGroupMonitoringService, GroupMonitoringService>();
+        
+        services.AddProxiedScoped<IUnitProgressRatingService, UnitProgressRatingService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -58,6 +62,8 @@ public static class CoursesStartup
         services.AddScoped<ICourseOwnershipRepository, CourseOwnershipDatabaseRepository>();
         services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
         services.AddScoped<IGroupRepository, GroupDatabaseRepository>();
+        
+        services.AddScoped<IUnitProgressRatingRepository, UnitProgressRatingRepository>();
 
         services.AddScoped<ICoursesUnitOfWork, CoursesUnitOfWork>();
         services.AddDbContext<CoursesContext>(opt =>

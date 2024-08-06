@@ -5,7 +5,6 @@ using Tutor.LearningTasks.API.Dtos.LearningTaskProgress;
 using Tutor.LearningTasks.API.Public;
 using Tutor.LearningTasks.API.Public.Monitoring;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
-using Tutor.LearningTasks.Core.Domain.LearningTasks;
 using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.LearningTasks.Core.UseCases.Monitoring;
@@ -30,14 +29,8 @@ public class GradingService : CrudService<TaskProgressDto, TaskProgress>, IGradi
     {
         if (!_accessServices.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
-        List<LearningTask> tasks = _taskRepository.GetByUnit(unitId);
-        List<TaskProgress> taskProgresses = new List<TaskProgress>();
-        foreach(var task in tasks)
-        {
-            TaskProgress? taskProgress = _progressRepository.GetByTaskAndLearner(task.Id, learnerId);
-            if (taskProgress != null)
-                taskProgresses.Add(taskProgress);
-        }
+        var tasks = _taskRepository.GetByUnit(unitId);
+        var taskProgresses = _progressRepository.GetByTasks(tasks.Select(t => t.Id).ToList(), learnerId);
         return MapToDto(taskProgresses);
     }
 
@@ -49,7 +42,7 @@ public class GradingService : CrudService<TaskProgressDto, TaskProgress>, IGradi
         if (taskProgress == null)
             return Result.Fail(FailureCode.NotFound);
 
-        List<StandardEvaluation> evaluations = stepProgress.Evaluations!.Select(e => _mapper.Map<StandardEvaluation>(e)).ToList();
+        var evaluations = stepProgress.Evaluations!.Select(_mapper.Map<StandardEvaluation>).ToList();
         taskProgress.SubmitGrade(stepProgress.StepId, evaluations, stepProgress.Comment!);
         return Update(taskProgress);
     }

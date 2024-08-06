@@ -94,18 +94,28 @@ public class KnowledgeComponentTests : BaseKnowledgeComponentsIntegrationTest
     [Fact]
     public void Deletes()
     {
+        var kcId = -15;
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
+        var originalAiCount = dbContext.AssessmentItems.Count(a => a.KnowledgeComponentId == kcId);
+        var originalIiCount = dbContext.InstructionalItems.Count(a => a.KnowledgeComponentId == kcId);
+        var originalMasteryCount = dbContext.KcMasteries.Count(m => m.KnowledgeComponentId == kcId);
         dbContext.Database.BeginTransaction();
 
-        var result = (OkResult)controller.Delete(-11);
+        var result = (OkResult)controller.Delete(kcId);
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-        var storedEntity = dbContext.KnowledgeComponents.FirstOrDefault(i => i.Id == -11);
+        var storedEntity = dbContext.KnowledgeComponents.FirstOrDefault(i => i.Id == kcId);
         storedEntity.ShouldBeNull();
+        originalAiCount.ShouldNotBe(0);
+        originalIiCount.ShouldNotBe(0);
+        originalMasteryCount.ShouldNotBe(0);
+        dbContext.AssessmentItems.Count(a => a.KnowledgeComponentId == kcId).ShouldBe(0);
+        dbContext.InstructionalItems.Count(a => a.KnowledgeComponentId == kcId).ShouldBe(0);
+        dbContext.KcMasteries.Count(m => m.KnowledgeComponentId == kcId).ShouldBe(0);
     }
 
     private static KnowledgeComponentController CreateController(IServiceScope scope)

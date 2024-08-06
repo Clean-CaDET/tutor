@@ -9,6 +9,7 @@ public class CoursesContext : DbContext
     public DbSet<KnowledgeUnit> KnowledgeUnits { get; set; }
     public DbSet<LearnerGroup> LearnerGroups { get; set; }
     public DbSet<UnitEnrollment> UnitEnrollments { get; set; }
+    public DbSet<UnitProgressRating> UnitProgressRating { get; set; }
     public DbSet<CourseOwnership> CourseOwnerships { get; set; }
 
     public CoursesContext(DbContextOptions<CoursesContext> options) : base(options) {}
@@ -17,7 +18,12 @@ public class CoursesContext : DbContext
     {
         modelBuilder.HasDefaultSchema("courses");
         modelBuilder.Entity<LearnerGroup>().Property(e => e.LearnerIds).HasColumnType("jsonb");
+        modelBuilder.Entity<UnitProgressRating>().Property(e => e.Feedback).HasColumnType("jsonb");
         
         modelBuilder.Entity<KnowledgeUnit>().HasIndex(u => new { u.CourseId, u.Code }).IsUnique();
+        modelBuilder.Entity<UnitProgressRating>()
+            .HasOne<KnowledgeUnit>()
+            .WithMany()
+            .HasForeignKey(p => p.KnowledgeUnitId);
     }
 }

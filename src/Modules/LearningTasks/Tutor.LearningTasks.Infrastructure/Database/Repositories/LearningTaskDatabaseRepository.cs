@@ -33,6 +33,11 @@ public class LearningTaskDatabaseRepository : CrudDatabaseRepository<LearningTas
         return GetTasksWhere(t => unitIds.Contains(t.UnitId));
     }
 
+    public int CountByUnit(int unitId)
+    {
+        return DbContext.LearningTasks.Count(t => t.UnitId == unitId);
+    }
+
     private List<LearningTask> GetTasksWhere(Expression<Func<LearningTask, bool>> expression)
     {
         return DbContext.LearningTasks.Where(expression)

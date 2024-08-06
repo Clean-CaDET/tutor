@@ -11,7 +11,7 @@ public class UnitEnrollment : Entity
     public DateTime? BestBefore { get; private set; }
     public EnrollmentStatus Status { get; internal set; }
 
-    private UnitEnrollment() {}
+    private UnitEnrollment() { }
 
     public UnitEnrollment(int learnerId, DateTime availableFrom, DateTime? bestBefore, KnowledgeUnit knowledgeUnit)
     {

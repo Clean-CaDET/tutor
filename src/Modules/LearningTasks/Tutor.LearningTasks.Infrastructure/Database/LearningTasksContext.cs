@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.Postgres;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
 using Tutor.LearningTasks.Core.Domain.LearningTasks;
 
@@ -11,6 +12,7 @@ public class LearningTasksContext : DbContext
     public DbSet<Standard> Standards { get; set; }
     public DbSet<TaskProgress> TaskProgresses { get; set; }
     public DbSet<StepProgress> StepProgresses { get; set; }
+    public DbSet<StoredDomainEvent> Events { get; set; }
 
     public LearningTasksContext(DbContextOptions<LearningTasksContext> options) : base(options) { }
 
@@ -47,5 +49,8 @@ public class LearningTasksContext : DbContext
             .WithOne()
             .HasForeignKey(tp => tp.LearningTaskId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<StoredDomainEvent>().Property(e => e.DomainEvent).HasColumnType("jsonb");
+        modelBuilder.Entity<StoredDomainEvent>().HasIndex(e => e.TimeStamp);
     }
 }

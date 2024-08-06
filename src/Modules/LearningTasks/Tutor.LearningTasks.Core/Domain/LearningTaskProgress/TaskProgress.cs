@@ -1,9 +1,12 @@
-﻿using Tutor.BuildingBlocks.Core.Domain;
+﻿using FluentResults;
+using Tutor.BuildingBlocks.Core.EventSourcing;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskProgressEvents;
 using Tutor.LearningTasks.Core.Domain.LearningTasks;
 
 namespace Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
 
-public class TaskProgress : AggregateRoot
+public class TaskProgress : EventSourcedAggregateRoot
 {
     public int LearningTaskId { get; private set; }
     public int LearnerId { get; private set; }
@@ -23,41 +26,133 @@ public class TaskProgress : AggregateRoot
 
     private void CreateStepProgresses(List<Activity> steps)
     {
-        StepProgresses = new List<StepProgress>();
-        foreach (var step in steps)
-        {
-            if (step.ParentId == 0)
-                StepProgresses.Add(new StepProgress(step.Id, LearnerId, step.Standards!));
-        }
+        StepProgresses = steps
+            .Where(step => step.ParentId == 0)
+            .Select(step => new StepProgress(step.Id, LearnerId, step.Standards!))
+            .ToList();
     }
 
     public void SubmitAnswer(int stepId, string answer)
     {
-        var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
-        stepProgress?.SubmitAnswer(answer);
-        Status = StepProgresses!.TrueForAll(s => s.Status == StepStatus.Answered) ? TaskStatus.Completed : Status;
-    }
+        Causes(new StepSubmitted(stepId, answer));
 
-    public void ViewStep(int stepId)
-    {
-        var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
-        stepProgress?.MarkAsViewed();
+        var allStepsAnswered = StepProgresses!.All(s => s.Status == StepStatus.Answered);
+        if (allStepsAnswered)
+        {
+            Causes(new TaskCompleted());
+        }
     }
 
     public void SubmitGrade(int stepId, List<StandardEvaluation> evaluations, string comment)
     {
-        var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
-        stepProgress?.SubmitGrade(evaluations, comment);
-        CalculateTotalScore();
-        Status = StepProgresses!.TrueForAll(s => s.Status == StepStatus.Graded) ? TaskStatus.Graded : Status;
+        Causes(new StepGraded(stepId, evaluations, comment));
+
+        var allStepsAnswered = StepProgresses!.All(s => s.Status == StepStatus.Graded);
+        if (allStepsAnswered)
+        {
+            Causes(new TaskGraded());
+        }
     }
 
-    private void CalculateTotalScore()
+    public void ViewStep(int stepId)
     {
-        foreach(var stepProgress in StepProgresses!)
+        Causes(new StepOpened(stepId));
+        Causes(new SubmissionOpened(stepId));
+    }
+
+    public Result TaskOpened()
+    {
+        Causes(new TaskOpened());
+        return Result.Ok();
+    }
+
+    public Result OpenSubmission(int stepId)
+    {
+        Causes(new SubmissionOpened(stepId));
+        return Result.Ok();
+    }
+
+    public Result OpenGuidance(int stepId)
+    {
+        Causes(new GuidanceOpened(stepId));
+        return Result.Ok();
+    }
+
+    public Result OpenExample(int stepId)
+    {
+        Causes(new ExampleOpened(stepId));
+        return Result.Ok();
+    }
+
+    public Result PlayExampleVideo(int stepId, string videoUrl)
+    {
+        Causes(new ExampleVideoPlayed(stepId, videoUrl));
+        return Result.Ok();
+    }
+
+    public Result PauseExampleVideo(int stepId, string videoUrl)
+    {
+        Causes(new ExampleVideoPaused(stepId, videoUrl));
+        return Result.Ok();
+    }
+
+    public Result FinishExampleVideo(int stepId, string videoUrl)
+    {
+        Causes(new ExampleVideoFinished(stepId, videoUrl));
+        return Result.Ok();
+    }
+
+    protected override void Apply(DomainEvent @event)
+    {
+        if (@event is not TaskProgressEvent kcEvent) throw new EventSourcingException("Unexpected event type: " + @event.GetType());
+
+        kcEvent.LearningTaskId = LearningTaskId;
+        kcEvent.LearnerId = LearnerId;
+
+        When((dynamic)kcEvent);
+    }
+
+    private void When(StepSubmitted @event)
+    {
+        var stepId = @event.StepId;
+        var answer = @event.Answer;
+
+        var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
+        stepProgress?.SubmitAnswer(answer);
+    }
+
+    private void When(StepGraded @event)
+    {
+        var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(@event.StepId));
+        stepProgress?.SubmitGrade(@event.Evaluations, @event.Comment);
+    }
+
+    private void When(TaskCompleted @event)
+    {
+        Status = TaskStatus.Completed;
+    }
+
+    private void When(TaskGraded @event)
+    {
+        foreach (var stepProgress in StepProgresses!)
         {
             TotalScore += stepProgress.Evaluations!.Sum(e => e.Points);
         }
+        Status = TaskStatus.Graded;
+    }
+
+    private void When(StepOpened @event)
+    {
+        var stepId = @event.StepId;
+
+        var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
+        stepProgress?.MarkAsViewed();
+    }
+
+    private static void When(TaskProgressEvent @event)
+    {
+        // No additional actions are required for TaskOpened, SubmissionOpened, GuidanceOpened, ExampleOpened
+        // ExampleVideoPlayed, ExampleVideoPaused, ExampleVideoFinished.
     }
 }
 
