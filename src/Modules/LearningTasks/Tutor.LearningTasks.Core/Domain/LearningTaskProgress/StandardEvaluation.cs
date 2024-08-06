@@ -17,6 +17,8 @@ public class StandardEvaluation : ValueObject
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        throw new NotImplementedException();
+        yield return StandardId;
+        yield return Points;
+        yield return Comment;
     }
 }

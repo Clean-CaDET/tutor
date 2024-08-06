@@ -19,16 +19,6 @@ public class StepProgress : Entity
         Status = StepStatus.Initialized;
         StepId = stepId;
         LearnerId = learnerId;
-        CreateEvaluations(standards);
-    }
-
-    private void CreateEvaluations(List<Standard> standards)
-    {
-        Evaluations = new List<StandardEvaluation>();
-        foreach (var standard in standards)
-        {
-            Evaluations.Add(new StandardEvaluation(standard.Id, 0, ""));
-        }
     }
 
     public void SubmitAnswer(string answer)
