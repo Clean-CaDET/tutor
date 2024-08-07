@@ -16,6 +16,8 @@ public class SessionTracker : EventSourcedEntity
     public TimeSpan? DurationOfUnfinishedSession => HasUnfinishedSession ? DateTime.UtcNow - StartOfUnfinishedSession!.Value : TimeSpan.Zero;
     public DateTime? StartOfUnfinishedSession { get; private set; }
 
+    public DateTime? LastActivity { get; private set; }
+
     public bool IsPaused { get; private set; }
     public TimeSpan DurationOfAllPauses => DurationOfFinishedPauses + DurationOfUnfinishedPause.GetValueOrDefault();
     public TimeSpan DurationOfFinishedPauses { get; private set; } = new(0);
@@ -44,19 +46,28 @@ public class SessionTracker : EventSourcedEntity
 
     public Result Pause()
     {
-        if (!HasUnfinishedSession) Launch();
+        if (!HasUnfinishedSession) return Result.Fail("No active session to pause.");
         if (IsPaused) return Result.Fail("Session is already paused.");
         
         IsPaused = true;
         var sessionPausedEvent = new SessionPaused();
-        sessionPausedEvent.TimeStamp = sessionPausedEvent.TimeStamp.AddMinutes(-2);
+
+        if (LastActivity.HasValue && (sessionPausedEvent.TimeStamp - LastActivity.Value).TotalHours > 1)
+        {
+            sessionPausedEvent.TimeStamp = LastActivity.Value.AddMinutes(-2);
+        }
+        else
+        {
+            sessionPausedEvent.TimeStamp = sessionPausedEvent.TimeStamp.AddMinutes(-2);
+        }
+
         Causes(sessionPausedEvent);
         return Result.Ok();
     }
 
     public Result Continue()
     {
-        if (!HasUnfinishedSession) Launch();
+        if (!HasUnfinishedSession) return Result.Fail("No active session to continue.");
         if (!IsPaused) return Result.Fail("Session is not paused.");
             
         IsPaused = false;
@@ -69,7 +80,10 @@ public class SessionTracker : EventSourcedEntity
         if (!HasUnfinishedSession) return Result.Fail("No active session to abandon.");
         if (IsPaused) Continue();
 
-        Causes(new SessionAbandoned());
+        var sessionAbandoned = new SessionAbandoned();
+        
+        if(LastActivity.HasValue) sessionAbandoned.TimeStamp = LastActivity.Value;
+        Causes(sessionAbandoned);
         return Result.Ok();
     }
 
@@ -80,6 +94,7 @@ public class SessionTracker : EventSourcedEntity
 
     private void When(SessionLaunched @event)
     {
+        LastActivity = @event.TimeStamp;
         StartOfUnfinishedSession = @event.TimeStamp;
         CountOfSessions++;
     }
@@ -88,6 +103,7 @@ public class SessionTracker : EventSourcedEntity
     {
         DurationOfFinishedSessions += DurationOfUnfinishedSession.GetValueOrDefault();
         StartOfUnfinishedSession = null;
+        LastActivity = null;
     }
 
     private void When(SessionPaused @event)
@@ -97,6 +113,7 @@ public class SessionTracker : EventSourcedEntity
 
     private void When(SessionContinued @event)
     {
+        LastActivity = @event.TimeStamp;
         DurationOfFinishedPauses += @event.TimeStamp - UnfinishedPauseStart!.Value;
         UnfinishedPauseStart = null;
     }
@@ -105,25 +122,29 @@ public class SessionTracker : EventSourcedEntity
     {
         DurationOfFinishedSessions += DurationOfUnfinishedSession.GetValueOrDefault();
         StartOfUnfinishedSession = null;
+        LastActivity = null;
     }
 
     private void When(KnowledgeComponentCompleted @event)
     {
+        LastActivity = @event.TimeStamp;
         @event.MinutesToCompletion = DurationOfAllSessions.TotalMinutes - DurationOfAllPauses.TotalMinutes;
     }
 
     private void When(KnowledgeComponentPassed @event)
     {
+        LastActivity = @event.TimeStamp;
         @event.MinutesToPass = DurationOfAllSessions.TotalMinutes - DurationOfAllPauses.TotalMinutes;
     }
 
     private void When(KnowledgeComponentSatisfied @event)
     {
+        LastActivity = @event.TimeStamp;
         @event.MinutesToSatisfaction = DurationOfAllSessions.TotalMinutes - DurationOfAllPauses.TotalMinutes;
     }
 
-    private static void When(KnowledgeComponentEvent @event)
+    private void When(KnowledgeComponentEvent @event)
     {
-        // LastActivity is no longer being recorded.
+        LastActivity = @event.TimeStamp;
     }
 }

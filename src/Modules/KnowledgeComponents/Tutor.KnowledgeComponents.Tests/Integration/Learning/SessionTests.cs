@@ -147,12 +147,10 @@ public class SessionTests : BaseKnowledgeComponentsIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
         dbContext.Database.BeginTransaction();
 
-        var pauseResult = controller.Pause(-15);
+        var pauseResult = (ObjectResult)controller.Pause(-15);
 
         pauseResult.ShouldNotBeNull();
-        pauseResult.ShouldBeOfType<OkResult>();
-        // VerifyEventGenerated(dbContext, "SessionPaused");
-        // Does not work since Paused changes the timestamp to some minutes earlier (making Launched occur last).
+        pauseResult.StatusCode.ShouldBe(500);
     }
 
     [Fact]
