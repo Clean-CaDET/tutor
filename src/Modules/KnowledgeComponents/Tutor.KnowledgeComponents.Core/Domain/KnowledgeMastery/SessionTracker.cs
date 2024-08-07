@@ -52,9 +52,9 @@ public class SessionTracker : EventSourcedEntity
         IsPaused = true;
         var sessionPausedEvent = new SessionPaused();
 
-        if (LastActivity.HasValue && (sessionPausedEvent.TimeStamp - LastActivity.Value).TotalHours > 1)
+        if (LastActivity.HasValue && (sessionPausedEvent.TimeStamp - LastActivity.Value).TotalMinutes > 5)
         {
-            sessionPausedEvent.TimeStamp = LastActivity.Value.AddMinutes(-2);
+            sessionPausedEvent.TimeStamp = LastActivity.Value;
         }
         else
         {
