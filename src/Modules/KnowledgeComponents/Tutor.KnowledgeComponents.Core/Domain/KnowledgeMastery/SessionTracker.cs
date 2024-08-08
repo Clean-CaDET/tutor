@@ -30,7 +30,6 @@ public class SessionTracker : EventSourcedEntity
         {
             if (IsPaused) Continue();
 
-
             var sessionAbandoned = new SessionAbandoned();
 
             if (LastActivity.HasValue && (sessionAbandoned.TimeStamp - LastActivity.Value).TotalHours > 1)
@@ -38,7 +37,6 @@ public class SessionTracker : EventSourcedEntity
                 sessionAbandoned.TimeStamp = LastActivity.Value;
             }
 
-            if (LastActivity.HasValue) sessionAbandoned.TimeStamp = LastActivity.Value;
             Causes(sessionAbandoned);
         }
         
