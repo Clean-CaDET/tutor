@@ -33,7 +33,7 @@ public class SessionTracker : EventSourcedEntity
 
             var sessionAbandoned = new SessionAbandoned();
 
-            if (LastActivity.HasValue && (sessionAbandoned.TimeStamp - LastActivity.Value).TotalMinutes > 3)
+            if (LastActivity.HasValue && (sessionAbandoned.TimeStamp - LastActivity.Value).TotalHours > 1)
             {
                 sessionAbandoned.TimeStamp = LastActivity.Value;
             }
