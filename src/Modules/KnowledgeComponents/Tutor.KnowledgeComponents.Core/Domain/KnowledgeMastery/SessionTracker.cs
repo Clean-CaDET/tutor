@@ -29,7 +29,17 @@ public class SessionTracker : EventSourcedEntity
         if (HasUnfinishedSession)
         {
             if (IsPaused) Continue();
-            Causes(new SessionAbandoned());
+
+
+            var sessionAbandoned = new SessionAbandoned();
+
+            if (LastActivity.HasValue && (sessionAbandoned.TimeStamp - LastActivity.Value).TotalMinutes > 3)
+            {
+                sessionAbandoned.TimeStamp = LastActivity.Value;
+            }
+
+            if (LastActivity.HasValue) sessionAbandoned.TimeStamp = LastActivity.Value;
+            Causes(sessionAbandoned);
         }
         
         Causes(new SessionLaunched());
@@ -80,10 +90,7 @@ public class SessionTracker : EventSourcedEntity
         if (!HasUnfinishedSession) return Result.Fail("No active session to abandon.");
         if (IsPaused) Continue();
 
-        var sessionAbandoned = new SessionAbandoned();
-        
-        if(LastActivity.HasValue) sessionAbandoned.TimeStamp = LastActivity.Value;
-        Causes(sessionAbandoned);
+        Causes(new SessionAbandoned());
         return Result.Ok();
     }
 
