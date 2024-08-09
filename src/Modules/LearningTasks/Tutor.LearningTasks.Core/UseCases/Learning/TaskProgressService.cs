@@ -56,7 +56,6 @@ public class TaskProgressService : BaseService<TaskProgressDto, TaskProgress>, I
             return Result.Fail(FailureCode.Forbidden);
 
         return new TaskProgress(learningTask.Steps!, learningTask.Id, learnerId);
-
     }
 
     public Result<TaskProgressDto> ViewStep(int unitId, int id, int stepId, int learnerId)

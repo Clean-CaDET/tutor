@@ -153,7 +153,7 @@ public class TaskGradingTests : BaseLearningTasksIntegrationTest
         objectResult.StatusCode.ShouldBe(403);
     }
 
-    private TaskGradingController CreateController(IServiceScope scope)
+    private static TaskGradingController CreateController(IServiceScope scope)
     {
         return new TaskGradingController(scope.ServiceProvider.GetRequiredService<ILearningTaskService>(), scope.ServiceProvider.GetRequiredService<IGradingService>())
         {
