@@ -168,21 +168,6 @@ public class SessionTests : BaseKnowledgeComponentsIntegrationTest
     }
 
     [Fact]
-    public void Continue_fails_without_active_pause()
-    {
-        using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope, "-2");
-        var dbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
-        dbContext.Database.BeginTransaction();
-
-        var launchResult = controller.LaunchSession(-15);
-        var continueResult = (ObjectResult)controller.TerminatePause(-15);
-
-        continueResult.ShouldNotBeNull();
-        continueResult.StatusCode.ShouldBe(500);
-    }
-
-    [Fact]
     public void Continue_fails_without_active_session()
     {
         using var scope = Factory.Services.CreateScope();
@@ -194,6 +179,35 @@ public class SessionTests : BaseKnowledgeComponentsIntegrationTest
 
         continueResult.ShouldNotBeNull();
         continueResult.StatusCode.ShouldBe(500);
+    }
+
+    [Fact]
+    public void Continue_without_active_pause()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-2");
+        var dbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
+        dbContext.Database.BeginTransaction();
+
+        var launchResult = controller.LaunchSession(-15);
+        var continueResult = controller.TerminatePause(-15);
+
+        continueResult.ShouldBeOfType<OkResult>();
+    }
+
+    [Fact]
+    public void Pause_with_active_pause()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-2");
+        var dbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
+        dbContext.Database.BeginTransaction();
+
+        var launchResult = controller.LaunchSession(-15);
+        var firstPauseResult = controller.Pause(-15);
+        var secondPauseResult = controller.Pause(-15);
+
+        secondPauseResult.ShouldBeOfType<OkResult>();
     }
 
     private static SessionController CreateController(IServiceScope scope, string id)
