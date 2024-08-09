@@ -16,6 +16,8 @@ public static class EventSerializationConfiguration
         { typeof(ExampleVideoPaused), "ExampleVideoPaused" },
         { typeof(ExampleVideoFinished), "ExampleVideoFinished" },
         { typeof(StepSubmitted), "StepSubmitted" },
-        { typeof(TaskCompleted), "TaskCompleted" }
+        { typeof(TaskCompleted), "TaskCompleted" },
+        { typeof(StepGraded), "StepGraded" },
+        { typeof(TaskGraded), "TaskGraded" }
     }.ToImmutableDictionary();
 }

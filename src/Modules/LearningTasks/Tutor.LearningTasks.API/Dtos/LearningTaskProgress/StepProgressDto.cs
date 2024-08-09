@@ -1,5 +1,4 @@
-﻿
-namespace Tutor.LearningTasks.API.Dtos.LearningTaskProgress;
+﻿namespace Tutor.LearningTasks.API.Dtos.LearningTaskProgress;
 
 public class StepProgressDto
 {
@@ -7,4 +6,6 @@ public class StepProgressDto
     public string? Answer { get; set; }
     public string? Status { get; set; }
     public int StepId { get; set; }
+    public List<StandardEvaluationDto>? Evaluations { get; set; }
+    public string? Comment { get; set; }
 }

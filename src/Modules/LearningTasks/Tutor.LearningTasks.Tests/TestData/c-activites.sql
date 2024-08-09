@@ -22,3 +22,9 @@ INSERT INTO "learningTasks"."Activities"(
 INSERT INTO "learningTasks"."Activities"(
     "Id", "ParentId", "Order", "Code",  "Name", "Guidance", "Examples", "SubmissionFormat", "MaxPoints", "LearningTaskId")
 	VALUES (-8, 0, 1, 'U2-LT4-A1', 'Activity1', 'Guidance', '[{{"Code":"U2-LT4-A1", "Url":"Url1"}}, {{"Code":"U2-LT4-A1", "Url":"Url2"}}]', '{{"Type":2,"ValidationRule":"some validation", "Guidlanes":"guidlanes7"}}', 5, -7);
+INSERT INTO "learningTasks"."Activities"(
+    "Id", "ParentId", "Order", "Code",  "Name", "Guidance", "Examples", "SubmissionFormat", "MaxPoints", "LearningTaskId")
+	VALUES (-9, 0, 1, 'U2-LT5-A1', 'Activity1', 'Guidance', '[{{"Code":"U2-LT5-A1", "Url":"Url1"}}, {{"Code":"U2-LT5-A1", "Url":"Url2"}}]', '{{"Type":2,"ValidationRule":"some validation", "Guidlanes":"guidlanes8"}}', 5, -8);
+INSERT INTO "learningTasks"."Activities"(
+    "Id", "ParentId", "Order", "Code",  "Name", "Guidance", "Examples", "SubmissionFormat", "MaxPoints", "LearningTaskId")
+	VALUES (-10, 0, 1, 'U1-LT3-A1', 'Activity1', 'Guidance', '[{{"Code":"U1-LT3-A1", "Url":"Url1"}}, {{"Code":"U1-LT3-A1", "Url":"Url2"}}]', '{{"Type":2,"ValidationRule":"some validation", "Guidlanes":"guidlanes8"}}', 5, -9);

@@ -1,23 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Infrastructure.Database;
+using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.BuildingBlocks.Infrastructure.Interceptors;
 using Tutor.LearningTasks.API.Internal;
-using Tutor.LearningTasks.API.Public.Authoring;
-using Tutor.LearningTasks.Core.UseCases.Authoring;
-using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
-using Tutor.LearningTasks.Infrastructure.Database.Repositories;
-using Tutor.LearningTasks.Core.UseCases;
-using Tutor.LearningTasks.Infrastructure.Database;
-using Tutor.LearningTasks.Core.Mappers;
 using Tutor.LearningTasks.API.Public;
+using Tutor.LearningTasks.API.Public.Authoring;
 using Tutor.LearningTasks.API.Public.Learning;
-using Tutor.LearningTasks.Core.UseCases.Learning;
+using Tutor.LearningTasks.API.Public.Monitoring;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events;
-using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
-using Tutor.LearningTasks.Infrastructure.Database.EventStore.Postgres;
+using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
+using Tutor.LearningTasks.Core.Mappers;
+using Tutor.LearningTasks.Core.UseCases;
+using Tutor.LearningTasks.Core.UseCases.Authoring;
+using Tutor.LearningTasks.Core.UseCases.Learning;
+using Tutor.LearningTasks.Core.UseCases.Monitoring;
+using Tutor.LearningTasks.Infrastructure.Database;
 using Tutor.LearningTasks.Infrastructure.Database.EventStore;
-using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.DefaultEventSerializer;
+using Tutor.LearningTasks.Infrastructure.Database.EventStore.Postgres;
+using Tutor.LearningTasks.Infrastructure.Database.Repositories;
 
 namespace Tutor.LearningTasks.Infrastructure;
 
@@ -44,6 +46,7 @@ public static class LearningTasksStartup
         services.AddProxiedScoped<ITaskProgressService, TaskProgressService>();
         services.AddProxiedScoped<ITaskProgressQuerier, TaskProgressService>();
         services.AddProxiedScoped<IAccessServices, AccessServices>();
+        services.AddProxiedScoped<IGradingService, GradingService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
