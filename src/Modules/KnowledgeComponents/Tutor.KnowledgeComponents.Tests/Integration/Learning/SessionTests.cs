@@ -140,19 +140,17 @@ public class SessionTests : BaseKnowledgeComponentsIntegrationTest
     }
     
     [Fact]
-    public void Pause_without_active_session()
+    public void Pause_fails_without_active_session()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
         var dbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
         dbContext.Database.BeginTransaction();
 
-        var pauseResult = controller.Pause(-15);
+        var pauseResult = (ObjectResult)controller.Pause(-15);
 
         pauseResult.ShouldNotBeNull();
-        pauseResult.ShouldBeOfType<OkResult>();
-        // VerifyEventGenerated(dbContext, "SessionPaused");
-        // Does not work since Paused changes the timestamp to some minutes earlier (making Launched occur last).
+        pauseResult.StatusCode.ShouldBe(500);
     }
 
     [Fact]
@@ -170,7 +168,21 @@ public class SessionTests : BaseKnowledgeComponentsIntegrationTest
     }
 
     [Fact]
-    public void Continue_fails_without_active_pause()
+    public void Continue_fails_without_active_session()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-2");
+        var dbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
+        dbContext.Database.BeginTransaction();
+
+        var continueResult = (ObjectResult)controller.TerminatePause(-15);
+
+        continueResult.ShouldNotBeNull();
+        continueResult.StatusCode.ShouldBe(500);
+    }
+
+    [Fact]
+    public void Continue_without_active_pause()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
@@ -178,10 +190,24 @@ public class SessionTests : BaseKnowledgeComponentsIntegrationTest
         dbContext.Database.BeginTransaction();
 
         var launchResult = controller.LaunchSession(-15);
-        var continueResult = (ObjectResult)controller.TerminatePause(-15);
+        var continueResult = controller.TerminatePause(-15);
 
-        continueResult.ShouldNotBeNull();
-        continueResult.StatusCode.ShouldBe(500);
+        continueResult.ShouldBeOfType<OkResult>();
+    }
+
+    [Fact]
+    public void Pause_with_active_pause()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-2");
+        var dbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
+        dbContext.Database.BeginTransaction();
+
+        var launchResult = controller.LaunchSession(-15);
+        controller.Pause(-15);
+        var pauseResult = controller.Pause(-15);
+
+        pauseResult.ShouldBeOfType<OkResult>();
     }
 
     private static SessionController CreateController(IServiceScope scope, string id)
