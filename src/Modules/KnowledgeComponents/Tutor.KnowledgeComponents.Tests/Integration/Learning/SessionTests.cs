@@ -204,10 +204,10 @@ public class SessionTests : BaseKnowledgeComponentsIntegrationTest
         dbContext.Database.BeginTransaction();
 
         var launchResult = controller.LaunchSession(-15);
-        var firstPauseResult = controller.Pause(-15);
-        var secondPauseResult = controller.Pause(-15);
+        controller.Pause(-15);
+        var pauseResult = controller.Pause(-15);
 
-        secondPauseResult.ShouldBeOfType<OkResult>();
+        pauseResult.ShouldBeOfType<OkResult>();
     }
 
     private static SessionController CreateController(IServiceScope scope, string id)
