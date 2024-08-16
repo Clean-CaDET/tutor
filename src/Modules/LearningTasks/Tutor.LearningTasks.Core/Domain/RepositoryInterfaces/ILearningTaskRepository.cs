@@ -7,7 +7,7 @@ public interface ILearningTaskRepository : ICrudRepository<LearningTask>
 {
     new LearningTask? Get(int id);
     List<LearningTask> GetByUnit(int unitId);
-    List<LearningTask> GetNonTemplateByUnit(int unitId);
     List<LearningTask> GetByUnits(List<int> unitIds);
-    int CountByUnit(int unitId);
+    List<LearningTask> GetNonTemplateByUnit(int unitId);
+    List<LearningTask> GetNonTemplateByUnits(List<int> unitIds);
 }

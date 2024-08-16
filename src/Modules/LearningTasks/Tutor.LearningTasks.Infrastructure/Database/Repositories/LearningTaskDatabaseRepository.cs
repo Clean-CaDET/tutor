@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.LearningTasks.Core.Domain.LearningTasks;
 using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
@@ -23,19 +24,21 @@ public class LearningTaskDatabaseRepository : CrudDatabaseRepository<LearningTas
         return GetTasksWhere(t => t.UnitId == unitId);
     }
 
-    public List<LearningTask> GetNonTemplateByUnit(int unitId)
-    {
-        return GetTasksWhere(t => t.UnitId == unitId && !t.IsTemplate);
-    }
-
     public List<LearningTask> GetByUnits(List<int> unitIds)
     {
         return GetTasksWhere(t => unitIds.Contains(t.UnitId));
     }
 
-    public int CountByUnit(int unitId)
+    public List<LearningTask> GetNonTemplateByUnit(int unitId)
     {
-        return DbContext.LearningTasks.Count(t => t.UnitId == unitId);
+        return GetTasksWhere(t => t.UnitId == unitId && !t.IsTemplate);
+    }
+
+    public List<LearningTask> GetNonTemplateByUnits(List<int> unitIds)
+    {
+        return DbContext.LearningTasks
+            .Where(t => unitIds.Contains(t.UnitId) && !t.IsTemplate)
+            .ToList();
     }
 
     private List<LearningTask> GetTasksWhere(Expression<Func<LearningTask, bool>> expression)

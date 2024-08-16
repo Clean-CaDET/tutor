@@ -64,9 +64,44 @@ public class EnrolledCourseTests : BaseCoursesIntegrationTest
         unit.Id.ShouldBe(-1);
     }
 
+    [Theory]
+    [MemberData(nameof(UnitIds))]
+    public void Retrieves_mastered_unit_ids(List<int> unitIds, int expectedCount)
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-4");
+
+        var masteredUnitIds = ((OkObjectResult)controller.GetMasteredUnitIds(unitIds).Result)?.Value as List<int>;
+
+        masteredUnitIds.ShouldNotBeNull();
+        masteredUnitIds.Count.ShouldBe(expectedCount);
+    }
+
+    public static IEnumerable<object[]> UnitIds()
+    {
+        return new List<object[]>
+        {
+            new object[]
+            {
+                new List<int> {-4},
+                1
+            },
+            new object[]
+            {
+                new List<int> {-50, -51},
+                1
+            },
+            new object[]
+            {
+                new List<int> {-4, -50, -51},
+                2
+            }
+        };
+    }
+
     private static EnrolledCourseController CreateController(IServiceScope scope, string id)
     {
-        return new EnrolledCourseController(scope.ServiceProvider.GetRequiredService<IEnrolledCourseService>())
+        return new EnrolledCourseController(scope.ServiceProvider.GetRequiredService<IEnrolledCourseService>(), scope.ServiceProvider.GetRequiredService<IUnitProgressService>())
         {
             ControllerContext = BuildContext(id, "learner")
         };

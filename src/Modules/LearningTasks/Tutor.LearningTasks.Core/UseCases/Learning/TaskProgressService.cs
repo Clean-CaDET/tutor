@@ -6,6 +6,7 @@ using Tutor.LearningTasks.API.Internal;
 using Tutor.LearningTasks.API.Public;
 using Tutor.LearningTasks.API.Public.Learning;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
+using Tutor.LearningTasks.Core.Domain.LearningTasks;
 using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 using TaskStatus = Tutor.LearningTasks.Core.Domain.LearningTaskProgress.TaskStatus;
 
@@ -149,6 +150,32 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
         var taskIds = tasks.Select(task => task.Id).ToList();
         var progresses = _progressRepository.GetByTasks(taskIds, learnerId);
 
-        return new Tuple<int, int>(tasks.Count, progresses.Count(p => p.Status == TaskStatus.Completed));
+        return new Tuple<int, int>(tasks.Count, progresses.Count(p => p.IsCompleted()));
+    }
+
+    public Result<List<int>> GetCompletedUnitIds(List<int> unitIds, int learnerId)
+    {
+        var tasks = _taskRepository.GetNonTemplateByUnits(unitIds);
+        var taskIds = tasks.Select(t => t.Id).ToList();
+        var progresses = _progressRepository.GetByTasks(taskIds, learnerId);
+
+        var groupedTasks = tasks.GroupBy(t => t.UnitId);
+        var completedUnits = unitIds.Where(id => tasks.All(t => t.UnitId != id)).ToList();
+        foreach (var grouping in groupedTasks)
+        {
+            if(UnitIsCompleted(grouping, progresses)) completedUnits.Add(grouping.Key);
+        }
+        return completedUnits;
+    }
+
+    private static bool UnitIsCompleted(IGrouping<int, LearningTask> grouping, List<TaskProgress> progresses)
+    {
+        foreach (var task in grouping)
+        {
+            var matchingProgress = progresses.Find(p => p.LearningTaskId == task.Id);
+            if(matchingProgress == null || !matchingProgress.IsCompleted()) return false;
+        }
+
+        return true;
     }
 }

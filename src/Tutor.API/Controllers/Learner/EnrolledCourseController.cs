@@ -12,10 +12,12 @@ namespace Tutor.API.Controllers.Learner;
 public class EnrolledCourseController : BaseApiController
 {
     private readonly IEnrolledCourseService _enrolledCourseService;
+    private readonly IUnitProgressService _progressService;
 
-    public EnrolledCourseController(IEnrolledCourseService enrolledCourseService)
+    public EnrolledCourseController(IEnrolledCourseService enrolledCourseService, IUnitProgressService progressService)
     {
         _enrolledCourseService = enrolledCourseService;
+        _progressService = progressService;
     }
 
     [HttpGet]
@@ -36,6 +38,13 @@ public class EnrolledCourseController : BaseApiController
     public ActionResult<KnowledgeUnitDto> GetEnrolledAndActiveUnit(int unitId)
     {
         var result = _enrolledCourseService.GetUnit(unitId, User.LearnerId());
+        return CreateResponse(result);
+    }
+
+    [HttpPost("{courseId:int}/units/mastered")]
+    public ActionResult<List<int>> GetMasteredUnitIds([FromBody] List<int> unitIds)
+    {
+        var result = _progressService.GetMasteredUnitIds(unitIds, User.LearnerId());
         return CreateResponse(result);
     }
 }

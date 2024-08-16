@@ -19,3 +19,14 @@ INSERT INTO "learningTasks"."LearningTasks"(
 INSERT INTO "learningTasks"."LearningTasks"(
     "Id", "UnitId", "Name", "Description", "IsTemplate", "MaxPoints", "Order")
 	VALUES (-7, -2, 'SeventhTask', 'SeventhDescription', false, 10, 7);
+
+
+INSERT INTO "learningTasks"."LearningTasks"(
+    "Id", "UnitId", "Name", "Description", "IsTemplate", "MaxPoints", "Order")
+	VALUES (-50, -50, 'MasteryTest', 'MasteryTest', false, 10, 1);
+INSERT INTO "learningTasks"."LearningTasks"(
+    "Id", "UnitId", "Name", "Description", "IsTemplate", "MaxPoints", "Order")
+	VALUES (-51, -51, 'MasteryTest2', 'MasteryTest2', false, 10, 1);
+INSERT INTO "learningTasks"."LearningTasks"(
+    "Id", "UnitId", "Name", "Description", "IsTemplate", "MaxPoints", "Order")
+	VALUES (-52, -51, 'MasteryTest3', 'MasteryTest3', false, 10, 2);

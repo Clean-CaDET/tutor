@@ -6,7 +6,6 @@ namespace Tutor.KnowledgeComponents.API.Public.Learning;
 
 public interface IStructureService
 {
-    Result<List<int>> GetMasteredUnitIds(List<int> unitIds, int learnerId);
     Result<List<KcWithMasteryDto>> GetKcsWithMasteries(int unitId, int learnerId);
     Result<KnowledgeComponentDto> GetKnowledgeComponent(int kcId, int learnerId);
 }
