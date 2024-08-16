@@ -10,4 +10,5 @@ public interface IUnitEnrollmentRepository
     List<UnitEnrollment> GetActiveEnrollmentsForCourse(int courseId);
 
     List<UnitEnrollment> GetEnrolledUnits(int courseId, int learnerId);
+    List<UnitEnrollment> GetEnrollmentsWithStartBetweenDates(int learnerId, DateTime startDate, DateTime endDate);
 }

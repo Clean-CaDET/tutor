@@ -11,11 +11,13 @@ namespace Tutor.Courses.Core.UseCases.Authoring;
 public class UnitService : CrudService<KnowledgeUnitDto, KnowledgeUnit>, IUnitService
 {
     private readonly IOwnedCourseRepository _ownedCourseRepository;
+    private readonly IUnitEnrollmentRepository _unitEnrollmentRepository;
 
-    public UnitService(IMapper mapper, ICrudRepository<KnowledgeUnit> unitRepository,
-        IOwnedCourseRepository ownedCourseRepository, ICoursesUnitOfWork unitOfWork) : base(unitRepository, unitOfWork, mapper)
+    public UnitService(IMapper mapper, ICrudRepository<KnowledgeUnit> unitRepository, IOwnedCourseRepository ownedCourseRepository,
+        IUnitEnrollmentRepository unitEnrollmentRepository, ICoursesUnitOfWork unitOfWork) : base(unitRepository, unitOfWork, mapper)
     {
         _ownedCourseRepository = ownedCourseRepository;
+        _unitEnrollmentRepository = unitEnrollmentRepository;
     }
 
     public Result<KnowledgeUnitDto> Create(KnowledgeUnitDto unit, int instructorId)
@@ -40,5 +42,15 @@ public class UnitService : CrudService<KnowledgeUnitDto, KnowledgeUnit>, IUnitSe
             return Result.Fail(FailureCode.Forbidden);
 
         return Delete(id);
+    }
+
+    public Result<List<KnowledgeUnitDto>> GetUnitsStartedDuringWeekBeforeDate(int courseId, int learnerId, DateTime date, int instructorId)
+    {
+        if (!_ownedCourseRepository.IsCourseOwner(courseId, instructorId))
+            return Result.Fail(FailureCode.Forbidden);
+
+        List<UnitEnrollment> unitEnrollments = _unitEnrollmentRepository.GetEnrollmentsWithStartBetweenDates(learnerId, date.AddDays(-8), date);
+        List<KnowledgeUnit> knowledgeUnits = unitEnrollments.Select(ue => ue.KnowledgeUnit).Where(ku => ku.CourseId == courseId).ToList();
+        return MapToDto(knowledgeUnits);
     }
 }

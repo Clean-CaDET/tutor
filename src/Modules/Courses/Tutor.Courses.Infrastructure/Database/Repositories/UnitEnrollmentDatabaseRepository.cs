@@ -59,4 +59,11 @@ public class UnitEnrollmentDatabaseRepository : IUnitEnrollmentRepository
                          && ue.KnowledgeUnit.CourseId.Equals(courseId))
             .Include(ue => ue.KnowledgeUnit).ToList();
     }
+
+    public List<UnitEnrollment> GetEnrollmentsWithStartBetweenDates(int learnerId, DateTime startDate, DateTime endDate)
+    {
+        return _dbContext.UnitEnrollments
+            .Where(ue => ue.LearnerId == learnerId && ue.Start > startDate && ue.Start < endDate)
+            .Include(ue => ue.KnowledgeUnit).ToList();
+    }
 }

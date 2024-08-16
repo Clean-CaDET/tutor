@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Instructor.Monitoring;
+using Tutor.Courses.API.Dtos;
+using Tutor.Courses.API.Public.Authoring;
 using Tutor.LearningTasks.API.Dtos.LearningTaskProgress;
 using Tutor.LearningTasks.API.Dtos.LearningTasks;
 using Tutor.LearningTasks.API.Public.Authoring;
@@ -14,6 +16,54 @@ namespace Tutor.LearningTasks.Tests.Integration.Monitoring;
 public class TaskGradingTests : BaseLearningTasksIntegrationTest
 {
     public TaskGradingTests(LearningTasksTestFactory factory) : base(factory) { }
+
+    [Fact]
+    public void Get_units_started_during_week_before_given_date()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+
+        DateTime date = new DateTime(2021, 12, 26, 0, 0, 0, DateTimeKind.Utc);
+        var actionResult = controller.GetUnitsStartedDuringWeekBeforeDate(-1, -2, date).Result;
+        var okObjectResult = actionResult as OkObjectResult;
+        var result = okObjectResult?.Value as List<KnowledgeUnitDto>;
+
+        result.ShouldNotBeNull();
+        result.Count.ShouldBe(2);
+        result[0].Id.ShouldBe(-1);
+        result[0].Code.ShouldBe("T-1");
+        result[1].Id.ShouldBe(-2);
+        result[1].Code.ShouldBe("T-2");
+    }
+
+    [Fact]
+    public void Gets_empty_list_when_no_units_started_that_week()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+
+        DateTime date = new DateTime(2021, 12, 30, 0, 0, 0, DateTimeKind.Utc);
+        var actionResult = controller.GetUnitsStartedDuringWeekBeforeDate(-1, -2, date).Result;
+        var okObjectResult = actionResult as OkObjectResult;
+        var result = okObjectResult?.Value as List<KnowledgeUnitDto>;
+
+        result.ShouldNotBeNull();
+        result.Count.ShouldBe(0);
+    }
+
+    [Fact]
+    public void Non_owner_fails_to_get_units()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+
+        DateTime date = new DateTime(2021, 12, 30, 0, 0, 0, DateTimeKind.Utc);
+        var actionResult = controller.GetUnitsStartedDuringWeekBeforeDate(-4, -4, date).Result;
+        var objectResult = actionResult as ObjectResult;
+
+        objectResult.ShouldNotBeNull();
+        objectResult.StatusCode.ShouldBe(403);
+    }
 
     [Fact]
     public void Gets_tasks_by_unit()
@@ -155,7 +205,8 @@ public class TaskGradingTests : BaseLearningTasksIntegrationTest
 
     private static TaskGradingController CreateController(IServiceScope scope)
     {
-        return new TaskGradingController(scope.ServiceProvider.GetRequiredService<ILearningTaskService>(), scope.ServiceProvider.GetRequiredService<IGradingService>())
+        return new TaskGradingController(scope.ServiceProvider.GetRequiredService<ILearningTaskService>(), 
+            scope.ServiceProvider.GetRequiredService<IGradingService>(), scope.ServiceProvider.GetRequiredService<IUnitService>())
         {
             ControllerContext = BuildContext("-51", "instructor")
         };
