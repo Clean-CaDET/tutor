@@ -30,21 +30,21 @@ public class EnrolledCourseController : BaseApiController
     [HttpGet("{courseId:int}")]
     public ActionResult<CourseDto> GetCourseWithEnrolledAndActiveUnits(int courseId)
     {
-        var result = _enrolledCourseService.GetWithActiveUnits(courseId, User.LearnerId());
+        var result = _enrolledCourseService.GetWithAccessibleUnits(courseId, User.LearnerId());
         return CreateResponse(result);
     }
 
     [HttpGet("{courseId:int}/units/{unitId:int}")]
-    public ActionResult<KnowledgeUnitDto> GetEnrolledAndActiveUnit(int unitId)
+    public ActionResult<KnowledgeUnitDto> GetAccessibleUnit(int unitId)
     {
         var result = _enrolledCourseService.GetUnit(unitId, User.LearnerId());
         return CreateResponse(result);
     }
 
-    [HttpPost("{courseId:int}/units/mastered")]
-    public ActionResult<List<int>> GetMasteredUnitIds([FromBody] List<int> unitIds)
+    [HttpPost("{courseId:int}/units/master")]
+    public ActionResult<List<int>> CompleteMasteredUnits(int courseId, [FromBody] List<int> unitIds)
     {
-        var result = _progressService.GetMasteredUnitIds(unitIds, User.LearnerId());
+        var result = _progressService.CompleteMasteredUnits(courseId, unitIds, User.LearnerId());
         return CreateResponse(result);
     }
 }

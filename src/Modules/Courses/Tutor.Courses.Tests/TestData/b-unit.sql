@@ -26,3 +26,17 @@ VALUES (-3, 'T-3', 'T-3', 'T-3', -2, 3);
 INSERT INTO courses."KnowledgeUnits"(
     "Id", "Name", "Code", "Goals", "CourseId", "Order")
 VALUES (-4, 'T-4', 'T-4', 'T-4', -1, 3);
+
+
+
+
+
+INSERT INTO courses."Courses"(
+    "Id", "Code", "Name", "Description", "IsArchived", "StartDate")
+VALUES (-50, 'Mastered Unit Tests', 'Mastered Unit Tests', '', false, '9/11/2022 12:00:01 PM');
+INSERT INTO courses."KnowledgeUnits"(
+    "Id", "Name", "Code", "Goals", "CourseId", "Order")
+VALUES (-50, 'Mastered Unit Tests 1', 'Mastered Unit Tests 1', '', -50, 1);
+INSERT INTO courses."KnowledgeUnits"(
+    "Id", "Name", "Code", "Goals", "CourseId", "Order")
+VALUES (-51, 'Mastered Unit Tests 2', 'Mastered Unit Tests 2', '', -50, 2);

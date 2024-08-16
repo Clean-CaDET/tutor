@@ -21,6 +21,6 @@ public class AccessServices : IAccessServices
 
     public bool IsEnrolledInUnit(int unitId, int learnerId)
     {
-        return _enrollmentService.HasActiveEnrollment(unitId, learnerId);
+        return _enrollmentService.HasAccessibleEnrollment(unitId, learnerId);
     }
 }

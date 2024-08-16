@@ -5,6 +5,8 @@ using Tutor.API.Controllers.Learner;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Public.Learning;
+using Tutor.Courses.Core.Domain;
+using Tutor.Courses.Infrastructure.Database;
 
 namespace Tutor.Courses.Tests.Integration.Learning;
 
@@ -58,7 +60,7 @@ public class EnrolledCourseTests : BaseCoursesIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
 
-        var unit = ((OkObjectResult)controller.GetEnrolledAndActiveUnit(-1).Result)?.Value as KnowledgeUnitDto;
+        var unit = ((OkObjectResult)controller.GetAccessibleUnit(-1).Result)?.Value as KnowledgeUnitDto;
 
         unit.ShouldNotBeNull();
         unit.Id.ShouldBe(-1);
@@ -66,15 +68,23 @@ public class EnrolledCourseTests : BaseCoursesIntegrationTest
 
     [Theory]
     [MemberData(nameof(UnitIds))]
-    public void Retrieves_mastered_unit_ids(List<int> unitIds, int expectedCount)
+    public void Retrieves_mastered_unit_ids(int courseId, List<int> unitIds, List<int> expectedUnits)
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-4");
+        var dbContext = scope.ServiceProvider.GetRequiredService<CoursesContext>();
+        dbContext.Database.BeginTransaction();
+        
+        var masteredUnitIds = ((OkObjectResult)controller.CompleteMasteredUnits(courseId, unitIds).Result)?.Value as List<int>;
 
-        var masteredUnitIds = ((OkObjectResult)controller.GetMasteredUnitIds(unitIds).Result)?.Value as List<int>;
-
+        dbContext.ChangeTracker.Clear();
         masteredUnitIds.ShouldNotBeNull();
-        masteredUnitIds.Count.ShouldBe(expectedCount);
+        masteredUnitIds.Count.ShouldBe(expectedUnits.Count);
+        masteredUnitIds.All(expectedUnits.Contains).ShouldBeTrue();
+        var storedEnrollments =
+            dbContext.UnitEnrollments.Where(e => expectedUnits.Contains(e.KnowledgeUnitId)).ToList();
+        storedEnrollments.ShouldNotBeNull();
+        storedEnrollments.All(e => e.Status == EnrollmentStatus.Completed).ShouldBeTrue();
     }
 
     public static IEnumerable<object[]> UnitIds()
@@ -83,18 +93,15 @@ public class EnrolledCourseTests : BaseCoursesIntegrationTest
         {
             new object[]
             {
+                -1,
                 new List<int> {-4},
-                1
+                new List<int> {-4},
             },
             new object[]
             {
+                -50,
                 new List<int> {-50, -51},
-                1
-            },
-            new object[]
-            {
-                new List<int> {-4, -50, -51},
-                2
+                new List<int> {-50}
             }
         };
     }

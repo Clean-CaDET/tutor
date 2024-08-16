@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using FluentResults;
-using System.Threading.Tasks;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Dtos;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge;

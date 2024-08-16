@@ -8,7 +8,6 @@ using Tutor.LearningTasks.API.Public.Learning;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
 using Tutor.LearningTasks.Core.Domain.LearningTasks;
 using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
-using TaskStatus = Tutor.LearningTasks.Core.Domain.LearningTaskProgress.TaskStatus;
 
 namespace Tutor.LearningTasks.Core.UseCases.Learning;
 

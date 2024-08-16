@@ -4,5 +4,5 @@ namespace Tutor.Courses.API.Public.Learning;
 
 public interface IUnitProgressService
 {
-    Result<List<int>> GetMasteredUnitIds(List<int> unitIds, int learnerId);
+    Result<List<int>> CompleteMasteredUnits(int courseId, List<int> unitIds, int learnerId);
 }

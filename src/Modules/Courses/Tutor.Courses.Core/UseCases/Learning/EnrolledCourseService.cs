@@ -28,30 +28,30 @@ public class EnrolledCourseService : BaseService<CourseDto, Course>, IEnrolledCo
         return MapToDto(result);
     }
 
-    public Result<CourseDto> GetWithActiveUnits(int courseId, int learnerId)
+    public Result<CourseDto> GetWithAccessibleUnits(int courseId, int learnerId)
     {
         var course = _groupRepository.GetEnrolledCourse(courseId, learnerId);
         if (course == null) return Result.Fail(FailureCode.Forbidden);
 
         var allEnrollments = _unitEnrollmentRepository.GetEnrolledUnits(courseId, learnerId);
         var activeUnits = allEnrollments
-            .Where(e => e.IsActive())
+            .Where(e => e.IsAccessible())
             .Select(e => e.KnowledgeUnit).ToList();
         course.KnowledgeUnits = activeUnits;
 
         return MapToDto(course);
     }
 
-    public bool HasActiveEnrollment(int unitId, int learnerId)
+    public bool HasAccessibleEnrollment(int unitId, int learnerId)
     {
         var enrollment = _unitEnrollmentRepository.Get(unitId, learnerId);
-        return enrollment != null && enrollment.IsActive();
+        return enrollment != null && enrollment.IsAccessible();
     }
 
     public Result<KnowledgeUnitDto> GetUnit(int unitId, int learnerId)
     {
         var enrollment = _unitEnrollmentRepository.Get(unitId, learnerId);
-        if(enrollment == null || !enrollment.IsActive())
+        if(enrollment == null || !enrollment.IsAccessible())
             return Result.Fail(FailureCode.Forbidden);
 
         return _mapper.Map<KnowledgeUnitDto>(enrollment.KnowledgeUnit);

@@ -39,6 +39,14 @@ INSERT INTO courses."UnitEnrollments"(
     "Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
 VALUES (-411, -4, -4, '2021-12-19 21:29:50.379749+01', 1);
 
+INSERT INTO courses."UnitEnrollments"(
+    "Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
+VALUES (-50, -4, -50, '2021-12-19 21:29:50.379749+01', 1);
+INSERT INTO courses."UnitEnrollments"(
+    "Id", "LearnerId", "KnowledgeUnitId", "Start", "Status")
+VALUES (-51, -4, -51, '2021-12-19 21:29:50.379749+01', 2);
+
+
 INSERT INTO courses."CourseOwnerships"(
     "Id", "CourseId", "InstructorId")
 VALUES (-1, -1, -51);
