@@ -53,6 +53,13 @@ public class UnitEnrollmentDatabaseRepository : IUnitEnrollmentRepository
                          && (ue.Status == EnrollmentStatus.Active || ue.Status == EnrollmentStatus.Completed)).ToList();
     }
 
+    public List<UnitEnrollment> GetStartedInDateRange(int learnerId, DateTime start, DateTime end)
+    {
+        return _dbContext.UnitEnrollments
+            .Where(ue => ue.LearnerId == learnerId && ue.Start > start && ue.Start < end)
+            .Include(ue => ue.KnowledgeUnit).ToList();
+    }
+
     public List<UnitEnrollment> GetEnrolledUnits(int courseId, int learnerId)
     {
         return _dbContext.UnitEnrollments

@@ -11,18 +11,20 @@ using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.LearningTasks.Core.UseCases.Learning;
 
-public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, ITaskProgressService, ITaskProgressQuerier
+public class TaskProgressService : BaseService<TaskProgressDto, TaskProgress>, ITaskProgressService, ITaskProgressQuerier
 {
     private readonly ITaskProgressRepository _progressRepository;
     private readonly IAccessServices _accessServices;
     private readonly ILearningTaskRepository _taskRepository;
+    private readonly ILearningTasksUnitOfWork _unitOfWork;
 
     public TaskProgressService(ITaskProgressRepository progressRepository, IAccessServices accessServices,
-        ILearningTaskRepository taskRepository, ILearningTasksUnitOfWork unitOfWork, IMapper mapper) : base(progressRepository, unitOfWork, mapper)
+        ILearningTaskRepository taskRepository, ILearningTasksUnitOfWork unitOfWork, IMapper mapper) : base(mapper)
     {
         _progressRepository = progressRepository;
         _accessServices = accessServices;
         _taskRepository = taskRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public Result<TaskProgressDto> GetOrCreate(int unitId, int taskId, int learnerId)
@@ -31,17 +33,22 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
             return Result.Fail(FailureCode.Forbidden);
 
         var taskProgress = _progressRepository.GetByTask(taskId, learnerId);
-        if(taskProgress == null)
-            return Create(taskId, learnerId);
-
+        if (taskProgress == null)
+        {
+            var creationResult = Create(taskId, learnerId);
+            if (creationResult.IsFailed) return Result.Fail(creationResult.Errors);
+            taskProgress = creationResult.Value;
+        }
+        
         taskProgress.TaskOpened();
         _progressRepository.UpdateEvents(taskProgress);
-        UnitOfWork.Save();
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
 
         return MapToDto(taskProgress);
     }
 
-    private Result<TaskProgressDto> Create(int taskId, int learnerId)
+    private Result<TaskProgress> Create(int taskId, int learnerId)
     {
         var learningTask = _taskRepository.Get(taskId);
         if (learningTask == null)
@@ -49,11 +56,7 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
         if (learningTask.IsTemplate)
             return Result.Fail(FailureCode.Forbidden);
 
-        TaskProgress taskProgress = new(learningTask.Steps!, learningTask.Id, learnerId);
-        taskProgress.TaskOpened();
-        _progressRepository.UpdateEvents(taskProgress);
-
-        return Create(MapToDto(taskProgress));
+        return new TaskProgress(learningTask.Steps!, learningTask.Id, learnerId);
     }
 
     public Result<TaskProgressDto> ViewStep(int unitId, int id, int stepId, int learnerId)
@@ -66,7 +69,10 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
         taskProgress.ViewStep(stepId);
         _progressRepository.UpdateEvents(taskProgress);
 
-        return Update(taskProgress);
+        var updateResult = _unitOfWork.Save();
+        if (updateResult.IsFailed) return updateResult;
+
+        return MapToDto(taskProgress);
     }
 
     public Result<TaskProgressDto> SubmitAnswer(int unitId, int id, StepProgressDto stepProgress, int learnerId)
@@ -79,7 +85,10 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
         taskProgress.SubmitAnswer(stepProgress.StepId, stepProgress.Answer!);
         _progressRepository.UpdateEvents(taskProgress);
 
-        return Update(taskProgress);
+        var updateResult = _unitOfWork.Save();
+        if (updateResult.IsFailed) return updateResult;
+
+        return MapToDto(taskProgress);
     }
 
     public Result OpenSubmission(int unitId, int id, int stepId, int learnerId)
@@ -128,7 +137,7 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
         action(taskProgress);
         _progressRepository.UpdateEvents(taskProgress);
 
-        return UnitOfWork.Save();
+        return _unitOfWork.Save();
     }
 
     private Result<TaskProgress> GetTaskProgress(int unitId, int learnerId, int progressId)
@@ -147,9 +156,9 @@ public class TaskProgressService : CrudService<TaskProgressDto, TaskProgress>, I
     {
         var tasks = _taskRepository.GetNonTemplateByUnit(unitId);
         var taskIds = tasks.Select(task => task.Id).ToList();
-        var progresses = _progressRepository.GetByTasks(taskIds, learnerId);
+        var doneCount = _progressRepository.CountCompletedOrGraded(taskIds, learnerId);
 
-        return new Tuple<int, int>(tasks.Count, progresses.Count(p => p.IsCompleted()));
+        return new Tuple<int, int>(tasks.Count, doneCount);
     }
 
     public Result<List<int>> GetCompletedUnitIds(List<int> unitIds, int learnerId)

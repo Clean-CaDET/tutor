@@ -16,3 +16,9 @@ INSERT INTO "learningTasks"."Standards"(
 INSERT INTO "learningTasks"."Standards"(
     "Id", "Name", "Description", "MaxPoints", "ActivityId")
 	VALUES (-6, 'Standard', 'Description', 5, -6);
+INSERT INTO "learningTasks"."Standards"(
+    "Id", "Name", "Description", "MaxPoints", "ActivityId")
+	VALUES (-7, 'Standard', 'Description', 5, -9);
+INSERT INTO "learningTasks"."Standards"(
+    "Id", "Name", "Description", "MaxPoints", "ActivityId")
+	VALUES (-8, 'Standard', 'Description', 10, -10);

@@ -26,12 +26,10 @@ public class TaskProgress : EventSourcedAggregateRoot
 
     private void CreateStepProgresses(List<Activity> steps)
     {
-        StepProgresses = new List<StepProgress>();
-        foreach (var step in steps)
-        {
-            if (step.ParentId == 0)
-                StepProgresses.Add(new StepProgress(step.Id, LearnerId));
-        }
+        StepProgresses = steps
+            .Where(step => step.ParentId == 0)
+            .Select(step => new StepProgress(step.Id, LearnerId, step.Standards!))
+            .ToList();
     }
 
     public bool IsCompleted()
@@ -47,6 +45,17 @@ public class TaskProgress : EventSourcedAggregateRoot
         if (allStepsAnswered)
         {
             Causes(new TaskCompleted());
+        }
+    }
+
+    public void SubmitGrade(int stepId, List<StandardEvaluation> evaluations, string comment)
+    {
+        Causes(new StepGraded(stepId, evaluations, comment));
+
+        var allStepsAnswered = StepProgresses!.All(s => s.Status == StepStatus.Graded);
+        if (allStepsAnswered)
+        {
+            Causes(new TaskGraded());
         }
     }
 
@@ -117,9 +126,24 @@ public class TaskProgress : EventSourcedAggregateRoot
         stepProgress?.SubmitAnswer(answer);
     }
 
+    private void When(StepGraded @event)
+    {
+        var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(@event.StepId));
+        stepProgress?.SubmitGrade(@event.Evaluations, @event.Comment);
+    }
+
     private void When(TaskCompleted @event)
     {
         Status = TaskStatus.Completed;
+    }
+
+    private void When(TaskGraded @event)
+    {
+        foreach (var stepProgress in StepProgresses!)
+        {
+            TotalScore += stepProgress.Evaluations!.Sum(e => e.Points);
+        }
+        Status = TaskStatus.Graded;
     }
 
     private void When(StepOpened @event)

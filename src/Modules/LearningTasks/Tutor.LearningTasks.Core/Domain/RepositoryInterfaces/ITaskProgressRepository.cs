@@ -9,4 +9,5 @@ public interface ITaskProgressRepository : ICrudRepository<TaskProgress>
     void UpdateEvents(TaskProgress taskProgress);
     TaskProgress? GetByTask(int taskId, int learnerId);
     List<TaskProgress> GetByTasks(List<int> taskIds, int learnerId);
+    int CountCompletedOrGraded(List<int> taskIds, int learnerId);
 }

@@ -35,12 +35,19 @@ public class LearningTasksContext : DbContext
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<Activity>().HasIndex(a => new { a.LearningTaskId, a.Code }).IsUnique();
+        modelBuilder.Entity<StepProgress>().Property(s => s.Evaluations).HasColumnType("jsonb");
 
         modelBuilder.Entity<TaskProgress>()
             .HasMany(t => t.StepProgresses)
             .WithOne()
             .HasForeignKey("TaskProgressId")
             .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<LearningTask>()
+            .HasMany<TaskProgress>()
+            .WithOne()
+            .HasForeignKey(tp => tp.LearningTaskId)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<StoredDomainEvent>().Property(e => e.DomainEvent).HasColumnType("jsonb");
