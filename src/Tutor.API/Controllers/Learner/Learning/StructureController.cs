@@ -12,16 +12,10 @@ namespace Tutor.API.Controllers.Learner.Learning;
 public class StructureController : BaseApiController
 {
     private readonly IStructureService _structureService;
+
     public StructureController(IStructureService structureService)
     {
         _structureService = structureService;
-    }
-
-    [HttpPost("units/mastered")]
-    public ActionResult<List<int>> GetMasteredUnitIds([FromBody] List<int> unitIds)
-    {
-        var result = _structureService.GetMasteredUnitIds(unitIds, User.LearnerId());
-        return CreateResponse(result);
     }
 
     [HttpGet("units/{unitId:int}/masteries")]

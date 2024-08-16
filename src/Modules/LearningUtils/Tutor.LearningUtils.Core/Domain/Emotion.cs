@@ -1,5 +1,4 @@
-﻿using System;
-using Tutor.BuildingBlocks.Core.Domain;
+﻿using Tutor.BuildingBlocks.Core.Domain;
 
 namespace Tutor.LearningUtils.Core.Domain;
 

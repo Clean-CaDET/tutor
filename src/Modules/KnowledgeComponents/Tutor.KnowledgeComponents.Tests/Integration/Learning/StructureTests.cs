@@ -14,19 +14,6 @@ public class StructureTests : BaseKnowledgeComponentsIntegrationTest
 {
     public StructureTests(KnowledgeComponentsTestFactory factory) : base(factory) {}
 
-    [Fact]
-    public void Retrieves_mastered_unit_ids()
-    {
-        using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope, "-4");
-
-        var masteredUnitIds = ((OkObjectResult)controller.GetMasteredUnitIds(new List<int> {-4}).Result)?.Value as List<int>;
-
-        masteredUnitIds.ShouldNotBeNull();
-        masteredUnitIds.Count.ShouldBe(1);
-        masteredUnitIds.ShouldContain(-4);
-    }
-
     [Theory]
     [MemberData(nameof(KnowledgeComponentMasteries))]
     public void Retrieves_kc_mastery_for_unit(int unitId, List<KnowledgeComponentMasteryDto> expectedResult)

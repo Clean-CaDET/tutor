@@ -10,4 +10,7 @@ public class KnowledgeUnitDto
     public string? Goals { get; set; }
     public string? Guidelines { get; set; }
     public int Order { get; set; }
+    
+    public DateTime? BestBefore { get; set; }
+    public string? EnrollmentStatus { get; set; }
 }

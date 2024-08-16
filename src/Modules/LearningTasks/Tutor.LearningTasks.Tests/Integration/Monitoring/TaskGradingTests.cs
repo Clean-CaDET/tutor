@@ -24,7 +24,7 @@ public class TaskGradingTests : BaseLearningTasksIntegrationTest
         var controller = CreateController(scope);
 
         DateTime date = new DateTime(2021, 12, 26, 0, 0, 0, DateTimeKind.Utc);
-        var actionResult = controller.GetUnitsStartedDuringWeekBeforeDate(-1, -2, date).Result;
+        var actionResult = controller.GetUnitsForWeek(-1, -2, date).Result;
         var okObjectResult = actionResult as OkObjectResult;
         var result = okObjectResult?.Value as List<KnowledgeUnitDto>;
 
@@ -43,7 +43,7 @@ public class TaskGradingTests : BaseLearningTasksIntegrationTest
         var controller = CreateController(scope);
 
         DateTime date = new DateTime(2021, 12, 30, 0, 0, 0, DateTimeKind.Utc);
-        var actionResult = controller.GetUnitsStartedDuringWeekBeforeDate(-1, -2, date).Result;
+        var actionResult = controller.GetUnitsForWeek(-1, -2, date).Result;
         var okObjectResult = actionResult as OkObjectResult;
         var result = okObjectResult?.Value as List<KnowledgeUnitDto>;
 
@@ -58,7 +58,7 @@ public class TaskGradingTests : BaseLearningTasksIntegrationTest
         var controller = CreateController(scope);
 
         DateTime date = new DateTime(2021, 12, 30, 0, 0, 0, DateTimeKind.Utc);
-        var actionResult = controller.GetUnitsStartedDuringWeekBeforeDate(-4, -4, date).Result;
+        var actionResult = controller.GetUnitsForWeek(-4, -4, date).Result;
         var objectResult = actionResult as ObjectResult;
 
         objectResult.ShouldNotBeNull();

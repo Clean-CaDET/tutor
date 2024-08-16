@@ -26,10 +26,9 @@ public class TaskGradingController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<KnowledgeUnitDto>> GetUnitsStartedDuringWeekBeforeDate([FromQuery(Name = "courseId")] int courseId,
-        [FromQuery(Name = "learnerId")] int learnerId, [FromQuery(Name = "date")] DateTime date)
+    public ActionResult<List<KnowledgeUnitDto>> GetUnitsForWeek([FromQuery] int courseId, [FromQuery] int learnerId, [FromQuery] DateTime date)
     {
-        var result = _unitService.GetUnitsStartedDuringWeekBeforeDate(courseId, learnerId, DateTime.SpecifyKind(date, DateTimeKind.Utc), User.InstructorId());
+        var result = _unitService.GetUnitsForWeek(courseId, learnerId, DateTime.SpecifyKind(date, DateTimeKind.Utc), User.InstructorId());
         return CreateResponse(result);
     }
 

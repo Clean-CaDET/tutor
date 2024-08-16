@@ -32,6 +32,11 @@ public class TaskProgress : EventSourcedAggregateRoot
             .ToList();
     }
 
+    public bool IsCompleted()
+    {
+        return Status == TaskStatus.Completed || Status == TaskStatus.Graded;
+    }
+
     public void SubmitAnswer(int stepId, string answer)
     {
         Causes(new StepSubmitted(stepId, answer));

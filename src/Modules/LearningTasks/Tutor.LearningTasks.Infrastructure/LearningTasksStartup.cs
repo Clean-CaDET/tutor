@@ -40,8 +40,8 @@ public static class LearningTasksStartup
 
     private static void SetupCore(IServiceCollection services)
     {
-        services.AddProxiedScoped<ILearningTaskService, LearningTaskProgressService>();
-        services.AddProxiedScoped<ILearningTaskCloner, LearningTaskProgressService>();
+        services.AddProxiedScoped<ILearningTaskService, LearningTaskService>();
+        services.AddProxiedScoped<ILearningTaskCloner, LearningTaskService>();
         services.AddProxiedScoped<ITaskService, TaskService>();
         services.AddProxiedScoped<ITaskProgressService, TaskProgressService>();
         services.AddProxiedScoped<ITaskProgressQuerier, TaskProgressService>();

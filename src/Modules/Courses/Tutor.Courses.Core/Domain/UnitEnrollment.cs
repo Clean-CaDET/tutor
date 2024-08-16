@@ -23,9 +23,10 @@ public class UnitEnrollment : Entity
         Status = EnrollmentStatus.Active;
     }
 
-    public bool IsActive()
+    public bool IsAccessible()
     {
-        return Status == EnrollmentStatus.Active && Start < DateTime.Now;
+        return (Status == EnrollmentStatus.Active || Status == EnrollmentStatus.Completed)
+               && Start < DateTime.Now;
     }
 
     public void Activate(DateTime availableFrom, DateTime? bestBefore)

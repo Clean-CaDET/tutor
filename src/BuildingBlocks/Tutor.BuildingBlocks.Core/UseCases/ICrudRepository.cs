@@ -1,5 +1,4 @@
 ﻿using Tutor.BuildingBlocks.Core.Domain;
-using FluentResults;
 
 namespace Tutor.BuildingBlocks.Core.UseCases;
 

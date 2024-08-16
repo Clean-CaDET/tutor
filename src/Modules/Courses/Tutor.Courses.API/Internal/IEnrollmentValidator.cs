@@ -2,5 +2,5 @@
 
 public interface IEnrollmentValidator
 {
-    bool HasActiveEnrollment(int unitId, int learnerId);
+    bool HasAccessibleEnrollment(int unitId, int learnerId);
 }

@@ -32,11 +32,11 @@ public class AccessServices : IAccessService
     public bool IsEnrolledInKc(int kcId, int learnerId)
     {
         var kc = _kcRepository.Get(kcId);
-        return kc != null && _enrollmentValidator.HasActiveEnrollment(kc.KnowledgeUnitId, learnerId);
+        return kc != null && _enrollmentValidator.HasAccessibleEnrollment(kc.KnowledgeUnitId, learnerId);
     }
 
     public bool IsEnrolledInUnit(int unitId, int learnerId)
     {
-        return _enrollmentValidator.HasActiveEnrollment(unitId, learnerId);
+        return _enrollmentValidator.HasAccessibleEnrollment(unitId, learnerId);
     }
 }
