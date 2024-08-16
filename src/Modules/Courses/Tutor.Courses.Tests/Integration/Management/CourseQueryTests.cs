@@ -22,8 +22,8 @@ public class CourseQueryTests : BaseCoursesIntegrationTest
         var result = ((OkObjectResult)controller.GetAll(0, 0).Result)?.Value as PagedResult<CourseDto>;
 
         result.ShouldNotBeNull();
-        result.Results.Count.ShouldBe(5);
-        result.TotalCount.ShouldBe(5);
+        result.Results.Count.ShouldBe(6);
+        result.TotalCount.ShouldBe(6);
     }
 
     private static CourseController CreateController(IServiceScope scope)

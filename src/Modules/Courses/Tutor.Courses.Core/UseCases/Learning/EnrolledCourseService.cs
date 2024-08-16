@@ -33,13 +33,31 @@ public class EnrolledCourseService : BaseService<CourseDto, Course>, IEnrolledCo
         var course = _groupRepository.GetEnrolledCourse(courseId, learnerId);
         if (course == null) return Result.Fail(FailureCode.Forbidden);
 
-        var allEnrollments = _unitEnrollmentRepository.GetEnrolledUnits(courseId, learnerId);
-        var activeUnits = allEnrollments
-            .Where(e => e.IsAccessible())
-            .Select(e => e.KnowledgeUnit).ToList();
-        course.KnowledgeUnits = activeUnits;
+        var accessibleEnrollments = GetAccessibleEnrollments(courseId, learnerId);
 
-        return MapToDto(course);
+        return CreateDto(course, accessibleEnrollments);
+    }
+
+    private List<UnitEnrollment> GetAccessibleEnrollments(int courseId, int learnerId)
+    {
+        return _unitEnrollmentRepository
+            .GetEnrolledUnits(courseId, learnerId)
+            .Where(e => e.IsAccessible())
+            .ToList();
+    }
+
+    private Result<CourseDto> CreateDto(Course course, List<UnitEnrollment> accessibleEnrollments)
+    {
+        var courseDto = MapToDto(course);
+        courseDto.KnowledgeUnits = new List<KnowledgeUnitDto>(accessibleEnrollments.Count);
+        foreach (var enrollment in accessibleEnrollments)
+        {
+            var unitDto = _mapper.Map<KnowledgeUnitDto>(enrollment.KnowledgeUnit);
+            unitDto.BestBefore = enrollment.BestBefore;
+            unitDto.EnrollmentStatus = enrollment.Status.ToString();
+            courseDto.KnowledgeUnits.Add(unitDto);
+        }
+        return courseDto;
     }
 
     public bool HasAccessibleEnrollment(int unitId, int learnerId)
