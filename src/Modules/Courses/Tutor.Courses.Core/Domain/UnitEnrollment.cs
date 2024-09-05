@@ -31,8 +31,6 @@ public class UnitEnrollment : Entity
 
     public void Activate(DateTime availableFrom, DateTime? bestBefore)
     {
-        if (Status == EnrollmentStatus.Active) return;
-
         Status = EnrollmentStatus.Active;
         Start = availableFrom;
         BestBefore = bestBefore;

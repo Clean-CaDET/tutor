@@ -44,12 +44,12 @@ public class UnitService : CrudService<KnowledgeUnitDto, KnowledgeUnit>, IUnitSe
         return Delete(id);
     }
 
-    public Result<List<KnowledgeUnitDto>> GetUnitsForWeek(int courseId, int learnerId, DateTime date, int instructorId)
+    public Result<List<KnowledgeUnitDto>> GetUnitsForWeek(int courseId, int learnerId, DateTime weekEnd, int instructorId)
     {
         if (!_ownedCourseRepository.IsCourseOwner(courseId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        var enrollments = _enrollmentRepository.GetStartedInDateRange(learnerId, date.AddDays(-8), date);
+        var enrollments = _enrollmentRepository.GetStartedInDateRange(learnerId, weekEnd.AddDays(-8), weekEnd);
         var units = enrollments.Select(ue => ue.KnowledgeUnit).Where(ku => ku.CourseId == courseId).ToList();
         return MapToDto(units);
     }

@@ -1,9 +1,9 @@
-﻿namespace Tutor.Courses.API.Dtos;
+﻿namespace Tutor.Courses.API.Dtos.Groups;
 
-public class InstructorDto
+public class LearnerDto
 {
     public int Id { get; set; }
-    public string Email { get; set; }
+    public string Index { get; set; }
     public string Name { get; set; }
     public string Surname { get; set; }
 }

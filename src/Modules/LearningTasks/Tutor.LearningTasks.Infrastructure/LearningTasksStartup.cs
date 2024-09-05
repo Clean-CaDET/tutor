@@ -42,6 +42,7 @@ public static class LearningTasksStartup
     {
         services.AddProxiedScoped<ILearningTaskService, LearningTaskService>();
         services.AddProxiedScoped<ILearningTaskCloner, LearningTaskService>();
+        services.AddProxiedScoped<ITaskQuerier, LearningTaskService>();
         services.AddProxiedScoped<ITaskService, TaskService>();
         services.AddProxiedScoped<ITaskProgressService, TaskProgressService>();
         services.AddProxiedScoped<ITaskProgressQuerier, TaskProgressService>();

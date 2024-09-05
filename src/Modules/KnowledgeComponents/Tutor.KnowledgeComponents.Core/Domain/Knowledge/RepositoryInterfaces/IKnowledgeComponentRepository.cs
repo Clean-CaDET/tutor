@@ -8,5 +8,4 @@ public interface IKnowledgeComponentRepository : ICrudRepository<KnowledgeCompon
     List<KnowledgeComponent> GetByUnitWithAssessments(int unitId);
     List<KnowledgeComponent> GetByUnitsWithItems(List<int> unitIds);
     List<KnowledgeComponent> GetRootKcs(List<int> unitIds);
-    int CountByUnit(int unitId);
 }

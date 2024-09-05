@@ -37,7 +37,7 @@ public class EnrolledCourseTests : BaseCoursesIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, learnerId.ToString());
 
-        var course = ((OkObjectResult)controller.GetCourseWithEnrolledAndActiveUnits(courseId).Result)?.Value as CourseDto;
+        var course = ((OkObjectResult)controller.GetCourseWithAccessibleUnits(courseId).Result)?.Value as CourseDto;
 
         course.ShouldNotBeNull();
         course.KnowledgeUnits.Count.ShouldBe(expectedUnitCount);
@@ -49,7 +49,7 @@ public class EnrolledCourseTests : BaseCoursesIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-1");
 
-        var response = (ObjectResult)controller.GetCourseWithEnrolledAndActiveUnits(-5).Result;
+        var response = (ObjectResult)controller.GetCourseWithAccessibleUnits(-5).Result;
 
         response.StatusCode.ShouldBe(403);
     }

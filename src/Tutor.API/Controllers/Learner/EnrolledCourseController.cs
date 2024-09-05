@@ -28,7 +28,7 @@ public class EnrolledCourseController : BaseApiController
     }
 
     [HttpGet("{courseId:int}")]
-    public ActionResult<CourseDto> GetCourseWithEnrolledAndActiveUnits(int courseId)
+    public ActionResult<CourseDto> GetCourseWithAccessibleUnits(int courseId)
     {
         var result = _enrolledCourseService.GetWithAccessibleUnits(courseId, User.LearnerId());
         return CreateResponse(result);

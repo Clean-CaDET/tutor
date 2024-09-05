@@ -10,7 +10,7 @@ using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.LearningTasks.Core.UseCases.Authoring;
 
-public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, ILearningTaskService, ILearningTaskCloner
+public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, ILearningTaskService, ILearningTaskCloner, ITaskQuerier
 {
     private readonly ILearningTaskRepository _taskRepository;
     private readonly IAccessServices _accessServices;
@@ -155,5 +155,11 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
             if (oldTasks[i].Steps == null) continue;
             clonedTasks[i].LinkActivityParents(oldTasks[i]);
         }
+    }
+
+    public Result<List<LearningTaskDto>> GetByUnits(List<int> unitIds)
+    {
+        var learningTasks = _taskRepository.GetNonTemplateByUnits(unitIds);
+        return MapToDto(learningTasks);
     }
 }

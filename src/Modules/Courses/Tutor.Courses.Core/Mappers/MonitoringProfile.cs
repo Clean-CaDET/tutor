@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
-using Tutor.Courses.API.Dtos;
+using Tutor.Courses.API.Dtos.Enrollments;
+using Tutor.Courses.API.Dtos.Groups;
+using Tutor.Courses.API.Dtos.Monitoring;
 using Tutor.Courses.Core.Domain;
+using Tutor.LearningTasks.API.Dtos.LearningTasks;
 
 namespace Tutor.Courses.Core.Mappers;
 
-public class GroupEnrollmentProfile : Profile
+public class MonitoringProfile : Profile
 {
-    public GroupEnrollmentProfile()
+    public MonitoringProfile()
     {
         CreateMap<LearnerGroup, GroupDto>();
         CreateMap<GroupDto, LearnerGroup>();
@@ -18,5 +21,8 @@ public class GroupEnrollmentProfile : Profile
             .ForMember(dest => dest.AvailableFrom, 
                 opt => opt.MapFrom(
                     src => src.Start));
+
+        CreateMap<KnowledgeUnit, UnitHeaderDto>();
+        CreateMap<LearningTaskDto, TaskHeaderDto>();
     }
 }

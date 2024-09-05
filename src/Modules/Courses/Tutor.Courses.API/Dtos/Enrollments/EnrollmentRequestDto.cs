@@ -1,4 +1,4 @@
-﻿namespace Tutor.Courses.API.Dtos;
+﻿namespace Tutor.Courses.API.Dtos.Enrollments;
 
 public class EnrollmentRequestDto
 {
