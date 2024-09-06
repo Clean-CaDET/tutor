@@ -67,17 +67,4 @@ public class KnowledgeMasteryDatabaseRepository<TEvent> : IKnowledgeMasteryRepos
         _dbContext.KcMasteries.Add(kcMastery);
         _eventStore.Save(kcMastery);
     }
-
-    public List<KnowledgeComponentMastery> GetByLearnersAndUnit(int unitId, int[] learnerIds)
-    {
-        var kcIds = _dbContext.KnowledgeComponents
-            .Where(kc => kc.KnowledgeUnitId == unitId)
-            .Select(kc => kc.Id);
-
-        return _dbContext.KcMasteries
-            .Where(kcm => learnerIds.Contains(kcm.LearnerId) && kcIds.Contains(kcm.KnowledgeComponentId))
-            .Include(kcm => kcm.AssessmentItemMasteries)
-            .Include(kcm => kcm.SessionTracker)
-            .ToList();
-    }
 }

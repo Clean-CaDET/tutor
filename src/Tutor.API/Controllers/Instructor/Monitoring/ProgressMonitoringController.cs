@@ -25,6 +25,13 @@ public class ProgressMonitoringController : BaseApiController
         return CreateResponse(result);
     }
 
+    [HttpPost("{learnerId:int}/statistics")]
+    public ActionResult<List<UnitHeaderDto>> GetKcAndTaskProgressAndWarnings(int learnerId, [FromQuery] int[]? unitIds, [FromBody] int[] groupMemberIds)
+    {
+        var result = _monitoringService.GetKcAndTaskProgressAndWarnings(User.InstructorId(), unitIds, learnerId, groupMemberIds);
+        return CreateResponse(result);
+    }
+
     [HttpGet("feedback")]
     public ActionResult<List<UnitProgressRatingDto>> GetLearnerFeedback([FromQuery] int[]? unitIds, [FromQuery] DateTime weekEnd)
     {

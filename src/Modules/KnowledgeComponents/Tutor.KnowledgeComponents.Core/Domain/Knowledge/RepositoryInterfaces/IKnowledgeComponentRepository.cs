@@ -6,6 +6,7 @@ public interface IKnowledgeComponentRepository : ICrudRepository<KnowledgeCompon
 {
     List<KnowledgeComponent> GetByUnit(int unitId);
     List<KnowledgeComponent> GetByUnitWithAssessments(int unitId);
+    List<KnowledgeComponent> GetByUnits(int[] unitIds);
     List<KnowledgeComponent> GetByUnitsWithItems(List<int> unitIds);
     List<KnowledgeComponent> GetRootKcs(List<int> unitIds);
 }

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
+using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.KnowledgeComponents.API.Public;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
+using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events;
 using Tutor.KnowledgeComponents.Core.UseCases;
 using Tutor.KnowledgeComponents.Core.UseCases.Monitoring;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
@@ -11,13 +13,13 @@ using Tutor.KnowledgeComponents.Infrastructure.Database;
 namespace Tutor.KnowledgeComponents.Tests.Integration.Monitoring;
 
 [Collection("Sequential")]
-public class LearnerMasteryCommandTests : BaseKnowledgeComponentsIntegrationTest
+public class MasteryFactoryTests : BaseKnowledgeComponentsIntegrationTest
 {
-    public LearnerMasteryCommandTests(KnowledgeComponentsTestFactory factory) : base(factory) {}
+    public MasteryFactoryTests(KnowledgeComponentsTestFactory factory) : base(factory) {}
     
     [Theory]
     [MemberData(nameof(TestData))]
-    public void Retrieves_kc_progress(int[] learnerIds, int expectedCountIncrement, int expectedAssessmentCountIncrement)
+    public void Initializes_masteries(int[] learnerIds, int expectedCountIncrement, int expectedAssessmentCountIncrement)
     {
         using var scope = Factory.Services.CreateScope();
         var service = CreateService(scope);
@@ -54,13 +56,12 @@ public class LearnerMasteryCommandTests : BaseKnowledgeComponentsIntegrationTest
         };
     }
 
-    private static LearnerMasteryService CreateService(IServiceScope scope)
+    private static MasteryMonitoringService CreateService(IServiceScope scope)
     {
-        return new LearnerMasteryService(
-            scope.ServiceProvider.GetRequiredService<IMapper>(),
+        return new MasteryMonitoringService(
             scope.ServiceProvider.GetRequiredService<IKnowledgeComponentRepository>(),
             scope.ServiceProvider.GetRequiredService<IKnowledgeMasteryRepository>(),
-            scope.ServiceProvider.GetRequiredService<IAccessService>(),
-            scope.ServiceProvider.GetRequiredService<IKnowledgeComponentsUnitOfWork>());
+            scope.ServiceProvider.GetRequiredService<IKnowledgeComponentsUnitOfWork>(),
+            scope.ServiceProvider.GetRequiredService<IEventStore<KnowledgeComponentEvent>>());
     }
 }

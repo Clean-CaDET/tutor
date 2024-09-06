@@ -31,7 +31,7 @@ public class StructureService : IStructureService, IKnowledgeMasteryQuerier
     public Result<List<int>> GetMasteredUnitIds(List<int> unitIds, int learnerId)
     {
         var rootKcs = _knowledgeComponentRepository.GetRootKcs(unitIds);
-        var unitIdsWithoutRootKcs = unitIds.Where(id => rootKcs.All(kc => kc.KnowledgeUnitId != id));
+        var unitsWithoutKcs = unitIds.Where(id => rootKcs.All(kc => kc.KnowledgeUnitId != id));
 
         var masteries = _knowledgeMasteryRepository
             .GetBareByKcs(rootKcs.Select(kc => kc.Id).ToList(), learnerId);
@@ -39,7 +39,7 @@ public class StructureService : IStructureService, IKnowledgeMasteryQuerier
 
         return masteredRootKcs
             .Select(kc => kc.KnowledgeUnitId)
-            .Concat(unitIdsWithoutRootKcs)
+            .Concat(unitsWithoutKcs)
             .ToList();
     }
 

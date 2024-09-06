@@ -4,10 +4,7 @@ using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Monitoring;
 using Tutor.Courses.API.Public.Monitoring;
-using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
-using Tutor.KnowledgeComponents.API.Dtos.Knowledge;
-using Tutor.KnowledgeComponents.API.Internal;
 using Tutor.LearningTasks.API.Dtos.LearningTasks;
 using Tutor.LearningTasks.API.Internal;
 
@@ -73,5 +70,14 @@ public class ProgressMonitoringService : IProgressMonitoringService
 
         var ratings = _ratingRepository.GetInDateRangeForUnits(unitIds, weekEnd.AddDays(-8), weekEnd.AddDays(8));
         return ratings.Select(_mapper.Map<UnitProgressRatingDto>).ToList();
+    }
+
+    public Result<List<UnitProgressStatisticsDto>> GetKcAndTaskProgressAndWarnings(int instructorId, int[]? unitIds, int learnerId, int[] groupMemberIds)
+    {
+        if (unitIds == null || unitIds.Length == 0) return Result.Fail(FailureCode.InvalidArgument);
+        if (!_ownedCourseRepository.IsUnitOwner(unitIds[0], instructorId))
+            return Result.Fail(FailureCode.Forbidden);
+
+        return null;
     }
 }

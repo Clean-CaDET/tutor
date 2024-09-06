@@ -21,6 +21,12 @@ public class KnowledgeComponentDatabaseRepository : CrudDatabaseRepository<Knowl
             .Where(kc => kc.KnowledgeUnitId == unitId).ToList();
     }
 
+    public List<KnowledgeComponent> GetByUnits(int[] unitIds)
+    {
+        return DbContext.KnowledgeComponents
+            .Where(kc => unitIds.Contains(kc.KnowledgeUnitId)).ToList();
+    }
+
     public List<KnowledgeComponent> GetByUnitsWithItems(List<int> unitIds)
     {
         return DbContext.KnowledgeComponents
