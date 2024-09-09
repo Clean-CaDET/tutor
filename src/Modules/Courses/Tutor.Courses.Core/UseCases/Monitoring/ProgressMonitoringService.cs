@@ -5,6 +5,7 @@ using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Monitoring;
 using Tutor.Courses.API.Public.Monitoring;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
+using Tutor.KnowledgeComponents.API.Internal;
 using Tutor.LearningTasks.API.Dtos.LearningTasks;
 using Tutor.LearningTasks.API.Internal;
 
@@ -12,20 +13,22 @@ namespace Tutor.Courses.Core.UseCases.Monitoring;
 
 public class ProgressMonitoringService : IProgressMonitoringService
 {
+    private readonly IMapper _mapper;
     private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly IUnitEnrollmentRepository _enrollmentRepository;
     private readonly IUnitProgressRatingRepository _ratingRepository;
     private readonly ITaskQuerier _taskQuerier;
-    private readonly IMapper _mapper;
+    private readonly IKcProgressService _kcProgressService;
 
-    public ProgressMonitoringService(IOwnedCourseRepository ownedCourseRepository, IUnitEnrollmentRepository enrollmentRepository,
-        IUnitProgressRatingRepository ratingRepository, ITaskQuerier taskQuerier, IMapper mapper)
+    public ProgressMonitoringService(IMapper mapper, IOwnedCourseRepository ownedCourseRepository, IUnitEnrollmentRepository enrollmentRepository,
+        IUnitProgressRatingRepository ratingRepository, ITaskQuerier taskQuerier, IKcProgressService kcProgressService)
     {
+        _mapper = mapper;
         _ownedCourseRepository = ownedCourseRepository;
         _enrollmentRepository = enrollmentRepository;
         _ratingRepository = ratingRepository;
         _taskQuerier = taskQuerier;
-        _mapper = mapper;
+        _kcProgressService = kcProgressService;
     }
 
     public Result<List<UnitHeaderDto>> GetWeeklyUnitsWithTasksAndKcs(int instructorId, int learnerId, int courseId, DateTime weekEnd)
@@ -78,6 +81,14 @@ public class ProgressMonitoringService : IProgressMonitoringService
         if (!_ownedCourseRepository.IsUnitOwner(unitIds[0], instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        return null;
+        var kcUnitSummaryStatistics = _mapper.Map<PublicKcUnitSummaryStatisticsDto>(_kcProgressService.GetProgress(learnerId, unitIds).Value);
+        // TODO: TaskStatistics
+
+        return unitIds.Select(id => new UnitProgressStatisticsDto
+        {
+            UnitId = id,
+            KcStatistics = kcUnitSummaryStatistics,
+            TaskStatistics = null
+        }).ToList();
     }
 }
