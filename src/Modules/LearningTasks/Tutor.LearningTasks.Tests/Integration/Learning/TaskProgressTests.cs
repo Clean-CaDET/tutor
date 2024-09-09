@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Learner.Learning;
-using Tutor.LearningTasks.API.Dtos.LearningTaskProgress;
+using Tutor.LearningTasks.API.Dtos.TaskProgress;
 using Tutor.LearningTasks.API.Public.Learning;
 using Tutor.LearningTasks.Infrastructure.Database;
 

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Learner.Learning;
-using Tutor.LearningTasks.API.Dtos.LearningTasks;
+using Tutor.LearningTasks.API.Dtos.Tasks;
 using Tutor.LearningTasks.API.Public.Learning;
 using Tutor.LearningTasks.Infrastructure.Database;
 

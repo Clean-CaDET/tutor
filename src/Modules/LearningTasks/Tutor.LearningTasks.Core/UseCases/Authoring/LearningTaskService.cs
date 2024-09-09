@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
-using Tutor.LearningTasks.API.Dtos.LearningTasks;
+using Tutor.LearningTasks.API.Dtos.Tasks;
 using Tutor.LearningTasks.API.Internal;
 using Tutor.LearningTasks.API.Public;
 using Tutor.LearningTasks.API.Public.Authoring;

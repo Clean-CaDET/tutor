@@ -1,6 +1,6 @@
-﻿namespace Tutor.Courses.API.Dtos.Monitoring;
+﻿namespace Tutor.LearningTasks.API.Dtos.TaskAnalytics;
 
-public class PublicTaskStatisticsDto
+public class InternalTaskProgressStatisticsDto
 {
     public int TaskId { get; set; }
     public DateTime CompletionTime { get; set; }

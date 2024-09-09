@@ -11,14 +11,13 @@ using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events.KnowledgeCom
 
 namespace Tutor.KnowledgeComponents.Core.UseCases.Monitoring;
 
-public class KcProgressService : IKcProgressService
+public class KcProgressMonitor : IKcProgressMonitor
 {
     private readonly IKnowledgeComponentRepository _kcRepository;
     private readonly IEventStore<KnowledgeComponentEvent> _eventStore;
     private readonly List<INegativePatternDetector> _negativePatternDetectors;
 
-
-    public KcProgressService(IKnowledgeComponentRepository kcRepository, IEventStore<KnowledgeComponentEvent> eventStore)
+    public KcProgressMonitor(IKnowledgeComponentRepository kcRepository, IEventStore<KnowledgeComponentEvent> eventStore)
     {
         _kcRepository = kcRepository;
         _eventStore = eventStore;
@@ -37,9 +36,9 @@ public class KcProgressService : IKcProgressService
         var kcs = _kcRepository.GetByUnits(unitIds);
         var kcIds = kcs.Select(kc => kc.Id).ToHashSet();
 
-        var orderedEvents = _eventStore.GetEventsByUserAndPrimaryEntities(learnerId, kcIds);
+        var kcEvents = _eventStore.GetEventsByUserAndPrimaryEntities(learnerId, kcIds);
 
-        return CalculateProgressStatistics(kcs, orderedEvents);
+        return CalculateProgressStatistics(kcs, kcEvents);
     }
 
     private List<InternalKcUnitSummaryStatisticsDto> CalculateProgressStatistics(List<KnowledgeComponent> kcs, List<KnowledgeComponentEvent> events)
@@ -72,7 +71,7 @@ public class KcProgressService : IKcProgressService
             UnitId = grouping.Key,
             TotalCount = grouping.Count(),
             SatisfiedCount = kcProgressStatistics.Count,
-            KcProgressStatisticsDto = kcProgressStatistics
+            KcProgressStatistics = kcProgressStatistics
         };
     }
 

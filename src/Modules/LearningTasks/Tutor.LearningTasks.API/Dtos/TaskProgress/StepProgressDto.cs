@@ -1,4 +1,4 @@
-﻿namespace Tutor.LearningTasks.API.Dtos.LearningTaskProgress;
+﻿namespace Tutor.LearningTasks.API.Dtos.TaskProgress;
 
 public class StepProgressDto
 {

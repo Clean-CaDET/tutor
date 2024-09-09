@@ -1,7 +1,7 @@
 ﻿namespace Tutor.LearningTasks.API.Public.Learning;
 
 using FluentResults;
-using Tutor.LearningTasks.API.Dtos.LearningTasks;
+using Dtos.Tasks;
 
 public interface ITaskService
 {

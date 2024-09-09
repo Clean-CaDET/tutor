@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.InstructionalItems;
-using Tutor.LearningTasks.API.Dtos.LearningTaskProgress;
+using Tutor.LearningTasks.API.Dtos.TaskProgress;
 using Tutor.LearningTasks.API.Public.Learning;
 using Tutor.Stakeholders.Infrastructure.Authentication;
 

@@ -4,7 +4,8 @@ using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Dtos.Monitoring;
 using Tutor.Courses.Core.Domain;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
-using Tutor.LearningTasks.API.Dtos.LearningTasks;
+using Tutor.LearningTasks.API.Dtos.TaskAnalytics;
+using Tutor.LearningTasks.API.Dtos.Tasks;
 
 namespace Tutor.Courses.Core.Mappers;
 
@@ -28,5 +29,8 @@ public class MonitoringProfile : Profile
         
         CreateMap<InternalKcUnitSummaryStatisticsDto, PublicKcUnitSummaryStatisticsDto>();
         CreateMap<InternalKcProgressStatisticsDto, PublicKcProgressStatisticsDto>();
+        
+        CreateMap<InternalTaskUnitSummaryStatisticsDto, PublicTaskUnitSummaryStatisticsDto>();
+        CreateMap<InternalTaskProgressStatisticsDto, PublicTaskProgressStatisticsDto>();
     }
 }

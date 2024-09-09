@@ -1,5 +1,5 @@
 ﻿using FluentResults;
-using Tutor.LearningTasks.API.Dtos.LearningTasks;
+using Tutor.LearningTasks.API.Dtos.Tasks;
 
 namespace Tutor.LearningTasks.API.Public.Authoring;
 

@@ -6,7 +6,7 @@ using Tutor.Courses.API.Dtos.Monitoring;
 using Tutor.Courses.API.Public.Monitoring;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 using Tutor.KnowledgeComponents.API.Internal;
-using Tutor.LearningTasks.API.Dtos.LearningTasks;
+using Tutor.LearningTasks.API.Dtos.Tasks;
 using Tutor.LearningTasks.API.Internal;
 
 namespace Tutor.Courses.Core.UseCases.Monitoring;
@@ -18,17 +18,21 @@ public class ProgressMonitoringService : IProgressMonitoringService
     private readonly IUnitEnrollmentRepository _enrollmentRepository;
     private readonly IUnitProgressRatingRepository _ratingRepository;
     private readonly ITaskQuerier _taskQuerier;
-    private readonly IKcProgressService _kcProgressService;
+    private readonly IKcProgressMonitor _kcProgressMonitor;
+    private readonly ITaskProgressMonitor _taskProgressMonitor;
 
-    public ProgressMonitoringService(IMapper mapper, IOwnedCourseRepository ownedCourseRepository, IUnitEnrollmentRepository enrollmentRepository,
-        IUnitProgressRatingRepository ratingRepository, ITaskQuerier taskQuerier, IKcProgressService kcProgressService)
+    public ProgressMonitoringService(IMapper mapper,
+        IOwnedCourseRepository ownedCourseRepository, IUnitEnrollmentRepository enrollmentRepository,
+        IUnitProgressRatingRepository ratingRepository, ITaskQuerier taskQuerier,
+        IKcProgressMonitor kcProgressMonitor, ITaskProgressMonitor taskProgressMonitor)
     {
         _mapper = mapper;
         _ownedCourseRepository = ownedCourseRepository;
         _enrollmentRepository = enrollmentRepository;
         _ratingRepository = ratingRepository;
         _taskQuerier = taskQuerier;
-        _kcProgressService = kcProgressService;
+        _kcProgressMonitor = kcProgressMonitor;
+        _taskProgressMonitor = taskProgressMonitor;
     }
 
     public Result<List<UnitHeaderDto>> GetWeeklyUnitsWithTasksAndKcs(int instructorId, int learnerId, int courseId, DateTime weekEnd)
@@ -81,14 +85,14 @@ public class ProgressMonitoringService : IProgressMonitoringService
         if (!_ownedCourseRepository.IsUnitOwner(unitIds[0], instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        var kcUnitSummaryStatistics = _mapper.Map<PublicKcUnitSummaryStatisticsDto>(_kcProgressService.GetProgress(learnerId, unitIds).Value);
-        // TODO: TaskStatistics
+        var kcUnitSummaryStatistics = _mapper.Map<PublicKcUnitSummaryStatisticsDto>(_kcProgressMonitor.GetProgress(learnerId, unitIds).Value);
+        var taskUnitSummaryStatistics = _mapper.Map<PublicTaskUnitSummaryStatisticsDto>(_taskProgressMonitor.GetProgress(learnerId, unitIds, groupMemberIds).Value);
 
         return unitIds.Select(id => new UnitProgressStatisticsDto
         {
             UnitId = id,
             KcStatistics = kcUnitSummaryStatistics,
-            TaskStatistics = null
+            TaskStatistics = taskUnitSummaryStatistics
         }).ToList();
     }
 }

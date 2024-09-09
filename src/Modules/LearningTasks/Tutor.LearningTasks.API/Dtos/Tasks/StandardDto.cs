@@ -1,4 +1,4 @@
-﻿namespace Tutor.LearningTasks.API.Dtos.LearningTasks;
+﻿namespace Tutor.LearningTasks.API.Dtos.Tasks;
 
 public class StandardDto
 {

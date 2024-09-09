@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Tutor.LearningTasks.API.Dtos.LearningTaskProgress;
+using Tutor.LearningTasks.API.Dtos.TaskProgress;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
 
 namespace Tutor.LearningTasks.Core.Mappers;

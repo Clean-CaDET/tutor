@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Public.Authoring;
-using Tutor.LearningTasks.API.Dtos.LearningTaskProgress;
-using Tutor.LearningTasks.API.Dtos.LearningTasks;
+using Tutor.LearningTasks.API.Dtos.TaskProgress;
+using Tutor.LearningTasks.API.Dtos.Tasks;
 using Tutor.LearningTasks.API.Public.Authoring;
 using Tutor.LearningTasks.API.Public.Monitoring;
 using Tutor.Stakeholders.Infrastructure.Authentication;
