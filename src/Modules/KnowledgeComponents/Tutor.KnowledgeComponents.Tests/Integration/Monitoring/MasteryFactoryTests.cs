@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
-using Tutor.KnowledgeComponents.API.Public;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
-using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events;
 using Tutor.KnowledgeComponents.Core.UseCases;
 using Tutor.KnowledgeComponents.Core.UseCases.Monitoring;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
@@ -56,12 +52,11 @@ public class MasteryFactoryTests : BaseKnowledgeComponentsIntegrationTest
         };
     }
 
-    private static MasteryMonitoringService CreateService(IServiceScope scope)
+    private static MasteryFactoryService CreateService(IServiceScope scope)
     {
-        return new MasteryMonitoringService(
+        return new MasteryFactoryService(
             scope.ServiceProvider.GetRequiredService<IKnowledgeComponentRepository>(),
             scope.ServiceProvider.GetRequiredService<IKnowledgeMasteryRepository>(),
-            scope.ServiceProvider.GetRequiredService<IKnowledgeComponentsUnitOfWork>(),
-            scope.ServiceProvider.GetRequiredService<IEventStore<KnowledgeComponentEvent>>());
+            scope.ServiceProvider.GetRequiredService<IKnowledgeComponentsUnitOfWork>());
     }
 }

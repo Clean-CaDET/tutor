@@ -5,28 +5,22 @@ using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.API.Internal;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
-using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.DomainServices;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events.KnowledgeComponentEvents;
 
 namespace Tutor.KnowledgeComponents.Core.UseCases.Monitoring;
 
-public class MasteryMonitoringService : IKcProgressService, IMasteryFactory
+public class KcProgressService : IKcProgressService
 {
     private readonly IKnowledgeComponentRepository _kcRepository;
-    private readonly IKnowledgeMasteryRepository _masteryRepository;
-    private readonly IKnowledgeComponentsUnitOfWork _unitOfWork;
     private readonly IEventStore<KnowledgeComponentEvent> _eventStore;
     private readonly List<INegativePatternDetector> _negativePatternDetectors;
 
 
-    public MasteryMonitoringService(IKnowledgeComponentRepository kcRepository, IKnowledgeMasteryRepository masteryRepository,
-        IKnowledgeComponentsUnitOfWork unitOfWork, IEventStore<KnowledgeComponentEvent> eventStore)
+    public KcProgressService(IKnowledgeComponentRepository kcRepository, IEventStore<KnowledgeComponentEvent> eventStore)
     {
         _kcRepository = kcRepository;
-        _masteryRepository = masteryRepository;
-        _unitOfWork = unitOfWork;
         _eventStore = eventStore;
         _negativePatternDetectors = new List<INegativePatternDetector>
         {
@@ -34,25 +28,6 @@ public class MasteryMonitoringService : IKcProgressService, IMasteryFactory
             new PatternDetectorInstruction(),
             new PatternDetectorAssessment()
         };
-    }
-
-    public Result InitializeMasteries(int unitId, int[] learnerIds)
-    {
-        Array.ForEach(learnerIds, learnerId => CreateMasteries(unitId, learnerId));
-        return _unitOfWork.Save();
-    }
-
-    private void CreateMasteries(int unitId, int learnerId)
-    {
-        var kcs = _kcRepository.GetByUnitWithAssessments(unitId);
-        foreach (var kc in kcs)
-        {
-            var assessmentMasteries = kc.AssessmentItems?
-                .OrderBy(i => i.Order)
-                .Select(item => new AssessmentItemMastery(item.Id)).ToList();
-            var kcMastery = new KnowledgeComponentMastery(learnerId, kc.Id, assessmentMasteries);
-            _masteryRepository.Create(kcMastery);
-        }
     }
 
     public Result<List<InternalKcUnitSummaryStatisticsDto>> GetProgress(int learnerId, int[] unitIds)
