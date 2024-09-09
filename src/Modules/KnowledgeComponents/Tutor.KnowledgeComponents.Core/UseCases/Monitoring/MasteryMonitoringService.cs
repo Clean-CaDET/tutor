@@ -62,9 +62,7 @@ public class MasteryMonitoringService : IKcProgressService, IMasteryFactory
         var kcs = _kcRepository.GetByUnits(unitIds);
         var kcIds = kcs.Select(kc => kc.Id).ToHashSet();
 
-        var orderedEvents = _eventStore.Events
-            .Where(e => kcIds.Contains(e.RootElement.GetProperty("KnowledgeComponentId").GetInt32()))
-            .ToList<KnowledgeComponentEvent>();
+        var orderedEvents = _eventStore.GetEventsByUserAndPrimaryEntities(learnerId, kcIds);
 
         return CalculateProgressStatistics(kcs, orderedEvents);
     }

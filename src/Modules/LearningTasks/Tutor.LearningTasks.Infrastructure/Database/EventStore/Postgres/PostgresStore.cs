@@ -1,7 +1,5 @@
 ﻿using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Core.EventSourcing;
-using Tutor.BuildingBlocks.Core.UseCases;
-using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.Postgres;
 
 namespace Tutor.LearningTasks.Infrastructure.Database.EventStore.Postgres;
@@ -11,23 +9,13 @@ public class PostgresStore<TEvent> : IEventStore<TEvent> where TEvent : DomainEv
     private readonly LearningTasksContext _eventContext;
     private readonly IEventSerializer<TEvent> _eventSerializer;
 
-    public IEventQueryable<TEvent> Events => new PostgresEventQueryable<TEvent>(_eventContext.Events, _eventSerializer);
-
     public PostgresStore(LearningTasksContext eventContext, IEventSerializer<TEvent> eventSerializer)
     {
         _eventContext = eventContext;
         _eventSerializer = eventSerializer;
     }
 
-    public async Task<PagedResult<TEvent>> GetEventsAsync(int page, int pageSize)
-    {
-        var storedEvents = await _eventContext.Events
-            .GetPaged(page, pageSize);
-
-        return new PagedResult<TEvent>(
-            storedEvents.Results.Select(e => _eventSerializer.Deserialize(e.DomainEvent)).ToList(),
-            storedEvents.TotalCount);
-    }
+    public IEventQueryable<TEvent> Events => new PostgresEventQueryable<TEvent>(_eventContext.Events, _eventSerializer);
 
     public void Save(EventSourcedAggregateRoot aggregate)
     {
@@ -35,7 +23,7 @@ public class PostgresStore<TEvent> : IEventStore<TEvent> where TEvent : DomainEv
         var aggregateType = aggregate.GetType().Name;
 
         var eventsToSave = aggregate.GetChanges().Select(
-            e => new StoredDomainEvent()
+            e => new StoredTaskDomainEvent()
             {
                 AggregateType = aggregateType,
                 AggregateId = aggregate.Id,
@@ -44,5 +32,13 @@ public class PostgresStore<TEvent> : IEventStore<TEvent> where TEvent : DomainEv
             });
         _eventContext.Events.AddRange(eventsToSave);
         aggregate.ClearChanges();
+    }
+
+    public List<TEvent> GetEventsByUserAndPrimaryEntities(int userId, HashSet<int> primaryEntityIds)
+    {
+        return _eventContext.Events
+            .Where(e => e.LearnerId == userId && primaryEntityIds.Contains(e.TaskId))
+            .Select(e => _eventSerializer.Deserialize(e.DomainEvent))
+            .ToList();
     }
 }
