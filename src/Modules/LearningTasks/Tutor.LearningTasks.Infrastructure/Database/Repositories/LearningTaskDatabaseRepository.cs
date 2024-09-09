@@ -23,7 +23,7 @@ public class LearningTaskDatabaseRepository : CrudDatabaseRepository<LearningTas
         return GetTasksWhere(t => t.UnitId == unitId);
     }
 
-    public List<LearningTask> GetByUnits(List<int> unitIds)
+    public List<LearningTask> GetByUnits(int[] unitIds)
     {
         return GetTasksWhere(t => unitIds.Contains(t.UnitId));
     }

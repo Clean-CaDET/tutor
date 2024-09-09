@@ -116,7 +116,7 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
 
     public Result CloneMany(List<Tuple<int, int>> unitIdPairs)
     {
-        var oldTasks = _taskRepository.GetByUnits(unitIdPairs.Select(u => u.Item1).ToList());
+        var oldTasks = _taskRepository.GetByUnits(unitIdPairs.Select(u => u.Item1).ToArray());
 
         UnitOfWork.BeginTransaction();
 

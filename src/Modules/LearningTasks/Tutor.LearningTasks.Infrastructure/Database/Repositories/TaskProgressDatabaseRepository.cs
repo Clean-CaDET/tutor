@@ -44,6 +44,14 @@ public class TaskProgressDatabaseRepository : CrudDatabaseRepository<TaskProgres
             .ToList();
     }
 
+    public List<TaskProgress> GetByTasksAndGroup(int[] taskIds, int[] groupMemberIds)
+    {
+        return DbContext.TaskProgresses
+            .Where(p => groupMemberIds.Contains(p.LearnerId) && taskIds.Contains(p.LearningTaskId))
+            .Include(p => p.StepProgresses)
+            .ToList();
+    }
+
     public int CountCompletedOrGraded(List<int> taskIds, int learnerId)
     {
         return DbContext.TaskProgresses

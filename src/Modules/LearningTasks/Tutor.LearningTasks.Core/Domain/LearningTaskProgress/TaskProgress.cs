@@ -144,6 +144,7 @@ public class TaskProgress : EventSourcedAggregateRoot
             TotalScore += stepProgress.Evaluations!.Sum(e => e.Points);
         }
         Status = TaskStatus.Graded;
+        @event.TotalScore = TotalScore;
     }
 
     private void When(StepOpened @event)
