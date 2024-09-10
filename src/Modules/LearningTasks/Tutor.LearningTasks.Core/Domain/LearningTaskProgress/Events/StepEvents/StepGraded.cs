@@ -1,7 +1,6 @@
-﻿namespace Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskProgressEvents;
-public class StepGraded : TaskProgressEvent
+﻿namespace Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.StepEvents;
+public class StepGraded : StepEvent
 {
-    public int StepId { get; private set; }
     public List<StandardEvaluation> Evaluations { get; private set; }
     public string Comment { get; private set; }
 

@@ -9,7 +9,7 @@ using Tutor.LearningTasks.API.Public;
 using Tutor.LearningTasks.API.Public.Authoring;
 using Tutor.LearningTasks.API.Public.Learning;
 using Tutor.LearningTasks.API.Public.Monitoring;
-using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskEvents;
 using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 using Tutor.LearningTasks.Core.Mappers;
 using Tutor.LearningTasks.Core.UseCases;
@@ -55,8 +55,8 @@ public static class LearningTasksStartup
     {
         services.AddScoped<ILearningTaskRepository, LearningTaskDatabaseRepository>();
         services.AddScoped<ITaskProgressRepository, TaskProgressDatabaseRepository>();
-        services.AddScoped(typeof(IEventStore<TaskProgressEvent>), typeof(PostgresStore<TaskProgressEvent>));
-        services.AddSingleton<IEventSerializer<TaskProgressEvent>>(new DefaultEventSerializer<TaskProgressEvent>(EventSerializationConfiguration.EventRelatedTypes));
+        services.AddScoped(typeof(IEventStore<TaskEvent>), typeof(PostgresStore<TaskEvent>));
+        services.AddSingleton<IEventSerializer<TaskEvent>>(new DefaultEventSerializer<TaskEvent>(EventSerializationConfiguration.EventRelatedTypes));
 
         services.AddScoped<ILearningTasksUnitOfWork, LearningTasksUnitOfWork>();
         services.AddDbContext<LearningTasksContext>(opt =>

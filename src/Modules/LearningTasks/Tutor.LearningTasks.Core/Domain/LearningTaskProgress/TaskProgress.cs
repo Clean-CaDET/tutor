@@ -1,7 +1,8 @@
 ﻿using FluentResults;
 using Tutor.BuildingBlocks.Core.EventSourcing;
-using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events;
-using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskProgressEvents;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.StepEvents;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.StepSupportEvents;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskEvents;
 using Tutor.LearningTasks.Core.Domain.LearningTasks;
 
 namespace Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
@@ -109,7 +110,7 @@ public class TaskProgress : EventSourcedAggregateRoot
 
     protected override void Apply(DomainEvent @event)
     {
-        if (@event is not TaskProgressEvent kcEvent) throw new EventSourcingException("Unexpected event type: " + @event.GetType());
+        if (@event is not TaskEvent kcEvent) throw new EventSourcingException("Unexpected event type: " + @event.GetType());
 
         kcEvent.LearningTaskId = LearningTaskId;
         kcEvent.LearnerId = LearnerId;
@@ -155,7 +156,7 @@ public class TaskProgress : EventSourcedAggregateRoot
         stepProgress?.MarkAsViewed();
     }
 
-    private static void When(TaskProgressEvent @event)
+    private static void When(TaskEvent @event)
     {
         // No additional actions are required for TaskOpened, SubmissionOpened, GuidanceOpened, ExampleOpened
         // ExampleVideoPlayed, ExampleVideoPaused, ExampleVideoFinished.

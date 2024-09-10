@@ -2,7 +2,7 @@
 using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
-using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskEvents;
 using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 using TaskStatus = Tutor.LearningTasks.Core.Domain.LearningTaskProgress.TaskStatus;
 
@@ -10,9 +10,9 @@ namespace Tutor.LearningTasks.Infrastructure.Database.Repositories;
 
 public class TaskProgressDatabaseRepository : CrudDatabaseRepository<TaskProgress, LearningTasksContext>, ITaskProgressRepository
 {
-    private readonly IEventStore<TaskProgressEvent> _eventStore;
+    private readonly IEventStore<TaskEvent> _eventStore;
 
-    public TaskProgressDatabaseRepository(LearningTasksContext dbContext, IEventStore<TaskProgressEvent> eventStore) : base(dbContext)
+    public TaskProgressDatabaseRepository(LearningTasksContext dbContext, IEventStore<TaskEvent> eventStore) : base(dbContext)
     {
         _eventStore = eventStore;
     }
