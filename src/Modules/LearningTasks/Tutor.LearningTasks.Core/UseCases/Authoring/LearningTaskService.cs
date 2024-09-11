@@ -157,7 +157,7 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
         }
     }
 
-    public Result<List<LearningTaskDto>> GetByUnits(List<int> unitIds)
+    public Result<List<LearningTaskDto>> GetByUnits(int[] unitIds)
     {
         var learningTasks = _taskRepository.GetNonTemplateByUnits(unitIds);
         return MapToDto(learningTasks);

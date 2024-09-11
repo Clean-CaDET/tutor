@@ -5,5 +5,5 @@ namespace Tutor.LearningTasks.API.Internal;
 
 public interface ITaskQuerier
 {
-    Result<List<LearningTaskDto>> GetByUnits(List<int> unitIds);
+    Result<List<LearningTaskDto>> GetByUnits(int[] unitIds);
 }

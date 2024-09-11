@@ -57,6 +57,7 @@ public static class KnowledgeComponentsStartup
         services.AddProxiedScoped<IInstructionalItemsService, InstructionalItemsService>();
         services.AddProxiedScoped<IKnowledgeComponentService, KnowledgeComponentService>();
         services.AddProxiedScoped<IKnowledgeComponentCloner, KnowledgeComponentService>();
+        services.AddProxiedScoped<IKnowledgeComponentQuerier, KnowledgeComponentService>();
 
         services.AddProxiedScoped<IInstructionService, InstructionService>();
         services.AddProxiedScoped<ISessionService, SessionService>();

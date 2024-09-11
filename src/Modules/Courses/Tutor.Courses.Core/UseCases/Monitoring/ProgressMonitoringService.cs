@@ -5,6 +5,7 @@ using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Monitoring;
 using Tutor.Courses.API.Public.Monitoring;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
+using Tutor.KnowledgeComponents.API.Dtos.Knowledge;
 using Tutor.KnowledgeComponents.API.Internal;
 using Tutor.LearningTasks.API.Dtos.Tasks;
 using Tutor.LearningTasks.API.Internal;
@@ -17,19 +18,21 @@ public class ProgressMonitoringService : IProgressMonitoringService
     private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly IUnitEnrollmentRepository _enrollmentRepository;
     private readonly IUnitProgressRatingRepository _ratingRepository;
+    private readonly IKnowledgeComponentQuerier _kcQuerier;
     private readonly ITaskQuerier _taskQuerier;
     private readonly IKcProgressMonitor _kcProgressMonitor;
     private readonly ITaskProgressMonitor _taskProgressMonitor;
 
-    public ProgressMonitoringService(IMapper mapper,
-        IOwnedCourseRepository ownedCourseRepository, IUnitEnrollmentRepository enrollmentRepository,
-        IUnitProgressRatingRepository ratingRepository, ITaskQuerier taskQuerier,
+    public ProgressMonitoringService(IMapper mapper, IOwnedCourseRepository ownedCourseRepository,
+        IUnitEnrollmentRepository enrollmentRepository, IUnitProgressRatingRepository ratingRepository,
+        IKnowledgeComponentQuerier kcQuerier, ITaskQuerier taskQuerier,
         IKcProgressMonitor kcProgressMonitor, ITaskProgressMonitor taskProgressMonitor)
     {
         _mapper = mapper;
         _ownedCourseRepository = ownedCourseRepository;
         _enrollmentRepository = enrollmentRepository;
         _ratingRepository = ratingRepository;
+        _kcQuerier = kcQuerier;
         _taskQuerier = taskQuerier;
         _kcProgressMonitor = kcProgressMonitor;
         _taskProgressMonitor = taskProgressMonitor;
@@ -41,10 +44,11 @@ public class ProgressMonitoringService : IProgressMonitoringService
             return Result.Fail(FailureCode.Forbidden);
 
         var unitHeaders = GetUnitHeaders(learnerId, courseId, weekEnd);
-        var unitIds = unitHeaders.Select(u => u.Id).ToList();
+        var unitIds = unitHeaders.Select(u => u.Id).ToArray();
+        var kcs = _kcQuerier.GetByUnits(unitIds);
         var tasks = _taskQuerier.GetByUnits(unitIds);
 
-        if(tasks.IsSuccess) PopulateTaskHeaders(unitHeaders, tasks.Value);
+        if(tasks.IsSuccess) PopulateTaskHeaders(unitHeaders, kcs.Value, tasks.Value);
 
         return unitHeaders;
     }
@@ -52,16 +56,27 @@ public class ProgressMonitoringService : IProgressMonitoringService
     private List<UnitHeaderDto> GetUnitHeaders(int learnerId, int courseId, DateTime weekEnd)
     {
         var enrollments = _enrollmentRepository.GetStartedInDateRange(learnerId, weekEnd.AddDays(-8), weekEnd);
-        var unitHeaders = enrollments
-            .Where(e => e.KnowledgeUnit.CourseId == courseId)
-            .Select(e => _mapper.Map<UnitHeaderDto>(e.KnowledgeUnit)).ToList();
+
+        var unitHeaders = new List<UnitHeaderDto>();
+        foreach (var enrollment in enrollments)
+        {
+            if(enrollment.KnowledgeUnit.CourseId != courseId) continue;
+            var header = _mapper.Map<UnitHeaderDto>(enrollment.KnowledgeUnit);
+            header.BestBefore = enrollment.BestBefore;
+            unitHeaders.Add(header);
+        }
+
         return unitHeaders;
     }
 
-    private void PopulateTaskHeaders(List<UnitHeaderDto> unitHeaders, List<LearningTaskDto> tasks)
+    private void PopulateTaskHeaders(List<UnitHeaderDto> unitHeaders, List<KnowledgeComponentDto> kcs, List<LearningTaskDto> tasks)
     {
         foreach (var unitHeader in unitHeaders)
         {
+            unitHeader.KnowledgeComponents = kcs
+                .Where(kc => kc.KnowledgeUnitId == unitHeader.Id)
+                .Select(_mapper.Map<KcHeaderDto>)
+                .ToList();
             unitHeader.Tasks = tasks
                 .Where(t => t.UnitId == unitHeader.Id)
                 .Select(_mapper.Map<TaskHeaderDto>)

@@ -3,6 +3,7 @@ using Tutor.Courses.API.Dtos.Enrollments;
 using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Dtos.Monitoring;
 using Tutor.Courses.Core.Domain;
+using Tutor.KnowledgeComponents.API.Dtos.Knowledge;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
 using Tutor.LearningTasks.API.Dtos.TaskAnalytics;
 using Tutor.LearningTasks.API.Dtos.Tasks;
@@ -25,6 +26,7 @@ public class MonitoringProfile : Profile
                     src => src.Start));
 
         CreateMap<KnowledgeUnit, UnitHeaderDto>();
+        CreateMap<KnowledgeComponentDto, KcHeaderDto>();
         CreateMap<LearningTaskDto, TaskHeaderDto>();
         
         CreateMap<InternalKcUnitSummaryStatisticsDto, PublicKcUnitSummaryStatisticsDto>();

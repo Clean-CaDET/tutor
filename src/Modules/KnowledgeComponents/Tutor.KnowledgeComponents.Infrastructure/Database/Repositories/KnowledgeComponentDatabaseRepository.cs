@@ -27,7 +27,7 @@ public class KnowledgeComponentDatabaseRepository : CrudDatabaseRepository<Knowl
             .Where(kc => unitIds.Contains(kc.KnowledgeUnitId)).ToList();
     }
 
-    public List<KnowledgeComponent> GetByUnitsWithItems(List<int> unitIds)
+    public List<KnowledgeComponent> GetByUnitsWithItems(int[] unitIds)
     {
         return DbContext.KnowledgeComponents
             .Include(kc => kc.InstructionalItems)
@@ -35,7 +35,7 @@ public class KnowledgeComponentDatabaseRepository : CrudDatabaseRepository<Knowl
             .Where(kc => unitIds.Contains(kc.KnowledgeUnitId)).ToList();
     }
 
-    public List<KnowledgeComponent> GetRootKcs(List<int> unitIds)
+    public List<KnowledgeComponent> GetRootKcs(int[] unitIds)
     {
         return DbContext.KnowledgeComponents
             .Where(kc => kc.ParentId == null && unitIds.Contains(kc.KnowledgeUnitId))

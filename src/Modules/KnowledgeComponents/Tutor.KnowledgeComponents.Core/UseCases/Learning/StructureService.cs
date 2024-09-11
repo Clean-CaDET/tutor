@@ -28,7 +28,7 @@ public class StructureService : IStructureService, IKnowledgeMasteryQuerier
         _knowledgeComponentRepository = knowledgeComponentRepository;
     }
 
-    public Result<List<int>> GetMasteredUnitIds(List<int> unitIds, int learnerId)
+    public Result<List<int>> GetMasteredUnitIds(int[] unitIds, int learnerId)
     {
         var rootKcs = _knowledgeComponentRepository.GetRootKcs(unitIds);
         var unitsWithoutKcs = unitIds.Where(id => rootKcs.All(kc => kc.KnowledgeUnitId != id));
