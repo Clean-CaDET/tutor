@@ -77,7 +77,7 @@ public class TaskProgressMonitor : ITaskProgressMonitor
             AvgScorePerLearner = CalculateAvgScorePerLearner(progresses),
             GradedCount = taskStatistics.Count,
             LearnerPoints = taskStatistics.Sum(s => s.WonPoints),
-            TaskStatistics = taskStatistics
+            CompletedTaskStatistics = taskStatistics
         };
     }
 

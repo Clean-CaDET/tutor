@@ -34,15 +34,15 @@ public class PatternDetectorAssessment : INegativePatternDetector
         var manyTriesRatio = Math.Round((double)threePlusTriesBeforeCompletion / completedQuestionCount, 2);
 
         var negativePatterns = new List<string>();
-        if (rushedAnswersRatio > 0.3)
+        if (rushedAnswersRatio > 0.4)
         {
             negativePatterns.Add(
-                $"Pogađanje ili brzanje: ${rushedAnswersRatio * 100}% pogrešnih prvih odgovora daje u 30 sekundi od otvaranja pitanja.");
+                $"Pogađanje ili brzanje: Od {completedQuestionCount} pitanja, za {rushedAnswersRatio * 100}% daje pogrešan prvi odgovor u 30 sekundi od otvaranja pitanja.");
         }
-        if (manyTriesRatio > 0.3)
+        if (manyTriesRatio > 0.4)
         {
             negativePatterns.Add(
-                $"Nepromišljenost: ${manyTriesRatio * 100}% pitanja odgovara tačno tek posle 3 ili više pokušaja.");
+                $"Nepromišljenost: Od {completedQuestionCount} pitanja, {manyTriesRatio * 100}% odgovara tačno tek posle 3 ili više pokušaja.");
         }
 
         return negativePatterns;

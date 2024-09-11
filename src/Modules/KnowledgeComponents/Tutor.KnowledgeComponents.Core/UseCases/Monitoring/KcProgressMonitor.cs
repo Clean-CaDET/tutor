@@ -71,7 +71,7 @@ public class KcProgressMonitor : IKcProgressMonitor
             UnitId = grouping.Key,
             TotalCount = grouping.Count(),
             SatisfiedCount = kcProgressStatistics.Count,
-            KcProgressStatistics = kcProgressStatistics
+            SatisfiedKcStatistics = kcProgressStatistics
         };
     }
 

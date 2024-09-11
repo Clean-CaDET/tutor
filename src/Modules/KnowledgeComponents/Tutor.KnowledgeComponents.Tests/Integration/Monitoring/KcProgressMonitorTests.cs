@@ -40,7 +40,32 @@ public class KcProgressMonitorTests : BaseKnowledgeComponentsIntegrationTest
                         UnitId = -9999,
                         TotalCount = 2,
                         SatisfiedCount = 1,
-                        KcProgressStatistics = new List<InternalKcProgressStatisticsDto>
+                        SatisfiedKcStatistics = new List<InternalKcProgressStatisticsDto>
+                        {
+                            new()
+                            {
+                                KcId = -9999,
+                                NegativePatterns = new List<string>
+                                {
+                                    "Brzanje: Proveo 0.8 minuta izučavajući gradivo pre nego što je završena komponenta.",
+                                    "Pogađanje ili brzanje: Od 3 pitanja, za 67% daje pogrešan prvi odgovor u 30 sekundi od otvaranja pitanja."
+                                },
+                                SatisfactionTime = DateTime.UtcNow
+                            }
+                        }
+                    }
+                }
+            },
+            new object[]
+            {
+                -9998, new []{-9999, -9998}, new List<InternalKcUnitSummaryStatisticsDto>()
+                {
+                    new()
+                    {
+                        UnitId = -9999,
+                        TotalCount = 2,
+                        SatisfiedCount = 2,
+                        SatisfiedKcStatistics = new List<InternalKcProgressStatisticsDto>
                         {
                             new()
                             {
@@ -51,17 +76,14 @@ public class KcProgressMonitorTests : BaseKnowledgeComponentsIntegrationTest
                             new()
                             {
                                 KcId = -9998,
-                                NegativePatterns = new List<string>(),
+                                NegativePatterns = new List<string>
+                                {
+                                    "Brzanje: Ukupno vremena provedeno na komponenti je 6 minuta (predviđeno minimalno 8 minuta).",
+                                    "Nepromišljenost: Od 1 pitanja, 100% odgovara tačno tek posle 3 ili više pokušaja."
+                                },
                                 SatisfactionTime = DateTime.UtcNow
                             }
                         }
-                    },
-                    new()
-                    {
-                        UnitId = -9998,
-                        TotalCount = 0,
-                        SatisfiedCount = 0,
-                        KcProgressStatistics = new List<InternalKcProgressStatisticsDto>()
                     }
                 }
             }

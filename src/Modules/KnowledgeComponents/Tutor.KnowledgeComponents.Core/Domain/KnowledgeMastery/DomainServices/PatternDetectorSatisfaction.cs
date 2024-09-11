@@ -13,7 +13,7 @@ internal class PatternDetectorSatisfaction : INegativePatternDetector
         {
             return new List<string>
             {
-                $"Brzanje: Ukupno vremena provedeno na komponenti je {Math.Round(satisfied.MinutesToSatisfaction, 1)} minuta."
+                $"Brzanje: Ukupno vremena provedeno na komponenti je {Math.Round(satisfied.MinutesToSatisfaction, 1)} minuta (predviđeno minimalno {kc.ExpectedDurationInMinutes} minuta)."
             };
         }
 

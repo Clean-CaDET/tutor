@@ -7,5 +7,5 @@ public class PublicTaskUnitSummaryStatisticsDto
     public int CompletedCount { get; set; }
     public int LearnerPoints { get; set; }
     public int AvgGroupPoints { get; set; }
-    public List<PublicTaskProgressStatisticsDto> TaskStatistics { get; set; }
+    public List<PublicTaskProgressStatisticsDto> CompletedTaskStatistics { get; set; }
 }

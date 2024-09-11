@@ -7,5 +7,5 @@ public class InternalTaskUnitSummaryStatisticsDto
     public int GradedCount { get; set; }
     public double LearnerPoints { get; set; }
     public double AvgScorePerLearner { get; set; }
-    public List<InternalTaskProgressStatisticsDto> TaskStatistics { get; set; }
+    public List<InternalTaskProgressStatisticsDto> CompletedTaskStatistics { get; set; }
 }
