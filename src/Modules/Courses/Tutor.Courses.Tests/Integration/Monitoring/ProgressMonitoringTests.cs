@@ -31,6 +31,9 @@ public class ProgressMonitoringTests : BaseCoursesIntegrationTest
         var taskUnit = result.Find(u => u.Id == -9998);
         taskUnit.ShouldNotBeNull();
         taskUnit.Name.ShouldBe("T-9998");
+        taskUnit.Tasks.Count.ShouldBe(2);
+        taskUnit.Tasks.Find(t => t.Id == -9999).ShouldNotBeNull();
+        taskUnit.Tasks.Find(t => t.Id == -9998).ShouldNotBeNull();
     }
 
     private static ProgressMonitoringController CreateController(IServiceScope scope, string id)

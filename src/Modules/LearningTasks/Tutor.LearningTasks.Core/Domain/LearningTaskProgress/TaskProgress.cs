@@ -112,7 +112,7 @@ public class TaskProgress : EventSourcedAggregateRoot
     {
         if (@event is not TaskEvent kcEvent) throw new EventSourcingException("Unexpected event type: " + @event.GetType());
 
-        kcEvent.LearningTaskId = LearningTaskId;
+        kcEvent.TaskId = LearningTaskId;
         kcEvent.LearnerId = LearnerId;
 
         When((dynamic)kcEvent);

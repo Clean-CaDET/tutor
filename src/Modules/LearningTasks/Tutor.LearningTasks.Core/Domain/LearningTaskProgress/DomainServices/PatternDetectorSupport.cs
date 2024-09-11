@@ -41,7 +41,7 @@ public class PatternDetectorSupport : INegativePatternDetector
         var insufficientTryRatio = (double)insufficientlyTriedSteps.Count / task.Steps.Count;
         if (insufficientTryRatio > 0.4)
         {
-            negativePatterns.Add($"Nedovoljna borba: Za {Math.Round(insufficientTryRatio * 100)}% koraka je gledao smernice/primere u roku od 3 minuta.");
+            negativePatterns.Add($"Nedovoljan početni napor: Za {Math.Round(insufficientTryRatio * 100)}% koraka je gledao smernice/primere u roku od 3 minuta.");
         }
 
         return negativePatterns;

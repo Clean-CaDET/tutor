@@ -23,7 +23,7 @@ public class PatternDetectorSteps : INegativePatternDetector
 
         if (stepsWithReviewedSupport.Count == task.Steps.Count)
         {
-            negativePatterns.Add("Neefektivan rad: Pogledao je smernice/primere od svih koraka pre nego što je rešio bar 1 korak.");
+            negativePatterns.Add("Neefektivno učenje: Pogledao je smernice/primere od svih koraka pre nego što je rešio bar 1 korak.");
         }
 
         return negativePatterns;

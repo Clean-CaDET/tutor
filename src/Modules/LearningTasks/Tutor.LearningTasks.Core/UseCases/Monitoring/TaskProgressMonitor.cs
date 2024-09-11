@@ -38,27 +38,27 @@ public class TaskProgressMonitor : ITaskProgressMonitor
 
         var tasks = _taskRepository.GetByUnits(unitIds);
         var taskIds = tasks.Select(kc => kc.Id).ToArray();
-        var progresses = _taskProgressRepository.GetByTasksAndGroup(taskIds, groupMemberIds);
         var taskEvents = _eventStore.GetEventsByUserAndPrimaryEntities(learnerId, taskIds.ToHashSet());
 
-        return CalculateProgressStatistics(tasks, progresses, taskEvents);
+        var unitStatistics = CalculateProgressStatistics(tasks, taskEvents);
+        PopulateAverageScores(unitStatistics, taskIds, groupMemberIds);
+        return unitStatistics;
     }
 
-    private List<InternalTaskUnitSummaryStatisticsDto> CalculateProgressStatistics(List<LearningTask> tasks,
-        List<TaskProgress> progresses, List<TaskEvent> events)
+    private List<InternalTaskUnitSummaryStatisticsDto> CalculateProgressStatistics(List<LearningTask> tasks, List<TaskEvent> events)
     {
-        var groupedKcs = tasks.GroupBy(kc => kc.UnitId);
-        return groupedKcs.Select(grouping => CalculateTaskProgressForUnit(grouping, progresses, events)).ToList();
+        var groupedTasks = tasks.GroupBy(kc => kc.UnitId);
+        return groupedTasks.Select(grouping => CalculateTaskProgressForUnit(grouping, events)).ToList();
     }
 
-    private InternalTaskUnitSummaryStatisticsDto CalculateTaskProgressForUnit(IGrouping<int, LearningTask> grouping, List<TaskProgress> progresses, List<TaskEvent> events)
+    private InternalTaskUnitSummaryStatisticsDto CalculateTaskProgressForUnit(IGrouping<int, LearningTask> grouping, List<TaskEvent> events)
     {
         var taskStatistics = new List<InternalTaskProgressStatisticsDto>();
 
         foreach (var task in grouping)
         {
             var orderedEvents = events
-                .Where(e => e.LearningTaskId == task.Id)
+                .Where(e => e.TaskId == task.Id)
                 .OrderBy(e => e.TimeStamp)
                 .ToList();
 
@@ -74,10 +74,9 @@ public class TaskProgressMonitor : ITaskProgressMonitor
         {
             UnitId = grouping.Key,
             TotalCount = grouping.Count(),
-            AvgScorePerLearner = CalculateAvgScorePerLearner(progresses),
             GradedCount = taskStatistics.Count,
             LearnerPoints = taskStatistics.Sum(s => s.WonPoints),
-            CompletedTaskStatistics = taskStatistics
+            GradedTaskStatistics = taskStatistics
         };
     }
 
@@ -98,8 +97,24 @@ public class TaskProgressMonitor : ITaskProgressMonitor
         };
     }
 
-    private static double CalculateAvgScorePerLearner(List<TaskProgress> progresses)
+    private void PopulateAverageScores(List<InternalTaskUnitSummaryStatisticsDto> unitStatistics, int[] taskIds, int[] groupMemberIds)
     {
-        return progresses.GroupBy(p => p.LearnerId).Average(g => g.Sum(p => p.TotalScore));
+        var allProgress = _taskProgressRepository.GetByTasksAndGroup(taskIds, groupMemberIds);
+        foreach (var stats in unitStatistics)
+        {
+            var relatedTaskIds = stats.GradedTaskStatistics.Select(t => t.TaskId).ToArray();
+            var learnersTotalScores = new List<double>(groupMemberIds.Length);
+
+            foreach (var learnerId in groupMemberIds)
+            {
+                var relatedScores = allProgress
+                    .Where(p => relatedTaskIds.Contains(p.LearningTaskId) && p.LearnerId == learnerId)
+                    .Select(p => p.TotalScore)
+                    .ToList();
+                learnersTotalScores.Add(relatedScores.Sum());
+            }
+
+            stats.AvgScorePerLearner = Math.Round(learnersTotalScores.Average(), 1);
+        }
     }
 }
