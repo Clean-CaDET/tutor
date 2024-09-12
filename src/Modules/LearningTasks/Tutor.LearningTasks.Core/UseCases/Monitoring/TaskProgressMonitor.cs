@@ -117,6 +117,7 @@ public class TaskProgressMonitor : ITaskProgressMonitor
             }
 
             stats.AvgScorePerLearner = Math.Round(learnersTotalScores.Average(), 1);
+            stats.TotalMaxPoints = tasks.Sum(t => t.MaxPoints);
         }
     }
 }

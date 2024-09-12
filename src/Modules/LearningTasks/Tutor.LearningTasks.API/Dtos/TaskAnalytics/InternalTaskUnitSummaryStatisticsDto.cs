@@ -7,6 +7,7 @@ public class InternalTaskUnitSummaryStatisticsDto
     public int GradedCount { get; set; }
     public double LearnerPoints { get; set; }
     public double AvgScorePerLearner { get; set; }
+    public double TotalMaxPoints { get; set; }
     public List<InternalTaskProgressStatisticsDto> GradedTaskStatistics { get; set; }
 
     public override bool Equals(object? obj)
