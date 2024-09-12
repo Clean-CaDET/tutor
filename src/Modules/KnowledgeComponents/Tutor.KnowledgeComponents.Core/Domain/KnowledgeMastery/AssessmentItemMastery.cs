@@ -15,7 +15,7 @@ public class AssessmentItemMastery : EventSourcedEntity
     public DateTime? LastSubmissionTime { get; private set; }
     public int HintRequestCount { get; private set; }
     public bool IsAttempted => SubmissionCount > 0;
-    public bool IsPassed => Mastery > PassThreshold;
+    public bool IsPassed => Mastery >= PassThreshold;
 
     private AssessmentItemMastery() {}
 
@@ -35,7 +35,7 @@ public class AssessmentItemMastery : EventSourcedEntity
 
     public void RecordSelection(string appClientId)
     {
-        Causes(new AssessmentItemSelected()
+        Causes(new AssessmentItemSelected
         {
             AssessmentItemId = AssessmentItemId,
             AppClientId = appClientId
@@ -48,7 +48,9 @@ public class AssessmentItemMastery : EventSourcedEntity
         {
             AssessmentItemId = AssessmentItemId,
             Submission = submission,
-            Feedback = feedback
+            Feedback = feedback,
+            AttemptCount = SubmissionCount + 1,
+            IsFirstCorrect = !IsPassed && feedback.Evaluation.Correct
         });
     }
 

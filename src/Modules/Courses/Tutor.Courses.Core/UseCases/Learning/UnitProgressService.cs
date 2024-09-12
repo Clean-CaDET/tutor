@@ -48,7 +48,7 @@ public class UnitProgressService : IUnitProgressService
 
     private List<int> GetMasteredUnitIds(int learnerId, List<UnitEnrollment> activeEnrollments)
     {
-        var candidateUnits = activeEnrollments.Select(e => e.KnowledgeUnitId).ToList();
+        var candidateUnits = activeEnrollments.Select(e => e.KnowledgeUnitId).ToArray();
         var masteredKcUnits = _kcMasteryQuerier.GetMasteredUnitIds(candidateUnits, learnerId).Value;
         var completedTaskUnits = _taskProgressQuerier.GetCompletedUnitIds(candidateUnits, learnerId).Value;
         return masteredKcUnits.Intersect(completedTaskUnits).ToList();

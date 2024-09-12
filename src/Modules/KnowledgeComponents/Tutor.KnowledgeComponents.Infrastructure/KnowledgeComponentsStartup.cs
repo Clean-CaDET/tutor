@@ -10,7 +10,6 @@ using Tutor.KnowledgeComponents.API.Public.Analysis;
 using Tutor.KnowledgeComponents.API.Public.Authoring;
 using Tutor.KnowledgeComponents.API.Public.Learning;
 using Tutor.KnowledgeComponents.API.Public.Learning.Assessment;
-using Tutor.KnowledgeComponents.API.Public.Monitoring;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.DomainServices;
@@ -58,6 +57,7 @@ public static class KnowledgeComponentsStartup
         services.AddProxiedScoped<IInstructionalItemsService, InstructionalItemsService>();
         services.AddProxiedScoped<IKnowledgeComponentService, KnowledgeComponentService>();
         services.AddProxiedScoped<IKnowledgeComponentCloner, KnowledgeComponentService>();
+        services.AddProxiedScoped<IKnowledgeComponentQuerier, KnowledgeComponentService>();
 
         services.AddProxiedScoped<IInstructionService, InstructionService>();
         services.AddProxiedScoped<ISessionService, SessionService>();
@@ -69,8 +69,8 @@ public static class KnowledgeComponentsStartup
         services.AddProxiedScoped<IHelpService, HelpService>();
         services.AddProxiedScoped<ISelectionService, SelectionService>();
 
-        services.AddProxiedScoped<ILearnerMasteryService, LearnerMasteryService>();
-        services.AddProxiedScoped<IMasteryFactory, LearnerMasteryService>();
+        services.AddProxiedScoped<IKcProgressMonitor, KcProgressMonitor>();
+        services.AddProxiedScoped<IMasteryFactory, MasteryFactoryService>();
 
         services.AddProxiedScoped<IAssessmentFeedbackGenerator, RuleAssessmentFeedbackGenerator>();
         services.AddProxiedScoped<IAssessmentItemSelector, LeastCorrectAssessmentItemSelector>();

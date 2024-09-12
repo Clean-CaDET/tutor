@@ -2,11 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Instructor.Authoring;
-using Tutor.LearningTasks.API.Dtos.LearningTasks;
+using Tutor.LearningTasks.API.Dtos.Tasks;
 using Tutor.LearningTasks.API.Public.Authoring;
 
 namespace Tutor.LearningTasks.Tests.Integration.Authoring;
 
+[Collection("Sequential")]
 public class LearningTaskQueryTests : BaseLearningTasksIntegrationTest
 {
     public LearningTaskQueryTests(LearningTasksTestFactory factory) : base(factory) { }

@@ -23,7 +23,7 @@ public class LearningTaskDatabaseRepository : CrudDatabaseRepository<LearningTas
         return GetTasksWhere(t => t.UnitId == unitId);
     }
 
-    public List<LearningTask> GetByUnits(List<int> unitIds)
+    public List<LearningTask> GetByUnits(int[] unitIds)
     {
         return GetTasksWhere(t => unitIds.Contains(t.UnitId));
     }
@@ -33,7 +33,7 @@ public class LearningTaskDatabaseRepository : CrudDatabaseRepository<LearningTas
         return GetTasksWhere(t => t.UnitId == unitId && !t.IsTemplate);
     }
 
-    public List<LearningTask> GetNonTemplateByUnits(List<int> unitIds)
+    public List<LearningTask> GetNonTemplateByUnits(int[] unitIds)
     {
         return DbContext.LearningTasks
             .Where(t => unitIds.Contains(t.UnitId) && !t.IsTemplate)

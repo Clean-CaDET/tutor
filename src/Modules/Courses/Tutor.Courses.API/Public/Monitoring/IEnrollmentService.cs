@@ -1,5 +1,5 @@
 ﻿using FluentResults;
-using Tutor.Courses.API.Dtos;
+using Tutor.Courses.API.Dtos.Enrollments;
 
 namespace Tutor.Courses.API.Public.Monitoring;
 

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
-using Tutor.LearningTasks.API.Dtos.LearningTaskProgress;
+using Tutor.LearningTasks.API.Dtos.TaskProgress;
 using Tutor.LearningTasks.API.Internal;
 using Tutor.LearningTasks.API.Public;
 using Tutor.LearningTasks.API.Public.Learning;
@@ -161,7 +161,7 @@ public class TaskProgressService : BaseService<TaskProgressDto, TaskProgress>, I
         return new Tuple<int, int>(tasks.Count, doneCount);
     }
 
-    public Result<List<int>> GetCompletedUnitIds(List<int> unitIds, int learnerId)
+    public Result<List<int>> GetCompletedUnitIds(int[] unitIds, int learnerId)
     {
         var tasks = _taskRepository.GetNonTemplateByUnits(unitIds);
         var taskIds = tasks.Select(t => t.Id).ToList();

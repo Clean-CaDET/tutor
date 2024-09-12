@@ -10,7 +10,7 @@ using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 
 namespace Tutor.KnowledgeComponents.Core.UseCases.Authoring;
 
-public class KnowledgeComponentService : CrudService<KnowledgeComponentDto, KnowledgeComponent>, IKnowledgeComponentService, IKnowledgeComponentCloner
+public class KnowledgeComponentService : CrudService<KnowledgeComponentDto, KnowledgeComponent>, IKnowledgeComponentService, IKnowledgeComponentCloner, IKnowledgeComponentQuerier
 {
     private readonly IKnowledgeComponentRepository _kcRepository;
     private readonly IAccessService _accessService;
@@ -64,7 +64,7 @@ public class KnowledgeComponentService : CrudService<KnowledgeComponentDto, Know
 
     public Result CloneMany(List<Tuple<int, int>> unitIdPairs)
     {
-        var oldKcs = _kcRepository.GetByUnitsWithItems(unitIdPairs.Select(u => u.Item1).ToList());
+        var oldKcs = _kcRepository.GetByUnitsWithItems(unitIdPairs.Select(u => u.Item1).ToArray());
 
         UnitOfWork.BeginTransaction();
         
@@ -115,5 +115,10 @@ public class KnowledgeComponentService : CrudService<KnowledgeComponentDto, Know
 
             matchingKc.ParentId = clonedKcs.Find(kc => kc.Code == oldKcParent.Code)?.Id;
         }
+    }
+
+    public Result<List<KnowledgeComponentDto>> GetByUnits(int[] unitIds)
+    {
+        return MapToDto(_kcRepository.GetByUnits(unitIds));
     }
 }

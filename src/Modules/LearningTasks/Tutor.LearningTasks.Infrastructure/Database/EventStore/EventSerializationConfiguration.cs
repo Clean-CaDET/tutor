@@ -1,5 +1,7 @@
 ﻿using System.Collections.Immutable;
-using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskProgressEvents;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.StepEvents;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.StepSupportEvents;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskEvents;
 
 namespace Tutor.LearningTasks.Infrastructure.Database.EventStore;
 

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
-using Tutor.LearningTasks.API.Dtos.LearningTasks;
+using Tutor.LearningTasks.API.Dtos.Tasks;
 using Tutor.LearningTasks.API.Internal;
 using Tutor.LearningTasks.API.Public;
 using Tutor.LearningTasks.API.Public.Authoring;
@@ -10,7 +10,7 @@ using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.LearningTasks.Core.UseCases.Authoring;
 
-public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, ILearningTaskService, ILearningTaskCloner
+public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, ILearningTaskService, ILearningTaskCloner, ITaskQuerier
 {
     private readonly ILearningTaskRepository _taskRepository;
     private readonly IAccessServices _accessServices;
@@ -116,7 +116,7 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
 
     public Result CloneMany(List<Tuple<int, int>> unitIdPairs)
     {
-        var oldTasks = _taskRepository.GetByUnits(unitIdPairs.Select(u => u.Item1).ToList());
+        var oldTasks = _taskRepository.GetByUnits(unitIdPairs.Select(u => u.Item1).ToArray());
 
         UnitOfWork.BeginTransaction();
 
@@ -155,5 +155,11 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
             if (oldTasks[i].Steps == null) continue;
             clonedTasks[i].LinkActivityParents(oldTasks[i]);
         }
+    }
+
+    public Result<List<LearningTaskDto>> GetByUnits(int[] unitIds)
+    {
+        var learningTasks = _taskRepository.GetNonTemplateByUnits(unitIds);
+        return MapToDto(learningTasks);
     }
 }

@@ -7,6 +7,7 @@ using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.MultiRespo
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.ShortAnswerQuestions;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.InstructionalItems;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
+using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore.Postgres;
 
 namespace Tutor.KnowledgeComponents.Infrastructure.Database;
 
@@ -16,7 +17,7 @@ public class KnowledgeComponentsContext : DbContext
     public DbSet<AssessmentItem> AssessmentItems { get; set; }
     public DbSet<InstructionalItem> InstructionalItems { get; set; }
     public DbSet<KnowledgeComponentMastery> KcMasteries { get; set; }
-    public DbSet<StoredDomainEvent> Events { get; set; }
+    public DbSet<StoredKcDomainEvent> Events { get; set; }
 
     public KnowledgeComponentsContext(DbContextOptions<KnowledgeComponentsContext> options) : base(options) {}
 
@@ -27,8 +28,10 @@ public class KnowledgeComponentsContext : DbContext
         ConfigureKnowledge(modelBuilder);
         ConfigureKnowledgeMastery(modelBuilder);
 
-        modelBuilder.Entity<StoredDomainEvent>().Property(e => e.DomainEvent).HasColumnType("jsonb");
-        modelBuilder.Entity<StoredDomainEvent>().HasIndex(e => e.TimeStamp);
+        modelBuilder.Entity<StoredKcDomainEvent>().Property(e => e.DomainEvent).HasColumnType("jsonb");
+        modelBuilder.Entity<StoredKcDomainEvent>().HasIndex(e => e.TimeStamp);
+        modelBuilder.Entity<StoredKcDomainEvent>().HasIndex(e => e.KnowledgeComponentId);
+        modelBuilder.Entity<StoredKcDomainEvent>().HasIndex(e => e.LearnerId);
     }
 
     private static void ConfigureKnowledge(ModelBuilder modelBuilder)
