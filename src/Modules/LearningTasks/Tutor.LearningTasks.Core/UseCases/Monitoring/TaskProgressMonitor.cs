@@ -37,11 +37,10 @@ public class TaskProgressMonitor : ITaskProgressMonitor
         if (unitIds.Length == 0) return Result.Fail(FailureCode.NotFound);
 
         var tasks = _taskRepository.GetByUnits(unitIds);
-        var taskIds = tasks.Select(kc => kc.Id).ToArray();
-        var taskEvents = _eventStore.GetEventsByUserAndPrimaryEntities(learnerId, taskIds.ToHashSet());
+        var taskEvents = _eventStore.GetEventsByUserAndPrimaryEntities(learnerId, tasks.Select(t => t.Id).ToHashSet());
 
         var unitStatistics = CalculateProgressStatistics(tasks, taskEvents);
-        PopulateAverageScores(unitStatistics, taskIds, groupMemberIds);
+        PopulateAverageScores(unitStatistics, tasks, groupMemberIds);
         return unitStatistics;
     }
 
@@ -97,12 +96,15 @@ public class TaskProgressMonitor : ITaskProgressMonitor
         };
     }
 
-    private void PopulateAverageScores(List<InternalTaskUnitSummaryStatisticsDto> unitStatistics, int[] taskIds, int[] groupMemberIds)
+    private void PopulateAverageScores(List<InternalTaskUnitSummaryStatisticsDto> unitStatistics, List<LearningTask> tasks, int[] groupMemberIds)
     {
-        var allProgress = _taskProgressRepository.GetByTasksAndGroup(taskIds, groupMemberIds);
+        
+        var allProgress = _taskProgressRepository.GetByTasksAndGroup(tasks.Select(t => t.Id).ToArray(), groupMemberIds);
         foreach (var stats in unitStatistics)
         {
-            var relatedTaskIds = stats.GradedTaskStatistics.Select(t => t.TaskId).ToArray();
+            var relatedTaskIds = tasks
+                .Where(t => t.UnitId == stats.UnitId)
+                .Select(t => t.Id).ToArray();
             var learnersTotalScores = new List<double>(groupMemberIds.Length);
 
             foreach (var learnerId in groupMemberIds)

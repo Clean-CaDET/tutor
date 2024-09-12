@@ -28,8 +28,8 @@ public class PatternDetectorSupport : INegativePatternDetector
                 var nextNonSupportEventIndex = stepEvents.FindIndex(i + 2, e => e is not StepSupportEvent);
                 if (nextNonSupportEventIndex == -1) continue;
 
-                var timeBeforeSupport = (eventsUpToGraded[i + 1].TimeStamp - eventsUpToGraded[i].TimeStamp).TotalMinutes;
-                timeOnSupport += (eventsUpToGraded[nextNonSupportEventIndex].TimeStamp - eventsUpToGraded[i + 1].TimeStamp).TotalMinutes;
+                var timeBeforeSupport = (stepEvents[i + 1].TimeStamp - stepEvents[i].TimeStamp).TotalMinutes;
+                timeOnSupport += (stepEvents[nextNonSupportEventIndex].TimeStamp - stepEvents[i + 1].TimeStamp).TotalMinutes;
                 if (timeBeforeSupport < 3 && timeOnSupport > 2)
                 {
                     insufficientlyTriedSteps.Add(step.Id);

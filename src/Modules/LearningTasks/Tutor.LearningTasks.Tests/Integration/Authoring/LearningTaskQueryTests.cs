@@ -7,6 +7,7 @@ using Tutor.LearningTasks.API.Public.Authoring;
 
 namespace Tutor.LearningTasks.Tests.Integration.Authoring;
 
+[Collection("Sequential")]
 public class LearningTaskQueryTests : BaseLearningTasksIntegrationTest
 {
     public LearningTaskQueryTests(LearningTasksTestFactory factory) : base(factory) { }

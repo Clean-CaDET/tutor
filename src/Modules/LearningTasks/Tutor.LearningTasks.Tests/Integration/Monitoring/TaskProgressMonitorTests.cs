@@ -39,9 +39,9 @@ public class TaskProgressMonitorTests : BaseLearningTasksIntegrationTest
                     {
                         UnitId = -9998,
                         TotalCount = 2,
-                        GradedCount = 1,
-                        LearnerPoints = 4,
-                        AvgScorePerLearner = 2,
+                        GradedCount = 2,
+                        LearnerPoints = 8,
+                        AvgScorePerLearner = 3.7,
                         GradedTaskStatistics = new List<InternalTaskProgressStatisticsDto>
                         {
                             new()
@@ -52,6 +52,45 @@ public class TaskProgressMonitorTests : BaseLearningTasksIntegrationTest
                                 {
                                     "Nedovoljan početni napor: Za 50% koraka je gledao smernice/primere u roku od 3 minuta."
                                 }
+                            },
+                            new()
+                            {
+                                TaskId = -9998,
+                                WonPoints = 4,
+                                NegativePatterns = new List<string>()
+                            }
+                        }
+                    }
+                }
+            },
+            new object[]
+            {
+                -9998, new []{-9999, -9998}, new []{-9999, -9998, -9997}, new List<InternalTaskUnitSummaryStatisticsDto>
+                {
+                    new()
+                    {
+                        UnitId = -9998,
+                        TotalCount = 2,
+                        GradedCount = 2,
+                        LearnerPoints = 3,
+                        AvgScorePerLearner = 3.7,
+                        GradedTaskStatistics = new List<InternalTaskProgressStatisticsDto>
+                        {
+                            new()
+                            {
+                                TaskId = -9999,
+                                WonPoints = 2,
+                                NegativePatterns = new List<string>
+                                {
+                                    "Nedovoljan početni napor: Za 100% koraka je gledao smernice/primere u roku od 3 minuta.",
+                                    "Neefektivno učenje: Pogledao je smernice/primere od svih koraka pre nego što je rešio bar 1 korak."
+                                }
+                            },
+                            new()
+                            {
+                                TaskId = -9998,
+                                WonPoints = 1,
+                                NegativePatterns = new List<string>()
                             }
                         }
                     }
