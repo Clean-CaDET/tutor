@@ -20,4 +20,9 @@ public class InternalKcUnitSummaryStatisticsDto
         if (!other.SatisfiedKcStatistics.All(SatisfiedKcStatistics.Contains)) return false;
         return true;
     }
+
+    public override int GetHashCode()
+    {
+        return UnitId.GetHashCode();
+    }
 }

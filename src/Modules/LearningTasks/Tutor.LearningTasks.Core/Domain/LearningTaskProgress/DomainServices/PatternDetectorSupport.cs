@@ -16,25 +16,7 @@ public class PatternDetectorSupport : INegativePatternDetector
                 .Where(e => e is StepEvent stepEvent && stepEvent.StepId == step.Id)
                 .ToList();
 
-            var firstOpenedIndex = stepEvents.FindIndex(e => e is StepOpened);
-            var firstSubmittedIndex = stepEvents.FindIndex(e => e is StepSubmitted);
-
-            var timeOnSupport = 0.0;
-            for (var i = firstOpenedIndex; i < firstSubmittedIndex - 2; i++)
-            {
-                if (stepEvents[i] is not SubmissionOpened) continue;
-                if (stepEvents[i + 1] is not StepSupportEvent) continue;
-
-                var nextNonSupportEventIndex = stepEvents.FindIndex(i + 2, e => e is not StepSupportEvent);
-                if (nextNonSupportEventIndex == -1) continue;
-
-                var timeBeforeSupport = (stepEvents[i + 1].TimeStamp - stepEvents[i].TimeStamp).TotalMinutes;
-                timeOnSupport += (stepEvents[nextNonSupportEventIndex].TimeStamp - stepEvents[i + 1].TimeStamp).TotalMinutes;
-                if (timeBeforeSupport < 3 && timeOnSupport > 2)
-                {
-                    insufficientlyTriedSteps.Add(step.Id);
-                }
-            }
+            if(IsInsufficientlyTriedStep(stepEvents)) insufficientlyTriedSteps.Add(step.Id);
         }
 
         var negativePatterns = new List<string>();
@@ -45,5 +27,30 @@ public class PatternDetectorSupport : INegativePatternDetector
         }
 
         return negativePatterns;
+    }
+
+    private static bool IsInsufficientlyTriedStep(List<TaskEvent> stepEvents)
+    {
+        var firstOpenedIndex = stepEvents.FindIndex(e => e is StepOpened);
+        var firstSubmittedIndex = stepEvents.FindIndex(e => e is StepSubmitted);
+
+        var timeOnSupport = 0.0;
+        for (var i = firstOpenedIndex; i < firstSubmittedIndex - 2; i++)
+        {
+            if (stepEvents[i] is not SubmissionOpened) continue;
+            if (stepEvents[i + 1] is not StepSupportEvent) continue;
+
+            var nextNonSupportEventIndex = stepEvents.FindIndex(i + 2, e => e is not StepSupportEvent);
+            if (nextNonSupportEventIndex == -1) continue;
+
+            var timeBeforeSupport = (stepEvents[i + 1].TimeStamp - stepEvents[i].TimeStamp).TotalMinutes;
+            timeOnSupport += (stepEvents[nextNonSupportEventIndex].TimeStamp - stepEvents[i + 1].TimeStamp).TotalMinutes;
+            if (timeBeforeSupport < 3 && timeOnSupport > 2)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

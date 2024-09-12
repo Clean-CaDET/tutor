@@ -9,26 +9,19 @@ public class PatternDetectorAssessment : INegativePatternDetector
     public List<string> Detect(List<KnowledgeComponentEvent> eventsUpToSatisfied, KnowledgeComponent kc)
     {
         var completedQuestionCount = 0;
-        var rushedFirstAnswers = 0;
         var threePlusTriesBeforeCompletion = 0;
 
         for (var i = 0; i < eventsUpToSatisfied.Count - 1; i++)
         {
             if (eventsUpToSatisfied[i] is not AssessmentItemSelected assessmentSelected) continue;
             var matchingAnswer = FindMatchingAnswer(eventsUpToSatisfied, i, assessmentSelected.AssessmentItemId);
-            if (matchingAnswer == null) continue;
+            if (matchingAnswer == null || !matchingAnswer.IsFirstCorrect) continue;
 
-            if (matchingAnswer.IsFirstCorrect)
-            {
-                completedQuestionCount++;
-                if (matchingAnswer.AttemptCount >= 3) threePlusTriesBeforeCompletion++;
-                continue;
-            }
-
-            if (matchingAnswer.AttemptCount != 1) continue;
-            if ((matchingAnswer.TimeStamp - assessmentSelected.TimeStamp).TotalMinutes > 0.5) continue;
-            rushedFirstAnswers++;
+            completedQuestionCount++;
+            if (matchingAnswer.AttemptCount >= 3) threePlusTriesBeforeCompletion++;
         }
+
+        var rushedFirstAnswers = CountRushedFirstAnswers(eventsUpToSatisfied);
 
         var rushedAnswersRatio = Math.Round((double)rushedFirstAnswers / completedQuestionCount, 2);
         var manyTriesRatio = Math.Round((double)threePlusTriesBeforeCompletion / completedQuestionCount, 2);
@@ -46,7 +39,6 @@ public class PatternDetectorAssessment : INegativePatternDetector
         }
 
         return negativePatterns;
-
     }
 
     private static AssessmentItemAnswered? FindMatchingAnswer(List<KnowledgeComponentEvent> events, int i, int aiId)
@@ -57,5 +49,21 @@ public class PatternDetectorAssessment : INegativePatternDetector
             if (events[j] is AssessmentItemAnswered e && e.AssessmentItemId == aiId) return e;
         }
         return null;
+    }
+
+    private static int CountRushedFirstAnswers(List<KnowledgeComponentEvent> eventsUpToSatisfied)
+    {
+        var rushedFirstAnswers = 0;
+        for (var i = 0; i < eventsUpToSatisfied.Count - 1; i++)
+        {
+            if (eventsUpToSatisfied[i] is not AssessmentItemSelected assessmentSelected) continue;
+            var matchingAnswer = FindMatchingAnswer(eventsUpToSatisfied, i, assessmentSelected.AssessmentItemId);
+            if (matchingAnswer == null) continue;
+            if (matchingAnswer.IsFirstCorrect || matchingAnswer.AttemptCount != 1) continue;
+            if ((matchingAnswer.TimeStamp - assessmentSelected.TimeStamp).TotalMinutes > 0.5) continue;
+            rushedFirstAnswers++;
+        }
+
+        return rushedFirstAnswers;
     }
 }

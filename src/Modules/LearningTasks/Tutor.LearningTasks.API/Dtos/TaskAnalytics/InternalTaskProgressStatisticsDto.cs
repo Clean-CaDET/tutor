@@ -20,4 +20,9 @@ public class InternalTaskProgressStatisticsDto
         if (!other.NegativePatterns.All(NegativePatterns.Contains)) return false;
         return true;
     }
+
+    public override int GetHashCode()
+    {
+        return TaskId.GetHashCode();
+    }
 }

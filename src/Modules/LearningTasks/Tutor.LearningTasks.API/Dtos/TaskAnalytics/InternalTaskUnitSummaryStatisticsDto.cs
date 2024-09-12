@@ -24,4 +24,9 @@ public class InternalTaskUnitSummaryStatisticsDto
         if (!other.GradedTaskStatistics.All(GradedTaskStatistics.Contains)) return false;
         return true;
     }
+
+    public override int GetHashCode()
+    {
+        return UnitId.GetHashCode();
+    }
 }

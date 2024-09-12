@@ -19,4 +19,9 @@ public class InternalKcProgressStatisticsDto
         if (!other.NegativePatterns.All(NegativePatterns.Contains)) return false;
         return true;
     }
+
+    public override int GetHashCode()
+    {
+        return KcId.GetHashCode();
+    }
 }

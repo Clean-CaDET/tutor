@@ -13,7 +13,6 @@ namespace Tutor.LearningTasks.Core.UseCases.Monitoring;
 
 public class TaskProgressMonitor : ITaskProgressMonitor
 {
-
     private readonly ILearningTaskRepository _taskRepository;
     private readonly ITaskProgressRepository _taskProgressRepository;
     private readonly IEventStore<TaskEvent> _eventStore;
@@ -98,7 +97,6 @@ public class TaskProgressMonitor : ITaskProgressMonitor
 
     private void PopulateAverageScores(List<InternalTaskUnitSummaryStatisticsDto> unitStatistics, List<LearningTask> tasks, int[] groupMemberIds)
     {
-        
         var allProgress = _taskProgressRepository.GetByTasksAndGroup(tasks.Select(t => t.Id).ToArray(), groupMemberIds);
         foreach (var stats in unitStatistics)
         {
