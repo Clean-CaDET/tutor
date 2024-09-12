@@ -100,14 +100,20 @@ public class ProgressMonitoringService : IProgressMonitoringService
         if (!_ownedCourseRepository.IsUnitOwner(unitIds[0], instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        var kcUnitSummaryStatistics = _mapper.Map<PublicKcUnitSummaryStatisticsDto>(_kcProgressMonitor.GetProgress(learnerId, unitIds).Value);
-        var taskUnitSummaryStatistics = _mapper.Map<PublicTaskUnitSummaryStatisticsDto>(_taskProgressMonitor.GetProgress(learnerId, unitIds, groupMemberIds).Value);
+        var kcUnitSummaryStatistics = _kcProgressMonitor
+            .GetProgress(learnerId, unitIds).Value
+            .Select(_mapper.Map<PublicKcUnitSummaryStatisticsDto>)
+            .ToList();
+        var taskUnitSummaryStatistics = _taskProgressMonitor
+            .GetProgress(learnerId, unitIds, groupMemberIds).Value
+            .Select(_mapper.Map<PublicTaskUnitSummaryStatisticsDto>)
+            .ToList();
 
         return unitIds.Select(id => new UnitProgressStatisticsDto
         {
             UnitId = id,
-            KcStatistics = kcUnitSummaryStatistics,
-            TaskStatistics = taskUnitSummaryStatistics
+            KcStatistics = kcUnitSummaryStatistics.Find(s => s.UnitId == id),
+            TaskStatistics = taskUnitSummaryStatistics.Find(s => s.UnitId == id)
         }).ToList();
     }
 }

@@ -26,7 +26,7 @@ public class ProgressMonitoringController : BaseApiController
     }
 
     [HttpPost("{learnerId:int}/statistics")]
-    public ActionResult<List<UnitHeaderDto>> GetKcAndTaskProgressAndWarnings(int learnerId, [FromQuery] int[]? unitIds, [FromBody] int[] groupMemberIds)
+    public ActionResult<List<UnitProgressStatisticsDto>> GetKcAndTaskProgressAndWarnings(int learnerId, [FromQuery] int[]? unitIds, [FromBody] int[] groupMemberIds)
     {
         var result = _monitoringService.GetKcAndTaskProgressAndWarnings(User.InstructorId(), unitIds, learnerId, groupMemberIds);
         return CreateResponse(result);

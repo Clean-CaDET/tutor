@@ -3,6 +3,6 @@
 public class UnitProgressStatisticsDto
 {
     public int UnitId { get; set; }
-    public PublicKcUnitSummaryStatisticsDto KcStatistics { get; set; }
-    public PublicTaskUnitSummaryStatisticsDto TaskStatistics { get; set; }
+    public PublicKcUnitSummaryStatisticsDto? KcStatistics { get; set; }
+    public PublicTaskUnitSummaryStatisticsDto? TaskStatistics { get; set; }
 }
