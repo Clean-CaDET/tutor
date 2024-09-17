@@ -140,8 +140,9 @@ public class TaskProgress : EventSourcedAggregateRoot
 
     private void When(TaskGraded @event)
     {
+        TotalScore = 0;
         foreach (var stepProgress in StepProgresses!)
-        {
+        {            
             TotalScore += stepProgress.Evaluations!.Sum(e => e.Points);
         }
         Status = TaskStatus.Graded;

@@ -25,7 +25,7 @@ public class LearningTaskController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<LearningTaskDto>> GetByUnit(int unitId)
+    public ActionResult<List<ProgressDto>> GetByUnit(int unitId)
     {
         var result = _taskService.GetByUnit(unitId, User.LearnerId());
         return CreateResponse(result);
