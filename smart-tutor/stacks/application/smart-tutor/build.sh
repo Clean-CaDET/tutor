@@ -49,8 +49,8 @@ set -- "${POSITIONAL[@]}"
 
 NAME=${NAME:-cleancadet/smart-tutor}
 TARGET=${TARGET:-final}
-ASPNET_VERSION=${ASPNET_VERSION:-6.0}
-SDK_VERSION=${SDK_VERSION:-6.0}
+ASPNET_VERSION=${ASPNET_VERSION:-7.0}
+SDK_VERSION=${SDK_VERSION:-7.0}
 SRC_URL=${SRC_URL:-https://github.com/Clean-CaDET/tutor/archive/refs/heads/master.tar.gz}
 
 docker build -t "${NAME}" \
