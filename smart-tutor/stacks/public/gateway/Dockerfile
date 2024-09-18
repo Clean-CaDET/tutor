@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:16.14.0-alpine3.14 AS frontBuild
+FROM node:18.20.4-alpine3.19 AS frontBuild
 WORKDIR /src
 COPY . .
 RUN apk --update --no-cache add gettext && \
