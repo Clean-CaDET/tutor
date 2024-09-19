@@ -8,9 +8,9 @@ using Tutor.Courses.API.Public.Monitoring;
 namespace Tutor.Courses.Tests.Integration.Monitoring;
 
 [Collection("Sequential")]
-public class ProgressMonitoringTests : BaseCoursesIntegrationTest
+public class WeeklyActivityTests : BaseCoursesIntegrationTest
 {
-    public ProgressMonitoringTests(CoursesTestFactory factory) : base(factory) {}
+    public WeeklyActivityTests(CoursesTestFactory factory) : base(factory) {}
     
     [Fact]
     public void Retrieves_unit_headers()
@@ -36,9 +36,9 @@ public class ProgressMonitoringTests : BaseCoursesIntegrationTest
         taskUnit.Tasks.Find(t => t.Id == -9998).ShouldNotBeNull();
     }
 
-    private static ProgressMonitoringController CreateController(IServiceScope scope, string id)
+    private static WeeklyActivityController CreateController(IServiceScope scope, string id)
     {
-        return new ProgressMonitoringController(scope.ServiceProvider.GetRequiredService<IProgressMonitoringService>())
+        return new WeeklyActivityController(scope.ServiceProvider.GetRequiredService<IWeeklyActivityService>())
         {
             ControllerContext = BuildContext(id, "instructor")
         };

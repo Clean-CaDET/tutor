@@ -6,11 +6,12 @@ namespace Tutor.Courses.Infrastructure.Database;
 public class CoursesContext : DbContext
 {
     public DbSet<Course> Courses { get; set; }
+    public DbSet<CourseOwnership> CourseOwnerships { get; set; }
     public DbSet<KnowledgeUnit> KnowledgeUnits { get; set; }
     public DbSet<LearnerGroup> LearnerGroups { get; set; }
     public DbSet<UnitEnrollment> UnitEnrollments { get; set; }
     public DbSet<UnitProgressRating> UnitProgressRating { get; set; }
-    public DbSet<CourseOwnership> CourseOwnerships { get; set; }
+    public DbSet<WeeklyFeedback> WeeklyProgress { get; set; }
 
     public CoursesContext(DbContextOptions<CoursesContext> options) : base(options) {}
 
@@ -25,5 +26,9 @@ public class CoursesContext : DbContext
             .HasOne<KnowledgeUnit>()
             .WithMany()
             .HasForeignKey(p => p.KnowledgeUnitId);
+        modelBuilder.Entity<WeeklyFeedback>()
+            .HasOne<Course>()
+            .WithMany()
+            .HasForeignKey(p => p.CourseId);
     }
 }

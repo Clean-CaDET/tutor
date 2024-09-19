@@ -9,33 +9,33 @@ namespace Tutor.API.Controllers.Instructor.Monitoring;
 
 [Authorize(Policy = "instructorPolicy")]
 [Route("api/monitoring/learners")]
-public class ProgressMonitoringController : BaseApiController
+public class WeeklyActivityController : BaseApiController
 {
-    private readonly IProgressMonitoringService _monitoringService;
+    private readonly IWeeklyActivityService _activityService;
 
-    public ProgressMonitoringController(IProgressMonitoringService monitoringService)
+    public WeeklyActivityController(IWeeklyActivityService activityService)
     {
-        _monitoringService = monitoringService;
+        _activityService = activityService;
     }
 
     [HttpGet("{learnerId:int}")]
     public ActionResult<List<UnitHeaderDto>> GetWeeklyUnitsWithTasksAndKcs(int learnerId, [FromQuery] int courseId, [FromQuery] DateTime weekEnd)
     {
-        var result = _monitoringService.GetWeeklyUnitsWithTasksAndKcs(User.InstructorId(), learnerId, courseId, DateTime.SpecifyKind(weekEnd, DateTimeKind.Utc));
+        var result = _activityService.GetWeeklyUnitsWithTasksAndKcs(User.InstructorId(), learnerId, courseId, DateTime.SpecifyKind(weekEnd, DateTimeKind.Utc));
         return CreateResponse(result);
     }
 
     [HttpPost("{learnerId:int}/statistics")]
     public ActionResult<List<UnitProgressStatisticsDto>> GetKcAndTaskProgressAndWarnings(int learnerId, [FromQuery] int[]? unitIds, [FromBody] int[] groupMemberIds)
     {
-        var result = _monitoringService.GetKcAndTaskProgressAndWarnings(User.InstructorId(), unitIds, learnerId, groupMemberIds);
+        var result = _activityService.GetKcAndTaskProgressAndWarnings(User.InstructorId(), unitIds, learnerId, groupMemberIds);
         return CreateResponse(result);
     }
 
-    [HttpGet("feedback")]
+    [HttpGet("ratings")]
     public ActionResult<List<UnitProgressRatingDto>> GetLearnerFeedback([FromQuery] int[]? unitIds, [FromQuery] DateTime weekEnd)
     {
-        var result = _monitoringService.GetRecentRatingsForUnits(User.InstructorId(), unitIds, DateTime.SpecifyKind(weekEnd, DateTimeKind.Utc));
+        var result = _activityService.GetRecentRatingsForUnits(User.InstructorId(), unitIds, DateTime.SpecifyKind(weekEnd, DateTimeKind.Utc));
         return CreateResponse(result);
     }
 }

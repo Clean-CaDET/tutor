@@ -12,7 +12,7 @@ using Tutor.LearningTasks.API.Internal;
 
 namespace Tutor.Courses.Core.UseCases.Monitoring;
 
-public class ProgressMonitoringService : IProgressMonitoringService
+public class WeeklyActivityService : IWeeklyActivityService
 {
     private readonly IMapper _mapper;
     private readonly IOwnedCourseRepository _ownedCourseRepository;
@@ -23,7 +23,7 @@ public class ProgressMonitoringService : IProgressMonitoringService
     private readonly IKcProgressMonitor _kcProgressMonitor;
     private readonly ITaskProgressMonitor _taskProgressMonitor;
 
-    public ProgressMonitoringService(IMapper mapper, IOwnedCourseRepository ownedCourseRepository,
+    public WeeklyActivityService(IMapper mapper, IOwnedCourseRepository ownedCourseRepository,
         IUnitEnrollmentRepository enrollmentRepository, IUnitProgressRatingRepository ratingRepository,
         IKnowledgeComponentQuerier kcQuerier, ITaskQuerier taskQuerier,
         IKcProgressMonitor kcProgressMonitor, ITaskProgressMonitor taskProgressMonitor)
