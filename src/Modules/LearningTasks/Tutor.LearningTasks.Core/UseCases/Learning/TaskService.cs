@@ -68,8 +68,6 @@ public class TaskService : ITaskService
                 progressDto.TotalScore = progress.TotalScore;
             }
         }
-
         return Result.Ok(result);
     }
-
 }
