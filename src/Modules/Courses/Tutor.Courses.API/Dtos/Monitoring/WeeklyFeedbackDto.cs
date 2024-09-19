@@ -1,16 +1,14 @@
-﻿using Tutor.BuildingBlocks.Core.Domain;
+﻿namespace Tutor.Courses.API.Dtos.Monitoring;
 
-namespace Tutor.Courses.API.Dtos.Monitoring;
-
-public class WeeklyFeedbackDto : Entity
+public class WeeklyFeedbackDto
 {
     public int Id { get; set; }
     public int CourseId { get; set; }
     public int LearnerId { get; set; }
 
     public int InstructorId { get; set; }
-    public int InstructorName { get; private set; }
-    public DateTime SelectedDate { get; set; }
+    public string? InstructorName { get; set; }
+    public DateTime WeekEnd { get; set; }
     public int Semaphore { get; set; }
     public string? SemaphoreJustification { get; set; }
 

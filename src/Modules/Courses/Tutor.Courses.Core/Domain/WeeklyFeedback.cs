@@ -8,8 +8,8 @@ public class WeeklyFeedback : Entity
     public int LearnerId { get; private set; }
 
     public int InstructorId { get; private set; }
-    public int InstructorName { get; private set; }
-    public DateTime SelectedDate { get; private set; }
+    public string? InstructorName { get; private set; }
+    public DateTime WeekEnd { get; private set; }
     public ProgressSemaphore Semaphore { get; private set; }
     public string? SemaphoreJustification { get; private set; }
 
