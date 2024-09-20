@@ -13,6 +13,9 @@ INSERT INTO "learningTasks"."TaskProgresses" (
 INSERT INTO "learningTasks"."TaskProgresses" (
     "Id", "TotalScore", "Status", "LearningTaskId", "LearnerId")
 	VALUES (-5, 0, 1, -9, -3);
+INSERT INTO "learningTasks"."TaskProgresses" (
+    "Id", "TotalScore", "Status", "LearningTaskId", "LearnerId")
+	VALUES (-6, 10, 3, -1, -3);
 
 INSERT INTO "learningTasks"."TaskProgresses" (
     "Id", "TotalScore", "Status", "LearningTaskId", "LearnerId")

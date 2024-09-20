@@ -13,3 +13,6 @@ INSERT INTO "learningTasks"."StepProgresses" (
 INSERT INTO "learningTasks"."StepProgresses" (
     "Id", "Answer", "Status", "StepId", "LearnerId", "TaskProgressId", "Evaluations", "Comment")
 	VALUES (-5, 'SomeAnswer', 2, -10, -3, -5, '[{{"StandardId": -8, "Points": 0, "Comment": ""}}]', '');
+INSERT INTO "learningTasks"."StepProgresses" (
+    "Id", "Answer", "Status", "StepId", "LearnerId", "TaskProgressId", "Evaluations", "Comment")
+	VALUES (-6, 'SomeAnswer', 3, -11, -3, -6, '[{{"StandardId": -9, "Points": 10, "Comment": "Excellent"}}]', '');

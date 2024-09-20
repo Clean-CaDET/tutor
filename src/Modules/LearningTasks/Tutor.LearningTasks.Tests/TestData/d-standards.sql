@@ -22,3 +22,6 @@ INSERT INTO "learningTasks"."Standards"(
 INSERT INTO "learningTasks"."Standards"(
     "Id", "Name", "Description", "MaxPoints", "ActivityId")
 	VALUES (-8, 'Standard', 'Description', 10, -10);
+INSERT INTO "learningTasks"."Standards"(
+    "Id", "Name", "Description", "MaxPoints", "ActivityId")
+	VALUES (-9, 'Standard', 'Description', 10, -11);

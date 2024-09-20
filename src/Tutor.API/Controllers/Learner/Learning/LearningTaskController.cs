@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Tutor.LearningTasks.API.Dtos.TaskProgress;
 using Tutor.LearningTasks.API.Dtos.Tasks;
 using Tutor.LearningTasks.API.Public.Learning;
 using Tutor.Stakeholders.Infrastructure.Authentication;
@@ -25,7 +26,7 @@ public class LearningTaskController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<LearningTaskDto>> GetByUnit(int unitId)
+    public ActionResult<List<TaskProgressSummaryDto>> GetByUnit(int unitId)
     {
         var result = _taskService.GetByUnit(unitId, User.LearnerId());
         return CreateResponse(result);

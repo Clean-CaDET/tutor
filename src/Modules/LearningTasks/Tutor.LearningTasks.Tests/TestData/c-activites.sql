@@ -28,3 +28,9 @@ INSERT INTO "learningTasks"."Activities"(
 INSERT INTO "learningTasks"."Activities"(
     "Id", "ParentId", "Order", "Code",  "Name", "Guidance", "Examples", "SubmissionFormat", "MaxPoints", "LearningTaskId")
 	VALUES (-10, 0, 1, 'U1-LT3-A1', 'Activity1', 'Guidance', '[{{"Code":"U1-LT3-A1", "Url":"Url1"}}, {{"Code":"U1-LT3-A1", "Url":"Url2"}}]', '{{"Type":2,"ValidationRule":"some validation", "Guidelines":""}}', 5, -9);
+INSERT INTO "learningTasks"."Activities"(
+    "Id", "ParentId", "Order", "Code",  "Name", "Guidance", "Examples", "SubmissionFormat", "MaxPoints", "LearningTaskId")
+	VALUES (-11, 0, 1, 'U1-LT1-A1', 'Activity1', 'Guidance', null, '{{"Type":2,"ValidationRule":"some validation", "Guidelines":""}}', 10, -1);
+INSERT INTO "learningTasks"."Activities"(
+    "Id", "ParentId", "Order", "Code",  "Name", "Guidance", "Examples", "SubmissionFormat", "MaxPoints", "LearningTaskId")
+	VALUES (-12, -11, 1, 'U1-LT1-A11', 'Activity11', 'Guidance', null, '{{"Type":2,"ValidationRule":"some validation", "Guidelines":""}}', 0, -1);

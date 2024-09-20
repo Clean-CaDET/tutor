@@ -88,7 +88,7 @@ public class TaskGradingTests : BaseLearningTasksIntegrationTest
         result[1].Id.ShouldBe(-1);
         result[1].UnitId.ShouldBe(-1);
         result[1].Name.ShouldBe("FirstTask");
-        result[1].Steps?.Count.ShouldBe(0);
+        result[1].Steps?.Count.ShouldBe(2);
     }
 
 

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Learner.Learning;
+using Tutor.LearningTasks.API.Dtos.TaskProgress;
 using Tutor.LearningTasks.API.Dtos.Tasks;
 using Tutor.LearningTasks.API.Public.Learning;
 using Tutor.LearningTasks.Infrastructure.Database;
@@ -80,15 +81,19 @@ public class LearningTaskTests : BaseLearningTasksIntegrationTest
 
         var actionResult = controller.GetByUnit(-1).Result;
         var okObjectResult = actionResult as OkObjectResult;
-        var result = okObjectResult?.Value as List<LearningTaskDto>;
+        var result = okObjectResult?.Value as List<TaskProgressSummaryDto>;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Count.ShouldBe(1);
         result[0].Id.ShouldBe(-1);
-        result[0].UnitId.ShouldBe(-1);
+        result[0].Order.ShouldBe(1);
         result[0].Name.ShouldBe("FirstTask");
-        result[0].Steps?.Count.ShouldBe(0);
+        result[0].Status.ShouldBe("Graded");
+        result[0].CompletedSteps.ShouldBe(1);
+        result[0].TotalSteps.ShouldBe(1);
+        result[0].TotalScore.ShouldBe(10);
+        result[0].MaxPoints.ShouldBe(10);
     }
 
     [Fact]
