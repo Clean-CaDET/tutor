@@ -57,6 +57,6 @@ public class TaskProgressDatabaseRepository : CrudDatabaseRepository<TaskProgres
         return DbContext.TaskProgresses
             .Count(p => 
                 p.LearnerId == learnerId && taskIds.Contains(p.LearningTaskId) &&
-                p.Status == TaskStatus.Completed || p.Status == TaskStatus.Graded);
+                (p.Status == TaskStatus.Completed || p.Status == TaskStatus.Graded));
     }
 }

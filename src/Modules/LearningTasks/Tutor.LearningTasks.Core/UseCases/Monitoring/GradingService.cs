@@ -9,19 +9,21 @@ using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.LearningTasks.Core.UseCases.Monitoring;
 
-public class GradingService : CrudService<TaskProgressDto, TaskProgress>, IGradingService
+public class GradingService : BaseService<TaskProgressDto, TaskProgress>, IGradingService
 {
     private readonly ITaskProgressRepository _progressRepository;
     private readonly ILearningTaskRepository _taskRepository;
     private readonly IAccessServices _accessServices;
+    private readonly ILearningTasksUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
     public GradingService(ITaskProgressRepository progressRepository, ILearningTaskRepository taskRepository, IAccessServices accessServices,
-        ILearningTasksUnitOfWork unitOfWork, IMapper mapper) : base(progressRepository, unitOfWork, mapper)
+        ILearningTasksUnitOfWork unitOfWork, IMapper mapper) : base(mapper)
     {
         _progressRepository = progressRepository;
         _taskRepository = taskRepository;
         _accessServices = accessServices;
+        _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
 
@@ -44,6 +46,9 @@ public class GradingService : CrudService<TaskProgressDto, TaskProgress>, IGradi
 
         var evaluations = stepProgress.Evaluations!.Select(_mapper.Map<StandardEvaluation>).ToList();
         taskProgress.SubmitGrade(stepProgress.StepId, evaluations, stepProgress.Comment!);
-        return Update(taskProgress);
+        _progressRepository.UpdateEvents(taskProgress);
+        var result = _unitOfWork.Save();
+        if (result.IsFailed) return result;
+        return MapToDto(taskProgress);
     }
 }

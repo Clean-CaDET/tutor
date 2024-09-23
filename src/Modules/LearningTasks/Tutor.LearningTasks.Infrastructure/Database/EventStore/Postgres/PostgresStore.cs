@@ -1,6 +1,7 @@
 ﻿using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.Postgres;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskEvents;
 
 namespace Tutor.LearningTasks.Infrastructure.Database.EventStore.Postgres;
 
@@ -22,14 +23,19 @@ public class PostgresStore<TEvent> : IEventStore<TEvent> where TEvent : DomainEv
         // class name is temporarily used as aggregate type until we choose a better approach
         var aggregateType = aggregate.GetType().Name;
 
-        var eventsToSave = aggregate.GetChanges().Select(
-            e => new StoredTaskDomainEvent()
+        var eventsToSave = aggregate.GetChanges().Select(e =>
+        {
+            var taskEvent = e as TaskEvent;
+            return new StoredTaskDomainEvent
             {
                 AggregateType = aggregateType,
                 AggregateId = aggregate.Id,
                 TimeStamp = e.TimeStamp.ToUniversalTime(),
+                LearnerId = taskEvent?.LearnerId ?? 0,
+                TaskId = taskEvent?.TaskId ?? 0,
                 DomainEvent = _eventSerializer.Serialize((TEvent)e)
-            });
+            };
+        });
         _eventContext.Events.AddRange(eventsToSave);
         aggregate.ClearChanges();
     }

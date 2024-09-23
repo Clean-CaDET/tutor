@@ -60,7 +60,7 @@ public class TaskProgressMonitor : ITaskProgressMonitor
                 .OrderBy(e => e.TimeStamp)
                 .ToList();
 
-            var gradedIndex = orderedEvents.FindIndex(e => e is TaskGraded);
+            var gradedIndex = orderedEvents.FindLastIndex(e => e is TaskGraded);
             if (gradedIndex == -1) continue;
 
             var eventsUpToGraded = orderedEvents.Take(gradedIndex + 1).ToList();

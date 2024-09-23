@@ -14,7 +14,7 @@ public class PatternDetectorAssessment : INegativePatternDetector
         for (var i = 0; i < eventsUpToSatisfied.Count - 1; i++)
         {
             if (eventsUpToSatisfied[i] is not AssessmentItemSelected assessmentSelected) continue;
-            var matchingAnswer = FindMatchingAnswer(eventsUpToSatisfied, i, assessmentSelected.AssessmentItemId);
+            var matchingAnswer = FindMatchingCorrectAnswer(eventsUpToSatisfied, i, assessmentSelected.AssessmentItemId);
             if (matchingAnswer == null || !matchingAnswer.IsFirstCorrect) continue;
 
             completedQuestionCount++;
@@ -41,12 +41,12 @@ public class PatternDetectorAssessment : INegativePatternDetector
         return negativePatterns;
     }
 
-    private static AssessmentItemAnswered? FindMatchingAnswer(List<KnowledgeComponentEvent> events, int i, int aiId)
+    private static AssessmentItemAnswered? FindMatchingCorrectAnswer(List<KnowledgeComponentEvent> events, int i, int aiId)
     {
         for (var j = i + 1; j < events.Count; j++)
         {
             if (events[j] is AssessmentItemSelected) return null;
-            if (events[j] is AssessmentItemAnswered e && e.AssessmentItemId == aiId) return e;
+            if (events[j] is AssessmentItemAnswered e && e.AssessmentItemId == aiId && e.IsFirstCorrect) return e;
         }
         return null;
     }
@@ -57,6 +57,7 @@ public class PatternDetectorAssessment : INegativePatternDetector
         for (var i = 0; i < eventsUpToSatisfied.Count - 1; i++)
         {
             if (eventsUpToSatisfied[i] is not AssessmentItemSelected assessmentSelected) continue;
+
             var matchingAnswer = FindMatchingAnswer(eventsUpToSatisfied, i, assessmentSelected.AssessmentItemId);
             if (matchingAnswer == null) continue;
             if (matchingAnswer.IsFirstCorrect || matchingAnswer.AttemptCount != 1) continue;
@@ -65,5 +66,15 @@ public class PatternDetectorAssessment : INegativePatternDetector
         }
 
         return rushedFirstAnswers;
+    }
+
+    private static AssessmentItemAnswered? FindMatchingAnswer(List<KnowledgeComponentEvent> events, int i, int aiId)
+    {
+        for (var j = i + 1; j < events.Count; j++)
+        {
+            if (events[j] is AssessmentItemSelected) return null;
+            if (events[j] is AssessmentItemAnswered e && e.AssessmentItemId == aiId) return e;
+        }
+        return null;
     }
 }
