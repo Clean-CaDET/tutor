@@ -1,4 +1,5 @@
-﻿using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
+﻿using Microsoft.EntityFrameworkCore;
+using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Core.EventSourcing;
 using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.Postgres;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events;
@@ -45,7 +46,10 @@ public class PostgresStore<TEvent> : IEventStore<TEvent> where TEvent : DomainEv
     {
         return _eventContext.Events
             .Where(e => e.LearnerId == userId && primaryEntityIds.Contains(e.KnowledgeComponentId))
-            .Select(e => _eventSerializer.Deserialize(e.DomainEvent))
+            .AsNoTracking()
+            .Select(e => e.DomainEvent)
+            .ToList()
+            .Select(_eventSerializer.Deserialize)
             .ToList();
     }
 }

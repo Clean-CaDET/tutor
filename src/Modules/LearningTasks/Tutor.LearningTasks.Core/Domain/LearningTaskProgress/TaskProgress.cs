@@ -41,6 +41,7 @@ public class TaskProgress : EventSourcedAggregateRoot
     public void SubmitAnswer(int stepId, string answer)
     {
         Causes(new StepSubmitted(stepId, answer));
+        if (IsCompleted()) return;
 
         var allStepsAnswered = StepProgresses!.All(s => s.Status == StepStatus.Answered);
         if (allStepsAnswered)
