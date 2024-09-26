@@ -16,6 +16,12 @@ INSERT INTO "learningTasks"."Activities"(
 INSERT INTO "learningTasks"."Activities"(
     "Id", "ParentId", "Order", "Code",  "Name", "Guidance", "Examples", "SubmissionFormat", "MaxPoints", "LearningTaskId")
 	VALUES (-9996, 0, 1, 'M-9996', 'M-9996', '', '[{{"Code":"M-9996", "Url":""}}]', '{{"Type":0,"ValidationRule":"", "Guidelines":""}}', 6, -9998);
+INSERT INTO "learningTasks"."LearningTasks"(
+    "Id", "UnitId", "Name", "Description", "IsTemplate", "MaxPoints", "Order")
+	VALUES (-9997, -9999, 'Monitoring task 3 - Nobody accessed it', '', false, 1, 1);
+INSERT INTO "learningTasks"."Activities"(
+    "Id", "ParentId", "Order", "Code",  "Name", "Guidance", "Examples", "SubmissionFormat", "MaxPoints", "LearningTaskId")
+	VALUES (-9995, 0, 1, 'M-9999', 'M-9999', '', '[{{"Code":"M-9999", "Url":""}}]', '{{"Type":0,"ValidationRule":"", "Guidelines":""}}', 1, -9997);
 
 
 INSERT INTO "learningTasks"."TaskProgresses" (

@@ -42,6 +42,7 @@ public class TaskProgressMonitorTests : BaseLearningTasksIntegrationTest
                         GradedCount = 2,
                         LearnerPoints = 8,
                         AvgScorePerLearner = 3.7,
+                        TotalMaxPoints = 15,
                         GradedTaskStatistics = new List<InternalTaskProgressStatisticsDto>
                         {
                             new()
@@ -60,12 +61,22 @@ public class TaskProgressMonitorTests : BaseLearningTasksIntegrationTest
                                 NegativePatterns = new List<string>()
                             }
                         }
+                    },
+                    new()
+                    {
+                        UnitId = -9999,
+                        TotalCount = 1,
+                        GradedCount = 0,
+                        LearnerPoints = 0,
+                        AvgScorePerLearner = 0,
+                        TotalMaxPoints = 1,
+                        GradedTaskStatistics = new List<InternalTaskProgressStatisticsDto>()
                     }
                 }
             },
             new object[]
             {
-                -9998, new []{-9999, -9998}, new []{-9999, -9998, -9997}, new List<InternalTaskUnitSummaryStatisticsDto>
+                -9998, new []{-9998}, new []{-9999, -9998, -9997}, new List<InternalTaskUnitSummaryStatisticsDto>
                 {
                     new()
                     {
@@ -74,6 +85,7 @@ public class TaskProgressMonitorTests : BaseLearningTasksIntegrationTest
                         GradedCount = 2,
                         LearnerPoints = 3,
                         AvgScorePerLearner = 3.7,
+                        TotalMaxPoints = 15,
                         GradedTaskStatistics = new List<InternalTaskProgressStatisticsDto>
                         {
                             new()

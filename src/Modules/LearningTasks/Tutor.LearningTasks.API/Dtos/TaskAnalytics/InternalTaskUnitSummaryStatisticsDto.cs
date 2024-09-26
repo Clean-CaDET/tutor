@@ -19,7 +19,9 @@ public class InternalTaskUnitSummaryStatisticsDto
     private bool Equals(InternalTaskUnitSummaryStatisticsDto other)
     {
         if (UnitId != other.UnitId || TotalCount != other.TotalCount || GradedCount != other.GradedCount) return false;
-        if (Math.Abs(AvgScorePerLearner - other.AvgScorePerLearner) > 0.1 || Math.Abs(LearnerPoints - other.LearnerPoints) > 0.1) return false;
+        if (Math.Abs(AvgScorePerLearner - other.AvgScorePerLearner) > 0.1
+            || Math.Abs(LearnerPoints - other.LearnerPoints) > 0.1
+            || Math.Abs(TotalMaxPoints - other.TotalMaxPoints) > 0.1) return false;
         if (GradedTaskStatistics.Count != other.GradedTaskStatistics.Count) return false;
         if (!other.GradedTaskStatistics.All(GradedTaskStatistics.Contains)) return false;
         return true;
