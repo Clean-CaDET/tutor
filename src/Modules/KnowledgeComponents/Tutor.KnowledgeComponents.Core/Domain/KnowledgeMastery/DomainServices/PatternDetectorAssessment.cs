@@ -30,12 +30,12 @@ public class PatternDetectorAssessment : INegativePatternDetector
         if (rushedAnswersRatio > 0.4)
         {
             negativePatterns.Add(
-                $"Pogađanje ili brzanje: Od {completedQuestionCount} pitanja, za {rushedAnswersRatio * 100}% daje pogrešan prvi odgovor u 30 sekundi od otvaranja pitanja.");
+                $"Pogađanje ili brzanje: Od {completedQuestionCount} pitanja, za {rushedAnswersRatio * 100:F0}% daje pogrešan prvi odgovor u 30 sekundi od otvaranja pitanja.");
         }
         if (manyTriesRatio > 0.4)
         {
             negativePatterns.Add(
-                $"Nepromišljenost: Od {completedQuestionCount} pitanja, {manyTriesRatio * 100}% odgovara tačno tek posle 3 ili više pokušaja.");
+                $"Nepromišljenost: Od {completedQuestionCount} pitanja, {manyTriesRatio * 100:F0}% odgovara tačno tek posle 3 ili više pokušaja.");
         }
 
         return negativePatterns;
