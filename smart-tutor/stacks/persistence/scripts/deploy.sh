@@ -97,7 +97,5 @@ printf "%s" "${DATABASE_SCHEMA}" \
 
 envsubst < "${ENVIRONMENT_TEMPLATE_FILE}" > "${ENVIRONMENT_FILE}"
 
-docker-compose --env-file "${ENVIRONMENT_FILE}" \
-               --file "${COMPOSE_FILE}" config \
-               | docker stack deploy -c - "${STACK_NAME}"
+docker stack deploy -c "${COMPOSE_FILE}" "${STACK_NAME}"
 rm "${ENVIRONMENT_FILE}"

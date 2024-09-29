@@ -1,8 +1,7 @@
-version: '3.8'
 
 services:
   database:
-    image: postgres:${POSTGRES_VERSION-13}
+    image: postgres:13
     networks:
       - persistence
     environment:
@@ -28,21 +27,21 @@ services:
 
 volumes:
   database-data:
-    name: clean_cadet_database_${STAGE:-dev}
+    name: clean_cadet_database_dev
 
 secrets:
   database-password:
-    name: clean_cadet_database_password_${STAGE-dev}
+    name: clean_cadet_database_password_dev
     external: true
   database-username:
-    name: clean_cadet_database_username_${STAGE-dev}
+    name: clean_cadet_database_username_dev
     external: true
   database-schema:
-    name: clean_cadet_database_schema_${STAGE-dev}
+    name: clean_cadet_database_schema_dev
     external: true
 
 networks:
   persistence:
-    name: clean_cadet_persistence_${STAGE-dev}
+    name: clean_cadet_persistence_dev
     driver: overlay
     attachable: true

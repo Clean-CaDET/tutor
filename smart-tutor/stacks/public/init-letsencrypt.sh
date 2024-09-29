@@ -1,19 +1,19 @@
 #!/bin/bash
 
-if ! [ -x "$(command -v docker-compose)" ]; then
-  echo 'Error: docker-compose is not installed.' >&2
+if ! [ -x "$(command -v docker compose)" ]; then
+  echo 'Error: docker compose is not installed.' >&2
   exit 1
 fi
 
-domains=(clean-cadet.com www.clean-cadet.com)
+domains=(tutor.ftninformatika.com)
 rsa_key_size=4096
 data_path="./certbot"
 email="clean.cadet.ftn@gmail.com" # Adding a valid address is strongly recommended
 staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
 # HTTPS proxy configuration
-export HTTPS_PROXY="http://proxy.uns.ac.rs:8080/"
-export HTTP_PROXY="http://proxy.uns.ac.rs:8080/"
+# export HTTPS_PROXY="http://proxy.uns.ac.rs:8080/
+# export HTTP_PROXY="http://proxy.uns.ac.rs:8080/
 
 
 if [ -d "$data_path" ]; then
@@ -35,7 +35,7 @@ fi
 echo "### Creating dummy certificate for $domains ..."
 path="/etc/letsencrypt/live/$domains"
 mkdir -p "$data_path/conf/live/$domains"
-docker-compose -f ./init-cert.yml run --rm --entrypoint "\
+docker compose -f ./init-cert.yml run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 1\
     -keyout '$path/privkey.pem' \
     -out '$path/fullchain.pem' \
@@ -44,11 +44,11 @@ echo
 
 
 echo "### Starting gateway ..."
-docker-compose -f ./init-cert.yml up --force-recreate -d gateway
+docker compose -f ./init-cert.yml up --force-recreate -d gateway
 echo
 
 echo "### Deleting dummy certificate for $domains ..."
-docker-compose -f ./init-cert.yml run --rm --entrypoint "\
+docker compose -f ./init-cert.yml run --rm --entrypoint "\
   rm -Rf /etc/letsencrypt/live/$domains && \
   rm -Rf /etc/letsencrypt/archive/$domains && \
   rm -Rf /etc/letsencrypt/renewal/$domains.conf" certbot
@@ -71,7 +71,7 @@ esac
 # Enable staging mode if needed
 if [ $staging != "0" ]; then staging_arg="--staging"; fi
 
-docker-compose -f ./init-cert.yml run --rm --entrypoint "\
+docker compose -f ./init-cert.yml run --rm --entrypoint "\
   certbot certonly --webroot -w /var/www/certbot \
     $staging_arg \
     $email_arg \
@@ -81,5 +81,5 @@ docker-compose -f ./init-cert.yml run --rm --entrypoint "\
     --force-renewal" certbot
 echo
 
-#echo "### Reloading nginx ..."
-docker-compose -f init-cert.yml down -v
+echo "### Reloading nginx ..."
+docker compose -f init-cert.yml down -v

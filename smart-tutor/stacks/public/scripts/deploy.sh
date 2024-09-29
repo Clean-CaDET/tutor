@@ -60,9 +60,10 @@ echo "COMPOSE FILE              | ${COMPOSE_FILE}"
 docker create --name config-hash "${DOCKER_CONFIG_HASH}"
 docker cp ../ config-hash:
 docker start config-hash
+sleep 1
 docker cp config-hash:/tmp/"${ENVIRONMENT_FILE}" .
 docker rm config-hash
-docker-compose --env-file "${ENVIRONMENT_FILE}" \
+docker compose --env-file "${ENVIRONMENT_FILE}" \
                --file "${COMPOSE_FILE}" config \
-               | docker stack deploy --prune -c - "${STACK_NAME}"
+               | yq 'del(.name) | (.services[].ports[]?.published |= tonumber)' - | docker stack deploy --prune -c - "${STACK_NAME}"
 rm "${ENVIRONMENT_FILE}"

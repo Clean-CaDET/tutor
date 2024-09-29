@@ -1,20 +1,26 @@
-version: '3.8'
 
 services:
   smart-tutor:
-    image: ccadett/tutor:${SMART_TUTOR_VERSION-latest}
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 2
+        delay: 5s
+      restart_policy:
+        condition: on-failure
+    environment:
+      DATABASE_HOST: database
+      DATABASE_PASSWORD_FILE: /run/secrets/database-password
+      DATABASE_PORT: "5432"
+      DATABASE_SCHEMA_FILE: /run/secrets/database-schema
+      DATABASE_USERNAME_FILE: /run/secrets/database-username
+      JWT_KEY: /run/secrets/jwt-key
+      SMART_TUTOR_CORS_ORIGINS: /run/secrets/cors
+      STAGE: PROD
+    image: ccadett/tutor:v2.20.0
     networks:
       - application
       - persistence
-    environment:
-      STAGE: ${SMART_TUTOR_STAGE}
-      DATABASE_HOST: ${SMART_TUTOR_DATABASE_HOST}
-      DATABASE_PORT: ${SMART_TUTOR_DATABASE_PORT}
-      DATABASE_SCHEMA_FILE: /run/secrets/database-schema
-      DATABASE_USERNAME_FILE: /run/secrets/database-username
-      DATABASE_PASSWORD_FILE: /run/secrets/database-password
-      JWT_KEY: /run/secrets/jwt-key
-      SMART_TUTOR_CORS_ORIGINS: /run/secrets/cors
     secrets:
       - source: database-schema
         target: database-schema
@@ -26,37 +32,28 @@ services:
         target: jwt-key
       - source: cors
         target: cors
-    deploy:
-      replicas: 3
-      update_config:
-        parallelism: 2
-        delay: 5s
-      restart_policy:
-        condition: on-failure
-
-secrets:
-  database-password:
-    name: clean_cadet_database_password_${STAGE-dev}
-    external: true
-  database-username:
-    name: clean_cadet_database_username_${STAGE-dev}
-    external: true
-  database-schema:
-    name: clean_cadet_database_schema_${STAGE-dev}
-    external: true
-  jwt-key:
-    name: clean_cadet_smart_tutor_jwt_key_${STAGE}
-    external: true
-  cors:
-    name: clean_cadet_smart_tutor_cors_${STAGE}
-    external: true
-
 networks:
   application:
-    name: clean_cadet_application_${STAGE-dev}
+    name: clean_cadet_application_dev
     driver: overlay
     attachable: true
   persistence:
-    name: clean_cadet_persistence_${STAGE-dev}
+    name: clean_cadet_persistence_dev
     driver: overlay
+    external: true
+secrets:
+  cors:
+    name: clean_cadet_smart_tutor_cors_dev
+    external: true
+  database-password:
+    name: clean_cadet_database_password_dev
+    external: true
+  database-schema:
+    name: clean_cadet_database_schema_dev
+    external: true
+  database-username:
+    name: clean_cadet_database_username_dev
+    external: true
+  jwt-key:
+    name: clean_cadet_smart_tutor_jwt_key_dev
     external: true

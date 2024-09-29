@@ -80,9 +80,5 @@ printf "%s" "${SMART_TUTOR_JWT_KEY}" \
 printf "%s" "${SMART_TUTOR_CORS}" \
     | docker secret create "clean_cadet_smart_tutor_cors_${STAGE}" - > /dev/null || exit
 
+docker stack deploy -c "${COMPOSE_FILE}" "${STACK_NAME}"
 
-envsubst < "${ENVIRONMENT_TEMPLATE_FILE}" > "${ENVIRONMENT_FILE}"
-docker-compose --env-file "${ENVIRONMENT_FILE}" \
-               --file "${COMPOSE_FILE}" config \
-               | docker stack deploy -c - "${STACK_NAME}"
-rm "${ENVIRONMENT_FILE}"

@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   pgadmin:
@@ -12,7 +11,7 @@ services:
     volumes:
       - pgadmin:/var/lib/pgadmin
     ports:
-      - "${PGADMIN_PUBLISHED_PORT-8081}:80"
+      - 8081:80
     deploy:
       replicas: 1
       update_config:
@@ -23,14 +22,14 @@ services:
 
 volumes:
   pgadmin:
-    name: pgadmin_${STAGE:-dev}
+    name: pgadmin_dev
 
 networks:
   operations:
-    name: operations_${STAGE-dev}
+    name: operations_dev
     driver: overlay
     attachable: true
   persistence:
-    name: clean_cadet_persistence_${STAGE-dev}
+    name: clean_cadet_persistence_dev
     driver: overlay
     external: true

@@ -45,8 +45,8 @@ echo "COMPOSE FILE              | ${COMPOSE_FILE}"
 
 
 envsubst < "${ENVIRONMENT_TEMPLATE_FILE}" > "${ENVIRONMENT_FILE}"
-docker-compose --env-file "${ENVIRONMENT_FILE}" \
+docker compose --env-file "${ENVIRONMENT_FILE}" \
                --file "${COMPOSE_FILE}" config \
-               | docker stack deploy -c - "${STACK_NAME}"
+               | yq 'del(.name) | (.services[].ports[]?.published |= tonumber)' - | docker stack deploy -c - "${STACK_NAME}"
 rm "${ENVIRONMENT_FILE}"
 
