@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
-using Tutor.Courses.API.Dtos;
+using Tutor.Courses.API.Dtos.Enrollments;
 using Tutor.Courses.API.Public.Monitoring;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;

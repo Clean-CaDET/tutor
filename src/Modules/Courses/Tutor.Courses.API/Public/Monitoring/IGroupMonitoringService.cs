@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
-using Tutor.Courses.API.Dtos;
+using Tutor.Courses.API.Dtos.Groups;
 
 namespace Tutor.Courses.API.Public.Monitoring;
 

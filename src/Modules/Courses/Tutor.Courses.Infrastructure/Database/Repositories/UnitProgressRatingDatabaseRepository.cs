@@ -25,4 +25,11 @@ public class UnitProgressRatingRepository : IUnitProgressRatingRepository
         _dbContext.UnitProgressRating.Add(rating);
         return rating;
     }
+
+    public List<UnitProgressRating> GetInDateRangeForUnits(int[] unitIds, DateTime start, DateTime end)
+    {
+        return _dbContext.UnitProgressRating
+            .Where(r => unitIds.Contains(r.KnowledgeUnitId) && r.Created > start && r.Created < end)
+            .ToList();
+    }
 }

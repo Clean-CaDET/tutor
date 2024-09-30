@@ -12,10 +12,12 @@ namespace Tutor.API.Controllers.Learner;
 public class EnrolledCourseController : BaseApiController
 {
     private readonly IEnrolledCourseService _enrolledCourseService;
+    private readonly IUnitProgressService _progressService;
 
-    public EnrolledCourseController(IEnrolledCourseService enrolledCourseService)
+    public EnrolledCourseController(IEnrolledCourseService enrolledCourseService, IUnitProgressService progressService)
     {
         _enrolledCourseService = enrolledCourseService;
+        _progressService = progressService;
     }
 
     [HttpGet]
@@ -26,16 +28,23 @@ public class EnrolledCourseController : BaseApiController
     }
 
     [HttpGet("{courseId:int}")]
-    public ActionResult<CourseDto> GetCourseWithEnrolledAndActiveUnits(int courseId)
+    public ActionResult<CourseDto> GetCourseWithAccessibleUnits(int courseId)
     {
-        var result = _enrolledCourseService.GetWithActiveUnits(courseId, User.LearnerId());
+        var result = _enrolledCourseService.GetWithAccessibleUnits(courseId, User.LearnerId());
         return CreateResponse(result);
     }
 
     [HttpGet("{courseId:int}/units/{unitId:int}")]
-    public ActionResult<KnowledgeUnitDto> GetEnrolledAndActiveUnit(int unitId)
+    public ActionResult<KnowledgeUnitDto> GetAccessibleUnit(int unitId)
     {
         var result = _enrolledCourseService.GetUnit(unitId, User.LearnerId());
+        return CreateResponse(result);
+    }
+
+    [HttpPost("{courseId:int}/units/master")]
+    public ActionResult<List<int>> CompleteMasteredUnits(int courseId, [FromBody] List<int> unitIds)
+    {
+        var result = _progressService.CompleteMasteredUnits(courseId, unitIds, User.LearnerId());
         return CreateResponse(result);
     }
 }

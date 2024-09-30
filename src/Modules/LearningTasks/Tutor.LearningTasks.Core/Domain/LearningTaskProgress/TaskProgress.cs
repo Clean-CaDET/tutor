@@ -1,7 +1,8 @@
 ﻿using FluentResults;
 using Tutor.BuildingBlocks.Core.EventSourcing;
-using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events;
-using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskProgressEvents;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.StepEvents;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.StepSupportEvents;
+using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskEvents;
 using Tutor.LearningTasks.Core.Domain.LearningTasks;
 
 namespace Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
@@ -26,22 +27,37 @@ public class TaskProgress : EventSourcedAggregateRoot
 
     private void CreateStepProgresses(List<Activity> steps)
     {
-        StepProgresses = new List<StepProgress>();
-        foreach (var step in steps)
-        {
-            if (step.ParentId == 0)
-                StepProgresses.Add(new StepProgress(step.Id, LearnerId));
-        }
+        StepProgresses = steps
+            .Where(step => step.ParentId == 0)
+            .Select(step => new StepProgress(step.Id, LearnerId, step.Standards!))
+            .ToList();
+    }
+
+    public bool IsCompleted()
+    {
+        return Status == TaskStatus.Completed || Status == TaskStatus.Graded;
     }
 
     public void SubmitAnswer(int stepId, string answer)
     {
         Causes(new StepSubmitted(stepId, answer));
+        if (IsCompleted()) return;
 
         var allStepsAnswered = StepProgresses!.All(s => s.Status == StepStatus.Answered);
         if (allStepsAnswered)
         {
             Causes(new TaskCompleted());
+        }
+    }
+
+    public void SubmitGrade(int stepId, List<StandardEvaluation> evaluations, string comment)
+    {
+        Causes(new StepGraded(stepId, evaluations, comment));
+
+        var allStepsAnswered = StepProgresses!.All(s => s.Status == StepStatus.Graded);
+        if (allStepsAnswered)
+        {
+            Causes(new TaskGraded());
         }
     }
 
@@ -95,9 +111,9 @@ public class TaskProgress : EventSourcedAggregateRoot
 
     protected override void Apply(DomainEvent @event)
     {
-        if (@event is not TaskProgressEvent kcEvent) throw new EventSourcingException("Unexpected event type: " + @event.GetType());
+        if (@event is not TaskEvent kcEvent) throw new EventSourcingException("Unexpected event type: " + @event.GetType());
 
-        kcEvent.LearningTaskId = LearningTaskId;
+        kcEvent.TaskId = LearningTaskId;
         kcEvent.LearnerId = LearnerId;
 
         When((dynamic)kcEvent);
@@ -112,9 +128,26 @@ public class TaskProgress : EventSourcedAggregateRoot
         stepProgress?.SubmitAnswer(answer);
     }
 
+    private void When(StepGraded @event)
+    {
+        var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(@event.StepId));
+        stepProgress?.SubmitGrade(@event.Evaluations, @event.Comment);
+    }
+
     private void When(TaskCompleted @event)
     {
         Status = TaskStatus.Completed;
+    }
+
+    private void When(TaskGraded @event)
+    {
+        TotalScore = 0;
+        foreach (var stepProgress in StepProgresses!)
+        {            
+            TotalScore += stepProgress.Evaluations!.Sum(e => e.Points);
+        }
+        Status = TaskStatus.Graded;
+        @event.TotalScore = TotalScore;
     }
 
     private void When(StepOpened @event)
@@ -125,7 +158,7 @@ public class TaskProgress : EventSourcedAggregateRoot
         stepProgress?.MarkAsViewed();
     }
 
-    private static void When(TaskProgressEvent @event)
+    private static void When(TaskEvent @event)
     {
         // No additional actions are required for TaskOpened, SubmissionOpened, GuidanceOpened, ExampleOpened
         // ExampleVideoPlayed, ExampleVideoPaused, ExampleVideoFinished.

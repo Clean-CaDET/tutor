@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Learner.Learning;
-using Tutor.LearningTasks.API.Dtos.LearningTaskProgress;
+using Tutor.LearningTasks.API.Dtos.TaskProgress;
 using Tutor.LearningTasks.API.Public.Learning;
 using Tutor.LearningTasks.Infrastructure.Database;
 
@@ -29,7 +29,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);
         result.LearningTaskId.ShouldBe(-3);
-        result.Status.ShouldBe("Initialized");
+        result.Status.ShouldBe("Assigned");
         result.TotalScore.ShouldBe(0);
         result.StepProgresses.ShouldNotBeNull();
         result.StepProgresses.Count.ShouldBe(1);

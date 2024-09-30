@@ -1,17 +1,20 @@
 ﻿using Tutor.BuildingBlocks.Core.Domain;
+using Tutor.LearningTasks.Core.Domain.LearningTasks;
 
 namespace Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
 
 public class StepProgress : Entity
 {
     public string? Answer { get; private set; }
-    public StepStatus Status { get; private set; } 
+    public StepStatus Status { get; private set; }
     public int StepId { get; private set; }
     public int LearnerId { get; private set; }
+    public List<StandardEvaluation>? Evaluations { get; private set; }
+    public string? Comment { get; private set; }
 
     public StepProgress() { }
 
-    public StepProgress(int stepId, int learnerId)
+    public StepProgress(int stepId, int learnerId, List<Standard> standards)
     {
         Status = StepStatus.Initialized;
         StepId = stepId;
@@ -26,9 +29,24 @@ public class StepProgress : Entity
 
     public void MarkAsViewed()
     {
-        if(Status == StepStatus.Initialized)
+        if (Status == StepStatus.Initialized)
         {
             Status = StepStatus.Viewed;
+        }
+    }
+
+    public void SubmitGrade(List<StandardEvaluation> evaluations, string comment)
+    {
+        Evaluations = evaluations;
+        Comment = comment;
+        MarkAsGraded();
+    }
+
+    private void MarkAsGraded()
+    {
+        if (Status == StepStatus.Answered)
+        {
+            Status = StepStatus.Graded;
         }
     }
 }

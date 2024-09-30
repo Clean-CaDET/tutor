@@ -1,6 +1,6 @@
 ﻿INSERT INTO "learningTasks"."LearningTasks"(
     "Id", "UnitId", "Name", "Description", "IsTemplate", "MaxPoints", "Order")
-	VALUES (-1, -1, 'FirstTask', 'FirstDescription', false, 0, 1);
+	VALUES (-1, -1, 'FirstTask', 'FirstDescription', false, 10, 1);
 INSERT INTO "learningTasks"."LearningTasks"(
     "Id", "UnitId", "Name", "Description", "IsTemplate", "MaxPoints", "Order")
 	VALUES (-2, -1, 'SecondTask', 'SecondDescription', true, 20, 2);
@@ -19,3 +19,20 @@ INSERT INTO "learningTasks"."LearningTasks"(
 INSERT INTO "learningTasks"."LearningTasks"(
     "Id", "UnitId", "Name", "Description", "IsTemplate", "MaxPoints", "Order")
 	VALUES (-7, -2, 'SeventhTask', 'SeventhDescription', false, 10, 7);
+INSERT INTO "learningTasks"."LearningTasks"(
+    "Id", "UnitId", "Name", "Description", "IsTemplate", "MaxPoints", "Order")
+	VALUES (-8, -2, 'EighthTask', 'EighthDescription', false, 10, 8);
+INSERT INTO "learningTasks"."LearningTasks"(
+    "Id", "UnitId", "Name", "Description", "IsTemplate", "MaxPoints", "Order")
+	VALUES (-9, -2, 'NinthTask', 'NinthDescription', false, 10, 9);
+
+
+INSERT INTO "learningTasks"."LearningTasks"(
+    "Id", "UnitId", "Name", "Description", "IsTemplate", "MaxPoints", "Order")
+	VALUES (-50, -50, 'MasteryTest', 'MasteryTest', false, 10, 1);
+INSERT INTO "learningTasks"."LearningTasks"(
+    "Id", "UnitId", "Name", "Description", "IsTemplate", "MaxPoints", "Order")
+	VALUES (-51, -51, 'MasteryTest2', 'MasteryTest2', false, 10, 1);
+INSERT INTO "learningTasks"."LearningTasks"(
+    "Id", "UnitId", "Name", "Description", "IsTemplate", "MaxPoints", "Order")
+	VALUES (-52, -51, 'MasteryTest3', 'MasteryTest3', false, 10, 2);

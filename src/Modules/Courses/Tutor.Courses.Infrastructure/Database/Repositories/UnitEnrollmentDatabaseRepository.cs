@@ -49,7 +49,15 @@ public class UnitEnrollmentDatabaseRepository : IUnitEnrollmentRepository
     public List<UnitEnrollment> GetActiveEnrollmentsForCourse(int courseId)
     {
         return _dbContext.UnitEnrollments
-            .Where(ue => ue.KnowledgeUnit.CourseId.Equals(courseId) && ue.Status == EnrollmentStatus.Active).ToList();
+            .Where(ue => ue.KnowledgeUnit.CourseId.Equals(courseId)
+                         && (ue.Status == EnrollmentStatus.Active || ue.Status == EnrollmentStatus.Completed)).ToList();
+    }
+
+    public List<UnitEnrollment> GetStartedInDateRange(int learnerId, DateTime start, DateTime end)
+    {
+        return _dbContext.UnitEnrollments
+            .Where(ue => ue.LearnerId == learnerId && ue.Start > start && ue.Start < end)
+            .Include(ue => ue.KnowledgeUnit).ToList();
     }
 
     public List<UnitEnrollment> GetEnrolledUnits(int courseId, int learnerId)

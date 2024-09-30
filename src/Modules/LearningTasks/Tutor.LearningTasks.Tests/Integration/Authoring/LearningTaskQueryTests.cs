@@ -2,11 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Instructor.Authoring;
-using Tutor.LearningTasks.API.Dtos.LearningTasks;
+using Tutor.LearningTasks.API.Dtos.Tasks;
 using Tutor.LearningTasks.API.Public.Authoring;
 
 namespace Tutor.LearningTasks.Tests.Integration.Authoring;
 
+[Collection("Sequential")]
 public class LearningTaskQueryTests : BaseLearningTasksIntegrationTest
 {
     public LearningTaskQueryTests(LearningTasksTestFactory factory) : base(factory) { }
@@ -70,7 +71,7 @@ public class LearningTaskQueryTests : BaseLearningTasksIntegrationTest
         result[1].Id.ShouldBe(-1);
         result[1].UnitId.ShouldBe(-1);
         result[1].Name.ShouldBe("FirstTask");
-        result[1].Steps?.Count.ShouldBe(0);
+        result[1].Steps?.Count.ShouldBe(2);
     }
 
     [Fact]

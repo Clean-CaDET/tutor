@@ -2,6 +2,7 @@
 using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.Postgres;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
 using Tutor.LearningTasks.Core.Domain.LearningTasks;
+using Tutor.LearningTasks.Infrastructure.Database.EventStore.Postgres;
 
 namespace Tutor.LearningTasks.Infrastructure.Database;
 
@@ -12,7 +13,7 @@ public class LearningTasksContext : DbContext
     public DbSet<Standard> Standards { get; set; }
     public DbSet<TaskProgress> TaskProgresses { get; set; }
     public DbSet<StepProgress> StepProgresses { get; set; }
-    public DbSet<StoredDomainEvent> Events { get; set; }
+    public DbSet<StoredTaskDomainEvent> Events { get; set; }
 
     public LearningTasksContext(DbContextOptions<LearningTasksContext> options) : base(options) { }
 
@@ -35,6 +36,7 @@ public class LearningTasksContext : DbContext
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<Activity>().HasIndex(a => new { a.LearningTaskId, a.Code }).IsUnique();
+        modelBuilder.Entity<StepProgress>().Property(s => s.Evaluations).HasColumnType("jsonb");
 
         modelBuilder.Entity<TaskProgress>()
             .HasMany(t => t.StepProgresses)
@@ -43,7 +45,15 @@ public class LearningTasksContext : DbContext
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<StoredDomainEvent>().Property(e => e.DomainEvent).HasColumnType("jsonb");
-        modelBuilder.Entity<StoredDomainEvent>().HasIndex(e => e.TimeStamp);
+        modelBuilder.Entity<LearningTask>()
+            .HasMany<TaskProgress>()
+            .WithOne()
+            .HasForeignKey(tp => tp.LearningTaskId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<StoredTaskDomainEvent>().Property(e => e.DomainEvent).HasColumnType("jsonb");
+        modelBuilder.Entity<StoredTaskDomainEvent>().HasIndex(e => e.TimeStamp);
+        modelBuilder.Entity<StoredTaskDomainEvent>().HasIndex(e => e.LearnerId);
+        modelBuilder.Entity<StoredTaskDomainEvent>().HasIndex(e => e.TaskId);
     }
 }

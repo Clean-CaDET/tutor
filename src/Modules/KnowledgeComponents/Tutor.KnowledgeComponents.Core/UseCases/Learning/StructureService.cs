@@ -28,14 +28,19 @@ public class StructureService : IStructureService, IKnowledgeMasteryQuerier
         _knowledgeComponentRepository = knowledgeComponentRepository;
     }
 
-    public Result<List<int>> GetMasteredUnitIds(List<int> unitIds, int learnerId)
+    public Result<List<int>> GetMasteredUnitIds(int[] unitIds, int learnerId)
     {
         var rootKcs = _knowledgeComponentRepository.GetRootKcs(unitIds);
+        var unitsWithoutKcs = unitIds.Where(id => rootKcs.All(kc => kc.KnowledgeUnitId != id));
+
         var masteries = _knowledgeMasteryRepository
             .GetBareByKcs(rootKcs.Select(kc => kc.Id).ToList(), learnerId);
         var masteredRootKcs = GetMasteredKcs(rootKcs, masteries);
 
-        return masteredRootKcs.Select(kc => kc.KnowledgeUnitId).ToList();
+        return masteredRootKcs
+            .Select(kc => kc.KnowledgeUnitId)
+            .Concat(unitsWithoutKcs)
+            .ToList();
     }
 
     private static List<KnowledgeComponent> GetMasteredKcs(List<KnowledgeComponent> rootKcs, List<KnowledgeComponentMastery> masteries)

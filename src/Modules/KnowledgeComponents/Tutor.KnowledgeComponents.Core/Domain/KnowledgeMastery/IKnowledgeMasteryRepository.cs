@@ -8,5 +8,4 @@ public interface IKnowledgeMasteryRepository
     List<KnowledgeComponentMastery> GetBareByKcs(List<int> kcIds, int learnerId);
     void Update(KnowledgeComponentMastery kcMastery);
     void Create(KnowledgeComponentMastery kcMastery);
-    List<KnowledgeComponentMastery> GetByLearnersAndUnit(int unitId, int[] learnerIds);
 }

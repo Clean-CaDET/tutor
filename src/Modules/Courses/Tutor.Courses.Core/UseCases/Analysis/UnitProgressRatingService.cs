@@ -75,6 +75,6 @@ public class UnitProgressRatingService : IUnitProgressRatingService
     public bool HasActiveEnrollment(int unitId, int learnerId)
     {
         var enrollment = _enrollmentRepository.Get(unitId, learnerId);
-        return enrollment != null && enrollment.IsActive();
+        return enrollment != null && enrollment.IsAccessible();
     }
 }

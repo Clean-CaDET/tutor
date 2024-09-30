@@ -12,8 +12,5 @@ public class MasteryProfile : Profile
         CreateMap<AssessmentItemMastery, AssessmentItemMasteryDto>();
         
         CreateMap<KcMasteryStatistics, KcMasteryStatisticsDto>();
-        CreateMap<KnowledgeComponentMastery, KcmProgressDto>()
-            .ForMember(dest => dest.ActiveSessionInMinutes, opt => opt.MapFrom(src =>
-                src.SessionTracker.DurationOfAllSessions.TotalMinutes - src.SessionTracker.DurationOfAllPauses.TotalMinutes));
     }
 }

@@ -6,4 +6,6 @@ public class AssessmentItemAnswered : AssessmentItemEvent
 {
     public Submission Submission { get; set; }
     public Feedback Feedback { get; set; }
+    public int AttemptCount { get; set; }
+    public bool IsFirstCorrect { get; set; }
 }

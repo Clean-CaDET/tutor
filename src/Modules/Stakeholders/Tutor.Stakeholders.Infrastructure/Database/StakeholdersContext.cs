@@ -5,6 +5,7 @@ namespace Tutor.Stakeholders.Infrastructure.Database;
 
 public class StakeholdersContext : DbContext
 {
+    public DbSet<AppVersion> AppVersion { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Learner> Learners { get; set; }
     public DbSet<Instructor> Instructors { get; set; }
