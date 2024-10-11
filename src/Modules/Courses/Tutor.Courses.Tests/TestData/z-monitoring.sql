@@ -21,18 +21,18 @@ INSERT INTO courses."UnitEnrollments"(
 VALUES (-99991, -9999, -9999, '2023-10-20 21:29:50.379749+01', '2023-10-23 21:29:50.379749+01', 1);
 INSERT INTO courses."UnitEnrollments"(
     "Id", "LearnerId", "KnowledgeUnitId", "Start", "BestBefore", "Status")
-VALUES (-99992, -9999, -9998, '2023-10-20 21:29:50.379749+01', '2023-10-27 21:29:50.379749+01', 1);
+VALUES (-99992, -9999, -9998, '2023-10-20 21:29:50.379749+01', '2023-10-25 21:29:50.379749+01', 1);
 
 INSERT INTO courses."UnitEnrollments"(
     "Id", "LearnerId", "KnowledgeUnitId", "Start", "BestBefore", "Status")
 VALUES (-99993, -9998, -9999, '2023-10-20 21:29:50.379749+01', '2023-10-23 21:29:50.379749+01', 1);
 INSERT INTO courses."UnitEnrollments"(
     "Id", "LearnerId", "KnowledgeUnitId", "Start", "BestBefore", "Status")
-VALUES (-99994, -9998, -9998, '2023-10-20 21:29:50.379749+01', '2023-10-27 21:29:50.379749+01', 1);
+VALUES (-99994, -9998, -9998, '2023-10-20 21:29:50.379749+01', '2023-10-25 21:29:50.379749+01', 1);
 
 INSERT INTO courses."UnitEnrollments"(
     "Id", "LearnerId", "KnowledgeUnitId", "Start", "BestBefore", "Status")
 VALUES (-99995, -9997, -9999, '2023-10-20 21:29:50.379749+01', '2023-10-23 21:29:50.379749+01', 1);
 INSERT INTO courses."UnitEnrollments"(
     "Id", "LearnerId", "KnowledgeUnitId", "Start", "BestBefore", "Status")
-VALUES (-99996, -9997, -9998, '2023-10-20 21:29:50.379749+01', '2023-10-27 21:29:50.379749+01', 1);
+VALUES (-99996, -9997, -9998, '2023-10-20 21:29:50.379749+01', '2023-10-25 21:29:50.379749+01', 1);

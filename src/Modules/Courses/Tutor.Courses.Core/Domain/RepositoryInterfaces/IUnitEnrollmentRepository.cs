@@ -8,7 +8,7 @@ public interface IUnitEnrollmentRepository
     UnitEnrollment Create(UnitEnrollment newEnrollment);
     UnitEnrollment Update(UnitEnrollment enrollment);
     List<UnitEnrollment> GetActiveEnrollmentsForCourse(int courseId);
-    List<UnitEnrollment> GetStartedInDateRange(int learnerId, DateTime start, DateTime end);
+    List<UnitEnrollment> GetBestBeforeInDateRange(int learnerId, DateTime start, DateTime end);
 
     List<UnitEnrollment> GetEnrolledUnits(int courseId, int learnerId);
 }

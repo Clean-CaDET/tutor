@@ -53,10 +53,10 @@ public class UnitEnrollmentDatabaseRepository : IUnitEnrollmentRepository
                          && (ue.Status == EnrollmentStatus.Active || ue.Status == EnrollmentStatus.Completed)).ToList();
     }
 
-    public List<UnitEnrollment> GetStartedInDateRange(int learnerId, DateTime start, DateTime end)
+    public List<UnitEnrollment> GetBestBeforeInDateRange(int learnerId, DateTime start, DateTime end)
     {
         return _dbContext.UnitEnrollments
-            .Where(ue => ue.LearnerId == learnerId && ue.Start > start && ue.Start < end)
+            .Where(ue => ue.LearnerId == learnerId && ue.BestBefore > start && ue.BestBefore < end)
             .Include(ue => ue.KnowledgeUnit).ToList();
     }
 
