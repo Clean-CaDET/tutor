@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
+using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Enrollments;
 using Tutor.Courses.API.Public.Monitoring;
 using Tutor.Courses.Core.Domain;
@@ -27,10 +28,10 @@ public class EnrollmentService : BaseService<EnrollmentDto, UnitEnrollment>, IEn
         _unitOfWork = unitOfWork;
     }
 
-    public Result<List<EnrollmentDto>> GetEnrollments(EnrollmentFilterDto unitAndLearnerIds, int instructorId)
+    public Result<List<EnrollmentDto>> GetEnrollments(UnitAndLearnerIdsDto enrollmentFilter, int instructorId)
     {
         return MapToDto(_unitEnrollmentRepository
-            .GetMany(unitAndLearnerIds.UnitIds, unitAndLearnerIds.LearnerIds));
+            .GetMany(enrollmentFilter.UnitIds, enrollmentFilter.LearnerIds));
     }
 
     public Result<List<EnrollmentDto>> BulkEnroll(int unitId, int[] learnerIds, EnrollmentDto newEnrollment, int instructorId)
