@@ -1,6 +1,6 @@
-﻿namespace Tutor.Courses.API.Dtos.Enrollments;
+﻿namespace Tutor.Courses.API.Dtos;
 
-public class EnrollmentFilterDto
+public class UnitAndLearnerIdsDto
 {
     public int[] UnitIds { get; set; }
     public int[] LearnerIds { get; set; }

@@ -51,4 +51,14 @@ public class GradingService : BaseService<TaskProgressDto, TaskProgress>, IGradi
         if (result.IsFailed) return result;
         return MapToDto(taskProgress);
     }
+
+    public Result<List<TaskProgressDto>> GetGroupSummaries(int[] unitIds, int[] groupMemberIds, int instructorId)
+    {
+        if (unitIds.Length == 0 || groupMemberIds.Length == 0) return Result.Ok(new List<TaskProgressDto>());
+        if (!_accessServices.IsUnitOwner(unitIds[0], instructorId)) return Result.Fail(FailureCode.Forbidden);
+
+        var tasks = _taskRepository.GetByUnits(unitIds);
+        var taskProgresses = _progressRepository.GetByTasksAndGroup(tasks.Select(t => t.Id).ToArray(), groupMemberIds);
+        return MapToDto(taskProgresses);
+    }
 }

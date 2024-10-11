@@ -114,7 +114,7 @@ public class TaskProgressMonitor : ITaskProgressMonitor
                 learnersTotalScores.Add(relatedScores.Sum());
             }
 
-            stats.AvgScorePerLearner = Math.Round(learnersTotalScores.Average(), 1);
+            stats.AvgGroupPoints = Math.Round(learnersTotalScores.Average(), 1);
             stats.TotalMaxPoints = tasks.Where(t => t.UnitId == stats.UnitId).Sum(t => t.MaxPoints);
         }
     }

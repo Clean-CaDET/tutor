@@ -52,4 +52,11 @@ public class TaskGradingController : BaseApiController
         var result = _gradingService.SubmitGrade(unitId, progressId, stepProgress, User.InstructorId());
         return CreateResponse(result);
     }
+
+    [HttpPost("group-summaries")]
+    public ActionResult<List<TaskProgressDto>> GetGroupSummaries([FromBody] UnitAndLearnerIdsDto unitAndLearnerIds)
+    {
+        var result = _gradingService.GetGroupSummaries(unitAndLearnerIds.UnitIds, unitAndLearnerIds.LearnerIds, User.InstructorId());
+        return CreateResponse(result);
+    }
 }

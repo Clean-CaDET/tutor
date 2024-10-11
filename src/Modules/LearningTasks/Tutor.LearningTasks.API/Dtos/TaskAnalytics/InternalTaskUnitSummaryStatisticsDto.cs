@@ -6,7 +6,7 @@ public class InternalTaskUnitSummaryStatisticsDto
     public int TotalCount { get; set; }
     public int GradedCount { get; set; }
     public double LearnerPoints { get; set; }
-    public double AvgScorePerLearner { get; set; }
+    public double AvgGroupPoints { get; set; }
     public double TotalMaxPoints { get; set; }
     public List<InternalTaskProgressStatisticsDto> GradedTaskStatistics { get; set; }
 
@@ -19,7 +19,7 @@ public class InternalTaskUnitSummaryStatisticsDto
     private bool Equals(InternalTaskUnitSummaryStatisticsDto other)
     {
         if (UnitId != other.UnitId || TotalCount != other.TotalCount || GradedCount != other.GradedCount) return false;
-        if (Math.Abs(AvgScorePerLearner - other.AvgScorePerLearner) > 0.1
+        if (Math.Abs(AvgGroupPoints - other.AvgGroupPoints) > 0.1
             || Math.Abs(LearnerPoints - other.LearnerPoints) > 0.1
             || Math.Abs(TotalMaxPoints - other.TotalMaxPoints) > 0.1) return false;
         if (GradedTaskStatistics.Count != other.GradedTaskStatistics.Count) return false;

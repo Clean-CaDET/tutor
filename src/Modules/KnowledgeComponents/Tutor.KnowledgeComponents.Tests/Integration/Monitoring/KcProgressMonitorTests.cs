@@ -48,7 +48,7 @@ public class KcProgressMonitorTests : BaseKnowledgeComponentsIntegrationTest
                                 NegativePatterns = new List<string>
                                 {
                                     "Brzanje: Proveo 0.8 minuta izučavajući gradivo pre nego što je završena komponenta.",
-                                    "Pogađanje ili brzanje: Od 3 pitanja, za 67% daje pogrešan prvi odgovor u 30 sekundi od otvaranja pitanja."
+                                    "Pogađanje ili brzanje: Od 3 rešenih pitanja, za 67% daje pogrešan prvi odgovor u 30 sekundi od otvaranja pitanja."
                                 },
                                 SatisfactionTime = DateTime.UtcNow
                             }
@@ -79,7 +79,7 @@ public class KcProgressMonitorTests : BaseKnowledgeComponentsIntegrationTest
                                 NegativePatterns = new List<string>
                                 {
                                     "Brzanje: Ukupno vremena provedeno na komponenti je 6 minuta (predviđeno minimalno 8 minuta).",
-                                    "Nepromišljenost: Od 1 pitanja, 100% odgovara tačno tek posle 3 ili više pokušaja."
+                                    "Nepromišljenost: Od 1 rešenih pitanja, 100% odgovara tačno tek posle 3 ili više pokušaja."
                                 },
                                 SatisfactionTime = DateTime.UtcNow
                             }

@@ -41,7 +41,7 @@ public class TaskProgressMonitorTests : BaseLearningTasksIntegrationTest
                         TotalCount = 2,
                         GradedCount = 2,
                         LearnerPoints = 8,
-                        AvgScorePerLearner = 3.7,
+                        AvgGroupPoints = 3.7,
                         TotalMaxPoints = 15,
                         GradedTaskStatistics = new List<InternalTaskProgressStatisticsDto>
                         {
@@ -68,7 +68,7 @@ public class TaskProgressMonitorTests : BaseLearningTasksIntegrationTest
                         TotalCount = 1,
                         GradedCount = 0,
                         LearnerPoints = 0,
-                        AvgScorePerLearner = 0,
+                        AvgGroupPoints = 0,
                         TotalMaxPoints = 1,
                         GradedTaskStatistics = new List<InternalTaskProgressStatisticsDto>()
                     }
@@ -84,7 +84,7 @@ public class TaskProgressMonitorTests : BaseLearningTasksIntegrationTest
                         TotalCount = 2,
                         GradedCount = 2,
                         LearnerPoints = 3,
-                        AvgScorePerLearner = 3.7,
+                        AvgGroupPoints = 3.7,
                         TotalMaxPoints = 15,
                         GradedTaskStatistics = new List<InternalTaskProgressStatisticsDto>
                         {

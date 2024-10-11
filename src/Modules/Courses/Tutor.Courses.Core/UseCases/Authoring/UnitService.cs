@@ -49,7 +49,7 @@ public class UnitService : CrudService<KnowledgeUnitDto, KnowledgeUnit>, IUnitSe
         if (!_ownedCourseRepository.IsCourseOwner(courseId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        var enrollments = _enrollmentRepository.GetStartedInDateRange(learnerId, weekEnd.AddDays(-8), weekEnd);
+        var enrollments = _enrollmentRepository.GetBestBeforeInDateRange(learnerId, weekEnd.AddDays(-4), weekEnd.AddDays(1));
         var units = enrollments.Select(ue => ue.KnowledgeUnit).Where(ku => ku.CourseId == courseId).ToList();
         return MapToDto(units);
     }

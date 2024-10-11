@@ -18,7 +18,7 @@ public class TaskGradingTests : BaseLearningTasksIntegrationTest
     public TaskGradingTests(LearningTasksTestFactory factory) : base(factory) { }
 
     [Fact]
-    public void Get_units_started_during_week_before_given_date()
+    public void Gets_weekly_units()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);

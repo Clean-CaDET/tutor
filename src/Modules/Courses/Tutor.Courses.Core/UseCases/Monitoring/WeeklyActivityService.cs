@@ -55,7 +55,7 @@ public class WeeklyActivityService : IWeeklyActivityService
 
     private List<UnitHeaderDto> GetUnitHeaders(int learnerId, int courseId, DateTime weekEnd)
     {
-        var enrollments = _enrollmentRepository.GetStartedInDateRange(learnerId, weekEnd.AddDays(-8), weekEnd);
+        var enrollments = _enrollmentRepository.GetBestBeforeInDateRange(learnerId, weekEnd.AddDays(-4), weekEnd.AddDays(1));
 
         var unitHeaders = new List<UnitHeaderDto>();
         foreach (var enrollment in enrollments)

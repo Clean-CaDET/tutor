@@ -21,7 +21,7 @@ public class UnitEnrollmentQueryTests : BaseCoursesIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, instructorId);
-        var enrollmentFilter = new EnrollmentFilterDto
+        var enrollmentFilter = new UnitAndLearnerIdsDto
         {
             LearnerIds = learnerIds,
             UnitIds = unitIds

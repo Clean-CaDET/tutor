@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Enrollments;
 using Tutor.Courses.API.Public.Monitoring;
 using Tutor.Stakeholders.Infrastructure.Authentication;
@@ -17,12 +18,11 @@ public class UnitEnrollmentController : BaseApiController
         _enrollmentService = enrollmentService;
     }
 
-    // POST because of int[] that can have 150 elements, making the query too long.
-    // A better solution might be to send groupId and 0 or a separate endpoint for All groups, but that clashes with pagination.
+    // POST because int[] can have many elements, making the query too long.
     [HttpPost]
-    public ActionResult<List<EnrollmentDto>> GetEnrollments([FromBody] EnrollmentFilterDto unitAndLearnerIds)
+    public ActionResult<List<EnrollmentDto>> GetEnrollments([FromBody] UnitAndLearnerIdsDto enrollmentFilter)
     {
-        var result = _enrollmentService.GetEnrollments(unitAndLearnerIds, User.InstructorId());
+        var result = _enrollmentService.GetEnrollments(enrollmentFilter, User.InstructorId());
         return CreateResponse(result);
     }
 
