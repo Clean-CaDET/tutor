@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.BuildingBlocks.Core.UseCases;
-using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Public.Monitoring;
 using Tutor.Stakeholders.Infrastructure.Authentication;

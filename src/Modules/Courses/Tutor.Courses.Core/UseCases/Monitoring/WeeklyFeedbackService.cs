@@ -31,6 +31,14 @@ public class WeeklyFeedbackService : CrudService<WeeklyFeedbackDto, WeeklyFeedba
         return MapToDto(_feedbackRepository.GetByCourseAndLearner(courseId, learnerId));
     }
 
+    public Result<List<WeeklyFeedbackDto>> GetByGroup(int courseId, int[] groupMemberIds, DateTime weekEnd, int instructorId)
+    {
+        if (!_ownedCourseRepository.IsCourseOwner(courseId, instructorId))
+            return Result.Fail(FailureCode.Forbidden);
+
+        return MapToDto(_feedbackRepository.GetByCourseAndLearners(courseId, groupMemberIds, weekEnd.AddDays(-2), weekEnd.AddDays(2)));
+    }
+
     public Result<WeeklyFeedbackDto> Create(WeeklyFeedbackDto feedback, int instructorId)
     {
         if (!_ownedCourseRepository.IsCourseOwner(feedback.CourseId, instructorId))
