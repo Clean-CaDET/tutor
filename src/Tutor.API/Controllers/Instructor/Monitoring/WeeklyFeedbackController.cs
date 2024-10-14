@@ -7,7 +7,7 @@ using Tutor.Stakeholders.Infrastructure.Authentication;
 namespace Tutor.API.Controllers.Instructor.Monitoring;
 
 [Authorize(Policy = "instructorPolicy")]
-[Route("api/monitoring/{courseId:int}/feedback/{learnerId:int}")]
+[Route("api/monitoring/{courseId:int}/feedback")]
 public class WeeklyFeedbackController : BaseApiController
 {
     private readonly IWeeklyFeedbackService _feedbackService;
@@ -17,13 +17,19 @@ public class WeeklyFeedbackController : BaseApiController
         _feedbackService = feedbackService;
     }
 
-    [HttpGet]
-    public ActionResult<List<WeeklyFeedbackDto>> GetAll(int courseId, int learnerId)
+    [HttpPost]
+    public ActionResult<WeeklyFeedbackDto> GetForGroup(int courseId, [FromBody] GroupFeedbackRequestDto feedbackRequest)
+    {
+        return CreateResponse(_feedbackService.GetByGroup(courseId, feedbackRequest.LearnerIds, feedbackRequest.WeekEnd, User.InstructorId()));
+    }
+
+    [HttpGet("{learnerId:int}")]
+    public ActionResult<List<WeeklyFeedbackDto>> GetForLearner(int courseId, int learnerId)
     {
         return CreateResponse(_feedbackService.GetByCourseAndLearner(courseId, learnerId, User.InstructorId()));
     }
 
-    [HttpPost]
+    [HttpPost("{learnerId:int}")]
     public ActionResult<WeeklyFeedbackDto> Create(int courseId, int learnerId, [FromBody] WeeklyFeedbackDto feedback)
     {
         feedback.CourseId = courseId;
@@ -31,7 +37,7 @@ public class WeeklyFeedbackController : BaseApiController
         return CreateResponse(_feedbackService.Create(feedback, User.InstructorId()));
     }
 
-    [HttpPut("{feedbackId:int}")]
+    [HttpPut("{learnerId:int}/{feedbackId:int}")]
     public ActionResult<WeeklyFeedbackDto> Update(int courseId, int learnerId, int feedbackId, [FromBody] WeeklyFeedbackDto feedback)
     {
         feedback.Id = feedbackId;

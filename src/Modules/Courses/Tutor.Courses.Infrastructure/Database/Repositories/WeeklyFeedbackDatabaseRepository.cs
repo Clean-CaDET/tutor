@@ -14,4 +14,11 @@ public class WeeklyFeedbackDatabaseRepository : CrudDatabaseRepository<WeeklyFee
             .Where(p => p.CourseId == courseId && p.LearnerId == learnerId)
             .ToList();
     }
+
+    public List<WeeklyFeedback> GetByCourseAndLearners(int courseId, int[] learnerIds, DateTime start, DateTime end)
+    {
+        return DbContext.WeeklyProgress
+            .Where(p => p.CourseId == courseId && learnerIds.Contains(p.LearnerId) && p.WeekEnd > start && p.WeekEnd < end)
+            .ToList();
+    }
 }
