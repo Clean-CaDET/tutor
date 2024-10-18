@@ -5,7 +5,6 @@ using Tutor.LearningTasks.API.Dtos.TaskProgress;
 using Tutor.LearningTasks.API.Dtos.Tasks;
 using Tutor.LearningTasks.API.Public;
 using Tutor.LearningTasks.API.Public.Learning;
-using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
 using Tutor.LearningTasks.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.LearningTasks.Core.UseCases.Learning;
@@ -64,7 +63,7 @@ public class TaskService : ITaskService
             if (progressDto != null)
             {
                 progressDto.Status = progress.Status.ToString();
-                progressDto.CompletedSteps = progress.StepProgresses!.Count(s => s.Status == StepStatus.Answered || s.Status == StepStatus.Graded);
+                progressDto.CompletedSteps = progress.StepProgresses!.Count(s => s.IsCompleted());
                 progressDto.TotalScore = progress.TotalScore;
             }
         }
