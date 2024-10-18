@@ -21,6 +21,11 @@ public class StepProgress : Entity
         LearnerId = learnerId;
     }
 
+    public bool IsCompleted()
+    {
+        return Status == StepStatus.Answered || Status == StepStatus.Graded;
+    }
+
     public void SubmitAnswer(string answer)
     {
         Answer = answer;

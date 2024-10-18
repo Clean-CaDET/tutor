@@ -43,7 +43,7 @@ public class TaskProgress : EventSourcedAggregateRoot
         Causes(new StepSubmitted(stepId, answer));
         if (IsCompleted()) return;
 
-        var allStepsAnswered = StepProgresses!.All(s => s.Status == StepStatus.Answered);
+        var allStepsAnswered = StepProgresses!.All(s => s.IsCompleted());
         if (allStepsAnswered)
         {
             Causes(new TaskCompleted());
@@ -54,8 +54,8 @@ public class TaskProgress : EventSourcedAggregateRoot
     {
         Causes(new StepGraded(stepId, evaluations, comment));
 
-        var allStepsAnswered = StepProgresses!.All(s => s.Status == StepStatus.Graded);
-        if (allStepsAnswered)
+        var allStepsGraded = StepProgresses!.All(s => s.Status == StepStatus.Graded);
+        if (allStepsGraded)
         {
             Causes(new TaskGraded());
         }

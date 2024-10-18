@@ -3,7 +3,6 @@ using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.LearningTasks.API.Dtos.TaskAnalytics;
 using Tutor.LearningTasks.API.Internal;
-using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.DomainServices;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress.Events.TaskEvents;
 using Tutor.LearningTasks.Core.Domain.LearningTasks;
