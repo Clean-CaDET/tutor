@@ -36,17 +36,17 @@ public class WeeklyFeedbackController : BaseApiController
         return CreateResponse(_feedbackService.Create(feedback, User.InstructorId()));
     }
 
-    [HttpPut("{feedbackId:int}")]
-    public ActionResult<WeeklyFeedbackDto> Update(int courseId, int feedbackId, [FromBody] WeeklyFeedbackDto feedback)
+    [HttpPut("{id:int}")]
+    public ActionResult<WeeklyFeedbackDto> Update(int courseId, int id, [FromBody] WeeklyFeedbackDto feedback)
     {
-        feedback.Id = feedbackId;
+        feedback.Id = id;
         feedback.CourseId = courseId;
         return CreateResponse(_feedbackService.Update(feedback, User.InstructorId()));
     }
 
-    [HttpDelete("{feedbackId:int}")]
-    public ActionResult<WeeklyFeedbackDto> Delete(int feedbackId)
+    [HttpDelete("{id:int}")]
+    public ActionResult<WeeklyFeedbackDto> Delete(int id)
     {
-        return CreateResponse(_feedbackService.Delete(feedbackId, User.InstructorId()));
+        return CreateResponse(_feedbackService.Delete(id, User.InstructorId()));
     }
 }
