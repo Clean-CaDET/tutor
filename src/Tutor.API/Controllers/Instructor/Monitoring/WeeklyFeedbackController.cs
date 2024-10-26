@@ -17,32 +17,36 @@ public class WeeklyFeedbackController : BaseApiController
         _feedbackService = feedbackService;
     }
 
-    [HttpPost]
+    [HttpPost("group")]
     public ActionResult<WeeklyFeedbackDto> GetForGroup(int courseId, [FromBody] GroupFeedbackRequestDto feedbackRequest)
     {
         return CreateResponse(_feedbackService.GetByGroup(courseId, feedbackRequest.LearnerIds, feedbackRequest.WeekEnd, User.InstructorId()));
     }
 
-    [HttpGet("{learnerId:int}")]
-    public ActionResult<List<WeeklyFeedbackDto>> GetForLearner(int courseId, int learnerId)
+    [HttpGet]
+    public ActionResult<List<WeeklyFeedbackDto>> GetForLearner(int courseId, [FromQuery] int learnerId)
     {
         return CreateResponse(_feedbackService.GetByCourseAndLearner(courseId, learnerId, User.InstructorId()));
     }
 
-    [HttpPost("{learnerId:int}")]
-    public ActionResult<WeeklyFeedbackDto> Create(int courseId, int learnerId, [FromBody] WeeklyFeedbackDto feedback)
+    [HttpPost]
+    public ActionResult<WeeklyFeedbackDto> Create(int courseId, [FromBody] WeeklyFeedbackDto feedback)
     {
         feedback.CourseId = courseId;
-        feedback.LearnerId = learnerId;
         return CreateResponse(_feedbackService.Create(feedback, User.InstructorId()));
     }
 
-    [HttpPut("{learnerId:int}/{feedbackId:int}")]
-    public ActionResult<WeeklyFeedbackDto> Update(int courseId, int learnerId, int feedbackId, [FromBody] WeeklyFeedbackDto feedback)
+    [HttpPut("{id:int}")]
+    public ActionResult<WeeklyFeedbackDto> Update(int courseId, int id, [FromBody] WeeklyFeedbackDto feedback)
     {
-        feedback.Id = feedbackId;
+        feedback.Id = id;
         feedback.CourseId = courseId;
-        feedback.LearnerId = learnerId;
         return CreateResponse(_feedbackService.Update(feedback, User.InstructorId()));
+    }
+
+    [HttpDelete("{id:int}")]
+    public ActionResult<WeeklyFeedbackDto> Delete(int id)
+    {
+        return CreateResponse(_feedbackService.Delete(id, User.InstructorId()));
     }
 }
