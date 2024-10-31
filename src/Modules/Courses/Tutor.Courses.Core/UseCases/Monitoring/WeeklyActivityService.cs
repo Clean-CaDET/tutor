@@ -90,7 +90,7 @@ public class WeeklyActivityService : IWeeklyActivityService
         if (!_ownedCourseRepository.IsUnitOwner(unitIds[0], instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        var ratings = _ratingRepository.GetInDateRangeForUnits(unitIds, weekEnd.AddDays(-8), weekEnd.AddDays(8));
+        var ratings = _ratingRepository.GetInDateRangeForUnits(unitIds, weekEnd.AddDays(-15), weekEnd.AddDays(15));
         return ratings.Select(_mapper.Map<UnitProgressRatingDto>).ToList();
     }
 

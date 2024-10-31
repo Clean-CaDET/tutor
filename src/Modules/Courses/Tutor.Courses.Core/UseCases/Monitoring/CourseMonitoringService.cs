@@ -70,6 +70,7 @@ public class CourseMonitoringService : ICourseMonitoringService
         {
             var groupDto = _mapper.Map<GroupDto>(group);
             groupDto.Learners = learnerDtos.Where(l => group.LearnerIds.Contains(l.Id)).ToList();
+            groupDtos.Add(groupDto);
         }
 
         return groupDtos;
