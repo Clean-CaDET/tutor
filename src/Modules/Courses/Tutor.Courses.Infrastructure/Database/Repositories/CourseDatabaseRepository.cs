@@ -10,6 +10,13 @@ public class CourseDatabaseRepository : CrudDatabaseRepository<Course, CoursesCo
 {
     public CourseDatabaseRepository(CoursesContext dbContext) : base(dbContext) {}
 
+    public List<Course> GetActiveAndStarted()
+    {
+        return DbContext.Courses
+            .Where(c => c.StartDate < DateTime.UtcNow && !c.IsArchived)
+            .ToList();
+    }
+
     public PagedResult<Course> GetPagedSortedByDate(int page, int pageSize)
     {
         var task = DbContext.Courses.OrderByDescending(c => c.StartDate).GetPaged(page, pageSize);
