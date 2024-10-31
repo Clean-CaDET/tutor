@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Public.Monitoring;
 
 namespace Tutor.API.Controllers.Administrator;
 
 [Authorize(Policy = "administratorPolicy")]
-[Route("api/overview/courses/{courseId:int}")]
+[Route("api/monitoring/overview")]
 public class CourseMonitoringController : BaseApiController
 {
     private readonly ICourseMonitoringService _monitoringService;
@@ -17,9 +18,16 @@ public class CourseMonitoringController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<GroupDto>> GetOverview(int courseId)
+    public ActionResult<List<CourseDto>> GetActiveCourses()
     {
-        var result = _monitoringService.GetGroupedLearnerFeedback(courseId);
+        var result = _monitoringService.GetActiveCourses();
+        return CreateResponse(result);
+    }
+
+    [HttpGet("{courseId:int}")]
+    public ActionResult<List<GroupDto>> GetGroupOverview(int courseId)
+    {
+        var result = _monitoringService.GetGroupFeedback(courseId);
         return CreateResponse(result);
     }
 }

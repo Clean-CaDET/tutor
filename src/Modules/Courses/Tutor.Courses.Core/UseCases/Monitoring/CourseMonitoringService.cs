@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentResults;
+using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Dtos.Monitoring;
 using Tutor.Courses.API.Public.Monitoring;
@@ -12,21 +13,28 @@ namespace Tutor.Courses.Core.UseCases.Monitoring;
 public class CourseMonitoringService : ICourseMonitoringService
 {
     private readonly IMapper _mapper;
+    private readonly ICourseRepository _courseRepository;
     private readonly IGroupRepository _groupRepository;
     private readonly IInternalLearnerService _learnerService;
     private readonly IWeeklyFeedbackRepository _feedbackRepository;
 
-    public CourseMonitoringService(IMapper mapper, IGroupRepository groupRepository, 
+    public CourseMonitoringService(IMapper mapper, ICourseRepository courseRepository, IGroupRepository groupRepository, 
         IInternalLearnerService learnerService, IWeeklyFeedbackRepository feedbackRepository)
     {
         _mapper = mapper;
+        _courseRepository = courseRepository;
         _groupRepository = groupRepository;
         _learnerService = learnerService;
         _feedbackRepository = feedbackRepository;
     }
 
+    public Result<List<CourseDto>> GetActiveCourses()
+    {
+        var courses = _courseRepository.GetActiveAndStarted();
+        return courses.Select(_mapper.Map<CourseDto>).ToList();
+    }
 
-    public Result<List<GroupDto>> GetGroupedLearnerFeedback(int courseId)
+    public Result<List<GroupDto>> GetGroupFeedback(int courseId)
     {
         var groups = _groupRepository.GetCourseGroups(courseId);
         var learnerDtos = GetLearners(groups);
