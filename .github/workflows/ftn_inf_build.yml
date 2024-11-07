@@ -1,4 +1,4 @@
-name: Build
+name: FtnInfBuild
 on:
   push:
     branches:
