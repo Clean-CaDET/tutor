@@ -35,7 +35,7 @@ jobs:
       - name: Deploy service
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.FTN_INFSSH_HOST }}
+          host: ${{ secrets.FTN_INF_SSH_HOST }}
           username: ${{ secrets.FTN_INF_SSH_USERNAME }}
           key: ${{ secrets.FTN_INF_SSH_KEY }}
           port: ${{ secrets.FTN_INF_SSH_PORT }}
