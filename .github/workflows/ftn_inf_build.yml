@@ -8,7 +8,7 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   build:
-    name: Build
+    name: FtnInfBuild
     runs-on: windows-latest
     steps:
       - name: Install .NET 7 SDK
