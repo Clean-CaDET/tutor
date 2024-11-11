@@ -43,3 +43,14 @@ jobs:
             docker service update \
               --image ${{ secrets.DOCKER_HUB_USERNAME }}/tutor:${{steps.get-tag.outputs.tag}} \
               --force clean_cadet_application_dev_smart-tutor
+      - name: FtnInf deploy service
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.FTN_INF_SSH_HOST }}
+          username: ${{ secrets.FTN_INF_SSH_USERNAME }}
+          key: ${{ secrets.FTN_INF_SSH_KEY }}
+          port: ${{ secrets.FTN_INF_SSH_PORT }}
+          script: |
+            docker service update \
+              --image ${{ secrets.DOCKER_HUB_USERNAME }}/tutor:${{steps.get-tag.outputs.tag}} \
+              --force clean_cadet_application_dev_smart-tutor
