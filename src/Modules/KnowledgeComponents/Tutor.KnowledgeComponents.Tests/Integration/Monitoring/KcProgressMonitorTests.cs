@@ -47,7 +47,7 @@ public class KcProgressMonitorTests : BaseKnowledgeComponentsIntegrationTest
                                 KcId = -9999,
                                 NegativePatterns = new List<string>
                                 {
-                                    "Brzanje: Proveo 0.8 minuta izučavajući gradivo pre nego što je završena komponenta.",
+                                    "Preskakanje gradiva: Proveo 0.8 minuta izučavajući gradivo pre nego što je završena komponenta.",
                                     "Pogađanje ili brzanje: Od 3 rešenih pitanja, za 67% daje pogrešan prvi odgovor u 30 sekundi od otvaranja pitanja."
                                 },
                                 SatisfactionTime = DateTime.UtcNow

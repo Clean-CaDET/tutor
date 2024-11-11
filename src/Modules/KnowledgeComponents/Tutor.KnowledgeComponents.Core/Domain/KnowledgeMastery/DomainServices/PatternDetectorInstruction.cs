@@ -16,8 +16,8 @@ internal class PatternDetectorInstruction : INegativePatternDetector
         }
 
         var retVal = new List<string>();
-        if (timeOnInstruction < 2) retVal.Add(
-            $"Brzanje: Proveo {Math.Round(timeOnInstruction, 1)} minuta izučavajući gradivo pre nego što je završena komponenta.");
+        if (timeOnInstruction < 1) retVal.Add(
+            $"Preskakanje gradiva: Proveo {Math.Round(timeOnInstruction, 1)} minuta izučavajući gradivo pre nego što je završena komponenta.");
 
         return retVal;
     }
