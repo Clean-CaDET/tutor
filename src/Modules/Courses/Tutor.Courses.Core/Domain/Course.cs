@@ -23,4 +23,9 @@ public class Course : Entity
             KnowledgeUnits = KnowledgeUnits?.Select(u => u.Clone()).ToList()
         };
     }
+
+    public bool IsActive()
+    {
+        return !IsArchived && StartDate < DateTime.UtcNow;
+    }
 }

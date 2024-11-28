@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentResults;
+using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Dtos.Monitoring;
@@ -14,15 +15,17 @@ public class CourseMonitoringService : ICourseMonitoringService
 {
     private readonly IMapper _mapper;
     private readonly ICourseRepository _courseRepository;
+    private readonly IOwnedCourseRepository _ownershipRepository;
     private readonly IGroupRepository _groupRepository;
     private readonly IInternalLearnerService _learnerService;
     private readonly IWeeklyFeedbackRepository _feedbackRepository;
 
-    public CourseMonitoringService(IMapper mapper, ICourseRepository courseRepository, IGroupRepository groupRepository, 
-        IInternalLearnerService learnerService, IWeeklyFeedbackRepository feedbackRepository)
+    public CourseMonitoringService(IMapper mapper, ICourseRepository courseRepository, IOwnedCourseRepository ownershipRepository,
+        IGroupRepository groupRepository, IInternalLearnerService learnerService, IWeeklyFeedbackRepository feedbackRepository)
     {
         _mapper = mapper;
         _courseRepository = courseRepository;
+        _ownershipRepository = ownershipRepository;
         _groupRepository = groupRepository;
         _learnerService = learnerService;
         _feedbackRepository = feedbackRepository;
@@ -40,6 +43,20 @@ public class CourseMonitoringService : ICourseMonitoringService
         var learnerDtos = GetLearners(groups);
         PopulateWeeklyFeedback(courseId, learnerDtos);
         return CreateGroupDtos(groups, learnerDtos);
+    }
+
+    public Result<List<CourseDto>> GetOwnedActiveCourses(int instructorId)
+    {
+        var courses = _ownershipRepository.GetAll(instructorId);
+        return courses.Where(c => c.IsActive()).Select(_mapper.Map<CourseDto>).ToList();
+    }
+
+    public Result<List<GroupDto>> GetOwnedGroupFeedback(int courseId, int instructorId)
+    {
+        if (!_ownershipRepository.IsCourseOwner(courseId, instructorId))
+            return Result.Fail(FailureCode.Forbidden);
+
+        return GetGroupFeedback(courseId);
     }
 
     private List<LearnerDto> GetLearners(List<LearnerGroup> groups)

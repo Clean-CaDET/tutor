@@ -8,11 +8,11 @@ namespace Tutor.API.Controllers.Administrator;
 
 [Authorize(Policy = "administratorPolicy")]
 [Route("api/monitoring/overview")]
-public class CourseMonitoringController : BaseApiController
+public class CourseOverviewController : BaseApiController
 {
     private readonly ICourseMonitoringService _monitoringService;
 
-    public CourseMonitoringController(ICourseMonitoringService monitoringService)
+    public CourseOverviewController(ICourseMonitoringService monitoringService)
     {
         _monitoringService = monitoringService;
     }
