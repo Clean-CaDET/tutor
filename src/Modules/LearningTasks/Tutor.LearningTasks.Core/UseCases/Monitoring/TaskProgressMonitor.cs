@@ -59,25 +59,39 @@ public class TaskProgressMonitor : ITaskProgressMonitor
                 .OrderBy(e => e.TimeStamp)
                 .ToList();
 
+            var completedIndex = orderedEvents.FindIndex(e => e is TaskCompleted);
+            if(completedIndex == -1) continue;
+
             var gradedIndex = orderedEvents.FindLastIndex(e => e is TaskGraded);
-            if (gradedIndex == -1) continue;
+            if (gradedIndex == -1)
+            {
+                taskStatistics.Add(new InternalTaskProgressStatisticsDto
+                {
+                    TaskId = task.Id,
+                    CompletionTime = orderedEvents[completedIndex].TimeStamp,
+                    IsGraded = false,
+                    WonPoints = 0,
+                    NegativePatterns = new List<string>()
+                });
+                continue;
+            }
 
             var eventsUpToGraded = orderedEvents.Take(gradedIndex + 1).ToList();
-
-            taskStatistics.Add(CreateTaskStatistics(eventsUpToGraded, task));
+            taskStatistics.Add(CreateGradedTaskStatistics(eventsUpToGraded, task));
         }
 
         return new InternalTaskUnitSummaryStatisticsDto
         {
             UnitId = grouping.Key,
             TotalCount = grouping.Count(),
-            GradedCount = taskStatistics.Count,
+            GradedCount = taskStatistics.Count(s => s.IsGraded),
+            CompletedCount = taskStatistics.Count(s => !s.IsGraded),
             LearnerPoints = taskStatistics.Sum(s => s.WonPoints),
-            GradedTaskStatistics = taskStatistics
+            TaskStatistics = taskStatistics
         };
     }
 
-    private InternalTaskProgressStatisticsDto CreateTaskStatistics(List<TaskEvent> eventsUpToGraded, LearningTask task)
+    private InternalTaskProgressStatisticsDto CreateGradedTaskStatistics(List<TaskEvent> eventsUpToGraded, LearningTask task)
     {
         var negativePatterns = new List<string>();
         foreach (var detector in _negativePatternDetectors)
@@ -89,6 +103,7 @@ public class TaskProgressMonitor : ITaskProgressMonitor
         {
             TaskId = task.Id,
             CompletionTime = eventsUpToGraded.Find(e => e is TaskCompleted)!.TimeStamp,
+            IsGraded = true,
             WonPoints = (eventsUpToGraded[^1] as TaskGraded)!.TotalScore,
             NegativePatterns = negativePatterns
         };
