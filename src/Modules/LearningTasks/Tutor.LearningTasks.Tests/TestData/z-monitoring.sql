@@ -18,7 +18,7 @@ INSERT INTO "learningTasks"."Activities"(
 	VALUES (-9996, 0, 1, 'M-9996', 'M-9996', '', '[{{"Code":"M-9996", "Url":""}}]', '{{"Type":0,"ValidationRule":"", "Guidelines":""}}', 6, -9998);
 INSERT INTO "learningTasks"."LearningTasks"(
     "Id", "UnitId", "Name", "Description", "IsTemplate", "MaxPoints", "Order")
-	VALUES (-9997, -9999, 'Monitoring task 3 - Nobody accessed it', '', false, 1, 1);
+	VALUES (-9997, -9999, 'Monitoring task 3 - Nobody got grades for it', '', false, 1, 1);
 INSERT INTO "learningTasks"."Activities"(
     "Id", "ParentId", "Order", "Code",  "Name", "Guidance", "Examples", "SubmissionFormat", "MaxPoints", "LearningTaskId")
 	VALUES (-9995, 0, 1, 'M-9999', 'M-9999', '', '[{{"Code":"M-9999", "Url":""}}]', '{{"Type":0,"ValidationRule":"", "Guidelines":""}}', 1, -9997);
@@ -42,9 +42,13 @@ INSERT INTO "learningTasks"."TaskProgresses" (
     "Id", "TotalScore", "Status", "LearningTaskId", "LearnerId")
 	VALUES (-9995, 0, 1, -9998, -9997);
 
+INSERT INTO "learningTasks"."TaskProgresses" (
+    "Id", "TotalScore", "Status", "LearningTaskId", "LearnerId")
+	VALUES (-9994, 0, 1, -9997, -9999);
 
 
--- Learner -9999 only interacted with Task -9999 (1 negative pattern)
+
+-- Learner -9999 completed and got grades for Task -9999 (1 negative pattern) and -9998 and only completed Task -9997
 INSERT INTO "learningTasks"."Events"(
 	"Id", "LearnerId", "TaskId", "AggregateType", "AggregateId", "TimeStamp", "DomainEvent")
 	VALUES (-99900, -9999, -9999, 'TaskProgress', -9999, '2023-10-24 15:36:27.127578+02',
@@ -115,6 +119,28 @@ INSERT INTO "learningTasks"."Events"(
 	"Id", "LearnerId", "TaskId", "AggregateType", "AggregateId", "TimeStamp", "DomainEvent")
 	VALUES (-99916, -9999, -9998, 'TaskProgress', -9998, '2023-10-26 16:00:27.127578+02',
         '{{"LearnerId": -9999, "TaskId": -9998, "TimeStamp": "2023-10-26T14:00:27.1275783Z", "$discriminator": "TaskGraded", "TotalScore": 4}}');
+
+
+INSERT INTO "learningTasks"."Events"(
+	"Id", "LearnerId", "TaskId", "AggregateType", "AggregateId", "TimeStamp", "DomainEvent")
+	VALUES (-99811, -9999, -9997, 'TaskProgress', -9994, '2023-10-25 15:36:27.127578+02',
+        '{{"LearnerId": -9999, "TaskId": -9997, "TimeStamp": "2023-10-25T13:36:27.1275783Z", "$discriminator": "TaskOpened"}}');
+INSERT INTO "learningTasks"."Events"(
+	"Id", "LearnerId", "TaskId", "AggregateType", "AggregateId", "TimeStamp", "DomainEvent")
+	VALUES (-99812, -9999, -9997, 'TaskProgress', -9994, '2023-10-25 15:36:29.127578+02',
+        '{{"LearnerId": -9999, "TaskId": -9997, "TimeStamp": "2023-10-25T13:36:29.1275783Z", "$discriminator": "StepOpened", "StepId": -9995}}');
+INSERT INTO "learningTasks"."Events"(
+	"Id", "LearnerId", "TaskId", "AggregateType", "AggregateId", "TimeStamp", "DomainEvent")
+	VALUES (-99813, -9999, -9997, 'TaskProgress', -9994, '2023-10-25 15:36:33.127578+02',
+        '{{"LearnerId": -9999, "TaskId": -9997, "TimeStamp": "2023-10-25T13:36:33.1275783Z", "$discriminator": "SubmissionOpened", "StepId": -9995}}');
+INSERT INTO "learningTasks"."Events"(
+	"Id", "LearnerId", "TaskId", "AggregateType", "AggregateId", "TimeStamp", "DomainEvent")
+	VALUES (-99814, -9999, -9997, 'TaskProgress', -9994, '2023-10-25 15:56:27.127578+02',
+        '{{"LearnerId": -9999, "TaskId": -9997, "TimeStamp": "2023-10-25T13:56:27.1275783Z", "$discriminator": "StepSubmitted", "StepId": -9995, "Answer":"Neki tekst"}}');
+INSERT INTO "learningTasks"."Events"(
+	"Id", "LearnerId", "TaskId", "AggregateType", "AggregateId", "TimeStamp", "DomainEvent")
+	VALUES (-99815, -9999, -9997, 'TaskProgress', -9994, '2023-10-25 16:00:27.127578+02',
+        '{{"LearnerId": -9999, "TaskId": -9997, "TimeStamp": "2023-10-25T14:00:27.1275783Z", "$discriminator": "TaskCompleted"}}');
 
 
 

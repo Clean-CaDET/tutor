@@ -40,15 +40,17 @@ public class TaskProgressMonitorTests : BaseLearningTasksIntegrationTest
                         UnitId = -9998,
                         TotalCount = 2,
                         GradedCount = 2,
+                        CompletedCount = 0,
                         LearnerPoints = 8,
                         AvgGroupPoints = 3.7,
                         TotalMaxPoints = 15,
-                        GradedTaskStatistics = new List<InternalTaskProgressStatisticsDto>
+                        TaskStatistics = new List<InternalTaskProgressStatisticsDto>
                         {
                             new()
                             {
                                 TaskId = -9999,
                                 WonPoints = 4,
+                                IsGraded = true,
                                 NegativePatterns = new List<string>
                                 {
                                     "Nedovoljan početni napor: Za 50% koraka je gledao smernice/primere u roku od 3 minuta."
@@ -58,6 +60,7 @@ public class TaskProgressMonitorTests : BaseLearningTasksIntegrationTest
                             {
                                 TaskId = -9998,
                                 WonPoints = 4,
+                                IsGraded = true,
                                 NegativePatterns = new List<string>()
                             }
                         }
@@ -67,10 +70,20 @@ public class TaskProgressMonitorTests : BaseLearningTasksIntegrationTest
                         UnitId = -9999,
                         TotalCount = 1,
                         GradedCount = 0,
+                        CompletedCount = 1,
                         LearnerPoints = 0,
                         AvgGroupPoints = 0,
                         TotalMaxPoints = 1,
-                        GradedTaskStatistics = new List<InternalTaskProgressStatisticsDto>()
+                        TaskStatistics = new List<InternalTaskProgressStatisticsDto>
+                        {
+                            new()
+                            {
+                                TaskId = -9997,
+                                WonPoints = 0,
+                                IsGraded = false,
+                                NegativePatterns = new List<string>()
+                            }
+                        }
                     }
                 }
             },
@@ -83,15 +96,17 @@ public class TaskProgressMonitorTests : BaseLearningTasksIntegrationTest
                         UnitId = -9998,
                         TotalCount = 2,
                         GradedCount = 2,
+                        CompletedCount = 0,
                         LearnerPoints = 3,
                         AvgGroupPoints = 3.7,
                         TotalMaxPoints = 15,
-                        GradedTaskStatistics = new List<InternalTaskProgressStatisticsDto>
+                        TaskStatistics = new List<InternalTaskProgressStatisticsDto>
                         {
                             new()
                             {
                                 TaskId = -9999,
                                 WonPoints = 2,
+                                IsGraded = true,
                                 NegativePatterns = new List<string>
                                 {
                                     "Nedovoljan početni napor: Za 100% koraka je gledao smernice/primere u roku od 3 minuta.",
@@ -102,6 +117,7 @@ public class TaskProgressMonitorTests : BaseLearningTasksIntegrationTest
                             {
                                 TaskId = -9998,
                                 WonPoints = 1,
+                                IsGraded = true,
                                 NegativePatterns = new List<string>()
                             }
                         }

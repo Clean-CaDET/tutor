@@ -9,7 +9,7 @@ public static class UnitFeedbackRequestor
         var totalItemsCount = kcMasteryCount.Item1 + taskProgressCount.Item1;
         var completedItemsCount = kcMasteryCount.Item2 + taskProgressCount.Item2;
 
-        var lastRatingTime = ratings.Where(r => !r.IsLearnerInitiated).MaxBy(r => r.Created)?.Created ?? DateTime.UtcNow;
+        var lastRatingTime = ratings.Where(r => !r.IsLearnerInitiated).MaxBy(r => r.Created)?.Created;
         var ratedKcsCount = ratings.SelectMany(r => r.CompletedKcIds).Distinct().Count();
         var ratedTasksCount = ratings.SelectMany(r => r.CompletedTaskIds).Distinct().Count();
         var ratedItemsCount = ratedKcsCount + ratedTasksCount;
@@ -24,16 +24,18 @@ public static class UnitFeedbackRequestor
         return new UnitFeedbackRequest(false, false);
     }
 
-    private static bool HasSufficientlyProgressed(int completedItemsCount, int totalItemsCount, int ratedItemsCount, DateTime lastRatingTime)
+    private static bool HasSufficientlyProgressed(int completedItemsCount, int totalItemsCount, int ratedItemsCount, DateTime? lastRatingTime)
     {
         return completedItemsCount == totalItemsCount ||
+               (lastRatingTime == null && completedItemsCount > ratedItemsCount) ||
                completedItemsCount >= ratedItemsCount + 3 ||
                (completedItemsCount == ratedItemsCount + 1 && HoursHavePassed(lastRatingTime, 1.5)) ||
                (completedItemsCount == ratedItemsCount + 2 && HoursHavePassed(lastRatingTime, 1));
     }
 
-    private static bool HoursHavePassed(DateTime lastRatingTime, double hours)
+    private static bool HoursHavePassed(DateTime? lastRatingTime, double hours)
     {
+        if(lastRatingTime == null) return false;
         return DateTime.UtcNow - lastRatingTime > TimeSpan.FromHours(hours);
     }
 }

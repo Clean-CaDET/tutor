@@ -22,6 +22,22 @@ public class UnitFeedbackRequestorTests
         {
             new object[]
             {
+                new Tuple<int, int>(6, 0),
+                new Tuple<int, int>(6, 0),
+                new List<UnitProgressRating>(),
+                false,
+                false
+            },
+            new object[]
+            {
+                new Tuple<int, int>(6, 1),
+                new Tuple<int, int>(6, 0),
+                new List<UnitProgressRating>(),
+                true,
+                false
+            },
+            new object[]
+            {
               new Tuple<int, int>(6, 3),
               new Tuple<int, int>(6, 3),
               new List<UnitProgressRating>
