@@ -27,10 +27,10 @@ public static class UnitFeedbackRequestor
     private static bool HasSufficientlyProgressed(int completedItemsCount, int totalItemsCount, int ratedItemsCount, DateTime? lastRatingTime)
     {
         return completedItemsCount == totalItemsCount ||
-               (lastRatingTime == null && completedItemsCount > ratedItemsCount) ||
-               completedItemsCount >= ratedItemsCount + 3 ||
-               (completedItemsCount == ratedItemsCount + 1 && HoursHavePassed(lastRatingTime, 1.5)) ||
-               (completedItemsCount == ratedItemsCount + 2 && HoursHavePassed(lastRatingTime, 1));
+               (lastRatingTime == null && completedItemsCount > ratedItemsCount + 1) ||
+               completedItemsCount >= ratedItemsCount + 4 ||
+               (completedItemsCount > ratedItemsCount && HoursHavePassed(lastRatingTime, 1.5)) ||
+               (completedItemsCount == ratedItemsCount + 3 && HoursHavePassed(lastRatingTime, 1));
     }
 
     private static bool HoursHavePassed(DateTime? lastRatingTime, double hours)
