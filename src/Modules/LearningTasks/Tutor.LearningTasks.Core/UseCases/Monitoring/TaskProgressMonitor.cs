@@ -34,7 +34,7 @@ public class TaskProgressMonitor : ITaskProgressMonitor
     {
         if (unitIds.Length == 0) return Result.Fail(FailureCode.NotFound);
 
-        var tasks = _taskRepository.GetByUnits(unitIds);
+        var tasks = _taskRepository.GetNonTemplateByUnits(unitIds);
         var taskEvents = _eventStore.GetEventsByUserAndPrimaryEntities(learnerId, tasks.Select(t => t.Id).ToHashSet());
 
         var unitStatistics = CalculateProgressStatistics(tasks, taskEvents);

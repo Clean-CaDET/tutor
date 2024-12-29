@@ -31,7 +31,7 @@ public class GradingService : BaseService<TaskProgressDto, TaskProgress>, IGradi
     {
         if (!_accessServices.IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
 
-        var tasks = _taskRepository.GetByUnit(unitId);
+        var tasks = _taskRepository.GetNonTemplateByUnit(unitId);
         var taskProgresses = _progressRepository.GetByTasks(tasks.Select(t => t.Id).ToList(), learnerId);
         return MapToDto(taskProgresses);
     }
@@ -57,7 +57,7 @@ public class GradingService : BaseService<TaskProgressDto, TaskProgress>, IGradi
         if (unitIds.Length == 0 || groupMemberIds.Length == 0) return Result.Ok(new List<TaskProgressDto>());
         if (!_accessServices.IsUnitOwner(unitIds[0], instructorId)) return Result.Fail(FailureCode.Forbidden);
 
-        var tasks = _taskRepository.GetByUnits(unitIds);
+        var tasks = _taskRepository.GetNonTemplateByUnits(unitIds);
         var taskProgresses = _progressRepository.GetByTasksAndGroup(tasks.Select(t => t.Id).ToArray(), groupMemberIds);
         return MapToDto(taskProgresses);
     }
