@@ -8,6 +8,7 @@ public class CoursesContext : DbContext
     public DbSet<Course> Courses { get; set; }
     public DbSet<CourseOwnership> CourseOwnerships { get; set; }
     public DbSet<KnowledgeUnit> KnowledgeUnits { get; set; }
+    public DbSet<SystemPrompt> SystemPrompts { get; set; }
     public DbSet<LearnerGroup> LearnerGroups { get; set; }
     public DbSet<UnitEnrollment> UnitEnrollments { get; set; }
     public DbSet<UnitProgressRating> UnitProgressRating { get; set; }
