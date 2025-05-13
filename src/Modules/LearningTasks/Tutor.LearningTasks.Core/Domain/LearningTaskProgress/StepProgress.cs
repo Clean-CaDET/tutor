@@ -6,6 +6,7 @@ namespace Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
 public class StepProgress : Entity
 {
     public string? Answer { get; private set; }
+    public string? CommentForMentor { get; private set; }
     public StepStatus Status { get; private set; }
     public int StepId { get; private set; }
     public int LearnerId { get; private set; }
@@ -26,9 +27,10 @@ public class StepProgress : Entity
         return Status == StepStatus.Answered || Status == StepStatus.Graded;
     }
 
-    public void SubmitAnswer(string answer)
+    public void SubmitAnswer(string answer, string? commentForMentor)
     {
         Answer = answer;
+        CommentForMentor = commentForMentor;
         Status = StepStatus.Answered;
     }
 

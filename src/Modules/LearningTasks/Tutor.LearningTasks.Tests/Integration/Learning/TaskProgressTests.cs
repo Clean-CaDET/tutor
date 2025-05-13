@@ -188,6 +188,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
         var stepProgressDto = new StepProgressDto
         {
             Answer = "Answer",
+            CommentForMentor = "Help",
             StepId = -7
         };
 
@@ -205,6 +206,7 @@ public class TaskProgressTests : BaseLearningTasksIntegrationTest
         result.StepProgresses[0].ShouldNotBeNull();
         result.StepProgresses[0].Id.ShouldBe(-2);
         result.StepProgresses[0].Answer.ShouldBe("Answer");
+        result.StepProgresses[0].CommentForMentor.ShouldBe("Help");
         result.StepProgresses[0].Status.ShouldBe("Answered");
         result.StepProgresses[0].StepId.ShouldBe(-7);
     }
