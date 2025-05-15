@@ -13,6 +13,7 @@ public class CoursesContext : DbContext
     public DbSet<UnitEnrollment> UnitEnrollments { get; set; }
     public DbSet<UnitProgressRating> UnitProgressRating { get; set; }
     public DbSet<WeeklyFeedback> WeeklyProgress { get; set; }
+    public DbSet<WeeklyFeedbackQuestion> WeeklyFeedbackQuestions { get; set; }
 
     public CoursesContext(DbContextOptions<CoursesContext> options) : base(options) {}
 
@@ -31,5 +32,7 @@ public class CoursesContext : DbContext
             .HasOne<Course>()
             .WithMany()
             .HasForeignKey(p => p.CourseId);
+        modelBuilder.Entity<WeeklyFeedback>().Property(w => w.Opinions).HasColumnType("jsonb");
+        modelBuilder.Entity<WeeklyFeedbackQuestion>().Property(q => q.Options).HasColumnType("jsonb");
     }
 }

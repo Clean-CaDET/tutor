@@ -68,6 +68,8 @@ public static class CoursesStartup
         services.AddScoped<IGroupRepository, GroupDatabaseRepository>();
         
         services.AddScoped<IWeeklyFeedbackRepository, WeeklyFeedbackDatabaseRepository>();
+        services.AddScoped(typeof(ICrudRepository<WeeklyFeedbackQuestion>), typeof(CrudDatabaseRepository<WeeklyFeedbackQuestion, CoursesContext>));
+
         services.AddScoped<IUnitProgressRatingRepository, UnitProgressRatingRepository>();
         services.AddScoped(typeof(ICrudRepository<SystemPrompt>), typeof(CrudDatabaseRepository<SystemPrompt, CoursesContext>));
 
