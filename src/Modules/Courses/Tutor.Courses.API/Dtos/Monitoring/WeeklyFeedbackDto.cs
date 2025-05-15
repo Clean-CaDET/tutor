@@ -11,6 +11,7 @@ public class WeeklyFeedbackDto
     public DateTime WeekEnd { get; set; }
     public int Semaphore { get; set; }
     public string? SemaphoreJustification { get; set; }
+    public string? Opinions { get; set; }
 
     public double AverageSatisfaction { get; set; }
     public double AchievedTaskPoints { get; set; }
