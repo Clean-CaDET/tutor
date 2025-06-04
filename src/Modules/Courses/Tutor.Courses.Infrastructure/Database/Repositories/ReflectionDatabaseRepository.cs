@@ -1,0 +1,33 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Tutor.BuildingBlocks.Infrastructure.Database;
+using Tutor.Courses.Core.Domain.Reflections;
+
+namespace Tutor.Courses.Infrastructure.Database.Repositories;
+
+public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, CoursesContext>, IReflectionRepository
+{
+    public ReflectionDatabaseRepository(CoursesContext dbContext) : base(dbContext) {}
+
+    public List<Reflection> GetByUnitWithSubmission(int unitId, int learnerId)
+    {
+        return DbContext.Reflections
+            .Where(r => r.UnitId == unitId)
+            .Include(r => r.Questions)
+            .Include(r => r.Submissions.Where(s => s.LearnerId == learnerId))
+            .AsNoTracking()
+            .ToList();
+    }
+
+    public Reflection? GetWithSubmission(int reflectionId, int learnerId)
+    {
+        return DbContext.Reflections
+            .Include(r => r.Questions)
+            .Include(r => r.Submissions.Where(s => s.LearnerId == learnerId))
+            .FirstOrDefault(r => r.Id == reflectionId);
+    }
+
+    public void CreateAnswer(ReflectionAnswer answer)
+    {
+        DbContext.ReflectionAnswers.Attach(answer);
+    }
+}
