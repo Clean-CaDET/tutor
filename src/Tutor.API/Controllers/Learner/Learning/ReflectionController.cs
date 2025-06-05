@@ -34,7 +34,9 @@ public class ReflectionController : BaseApiController
     [HttpPost("reflections/{id:int}/answer")]
     public ActionResult SubmitAnswer(int id, [FromBody] ReflectionAnswerDto answer)
     {
-        var result = _reflectionService.SubmitAnswer(id, User.LearnerId(), answer);
+        answer.ReflectionId = id;
+        answer.LearnerId = User.LearnerId();
+        var result = _reflectionService.SubmitAnswer(answer);
         return CreateResponse(result);
     }
 }

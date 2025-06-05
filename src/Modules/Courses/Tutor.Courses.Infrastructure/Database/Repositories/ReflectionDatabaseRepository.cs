@@ -8,11 +8,20 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
 {
     public ReflectionDatabaseRepository(CoursesContext dbContext) : base(dbContext) {}
 
-    public List<Reflection> GetByUnitWithSubmission(int unitId, int learnerId)
+    public List<Reflection> GetByUnit(int unitId)
     {
         return DbContext.Reflections
             .Where(r => r.UnitId == unitId)
             .Include(r => r.Questions)
+            .ThenInclude(q => q.Category)
+            .AsNoTracking()
+            .ToList();
+    }
+
+    public List<Reflection> GetByUnitWithSubmission(int unitId, int learnerId)
+    {
+        return DbContext.Reflections
+            .Where(r => r.UnitId == unitId)
             .Include(r => r.Submissions.Where(s => s.LearnerId == learnerId))
             .AsNoTracking()
             .ToList();
@@ -23,6 +32,13 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
         return DbContext.Reflections
             .Include(r => r.Questions)
             .Include(r => r.Submissions.Where(s => s.LearnerId == learnerId))
+            .FirstOrDefault(r => r.Id == reflectionId);
+    }
+
+    public Reflection? GetWithQuestions(int reflectionId)
+    {
+        return DbContext.Reflections
+            .Include(r => r.Questions)
             .FirstOrDefault(r => r.Id == reflectionId);
     }
 

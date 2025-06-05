@@ -12,5 +12,6 @@ public class ReflectionProfile : Profile
         CreateMap<ReflectionQuestionDto, ReflectionQuestion>().ReverseMap();
         CreateMap<ReflectionAnswerDto, ReflectionAnswer>().ReverseMap();
         CreateMap<ReflectionQuestionAnswerDto, ReflectionQuestionAnswer>().ReverseMap();
+        CreateMap<ReflectionQuestionCategoryDto, ReflectionQuestionCategory>().ReverseMap();
     }
 }

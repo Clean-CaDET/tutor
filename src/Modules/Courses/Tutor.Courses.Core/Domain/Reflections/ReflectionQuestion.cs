@@ -4,6 +4,7 @@ namespace Tutor.Courses.Core.Domain.Reflections;
 
 public class ReflectionQuestion : Entity
 {
+    public int ReflectionId { get; private set; }
     public int Order { get; private set; }
     public string Text { get; private set; } = "";
     public ReflectionQuestionCategory? Category { get; private set; }
@@ -14,5 +15,5 @@ public class ReflectionQuestion : Entity
 public enum ReflectionQuestionType
 {
     OpenEnded = 1,
-    Slider4 = 2
+    Slider = 2
 }

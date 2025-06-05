@@ -13,5 +13,5 @@ public class ReflectionQuestionDto
 public enum ReflectionQuestionType
 {
     OpenEnded = 1,
-    Slider4 = 2
+    Slider = 2
 }

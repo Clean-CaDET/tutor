@@ -9,4 +9,11 @@ public class Reflection : Entity
     public string Name { get; private set; } = "";
     public List<ReflectionQuestion> Questions { get; private set; } = new();
     public List<ReflectionAnswer> Submissions { get; private set; } = new();
+
+    public void Update(Reflection updatedReflection)
+    {
+        Name = updatedReflection.Name;
+        Order = updatedReflection.Order;
+        Questions = updatedReflection.Questions;
+    }
 }

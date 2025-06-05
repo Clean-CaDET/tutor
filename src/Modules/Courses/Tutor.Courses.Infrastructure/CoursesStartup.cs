@@ -42,6 +42,7 @@ public static class CoursesStartup
         services.AddProxiedScoped<IUnitService, UnitService>();
         
         services.AddProxiedScoped<IReflectionService, ReflectionService>();
+        services.AddProxiedScoped<IReflectionAuthoringService, ReflectionAuthoringService>();
 
         services.AddProxiedScoped<IEnrolledCourseService, EnrolledCourseService>();
         services.AddProxiedScoped<IEnrollmentValidator, EnrolledCourseService>();

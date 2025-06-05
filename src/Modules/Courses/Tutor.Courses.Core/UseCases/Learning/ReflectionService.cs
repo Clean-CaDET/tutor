@@ -44,16 +44,14 @@ public class ReflectionService : BaseService<ReflectionDto, Reflection>, IReflec
         return MapToDto(reflection);
     }
 
-    public Result SubmitAnswer(int reflectionId, int learnerId, ReflectionAnswerDto answer)
+    public Result SubmitAnswer(ReflectionAnswerDto answer)
     {
-        var reflection = _reflectionRepository.GetWithSubmission(reflectionId, learnerId);
+        var reflection = _reflectionRepository.GetWithSubmission(answer.ReflectionId, answer.LearnerId);
         if (reflection == null)
             return Result.Fail(FailureCode.NotFound);
-        if (!_enrollmentValidator.HasAccessibleEnrollment(reflection.UnitId, learnerId))
+        if (!_enrollmentValidator.HasAccessibleEnrollment(reflection.UnitId, answer.LearnerId))
             return Result.Fail(FailureCode.Forbidden);
 
-        answer.ReflectionId = reflectionId;
-        answer.LearnerId = learnerId;
         if (reflection.Submissions.Count > 0)
         {
             reflection.Submissions[0].Update(_mapper.Map<ReflectionAnswer>(answer));
