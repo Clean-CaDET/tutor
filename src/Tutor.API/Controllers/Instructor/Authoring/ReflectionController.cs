@@ -24,6 +24,13 @@ public class ReflectionController : BaseApiController
         return CreateResponse(result);
     }
 
+    [HttpGet("categories")]
+    public ActionResult<List<ReflectionQuestionCategoryDto>> GetCategories()
+    {
+        var result = _reflectionService.GetCategories();
+        return CreateResponse(result);
+    }
+
     [HttpPost]
     public ActionResult<ReflectionDto> Create(int unitId, [FromBody] ReflectionDto reflection)
     {
@@ -32,7 +39,7 @@ public class ReflectionController : BaseApiController
         return CreateResponse(result);
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut]
     public ActionResult<ReflectionDto> Update(int unitId, [FromBody] ReflectionDto reflection)
     {
         reflection.UnitId = unitId;

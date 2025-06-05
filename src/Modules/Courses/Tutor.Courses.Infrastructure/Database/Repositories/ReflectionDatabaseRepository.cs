@@ -12,8 +12,8 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
     {
         return DbContext.Reflections
             .Where(r => r.UnitId == unitId)
-            .Include(r => r.Questions)
-            .ThenInclude(q => q.Category)
+            .OrderBy(r => r.Order)
+            .Include(r => r.Questions.OrderBy(q => q.Order))
             .AsNoTracking()
             .ToList();
     }
@@ -45,5 +45,10 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
     public void CreateAnswer(ReflectionAnswer answer)
     {
         DbContext.ReflectionAnswers.Attach(answer);
+    }
+
+    public List<ReflectionQuestionCategory> GetCategories()
+    {
+        return DbContext.ReflectionQuestionCategories.ToList();
     }
 }

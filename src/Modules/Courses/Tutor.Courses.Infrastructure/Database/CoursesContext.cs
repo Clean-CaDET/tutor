@@ -26,6 +26,10 @@ public class CoursesContext : DbContext
     {
         modelBuilder.HasDefaultSchema("courses");
         modelBuilder.Entity<KnowledgeUnit>().HasIndex(u => new { u.CourseId, u.Code }).IsUnique();
+        modelBuilder.Entity<ReflectionQuestion>()
+            .HasOne<ReflectionQuestionCategory>()
+            .WithMany()
+            .HasForeignKey(q => q.CategoryId);
         modelBuilder.Entity<ReflectionAnswer>().Property(a => a.Answers).HasColumnType("jsonb");
         modelBuilder.Entity<LearnerGroup>().Property(e => e.LearnerIds).HasColumnType("jsonb");
         

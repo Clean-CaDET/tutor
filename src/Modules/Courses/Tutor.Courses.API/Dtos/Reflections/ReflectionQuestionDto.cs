@@ -5,7 +5,7 @@ public class ReflectionQuestionDto
     public int Id { get; set; }
     public int Order { get; set; }
     public string Text { get; set; } = "";
-    public ReflectionQuestionCategoryDto? Category { get; set; }
+    public int? CategoryId { get; set; }
     public ReflectionQuestionType Type { get; set; }
     public List<string>? Labels { get; set; }
 }
