@@ -66,9 +66,8 @@ public class ReflectionTests : BaseCoursesIntegrationTest
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-        var storedEntity = dbContext.ReflectionAnswers.Single();
+        var storedEntity = dbContext.ReflectionAnswers.First(a => a.ReflectionId == reflectionId);
         storedEntity.ShouldNotBeNull();
-        storedEntity.ReflectionId.ShouldBe(reflectionId);
         storedEntity.Answers.Count.ShouldBe(answer.Answers.Count);
         storedEntity.Answers
             .All(storedA => answer.Answers

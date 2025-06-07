@@ -113,7 +113,7 @@ public class WeeklyActivityService : IWeeklyActivityService
         {
             UnitId = id,
             KcStatistics = kcUnitSummaryStatistics.Find(s => s.UnitId == id),
-            TaskStatistics = taskUnitSummaryStatistics.Find(s => s.UnitId == id),
+            TaskStatistics = taskUnitSummaryStatistics.Find(s => s.UnitId == id)
         }).ToList();
     }
 

@@ -40,7 +40,7 @@ public class ReflectionTests : BaseCoursesIntegrationTest
         var newEntity = CreateReflection();
         dbContext.Database.BeginTransaction();
 
-        var result = ((OkObjectResult)controller.Create(-1, newEntity).Result)?.Value as ReflectionDto;
+        var result = ((OkObjectResult)controller.Create(-1, newEntity).Result!).Value as ReflectionDto;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
@@ -88,7 +88,7 @@ public class ReflectionTests : BaseCoursesIntegrationTest
         var updatedEntity = CreateUpdatedReflection();
         dbContext.Database.BeginTransaction();
 
-        var result = ((OkObjectResult)controller.Update(-1, updatedEntity).Result)?.Value as ReflectionDto;
+        var result = ((OkObjectResult)controller.Update(-1, updatedEntity).Result!).Value as ReflectionDto;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();

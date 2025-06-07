@@ -33,7 +33,6 @@ public class WeeklyActivityTests : BaseCoursesIntegrationTest
         kcUnit.Reflections[0].Questions.Count.ShouldBe(2);
         kcUnit.Reflections[0].Submissions.ShouldNotBeNull();
         kcUnit.Reflections[0].Submissions!.Count.ShouldBe(2);
-        
 
         var taskUnit = result.Find(u => u.Id == -9998);
         taskUnit.ShouldNotBeNull();
