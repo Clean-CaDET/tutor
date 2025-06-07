@@ -29,7 +29,6 @@ public class ReflectionTests : BaseCoursesIntegrationTest
         result.Count.ShouldBe(expectedReflectionCount);
         var questions = result.SelectMany(r => r.Questions).ToList();
         questions.Count.ShouldBe(expectedQuestionCount);
-        questions.All(q => q.Category != null).ShouldBeTrue();
     }
 
     [Fact]

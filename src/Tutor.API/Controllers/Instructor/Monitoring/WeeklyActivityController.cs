@@ -19,16 +19,16 @@ public class WeeklyActivityController : BaseApiController
     }
 
     [HttpGet("{learnerId:int}")]
-    public ActionResult<List<UnitHeaderDto>> GetWeeklyUnitsWithTasksAndKcs(int learnerId, [FromQuery] int courseId, [FromQuery] DateTime weekEnd)
+    public ActionResult<List<UnitHeaderDto>> GetWeeklyUnitsWithItems(int learnerId, [FromQuery] int courseId, [FromQuery] DateTime weekEnd)
     {
-        var result = _activityService.GetWeeklyUnitsWithTasksAndKcs(User.InstructorId(), learnerId, courseId, DateTime.SpecifyKind(weekEnd, DateTimeKind.Utc));
+        var result = _activityService.GetWeeklyUnitsWithItems(User.InstructorId(), learnerId, courseId, DateTime.SpecifyKind(weekEnd, DateTimeKind.Utc));
         return CreateResponse(result);
     }
 
     [HttpPost("{learnerId:int}/statistics")]
-    public ActionResult<List<UnitProgressStatisticsDto>> GetKcAndTaskProgressAndWarnings(int learnerId, [FromQuery] int[]? unitIds, [FromBody] int[] groupMemberIds)
+    public ActionResult<List<UnitProgressStatisticsDto>> GetTaskAndKcStatistics(int learnerId, [FromQuery] int[]? unitIds, [FromBody] int[] groupMemberIds)
     {
-        var result = _activityService.GetKcAndTaskProgressAndWarnings(User.InstructorId(), unitIds, learnerId, groupMemberIds);
+        var result = _activityService.GetTaskAndKcStatistics(User.InstructorId(), unitIds, learnerId, groupMemberIds);
         return CreateResponse(result);
     }
 

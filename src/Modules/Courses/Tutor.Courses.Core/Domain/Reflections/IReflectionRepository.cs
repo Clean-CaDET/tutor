@@ -5,10 +5,11 @@ namespace Tutor.Courses.Core.Domain.Reflections;
 public interface IReflectionRepository : ICrudRepository<Reflection>
 {
     List<Reflection> GetByUnit(int unitId);
+    List<Reflection> GetByUnits(int[] unitIds);
     Reflection? GetWithQuestions(int reflectionId);
+    List<ReflectionAnswer> GetAnswersByUnits(int learnerId, int[] unitIds);
     
     List<Reflection> GetByUnitWithSubmission(int unitId, int learnerId);
     Reflection? GetWithSubmission(int reflectionId, int learnerId);
     void CreateAnswer(ReflectionAnswer answer);
-    List<ReflectionQuestionCategory> GetCategories();
 }

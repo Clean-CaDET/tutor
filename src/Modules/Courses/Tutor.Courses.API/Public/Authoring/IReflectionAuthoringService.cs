@@ -9,5 +9,4 @@ public interface IReflectionAuthoringService
     Result<ReflectionDto> Create(ReflectionDto reflection, int instructorId);
     Result<ReflectionDto> Update(ReflectionDto reflection, int instructorId);
     Result Delete(int id, int instructorId);
-    Result<List<ReflectionQuestionCategoryDto>> GetCategories();
 }

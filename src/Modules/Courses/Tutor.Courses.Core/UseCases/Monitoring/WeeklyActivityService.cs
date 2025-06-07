@@ -3,7 +3,9 @@ using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Monitoring;
+using Tutor.Courses.API.Dtos.Reflections;
 using Tutor.Courses.API.Public.Monitoring;
+using Tutor.Courses.Core.Domain.Reflections;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge;
 using Tutor.KnowledgeComponents.API.Internal;
@@ -17,6 +19,7 @@ public class WeeklyActivityService : IWeeklyActivityService
     private readonly IMapper _mapper;
     private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly IUnitEnrollmentRepository _enrollmentRepository;
+    private readonly IReflectionRepository _reflectionRepository;
     private readonly IUnitProgressRatingRepository _ratingRepository;
     private readonly IKnowledgeComponentQuerier _kcQuerier;
     private readonly ITaskQuerier _taskQuerier;
@@ -24,13 +27,14 @@ public class WeeklyActivityService : IWeeklyActivityService
     private readonly ITaskProgressMonitor _taskProgressMonitor;
 
     public WeeklyActivityService(IMapper mapper, IOwnedCourseRepository ownedCourseRepository,
-        IUnitEnrollmentRepository enrollmentRepository, IUnitProgressRatingRepository ratingRepository,
+        IUnitEnrollmentRepository enrollmentRepository, IReflectionRepository reflectionRepository, IUnitProgressRatingRepository ratingRepository,
         IKnowledgeComponentQuerier kcQuerier, ITaskQuerier taskQuerier,
         IKcProgressMonitor kcProgressMonitor, ITaskProgressMonitor taskProgressMonitor)
     {
         _mapper = mapper;
         _ownedCourseRepository = ownedCourseRepository;
         _enrollmentRepository = enrollmentRepository;
+        _reflectionRepository = reflectionRepository;
         _ratingRepository = ratingRepository;
         _kcQuerier = kcQuerier;
         _taskQuerier = taskQuerier;
@@ -38,7 +42,7 @@ public class WeeklyActivityService : IWeeklyActivityService
         _taskProgressMonitor = taskProgressMonitor;
     }
 
-    public Result<List<UnitHeaderDto>> GetWeeklyUnitsWithTasksAndKcs(int instructorId, int learnerId, int courseId, DateTime weekEnd)
+    public Result<List<UnitHeaderDto>> GetWeeklyUnitsWithItems(int instructorId, int learnerId, int courseId, DateTime weekEnd)
     {
         if (!_ownedCourseRepository.IsCourseOwner(courseId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
@@ -47,8 +51,9 @@ public class WeeklyActivityService : IWeeklyActivityService
         var unitIds = unitHeaders.Select(u => u.Id).ToArray();
         var kcs = _kcQuerier.GetByUnits(unitIds);
         var tasks = _taskQuerier.GetByUnits(unitIds);
+        var reflections = _reflectionRepository.GetByUnits(unitIds);
 
-        if(tasks.IsSuccess) PopulateTaskHeaders(unitHeaders, kcs.Value, tasks.Value);
+        if(tasks.IsSuccess) PopulateUnitHeaders(unitHeaders, kcs.Value, tasks.Value, reflections);
 
         return unitHeaders;
     }
@@ -69,7 +74,8 @@ public class WeeklyActivityService : IWeeklyActivityService
         return unitHeaders;
     }
 
-    private void PopulateTaskHeaders(List<UnitHeaderDto> unitHeaders, List<KnowledgeComponentDto> kcs, List<LearningTaskDto> tasks)
+    private void PopulateUnitHeaders(List<UnitHeaderDto> unitHeaders,
+        List<KnowledgeComponentDto> kcs, List<LearningTaskDto> tasks, List<Reflection> reflections)
     {
         foreach (var unitHeader in unitHeaders)
         {
@@ -81,20 +87,14 @@ public class WeeklyActivityService : IWeeklyActivityService
                 .Where(t => t.UnitId == unitHeader.Id)
                 .Select(_mapper.Map<TaskHeaderDto>)
                 .ToList();
+            unitHeader.Reflections = reflections
+                .Where(r => r.UnitId == unitHeader.Id)
+                .Select(_mapper.Map<ReflectionDto>)
+                .ToList();
         }
     }
 
-    public Result<List<UnitProgressRatingDto>> GetRecentRatingsForUnits(int instructorId, int[]? unitIds, DateTime weekEnd)
-    {
-        if (unitIds == null || unitIds.Length == 0) return Result.Fail(FailureCode.InvalidArgument);
-        if (!_ownedCourseRepository.IsUnitOwner(unitIds[0], instructorId))
-            return Result.Fail(FailureCode.Forbidden);
-
-        var ratings = _ratingRepository.GetInDateRangeForUnits(unitIds, weekEnd.AddDays(-15), weekEnd.AddDays(15));
-        return ratings.Select(_mapper.Map<UnitProgressRatingDto>).ToList();
-    }
-
-    public Result<List<UnitProgressStatisticsDto>> GetKcAndTaskProgressAndWarnings(int instructorId, int[]? unitIds, int learnerId, int[] groupMemberIds)
+    public Result<List<UnitProgressStatisticsDto>> GetTaskAndKcStatistics(int instructorId, int[]? unitIds, int learnerId, int[] groupMemberIds)
     {
         if (unitIds == null || unitIds.Length == 0) return Result.Fail(FailureCode.InvalidArgument);
         if (!_ownedCourseRepository.IsUnitOwner(unitIds[0], instructorId))
@@ -113,7 +113,17 @@ public class WeeklyActivityService : IWeeklyActivityService
         {
             UnitId = id,
             KcStatistics = kcUnitSummaryStatistics.Find(s => s.UnitId == id),
-            TaskStatistics = taskUnitSummaryStatistics.Find(s => s.UnitId == id)
+            TaskStatistics = taskUnitSummaryStatistics.Find(s => s.UnitId == id),
         }).ToList();
+    }
+
+    public Result<List<UnitProgressRatingDto>> GetRecentRatingsForUnits(int instructorId, int[]? unitIds, DateTime weekEnd)
+    {
+        if (unitIds == null || unitIds.Length == 0) return Result.Fail(FailureCode.InvalidArgument);
+        if (!_ownedCourseRepository.IsUnitOwner(unitIds[0], instructorId))
+            return Result.Fail(FailureCode.Forbidden);
+
+        var ratings = _ratingRepository.GetInDateRangeForUnits(unitIds, weekEnd.AddDays(-15), weekEnd.AddDays(15));
+        return ratings.Select(_mapper.Map<UnitProgressRatingDto>).ToList();
     }
 }

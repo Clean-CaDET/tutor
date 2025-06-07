@@ -12,7 +12,6 @@ public class CoursesContext : DbContext
     public DbSet<Reflection> Reflections { get; set; }
     public DbSet<ReflectionQuestion> ReflectionQuestions { get; set; }
     public DbSet<ReflectionAnswer> ReflectionAnswers { get; set; }
-    public DbSet<ReflectionQuestionCategory> ReflectionQuestionCategories { get; set; }
     public DbSet<SystemPrompt> SystemPrompts { get; set; }
     public DbSet<LearnerGroup> LearnerGroups { get; set; }
     public DbSet<UnitEnrollment> UnitEnrollments { get; set; }
@@ -26,10 +25,6 @@ public class CoursesContext : DbContext
     {
         modelBuilder.HasDefaultSchema("courses");
         modelBuilder.Entity<KnowledgeUnit>().HasIndex(u => new { u.CourseId, u.Code }).IsUnique();
-        modelBuilder.Entity<ReflectionQuestion>()
-            .HasOne<ReflectionQuestionCategory>()
-            .WithMany()
-            .HasForeignKey(q => q.CategoryId);
         modelBuilder.Entity<ReflectionAnswer>().Property(a => a.Answers).HasColumnType("jsonb");
         modelBuilder.Entity<LearnerGroup>().Property(e => e.LearnerIds).HasColumnType("jsonb");
         

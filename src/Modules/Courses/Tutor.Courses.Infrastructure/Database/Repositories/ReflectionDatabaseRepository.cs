@@ -18,6 +18,27 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
             .ToList();
     }
 
+    public List<Reflection> GetByUnits(int[] unitIds)
+    {
+        return DbContext.Reflections
+            .Where(r => unitIds.Contains(r.UnitId))
+            .OrderBy(r => r.Order)
+            .Include(r => r.Questions.OrderBy(q => q.Order))
+            .AsNoTracking()
+            .ToList();
+    }
+
+    public List<ReflectionAnswer> GetAnswersByUnits(int learnerId, int[] unitIds)
+    {
+        return DbContext.ReflectionAnswers
+            .Join(DbContext.Reflections,
+                answer => answer.ReflectionId,
+                reflection => reflection.Id,
+                (answer, reflection) => new { answer, reflection })
+            .Where(x => unitIds.Contains(x.reflection.UnitId))
+            .Select(x => x.answer).ToList();
+    }
+
     public List<Reflection> GetByUnitWithSubmission(int unitId, int learnerId)
     {
         return DbContext.Reflections
@@ -45,10 +66,5 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
     public void CreateAnswer(ReflectionAnswer answer)
     {
         DbContext.ReflectionAnswers.Attach(answer);
-    }
-
-    public List<ReflectionQuestionCategory> GetCategories()
-    {
-        return DbContext.ReflectionQuestionCategories.ToList();
     }
 }

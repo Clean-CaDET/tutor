@@ -61,10 +61,4 @@ public class ReflectionAuthoringService : CrudService<ReflectionDto, Reflection>
 
         return Delete(id);
     }
-
-    public Result<List<ReflectionQuestionCategoryDto>> GetCategories()
-    {
-        var result = _reflectionRepository.GetCategories();
-        return result.Select(_mapper.Map<ReflectionQuestionCategoryDto>).ToList();
-    }
 }

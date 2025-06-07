@@ -4,7 +4,6 @@ DELETE FROM courses."LearnerGroups";
 
 DELETE FROM courses."ReflectionAnswers";
 DELETE FROM courses."ReflectionQuestions";
-DELETE FROM courses."ReflectionQuestionCategories";
 DELETE FROM courses."Reflections";
 
 DELETE FROM courses."KnowledgeUnits";
