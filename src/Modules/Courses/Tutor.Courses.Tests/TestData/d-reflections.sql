@@ -50,3 +50,11 @@ INSERT INTO courses."ReflectionQuestions" (
 )
 VALUES
   (-9998, 1, 'Koliko je gradivo bilo jasno izloženo?', 2, 2, ARRAY['Nimalo', 'Slabo', 'Korektno', 'Veoma'], -9998);
+
+
+
+INSERT INTO courses."ReflectionAnswers" ("Id", "LearnerId", "ReflectionId", "Created", "Answers")
+VALUES 
+(-1, -2, -9999, '2025-06-07T09:00:00+02:00', '[{{"QuestionId": -9991, "Answer": "Good"}}, {{"QuestionId": -9992, "Answer": "Yes"}}]'),
+(-2, -3, -9999, '2025-06-06T14:30:00+02:00', '[{{"QuestionId": -9991, "Answer": "4"}}, {{"QuestionId": -9992, "Answer": "No comments"}}]'),
+(-3, -2, -9998, '2025-06-05T18:45:00+02:00', '[{{"QuestionId": -9998, "Answer": "Agree"}}]');

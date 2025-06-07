@@ -31,6 +31,9 @@ public class WeeklyActivityTests : BaseCoursesIntegrationTest
         kcUnit.Reflections.ShouldNotBeNull();
         kcUnit.Reflections.Count.ShouldBe(1);
         kcUnit.Reflections[0].Questions.Count.ShouldBe(2);
+        kcUnit.Reflections[0].Submissions.ShouldNotBeNull();
+        kcUnit.Reflections[0].Submissions!.Count.ShouldBe(2);
+        
 
         var taskUnit = result.Find(u => u.Id == -9998);
         taskUnit.ShouldNotBeNull();
@@ -42,6 +45,8 @@ public class WeeklyActivityTests : BaseCoursesIntegrationTest
         taskUnit.Reflections.ShouldNotBeNull();
         taskUnit.Reflections.Count.ShouldBe(1);
         taskUnit.Reflections[0].Questions.Count.ShouldBe(1);
+        taskUnit.Reflections[0].Submissions.ShouldNotBeNull();
+        taskUnit.Reflections[0].Submissions!.Count.ShouldBe(1);
     }
 
     private static WeeklyActivityController CreateController(IServiceScope scope, string id)
