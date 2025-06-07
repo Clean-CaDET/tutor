@@ -59,7 +59,9 @@ public class CourseMonitoringService : ICourseMonitoringService
         {
             var relatedLearner = learnerDtos.Find(l => l.Id == grouping.Key);
             if (relatedLearner == null) continue;
-            relatedLearner.WeeklyFeedback = grouping.Select(_mapper.Map<WeeklyFeedbackDto>).OrderBy(f => f.WeekEnd).ToList();
+            relatedLearner.WeeklyFeedback = grouping
+                .Select(_mapper.Map<WeeklyFeedbackDto>)
+                .OrderByDescending(f => f.WeekEnd).ToList();
         }
     }
 

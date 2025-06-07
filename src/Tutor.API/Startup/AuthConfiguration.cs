@@ -55,6 +55,7 @@ public static class AuthConfiguration
         {
             options.AddPolicy("administratorPolicy", policy => policy.RequireRole("administrator"));
             options.AddPolicy("instructorPolicy", policy => policy.RequireRole("instructor"));
+            options.AddPolicy("monitoringFeedbackPolicy", policy => policy.RequireRole("instructor", "administrator"));
             options.AddPolicy("learnerPolicy", policy => policy.RequireRole("learner", "learnercommercial"));
         });
     }

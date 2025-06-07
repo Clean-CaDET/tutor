@@ -6,7 +6,7 @@ using Tutor.Courses.Core.Domain;
 namespace Tutor.API.Controllers.Instructor.Monitoring;
 
 [Route("api/monitoring/feedback-questions")]
-[Authorize(Policy = "instructorPolicy")]
+[Authorize(Policy = "monitoringFeedbackPolicy")]
 public class WeeklyFeedbackQuestionController : BaseApiController
 {
     private readonly ICrudRepository<WeeklyFeedbackQuestion> _questionRepository;

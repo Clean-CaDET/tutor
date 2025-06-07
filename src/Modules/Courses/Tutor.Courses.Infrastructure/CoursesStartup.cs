@@ -10,6 +10,7 @@ using Tutor.Courses.API.Public.Learning;
 using Tutor.Courses.API.Public.Management;
 using Tutor.Courses.API.Public.Monitoring;
 using Tutor.Courses.Core.Domain;
+using Tutor.Courses.Core.Domain.Reflections;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 using Tutor.Courses.Core.Mappers;
 using Tutor.Courses.Core.UseCases;
@@ -39,6 +40,9 @@ public static class CoursesStartup
         services.AddProxiedScoped<IOwnedCourseService, OwnedCourseService>();
         services.AddProxiedScoped<IOwnershipValidator, OwnedCourseService>();
         services.AddProxiedScoped<IUnitService, UnitService>();
+        
+        services.AddProxiedScoped<IReflectionService, ReflectionService>();
+        services.AddProxiedScoped<IReflectionAuthoringService, ReflectionAuthoringService>();
 
         services.AddProxiedScoped<IEnrolledCourseService, EnrolledCourseService>();
         services.AddProxiedScoped<IEnrollmentValidator, EnrolledCourseService>();
@@ -62,6 +66,7 @@ public static class CoursesStartup
     {
         services.AddScoped<IOwnedCourseRepository, OwnedCourseDatabaseRepository>();
         services.AddScoped(typeof(ICrudRepository<KnowledgeUnit>), typeof(CrudDatabaseRepository<KnowledgeUnit, CoursesContext>));
+        services.AddScoped<IReflectionRepository, ReflectionDatabaseRepository>();
         services.AddScoped<IUnitEnrollmentRepository, UnitEnrollmentDatabaseRepository>();
         services.AddScoped<ICourseOwnershipRepository, CourseOwnershipDatabaseRepository>();
         services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
