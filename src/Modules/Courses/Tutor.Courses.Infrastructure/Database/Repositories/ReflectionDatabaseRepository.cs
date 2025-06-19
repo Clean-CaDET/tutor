@@ -18,6 +18,15 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
             .ToList();
     }
 
+    public List<Reflection> GetByUnitsWithQuestions(int[] unitIds)
+    {
+        return DbContext.Reflections
+            .Where(r => unitIds.Contains(r.UnitId))
+            .Include(r => r.Questions)
+            .AsNoTracking()
+            .ToList();
+    }
+
     public List<Reflection> GetByUnitsWithSubmissions(int[] unitIds)
     {
         return DbContext.Reflections

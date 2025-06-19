@@ -10,6 +10,18 @@ public class ReflectionQuestion : Entity
     public QuestionCategory Category { get; private set; }
     public ReflectionQuestionType Type { get; private set; }
     public List<string>? Labels { get; private set; }
+
+    public ReflectionQuestion Clone()
+    {
+        return new ReflectionQuestion
+        {
+            Order = Order,
+            Text = Text,
+            Category = Category,
+            Type = Type,
+            Labels = Labels
+        };
+    }
 }
 
 public enum QuestionCategory

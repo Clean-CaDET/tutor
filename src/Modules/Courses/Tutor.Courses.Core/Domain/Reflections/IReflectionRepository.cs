@@ -5,6 +5,7 @@ namespace Tutor.Courses.Core.Domain.Reflections;
 public interface IReflectionRepository : ICrudRepository<Reflection>
 {
     List<Reflection> GetByUnit(int unitId);
+    List<Reflection> GetByUnitsWithQuestions(int[] unitIds);
     List<Reflection> GetByUnitsWithSubmissions(int[] unitIds);
     Reflection? GetWithQuestions(int reflectionId);
     

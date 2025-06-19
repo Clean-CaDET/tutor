@@ -16,4 +16,15 @@ public class Reflection : Entity
         Order = updatedReflection.Order;
         Questions = updatedReflection.Questions;
     }
+
+    public Reflection Clone(int unitId)
+    {
+        return new Reflection
+        {
+            UnitId = unitId,
+            Order = Order,
+            Name = Name,
+            Questions = Questions.Select(q => q.Clone()).ToList(),
+        };
+    }
 }
