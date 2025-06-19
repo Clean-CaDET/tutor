@@ -4,6 +4,7 @@ using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Public.Management;
 using Tutor.Courses.Core.Domain;
+using Tutor.Courses.Core.Domain.Reflections;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 using Tutor.KnowledgeComponents.API.Internal;
 using Tutor.LearningTasks.API.Internal;
@@ -16,17 +17,19 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
     private readonly ICoursesUnitOfWork _unitOfWork;
     private readonly ICourseOwnershipRepository _ownershipRepository;
     private readonly IUnitEnrollmentRepository _unitEnrollmentRepository;
+    private readonly IReflectionRepository _reflectionRepository;
     private readonly IKnowledgeComponentCloner _kcCloner;
     private readonly ILearningTaskCloner _taskCloner;
 
     public CourseService(IMapper mapper, ICourseRepository courseRepository, ICoursesUnitOfWork unitOfWork,
         ICourseOwnershipRepository ownershipRepository, IUnitEnrollmentRepository unitEnrollmentRepository,
-        IKnowledgeComponentCloner kcCloner, ILearningTaskCloner taskCloner) : base(mapper)
+        IReflectionRepository reflectionRepository, IKnowledgeComponentCloner kcCloner, ILearningTaskCloner taskCloner) : base(mapper)
     {
         _courseRepository = courseRepository;
         _unitOfWork = unitOfWork;
         _ownershipRepository = ownershipRepository;
         _unitEnrollmentRepository = unitEnrollmentRepository;
+        _reflectionRepository = reflectionRepository;
         _kcCloner = kcCloner;
         _taskCloner = taskCloner;
     }
@@ -127,6 +130,7 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
             var unitIdPairs = PairOldAndClonedUnits(existingCourse.KnowledgeUnits, clonedCourse.KnowledgeUnits);
             _kcCloner.CloneMany(unitIdPairs);
             _taskCloner.CloneMany(unitIdPairs);
+            CloneReflections(unitIdPairs);
         }
         CloneOwnerships(clonedCourse, existingCourse.Id);
 
@@ -153,5 +157,16 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
     {
         var owners = _ownershipRepository.GetOwnerIds(clonedCourseId);
         owners.ForEach(o => _ownershipRepository.Create(new CourseOwnership(course, o)));
+    }
+
+    private void CloneReflections(List<Tuple<int, int>> unitIdPairs)
+    {
+        var oldReflections = _reflectionRepository.GetByUnitsWithQuestions(unitIdPairs.Select(u => u.Item1).ToArray());
+
+        var clonedReflections = oldReflections
+            .Select(r => r.Clone(unitIdPairs.Find(pair => pair.Item1 == r.UnitId)!.Item2))
+            .ToList();
+
+        _reflectionRepository.BulkCreate(clonedReflections);
     }
 }
