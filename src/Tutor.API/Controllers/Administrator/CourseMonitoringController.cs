@@ -34,7 +34,6 @@ public class CourseMonitoringController : BaseApiController
 
     [HttpGet("reflections/{learnerId:int}")]
     public ActionResult<List<ReflectionDto>> GetReflections(int learnerId, [FromQuery] List<int> reflectionIds)
-
     {
         var result = _monitoringService.GetReflections(learnerId, reflectionIds);
         return CreateResponse(result);
