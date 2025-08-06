@@ -65,10 +65,9 @@ public abstract class BaseTestFactory<TDbContext> : WebApplicationFactory<Progra
         var database = EnvironmentConnection.GetSecret("DATABASE_SCHEMA") ?? "tutor-v7-test";
         var user = EnvironmentConnection.GetSecret("DATABASE_USERNAME") ?? "postgres";
         var password = EnvironmentConnection.GetSecret("DATABASE_PASSWORD") ?? "admin";
-        var integratedSecurity = Environment.GetEnvironmentVariable("DATABASE_INTEGRATED_SECURITY") ?? "false";
         var pooling = Environment.GetEnvironmentVariable("DATABASE_POOLING") ?? "true";
 
-        var connectionString = $"Server={server};Port={port};Database={database};User ID={user};Password={password};Integrated Security={integratedSecurity};Pooling={pooling};Include Error Detail=True";
+        var connectionString = $"Server={server};Port={port};Database={database};User ID={user};Password={password};Pooling={pooling};Include Error Detail=True";
 
         return opt => opt.UseNpgsql(connectionString);
     }
