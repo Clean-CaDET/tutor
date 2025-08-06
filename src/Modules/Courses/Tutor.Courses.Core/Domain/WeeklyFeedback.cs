@@ -17,6 +17,7 @@ public class WeeklyFeedback : Entity
     public double AverageSatisfaction { get; private set; }
     public double AchievedTaskPoints { get; set; }
     public double MaxTaskPoints { get; set; }
+    public List<int>? ReflectionIds { get; set; }
 }
 
 public enum ProgressSemaphore
