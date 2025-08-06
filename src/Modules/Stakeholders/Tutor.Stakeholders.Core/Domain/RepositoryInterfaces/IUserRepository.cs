@@ -10,4 +10,5 @@ public interface IUserRepository
     int GetInstructorId(int userId);
     int GetLearnerId(int userId);
     void Delete(User user);
+    void Update(User user);
 }

@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.Stakeholders.API.Dtos;
 using Tutor.Stakeholders.API.Public;
+using Tutor.Stakeholders.Infrastructure.Authentication;
 
 namespace Tutor.API.Controllers;
 
@@ -27,5 +29,13 @@ public class AuthenticationController : BaseApiController
         var result = _authenticationService.RefreshToken(authenticationTokens);
         if (result.IsFailed) return BadRequest(result.Errors);
         return Ok(result.Value);
+    }
+
+    [Authorize]
+    [HttpPost("change-password")]
+    public ActionResult ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
+    {
+        var result = _authenticationService.ChangePassword(User.UserId(), changePasswordDto);
+        return CreateResponse(result);
     }
 }

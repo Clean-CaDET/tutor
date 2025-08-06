@@ -7,4 +7,5 @@ public interface IAuthenticationService
 {
     Result<AuthenticationTokensDto> Login(CredentialsDto credentials);
     Result<AuthenticationTokensDto> RefreshToken(AuthenticationTokensDto authenticationTokens);
+    Result ChangePassword(int userId, ChangePasswordDto changePasswordDto);
 }

@@ -4,6 +4,9 @@ namespace Tutor.Stakeholders.Infrastructure.Authentication;
 
 public static class ClaimsPrincipalExtensions
 {
+    public static int UserId(this ClaimsPrincipal user)
+        => int.Parse(user.Claims.First(i => i.Type == "id").Value);
+
     public static int LearnerId(this ClaimsPrincipal user)
         => int.Parse(user.Claims.First(i => i.Type.StartsWith("learner")).Value);
 

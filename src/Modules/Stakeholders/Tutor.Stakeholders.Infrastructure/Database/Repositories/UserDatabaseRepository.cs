@@ -69,4 +69,9 @@ public class UserDatabaseRepository : IUserRepository
     {
         _dbContext.Users.Remove(user);
     }
+
+    public void Update(User user)
+    {
+        _dbContext.Users.Update(user);
+    }
 }

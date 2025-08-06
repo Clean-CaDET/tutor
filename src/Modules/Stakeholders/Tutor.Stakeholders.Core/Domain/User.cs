@@ -23,6 +23,12 @@ public class User
     {
         return Role.ToString().ToLower();
     }
+
+    public void ChangePassword(string newPassword, string newSalt)
+    {
+        Password = newPassword;
+        Salt = newSalt;
+    }
 }
 
 public enum UserRole
