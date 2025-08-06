@@ -92,7 +92,7 @@ public class CourseMonitoringTests : BaseCoursesIntegrationTest
         var controller = CreateController(scope);
         var reflectionIds = new List<int> { -9999, -9998 };
         
-        var result = ((OkObjectResult)controller.GetGroupOverview(-2, reflectionIds).Result)?.Value as List<ReflectionDto>;
+        var result = ((OkObjectResult)controller.GetReflections(-2, reflectionIds).Result)?.Value as List<ReflectionDto>;
 
         result.ShouldNotBeNull();
         result.Count.ShouldBe(2);
@@ -121,7 +121,7 @@ public class CourseMonitoringTests : BaseCoursesIntegrationTest
         var controller = CreateController(scope);
         var reflectionIds = new List<int> { -9999, -9998 };
         
-        var result = ((OkObjectResult)controller.GetGroupOverview(-9999, reflectionIds).Result)?.Value as List<ReflectionDto>;
+        var result = ((OkObjectResult)controller.GetReflections(-9999, reflectionIds).Result)?.Value as List<ReflectionDto>;
 
         result.ShouldNotBeNull();
         result.Count.ShouldBe(2);
@@ -135,7 +135,7 @@ public class CourseMonitoringTests : BaseCoursesIntegrationTest
         var controller = CreateController(scope);
         var reflectionIds = new List<int>();
         
-        var result = ((OkObjectResult)controller.GetGroupOverview(-2, reflectionIds).Result)?.Value as List<ReflectionDto>;
+        var result = ((OkObjectResult)controller.GetReflections(-2, reflectionIds).Result)?.Value as List<ReflectionDto>;
 
         result.ShouldNotBeNull();
         result.Count.ShouldBe(0);
@@ -148,7 +148,7 @@ public class CourseMonitoringTests : BaseCoursesIntegrationTest
         var controller = CreateController(scope);
         var reflectionIds = new List<int> { -99999, -99998 };
         
-        var result = ((OkObjectResult)controller.GetGroupOverview(-2, reflectionIds).Result)?.Value as List<ReflectionDto>;
+        var result = ((OkObjectResult)controller.GetReflections(-2, reflectionIds).Result)?.Value as List<ReflectionDto>;
 
         result.ShouldNotBeNull();
         result.Count.ShouldBe(0);
@@ -165,7 +165,7 @@ public class CourseMonitoringTests : BaseCoursesIntegrationTest
         var controller = CreateController(scope);
         var reflectionIds = new List<int> { reflectionId };
         
-        var result = ((OkObjectResult)controller.GetGroupOverview(learnerId, reflectionIds).Result)?.Value as List<ReflectionDto>;
+        var result = ((OkObjectResult)controller.GetReflections(learnerId, reflectionIds).Result)?.Value as List<ReflectionDto>;
 
         result.ShouldNotBeNull();
         result.Count.ShouldBe(1);
