@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
-ARG ASPNET_VERSION=7.0
-ARG SDK_VERSION=7.0
+ARG ASPNET_VERSION=9.0
+ARG SDK_VERSION=9.0
 
 FROM mcr.microsoft.com/dotnet/aspnet:${ASPNET_VERSION} AS base
 WORKDIR /app
