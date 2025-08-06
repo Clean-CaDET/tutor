@@ -36,3 +36,16 @@ VALUES (-99995, -9997, -9999, '2023-10-20 21:29:50.379749+01', '2023-10-23 21:29
 INSERT INTO courses."UnitEnrollments"(
     "Id", "LearnerId", "KnowledgeUnitId", "Start", "BestBefore", "Status")
 VALUES (-99996, -9997, -9998, '2023-10-20 21:29:50.379749+01', '2023-10-25 21:29:50.379749+01', 1);
+
+-- Weekly feedback for testing CourseMonitoringController
+INSERT INTO courses."WeeklyProgress"(
+    "Id", "CourseId", "LearnerId", "InstructorId", "InstructorName", "WeekEnd", "Semaphore", "SemaphoreJustification", "Opinions", "AverageSatisfaction", "AchievedTaskPoints", "MaxTaskPoints")
+VALUES (-9999, -9999, -9999, -9999, 'Test Instructor', '2023-10-22 23:59:59+01', 3, 'Good progress', NULL, 4.5, 85.0, 100.0);
+
+INSERT INTO courses."WeeklyProgress"(
+    "Id", "CourseId", "LearnerId", "InstructorId", "InstructorName", "WeekEnd", "Semaphore", "SemaphoreJustification", "Opinions", "AverageSatisfaction", "AchievedTaskPoints", "MaxTaskPoints")
+VALUES (-9998, -9999, -9998, -9999, 'Test Instructor', '2023-10-22 23:59:59+01', 2, 'Needs improvement', NULL, 3.0, 60.0, 100.0);
+
+INSERT INTO courses."WeeklyProgress"(
+    "Id", "CourseId", "LearnerId", "InstructorId", "InstructorName", "WeekEnd", "Semaphore", "SemaphoreJustification", "Opinions", "AverageSatisfaction", "AchievedTaskPoints", "MaxTaskPoints")
+VALUES (-9997, -9999, -9997, -9999, 'Test Instructor', '2023-10-22 23:59:59+01', 1, 'Struggling', NULL, 2.0, 30.0, 100.0);

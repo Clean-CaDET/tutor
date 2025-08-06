@@ -75,8 +75,8 @@ public class LearnerQueryTests : BaseStakeholdersIntegrationTest
         var result = ((OkObjectResult)controller.GetAll(0, 0).Result)?.Value as PagedResult<StakeholderAccountDto>;
 
         result.ShouldNotBeNull();
-        result.Results.Count.ShouldBe(7);
-        result.TotalCount.ShouldBe(7);
+        result.Results.Count.ShouldBe(10);
+        result.TotalCount.ShouldBe(10);
         foreach (var item in result.Results)
         {
             item.ShouldNotBeNull();
