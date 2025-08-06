@@ -11,5 +11,6 @@ public interface IReflectionRepository : ICrudRepository<Reflection>
     
     List<Reflection> GetByUnitWithSubmission(int unitId, int learnerId);
     Reflection? GetWithSubmission(int reflectionId, int learnerId);
+    List<Reflection> GetManyWithSubmission(List<int> reflectionIds, int learnerId);
     void CreateAnswer(ReflectionAnswer answer);
 }
