@@ -8,10 +8,13 @@ public class Standard : Entity
     public string? Description { get; private set; }
     public double MaxPoints { get; private set; }
 
-    public void Update(Standard standard)
+    public Standard Clone()
     {
-        Name = standard.Name;
-        Description = standard.Description;
-        MaxPoints = standard.MaxPoints;
+        return new Standard
+        {
+            Name = Name,
+            Description = Description,
+            MaxPoints = MaxPoints
+        };
     }
 }

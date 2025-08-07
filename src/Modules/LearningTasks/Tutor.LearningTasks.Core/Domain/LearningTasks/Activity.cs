@@ -11,7 +11,9 @@ public class Activity : Entity
     public string? Name { get; private set; }
     public string? Guidance { get; private set; }
     public List<Example>? Examples { get; private set; }
+    public bool HasLlmSupport { get; private set; }
     public SubmissionFormat? SubmissionFormat { get; private set; }
+    public bool ShouldBeGraded { get; private set; }
     public List<Standard>? Standards { get; private set; }
     public double MaxPoints { get; private set; }
 
@@ -29,14 +31,11 @@ public class Activity : Entity
             Order = Order,
             Guidance = Guidance,
             Examples = Examples, // VOs can be directly referenced
+            HasLlmSupport = HasLlmSupport,
             SubmissionFormat = SubmissionFormat,
-            Standards = Standards?.Select(s =>
-            {
-                var standard = new Standard();
-                standard.Update(s);
-                return standard;
-            }).ToList(),
+            ShouldBeGraded = ShouldBeGraded,
+            Standards = Standards?.Select(s => s.Clone()).ToList(),
             MaxPoints = Standards?.Sum(s => s.MaxPoints) ?? 0
-    };
+        };
     }
 }

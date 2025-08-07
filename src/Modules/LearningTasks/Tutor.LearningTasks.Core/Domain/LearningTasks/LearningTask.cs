@@ -47,7 +47,7 @@ public class LearningTask : AggregateRoot
             Order = Order,
             Steps = Steps?.Select(a => a.Clone()).ToList(),
             MaxPoints = Steps?.Sum(s => s.MaxPoints) ?? 0
-    };
+        };
     }
 
     public void LinkActivityParents(LearningTask oldTask)

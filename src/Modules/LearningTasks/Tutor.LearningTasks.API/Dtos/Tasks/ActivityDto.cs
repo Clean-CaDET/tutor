@@ -10,7 +10,9 @@ public class ActivityDto
     public required string Name { get; set; }
     public required string Guidance { get; set; }
     public List<ExampleDto>? Examples { get; set; }
+    public bool HasLlmSupport { get; set; }
     public SubmissionFormatDto? SubmissionFormat { get; set; }
+    public bool ShouldBeGraded { get; set; }
     public List<StandardDto>? Standards { get; set; }
     public double MaxPoints { get; set; }
 }
