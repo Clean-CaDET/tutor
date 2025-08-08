@@ -2,20 +2,21 @@
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos.Groups;
+using Tutor.Courses.API.Internal;
 using Tutor.Courses.API.Public.Management;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 using Tutor.Stakeholders.API.Internal;
 
 namespace Tutor.Courses.Core.UseCases.Management;
 
-public class GroupMembershipService: IGroupMembershipService
+public class MembershipService: IGroupMembershipService, IInternalMembershipService
 {
     private readonly IMapper _mapper;
     private readonly IGroupRepository _groupRepository;
     private readonly ICoursesUnitOfWork _unitOfWork;
     private readonly IInternalLearnerService _learnerService;
 
-    public GroupMembershipService(IMapper mapper, IGroupRepository groupRepository,
+    public MembershipService(IMapper mapper, IGroupRepository groupRepository,
         ICoursesUnitOfWork unitOfWork, IInternalLearnerService learnerService)
     {
         _mapper = mapper;
@@ -59,5 +60,11 @@ public class GroupMembershipService: IGroupMembershipService
         if (result.IsFailed) return result;
 
         return Result.Ok();
+    }
+
+    public List<int> GetMemberIdsByCourse(int courseId)
+    {
+        var groups = _groupRepository.GetCourseGroups(courseId);
+        return groups.SelectMany(g => g.LearnerIds).ToList();
     }
 }

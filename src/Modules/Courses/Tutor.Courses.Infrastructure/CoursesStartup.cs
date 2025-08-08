@@ -49,7 +49,8 @@ public static class CoursesStartup
 
         services.AddProxiedScoped<ICourseOwnershipService, CourseOwnershipService>();
         services.AddProxiedScoped<ICourseService, CourseService>();
-        services.AddProxiedScoped<IGroupMembershipService, GroupMembershipService>();
+        services.AddProxiedScoped<IGroupMembershipService, MembershipService>();
+        services.AddProxiedScoped<IInternalMembershipService, MembershipService>();
         services.AddProxiedScoped<IGroupService, GroupService>();
 
         services.AddProxiedScoped<ICourseMonitoringService, CourseMonitoringService>();

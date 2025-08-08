@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tutor.Stakeholders.Core.Domain;
+using Tutor.Stakeholders.Infrastructure.Database.EventStore;
 
 namespace Tutor.Stakeholders.Infrastructure.Database;
 
@@ -9,6 +10,8 @@ public class StakeholdersContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Learner> Learners { get; set; }
     public DbSet<Instructor> Instructors { get; set; }
+    public DbSet<Wallet> Wallets { get; set; }
+    public DbSet<StoredWalletDomainEvent> WalletEvents { get; set; }
 
     public StakeholdersContext(DbContextOptions<StakeholdersContext> options) : base(options) {}
 
