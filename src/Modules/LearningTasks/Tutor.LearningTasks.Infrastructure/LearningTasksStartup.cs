@@ -49,12 +49,14 @@ public static class LearningTasksStartup
         services.AddProxiedScoped<ITaskProgressMonitor, TaskProgressMonitor>();
         services.AddProxiedScoped<IAccessServices, AccessServices>();
         services.AddProxiedScoped<IGradingService, GradingService>();
+        services.AddScoped<TaskConversationService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
         services.AddScoped<ILearningTaskRepository, LearningTaskDatabaseRepository>();
         services.AddScoped<ITaskProgressRepository, TaskProgressDatabaseRepository>();
+        services.AddScoped<ITaskConversationRepository, TaskConversationDatabaseRepository>();
         services.AddScoped(typeof(IEventStore<TaskEvent>), typeof(PostgresStore<TaskEvent>));
         services.AddSingleton<IEventSerializer<TaskEvent>>(new DefaultEventSerializer<TaskEvent>(EventSerializationConfiguration.EventRelatedTypes));
 

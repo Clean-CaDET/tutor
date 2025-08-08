@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Tutor.LearningTasks.Core.Domain;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
 using Tutor.LearningTasks.Core.Domain.LearningTasks;
 using Tutor.LearningTasks.Infrastructure.Database.EventStore.Postgres;
@@ -13,6 +14,7 @@ public class LearningTasksContext : DbContext
     public DbSet<TaskProgress> TaskProgresses { get; set; }
     public DbSet<StepProgress> StepProgresses { get; set; }
     public DbSet<StoredTaskDomainEvent> Events { get; set; }
+    public DbSet<TaskConversation> TaskConversations { get; set; }
 
     public LearningTasksContext(DbContextOptions<LearningTasksContext> options) : base(options) { }
 
@@ -54,5 +56,9 @@ public class LearningTasksContext : DbContext
         modelBuilder.Entity<StoredTaskDomainEvent>().HasIndex(e => e.TimeStamp);
         modelBuilder.Entity<StoredTaskDomainEvent>().HasIndex(e => e.LearnerId);
         modelBuilder.Entity<StoredTaskDomainEvent>().HasIndex(e => e.TaskId);
+
+        modelBuilder.Entity<TaskConversation>().Property(tc => tc.Messages).HasColumnType("jsonb");
+        modelBuilder.Entity<TaskConversation>().HasIndex(tc => new { tc.LearningTaskId, tc.LearnerId });
+        modelBuilder.Entity<TaskConversation>().HasIndex(tc => tc.CreatedAt);
     }
 }

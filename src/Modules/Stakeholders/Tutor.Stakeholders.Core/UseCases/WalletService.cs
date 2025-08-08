@@ -61,6 +61,11 @@ public class WalletService : IWalletService, IInternalWalletService
         return _unitOfWork.Save();
     }
 
+    public Result<int> GetFunds(int learnerId)
+    {
+        return _walletRepository.GetByLearnerId(learnerId)?.AvailableTokens ?? 0;
+    }
+
     public Result SpendFunds(int learnerId, int amount)
     {
         var wallet = _walletRepository.GetByLearnerId(learnerId);

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Tutor.LearningTasks.API.Dtos;
 using Tutor.LearningTasks.API.Dtos.Tasks;
+using Tutor.LearningTasks.Core.Domain;
 using Tutor.LearningTasks.Core.Domain.LearningTasks;
 
 namespace Tutor.LearningTasks.Core.Mappers;
@@ -15,5 +17,7 @@ public class LearningTasksProfile : Profile
         CreateMap<StandardDto, Standard>().ReverseMap();
         CreateMap<LearningTaskDto, LearningTask>()
             .AfterMap((src, dest) => dest.CalculateMaxPoints()).ReverseMap();
+
+        CreateMap<TaskConversation, TaskConversationDto>();
     }
 }

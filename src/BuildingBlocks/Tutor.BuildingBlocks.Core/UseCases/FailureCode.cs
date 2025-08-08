@@ -13,6 +13,9 @@ public static class FailureCode
     public static readonly IError DuplicateUsername = new Error("Duplicate username.")
         .WithMetadata("code", 400)
         .WithMetadata("subCode", "s1");
+    public static readonly IError NoFunds = new Error("No remaining tokens.")
+        .WithMetadata("code", 403)
+        .WithMetadata("subCode", "s2");
 
     public static readonly IError InvalidArgument = new Error("Invalid data supplied.")
         .WithMetadata("code", 400);
