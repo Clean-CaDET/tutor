@@ -37,6 +37,7 @@ public class CoursesContext : DbContext
             .HasOne<Course>()
             .WithMany()
             .HasForeignKey(p => p.CourseId);
+        modelBuilder.Entity<WeeklyFeedback>().Property(w => w.ReflectionIds).HasColumnType("jsonb");
         modelBuilder.Entity<WeeklyFeedback>().Property(w => w.Opinions).HasColumnType("jsonb");
         modelBuilder.Entity<WeeklyFeedbackQuestion>().Property(q => q.Options).HasColumnType("jsonb");
     }

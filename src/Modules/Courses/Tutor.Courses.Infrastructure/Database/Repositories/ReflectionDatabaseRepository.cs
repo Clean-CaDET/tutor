@@ -62,6 +62,16 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
             .FirstOrDefault(r => r.Id == reflectionId);
     }
 
+    public List<Reflection> GetManyWithSubmission(List<int> reflectionIds, int learnerId)
+    {
+        return DbContext.Reflections
+            .Where(r => reflectionIds.Contains(r.Id))
+            .Include(r => r.Questions.OrderBy(q => q.Order))
+            .Include(r => r.Submissions.Where(s => s.LearnerId == learnerId))
+            .AsNoTracking()
+            .ToList();
+    }
+
     public void CreateAnswer(ReflectionAnswer answer)
     {
         DbContext.ReflectionAnswers.Attach(answer);

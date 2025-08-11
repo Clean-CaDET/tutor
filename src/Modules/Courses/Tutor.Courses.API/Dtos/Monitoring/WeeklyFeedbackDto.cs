@@ -16,4 +16,5 @@ public class WeeklyFeedbackDto
     public double AverageSatisfaction { get; set; }
     public double AchievedTaskPoints { get; set; }
     public double MaxTaskPoints { get; set; }
+    public List<int>? ReflectionIds { get; set; }
 }
