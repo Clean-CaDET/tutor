@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.Postgres;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.AssessmentItems.MultiChoiceQuestions;

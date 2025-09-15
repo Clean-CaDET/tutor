@@ -82,7 +82,7 @@ public class TaskProgressService : BaseService<TaskProgressDto, TaskProgress>, I
             return result.ToResult();
 
         var taskProgress = result.Value;
-        taskProgress.SubmitAnswer(stepProgress.StepId, stepProgress.Answer!);
+        taskProgress.SubmitAnswer(stepProgress.StepId, stepProgress.Answer!, stepProgress.CommentForMentor);
         _progressRepository.UpdateEvents(taskProgress);
 
         var updateResult = _unitOfWork.Save();

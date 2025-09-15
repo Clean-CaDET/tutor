@@ -35,9 +35,7 @@ public class LearningTaskDatabaseRepository : CrudDatabaseRepository<LearningTas
 
     public List<LearningTask> GetNonTemplateByUnits(int[] unitIds)
     {
-        return DbContext.LearningTasks
-            .Where(t => unitIds.Contains(t.UnitId) && !t.IsTemplate)
-            .ToList();
+        return GetTasksWhere(t => unitIds.Contains(t.UnitId) && !t.IsTemplate);
     }
 
     private List<LearningTask> GetTasksWhere(Expression<Func<LearningTask, bool>> expression)

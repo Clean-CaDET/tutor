@@ -4,7 +4,6 @@ using Shouldly;
 using Tutor.API.Controllers.Instructor.Monitoring;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Enrollments;
-using Tutor.Courses.API.Dtos.Monitoring;
 using Tutor.Courses.API.Public.Monitoring;
 
 namespace Tutor.Courses.Tests.Integration.Monitoring;

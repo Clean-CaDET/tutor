@@ -4,8 +4,10 @@ using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Dtos.Monitoring;
+using Tutor.Courses.API.Dtos.Reflections;
 using Tutor.Courses.API.Public.Monitoring;
 using Tutor.Courses.Core.Domain;
+using Tutor.Courses.Core.Domain.Reflections;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 using Tutor.Stakeholders.API.Internal;
 
@@ -19,9 +21,11 @@ public class CourseMonitoringService : ICourseMonitoringService
     private readonly IGroupRepository _groupRepository;
     private readonly IInternalLearnerService _learnerService;
     private readonly IWeeklyFeedbackRepository _feedbackRepository;
+    private readonly IReflectionRepository _reflectionRepository;
 
     public CourseMonitoringService(IMapper mapper, ICourseRepository courseRepository, IOwnedCourseRepository ownershipRepository,
-        IGroupRepository groupRepository, IInternalLearnerService learnerService, IWeeklyFeedbackRepository feedbackRepository)
+        IGroupRepository groupRepository, IInternalLearnerService learnerService, IWeeklyFeedbackRepository feedbackRepository,
+        IReflectionRepository reflectionRepository)
     {
         _mapper = mapper;
         _courseRepository = courseRepository;
@@ -29,6 +33,7 @@ public class CourseMonitoringService : ICourseMonitoringService
         _groupRepository = groupRepository;
         _learnerService = learnerService;
         _feedbackRepository = feedbackRepository;
+        _reflectionRepository = reflectionRepository;
     }
 
     public Result<List<CourseDto>> GetActiveCourses()
@@ -76,7 +81,9 @@ public class CourseMonitoringService : ICourseMonitoringService
         {
             var relatedLearner = learnerDtos.Find(l => l.Id == grouping.Key);
             if (relatedLearner == null) continue;
-            relatedLearner.WeeklyFeedback = grouping.Select(_mapper.Map<WeeklyFeedbackDto>).OrderBy(f => f.WeekEnd).ToList();
+            relatedLearner.WeeklyFeedback = grouping
+                .Select(_mapper.Map<WeeklyFeedbackDto>)
+                .OrderByDescending(f => f.WeekEnd).ToList();
         }
     }
 
@@ -91,5 +98,11 @@ public class CourseMonitoringService : ICourseMonitoringService
         }
 
         return groupDtos;
+    }
+
+    public Result<List<ReflectionDto>> GetReflections(int learnerId, List<int> reflectionIds)
+    {
+        var reflections = _reflectionRepository.GetManyWithSubmission(reflectionIds, learnerId);
+        return reflections.Select(_mapper.Map<ReflectionDto>).ToList();
     }
 }

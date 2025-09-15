@@ -25,3 +25,14 @@ INSERT INTO stakeholders."Instructors"("Id", "UserId", "Name", "Surname", "Email
 
 INSERT INTO stakeholders."Instructors"("Id", "UserId", "Name", "Surname", "Email") VALUES
     (-52, -52, 'TestInstructor2', 'TestInstructor2', NULL);
+
+-- Monitoring students
+INSERT INTO stakeholders."Learners"(
+    "Id", "UserId", "Name", "Surname", "Index", "Email")
+VALUES (-9999, -9999, 'M1', '', 'M1', NULL);
+INSERT INTO stakeholders."Learners"(
+    "Id", "UserId", "Name", "Surname", "Index", "Email")
+VALUES (-9998, -9998, 'M1', '', 'M1', NULL);
+INSERT INTO stakeholders."Learners"(
+    "Id", "UserId", "Name", "Surname", "Index", "Email")
+VALUES (-9997, -9997, 'M1', '', 'M1', NULL);

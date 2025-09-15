@@ -38,9 +38,9 @@ public class TaskProgress : EventSourcedAggregateRoot
         return Status == TaskStatus.Completed || Status == TaskStatus.Graded;
     }
 
-    public void SubmitAnswer(int stepId, string answer)
+    public void SubmitAnswer(int stepId, string answer, string? commentForMentor)
     {
-        Causes(new StepSubmitted(stepId, answer));
+        Causes(new StepSubmitted(stepId, answer, commentForMentor));
         if (IsCompleted()) return;
 
         var allStepsAnswered = StepProgresses!.All(s => s.IsCompleted());
@@ -122,10 +122,9 @@ public class TaskProgress : EventSourcedAggregateRoot
     private void When(StepSubmitted @event)
     {
         var stepId = @event.StepId;
-        var answer = @event.Answer;
 
         var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
-        stepProgress?.SubmitAnswer(answer);
+        stepProgress?.SubmitAnswer(@event.Answer, @event.CommentForMentor);
     }
 
     private void When(StepGraded @event)

@@ -7,6 +7,7 @@ public interface ILearningTaskService
 {
     Result<LearningTaskDto> Get(int id, int unitId, int instructorId);
     Result<List<LearningTaskDto>> GetByUnit(int unitId, int instructorId);
+    Result<List<LearningTaskDto>> GetNonTemplateByUnit(int unitId, int instructorId);
     Result<LearningTaskDto> Create(LearningTaskDto learningTask, int instructorId);
     Result<LearningTaskDto> Clone(LearningTaskDto taskHeader, int instructorId);
     Result Move(int taskId, int destinationUnitId, int instructorId);

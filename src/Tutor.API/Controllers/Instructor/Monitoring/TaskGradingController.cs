@@ -35,7 +35,7 @@ public class TaskGradingController : BaseApiController
     [HttpGet("{unitId:int}/tasks")]
     public ActionResult<List<LearningTaskDto>> GetTasksByUnit(int unitId)
     {
-        var result = _taskService.GetByUnit(unitId, User.InstructorId());
+        var result = _taskService.GetNonTemplateByUnit(unitId, User.InstructorId());
         return CreateResponse(result);
     }
 

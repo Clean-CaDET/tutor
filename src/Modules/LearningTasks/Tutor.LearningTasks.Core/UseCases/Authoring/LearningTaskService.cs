@@ -36,6 +36,14 @@ public class LearningTaskService : CrudService<LearningTaskDto, LearningTask>, I
         return MapToDto(learningTasks);
     }
 
+    public Result<List<LearningTaskDto>> GetNonTemplateByUnit(int unitId, int instructorId)
+    {
+        if (!IsUnitOwner(unitId, instructorId)) return Result.Fail(FailureCode.Forbidden);
+
+        var learningTasks = _taskRepository.GetNonTemplateByUnit(unitId);
+        return MapToDto(learningTasks);
+    }
+
     public Result<LearningTaskDto> Create(LearningTaskDto learningTask, int instructorId)
     {
         if (!IsUnitOwner(learningTask.UnitId, instructorId)) return Result.Fail(FailureCode.Forbidden);

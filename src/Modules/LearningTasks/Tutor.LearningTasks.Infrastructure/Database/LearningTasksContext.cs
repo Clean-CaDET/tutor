@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.Postgres;
 using Tutor.LearningTasks.Core.Domain.LearningTaskProgress;
 using Tutor.LearningTasks.Core.Domain.LearningTasks;
 using Tutor.LearningTasks.Infrastructure.Database.EventStore.Postgres;

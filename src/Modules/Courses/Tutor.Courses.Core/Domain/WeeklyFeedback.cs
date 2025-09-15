@@ -12,10 +12,12 @@ public class WeeklyFeedback : Entity
     public DateTime WeekEnd { get; private set; }
     public ProgressSemaphore Semaphore { get; private set; }
     public string? SemaphoreJustification { get; private set; }
+    public string? Opinions { get; private set; }
 
     public double AverageSatisfaction { get; private set; }
     public double AchievedTaskPoints { get; set; }
     public double MaxTaskPoints { get; set; }
+    public List<int>? ReflectionIds { get; set; }
 }
 
 public enum ProgressSemaphore

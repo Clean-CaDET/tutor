@@ -49,9 +49,11 @@ public class CourseCommandTests : BaseCoursesIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<CoursesContext>();
-        var secondaryDbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
+        var kcDbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
         var tasksDbContext = scope.ServiceProvider.GetRequiredService<LearningTasksContext>();
-        var startingKcCount = secondaryDbContext.KnowledgeComponents.Count();
+        var startingKcCount = kcDbContext.KnowledgeComponents.Count();
+        var startingReflectionsCount = dbContext.Reflections.Count();
+        var startingReflectionQuestionsCount = dbContext.ReflectionQuestions.Count();
 
         var newCourse = new CourseDto
         {
@@ -63,7 +65,7 @@ public class CourseCommandTests : BaseCoursesIntegrationTest
         var result = ((OkObjectResult)controller.Clone(-2, newCourse).Result)?.Value as CourseDto;
 
         dbContext.ChangeTracker.Clear();
-        secondaryDbContext.ChangeTracker.Clear();
+        kcDbContext.ChangeTracker.Clear();
         tasksDbContext.ChangeTracker.Clear();
 
         result.ShouldNotBeNull();
@@ -77,12 +79,17 @@ public class CourseCommandTests : BaseCoursesIntegrationTest
         units.Count.ShouldBe(1);
         var ownerships = dbContext.CourseOwnerships.Where(o => o.Course.Id == result.Id).ToList();
         ownerships.Count.ShouldBe(1);
-        var endingKcCount = secondaryDbContext.KnowledgeComponents.Count();
+        var endingKcCount = kcDbContext.KnowledgeComponents.Count();
         endingKcCount.ShouldBe(startingKcCount + 2);
         int unitId = units[0].Id;
         var tasks = tasksDbContext.LearningTasks.Where(l => l.UnitId == unitId)
             .Include(l => l.Steps!).ThenInclude(s => s.Standards).ToList();
         AssertTaskCorrectlyCloned(tasks);
+        
+        var endingReflectionsCount = dbContext.Reflections.Count();
+        var endingReflectionQuestionsCount = dbContext.ReflectionQuestions.Count();
+        endingReflectionsCount.ShouldBe(startingReflectionsCount + 1);
+        endingReflectionQuestionsCount.ShouldBe(startingReflectionQuestionsCount + 3);
     }
 
     private static void AssertTaskCorrectlyCloned(List<LearningTask> tasks)
