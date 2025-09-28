@@ -32,8 +32,11 @@ public class StepProgress : Entity
     {
         Answer = answer;
         CommentForMentor = commentForMentor;
-        Status = StepStatus.Answered;
         LastAnsweredAt = answeredAt;
+        if (Status != StepStatus.Graded)
+        {
+            Status = StepStatus.Answered;
+        }
     }
 
     public void MarkAsViewed()
