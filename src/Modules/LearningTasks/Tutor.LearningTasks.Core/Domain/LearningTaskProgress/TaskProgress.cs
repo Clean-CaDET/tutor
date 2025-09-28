@@ -12,6 +12,7 @@ public class TaskProgress : EventSourcedAggregateRoot
     public int LearningTaskId { get; private set; }
     public int LearnerId { get; private set; }
     public double TotalScore { get; private set; }
+    public bool? WasGradedMultipleTimes { get; private set; }
     public TaskStatus Status { get; private set; }
     public List<StepProgress>? StepProgresses { get; private set; }
 
@@ -29,7 +30,7 @@ public class TaskProgress : EventSourcedAggregateRoot
     {
         StepProgresses = steps
             .Where(step => step.ParentId == 0)
-            .Select(step => new StepProgress(step.Id, LearnerId, step.Standards!))
+            .Select(step => new StepProgress(step.Id, LearnerId))
             .ToList();
     }
 
@@ -124,13 +125,17 @@ public class TaskProgress : EventSourcedAggregateRoot
         var stepId = @event.StepId;
 
         var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(stepId));
-        stepProgress?.SubmitAnswer(@event.Answer, @event.CommentForMentor);
+        stepProgress?.SubmitAnswer(@event.Answer, @event.CommentForMentor, @event.TimeStamp);
     }
 
     private void When(StepGraded @event)
     {
+        if (Status == TaskStatus.Graded)
+        {
+            WasGradedMultipleTimes = true;
+        }
         var stepProgress = StepProgresses?.Find(s => s.StepId.Equals(@event.StepId));
-        stepProgress?.SubmitGrade(@event.Evaluations, @event.Comment);
+        stepProgress?.SubmitGrade(@event.Evaluations, @event.Comment, @event.TimeStamp);
     }
 
     private void When(TaskCompleted @event)
