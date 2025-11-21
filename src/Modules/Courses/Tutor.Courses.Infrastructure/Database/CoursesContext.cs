@@ -18,6 +18,7 @@ public class CoursesContext : DbContext
     public DbSet<UnitProgressRating> UnitProgressRating { get; set; }
     public DbSet<WeeklyFeedback> WeeklyProgress { get; set; }
     public DbSet<WeeklyFeedbackQuestion> WeeklyFeedbackQuestions { get; set; }
+    public DbSet<CourseReport> CourseReports { get; set; }
 
     public CoursesContext(DbContextOptions<CoursesContext> options) : base(options) {}
 

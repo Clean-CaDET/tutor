@@ -56,6 +56,12 @@ public class KnowledgeMasteryDatabaseRepository<TEvent> : IKnowledgeMasteryRepos
         return kcms;
     }
 
+    public int CountSatisfied(List<int> kcIds, int learnerId)
+    {
+        return _dbContext.KcMasteries.Count(kcm =>
+            kcm.LearnerId == learnerId && kcm.IsSatisfied && kcIds.Contains(kcm.LearnerId));
+    }
+
     public void Update(KnowledgeComponentMastery kcMastery)
     {
         _dbContext.KcMasteries.Attach(kcMastery);

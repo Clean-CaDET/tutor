@@ -3,7 +3,7 @@ using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Dtos.Reflections;
 
-namespace Tutor.Courses.API.Public.Monitoring;
+namespace Tutor.Courses.API.Public.Supervision;
 
 public interface ICourseMonitoringService
 {
@@ -13,5 +13,5 @@ public interface ICourseMonitoringService
 
     Result<List<CourseDto>> GetStartedCourses();
     Result<CourseDto> GetCourseWithGroupsAndUnits(int courseId);
-    Result<List<ReflectionAnswerDto>> GetAchievements(int courseId, int learnerId, AchievementsRequestDto ids);
+    Result<CourseAchievementsDto> GetAchievements(int courseId, int learnerId, AchievementsRequestDto ids);
 }

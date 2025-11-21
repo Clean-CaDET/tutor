@@ -9,6 +9,7 @@ using Tutor.Courses.API.Public.Authoring;
 using Tutor.Courses.API.Public.Learning;
 using Tutor.Courses.API.Public.Management;
 using Tutor.Courses.API.Public.Monitoring;
+using Tutor.Courses.API.Public.Supervision;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.Reflections;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
@@ -19,6 +20,7 @@ using Tutor.Courses.Core.UseCases.Authoring;
 using Tutor.Courses.Core.UseCases.Learning;
 using Tutor.Courses.Core.UseCases.Management;
 using Tutor.Courses.Core.UseCases.Monitoring;
+using Tutor.Courses.Core.UseCases.Supervision;
 using Tutor.Courses.Infrastructure.Database;
 using Tutor.Courses.Infrastructure.Database.Repositories;
 

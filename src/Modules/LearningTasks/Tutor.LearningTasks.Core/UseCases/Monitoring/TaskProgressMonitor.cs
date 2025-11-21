@@ -132,4 +132,12 @@ public class TaskProgressMonitor : ITaskProgressMonitor
             stats.TotalMaxPoints = tasks.Where(t => t.UnitId == stats.UnitId).Sum(t => t.MaxPoints);
         }
     }
+
+    public Result<int> GetSatisfiedPercent(int learnerId, int[] unitIds)
+    {
+        var tasks = _taskRepository.GetByUnits(unitIds);
+        var completedCount = _taskProgressRepository.CountCompletedOrGraded(tasks.Select(t => t.Id).ToList(), learnerId);
+
+        return (int)Math.Round(100.0 * completedCount / tasks.Count, 0);
+    }
 }

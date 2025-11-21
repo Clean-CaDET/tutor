@@ -47,4 +47,10 @@ public class CourseDatabaseRepository : CrudDatabaseRepository<Course, CoursesCo
             .AsNoTracking()
             .FirstOrDefault(c => c.Id == courseId);
     }
+
+    public CourseReport? GetReport(int courseId, int learnerId)
+    {
+        return DbContext.CourseReports
+            .FirstOrDefault(r => r.CourseId == courseId && r.LearnerId == learnerId);
+    }
 }

@@ -14,7 +14,6 @@ public class CourseAchievementsDto
 
     public List<WeeklyFeedbackDto> WeeklyFeedback { get; set; } = new();
 
-    public int TasksCompletedPercent { get; set; }
-    public int KcCompletedPercent { get; set; }
-    public int KcWithNegativePatternPercent { get; set; }
+    public int TaskSatisfiedPercent { get; set; }
+    public int KcSatisfiedPercent { get; set; }
 }

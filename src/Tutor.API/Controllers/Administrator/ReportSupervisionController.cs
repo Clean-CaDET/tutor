@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Reflections;
-using Tutor.Courses.API.Public.Monitoring;
+using Tutor.Courses.API.Public.Supervision;
 
 namespace Tutor.API.Controllers.Administrator;
 
@@ -32,7 +32,7 @@ public class ReportSupervisionController : BaseApiController
     }
 
     [HttpPost("{courseId:int}/achievements/{learnerId:int}")]
-    public ActionResult<List<ReflectionAnswerDto>> GetAchievements(int courseId, int learnerId, [FromBody] AchievementsRequestDto ids)
+    public ActionResult<CourseAchievementsDto> GetAchievements(int courseId, int learnerId, [FromBody] AchievementsRequestDto ids)
     {
         var result = _monitoringService.GetAchievements(courseId, learnerId, ids);
         return CreateResponse(result);

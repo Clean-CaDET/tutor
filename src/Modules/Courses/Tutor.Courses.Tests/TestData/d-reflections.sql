@@ -1,5 +1,5 @@
 INSERT INTO courses."Reflections" (
-  "Id", "UnitId", "Order", "Name"
+  "Id", "KnowledgeUnitId", "Order", "Name"
 )
 VALUES (-1, -2, 1, 'Refleksija nad petljama');
 
@@ -15,7 +15,7 @@ VALUES
 
 
 INSERT INTO courses."Reflections" (
-  "Id", "UnitId", "Order", "Name"
+  "Id", "KnowledgeUnitId", "Order", "Name"
 )
 VALUES (-2, -3, 1, 'Refleksija nad grananjem');
 
@@ -29,9 +29,9 @@ VALUES
 
 
 INSERT INTO courses."Reflections" (
-  "Id", "UnitId", "Order", "Name"
+  "Id", "KnowledgeUnitId", "Order", "Name"
 )
-VALUES (-9999, -9999, 1, 'Refleksija za monitoring 1');
+VALUES (-9999, -3, 1, 'Refleksija za monitoring 1');
 
 INSERT INTO courses."ReflectionQuestions" (
   "Id", "Order", "Text", "Category", "Type", "Labels", "ReflectionId"
@@ -41,9 +41,9 @@ VALUES
   (-9992, 2, 'Koliko su pitanja bila jasno formulisana?', 2, 2, ARRAY['Nimalo', 'Slabo', 'Korektno', 'Veoma'], -9999);
 
 INSERT INTO courses."Reflections" (
-  "Id", "UnitId", "Order", "Name"
+  "Id", "KnowledgeUnitId", "Order", "Name"
 )
-VALUES (-9998, -9998, 1, 'Refleksija za monitoring 2');
+VALUES (-9998, -4, 1, 'Refleksija za monitoring 2');
 
 INSERT INTO courses."ReflectionQuestions" (
   "Id", "Order", "Text", "Category", "Type", "Labels", "ReflectionId"

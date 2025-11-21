@@ -16,7 +16,7 @@ public class ReflectionTests : BaseCoursesIntegrationTest
 
     [Theory]
     [InlineData("-2", -2, 1)]
-    [InlineData("-2", -3, 1)]
+    [InlineData("-2", -3, 2)]
     public void Gets_reflections_for_enrolled_unit(string learnerId, int unitId, int expectedReflectionCount)
     {
         using var scope = Factory.Services.CreateScope();

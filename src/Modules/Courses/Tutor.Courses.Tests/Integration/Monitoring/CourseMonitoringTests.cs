@@ -5,7 +5,7 @@ using Tutor.API.Controllers.Administrator;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Dtos.Reflections;
-using Tutor.Courses.API.Public.Monitoring;
+using Tutor.Courses.API.Public.Supervision;
 
 namespace Tutor.Courses.Tests.Integration.Monitoring;
 

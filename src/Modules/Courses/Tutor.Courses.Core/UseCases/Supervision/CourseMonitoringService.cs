@@ -5,13 +5,15 @@ using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Dtos.Monitoring;
 using Tutor.Courses.API.Dtos.Reflections;
-using Tutor.Courses.API.Public.Monitoring;
+using Tutor.Courses.API.Public.Supervision;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.Reflections;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
+using Tutor.KnowledgeComponents.API.Internal;
+using Tutor.LearningTasks.API.Internal;
 using Tutor.Stakeholders.API.Internal;
 
-namespace Tutor.Courses.Core.UseCases.Monitoring;
+namespace Tutor.Courses.Core.UseCases.Supervision;
 
 public class CourseMonitoringService : ICourseMonitoringService
 {
@@ -21,9 +23,12 @@ public class CourseMonitoringService : ICourseMonitoringService
     private readonly IInternalLearnerService _learnerService;
     private readonly IWeeklyFeedbackRepository _feedbackRepository;
     private readonly IReflectionRepository _reflectionRepository;
+    private readonly ITaskProgressMonitor _taskReporter;
+    private readonly IKcProgressMonitor _kcReporter;
 
     public CourseMonitoringService(IMapper mapper, ICourseRepository courseRepository, IGroupRepository groupRepository, 
-        IInternalLearnerService learnerService, IWeeklyFeedbackRepository feedbackRepository, IReflectionRepository reflectionRepository)
+        IInternalLearnerService learnerService, IWeeklyFeedbackRepository feedbackRepository, IReflectionRepository reflectionRepository,
+        ITaskProgressMonitor taskReporter, IKcProgressMonitor kcReporter)
     {
         _mapper = mapper;
         _courseRepository = courseRepository;
@@ -31,6 +36,8 @@ public class CourseMonitoringService : ICourseMonitoringService
         _learnerService = learnerService;
         _feedbackRepository = feedbackRepository;
         _reflectionRepository = reflectionRepository;
+        _taskReporter = taskReporter;
+        _kcReporter = kcReporter;
     }
 
     public Result<List<CourseDto>> GetActiveCourses()
@@ -111,8 +118,34 @@ public class CourseMonitoringService : ICourseMonitoringService
         return courseDto;
     }
 
-    public Result<List<ReflectionAnswerDto>> GetAchievements(int courseId, int learnerId, AchievementsRequestDto ids)
+    public Result<CourseAchievementsDto> GetAchievements(int courseId, int learnerId, AchievementsRequestDto ids)
     {
-        throw new NotImplementedException();
+        var report = _courseRepository.GetReport(courseId, learnerId);
+        var retVal = new CourseAchievementsDto
+        {
+            CourseId = courseId,
+            LearnerId = learnerId,
+            Report = report?.Report ?? string.Empty
+        };
+
+        PopulateReflectionAnswers(learnerId, ids.ReflectionIds, retVal);
+        retVal.WeeklyFeedback = _feedbackRepository.GetByCourseAndLearner(courseId, learnerId)
+            .Select(_mapper.Map<WeeklyFeedbackDto>).ToList();
+
+        if (ids.UnitIds == null) return retVal;
+
+        retVal.TaskSatisfiedPercent = _taskReporter.GetSatisfiedPercent(learnerId, ids.UnitIds.ToArray()).Value;
+        retVal.KcSatisfiedPercent = _kcReporter.GetSatisfiedCount(learnerId, ids.UnitIds.ToArray()).Value;
+
+        return retVal;
+    }
+
+    private void PopulateReflectionAnswers(int learnerId, List<int>? reflectionIds, CourseAchievementsDto retVal)
+    {
+        if (reflectionIds == null) return;
+
+        var answers = _reflectionRepository.GetAnswers(reflectionIds, learnerId);
+        retVal.ReflectionAnswers = answers.Select(_mapper.Map<ReflectionAnswerDto>).ToList();
+        retVal.ReflectionsAnsweredPercent = (int) Math.Round(100.0 * retVal.ReflectionAnswers.Count / reflectionIds.Count, 0);
     }
 }

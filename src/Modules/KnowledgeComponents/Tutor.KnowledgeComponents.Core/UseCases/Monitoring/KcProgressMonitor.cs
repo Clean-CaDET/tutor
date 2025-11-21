@@ -5,6 +5,7 @@ using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.API.Internal;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
+using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.DomainServices;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events.KnowledgeComponentEvents;
@@ -14,13 +15,16 @@ namespace Tutor.KnowledgeComponents.Core.UseCases.Monitoring;
 public class KcProgressMonitor : IKcProgressMonitor
 {
     private readonly IKnowledgeComponentRepository _kcRepository;
+    private readonly IKnowledgeMasteryRepository _masteryRepository;
     private readonly IEventStore<KnowledgeComponentEvent> _eventStore;
     private readonly List<INegativePatternDetector> _negativePatternDetectors;
 
-    public KcProgressMonitor(IKnowledgeComponentRepository kcRepository, IEventStore<KnowledgeComponentEvent> eventStore)
+    public KcProgressMonitor(IKnowledgeComponentRepository kcRepository, IEventStore<KnowledgeComponentEvent> eventStore,
+        IKnowledgeMasteryRepository masteryRepository)
     {
         _kcRepository = kcRepository;
         _eventStore = eventStore;
+        _masteryRepository = masteryRepository;
         _negativePatternDetectors = new List<INegativePatternDetector>
         {
             new PatternDetectorSatisfaction(),
@@ -89,5 +93,13 @@ public class KcProgressMonitor : IKcProgressMonitor
             SatisfactionTime = eventsUpToSatisfied[^1].TimeStamp,
             NegativePatterns = negativePatterns
         };
+    }
+
+    public Result<int> GetSatisfiedCount(int learnerId, int[] unitIds)
+    {
+        var kcs = _kcRepository.GetByUnits(unitIds);
+        var satisfiedCount = _masteryRepository.CountSatisfied(kcs.Select(kc => kc.Id).ToList(), learnerId);
+
+        return (int)Math.Round(100.0 * satisfiedCount / kcs.Count, 0);
     }
 }
