@@ -8,6 +8,10 @@ namespace Tutor.Courses.API.Public.Monitoring;
 public interface ICourseMonitoringService
 {
     Result<List<CourseDto>> GetActiveCourses();
-    Result<List<GroupDto>> GetGroupFeedback(int courseId);
-    Result<List<ReflectionDto>> GetReflections(int learnerId, List<int> reflectionIds);
+    Result<List<GroupDto>> GetGroupedLearnersWithFeedback(int courseId);
+    Result<List<ReflectionDto>> GetReflections(int learnerId, List<int>? reflectionIds);
+
+    Result<List<CourseDto>> GetStartedCourses();
+    Result<CourseDto> GetCourseWithGroupsAndUnits(int courseId);
+    Result<List<ReflectionAnswerDto>> GetAchievements(int courseId, int learnerId, AchievementsRequestDto ids);
 }

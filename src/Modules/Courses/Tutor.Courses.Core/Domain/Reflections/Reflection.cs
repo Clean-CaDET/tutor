@@ -4,7 +4,7 @@ namespace Tutor.Courses.Core.Domain.Reflections;
 
 public class Reflection : Entity
 {
-    public int UnitId { get; private set; }
+    public int KnowledgeUnitId { get; private set; }
     public int Order { get; private set; }
     public string Name { get; private set; } = "";
     public List<ReflectionQuestion> Questions { get; private set; } = new();
@@ -21,7 +21,7 @@ public class Reflection : Entity
     {
         return new Reflection
         {
-            UnitId = unitId,
+            KnowledgeUnitId = unitId,
             Order = Order,
             Name = Name,
             Questions = Questions.Select(q => q.Clone()).ToList(),

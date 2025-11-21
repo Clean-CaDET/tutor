@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentResults;
+using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Dtos.Monitoring;
@@ -38,7 +39,7 @@ public class CourseMonitoringService : ICourseMonitoringService
         return courses.Select(_mapper.Map<CourseDto>).ToList();
     }
 
-    public Result<List<GroupDto>> GetGroupFeedback(int courseId)
+    public Result<List<GroupDto>> GetGroupedLearnersWithFeedback(int courseId)
     {
         var groups = _groupRepository.GetCourseGroups(courseId);
         var learnerDtos = GetLearners(groups);
@@ -82,9 +83,36 @@ public class CourseMonitoringService : ICourseMonitoringService
         return groupDtos;
     }
 
-    public Result<List<ReflectionDto>> GetReflections(int learnerId, List<int> reflectionIds)
+    public Result<List<ReflectionDto>> GetReflections(int learnerId, List<int>? reflectionIds)
     {
-        var reflections = _reflectionRepository.GetManyWithSubmission(reflectionIds, learnerId);
+        if(reflectionIds == null || !reflectionIds.Any())
+        {
+            return new List<ReflectionDto>();
+        }
+        var reflections = _reflectionRepository.GetManyWithAnswers(reflectionIds, learnerId);
         return reflections.Select(_mapper.Map<ReflectionDto>).ToList();
+    }
+
+    public Result<List<CourseDto>> GetStartedCourses()
+    {
+        var courses = _courseRepository.GetStarted();
+        return courses.Select(_mapper.Map<CourseDto>).ToList();
+    }
+
+    public Result<CourseDto> GetCourseWithGroupsAndUnits(int courseId)
+    {
+        var course = _courseRepository.GetWithUnitsAndReflections(courseId);
+        if (course == null) return Result.Fail(FailureCode.NotFound);
+
+        var courseDto = _mapper.Map<CourseDto>(course);
+        var groups = _groupRepository.GetCourseGroups(courseId);
+        var learnerDtos = GetLearners(groups);
+        courseDto.Groups = CreateGroupDtos(groups, learnerDtos);
+        return courseDto;
+    }
+
+    public Result<List<ReflectionAnswerDto>> GetAchievements(int courseId, int learnerId, AchievementsRequestDto ids)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -5,6 +5,8 @@ namespace Tutor.Courses.Core.Domain.RepositoryInterfaces;
 public interface ICourseRepository : ICrudRepository<Course>
 {
     List<Course> GetActiveAndStarted();
+    List<Course> GetStarted();
     PagedResult<Course> GetPagedSortedByDate(int page, int pageSize);
     Course? GetWithUnits(int courseId);
+    Course? GetWithUnitsAndReflections(int courseId);
 }

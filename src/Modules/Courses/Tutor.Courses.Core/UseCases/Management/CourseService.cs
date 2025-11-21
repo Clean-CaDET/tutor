@@ -164,7 +164,7 @@ public class CourseService : BaseService<CourseDto, Course>, ICourseService
         var oldReflections = _reflectionRepository.GetByUnitsWithQuestions(unitIdPairs.Select(u => u.Item1).ToArray());
 
         var clonedReflections = oldReflections
-            .Select(r => r.Clone(unitIdPairs.Find(pair => pair.Item1 == r.UnitId)!.Item2))
+            .Select(r => r.Clone(unitIdPairs.Find(pair => pair.Item1 == r.KnowledgeUnitId)!.Item2))
             .ToList();
 
         _reflectionRepository.BulkCreate(clonedReflections);

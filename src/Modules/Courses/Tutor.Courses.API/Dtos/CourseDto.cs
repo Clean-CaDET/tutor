@@ -1,4 +1,6 @@
-﻿namespace Tutor.Courses.API.Dtos;
+﻿using Tutor.Courses.API.Dtos.Groups;
+
+namespace Tutor.Courses.API.Dtos;
 
 public class CourseDto
 {
@@ -9,4 +11,5 @@ public class CourseDto
     public DateTime StartDate { get; set; }
     public bool IsArchived { get; set; }
     public List<KnowledgeUnitDto>? KnowledgeUnits { get; set; }
+    public List<GroupDto>? Groups { get; set; }
 }

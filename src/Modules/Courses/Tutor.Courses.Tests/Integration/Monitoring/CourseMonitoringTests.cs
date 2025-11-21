@@ -173,9 +173,9 @@ public class CourseMonitoringTests : BaseCoursesIntegrationTest
         result.First().Submissions?.Count.ShouldBe(expectedSubmissionCount);
     }
 
-    private static CourseMonitoringController CreateController(IServiceScope scope)
+    private static ActiveSupervisionController CreateController(IServiceScope scope)
     {
-        return new CourseMonitoringController(scope.ServiceProvider.GetRequiredService<ICourseMonitoringService>())
+        return new ActiveSupervisionController(scope.ServiceProvider.GetRequiredService<ICourseMonitoringService>())
         {
             ControllerContext = BuildContext("0", "administrator")
         };

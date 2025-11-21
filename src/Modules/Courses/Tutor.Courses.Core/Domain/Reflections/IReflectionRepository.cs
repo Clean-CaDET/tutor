@@ -6,11 +6,12 @@ public interface IReflectionRepository : ICrudRepository<Reflection>
 {
     List<Reflection> GetByUnit(int unitId);
     List<Reflection> GetByUnitsWithQuestions(int[] unitIds);
-    List<Reflection> GetByUnitsWithSubmissions(int[] unitIds);
+    List<Reflection> GetByUnitsWithAnswers(int[] unitIds);
     Reflection? GetWithQuestions(int reflectionId);
     
-    List<Reflection> GetByUnitWithSubmission(int unitId, int learnerId);
-    Reflection? GetWithSubmission(int reflectionId, int learnerId);
-    List<Reflection> GetManyWithSubmission(List<int> reflectionIds, int learnerId);
+    List<Reflection> GetByUnitWithAnswers(int unitId, int learnerId);
+    Reflection? GetWithAnswers(int reflectionId, int learnerId);
+    List<Reflection> GetManyWithAnswers(List<int> reflectionIds, int learnerId);
+    List<ReflectionAnswer> GetAnswers(List<int> reflectionIds, int learnerId);
     void CreateAnswer(ReflectionAnswer answer);
 }
