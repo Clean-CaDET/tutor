@@ -47,6 +47,16 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
             .ToList();
     }
 
+    public List<Reflection> GetByUnitsWithQAndA(int[] unitIds, int learnerId)
+    {
+        return DbContext.Reflections
+            .Where(r => unitIds.Contains(r.KnowledgeUnitId))
+            .Include(r => r.Questions)
+            .Include(r => r.Submissions.Where(s => s.LearnerId == learnerId))
+            .AsNoTracking()
+            .ToList();
+    }
+
     public Reflection? GetWithAnswers(int reflectionId, int learnerId)
     {
         return DbContext.Reflections
@@ -69,13 +79,6 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
             .Include(r => r.Questions.OrderBy(q => q.Order))
             .Include(r => r.Submissions.Where(s => s.LearnerId == learnerId))
             .AsNoTracking()
-            .ToList();
-    }
-
-    public List<ReflectionAnswer> GetAnswers(List<int> reflectionIds, int learnerId)
-    {
-        return DbContext.ReflectionAnswers
-            .Where(r => r.LearnerId == learnerId && reflectionIds.Contains(r.Id))
             .ToList();
     }
 

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using FluentResults;
-using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Dtos.Monitoring;
@@ -9,8 +8,6 @@ using Tutor.Courses.API.Public.Supervision;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.Reflections;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
-using Tutor.KnowledgeComponents.API.Internal;
-using Tutor.LearningTasks.API.Internal;
 using Tutor.Stakeholders.API.Internal;
 
 namespace Tutor.Courses.Core.UseCases.Supervision;
@@ -23,12 +20,10 @@ public class CourseMonitoringService : ICourseMonitoringService
     private readonly IInternalLearnerService _learnerService;
     private readonly IWeeklyFeedbackRepository _feedbackRepository;
     private readonly IReflectionRepository _reflectionRepository;
-    private readonly ITaskProgressMonitor _taskReporter;
-    private readonly IKcProgressMonitor _kcReporter;
 
     public CourseMonitoringService(IMapper mapper, ICourseRepository courseRepository, IGroupRepository groupRepository, 
-        IInternalLearnerService learnerService, IWeeklyFeedbackRepository feedbackRepository, IReflectionRepository reflectionRepository,
-        ITaskProgressMonitor taskReporter, IKcProgressMonitor kcReporter)
+        IInternalLearnerService learnerService, IWeeklyFeedbackRepository feedbackRepository,
+        IReflectionRepository reflectionRepository)
     {
         _mapper = mapper;
         _courseRepository = courseRepository;
@@ -36,8 +31,6 @@ public class CourseMonitoringService : ICourseMonitoringService
         _learnerService = learnerService;
         _feedbackRepository = feedbackRepository;
         _reflectionRepository = reflectionRepository;
-        _taskReporter = taskReporter;
-        _kcReporter = kcReporter;
     }
 
     public Result<List<CourseDto>> GetActiveCourses()
@@ -98,54 +91,5 @@ public class CourseMonitoringService : ICourseMonitoringService
         }
         var reflections = _reflectionRepository.GetManyWithAnswers(reflectionIds, learnerId);
         return reflections.Select(_mapper.Map<ReflectionDto>).ToList();
-    }
-
-    public Result<List<CourseDto>> GetStartedCourses()
-    {
-        var courses = _courseRepository.GetStarted();
-        return courses.Select(_mapper.Map<CourseDto>).ToList();
-    }
-
-    public Result<CourseDto> GetCourseWithGroupsAndUnits(int courseId)
-    {
-        var course = _courseRepository.GetWithUnitsAndReflections(courseId);
-        if (course == null) return Result.Fail(FailureCode.NotFound);
-
-        var courseDto = _mapper.Map<CourseDto>(course);
-        var groups = _groupRepository.GetCourseGroups(courseId);
-        var learnerDtos = GetLearners(groups);
-        courseDto.Groups = CreateGroupDtos(groups, learnerDtos);
-        return courseDto;
-    }
-
-    public Result<CourseAchievementsDto> GetAchievements(int courseId, int learnerId, AchievementsRequestDto ids)
-    {
-        var report = _courseRepository.GetReport(courseId, learnerId);
-        var retVal = new CourseAchievementsDto
-        {
-            CourseId = courseId,
-            LearnerId = learnerId,
-            Report = report?.Report ?? string.Empty
-        };
-
-        PopulateReflectionAnswers(learnerId, ids.ReflectionIds, retVal);
-        retVal.WeeklyFeedback = _feedbackRepository.GetByCourseAndLearner(courseId, learnerId)
-            .Select(_mapper.Map<WeeklyFeedbackDto>).ToList();
-
-        if (ids.UnitIds == null) return retVal;
-
-        retVal.TaskSatisfiedPercent = _taskReporter.GetSatisfiedPercent(learnerId, ids.UnitIds.ToArray()).Value;
-        retVal.KcSatisfiedPercent = _kcReporter.GetSatisfiedCount(learnerId, ids.UnitIds.ToArray()).Value;
-
-        return retVal;
-    }
-
-    private void PopulateReflectionAnswers(int learnerId, List<int>? reflectionIds, CourseAchievementsDto retVal)
-    {
-        if (reflectionIds == null) return;
-
-        var answers = _reflectionRepository.GetAnswers(reflectionIds, learnerId);
-        retVal.ReflectionAnswers = answers.Select(_mapper.Map<ReflectionAnswerDto>).ToList();
-        retVal.ReflectionsAnsweredPercent = (int) Math.Round(100.0 * retVal.ReflectionAnswers.Count / reflectionIds.Count, 0);
     }
 }

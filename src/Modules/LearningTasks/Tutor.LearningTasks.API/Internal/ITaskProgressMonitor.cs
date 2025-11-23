@@ -6,5 +6,4 @@ namespace Tutor.LearningTasks.API.Internal;
 public interface ITaskProgressMonitor
 {
     Result<List<InternalTaskUnitSummaryStatisticsDto>> GetProgress(int learnerId, int[] unitIds, int[] groupMemberIds);
-    Result<int> GetSatisfiedPercent(int learnerId, int[] unitIds);
 }

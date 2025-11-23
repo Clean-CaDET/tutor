@@ -6,5 +6,4 @@ namespace Tutor.KnowledgeComponents.API.Internal;
 public interface IKcProgressMonitor
 {
     Result<List<InternalKcUnitSummaryStatisticsDto>> GetProgress(int learnerId, int[] unitIds);
-    Result<int> GetSatisfiedCount(int learnerId, int[] unitIds);
 }

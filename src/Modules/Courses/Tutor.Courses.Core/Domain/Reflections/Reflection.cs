@@ -27,4 +27,24 @@ public class Reflection : Entity
             Questions = Questions.Select(q => q.Clone()).ToList(),
         };
     }
+
+    public List<ReflectionQuestion> GetOpenEndedQuestions()
+    {
+        return Questions.Where(q => q.Type == ReflectionQuestionType.OpenEnded).ToList();
+    }
+
+    public ReflectionQuestionAnswer? FindFirstMeaningfulAnswer(ReflectionQuestion question)
+    {
+        foreach (var submission in Submissions.Where(s => s.IsMeaningful()))
+        {
+            foreach (var a in submission.Answers)
+            {
+                if (a.QuestionId == question.Id)
+                {
+                    return a;
+                }
+            }
+        }
+        return null;
+    }
 }

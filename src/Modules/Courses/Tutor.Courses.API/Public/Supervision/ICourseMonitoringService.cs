@@ -10,8 +10,4 @@ public interface ICourseMonitoringService
     Result<List<CourseDto>> GetActiveCourses();
     Result<List<GroupDto>> GetGroupedLearnersWithFeedback(int courseId);
     Result<List<ReflectionDto>> GetReflections(int learnerId, List<int>? reflectionIds);
-
-    Result<List<CourseDto>> GetStartedCourses();
-    Result<CourseDto> GetCourseWithGroupsAndUnits(int courseId);
-    Result<CourseAchievementsDto> GetAchievements(int courseId, int learnerId, AchievementsRequestDto ids);
 }

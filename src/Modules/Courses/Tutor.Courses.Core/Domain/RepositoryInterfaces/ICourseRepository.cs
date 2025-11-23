@@ -8,6 +8,5 @@ public interface ICourseRepository : ICrudRepository<Course>
     List<Course> GetStarted();
     PagedResult<Course> GetPagedSortedByDate(int page, int pageSize);
     Course? GetWithUnits(int courseId);
-    Course? GetWithUnitsAndReflections(int courseId);
     CourseReport? GetReport(int courseId, int learnerId);
 }

@@ -10,8 +10,8 @@ public interface IReflectionRepository : ICrudRepository<Reflection>
     Reflection? GetWithQuestions(int reflectionId);
     
     List<Reflection> GetByUnitWithAnswers(int unitId, int learnerId);
+    List<Reflection> GetByUnitsWithQAndA(int[] unitIds, int learnerId);
     Reflection? GetWithAnswers(int reflectionId, int learnerId);
     List<Reflection> GetManyWithAnswers(List<int> reflectionIds, int learnerId);
-    List<ReflectionAnswer> GetAnswers(List<int> reflectionIds, int learnerId);
     void CreateAnswer(ReflectionAnswer answer);
 }

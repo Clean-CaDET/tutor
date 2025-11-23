@@ -94,12 +94,4 @@ public class KcProgressMonitor : IKcProgressMonitor
             NegativePatterns = negativePatterns
         };
     }
-
-    public Result<int> GetSatisfiedCount(int learnerId, int[] unitIds)
-    {
-        var kcs = _kcRepository.GetByUnits(unitIds);
-        var satisfiedCount = _masteryRepository.CountSatisfied(kcs.Select(kc => kc.Id).ToList(), learnerId);
-
-        return (int)Math.Round(100.0 * satisfiedCount / kcs.Count, 0);
-    }
 }

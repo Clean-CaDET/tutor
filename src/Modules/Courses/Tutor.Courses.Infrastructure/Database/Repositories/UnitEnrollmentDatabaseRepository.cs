@@ -34,6 +34,14 @@ public class UnitEnrollmentDatabaseRepository : IUnitEnrollmentRepository
             .ToList();
     }
 
+    public List<UnitEnrollment> GetEnrollments(int courseId, int learnerId)
+    {
+        return _dbContext.UnitEnrollments
+            .Where(ue => ue.LearnerId == learnerId && ue.KnowledgeUnit.CourseId == courseId)
+            .OrderBy(ue => ue.BestBefore)
+            .ToList();
+    }
+
     public UnitEnrollment Create(UnitEnrollment newEnrollment)
     {
         _dbContext.UnitEnrollments.Add(newEnrollment);
