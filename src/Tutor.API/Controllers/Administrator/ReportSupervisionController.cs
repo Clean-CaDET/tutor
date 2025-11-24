@@ -27,7 +27,7 @@ public class ReportSupervisionController : BaseApiController
     [HttpGet("{courseId:int}")]
     public ActionResult<CourseDto> GetCourseWithGroupsAndUnits(int courseId)
     {
-        var result = _reportingService.GetCourseWithGroupsAndUnits(courseId);
+        var result = _reportingService.GetGroupedLearners(courseId);
         return CreateResponse(result);
     }
 

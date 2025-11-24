@@ -1,6 +1,4 @@
-﻿using Tutor.Courses.API.Dtos.Reflections;
-
-namespace Tutor.Courses.API.Dtos;
+﻿namespace Tutor.Courses.API.Dtos;
 
 public class KnowledgeUnitDto
 {
@@ -12,7 +10,6 @@ public class KnowledgeUnitDto
     public string? Goals { get; set; }
     public string? Guidelines { get; set; }
     public int Order { get; set; }
-    public List<ReflectionDto>? Reflections { get; set; }
     
     public DateTime? BestBefore { get; set; }
     public string? EnrollmentStatus { get; set; }

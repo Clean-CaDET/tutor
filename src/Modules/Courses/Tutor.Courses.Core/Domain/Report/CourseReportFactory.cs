@@ -31,7 +31,7 @@ public class CourseReportFactory
 
         foreach (var enrollment in enrollments)
         {
-            var relatedReflections = meaningfulReflections[enrollment.Id];
+            var relatedReflections = meaningfulReflections[enrollment.KnowledgeUnitId];
             unitReports.Add(new UnitReport(
                 enrollment.KnowledgeUnitId,
                 enrollment.KnowledgeUnit.Name,

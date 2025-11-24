@@ -14,9 +14,4 @@ public class ReflectionAnswer : Entity
         Created = answer.Created;
         Answers = answer.Answers;
     }
-
-    public bool IsMeaningful()
-    {
-        return Answers.Any(a => a.Answer.Length > 30);
-    }
 }

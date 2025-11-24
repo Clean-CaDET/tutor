@@ -10,7 +10,6 @@ public class Course : Entity
     public DateTime StartDate { get; private set; }
     public bool IsArchived { get; set; }
     public List<KnowledgeUnit>? KnowledgeUnits { get; internal set; }
-    public List<LearnerGroup>? LearningGroups { get; internal set; }
 
     internal Course Clone(Course newCourse)
     {

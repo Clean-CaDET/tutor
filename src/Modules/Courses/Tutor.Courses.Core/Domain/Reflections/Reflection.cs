@@ -35,11 +35,11 @@ public class Reflection : Entity
 
     public ReflectionQuestionAnswer? FindFirstMeaningfulAnswer(ReflectionQuestion question)
     {
-        foreach (var submission in Submissions.Where(s => s.IsMeaningful()))
+        foreach (var submission in Submissions)
         {
             foreach (var a in submission.Answers)
             {
-                if (a.QuestionId == question.Id)
+                if (a.QuestionId == question.Id && a.IsMeaningful())
                 {
                     return a;
                 }

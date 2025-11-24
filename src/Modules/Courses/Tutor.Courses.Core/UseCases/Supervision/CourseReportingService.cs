@@ -42,16 +42,11 @@ public class CourseReportingService : ICourseReportingService
         return courses.Select(_mapper.Map<CourseDto>).ToList();
     }
 
-    public Result<CourseDto> GetCourseWithGroupsAndUnits(int courseId)
+    public Result<List<GroupDto>> GetGroupedLearners(int courseId)
     {
-        var course = _courseRepository.GetWithUnits(courseId);
-        if (course == null) return Result.Fail(FailureCode.NotFound);
-
-        var courseDto = _mapper.Map<CourseDto>(course);
         var groups = _groupRepository.GetCourseGroups(courseId);
         var learnerDtos = GetLearners(groups);
-        courseDto.Groups = CreateGroupDtos(groups, learnerDtos);
-        return courseDto;
+        return CreateGroupDtos(groups, learnerDtos);
     }
 
     private List<LearnerDto> GetLearners(List<LearnerGroup> groups)

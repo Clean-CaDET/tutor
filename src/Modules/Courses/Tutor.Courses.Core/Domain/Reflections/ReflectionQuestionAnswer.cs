@@ -12,4 +12,9 @@ public class ReflectionQuestionAnswer : ValueObject
         yield return QuestionId;
         yield return Answer;
     }
+
+    public bool IsMeaningful()
+    {
+        return Answer.Length > 40;
+    }
 }
