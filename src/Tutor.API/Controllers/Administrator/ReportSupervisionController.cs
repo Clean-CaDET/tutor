@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.Courses.API.Dtos;
+using Tutor.Courses.API.Dtos.Reports;
 using Tutor.Courses.API.Public.Supervision;
 
 namespace Tutor.API.Controllers.Administrator;
@@ -30,10 +31,35 @@ public class ReportSupervisionController : BaseApiController
         return CreateResponse(result);
     }
 
-    [HttpGet("{courseId:int}/achievements/{learnerId:int}")]
-    public ActionResult<CourseAchievementsDto> GetAchievements(int courseId, int learnerId)
+    [HttpGet("{courseId:int}/generate/{learnerId:int}")]
+    public ActionResult<CourseReportDto> RegenerateReport(int courseId, int learnerId)
     {
-        var result = _reportingService.GetAchievements(courseId, learnerId);
+        var result = _reportingService.RegenerateReport(courseId, learnerId);
+        return CreateResponse(result);
+    }
+
+    [HttpGet("{courseId:int}/report/{learnerId:int}")]
+    public ActionResult<CourseReportDto> GetReport(int courseId, int learnerId)
+    {
+        var result = _reportingService.GetReport(courseId, learnerId);
+        return CreateResponse(result);
+    }
+
+    [HttpPost("{courseId:int}/report/{learnerId:int}")]
+    public ActionResult<CourseReportDto> CreateReport(int courseId, int learnerId, [FromBody] CourseReportDto report)
+    {
+        report.CourseId = courseId;
+        report.LearnerId = learnerId;
+        var result = _reportingService.CreateReport(report);
+        return CreateResponse(result);
+    }
+
+    [HttpPut("{courseId:int}/report/{learnerId:int}")]
+    public ActionResult<CourseReportDto> UpdateReport(int courseId, int learnerId, [FromBody] CourseReportDto report)
+    {
+        report.CourseId = courseId;
+        report.LearnerId = learnerId;
+        var result = _reportingService.UpdateReport(report);
         return CreateResponse(result);
     }
 }

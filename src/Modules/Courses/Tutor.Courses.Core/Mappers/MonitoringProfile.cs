@@ -2,7 +2,9 @@
 using Tutor.Courses.API.Dtos.Enrollments;
 using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Dtos.Monitoring;
+using Tutor.Courses.API.Dtos.Reports;
 using Tutor.Courses.Core.Domain;
+using Tutor.Courses.Core.Domain.Report;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
 using Tutor.LearningTasks.API.Dtos.TaskAnalytics;
@@ -37,5 +39,10 @@ public class MonitoringProfile : Profile
 
         CreateMap<WeeklyFeedback, WeeklyFeedbackDto>().ReverseMap();
         CreateMap<WeeklyFeedbackItem, WeeklyFeedbackItemDto>().ReverseMap();
+
+        CreateMap<CourseReport, CourseReportDto>();
+        CreateMap<UnitReport, UnitReportDto>();
+        CreateMap<MeaningfulReflection, MeaningfulReflectionDto>();
+        CreateMap<FeedbackItemAggregate, FeedbackItemAggregateDto>();
     }
 }

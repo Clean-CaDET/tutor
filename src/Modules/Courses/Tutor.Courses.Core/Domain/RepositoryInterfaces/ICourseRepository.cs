@@ -1,4 +1,5 @@
 ﻿using Tutor.BuildingBlocks.Core.UseCases;
+using Tutor.Courses.Core.Domain.Report;
 
 namespace Tutor.Courses.Core.Domain.RepositoryInterfaces;
 

@@ -3,10 +3,11 @@ using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Groups;
-using Tutor.Courses.API.Dtos.Monitoring;
+using Tutor.Courses.API.Dtos.Reports;
 using Tutor.Courses.API.Public.Supervision;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.Reflections;
+using Tutor.Courses.Core.Domain.Report;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 using Tutor.Stakeholders.API.Internal;
 
@@ -76,82 +77,38 @@ public class CourseReportingService : ICourseReportingService
         return groupDtos;
     }
 
-    public Result<CourseAchievementsDto> GetAchievements(int courseId, int learnerId)
+    public Result<CourseReportDto> RegenerateReport(int courseId, int learnerId)
     {
-        var report = _courseRepository.GetReport(courseId, learnerId);
-        var retVal = new CourseAchievementsDto
+        var enrollments = _enrollmentRepository.GetEnrolledUnits(courseId, learnerId);
+        if (enrollments.Count == 0)
         {
-            CourseId = courseId,
-            LearnerId = learnerId,
-            Report = report?.Report ?? string.Empty
-        };
-
-        var enrollments = _enrollmentRepository.GetEnrollments(courseId, learnerId);
-        if (enrollments.Count == 0) return retVal;
-
-        retVal.UnitAchievements = GenerateUnitAchievements(enrollments);
-        retVal.TotalSatisfiedPercent =
-            ToPercentage(retVal.UnitAchievements.Count(a => a.IsSatisfied), retVal.UnitAchievements.Count);
-        retVal.TotalMeaningfulReflectionAnswerPercent =
-            ToPercentage(retVal.UnitAchievements.Count(a => a.ContainsMeaningfulReflectionAnswer), retVal.UnitAchievements.Count);
-
-        retVal.WeeklyFeedback = _feedbackRepository.GetByCourseAndLearner(courseId, learnerId)
-            .Select(_mapper.Map<WeeklyFeedbackDto>)
-            .ToList();
-
-        return retVal;
-    }
-
-    private List<UnitAchievementsDto> GenerateUnitAchievements(List<UnitEnrollment> enrollments)
-    {
-        var unitIds = enrollments.Select(e => e.KnowledgeUnitId).ToArray();
-        var reflections = _reflectionRepository.GetByUnitsWithQAndA(unitIds, enrollments[0].LearnerId);
-        var meaningfulReflections = FindMeaningfulReflections(reflections, unitIds);
-
-        var retVal = new List<UnitAchievementsDto>();
-        foreach (var enrollment in enrollments)
-        {
-            var relatedReflections = meaningfulReflections[enrollment.KnowledgeUnitId];
-            var unitAchievement = new UnitAchievementsDto
+            return new CourseReportDto
             {
-                UnitId = enrollment.KnowledgeUnitId,
-                IsSatisfied = enrollment.Status == EnrollmentStatus.Completed,
-                MeaningfulReflections = relatedReflections,
-                ContainsMeaningfulReflectionAnswer = relatedReflections.Count > 0
+                CourseId = courseId,
+                LearnerId = learnerId
             };
-            retVal.Add(unitAchievement);
-        }
-        return retVal;
-    }
-
-    private static Dictionary<int, List<MeaningfulReflectionDto>> FindMeaningfulReflections(
-        List<Reflection> reflections, int[] unitIds)
-    {
-        var retVal = unitIds.ToDictionary(id => id, _ => new List<MeaningfulReflectionDto>());
-        foreach (var reflection in reflections)
-        {
-            var openEndedQuestions = reflection.GetOpenEndedQuestions();
-            foreach (var q in openEndedQuestions)
-            {
-                var answer = reflection.FindFirstMeaningfulAnswer(q);
-                if (answer == null) continue;
-
-                retVal[reflection.KnowledgeUnitId].Add(new MeaningfulReflectionDto
-                {
-                    ReflectionId = reflection.Id,
-                    UnitId = reflection.KnowledgeUnitId,
-                    Created = reflection.Submissions[0].Created,
-                    Question = q.Text,
-                    Answer = answer.Answer
-                });
-            }
         }
 
-        return retVal;
+        var unitIds = enrollments.Select(e => e.KnowledgeUnitId).ToArray();
+        var reflections = _reflectionRepository.GetByUnitsWithQAndA(unitIds, learnerId);
+        var feedback = _feedbackRepository.GetByCourseAndLearner(courseId, learnerId);
+
+        var report = CourseReportFactory.CreateReport(courseId, learnerId, feedback, enrollments, reflections);
+        return _mapper.Map<CourseReportDto>(report);
     }
 
-    private static int ToPercentage(int part, int total)
+    public Result<CourseReportDto> GetReport(int courseId, int learnerId)
     {
-        return (int) Math.Round(100.0 * part / total, 0);
+        throw new NotImplementedException();
+    }
+
+    public Result<CourseReportDto> CreateReport(CourseReportDto report)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Result<CourseReportDto> UpdateReport(CourseReportDto report)
+    {
+        throw new NotImplementedException();
     }
 }

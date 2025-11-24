@@ -2,6 +2,7 @@
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.Courses.Core.Domain;
+using Tutor.Courses.Core.Domain.Report;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.Courses.Infrastructure.Database.Repositories;
