@@ -36,5 +36,6 @@ public class MonitoringProfile : Profile
         CreateMap<InternalTaskProgressStatisticsDto, PublicTaskProgressStatisticsDto>();
 
         CreateMap<WeeklyFeedback, WeeklyFeedbackDto>().ReverseMap();
+        CreateMap<WeeklyFeedbackItem, WeeklyFeedbackItemDto>().ReverseMap();
     }
 }
