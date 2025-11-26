@@ -40,9 +40,9 @@ public class MonitoringProfile : Profile
         CreateMap<WeeklyFeedback, WeeklyFeedbackDto>().ReverseMap();
         CreateMap<WeeklyFeedbackItem, WeeklyFeedbackItemDto>().ReverseMap();
 
-        CreateMap<CourseReport, CourseReportDto>();
-        CreateMap<UnitReport, UnitReportDto>();
-        CreateMap<MeaningfulReflection, MeaningfulReflectionDto>();
-        CreateMap<FeedbackItemAggregate, FeedbackItemAggregateDto>();
+        CreateMap<CourseReport, CourseReportDto>().ReverseMap();
+        CreateMap<UnitReport, UnitReportDto>().ReverseMap();
+        CreateMap<MeaningfulReflection, MeaningfulReflectionDto>().ReverseMap();
+        CreateMap<FeedbackItemAggregate, FeedbackItemAggregateDto>().ReverseMap();
     }
 }
