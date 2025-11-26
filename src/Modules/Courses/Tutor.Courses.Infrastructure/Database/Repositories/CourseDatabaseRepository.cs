@@ -2,7 +2,6 @@
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.Courses.Core.Domain;
-using Tutor.Courses.Core.Domain.Report;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 
 namespace Tutor.Courses.Infrastructure.Database.Repositories;
@@ -40,11 +39,5 @@ public class CourseDatabaseRepository : CrudDatabaseRepository<Course, CoursesCo
             .Include(c => c.KnowledgeUnits)
             .AsNoTracking()
             .FirstOrDefault(c => c.Id == courseId);
-    }
-
-    public CourseReport? GetReport(int courseId, int learnerId)
-    {
-        return DbContext.CourseReports
-            .FirstOrDefault(r => r.CourseId == courseId && r.LearnerId == learnerId);
     }
 }

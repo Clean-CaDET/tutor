@@ -56,6 +56,7 @@ public static class CoursesStartup
 
         services.AddProxiedScoped<ICourseMonitoringService, CourseMonitoringService>();
         services.AddProxiedScoped<ICourseReportingService, CourseReportingService>();
+        services.AddProxiedScoped<IReportService, ReportService>();
         services.AddProxiedScoped<IEnrollmentService, EnrollmentService>();
         services.AddProxiedScoped<IGroupMonitoringService, GroupMonitoringService>();
         services.AddProxiedScoped<IWeeklyActivityService, WeeklyActivityService>();
@@ -73,6 +74,7 @@ public static class CoursesStartup
         services.AddScoped<IUnitEnrollmentRepository, UnitEnrollmentDatabaseRepository>();
         services.AddScoped<ICourseOwnershipRepository, CourseOwnershipDatabaseRepository>();
         services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
+        services.AddScoped<IReportRepository, ReportDatabaseRepository>();
         services.AddScoped<IGroupRepository, GroupDatabaseRepository>();
         
         services.AddScoped<IWeeklyFeedbackRepository, WeeklyFeedbackDatabaseRepository>();

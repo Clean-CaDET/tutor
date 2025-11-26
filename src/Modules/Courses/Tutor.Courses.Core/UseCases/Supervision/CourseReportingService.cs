@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
 using FluentResults;
-using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Dtos.Reports;
 using Tutor.Courses.API.Public.Supervision;
 using Tutor.Courses.Core.Domain;
-using Tutor.Courses.Core.Domain.Reflections;
-using Tutor.Courses.Core.Domain.Report;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 using Tutor.Stakeholders.API.Internal;
 
@@ -19,21 +16,16 @@ public class CourseReportingService : ICourseReportingService
     private readonly ICourseRepository _courseRepository;
     private readonly IGroupRepository _groupRepository;
     private readonly IInternalLearnerService _learnerService;
-    private readonly IWeeklyFeedbackRepository _feedbackRepository;
-    private readonly IReflectionRepository _reflectionRepository;
-    private readonly IUnitEnrollmentRepository _enrollmentRepository;
+    private readonly IReportRepository _reportRepository;
 
-    public CourseReportingService(IMapper mapper, ICourseRepository courseRepository, IGroupRepository groupRepository, 
-        IInternalLearnerService learnerService, IWeeklyFeedbackRepository feedbackRepository,
-        IReflectionRepository reflectionRepository, IUnitEnrollmentRepository enrollmentRepository)
+    public CourseReportingService(IMapper mapper, ICourseRepository courseRepository,
+        IGroupRepository groupRepository, IInternalLearnerService learnerService, IReportRepository reportRepository)
     {
         _mapper = mapper;
         _courseRepository = courseRepository;
         _groupRepository = groupRepository;
         _learnerService = learnerService;
-        _feedbackRepository = feedbackRepository;
-        _reflectionRepository = reflectionRepository;
-        _enrollmentRepository = enrollmentRepository;
+        _reportRepository = reportRepository;
     }
 
     public Result<List<CourseDto>> GetStartedCourses()
@@ -46,6 +38,7 @@ public class CourseReportingService : ICourseReportingService
     {
         var groups = _groupRepository.GetCourseGroups(courseId);
         var learnerDtos = GetLearners(groups);
+        PopulateReports(learnerDtos);
         return CreateGroupDtos(groups, learnerDtos);
     }
 
@@ -59,51 +52,30 @@ public class CourseReportingService : ICourseReportingService
         return learners.Value.Select(_mapper.Map<LearnerDto>).ToList();
     }
 
-    private List<GroupDto> CreateGroupDtos(List<LearnerGroup> groups, List<LearnerDto> learnerDtos)
+    private void PopulateReports(List<LearnerDto> learners)
+    {
+        var learnerIds = learners.Select(l => l.Id).ToArray();
+        var reportsByLearner = _reportRepository.GetByLearners(learnerIds).GroupBy(f => f.LearnerId);
+        foreach (var grouping in reportsByLearner)
+        {
+            var relatedLearner = learners.Find(l => l.Id == grouping.Key);
+            if (relatedLearner == null) continue;
+            relatedLearner.Reports = grouping
+                .Select(_mapper.Map<CourseReportDto>)
+                .OrderByDescending(f => f.CourseId).ToList();
+        }
+    }
+
+    private List<GroupDto> CreateGroupDtos(List<LearnerGroup> groups, List<LearnerDto> learners)
     {
         var groupDtos = new List<GroupDto>();
         foreach (var group in groups)
         {
             var groupDto = _mapper.Map<GroupDto>(group);
-            groupDto.Learners = learnerDtos.Where(l => group.LearnerIds.Contains(l.Id)).ToList();
+            groupDto.Learners = learners.Where(l => group.LearnerIds.Contains(l.Id)).ToList();
             groupDtos.Add(groupDto);
         }
 
         return groupDtos;
-    }
-
-    public Result<CourseReportDto> RegenerateReport(int courseId, int learnerId)
-    {
-        var enrollments = _enrollmentRepository.GetEnrolledUnits(courseId, learnerId);
-        if (enrollments.Count == 0)
-        {
-            return new CourseReportDto
-            {
-                CourseId = courseId,
-                LearnerId = learnerId
-            };
-        }
-
-        var unitIds = enrollments.Select(e => e.KnowledgeUnitId).ToArray();
-        var reflections = _reflectionRepository.GetByUnitsWithQAndA(unitIds, learnerId);
-        var feedback = _feedbackRepository.GetByCourseAndLearner(courseId, learnerId);
-
-        var report = CourseReportFactory.CreateReport(courseId, learnerId, feedback, enrollments, reflections);
-        return _mapper.Map<CourseReportDto>(report);
-    }
-
-    public Result<CourseReportDto> GetReport(int courseId, int learnerId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Result<CourseReportDto> CreateReport(CourseReportDto report)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Result<CourseReportDto> UpdateReport(CourseReportDto report)
-    {
-        throw new NotImplementedException();
     }
 }

@@ -11,10 +11,12 @@ namespace Tutor.API.Controllers.Administrator;
 public class ReportSupervisionController : BaseApiController
 {
     private readonly ICourseReportingService _reportingService;
+    private readonly IReportService _reportService;
 
-    public ReportSupervisionController(ICourseReportingService reportingService)
+    public ReportSupervisionController(ICourseReportingService reportingService, IReportService reportService)
     {
         _reportingService = reportingService;
+        _reportService = reportService;
     }
 
     [HttpGet]
@@ -34,14 +36,14 @@ public class ReportSupervisionController : BaseApiController
     [HttpGet("{courseId:int}/generate/{learnerId:int}")]
     public ActionResult<CourseReportDto> RegenerateReport(int courseId, int learnerId)
     {
-        var result = _reportingService.RegenerateReport(courseId, learnerId);
+        var result = _reportService.Regenerate(courseId, learnerId);
         return CreateResponse(result);
     }
 
     [HttpGet("{courseId:int}/report/{learnerId:int}")]
     public ActionResult<CourseReportDto> GetReport(int courseId, int learnerId)
     {
-        var result = _reportingService.GetReport(courseId, learnerId);
+        var result = _reportService.Get(courseId, learnerId);
         return CreateResponse(result);
     }
 
@@ -50,7 +52,7 @@ public class ReportSupervisionController : BaseApiController
     {
         report.CourseId = courseId;
         report.LearnerId = learnerId;
-        var result = _reportingService.CreateReport(report);
+        var result = _reportService.Create(report);
         return CreateResponse(result);
     }
 
@@ -59,7 +61,7 @@ public class ReportSupervisionController : BaseApiController
     {
         report.CourseId = courseId;
         report.LearnerId = learnerId;
-        var result = _reportingService.UpdateReport(report);
+        var result = _reportService.Update(report);
         return CreateResponse(result);
     }
 }

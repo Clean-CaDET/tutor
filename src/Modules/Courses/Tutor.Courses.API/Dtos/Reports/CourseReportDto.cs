@@ -2,6 +2,7 @@
 
 public class CourseReportDto
 {
+    public int Id { get; set; }
     public int CourseId { get; set; }
     public int LearnerId { get; set; }
     public string Report { get; set; } = string.Empty;
