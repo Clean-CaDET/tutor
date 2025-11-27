@@ -95,7 +95,6 @@ public class KcProgressMonitorTests : BaseKnowledgeComponentsIntegrationTest
     {
         return new KcProgressMonitor(
             scope.ServiceProvider.GetRequiredService<IKnowledgeComponentRepository>(),
-            scope.ServiceProvider.GetRequiredService<IEventStore<KnowledgeComponentEvent>>(),
-            scope.ServiceProvider.GetRequiredService<IKnowledgeMasteryRepository>());
+            scope.ServiceProvider.GetRequiredService<IEventStore<KnowledgeComponentEvent>>());
     }
 }

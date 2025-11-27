@@ -15,16 +15,13 @@ namespace Tutor.KnowledgeComponents.Core.UseCases.Monitoring;
 public class KcProgressMonitor : IKcProgressMonitor
 {
     private readonly IKnowledgeComponentRepository _kcRepository;
-    private readonly IKnowledgeMasteryRepository _masteryRepository;
     private readonly IEventStore<KnowledgeComponentEvent> _eventStore;
     private readonly List<INegativePatternDetector> _negativePatternDetectors;
 
-    public KcProgressMonitor(IKnowledgeComponentRepository kcRepository, IEventStore<KnowledgeComponentEvent> eventStore,
-        IKnowledgeMasteryRepository masteryRepository)
+    public KcProgressMonitor(IKnowledgeComponentRepository kcRepository, IEventStore<KnowledgeComponentEvent> eventStore)
     {
         _kcRepository = kcRepository;
         _eventStore = eventStore;
-        _masteryRepository = masteryRepository;
         _negativePatternDetectors = new List<INegativePatternDetector>
         {
             new PatternDetectorSatisfaction(),
