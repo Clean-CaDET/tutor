@@ -3,7 +3,6 @@ using Shouldly;
 using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.KnowledgeComponents.API.Dtos.KnowledgeAnalytics;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
-using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.Events;
 using Tutor.KnowledgeComponents.Core.UseCases.Monitoring;
 
