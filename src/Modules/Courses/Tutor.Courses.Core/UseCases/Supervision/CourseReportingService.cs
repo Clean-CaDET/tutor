@@ -34,7 +34,7 @@ public class CourseReportingService : ICourseReportingService
         return courses.Select(_mapper.Map<CourseDto>).ToList();
     }
 
-    public Result<List<GroupDto>> GetGroupedLearners(int courseId)
+    public Result<List<GroupDto>> GetGroupedLearnersWithReports(int courseId)
     {
         var groups = _groupRepository.GetCourseGroups(courseId);
         var learnerDtos = GetLearners(groups);

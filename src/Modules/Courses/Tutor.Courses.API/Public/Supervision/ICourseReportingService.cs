@@ -7,5 +7,5 @@ namespace Tutor.Courses.API.Public.Supervision;
 public interface ICourseReportingService
 {
     Result<List<CourseDto>> GetStartedCourses();
-    Result<List<GroupDto>> GetGroupedLearners(int courseId);
+    Result<List<GroupDto>> GetGroupedLearnersWithReports(int courseId);
 }
