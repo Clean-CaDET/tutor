@@ -57,7 +57,7 @@ public class CourseReportFactory
                 var answer = reflection.FindFirstMeaningfulAnswer(q);
                 if (answer == null) continue;
 
-                retVal[reflection.KnowledgeUnitId].Add(new MeaningfulReflection(
+                retVal[reflection.UnitId].Add(new MeaningfulReflection(
                     reflection.Id,
                     reflection.Submissions[0].Created,
                     q.Text,

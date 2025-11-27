@@ -38,7 +38,7 @@ public class ReflectionService : BaseService<ReflectionDto, Reflection>, IReflec
         var reflection = _reflectionRepository.GetWithAnswers(reflectionId, learnerId);
         if(reflection == null)
             return Result.Fail(FailureCode.NotFound);
-        if (!_enrollmentValidator.HasAccessibleEnrollment(reflection.KnowledgeUnitId, learnerId))
+        if (!_enrollmentValidator.HasAccessibleEnrollment(reflection.UnitId, learnerId))
             return Result.Fail(FailureCode.Forbidden);
 
         return MapToDto(reflection);
@@ -49,7 +49,7 @@ public class ReflectionService : BaseService<ReflectionDto, Reflection>, IReflec
         var reflection = _reflectionRepository.GetWithAnswers(answer.ReflectionId, answer.LearnerId);
         if (reflection == null)
             return Result.Fail(FailureCode.NotFound);
-        if (!_enrollmentValidator.HasAccessibleEnrollment(reflection.KnowledgeUnitId, answer.LearnerId))
+        if (!_enrollmentValidator.HasAccessibleEnrollment(reflection.UnitId, answer.LearnerId))
             return Result.Fail(FailureCode.Forbidden);
 
         if (reflection.Submissions.Count > 0)

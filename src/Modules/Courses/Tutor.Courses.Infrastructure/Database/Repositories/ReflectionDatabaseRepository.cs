@@ -11,7 +11,7 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
     public List<Reflection> GetByUnit(int unitId)
     {
         return DbContext.Reflections
-            .Where(r => r.KnowledgeUnitId == unitId)
+            .Where(r => r.UnitId == unitId)
             .OrderBy(r => r.Order)
             .Include(r => r.Questions.OrderBy(q => q.Order))
             .AsNoTracking()
@@ -21,7 +21,7 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
     public List<Reflection> GetByUnitsWithQuestions(int[] unitIds)
     {
         return DbContext.Reflections
-            .Where(r => unitIds.Contains(r.KnowledgeUnitId))
+            .Where(r => unitIds.Contains(r.UnitId))
             .Include(r => r.Questions)
             .AsNoTracking()
             .ToList();
@@ -30,7 +30,7 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
     public List<Reflection> GetByUnitsWithAnswers(int[] unitIds)
     {
         return DbContext.Reflections
-            .Where(r => unitIds.Contains(r.KnowledgeUnitId))
+            .Where(r => unitIds.Contains(r.UnitId))
             .OrderBy(r => r.Order)
             .Include(r => r.Questions.OrderBy(q => q.Order))
             .Include(r => r.Submissions)
@@ -41,7 +41,7 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
     public List<Reflection> GetByUnitWithAnswers(int unitId, int learnerId)
     {
         return DbContext.Reflections
-            .Where(r => r.KnowledgeUnitId == unitId)
+            .Where(r => r.UnitId == unitId)
             .Include(r => r.Submissions.Where(s => s.LearnerId == learnerId))
             .AsNoTracking()
             .ToList();
@@ -50,7 +50,7 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
     public List<Reflection> GetByUnitsWithQAndA(int[] unitIds, int learnerId)
     {
         return DbContext.Reflections
-            .Where(r => unitIds.Contains(r.KnowledgeUnitId))
+            .Where(r => unitIds.Contains(r.UnitId))
             .Include(r => r.Questions)
             .Include(r => r.Submissions.Where(s => s.LearnerId == learnerId))
             .AsNoTracking()

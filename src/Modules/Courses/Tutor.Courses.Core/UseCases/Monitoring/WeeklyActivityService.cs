@@ -88,7 +88,7 @@ public class WeeklyActivityService : IWeeklyActivityService
                 .Select(_mapper.Map<TaskHeaderDto>)
                 .ToList();
             unitHeader.Reflections = reflections
-                .Where(r => r.KnowledgeUnitId == unitHeader.Id)
+                .Where(r => r.UnitId == unitHeader.Id)
                 .Select(_mapper.Map<ReflectionDto>)
                 .ToList();
         }

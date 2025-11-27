@@ -44,7 +44,7 @@ public class ReflectionAuthoringService : CrudService<ReflectionDto, Reflection>
         var storedReflection = _reflectionRepository.GetWithQuestions(reflection.Id);
         if(storedReflection == null)
             return Result.Fail(FailureCode.NotFound);
-        if (!_ownedCourseRepository.IsUnitOwner(storedReflection.KnowledgeUnitId, instructorId))
+        if (!_ownedCourseRepository.IsUnitOwner(storedReflection.UnitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
         storedReflection.Update(_mapper.Map<Reflection>(reflection));
         
@@ -56,7 +56,7 @@ public class ReflectionAuthoringService : CrudService<ReflectionDto, Reflection>
         var reflection = CrudRepository.Get(id);
         if(reflection == null)
             return Result.Fail(FailureCode.NotFound);
-        if (!_ownedCourseRepository.IsUnitOwner(reflection.KnowledgeUnitId, instructorId))
+        if (!_ownedCourseRepository.IsUnitOwner(reflection.UnitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
         return Delete(id);
