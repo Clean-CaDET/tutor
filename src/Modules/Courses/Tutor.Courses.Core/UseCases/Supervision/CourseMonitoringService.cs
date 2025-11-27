@@ -85,7 +85,7 @@ public class CourseMonitoringService : ICourseMonitoringService
 
     public Result<List<ReflectionDto>> GetReflections(int learnerId, List<int>? reflectionIds)
     {
-        if(reflectionIds == null || !reflectionIds.Any())
+        if(reflectionIds == null || reflectionIds.Count == 0)
         {
             return new List<ReflectionDto>();
         }

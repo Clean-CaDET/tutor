@@ -2,7 +2,7 @@
 
 namespace Tutor.Courses.Core.Domain.Report;
 
-public class CourseReportFactory
+public static class CourseReportFactory
 {
     public static CourseReport CreateReport(int courseId, int learnerId,
         List<WeeklyFeedback> feedback,
@@ -77,15 +77,15 @@ public class CourseReportFactory
     private static List<FeedbackItemAggregate> CreateFeedbackAggregates(List<WeeklyFeedback> feedback)
     {
         var totalWeeks = feedback.Count;
-        if (totalWeeks == 0) return new List<FeedbackItemAggregate>();
+        if (totalWeeks < 8) return new List<FeedbackItemAggregate>();
 
-        var firstThird = totalWeeks / 3;
-        var lastThirdStart = totalWeeks - totalWeeks / 3;
+        var third = totalWeeks / 3;
+        var lastThirdStart = totalWeeks - third;
         
         var weekGroups = new[]
         {
-            new { Weeks = Enumerable.Range(1, firstThird).ToArray(), Feedback = feedback.Take(firstThird).ToList() },
-            new { Weeks = Enumerable.Range(firstThird + 1, lastThirdStart - firstThird).ToArray(), Feedback = feedback.Skip(firstThird).Take(lastThirdStart - firstThird).ToList() },
+            new { Weeks = Enumerable.Range(1, third).ToArray(), Feedback = feedback.Take(third).ToList() },
+            new { Weeks = Enumerable.Range(third + 1, lastThirdStart - third).ToArray(), Feedback = feedback.Skip(third).Take(lastThirdStart - third).ToList() },
             new { Weeks = Enumerable.Range(lastThirdStart + 1, totalWeeks - lastThirdStart).ToArray(), Feedback = feedback.Skip(lastThirdStart).ToList() }
         };
 
@@ -102,7 +102,7 @@ public class CourseReportFactory
             foreach (var code in questionCodes)
             {
                 var values = GetFeedbackItemValues(group.Feedback, code);
-                if (!values.Any()) continue;
+                if (values.Count == 0) continue;
 
                 var hasData = CalculateHasData(code, values);
                 var average = CalculateAverage(code, values, hasData);
@@ -129,7 +129,7 @@ public class CourseReportFactory
             .Where(o => o.Code == code)
             .ToList();
 
-        if (!relevantOpinions.Any()) return new List<int>();
+        if (relevantOpinions.Count == 0) return new List<int>();
 
         var values = relevantOpinions.Select(o => o.Value).ToList();
         return values;
@@ -168,7 +168,7 @@ public class CourseReportFactory
             values = values.Where(v => v != 2).ToList();
         }
 
-        if (!values.Any()) return 0;
+        if (values.Count == 0) return 0;
         return Math.Round(values.Average(), 1);
     }
 
