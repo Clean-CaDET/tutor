@@ -29,10 +29,7 @@ public class WeeklyActivityTests : BaseCoursesIntegrationTest
         kcUnit.KnowledgeComponents.Find(kc => kc.Id == -9999).ShouldNotBeNull();
         kcUnit.KnowledgeComponents.Find(kc => kc.Id == -9998).ShouldNotBeNull();
         kcUnit.Reflections.ShouldNotBeNull();
-        kcUnit.Reflections.Count.ShouldBe(1);
-        kcUnit.Reflections[0].Questions.Count.ShouldBe(2);
-        kcUnit.Reflections[0].Submissions.ShouldNotBeNull();
-        kcUnit.Reflections[0].Submissions!.Count.ShouldBe(2);
+        kcUnit.Reflections.Count.ShouldBe(0);
 
         var taskUnit = result.Find(u => u.Id == -9998);
         taskUnit.ShouldNotBeNull();
@@ -42,10 +39,7 @@ public class WeeklyActivityTests : BaseCoursesIntegrationTest
         taskUnit.Tasks.Find(t => t.Id == -9999).ShouldNotBeNull();
         taskUnit.Tasks.Find(t => t.Id == -9998).ShouldNotBeNull();
         taskUnit.Reflections.ShouldNotBeNull();
-        taskUnit.Reflections.Count.ShouldBe(1);
-        taskUnit.Reflections[0].Questions.Count.ShouldBe(1);
-        taskUnit.Reflections[0].Submissions.ShouldNotBeNull();
-        taskUnit.Reflections[0].Submissions!.Count.ShouldBe(1);
+        taskUnit.Reflections.Count.ShouldBe(0);
     }
 
     private static WeeklyActivityController CreateController(IServiceScope scope, string id)

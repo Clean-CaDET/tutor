@@ -3,17 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Dtos.Reflections;
-using Tutor.Courses.API.Public.Monitoring;
+using Tutor.Courses.API.Public.Supervision;
 
 namespace Tutor.API.Controllers.Administrator;
 
 [Authorize(Policy = "administratorPolicy")]
-[Route("api/monitoring/overview")]
-public class CourseMonitoringController : BaseApiController
+[Route("api/supervision/active")]
+public class ActiveSupervisionController : BaseApiController
 {
     private readonly ICourseMonitoringService _monitoringService;
 
-    public CourseMonitoringController(ICourseMonitoringService monitoringService)
+    public ActiveSupervisionController(ICourseMonitoringService monitoringService)
     {
         _monitoringService = monitoringService;
     }
@@ -28,12 +28,12 @@ public class CourseMonitoringController : BaseApiController
     [HttpGet("{courseId:int}")]
     public ActionResult<List<GroupDto>> GetGroupOverview(int courseId)
     {
-        var result = _monitoringService.GetGroupFeedback(courseId);
+        var result = _monitoringService.GetGroupedLearnersWithFeedback(courseId);
         return CreateResponse(result);
     }
 
     [HttpGet("reflections/{learnerId:int}")]
-    public ActionResult<List<ReflectionDto>> GetReflections(int learnerId, [FromQuery] List<int> reflectionIds)
+    public ActionResult<List<ReflectionDto>> GetReflections(int learnerId, [FromQuery] List<int>? reflectionIds)
     {
         var result = _monitoringService.GetReflections(learnerId, reflectionIds);
         return CreateResponse(result);

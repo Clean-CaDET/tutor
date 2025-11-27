@@ -14,6 +14,15 @@ public class CourseDatabaseRepository : CrudDatabaseRepository<Course, CoursesCo
     {
         return DbContext.Courses
             .Where(c => c.StartDate < DateTime.UtcNow && !c.IsArchived)
+            .OrderByDescending(c => c.StartDate)
+            .ToList();
+    }
+
+    public List<Course> GetStarted()
+    {
+        return DbContext.Courses
+            .Where(c => c.StartDate < DateTime.UtcNow)
+            .OrderByDescending(c => c.StartDate)
             .ToList();
     }
 
@@ -28,6 +37,7 @@ public class CourseDatabaseRepository : CrudDatabaseRepository<Course, CoursesCo
     {
         return DbContext.Courses
             .Include(c => c.KnowledgeUnits)
+            .AsNoTracking()
             .FirstOrDefault(c => c.Id == courseId);
     }
 }

@@ -29,13 +29,13 @@ public class ReflectionService : BaseService<ReflectionDto, Reflection>, IReflec
         if (!_enrollmentValidator.HasAccessibleEnrollment(unitId, learnerId))
             return Result.Fail(FailureCode.Forbidden);
 
-        var reflections = _reflectionRepository.GetByUnitWithSubmission(unitId, learnerId);
+        var reflections = _reflectionRepository.GetByUnitWithAnswers(unitId, learnerId);
         return MapToDto(reflections);
     }
 
     public Result<ReflectionDto> GetWithSubmission(int reflectionId, int learnerId)
     {
-        var reflection = _reflectionRepository.GetWithSubmission(reflectionId, learnerId);
+        var reflection = _reflectionRepository.GetWithAnswers(reflectionId, learnerId);
         if(reflection == null)
             return Result.Fail(FailureCode.NotFound);
         if (!_enrollmentValidator.HasAccessibleEnrollment(reflection.UnitId, learnerId))
@@ -46,7 +46,7 @@ public class ReflectionService : BaseService<ReflectionDto, Reflection>, IReflec
 
     public Result SubmitAnswer(ReflectionAnswerDto answer)
     {
-        var reflection = _reflectionRepository.GetWithSubmission(answer.ReflectionId, answer.LearnerId);
+        var reflection = _reflectionRepository.GetWithAnswers(answer.ReflectionId, answer.LearnerId);
         if (reflection == null)
             return Result.Fail(FailureCode.NotFound);
         if (!_enrollmentValidator.HasAccessibleEnrollment(reflection.UnitId, answer.LearnerId))

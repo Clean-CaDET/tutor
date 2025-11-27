@@ -4,13 +4,13 @@ namespace Tutor.Courses.Core.Domain;
 
 public class KnowledgeUnit : Entity
 {
+    public int CourseId { get; set; }
     public string Code { get; private set; }
     public string Name { get; private set; }
     public string? Introduction { get; private set; }
     public string? Goals { get; private set; }
     public string? Guidelines { get; private set; }
     public int Order { get; private set; }
-    public int CourseId { get; set; }
 
     internal KnowledgeUnit Clone()
     {

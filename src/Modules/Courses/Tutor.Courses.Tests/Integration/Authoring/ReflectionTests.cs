@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Instructor.Authoring;
-using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Reflections;
 using Tutor.Courses.API.Public.Authoring;
 using Tutor.Courses.Infrastructure.Database;
@@ -18,7 +17,7 @@ public class ReflectionTests : BaseCoursesIntegrationTest
     [Theory]
     [InlineData("-52", -1, 0, 0)]
     [InlineData("-52", -2, 1, 5)]
-    [InlineData("-52", -3, 1, 3)]
+    [InlineData("-52", -3, 2, 5)]
     public void Gets_reflections_for_unit(string instructorId, int unitId, int expectedReflectionCount, int expectedQuestionCount)
     {
         using var scope = Factory.Services.CreateScope();

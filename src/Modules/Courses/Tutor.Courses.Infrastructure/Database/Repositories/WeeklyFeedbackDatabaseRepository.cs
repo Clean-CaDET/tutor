@@ -12,6 +12,7 @@ public class WeeklyFeedbackDatabaseRepository : CrudDatabaseRepository<WeeklyFee
     {
         return DbContext.WeeklyProgress
             .Where(p => p.CourseId == courseId && p.LearnerId == learnerId)
+            .OrderBy(p => p.WeekEnd)
             .ToList();
     }
 

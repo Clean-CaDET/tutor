@@ -9,6 +9,7 @@ using Tutor.Courses.API.Public.Authoring;
 using Tutor.Courses.API.Public.Learning;
 using Tutor.Courses.API.Public.Management;
 using Tutor.Courses.API.Public.Monitoring;
+using Tutor.Courses.API.Public.Supervision;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.Reflections;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
@@ -19,6 +20,7 @@ using Tutor.Courses.Core.UseCases.Authoring;
 using Tutor.Courses.Core.UseCases.Learning;
 using Tutor.Courses.Core.UseCases.Management;
 using Tutor.Courses.Core.UseCases.Monitoring;
+using Tutor.Courses.Core.UseCases.Supervision;
 using Tutor.Courses.Infrastructure.Database;
 using Tutor.Courses.Infrastructure.Database.Repositories;
 
@@ -53,6 +55,8 @@ public static class CoursesStartup
         services.AddProxiedScoped<IGroupService, GroupService>();
 
         services.AddProxiedScoped<ICourseMonitoringService, CourseMonitoringService>();
+        services.AddProxiedScoped<ICourseReportingService, CourseReportingService>();
+        services.AddProxiedScoped<IReportService, ReportService>();
         services.AddProxiedScoped<IEnrollmentService, EnrollmentService>();
         services.AddProxiedScoped<IGroupMonitoringService, GroupMonitoringService>();
         services.AddProxiedScoped<IWeeklyActivityService, WeeklyActivityService>();
@@ -70,6 +74,7 @@ public static class CoursesStartup
         services.AddScoped<IUnitEnrollmentRepository, UnitEnrollmentDatabaseRepository>();
         services.AddScoped<ICourseOwnershipRepository, CourseOwnershipDatabaseRepository>();
         services.AddScoped<ICourseRepository, CourseDatabaseRepository>();
+        services.AddScoped<IReportRepository, ReportDatabaseRepository>();
         services.AddScoped<IGroupRepository, GroupDatabaseRepository>();
         
         services.AddScoped<IWeeklyFeedbackRepository, WeeklyFeedbackDatabaseRepository>();
