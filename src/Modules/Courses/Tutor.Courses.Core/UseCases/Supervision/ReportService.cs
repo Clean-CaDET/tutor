@@ -26,7 +26,23 @@ public class ReportService : CrudService<CourseReportDto, CourseReport>, IReport
         _enrollmentRepository = enrollmentRepository;
     }
 
-    public Result<CourseReportDto> Regenerate(int courseId, int learnerId)
+    public Result<List<CourseReportDto>> GetMany(int[] learnerIds)
+    {
+        var reports = _reportRepository.GetByLearners(learnerIds);
+        return reports.Select(MapToDto).ToList();
+    }
+
+    public Result<CourseReportDto> Get(int courseId, int learnerId)
+    {
+        var report = _reportRepository.Get(courseId, learnerId);
+        if (report == null)
+        {
+            return RegenerateAchievements(courseId, learnerId);
+        }
+        return MapToDto(report);
+    }
+
+    public Result<CourseReportDto> RegenerateAchievements(int courseId, int learnerId)
     {
         var enrollments = _enrollmentRepository.GetEnrolledUnits(courseId, learnerId);
         if (enrollments.Count == 0)
@@ -43,16 +59,6 @@ public class ReportService : CrudService<CourseReportDto, CourseReport>, IReport
         var feedback = _feedbackRepository.GetByCourseAndLearner(courseId, learnerId);
 
         var report = CourseReportFactory.CreateReport(courseId, learnerId, feedback, enrollments, reflections);
-        return MapToDto(report);
-    }
-
-    public Result<CourseReportDto> Get(int courseId, int learnerId)
-    {
-        var report = _reportRepository.Get(courseId, learnerId);
-        if (report == null)
-        {
-            return Regenerate(courseId, learnerId);
-        }
         return MapToDto(report);
     }
 }

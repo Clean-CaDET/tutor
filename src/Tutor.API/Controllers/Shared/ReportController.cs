@@ -6,7 +6,7 @@ using Tutor.Courses.API.Public.Supervision;
 namespace Tutor.API.Controllers.Shared;
 
 [Authorize(Policy = "reportPolicy")]
-[Route("api/courses/{courseId:int}/reports/{learnerId:int}")]
+[Route("api/reports")]
 public class ReportController : BaseApiController
 {
     private readonly IReportService _reportService;
@@ -16,21 +16,21 @@ public class ReportController : BaseApiController
         _reportService = reportService;
     }
 
-    [HttpGet("regenerate")]
-    public ActionResult<CourseReportDto> Regenerate(int courseId, int learnerId)
+    [HttpPost("query")]
+    public ActionResult<List<CourseReportDto>> GetMany([FromBody] int[] learnerIds)
     {
-        var result = _reportService.Regenerate(courseId, learnerId);
+        var result = _reportService.GetMany(learnerIds);
         return CreateResponse(result);
     }
 
-    [HttpGet]
+    [HttpGet("{courseId:int}/{learnerId:int}")]
     public ActionResult<CourseReportDto> Get(int courseId, int learnerId)
     {
         var result = _reportService.Get(courseId, learnerId);
         return CreateResponse(result);
     }
 
-    [HttpPost]
+    [HttpPost("{courseId:int}/{learnerId:int}")]
     public ActionResult<CourseReportDto> Create(int courseId, int learnerId, [FromBody] CourseReportDto report)
     {
         report.CourseId = courseId;
@@ -39,12 +39,19 @@ public class ReportController : BaseApiController
         return CreateResponse(result);
     }
 
-    [HttpPut]
+    [HttpPut("{courseId:int}/{learnerId:int}")]
     public ActionResult<CourseReportDto> Update(int courseId, int learnerId, [FromBody] CourseReportDto report)
     {
         report.CourseId = courseId;
         report.LearnerId = learnerId;
         var result = _reportService.Update(report);
+        return CreateResponse(result);
+    }
+
+    [HttpGet("{courseId:int}/{learnerId:int}/achievements")]
+    public ActionResult<CourseReportDto> RegenerateAchievements(int courseId, int learnerId)
+    {
+        var result = _reportService.RegenerateAchievements(courseId, learnerId);
         return CreateResponse(result);
     }
 }
