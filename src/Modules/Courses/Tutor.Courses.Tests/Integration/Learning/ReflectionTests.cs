@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Learner.Learning;
-using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Reflections;
 using Tutor.Courses.API.Public.Learning;
 using Tutor.Courses.Infrastructure.Database;
@@ -16,7 +15,7 @@ public class ReflectionTests : BaseCoursesIntegrationTest
 
     [Theory]
     [InlineData("-2", -2, 1)]
-    [InlineData("-2", -3, 1)]
+    [InlineData("-2", -3, 2)]
     public void Gets_reflections_for_enrolled_unit(string learnerId, int unitId, int expectedReflectionCount)
     {
         using var scope = Factory.Services.CreateScope();

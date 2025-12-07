@@ -4,15 +4,15 @@ using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Dtos.Monitoring;
 using Tutor.Courses.API.Dtos.Reflections;
-using Tutor.Courses.API.Public.Monitoring;
+using Tutor.Courses.API.Public.Supervision;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.Reflections;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
 using Tutor.Stakeholders.API.Internal;
 
-namespace Tutor.Courses.Core.UseCases.Monitoring;
+namespace Tutor.Courses.Core.UseCases.Supervision;
 
-public class CourseMonitoringService : ICourseMonitoringService
+public class ActiveSupervisionService : IActiveSupervisionService
 {
     private readonly IMapper _mapper;
     private readonly ICourseRepository _courseRepository;
@@ -21,8 +21,9 @@ public class CourseMonitoringService : ICourseMonitoringService
     private readonly IWeeklyFeedbackRepository _feedbackRepository;
     private readonly IReflectionRepository _reflectionRepository;
 
-    public CourseMonitoringService(IMapper mapper, ICourseRepository courseRepository, IGroupRepository groupRepository, 
-        IInternalLearnerService learnerService, IWeeklyFeedbackRepository feedbackRepository, IReflectionRepository reflectionRepository)
+    public ActiveSupervisionService(IMapper mapper, ICourseRepository courseRepository, IGroupRepository groupRepository, 
+        IInternalLearnerService learnerService, IWeeklyFeedbackRepository feedbackRepository,
+        IReflectionRepository reflectionRepository)
     {
         _mapper = mapper;
         _courseRepository = courseRepository;
@@ -38,7 +39,7 @@ public class CourseMonitoringService : ICourseMonitoringService
         return courses.Select(_mapper.Map<CourseDto>).ToList();
     }
 
-    public Result<List<GroupDto>> GetGroupFeedback(int courseId)
+    public Result<List<GroupDto>> GetGroupedLearnersWithFeedback(int courseId)
     {
         var groups = _groupRepository.GetCourseGroups(courseId);
         var learnerDtos = GetLearners(groups);
@@ -82,9 +83,13 @@ public class CourseMonitoringService : ICourseMonitoringService
         return groupDtos;
     }
 
-    public Result<List<ReflectionDto>> GetReflections(int learnerId, List<int> reflectionIds)
+    public Result<List<ReflectionDto>> GetReflections(int learnerId, List<int>? reflectionIds)
     {
-        var reflections = _reflectionRepository.GetManyWithSubmission(reflectionIds, learnerId);
+        if(reflectionIds == null || reflectionIds.Count == 0)
+        {
+            return new List<ReflectionDto>();
+        }
+        var reflections = _reflectionRepository.GetManyWithAnswers(reflectionIds, learnerId);
         return reflections.Select(_mapper.Map<ReflectionDto>).ToList();
     }
 }

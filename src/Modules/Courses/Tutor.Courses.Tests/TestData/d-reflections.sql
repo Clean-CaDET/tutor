@@ -31,7 +31,7 @@ VALUES
 INSERT INTO courses."Reflections" (
   "Id", "UnitId", "Order", "Name"
 )
-VALUES (-9999, -9999, 1, 'Refleksija za monitoring 1');
+VALUES (-9999, -3, 1, 'Refleksija za monitoring 1');
 
 INSERT INTO courses."ReflectionQuestions" (
   "Id", "Order", "Text", "Category", "Type", "Labels", "ReflectionId"
@@ -43,7 +43,7 @@ VALUES
 INSERT INTO courses."Reflections" (
   "Id", "UnitId", "Order", "Name"
 )
-VALUES (-9998, -9998, 1, 'Refleksija za monitoring 2');
+VALUES (-9998, -4, 1, 'Refleksija za monitoring 2');
 
 INSERT INTO courses."ReflectionQuestions" (
   "Id", "Order", "Text", "Category", "Type", "Labels", "ReflectionId"
