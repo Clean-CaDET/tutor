@@ -12,7 +12,7 @@ using Tutor.Stakeholders.API.Internal;
 
 namespace Tutor.Courses.Core.UseCases.Supervision;
 
-public class CourseMonitoringService : ICourseMonitoringService
+public class ActiveSupervisionService : IActiveSupervisionService
 {
     private readonly IMapper _mapper;
     private readonly ICourseRepository _courseRepository;
@@ -21,7 +21,7 @@ public class CourseMonitoringService : ICourseMonitoringService
     private readonly IWeeklyFeedbackRepository _feedbackRepository;
     private readonly IReflectionRepository _reflectionRepository;
 
-    public CourseMonitoringService(IMapper mapper, ICourseRepository courseRepository, IGroupRepository groupRepository, 
+    public ActiveSupervisionService(IMapper mapper, ICourseRepository courseRepository, IGroupRepository groupRepository, 
         IInternalLearnerService learnerService, IWeeklyFeedbackRepository feedbackRepository,
         IReflectionRepository reflectionRepository)
     {

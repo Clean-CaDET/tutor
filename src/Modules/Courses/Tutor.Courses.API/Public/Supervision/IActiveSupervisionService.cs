@@ -5,7 +5,7 @@ using Tutor.Courses.API.Dtos.Reflections;
 
 namespace Tutor.Courses.API.Public.Supervision;
 
-public interface ICourseMonitoringService
+public interface IActiveSupervisionService
 {
     Result<List<CourseDto>> GetActiveCourses();
     Result<List<GroupDto>> GetGroupedLearnersWithFeedback(int courseId);

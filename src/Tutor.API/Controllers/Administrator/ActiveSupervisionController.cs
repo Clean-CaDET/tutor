@@ -11,9 +11,9 @@ namespace Tutor.API.Controllers.Administrator;
 [Route("api/supervision/active")]
 public class ActiveSupervisionController : BaseApiController
 {
-    private readonly ICourseMonitoringService _monitoringService;
+    private readonly IActiveSupervisionService _monitoringService;
 
-    public ActiveSupervisionController(ICourseMonitoringService monitoringService)
+    public ActiveSupervisionController(IActiveSupervisionService monitoringService)
     {
         _monitoringService = monitoringService;
     }
