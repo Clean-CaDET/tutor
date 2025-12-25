@@ -51,7 +51,7 @@ public class WeeklyActivityService : IWeeklyActivityService
         var unitIds = unitHeaders.Select(u => u.Id).ToArray();
         var kcs = _kcQuerier.GetByUnits(unitIds);
         var tasks = _taskQuerier.GetByUnits(unitIds);
-        var reflections = _reflectionRepository.GetByUnitsWithSubmissions(unitIds);
+        var reflections = _reflectionRepository.GetByUnitsWithAnswers(unitIds);
 
         if(tasks.IsSuccess) PopulateUnitHeaders(unitHeaders, kcs.Value, tasks.Value, reflections);
 

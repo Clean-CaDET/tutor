@@ -27,7 +27,7 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
             .ToList();
     }
 
-    public List<Reflection> GetByUnitsWithSubmissions(int[] unitIds)
+    public List<Reflection> GetByUnitsWithAnswers(int[] unitIds)
     {
         return DbContext.Reflections
             .Where(r => unitIds.Contains(r.UnitId))
@@ -38,7 +38,7 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
             .ToList();
     }
 
-    public List<Reflection> GetByUnitWithSubmission(int unitId, int learnerId)
+    public List<Reflection> GetByUnitWithAnswers(int unitId, int learnerId)
     {
         return DbContext.Reflections
             .Where(r => r.UnitId == unitId)
@@ -47,7 +47,17 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
             .ToList();
     }
 
-    public Reflection? GetWithSubmission(int reflectionId, int learnerId)
+    public List<Reflection> GetByUnitsWithQAndA(int[] unitIds, int learnerId)
+    {
+        return DbContext.Reflections
+            .Where(r => unitIds.Contains(r.UnitId))
+            .Include(r => r.Questions)
+            .Include(r => r.Submissions.Where(s => s.LearnerId == learnerId))
+            .AsNoTracking()
+            .ToList();
+    }
+
+    public Reflection? GetWithAnswers(int reflectionId, int learnerId)
     {
         return DbContext.Reflections
             .Include(r => r.Questions)
@@ -62,7 +72,7 @@ public class ReflectionDatabaseRepository : CrudDatabaseRepository<Reflection, C
             .FirstOrDefault(r => r.Id == reflectionId);
     }
 
-    public List<Reflection> GetManyWithSubmission(List<int> reflectionIds, int learnerId)
+    public List<Reflection> GetManyWithAnswers(List<int> reflectionIds, int learnerId)
     {
         return DbContext.Reflections
             .Where(r => reflectionIds.Contains(r.Id))

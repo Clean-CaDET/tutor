@@ -5,14 +5,14 @@ using Tutor.API.Controllers.Administrator;
 using Tutor.Courses.API.Dtos;
 using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Dtos.Reflections;
-using Tutor.Courses.API.Public.Monitoring;
+using Tutor.Courses.API.Public.Supervision;
 
-namespace Tutor.Courses.Tests.Integration.Monitoring;
+namespace Tutor.Courses.Tests.Integration.Supervision;
 
 [Collection("Sequential")]
-public class CourseMonitoringTests : BaseCoursesIntegrationTest
+public class ActiveSupervisionTests : BaseCoursesIntegrationTest
 {
-    public CourseMonitoringTests(CoursesTestFactory factory) : base(factory) {}
+    public ActiveSupervisionTests(CoursesTestFactory factory) : base(factory) {}
 
     [Fact]
     public void GetActiveCourses_ReturnsActiveCourses()
@@ -173,9 +173,9 @@ public class CourseMonitoringTests : BaseCoursesIntegrationTest
         result.First().Submissions?.Count.ShouldBe(expectedSubmissionCount);
     }
 
-    private static CourseMonitoringController CreateController(IServiceScope scope)
+    private static ActiveSupervisionController CreateController(IServiceScope scope)
     {
-        return new CourseMonitoringController(scope.ServiceProvider.GetRequiredService<ICourseMonitoringService>())
+        return new ActiveSupervisionController(scope.ServiceProvider.GetRequiredService<IActiveSupervisionService>())
         {
             ControllerContext = BuildContext("0", "administrator")
         };

@@ -88,8 +88,8 @@ public class CourseCommandTests : BaseCoursesIntegrationTest
         
         var endingReflectionsCount = dbContext.Reflections.Count();
         var endingReflectionQuestionsCount = dbContext.ReflectionQuestions.Count();
-        endingReflectionsCount.ShouldBe(startingReflectionsCount + 1);
-        endingReflectionQuestionsCount.ShouldBe(startingReflectionQuestionsCount + 3);
+        endingReflectionsCount.ShouldBe(startingReflectionsCount + 2);
+        endingReflectionQuestionsCount.ShouldBe(startingReflectionQuestionsCount + 5);
     }
 
     private static void AssertTaskCorrectlyCloned(List<LearningTask> tasks)

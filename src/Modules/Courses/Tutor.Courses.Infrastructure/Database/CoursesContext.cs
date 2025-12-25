@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.Reflections;
+using Tutor.Courses.Core.Domain.Report;
 
 namespace Tutor.Courses.Infrastructure.Database;
 
@@ -18,6 +19,7 @@ public class CoursesContext : DbContext
     public DbSet<UnitProgressRating> UnitProgressRating { get; set; }
     public DbSet<WeeklyFeedback> WeeklyProgress { get; set; }
     public DbSet<WeeklyFeedbackQuestion> WeeklyFeedbackQuestions { get; set; }
+    public DbSet<CourseReport> CourseReports { get; set; }
 
     public CoursesContext(DbContextOptions<CoursesContext> options) : base(options) {}
 
@@ -45,5 +47,8 @@ public class CoursesContext : DbContext
         modelBuilder.Entity<WeeklyFeedback>().Property(w => w.ReflectionIds).HasColumnType("jsonb");
         modelBuilder.Entity<WeeklyFeedback>().Property(w => w.Opinions).HasColumnType("jsonb");
         modelBuilder.Entity<WeeklyFeedbackQuestion>().Property(q => q.Options).HasColumnType("jsonb");
+
+        modelBuilder.Entity<CourseReport>().Property(cr => cr.UnitReports).HasColumnType("jsonb");
+        modelBuilder.Entity<CourseReport>().Property(cr => cr.FeedbackItemAggregates).HasColumnType("jsonb");
     }
 }
