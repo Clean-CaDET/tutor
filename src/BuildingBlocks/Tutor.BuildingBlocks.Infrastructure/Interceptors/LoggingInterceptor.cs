@@ -29,7 +29,7 @@ public class LoggingInterceptor : IInterceptor
             }
             else
             {
-                var errors = (ReadOnlyCollection<IError>)result.Errors;
+                var errors = (ReadOnlyCollection<IError>)result!.Errors;
                 _logger.LogWarning("Call: {@Class}.{@Method}. Fail: {@Errors}.",
                     invocation.TargetType, invocation.Method.Name, errors);
             }

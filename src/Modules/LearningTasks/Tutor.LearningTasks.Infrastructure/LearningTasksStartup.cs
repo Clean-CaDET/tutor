@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.DefaultEventSerializer;
@@ -59,8 +60,13 @@ public static class LearningTasksStartup
         services.AddSingleton<IEventSerializer<TaskEvent>>(new DefaultEventSerializer<TaskEvent>(EventSerializationConfiguration.EventRelatedTypes));
 
         services.AddScoped<ILearningTasksUnitOfWork, LearningTasksUnitOfWork>();
+        
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(DbConnectionStringBuilder.Build("learningTasks"));
+        dataSourceBuilder.EnableDynamicJson();
+        var dataSource = dataSourceBuilder.Build();
+        
         services.AddDbContext<LearningTasksContext>(opt =>
-            opt.UseNpgsql(DbConnectionStringBuilder.Build("learningTasks"),
+            opt.UseNpgsql(dataSource,
                 x => x.MigrationsHistoryTable("__EFMigrationsHistory", "learningTasks")));
     }
 }

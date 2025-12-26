@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 using Tutor.BuildingBlocks.Infrastructure.Security;
 
 namespace Tutor.BuildingBlocks.Tests;
@@ -68,6 +69,10 @@ public abstract class BaseTestFactory<TDbContext> : WebApplicationFactory<Progra
 
         var connectionString = $"Server={server};Port={port};Database={database};User ID={user};Password={password};Pooling={pooling};Include Error Detail=True";
 
-        return opt => opt.UseNpgsql(connectionString);
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
+        dataSourceBuilder.EnableDynamicJson();
+        var dataSource = dataSourceBuilder.Build();
+
+        return opt => opt.UseNpgsql(dataSource);
     }
 }

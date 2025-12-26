@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Interceptors;
 using Tutor.LearningUtils.API.Public;
@@ -32,8 +33,13 @@ public static class LearningUtilsStartup
         services.AddScoped<INoteRepository, NoteDatabaseRepository>();
 
         services.AddScoped<ILearningUtilsUnitOfWork, LearningUtilsUnitOfWork>();
+        
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(DbConnectionStringBuilder.Build("learningUtils"));
+        dataSourceBuilder.EnableDynamicJson();
+        var dataSource = dataSourceBuilder.Build();
+        
         services.AddDbContext<LearningUtilsContext>(opt =>
-            opt.UseNpgsql(DbConnectionStringBuilder.Build("learningUtils"),
+            opt.UseNpgsql(dataSource,
                 x => x.MigrationsHistoryTable("__EFMigrationsHistory", "learningUtils")));
     }
 }
