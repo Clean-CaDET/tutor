@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Security.Claims;
-using Tutor.API;
 using Xunit;
 
 namespace Tutor.BuildingBlocks.Tests;

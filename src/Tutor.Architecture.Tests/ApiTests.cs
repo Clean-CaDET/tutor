@@ -1,4 +1,5 @@
 using ArchUnitNET.xUnit;
+using Microsoft.AspNetCore.Authorization;
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
 
 namespace Tutor.Architecture.Tests;
@@ -11,9 +12,9 @@ public class ApiTests : BaseArchitecturalTests
         var examinedTypes = GetExaminedTypes($"Tutor.API");
 
         var controllers = Classes().That()
-            .ResideInNamespace("Tutor.API.Controllers.([a-zA-Z0-9_.]+)*", true);
+            .ResideInNamespaceMatching("Tutor.API.Controllers.([a-zA-Z0-9_.]+)*");
 
-        var rule = controllers.Should().HaveAnyAttributes("Microsoft.AspNetCore.Authorization.AuthorizeAttribute");
+        var rule = controllers.Should().HaveAnyAttributes(typeof(AuthorizeAttribute));
 
         rule.Check(Architecture);
     }

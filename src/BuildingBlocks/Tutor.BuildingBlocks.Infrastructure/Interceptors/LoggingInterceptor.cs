@@ -1,8 +1,9 @@
-﻿using FluentResults;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
+using FluentResults;
 using Microsoft.Extensions.Logging;
-using Tutor.BuildingBlocks.Core.UseCases;
+using System.Collections.ObjectModel;
 using System.Dynamic;
+using Tutor.BuildingBlocks.Core.UseCases;
 
 namespace Tutor.BuildingBlocks.Infrastructure.Interceptors;
 
@@ -28,7 +29,7 @@ public class LoggingInterceptor : IInterceptor
             }
             else
             {
-                var errors = (List<IError>)result.Errors;
+                var errors = (ReadOnlyCollection<IError>)result.Errors;
                 _logger.LogWarning("Call: {@Class}.{@Method}. Fail: {@Errors}.",
                     invocation.TargetType, invocation.Method.Name, errors);
             }
