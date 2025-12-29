@@ -16,7 +16,7 @@ public static class AuthConfiguration
 
     private static void ConfigureAuthentication(IServiceCollection services)
     {
-        var key = EnvironmentConnection.GetSecret("JWT_KEY") ?? "tutor_secret_key";
+        var key = EnvironmentConnection.GetSecret("JWT_KEY") ?? "tutor_secret_key_32_chars_minimum_for_hmac_sha256_security";
         var issuer = EnvironmentConnection.GetSecret("JWT_ISSUER") ?? "tutor";
         var audience = EnvironmentConnection.GetSecret("JWT_AUDIENCE") ?? "tutor-front.com";
 

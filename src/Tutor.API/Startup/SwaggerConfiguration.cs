@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace Tutor.API.Startup;
 
@@ -8,40 +8,40 @@ public static class SwaggerConfiguration
     public static IServiceCollection ConfigureSwagger(this IServiceCollection services, IConfiguration configuration)
     {
         var contactAddress = configuration.GetValue<string>("ContactUrl");
+
         services.AddSwaggerGen(setup =>
         {
             setup.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "Clean CaDET Tutor API",
                 Version = "v1",
-                Description =
-                    "An intelligent tutoring system specialized for the clean code analysis and refactoring domain.",
+                Description = "An intelligent tutoring system specialized for the clean code analysis and refactoring domain.",
                 Contact = new OpenApiContact
                 {
                     Name = "Clean CaDET Organization",
                     Url = new Uri(contactAddress)
                 }
             });
-            var jwtSecurityScheme = new OpenApiSecurityScheme
+
+            // Security scheme (Bearer JWT)
+            const string schemeId = JwtBearerDefaults.AuthenticationScheme; // "Bearer"
+
+            setup.AddSecurityDefinition(schemeId, new OpenApiSecurityScheme
             {
-                BearerFormat = "JWT",
-                Name = "JWT Authentication",
-                In = ParameterLocation.Header,
                 Type = SecuritySchemeType.Http,
-                Scheme = JwtBearerDefaults.AuthenticationScheme,
-                Description = "Put **_ONLY_** your JWT Bearer token in the text box below!",
-                Reference = new OpenApiReference
-                {
-                    Id = JwtBearerDefaults.AuthenticationScheme,
-                    Type = ReferenceType.SecurityScheme
-                }
-            };
-            setup.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
-            setup.AddSecurityRequirement(new OpenApiSecurityRequirement
+                Scheme = "bearer",
+                BearerFormat = "JWT",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Description = "Put **_ONLY_** your JWT Bearer token in the text box below!"
+            });
+
+            setup.AddSecurityRequirement(document => new OpenApiSecurityRequirement
             {
-                { jwtSecurityScheme, Array.Empty<string>() }
+                [new OpenApiSecuritySchemeReference(schemeId, document)] = []
             });
         });
+
         return services;
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Interceptors;
@@ -84,8 +85,13 @@ public static class CoursesStartup
         services.AddScoped(typeof(ICrudRepository<SystemPrompt>), typeof(CrudDatabaseRepository<SystemPrompt, CoursesContext>));
 
         services.AddScoped<ICoursesUnitOfWork, CoursesUnitOfWork>();
+        
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(DbConnectionStringBuilder.Build("courses"));
+        dataSourceBuilder.EnableDynamicJson();
+        var dataSource = dataSourceBuilder.Build();
+        
         services.AddDbContext<CoursesContext>(opt =>
-            opt.UseNpgsql(DbConnectionStringBuilder.Build("courses"),
+            opt.UseNpgsql(dataSource,
                 x => x.MigrationsHistoryTable("__EFMigrationsHistory", "courses")));
     }
 }

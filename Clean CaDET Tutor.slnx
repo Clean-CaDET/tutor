@@ -1,0 +1,42 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Tutor.API/Tutor.API.csproj" />
+    <Project Path="src/Tutor.Architecture.Tests/Tutor.Architecture.Tests.csproj" />
+  </Folder>
+  <Folder Name="/src/BuildingBlocks/">
+    <Project Path="src/BuildingBlocks/Tutor.BuildingBlocks.Core/Tutor.BuildingBlocks.Core.csproj" />
+    <Project Path="src/BuildingBlocks/Tutor.BuildingBlocks.Infrastructure/Tutor.BuildingBlocks.Infrastructure.csproj" />
+    <Project Path="src/BuildingBlocks/Tutor.BuildingBlocks.Tests/Tutor.BuildingBlocks.Tests.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/" />
+  <Folder Name="/src/Modules/Courses/">
+    <Project Path="src/Modules/Courses/Tutor.Courses.API/Tutor.Courses.API.csproj" />
+    <Project Path="src/Modules/Courses/Tutor.Courses.Core/Tutor.Courses.Core.csproj" />
+    <Project Path="src/Modules/Courses/Tutor.Courses.Infrastructure/Tutor.Courses.Infrastructure.csproj" />
+    <Project Path="src/Modules/Courses/Tutor.Courses.Tests/Tutor.Courses.Tests.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/KnowledgeComponents/">
+    <Project Path="src/Modules/KnowledgeComponents/Tutor.KnowledgeComponents.API/Tutor.KnowledgeComponents.API.csproj" />
+    <Project Path="src/Modules/KnowledgeComponents/Tutor.KnowledgeComponents.Core/Tutor.KnowledgeComponents.Core.csproj" />
+    <Project Path="src/Modules/KnowledgeComponents/Tutor.KnowledgeComponents.Infrastructure/Tutor.KnowledgeComponents.Infrastructure.csproj" />
+    <Project Path="src/Modules/KnowledgeComponents/Tutor.KnowledgeComponents.Tests/Tutor.KnowledgeComponents.Tests.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/LearningTasks/">
+    <Project Path="src/Modules/LearningTasks/Tutor.LearningTasks.API/Tutor.LearningTasks.API.csproj" />
+    <Project Path="src/Modules/LearningTasks/Tutor.LearningTasks.Core/Tutor.LearningTasks.Core.csproj" />
+    <Project Path="src/Modules/LearningTasks/Tutor.LearningTasks.Infrastructure/Tutor.LearningTasks.Infrastructure.csproj" />
+    <Project Path="src/Modules/LearningTasks/Tutor.LearningTasks.Tests/Tutor.LearningTasks.Tests.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/LearningUtils/">
+    <Project Path="src/Modules/LearningUtils/Tutor.LearningUtils.API/Tutor.LearningUtils.API.csproj" />
+    <Project Path="src/Modules/LearningUtils/Tutor.LearningUtils.Core/Tutor.LearningUtils.Core.csproj" />
+    <Project Path="src/Modules/LearningUtils/Tutor.LearningUtils.Infrastructure/Tutor.LearningUtils.Infrastructure.csproj" />
+    <Project Path="src/Modules/LearningUtils/Tutor.LearningUtils.Tests/Tutor.LearningUtils.Tests.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/Stakeholders/">
+    <Project Path="src/Modules/Stakeholders/Tutor.Stakeholders.API/Tutor.Stakeholders.API.csproj" />
+    <Project Path="src/Modules/Stakeholders/Tutor.Stakeholders.Core/Tutor.Stakeholders.Core.csproj" />
+    <Project Path="src/Modules/Stakeholders/Tutor.Stakeholders.Infrastructure/Tutor.Stakeholders.Infrastructure.csproj" />
+    <Project Path="src/Modules/Stakeholders/Tutor.Stakeholders.Tests/Tutor.Stakeholders.Tests.csproj" />
+  </Folder>
+</Solution>

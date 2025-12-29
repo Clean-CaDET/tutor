@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.DefaultEventSerializer;
@@ -88,8 +89,13 @@ public static class KnowledgeComponentsStartup
         services.AddSingleton<IEventSerializer<KnowledgeComponentEvent>>(new DefaultEventSerializer<KnowledgeComponentEvent>(EventSerializationConfiguration.EventRelatedTypes));
 
         services.AddScoped<IKnowledgeComponentsUnitOfWork, KnowledgeComponentsUnitOfWork>();
+        
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(DbConnectionStringBuilder.Build("knowledgeComponents"));
+        dataSourceBuilder.EnableDynamicJson();
+        var dataSource = dataSourceBuilder.Build();
+        
         services.AddDbContext<KnowledgeComponentsContext>(opt =>
-            opt.UseNpgsql(DbConnectionStringBuilder.Build("knowledgeComponents"),
+            opt.UseNpgsql(dataSource,
                 x => x.MigrationsHistoryTable("__EFMigrationsHistory", "knowledgeComponents")));
     }
 }

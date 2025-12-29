@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.Reflections;
 using Tutor.Courses.Core.Domain.Report;
@@ -28,8 +29,12 @@ public class CoursesContext : DbContext
         modelBuilder.HasDefaultSchema("courses");
         modelBuilder.Entity<KnowledgeUnit>().HasIndex(u => new { u.CourseId, u.Code }).IsUnique();
         modelBuilder.Entity<ReflectionAnswer>().Property(a => a.Answers).HasColumnType("jsonb");
-        modelBuilder.Entity<LearnerGroup>().Property(e => e.LearnerIds).HasColumnType("jsonb");
-        
+        modelBuilder.Entity<LearnerGroup>().Property(e => e.LearnerIds)
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions?)null),
+                v => JsonSerializer.Deserialize<HashSet<int>>(v, (JsonSerializerOptions?)null) ?? new HashSet<int>())
+            .HasColumnType("jsonb");
+
         modelBuilder.Entity<UnitProgressRating>().Property(e => e.Feedback).HasColumnType("jsonb");
         modelBuilder.Entity<UnitProgressRating>()
             .HasOne<KnowledgeUnit>()
