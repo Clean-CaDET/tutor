@@ -10,7 +10,7 @@ namespace Tutor.Stakeholders.Infrastructure.Authentication;
 
 public class JwtGenerator
 {
-    private readonly string _key = EnvironmentConnection.GetSecret("JWT_KEY") ?? "tutor_secret_key";   
+    private readonly string _key = EnvironmentConnection.GetSecret("JWT_KEY") ?? "tutor_secret_key_32_chars_minimum_for_hmac_sha256_security";   
     private readonly string _issuer = EnvironmentConnection.GetSecret("JWT_ISSUER") ?? "tutor";
     private readonly string _audience = EnvironmentConnection.GetSecret("JWT_AUDIENCE") ?? "tutor-front.com";
 

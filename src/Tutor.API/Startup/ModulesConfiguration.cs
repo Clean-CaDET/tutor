@@ -1,3 +1,4 @@
+using Npgsql;
 using Tutor.Courses.Infrastructure;
 using Tutor.KnowledgeComponents.Infrastructure;
 using Tutor.LearningTasks.Infrastructure;

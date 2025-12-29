@@ -7,7 +7,7 @@ namespace Tutor.API.Controllers;
 [ApiController]
 public class BaseApiController : ControllerBase
 {
-    protected ActionResult CreateErrorResponse(List<IError> errors)
+    protected ActionResult CreateErrorResponse(IReadOnlyList<IError> errors)
     {
         var code = 500;
         if (ContainsErrorCode(errors, 400)) code = 400;
@@ -17,7 +17,7 @@ public class BaseApiController : ControllerBase
         return CreateErrorObject(errors, code);
     }
 
-    private static bool ContainsErrorCode(List<IError> errors, int code)
+    private static bool ContainsErrorCode(IReadOnlyList<IError> errors, int code)
     {
         return errors.Any(e =>
         {
@@ -27,7 +27,7 @@ public class BaseApiController : ControllerBase
         });
     }
 
-    private ObjectResult CreateErrorObject(List<IError> errors, int code)
+    private ObjectResult CreateErrorObject(IReadOnlyList<IError> errors, int code)
     {
         var sb = new StringBuilder();
         foreach (var error in errors)
