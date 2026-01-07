@@ -10,8 +10,7 @@ public class BaseAssessmentEvaluationIntegrationTest : BaseKnowledgeComponentsIn
 
     protected static EvaluationController CreateController(IServiceScope scope, string id)
     {
-        return new EvaluationController(scope.ServiceProvider.GetRequiredService<IEvaluationService>(),
-            scope.ServiceProvider.GetRequiredService<IHelpService>())
+        return new EvaluationController(scope.ServiceProvider.GetRequiredService<IEvaluationService>())
         {
             ControllerContext = BuildContext(id, "learner")
         };

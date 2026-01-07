@@ -165,16 +165,6 @@ public class KnowledgeComponentMastery : EventSourcedAggregateRoot
         return Result.Fail("No mastery for assessment item with id " + assessmentItemId + ". Were masteries created and loaded correctly?");
     }
 
-    public Result RecordInstructorMessage(string message)
-    {
-        JoinOrLaunchSession();
-        Causes(new EncouragingMessageSent
-        {
-            Message = message
-        });
-        return Result.Ok();
-    }
-
     protected override void Apply(DomainEvent @event)
     {
         if (@event is not KnowledgeComponentEvent kcEvent) throw new EventSourcingException("Unexpected event type: " + @event.GetType());

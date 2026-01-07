@@ -23,11 +23,11 @@ public class EventsTests : BaseKnowledgeComponentsIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-51");
 
-        var result = ((OkObjectResult)controller.GetUnitEvents(new []{-10, -11, -12}).Result).Value.ToString();
+        var result = ((OkObjectResult)controller.GetUnitEvents([-10, -11, -12]).Result).Value.ToString();
 
         var events = JsonSerializer.Deserialize(result, typeof(List<DomainEvent>), ConfigureOptions()) as List<DomainEvent>;
         events.ShouldNotBeNull();
-        events.Count.ShouldBe(83);
+        events.Count.ShouldBe(82);
     }
 
     [Fact]
