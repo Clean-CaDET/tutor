@@ -1,0 +1,127 @@
+# Tutor - Educational Platform
+
+An intelligent tutoring system for structured learning with knowledge and skill mastery tracking.
+
+**Stack:** .NET 10.0 modular monolith | EF Core + PostgreSQL | JWT Auth | Semantic Kernel (AI)
+
+## Architecture
+
+27 projects organized as 5 domain modules, each with 4 layers, plus shared BuildingBlocks and host.
+
+**Layer Responsibilities:**
+- **API** - Public contracts, DTOs, internal service interfaces (what other modules can consume)
+- **Core** - Domain entities, business logic, domain services (no external dependencies)
+- **Infrastructure** - EF Core DbContext, repositories, external integrations
+- **Tests** - Integration tests using Tutor.API, unit tests
+
+**Key Rules:**
+- Cross-module communication only through API layer interfaces
+- Core never references Infrastructure (dependency inversion)
+- Modules reference other modules' API projects only, never Core
+
+### BuildingBlocks (shared kernel)
+- `BuildingBlocks.Core` - Base entity classes, common interfaces, Result types
+- `BuildingBlocks.Infrastructure` - Generic repository, DbContext base, JSON handling
+- `BuildingBlocks.AI.Core` - AI service abstractions
+- `BuildingBlocks.AI.Infrastructure` - Semantic Kernel implementations
+- `BuildingBlocks.Tests` - Test fixtures, base test classes
+
+### Host
+- `Tutor.API` - ASP.NET Core Web API, composes all modules, Swagger, auth middleware
+- `Tutor.Architecture.Tests` - ArchUnit tests enforcing architectural rules
+
+## Modules
+
+### Courses
+**Domain:** Orchestrates the learning experience by organizing content into courses and units, managing who can teach and learn, and tracking learner progress through weekly feedback cycles.
+
+**Key Entities:**
+- **Course** - Top-level container (code, name, description, startDate, isArchived)
+- **KnowledgeUnit** - Weekly learning unit within a course, contains KCs and Tasks
+- **LearnerGroup** - Groups learners for easier management and monitoring
+- **WeeklyFeedback** - Instructor's weekly assessment of learner progress (Red/Yellow/Green semaphore + comment)
+- **Reflection** - Structured questions for learners to reflect on their learning
+- **Enrollment** - Tracks which learners are enrolled in which units
+
+**Use Cases:**
+- **Authoring**: Instructors create and configure courses, define weekly units with learning objectives, clone existing courses as templates, archive completed courses, create reflection questions
+- **Enrollment**: Admins assign instructors as course owners, create learner groups, manage group memberships, bulk enroll/unenroll learners from units
+- **Learning**: Learners view their enrolled courses, access unit content based on visibility rules (date-based unlocking), submit answers to reflection questions
+- **Monitoring**: Instructors track which learners are enrolled per unit, monitor group activity levels, provide weekly feedback with progress semaphores (Red=struggling, Yellow=okay, Green=good)
+- **Analytics**: System calculates unit progress ratings, aggregates weekly activity metrics (tasks completed, KCs mastered)
+- **Supervision**: Admins view active courses with aggregated learner feedback, generate reports with meaningful reflections and feedback patterns
+
+**Dependencies:** → Stakeholders.API, KnowledgeComponents.API, LearningTasks.API
+
+### KnowledgeComponents (KC)
+**Domain:** Manages atomic units of knowledge that learners must master. Handles the learning session lifecycle, presents assessments and instructional content, evaluates submissions, and tracks mastery progression.
+
+**Key Entities:**
+- **KnowledgeComponent** - Atomic learning objective (code, name, expectedDuration)
+- **AssessmentItem** - Questions to test understanding: MCQ (single choice), MRQ (multiple choice), SAQ (short answer)
+- **InstructionalItem** - Learning content: Text, Video, or Image with ordering
+- **SessionTracker** - Manages a learner's session state for a KC
+- **Submission** - Learner's answer to an assessment item
+- **Evaluation** - Feedback on a submission (correct/incorrect, hints, explanations)
+- **KCMastery** - Tracks whether a learner has mastered a KC
+- **MoveOn Criteria** - Rules for when a KC is considered satisfied (Completed, Passed, CompletedAndPassed, CompletedOrPassed)
+
+**Use Cases:**
+- **Authoring**: Instructors create KCs with expected duration, add/reorder assessment items (MCQ/MRQ/SAQ with feedback patterns), add/reorder instructional items (text/video/image), clone KCs for reuse
+- **Learning**: Learners launch a learning session for a KC, system selects appropriate assessment items based on progress, learners view instructional content, submit answers and receive immediate evaluation with feedback, can pause/continue/terminate sessions
+- **Mastery**: System tracks completion (all items seen) and passing (sufficient correct answers), applies move-on criteria to determine if KC is satisfied, records mastery status
+- **Analytics**: Instructors view KC statistics (submission counts, correctness rates), system detects common misconceptions from wrong answer patterns, tracks most frequent errors per assessment
+
+**Domain Events:** SessionLaunched, KCStarted, KCCompleted, KCPassed, KCSatisfied (used for analytics and cross-module notifications)
+
+**Dependencies:** → Courses.API (for unit context)
+
+### LearningTasks
+**Domain:** Provides structured, multi-step tasks that develop learners' skills through practical exercises. Supports scaffolded learning with examples and guidance, tracks step-by-step progress, and enables instructor grading.
+
+**Key Entities:**
+- **LearningTask** - A practical exercise (name, description, maxPoints, isTemplate)
+- **Activity** - A step within a task, contains examples, guidance text, and submission requirements
+- **StepProgress** - Tracks learner's progress on a single step (answer, submission time)
+- **TaskProgress** - Overall progress on a task (started, completed, graded status)
+- **StandardEvaluation** - Instructor's grade and comment for a step
+- **SubmissionFormat** - Defines how learners should submit (text, file upload, etc.)
+
+**Use Cases:**
+- **Authoring**: Instructors create tasks with multiple steps (activities), define examples with video walkthroughs, write guidance text for each step, specify submission format and point values, clone tasks as templates, move tasks between units
+- **Learning**: Learners view task list for a unit with progress summaries, open a task to see step-by-step instructions, access examples (watch videos with play/pause/finish tracking), read guidance materials, submit answers for each step
+- **Progress**: System creates/updates task progress records, tracks which steps are completed, records submission timestamps and content
+- **Grading**: Instructors view learner submissions, grade individual steps with points and comments, view group summaries showing progress across all learners, bulk retrieve progress for a cohort
+
+**Domain Events:** TaskOpened, TaskCompleted, TaskGraded, StepOpened, StepSubmitted, StepGraded, ExampleOpened, GuidanceOpened, VideoPlayed, VideoPaused, VideoFinished (for learning analytics)
+
+**Dependencies:** → Courses.API (for unit context)
+
+### LearningUtils
+**Domain:** Provides supporting tools for learners during their learning journey.
+
+**Key Entities:**
+- **Note** - Learner's personal note (text, order) scoped to a specific unit within a course
+
+**Use Cases:**
+- **Note-taking**: Learners create notes while studying a unit, update note content, reorder notes, delete notes, retrieve all notes for a unit
+- **Export**: Learners export their notes to a downloadable file format
+
+**Dependencies:** → Stakeholders.API (for learner context)
+
+### Stakeholders
+**Domain:** Manages user identities, authentication, and the two primary roles in the system: instructors who create content and monitor progress, and learners who consume content and complete tasks.
+
+**Key Entities:**
+- **User** - Base authentication account (username, passwordHash)
+- **Stakeholder** - Abstract base for roles, contains profile info (name, surname, email, isArchived)
+- **Instructor** - Can author content, monitor learners, provide feedback
+- **Learner** - Can enroll in courses, complete KCs and tasks, receive feedback
+- **AuthenticationTokens** - JWT access token + refresh token pair
+
+**Use Cases:**
+- **Authentication**: Users login with credentials to receive JWT tokens, refresh expired access tokens using refresh token, logout invalidates tokens
+- **Learner Management**: Admins register learners individually or bulk import from CSV/list, retrieve paginated learner lists with filtering, update learner profile information, archive learners (soft delete preserving history), permanently delete learners
+- **Instructor Management**: Admins register instructor accounts, retrieve instructor lists, update instructor profiles, archive or delete instructors
+
+**Dependencies:** Foundation module - all other modules depend on Stakeholders for user identity
