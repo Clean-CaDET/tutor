@@ -6,6 +6,8 @@
   <Folder Name="/src/BuildingBlocks/">
     <Project Path="src/BuildingBlocks/Tutor.BuildingBlocks.Core/Tutor.BuildingBlocks.Core.csproj" />
     <Project Path="src/BuildingBlocks/Tutor.BuildingBlocks.Infrastructure/Tutor.BuildingBlocks.Infrastructure.csproj" />
+    <Project Path="src/BuildingBlocks/Tutor.BuildingBlocks.AI.Core/Tutor.BuildingBlocks.AI.Core.csproj" />
+    <Project Path="src/BuildingBlocks/Tutor.BuildingBlocks.AI.Infrastructure/Tutor.BuildingBlocks.AI.Infrastructure.csproj" />
     <Project Path="src/BuildingBlocks/Tutor.BuildingBlocks.Tests/Tutor.BuildingBlocks.Tests.csproj" />
   </Folder>
   <Folder Name="/src/Modules/" />
