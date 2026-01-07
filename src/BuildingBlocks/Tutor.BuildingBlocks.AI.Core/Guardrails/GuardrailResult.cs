@@ -1,5 +1,8 @@
 namespace Tutor.BuildingBlocks.AI.Core.Guardrails;
 
+/// <summary>
+/// Result of validating content against safety and policy rules.
+/// </summary>
 public record GuardrailResult(bool IsValid, IReadOnlyList<GuardrailViolation> Violations)
 {
     public static GuardrailResult Valid() => new(true, []);

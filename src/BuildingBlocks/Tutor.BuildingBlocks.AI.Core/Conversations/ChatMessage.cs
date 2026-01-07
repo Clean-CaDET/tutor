@@ -1,5 +1,8 @@
 namespace Tutor.BuildingBlocks.AI.Core.Conversations;
 
+/// <summary>
+/// A single message in a conversation with an AI model.
+/// </summary>
 public record ChatMessage(ChatRole Role, string Content)
 {
     public static ChatMessage FromUser(string content) => new(ChatRole.User, content);
