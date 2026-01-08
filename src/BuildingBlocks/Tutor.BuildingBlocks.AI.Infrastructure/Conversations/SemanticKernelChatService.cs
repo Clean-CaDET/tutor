@@ -6,6 +6,9 @@ using Tutor.BuildingBlocks.AI.Core.Conversations;
 
 namespace Tutor.BuildingBlocks.AI.Infrastructure.Conversations;
 
+/// <summary>
+/// Semantic Kernel implementation of chat completion service.
+/// </summary>
 public class SemanticKernelChatService : IAiChatService
 {
     private readonly IChatCompletionService _chatCompletionService;

@@ -3,6 +3,9 @@ using Tutor.BuildingBlocks.AI.Core.Guardrails;
 
 namespace Tutor.BuildingBlocks.AI.Infrastructure.Guardrails;
 
+/// <summary>
+/// Combines multiple input guardrails, collecting violations from all. Fails fast on service errors.
+/// </summary>
 public class CompositeInputGuardrail : IInputGuardrail
 {
     private readonly IEnumerable<IInputGuardrail> _guardrails;
@@ -12,9 +15,7 @@ public class CompositeInputGuardrail : IInputGuardrail
         _guardrails = guardrails;
     }
 
-    public async Task<Result<GuardrailResult>> ValidateAsync(
-        string input,
-        CancellationToken cancellationToken = default)
+    public async Task<Result<GuardrailResult>> ValidateAsync(string input, CancellationToken cancellationToken = default)
     {
         var allViolations = new List<GuardrailViolation>();
 
