@@ -30,16 +30,13 @@ public class TokenWalletService : ITokenWalletService
         return _mapper.Map<TokenWalletDto>(wallet);
     }
 
-    public Result DepositTokens(int learnerId, int courseId, int amount, string reason, int instructorId)
+    public Result DepositTokens(int learnerId, int courseId, int amount, string reason)
     {
-        if (!_ownedCourseRepository.IsCourseOwner(courseId, instructorId))
-            return Result.Fail(FailureCode.Forbidden);
-
         var wallet = _walletRepository.Get(learnerId, courseId);
         if (wallet == null) return Result.Fail(FailureCode.NotFound);
 
         var result = wallet.DepositTokens(amount, reason);
-        if (result.IsFailed) return result;
+        if (result.IsFailed) return Result.Fail(FailureCode.Forbidden);
 
         _walletRepository.Update(wallet);
         return _unitOfWork.Save();
