@@ -2,6 +2,9 @@
 DELETE FROM courses."UnitEnrollments";
 DELETE FROM courses."LearnerGroups";
 
+DELETE FROM courses."WalletEvents";
+DELETE FROM courses."TokenWallets";
+
 DELETE FROM courses."ReflectionAnswers";
 DELETE FROM courses."ReflectionQuestions";
 DELETE FROM courses."Reflections";

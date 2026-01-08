@@ -6,5 +6,5 @@ namespace Tutor.Courses.API.Public.Management;
 public interface ITokenWalletService
 {
     Result<TokenWalletDto> GetWallet(int learnerId, int courseId);
-    Result DepositTokens(int learnerId, int courseId, int amount, string reason, int instructorId);
+    Result DepositTokens(int learnerId, int courseId, int amount, string reason);
 }

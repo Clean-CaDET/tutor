@@ -126,6 +126,27 @@ An intelligent tutoring system for structured learning with knowledge and skill 
 
 **Dependencies:** Foundation module - all other modules depend on Stakeholders for user identity
 
+## Controllers (Tutor.API)
+
+Controllers are organized by audience and domain in `Tutor.API/Controllers/`:
+- `Administrator/` - Admin-only endpoints (course management, enrollments, monitoring)
+- `Instructor/` - Instructor endpoints (authoring, grading, feedback)
+- `Learner/` - Learner endpoints (learning sessions, submissions, progress)
+
+**Controller Conventions:**
+- Inherit from `BaseApiController` for standardized response handling
+- Use `CreateResponse(Result)` to convert FluentResults to HTTP responses
+- Apply `[Authorize(Policy = "...Policy")]` for role-based access:
+  - `administratorPolicy` - Admin only
+  - `instructorPolicy` - Instructors only
+  - `learnerPolicy` - Learners only
+- Extract user IDs from JWT claims using extension methods:
+  - `User.InstructorId()` - Get instructor ID from claims
+  - `User.LearnerId()` - Get learner ID from claims
+  - Import `Tutor.Stakeholders.Infrastructure.Authentication` namespace
+- Route patterns follow RESTful conventions with route parameters as `{param:int}`
+- Controller constructor injects service interfaces from module API layers
+
 ## AI Capabilities (BuildingBlocks.AI)
 
 Generic AI services available for module-specific features. Core defines abstractions; Infrastructure provides Semantic Kernel + pgvector implementations.
