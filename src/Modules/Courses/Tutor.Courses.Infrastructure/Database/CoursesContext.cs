@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.Reflections;
 using Tutor.Courses.Core.Domain.Report;
+using Tutor.Courses.Core.Domain.TokenWallet;
+using Tutor.Courses.Infrastructure.Database.EventStore.Wallet;
 
 namespace Tutor.Courses.Infrastructure.Database;
 
@@ -21,6 +23,8 @@ public class CoursesContext : DbContext
     public DbSet<WeeklyFeedback> WeeklyProgress { get; set; }
     public DbSet<WeeklyFeedbackQuestion> WeeklyFeedbackQuestions { get; set; }
     public DbSet<CourseReport> CourseReports { get; set; }
+    public DbSet<Wallet> TokenWallets { get; set; }
+    public DbSet<StoredWalletDomainEvent> WalletEvents { get; set; }
 
     public CoursesContext(DbContextOptions<CoursesContext> options) : base(options) {}
 
@@ -50,5 +54,19 @@ public class CoursesContext : DbContext
 
         modelBuilder.Entity<CourseReport>().Property(cr => cr.UnitReports).HasColumnType("jsonb");
         modelBuilder.Entity<CourseReport>().Property(cr => cr.FeedbackItemAggregates).HasColumnType("jsonb");
+
+        // TokenWallet configuration
+        modelBuilder.Entity<Wallet>()
+            .HasIndex(w => new { w.LearnerId, w.CourseId })
+            .IsUnique();
+
+        // Wallet events configuration
+        modelBuilder.Entity<StoredWalletDomainEvent>()
+            .Property(e => e.DomainEvent)
+            .HasColumnType("jsonb");
+        modelBuilder.Entity<StoredWalletDomainEvent>()
+            .HasIndex(e => new { e.LearnerId, e.CourseId });
+        modelBuilder.Entity<StoredWalletDomainEvent>()
+            .HasIndex(e => e.TimeStamp);
     }
 }

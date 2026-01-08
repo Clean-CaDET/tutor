@@ -14,6 +14,11 @@ public record CompletionRequest
     /// </summary>
     public double? Temperature { get; init; }
 
+    /// <summary>
+    /// Optional metadata for passing context to decorators or middleware (e.g., token spending context).
+    /// </summary>
+    public IReadOnlyDictionary<string, object>? Metadata { get; init; }
+
     public static CompletionRequest Create(IEnumerable<ChatMessage> messages, string? systemPrompt, int? maxTokens, double? temperature)
     {
         return new CompletionRequest
