@@ -125,3 +125,38 @@ An intelligent tutoring system for structured learning with knowledge and skill 
 - **Instructor Management**: Admins register instructor accounts, retrieve instructor lists, update instructor profiles, archive or delete instructors
 
 **Dependencies:** Foundation module - all other modules depend on Stakeholders for user identity
+
+## AI Capabilities (BuildingBlocks.AI)
+
+Generic AI services available for module-specific features. Core defines abstractions; Infrastructure provides Semantic Kernel + pgvector implementations.
+
+**Services:**
+- `IAiChatService` - Chat completions with `CompleteAsync` (returns full response) and `StreamAsync` (token streaming). Configure via `CompletionRequest` (messages, system prompt, temperature, max tokens).
+- `ITextEmbeddingService` - Convert text to vectors via `GenerateEmbeddingAsync` (single) or `GenerateEmbeddingsAsync` (batch).
+- `IVectorStore<TMetadata>` - Store/search embeddings with custom metadata. Supports `UpsertAsync`, `SearchAsync` (cosine similarity with filters), `DeleteAsync`. Each module registers its own instance with `AddVectorStore<TMetadata>()`.
+- `IInputGuardrail` / `IOutputGuardrail` - Validate user input before LLM calls and LLM output before returning to users. Use `CompositeInputGuardrail` / `CompositeOutputGuardrail` to chain multiple validators.
+
+**Registration:**
+```csharp
+// In module startup - register shared AI services
+services.AddAIServices(new AiServiceConfiguration
+{
+    ApiKey = "...",
+    ChatModelId = "gpt-4o",
+    EmbeddingModelId = "text-embedding-3-small" // optional
+});
+
+// Per-module vector store with custom metadata
+services.AddVectorStore<MyMetadata>(new VectorStoreConfiguration
+{
+    ConnectionString = "...",
+    TableName = "my_module_vectors",
+    VectorDimensions = 1536
+});
+```
+
+**Usage Pattern (RAG):**
+1. Generate embedding for user query via `ITextEmbeddingService`
+2. Search relevant content via `IVectorStore<T>.SearchAsync`
+3. Build prompt with retrieved context
+4. Call `IAiChatService.CompleteAsync` or `StreamAsync`
