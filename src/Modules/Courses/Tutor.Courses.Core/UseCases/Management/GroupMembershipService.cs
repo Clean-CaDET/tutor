@@ -4,6 +4,7 @@ using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos.Groups;
 using Tutor.Courses.API.Public.Management;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
+using Tutor.Courses.Core.Domain.TokenWallet;
 using Tutor.Stakeholders.API.Internal;
 
 namespace Tutor.Courses.Core.UseCases.Management;
@@ -14,14 +15,16 @@ public class GroupMembershipService: IGroupMembershipService
     private readonly IGroupRepository _groupRepository;
     private readonly ICoursesUnitOfWork _unitOfWork;
     private readonly IInternalLearnerService _learnerService;
+    private readonly IWalletRepository _walletRepository;
 
     public GroupMembershipService(IMapper mapper, IGroupRepository groupRepository,
-        ICoursesUnitOfWork unitOfWork, IInternalLearnerService learnerService)
+        ICoursesUnitOfWork unitOfWork, IInternalLearnerService learnerService, IWalletRepository walletRepository)
     {
         _mapper = mapper;
         _groupRepository = groupRepository;
         _unitOfWork = unitOfWork;
         _learnerService = learnerService;
+        _walletRepository = walletRepository;
     }
 
     public Result<List<LearnerDto>> GetMembers(int groupId)
@@ -42,10 +45,25 @@ public class GroupMembershipService: IGroupMembershipService
 
         group.AddMembers(learnerIds);
         _groupRepository.Update(group);
+
+        ProvisionWalletsIfNeeded(group.CourseId, learnerIds);
+
         var result = _unitOfWork.Save();
         if (result.IsFailed) return result;
-        
+
         return Result.Ok();
+    }
+
+    private void ProvisionWalletsIfNeeded(int courseId, List<int> learnerIds)
+    {
+        var existingWallets = _walletRepository.GetByCourseAndLearners(courseId, learnerIds);
+        var learnersWithoutWallets = learnerIds.Except(existingWallets.Select(w => w.LearnerId)).ToList();
+
+        foreach (var learnerId in learnersWithoutWallets)
+        {
+            var wallet = new Wallet(learnerId, courseId, 2000000);
+            _walletRepository.Create(wallet);
+        }
     }
 
     public Result DeleteMember(int groupId, int learnerId)
