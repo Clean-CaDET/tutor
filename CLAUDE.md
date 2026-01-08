@@ -160,3 +160,44 @@ services.AddVectorStore<MyMetadata>(new VectorStoreConfiguration
 2. Search relevant content via `IVectorStore<T>.SearchAsync`
 3. Build prompt with retrieved context
 4. Call `IAiChatService.CompleteAsync` or `StreamAsync`
+
+## BuildingBlocks Reference
+
+### When to Use Each Domain Building Block (Core)
+
+| Building Block | Use When | Example |
+|----------------|----------|---------|
+| `Entity` | Any domain object needing persistence and identity | `Course : Entity`, `Note : Entity` |
+| `AggregateRoot` | Entity is the root of a consistency boundary (aggregate) | `LearningTask : AggregateRoot` |
+| `ValueObject` | Object defined by attributes, not identity; immutable | `WeeklyFeedbackItem : ValueObject` |
+| `EventSourcedAggregateRoot` | Need audit trail, analytics, or rebuild state from events | `KnowledgeComponentMastery : EventSourcedAggregateRoot` |
+| `DomainEvent` | Recording state changes as events | `KnowledgeComponentStarted`, `TaskCompleted` |
+
+**Entity vs AggregateRoot:** Use `AggregateRoot` when the entity is the entry point for a cluster of related objects that must be consistent together. Child entities within that cluster use plain `Entity`.
+
+Do not use **EventSourcedAggregateRoot**, as it is a legacy feature.
+
+### When to Use Each Use Case Building Block (Core)
+
+| Building Block | Use When | Example |
+|----------------|----------|---------|
+| `BaseService<TDto, TDomain>` | Service needs DTO↔Domain mapping but custom persistence logic | Custom services with AutoMapper |
+| `CrudService<TDto, TDomain>` | Service needs standard Create/Read/Update/Delete operations | `NoteService : CrudService<NoteDto, Note>` |
+| `ICrudRepository<TEntity>` | Defining repository interface for Core layer | `INoteRepository : ICrudRepository<Note>` |
+| `IUnitOfWork` | Coordinating saves across multiple repositories | Transaction management in services |
+| `FailureCode` | Returning standardized errors with HTTP codes | `Result.Fail(FailureCode.NotFound)` |
+
+**BaseService vs CrudService:** Use `CrudService` when you need the standard CRUD operations out of the box. Use `BaseService` when you only need the mapping utilities but will implement persistence differently.
+
+### When to Use Each Infrastructure Building Block
+
+| Building Block | Use When | Example |
+|----------------|----------|---------|
+| `CrudDatabaseRepository<TEntity, TDbContext>` | Implementing ICrudRepository with EF Core | `LearningTaskDatabaseRepository : CrudDatabaseRepository<LearningTask, LearningTasksContext>` |
+| `UnitOfWork<TDbContext>` | Implementing IUnitOfWork for a module's DbContext | Module startup registration |
+| `LinqExtensions.GetPagedById` | Paginated queries with default Id ordering | Custom repository methods |
+| `LinqExtensions.GetPaged` | Paginated queries with custom ordering | Custom repository methods |
+| `DbConnectionStringBuilder.Build` | Building PostgreSQL connection string from env vars | DbContext configuration |
+| `EnvironmentConnection.GetSecret` | Reading Docker secrets or env vars | Database password, API keys |
+| `LoggingInterceptor` | Automatic logging of service call results | Cross-cutting logging concern |
+| `ProxiedServiceExtensions.AddProxiedScoped` | Register service with interceptors (e.g., logging) | Module DI registration |
