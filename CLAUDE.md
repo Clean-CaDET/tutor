@@ -187,7 +187,9 @@ Do not use **EventSourcedAggregateRoot**, as it is a legacy feature.
 | `IUnitOfWork` | Coordinating saves across multiple repositories | Transaction management in services |
 | `FailureCode` | Returning standardized errors with HTTP codes | `Result.Fail(FailureCode.NotFound)` |
 
-**BaseService vs CrudService:** Use `CrudService` when you need the standard CRUD operations out of the box. Use `BaseService` when you only need the mapping utilities but will implement persistence differently.
+**BaseService vs CrudService vs no inheritance:** Use `CrudService` when you need the standard CRUD operations out of the box. Use `BaseService` when you only need the mapping utilities but will implement persistence differently. Do not inherite either service when creating a service that works with multiple entities without a clear main entity.
+
+When creating a DTO and matching domain object in a Module.Core project, look for the Mappers directory and expand the AutoMapper profiles to simplify service implementations.
 
 ### When to Use Each Infrastructure Building Block
 
