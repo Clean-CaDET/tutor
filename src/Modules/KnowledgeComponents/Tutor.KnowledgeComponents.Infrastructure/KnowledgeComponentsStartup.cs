@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
+using Tutor.BuildingBlocks.AI.Infrastructure;
+using Tutor.BuildingBlocks.AI.Infrastructure.VectorStores;
 using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Infrastructure.Database;
 using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.DefaultEventSerializer;
@@ -11,6 +13,7 @@ using Tutor.KnowledgeComponents.API.Public.Analysis;
 using Tutor.KnowledgeComponents.API.Public.Authoring;
 using Tutor.KnowledgeComponents.API.Public.Learning;
 using Tutor.KnowledgeComponents.API.Public.Learning.Assessment;
+using Tutor.KnowledgeComponents.Core.Domain.Knowledge;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery;
 using Tutor.KnowledgeComponents.Core.Domain.KnowledgeMastery.DomainServices;
@@ -59,6 +62,7 @@ public static class KnowledgeComponentsStartup
         services.AddProxiedScoped<IKnowledgeComponentService, KnowledgeComponentService>();
         services.AddProxiedScoped<IKnowledgeComponentCloner, KnowledgeComponentService>();
         services.AddProxiedScoped<IKnowledgeComponentQuerier, KnowledgeComponentService>();
+        services.AddProxiedScoped<IKnowledgeComponentIndexingService, KnowledgeComponentIndexingService>();
 
         services.AddProxiedScoped<IInstructionService, InstructionService>();
         services.AddProxiedScoped<ISessionService, SessionService>();
@@ -88,13 +92,21 @@ public static class KnowledgeComponentsStartup
         services.AddSingleton<IEventSerializer<KnowledgeComponentEvent>>(new DefaultEventSerializer<KnowledgeComponentEvent>(EventSerializationConfiguration.EventRelatedTypes));
 
         services.AddScoped<IKnowledgeComponentsUnitOfWork, KnowledgeComponentsUnitOfWork>();
-        
-        var dataSourceBuilder = new NpgsqlDataSourceBuilder(DbConnectionStringBuilder.Build("knowledgeComponents"));
+
+        var connectionString = DbConnectionStringBuilder.Build("knowledgeComponents");
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
         dataSourceBuilder.EnableDynamicJson();
         var dataSource = dataSourceBuilder.Build();
-        
+
         services.AddDbContext<KnowledgeComponentsContext>(opt =>
             opt.UseNpgsql(dataSource,
                 x => x.MigrationsHistoryTable("__EFMigrationsHistory", "knowledgeComponents")));
+
+        services.AddVectorStore<InstructionalItemEmbeddingMetadata>(new VectorStoreConfiguration
+        {
+            ConnectionString = connectionString,
+            TableName = "\"knowledgeComponents\".instructional_item_embeddings",
+            VectorDimensions = 1536
+        });
     }
 }

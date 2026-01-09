@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Tutor.BuildingBlocks.AI.Infrastructure\Tutor.BuildingBlocks.AI.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\Tutor.BuildingBlocks.Infrastructure\Tutor.BuildingBlocks.Infrastructure.csproj" />
     <ProjectReference Include="..\Tutor.KnowledgeComponents.Core\Tutor.KnowledgeComponents.Core.csproj" />
   </ItemGroup>

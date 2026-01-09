@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Tutor.BuildingBlocks.AI.Core\Tutor.BuildingBlocks.AI.Core.csproj" />
     <ProjectReference Include="..\..\Courses\Tutor.Courses.API\Tutor.Courses.API.csproj" />
     <ProjectReference Include="..\Tutor.KnowledgeComponents.API\Tutor.KnowledgeComponents.API.csproj" />
   </ItemGroup>

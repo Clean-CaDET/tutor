@@ -41,4 +41,11 @@ public class KnowledgeComponentDatabaseRepository : CrudDatabaseRepository<Knowl
             .Where(kc => kc.ParentId == null && unitIds.Contains(kc.KnowledgeUnitId))
             .ToList();
     }
+
+    public KnowledgeComponent? GetWithInstruction(int kcId)
+    {
+        return DbContext.KnowledgeComponents
+            .Include(kc => kc.InstructionalItems)
+            .FirstOrDefault(kc => kc.Id == kcId);
+    }
 }
