@@ -205,6 +205,77 @@ public class KnowledgeComponentIndexingTests : IClassFixture<KnowledgeComponents
         objectResult.StatusCode.ShouldBe(500);
     }
 
+    [Fact]
+    public async Task Reindexing_removes_vectors_for_deleted_instructional_items()
+    {
+        var mockEmbeddingService = CreateMockEmbeddingService();
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<KnowledgeComponentsContext>();
+        var vectorStore = scope.ServiceProvider.GetRequiredService<IVectorStore<InstructionalItemEmbeddingMetadata>>();
+
+        // Setup: KC -10 has 2 text items (ids: -101, -102)
+        var initialMockEmbeddings = new List<EmbeddingResponse>
+        {
+            new(CreateMockVector(1536), 10),
+            new(CreateMockVector(1536), 10)
+        };
+
+        mockEmbeddingService
+            .Setup(x => x.GenerateEmbeddingsAsync(It.Is<IEnumerable<string>>(texts => texts.Count() == 2), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result.Ok<IReadOnlyList<EmbeddingResponse>>(initialMockEmbeddings));
+
+        dbContext.Database.BeginTransaction();
+
+        // Initial indexing
+        await controller.Index(-10, CancellationToken.None);
+
+        // Verify both items were indexed
+        var searchQuery1 = new VectorSearchQuery
+        {
+            QueryEmbedding = CreateMockVector(1536),
+            TopK = 10
+        };
+        var searchResult1 = await vectorStore.SearchAsync(searchQuery1, CancellationToken.None);
+        searchResult1.IsSuccess.ShouldBeTrue();
+        var initialVectors = searchResult1.Value.Where(v => v.Record.Metadata.KnowledgeComponentId == -10).ToList();
+        initialVectors.Count.ShouldBe(2);
+
+        // Delete one instructional item from the database
+        var itemToDelete = dbContext.InstructionalItems.First(i => i.Id == -102);
+        dbContext.InstructionalItems.Remove(itemToDelete);
+        dbContext.SaveChanges();
+        dbContext.ChangeTracker.Clear();
+
+        // Setup mock for reindexing (now only 1 item remains)
+        var reindexMockEmbedding = new List<EmbeddingResponse>
+        {
+            new(CreateMockVector(1536), 10)
+        };
+
+        mockEmbeddingService
+            .Setup(x => x.GenerateEmbeddingsAsync(It.Is<IEnumerable<string>>(texts => texts.Count() == 1), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result.Ok<IReadOnlyList<EmbeddingResponse>>(reindexMockEmbedding));
+
+        // Reindex
+        var reindexResult = await controller.Index(-10, CancellationToken.None);
+        reindexResult.ShouldBeOfType<OkResult>();
+
+        dbContext.ChangeTracker.Clear();
+
+        // Verify only the remaining item is indexed (deleted item's vector should be gone)
+        var searchQuery2 = new VectorSearchQuery
+        {
+            QueryEmbedding = CreateMockVector(1536),
+            TopK = 10
+        };
+        var searchResult2 = await vectorStore.SearchAsync(searchQuery2, CancellationToken.None);
+        searchResult2.IsSuccess.ShouldBeTrue();
+        var finalVectors = searchResult2.Value.Where(v => v.Record.Metadata.KnowledgeComponentId == -10).ToList();
+        finalVectors.Count.ShouldBe(1);
+        finalVectors[0].Record.Metadata.InstructionalItemId.ShouldBe(-101);
+    }
+
     private static KnowledgeComponentIndexingController CreateController(IServiceScope scope, string instructorId = "-51")
     {
         return new KnowledgeComponentIndexingController(scope.ServiceProvider.GetRequiredService<IKnowledgeComponentIndexingService>())

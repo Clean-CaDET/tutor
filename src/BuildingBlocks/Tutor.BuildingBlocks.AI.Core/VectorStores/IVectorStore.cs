@@ -19,4 +19,9 @@ public interface IVectorStore<TMetadata> where TMetadata : class
 
     Task<Result> DeleteAsync(string id, CancellationToken cancellationToken = default);
     Task<Result> DeleteBatchAsync(IEnumerable<string> ids, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Deletes all records matching the specified metadata filters and returns number of deleted records.
+    /// </summary>
+    Task<Result<int>> DeleteByMetadataAsync(Dictionary<string, object> metadataFilters, CancellationToken cancellationToken = default);
 }

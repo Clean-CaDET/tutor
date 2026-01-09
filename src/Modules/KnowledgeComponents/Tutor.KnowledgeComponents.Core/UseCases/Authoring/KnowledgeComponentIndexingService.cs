@@ -38,6 +38,15 @@ public class KnowledgeComponentIndexingService : IKnowledgeComponentIndexingServ
         if (kc == null)
             return Result.Fail(FailureCode.NotFound);
 
+        // Delete all existing vectors for this KC to handle removed instructional items
+        var deleteFilters = new Dictionary<string, object>
+        {
+            { nameof(InstructionalItemEmbeddingMetadata.KnowledgeComponentId), kcId }
+        };
+        var deleteResult = await _vectorStore.DeleteByMetadataAsync(deleteFilters, cancellationToken);
+        if (deleteResult.IsFailed)
+            return deleteResult.ToResult();
+
         var textItems = GetOrderedTextItems(kc);
         if (textItems.Count == 0)
             return Result.Ok();
@@ -53,7 +62,7 @@ public class KnowledgeComponentIndexingService : IKnowledgeComponentIndexingServ
 
         var records = textItems.Zip(embeddings, (item, embedding) => new VectorRecord<InstructionalItemEmbeddingMetadata>
         {
-            Id = BuildVectorId(item.Id),
+            Id = $"ii_{item.Id}",
             Embedding = embedding.Vector,
             Metadata = new InstructionalItemEmbeddingMetadata
             {
@@ -77,12 +86,12 @@ public class KnowledgeComponentIndexingService : IKnowledgeComponentIndexingServ
         var kc = _kcRepository.GetWithInstruction(kcId);
         if (kc == null) return Result.Fail(FailureCode.NotFound);
 
-        var textItems = GetOrderedTextItems(kc);
-        if (textItems.Count == 0)
-            return Result.Ok();
-
-        var vectorIds = textItems.Select(item => BuildVectorId(item.Id)).ToList();
-        return await _vectorStore.DeleteBatchAsync(vectorIds, cancellationToken);
+        // Delete all vectors for this KC using metadata filter
+        var deleteFilters = new Dictionary<string, object>
+        {
+            { nameof(InstructionalItemEmbeddingMetadata.KnowledgeComponentId), kcId }
+        };
+        return (await _vectorStore.DeleteByMetadataAsync(deleteFilters, cancellationToken)).ToResult();
     }
 
     private static List<Markdown> GetOrderedTextItems(KnowledgeComponent kc)
@@ -136,10 +145,5 @@ public class KnowledgeComponentIndexingService : IKnowledgeComponentIndexingServ
             return text;
 
         return text[..maxLength] + "...";
-    }
-
-    private static string BuildVectorId(int instructionalItemId)
-    {
-        return $"ii_{instructionalItemId}";
     }
 }

@@ -237,4 +237,46 @@ public class PgVectorStore<TMetadata> : IVectorStore<TMetadata> where TMetadata 
             return Result.Fail($"Failed to delete vector records: {ex.Message}");
         }
     }
+
+    public async Task<Result<int>> DeleteByMetadataAsync(Dictionary<string, object> metadataFilters, CancellationToken cancellationToken = default)
+    {
+        if (metadataFilters == null || !metadataFilters.Any())
+        {
+            return Result.Fail<int>("At least one metadata filter is required");
+        }
+
+        try
+        {
+            await using var connection = await _dataSource.OpenConnectionAsync(cancellationToken);
+
+            var whereConditions = new List<string>();
+            var parameters = new Dictionary<string, object>();
+
+            var filterIndex = 0;
+            foreach (var filter in metadataFilters)
+            {
+                var paramName = $"filter_{filterIndex}";
+                whereConditions.Add($"metadata->>'{filter.Key}' = @{paramName}");
+                parameters[paramName] = filter.Value.ToString()!;
+                filterIndex++;
+            }
+
+            var sql = $@"
+                DELETE FROM {_configuration.TableName}
+                WHERE {string.Join(" AND ", whereConditions)}";
+
+            await using var command = new NpgsqlCommand(sql, connection);
+            foreach (var param in parameters)
+            {
+                command.Parameters.AddWithValue(param.Key, param.Value);
+            }
+
+            var rowsAffected = await command.ExecuteNonQueryAsync(cancellationToken);
+            return Result.Ok(rowsAffected);
+        }
+        catch (Exception ex)
+        {
+            return Result.Fail<int>($"Failed to delete vector records by metadata: {ex.Message}");
+        }
+    }
 }
