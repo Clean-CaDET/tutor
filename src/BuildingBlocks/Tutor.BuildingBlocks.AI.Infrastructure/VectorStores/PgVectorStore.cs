@@ -12,18 +12,22 @@ namespace Tutor.BuildingBlocks.AI.Infrastructure.VectorStores;
 public class PgVectorStore<TMetadata> : IVectorStore<TMetadata> where TMetadata : class
 {
     private readonly VectorStoreConfiguration _configuration;
+    private readonly NpgsqlDataSource _dataSource;
 
     public PgVectorStore(VectorStoreConfiguration configuration)
     {
         _configuration = configuration;
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(_configuration.ConnectionString);
+        dataSourceBuilder.EnableDynamicJson();
+        dataSourceBuilder.UseVector();
+        _dataSource = dataSourceBuilder.Build();
     }
 
     public async Task<Result> UpsertAsync(VectorRecord<TMetadata> record, CancellationToken cancellationToken = default)
     {
         try
         {
-            await using var connection = new NpgsqlConnection(_configuration.ConnectionString);
-            await connection.OpenAsync(cancellationToken);
+            await using var connection = await _dataSource.OpenConnectionAsync(cancellationToken);
 
             var sql = $@"
                 INSERT INTO {_configuration.TableName} (id, embedding, metadata, created_at)
@@ -52,8 +56,7 @@ public class PgVectorStore<TMetadata> : IVectorStore<TMetadata> where TMetadata 
     {
         try
         {
-            await using var connection = new NpgsqlConnection(_configuration.ConnectionString);
-            await connection.OpenAsync(cancellationToken);
+            await using var connection = await _dataSource.OpenConnectionAsync(cancellationToken);
 
             await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
 
@@ -70,7 +73,7 @@ public class PgVectorStore<TMetadata> : IVectorStore<TMetadata> where TMetadata 
                 await using var command = new NpgsqlCommand(sql, connection, transaction);
                 command.Parameters.AddWithValue("id", record.Id);
                 command.Parameters.AddWithValue("embedding", new Vector(record.Embedding.ToArray()));
-                command.Parameters.AddWithValue("metadata", JsonSerializer.Serialize(record.Metadata));
+                command.Parameters.Add("metadata", NpgsqlTypes.NpgsqlDbType.Jsonb).Value = record.Metadata;
                 command.Parameters.AddWithValue("created_at", record.CreatedAt);
 
                 await command.ExecuteNonQueryAsync(cancellationToken);
@@ -89,8 +92,7 @@ public class PgVectorStore<TMetadata> : IVectorStore<TMetadata> where TMetadata 
     {
         try
         {
-            await using var connection = new NpgsqlConnection(_configuration.ConnectionString);
-            await connection.OpenAsync(cancellationToken);
+            await using var connection = await _dataSource.OpenConnectionAsync(cancellationToken);
 
             var sql = $"SELECT id, embedding, metadata, created_at FROM {_configuration.TableName} WHERE id = @id";
 
@@ -124,8 +126,7 @@ public class PgVectorStore<TMetadata> : IVectorStore<TMetadata> where TMetadata 
     {
         try
         {
-            await using var connection = new NpgsqlConnection(_configuration.ConnectionString);
-            await connection.OpenAsync(cancellationToken);
+            await using var connection = await _dataSource.OpenConnectionAsync(cancellationToken);
 
             var whereConditions = new List<string> { "1 - (embedding <=> @queryEmbedding) >= @minSimilarity" };
             var parameters = new Dictionary<string, object>
@@ -195,8 +196,7 @@ public class PgVectorStore<TMetadata> : IVectorStore<TMetadata> where TMetadata 
     {
         try
         {
-            await using var connection = new NpgsqlConnection(_configuration.ConnectionString);
-            await connection.OpenAsync(cancellationToken);
+            await using var connection = await _dataSource.OpenConnectionAsync(cancellationToken);
 
             var sql = $"DELETE FROM {_configuration.TableName} WHERE id = @id";
 
@@ -222,8 +222,7 @@ public class PgVectorStore<TMetadata> : IVectorStore<TMetadata> where TMetadata 
     {
         try
         {
-            await using var connection = new NpgsqlConnection(_configuration.ConnectionString);
-            await connection.OpenAsync(cancellationToken);
+            await using var connection = await _dataSource.OpenConnectionAsync(cancellationToken);
 
             var sql = $"DELETE FROM {_configuration.TableName} WHERE id = ANY(@ids)";
 

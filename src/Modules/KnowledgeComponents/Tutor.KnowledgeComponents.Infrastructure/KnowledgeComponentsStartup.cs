@@ -105,7 +105,7 @@ public static class KnowledgeComponentsStartup
         services.AddVectorStore<InstructionalItemEmbeddingMetadata>(new VectorStoreConfiguration
         {
             ConnectionString = connectionString,
-            TableName = "\"knowledgeComponents\".instructional_item_embeddings",
+            TableName = "\"knowledgeComponents\".\"EmbeddingsInstructionalItems\"",
             VectorDimensions = 1536
         });
     }
