@@ -22,7 +22,7 @@ public class ModulesTests : BaseArchitecturalTests
     public void Core_projects_should_only_reference_themselves_API_projects_and_core_building_blocks(string moduleName)
     {
         var examinedTypes = GetExaminedTypes($"Tutor.{moduleName}.Core");
-        var forbiddenTypes = GetForbiddenTypes("Tutor.BuildingBlocks.Core", "Tutor\\..+\\.API", $"Tutor.{moduleName}.Core");
+        var forbiddenTypes = GetForbiddenTypes("Tutor.BuildingBlocks.Core", "Tutor.BuildingBlocks.AI.Core", "Tutor\\..+\\.API", $"Tutor.{moduleName}.Core");
 
         var rule = Types().That().Are(examinedTypes).Should().NotDependOnAny(forbiddenTypes);
 
