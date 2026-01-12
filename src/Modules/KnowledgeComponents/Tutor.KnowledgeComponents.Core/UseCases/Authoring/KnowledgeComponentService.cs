@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentResults;
+using Tutor.BuildingBlocks.AI.Core.VectorStores;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge;
 using Tutor.KnowledgeComponents.API.Internal;
@@ -14,11 +15,15 @@ public class KnowledgeComponentService : CrudService<KnowledgeComponentDto, Know
 {
     private readonly IKnowledgeComponentRepository _kcRepository;
     private readonly IAccessService _accessService;
+    private readonly IVectorStore<InstructionalItemEmbeddingMetadata> _vectorStore;
 
-    public KnowledgeComponentService(IMapper mapper, IKnowledgeComponentRepository kcRepository, IAccessService accessService, IKnowledgeComponentsUnitOfWork unitOfWork) : base(kcRepository, unitOfWork, mapper)
+    public KnowledgeComponentService(IMapper mapper, IKnowledgeComponentRepository kcRepository,
+        IAccessService accessService, IKnowledgeComponentsUnitOfWork unitOfWork,
+        IVectorStore<InstructionalItemEmbeddingMetadata> vectorStore) : base(kcRepository, unitOfWork, mapper)
     {
         _kcRepository = kcRepository;
         _accessService = accessService;
+        _vectorStore = vectorStore;
     }
     
     public Result<List<KnowledgeComponentDto>> GetByUnit(int unitId, int instructorId)
@@ -58,6 +63,15 @@ public class KnowledgeComponentService : CrudService<KnowledgeComponentDto, Know
     {
         if (!_accessService.IsKcOwner(id, instructorId))
             return Result.Fail(FailureCode.Forbidden);
+
+        // Clear vector indexes first so user can retry delete if this fails
+        var deleteFilters = new Dictionary<string, object>
+        {
+            { nameof(InstructionalItemEmbeddingMetadata.KnowledgeComponentId), id }
+        };
+        var indexClearResult = _vectorStore.DeleteByMetadataAsync(deleteFilters).GetAwaiter().GetResult();
+        if (indexClearResult.IsFailed)
+            return indexClearResult.ToResult();
 
         return Delete(id);
     }

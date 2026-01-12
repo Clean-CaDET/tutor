@@ -4,6 +4,7 @@ using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.InstructionalItems;
 using Tutor.KnowledgeComponents.API.Public;
 using Tutor.KnowledgeComponents.API.Public.Authoring;
+using Tutor.KnowledgeComponents.Core.Domain.Knowledge;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.InstructionalItems;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.RepositoryInterfaces;
 
@@ -13,11 +14,15 @@ public class InstructionalItemsService : CrudService<InstructionalItemDto, Instr
 {
     private readonly IAccessService _accessService;
     private readonly IInstructionalItemRepository _instructionRepository;
+    private readonly IKnowledgeComponentRepository _kcRepository;
 
-    public InstructionalItemsService(IMapper mapper, IInstructionalItemRepository instructionRepository, IAccessService accessService, IKnowledgeComponentsUnitOfWork unitOfWork): base(instructionRepository, unitOfWork, mapper)
+    public InstructionalItemsService(IMapper mapper, IInstructionalItemRepository instructionRepository,
+        IAccessService accessService, IKnowledgeComponentsUnitOfWork unitOfWork,
+        IKnowledgeComponentRepository kcRepository) : base(instructionRepository, unitOfWork, mapper)
     {
         _instructionRepository = instructionRepository;
         _accessService = accessService;
+        _kcRepository = kcRepository;
     }
 
     public Result<List<InstructionalItemDto>> GetByKc(int kcId, int instructorId)
@@ -34,6 +39,7 @@ public class InstructionalItemsService : CrudService<InstructionalItemDto, Instr
         if (!_accessService.IsKcOwner(instruction.KnowledgeComponentId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
+        MarkKcIndexingPartial(instruction.KnowledgeComponentId);
         return Create(instruction);
     }
 
@@ -42,14 +48,17 @@ public class InstructionalItemsService : CrudService<InstructionalItemDto, Instr
         if (!_accessService.IsKcOwner(instruction.KnowledgeComponentId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
+        MarkKcIndexingPartial(instruction.KnowledgeComponentId);
         return Update(instruction);
     }
 
     public Result<List<InstructionalItemDto>> UpdateOrdering(List<InstructionalItemDto> items, int instructorId)
     {
-        var kcId = items.Select(i => i.KnowledgeComponentId).Distinct().ToList();
-        if (kcId.Count > 1 || !_accessService.IsKcOwner(kcId.First(), instructorId))
+        var kcIds = items.Select(i => i.KnowledgeComponentId).Distinct().ToList();
+        if (kcIds.Count > 1 || !_accessService.IsKcOwner(kcIds.First(), instructorId))
             return Result.Fail(FailureCode.Forbidden);
+
+        MarkKcIndexingPartial(kcIds.First());
 
         var updatedItems = items
             .Select(i => _instructionRepository.Update(MapToDomain(i)))
@@ -67,6 +76,16 @@ public class InstructionalItemsService : CrudService<InstructionalItemDto, Instr
         if (!_accessService.IsKcOwner(kcId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
+        MarkKcIndexingPartial(kcId);
         return Delete(id);
+    }
+
+    private void MarkKcIndexingPartial(int kcId)
+    {
+        var kc = _kcRepository.Get(kcId);
+        if (kc != null && kc.IndexingDegree == KcIndexingDegree.Full)
+        {
+            kc.IndexingDegree = KcIndexingDegree.Partial;
+        }
     }
 }

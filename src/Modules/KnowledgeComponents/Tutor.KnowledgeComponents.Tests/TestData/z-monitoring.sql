@@ -1,9 +1,9 @@
 ﻿INSERT INTO "knowledgeComponents"."KnowledgeComponents"(
-    "Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order", "ExpectedDurationInMinutes")
-	VALUES (-9999, 'T-9999', '', -9999, '-9999', 1, 6);
+    "Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order", "ExpectedDurationInMinutes", "IndexingDegree")
+	VALUES (-9999, 'T-9999', '', -9999, '-9999', 1, 6, 0);
 INSERT INTO "knowledgeComponents"."KnowledgeComponents"(
-    "Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order", "ExpectedDurationInMinutes")
-	VALUES (-9998, 'T-9998', '', -9999, '-9998', 2, 8);
+    "Id", "Name", "Description", "KnowledgeUnitId", "Code", "Order", "ExpectedDurationInMinutes", "IndexingDegree")
+	VALUES (-9998, 'T-9998', '', -9999, '-9998', 2, 8, 0);
 
 -- Learner -9999 only interacted with KC -9999 (2 negative patterns should be exhibited)
 INSERT INTO "knowledgeComponents"."Events"(

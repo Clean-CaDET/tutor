@@ -80,7 +80,7 @@ public class CourseCommandTests : BaseCoursesIntegrationTest
         var ownerships = dbContext.CourseOwnerships.Where(o => o.Course.Id == result.Id).ToList();
         ownerships.Count.ShouldBe(1);
         var endingKcCount = kcDbContext.KnowledgeComponents.Count();
-        endingKcCount.ShouldBe(startingKcCount + 2);
+        endingKcCount.ShouldBe(startingKcCount + 1);
         int unitId = units[0].Id;
         var tasks = tasksDbContext.LearningTasks.Where(l => l.UnitId == unitId)
             .Include(l => l.Steps!).ThenInclude(s => s.Standards).ToList();

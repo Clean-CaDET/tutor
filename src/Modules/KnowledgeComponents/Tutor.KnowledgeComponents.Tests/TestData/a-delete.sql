@@ -7,3 +7,5 @@ DELETE FROM "knowledgeComponents"."ShortAnswerQuestions";
 DELETE FROM "knowledgeComponents"."AssessmentItems";
 DELETE FROM "knowledgeComponents"."InstructionalItems";
 DELETE FROM "knowledgeComponents"."KnowledgeComponents";
+
+DELETE FROM "knowledgeComponents"."EmbeddingsInstructionalItems";

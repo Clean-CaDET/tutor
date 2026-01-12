@@ -19,14 +19,17 @@ public class KnowledgeComponentIndexingService : IKnowledgeComponentIndexingServ
     private readonly IKnowledgeComponentRepository _kcRepository;
     private readonly ITextEmbeddingService _embeddingService;
     private readonly IVectorStore<InstructionalItemEmbeddingMetadata> _vectorStore;
+    private readonly IKnowledgeComponentsUnitOfWork _unitOfWork;
 
     public KnowledgeComponentIndexingService(IAccessService accessService, IKnowledgeComponentRepository kcRepository,
-        ITextEmbeddingService embeddingService, IVectorStore<InstructionalItemEmbeddingMetadata> vectorStore)
+        ITextEmbeddingService embeddingService, IVectorStore<InstructionalItemEmbeddingMetadata> vectorStore,
+        IKnowledgeComponentsUnitOfWork unitOfWork)
     {
         _accessService = accessService;
         _kcRepository = kcRepository;
         _embeddingService = embeddingService;
         _vectorStore = vectorStore;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result> IndexAsync(int kcId, int instructorId, CancellationToken cancellationToken = default)
@@ -75,7 +78,12 @@ public class KnowledgeComponentIndexingService : IKnowledgeComponentIndexingServ
             }
         }).ToList();
 
-        return await _vectorStore.UpsertBatchAsync(records, cancellationToken);
+        var upsertResult = await _vectorStore.UpsertBatchAsync(records, cancellationToken);
+        if (upsertResult.IsFailed)
+            return upsertResult;
+
+        kc.IndexingDegree = KcIndexingDegree.Full;
+        return _unitOfWork.Save();
     }
 
     public async Task<Result> DeindexAsync(int kcId, int instructorId, CancellationToken cancellationToken = default)
@@ -91,7 +99,12 @@ public class KnowledgeComponentIndexingService : IKnowledgeComponentIndexingServ
         {
             { nameof(InstructionalItemEmbeddingMetadata.KnowledgeComponentId), kcId }
         };
-        return (await _vectorStore.DeleteByMetadataAsync(deleteFilters, cancellationToken)).ToResult();
+        var deleteResult = await _vectorStore.DeleteByMetadataAsync(deleteFilters, cancellationToken);
+        if (deleteResult.IsFailed)
+            return deleteResult.ToResult();
+
+        kc.IndexingDegree = KcIndexingDegree.None;
+        return _unitOfWork.Save();
     }
 
     private static List<Markdown> GetOrderedTextItems(KnowledgeComponent kc)
