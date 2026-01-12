@@ -224,3 +224,8 @@ When creating a DTO and matching domain object in a Module.Core project, look fo
 | `EnvironmentConnection.GetSecret` | Reading Docker secrets or env vars | Database password, API keys |
 | `LoggingInterceptor` | Automatic logging of service call results | Cross-cutting logging concern |
 | `ProxiedServiceExtensions.AddProxiedScoped` | Register service with interceptors (e.g., logging) | Module DI registration |
+
+# Coding Style
+- Methods with 3 or less parameters should have their headers and invocations fit into one row.
+- Methods with more than 3 parameters should have their headers and invocations separate into multiple rows, where each row should contain 2 or 3 parameters.
+- Do not write method headers and invocations where one row is one parameter.
