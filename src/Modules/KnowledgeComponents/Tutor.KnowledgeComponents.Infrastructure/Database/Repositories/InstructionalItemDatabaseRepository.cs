@@ -12,4 +12,9 @@ public class InstructionalItemDatabaseRepository : CrudDatabaseRepository<Instru
     {
         return DbContext.InstructionalItems.Where(i => i.KnowledgeComponentId == kcId).ToList();
     }
+
+    public List<InstructionalItem> GetByIds(IEnumerable<int> ids)
+    {
+        return DbContext.InstructionalItems.Where(i => ids.Contains(i.Id)).ToList();
+    }
 }

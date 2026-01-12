@@ -25,6 +25,7 @@ using Tutor.KnowledgeComponents.Core.UseCases.Analysis;
 using Tutor.KnowledgeComponents.Core.UseCases.Authoring;
 using Tutor.KnowledgeComponents.Core.UseCases.Learning;
 using Tutor.KnowledgeComponents.Core.UseCases.Learning.Assessment;
+using Tutor.KnowledgeComponents.Core.UseCases.Learning.Chat;
 using Tutor.KnowledgeComponents.Core.UseCases.Monitoring;
 using Tutor.KnowledgeComponents.Infrastructure.Database;
 using Tutor.KnowledgeComponents.Infrastructure.Database.EventStore;
@@ -72,6 +73,8 @@ public static class KnowledgeComponentsStartup
 
         services.AddProxiedScoped<IEvaluationService, EvaluationService>();
         services.AddProxiedScoped<ISelectionService, SelectionService>();
+
+        services.AddProxiedScoped<IKcChatbotService, KcChatbotService>();
 
         services.AddProxiedScoped<IKcProgressMonitor, KcProgressMonitor>();
         services.AddProxiedScoped<IMasteryFactory, MasteryFactoryService>();
