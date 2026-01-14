@@ -15,6 +15,6 @@ public static class DbConnectionStringBuilder
         var pooling = Environment.GetEnvironmentVariable("DATABASE_POOLING") ?? "true";
 
         return
-            $"Server={server};Port={port};Database={database};SearchPath={schema};User ID={user};Password={password};Pooling={pooling};";
+            $"Server={server};Port={port};Database={database};SearchPath={schema},public;User ID={user};Password={password};Pooling={pooling};";
     }
 }

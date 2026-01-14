@@ -55,10 +55,10 @@ public class KcChatbotService : IKcChatbotService
             QueryEmbedding = embeddingResult.Value.Vector,
             TopK = TopKChunks,
             MinimumSimilarity = MinimumSimilarity,
-            MetadataFilters = new Dictionary<string, object>
+            /*MetadataFilters = new Dictionary<string, object>
             {
                 ["KnowledgeComponentId"] = kcId
-            }
+            }*/
         };
 
         var searchResult = await _vectorStore.SearchAsync(searchQuery, cancellationToken);
