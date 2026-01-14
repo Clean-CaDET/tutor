@@ -14,7 +14,7 @@ public static class ModulesConfiguration
         services.AddAIServices(new AiServiceConfiguration
         {
             ApiKey = "TODO",
-            ChatModelId = "gpt-4-turbo",
+            ChatModelId = "gpt-4.1-mini",
             EmbeddingModelId = "text-embedding-3-small"
         }); // TODO: Move configuration to environment variables
 
