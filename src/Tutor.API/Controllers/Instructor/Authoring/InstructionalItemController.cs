@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Tutor.KnowledgeComponents.API.Dtos.Knowledge;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.InstructionalItems;
 using Tutor.KnowledgeComponents.API.Public.Authoring;
 using Tutor.Stakeholders.Infrastructure.Authentication;
@@ -18,9 +19,9 @@ public class InstructionalItemController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<InstructionalItemDto>> GetByKc(int kcId)
+    public ActionResult<KnowledgeComponentDto> GetKcWithInstruction(int kcId)
     {
-        var result = _instructionService.GetByKc(kcId, User.InstructorId());
+        var result = _instructionService.GetKcWithInstruction(kcId, User.InstructorId());
         return CreateResponse(result);
     }
 

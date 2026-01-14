@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Instructor.Authoring;
+using Tutor.KnowledgeComponents.API.Dtos.Knowledge;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.InstructionalItems;
 using Tutor.KnowledgeComponents.API.Public.Authoring;
 using Tutor.KnowledgeComponents.Core.Domain.Knowledge.InstructionalItems;
@@ -15,15 +16,16 @@ public class InstructionTests : BaseKnowledgeComponentsIntegrationTest
     public InstructionTests(KnowledgeComponentsTestFactory factory) : base(factory) { }
 
     [Fact]
-    public void Gets_by_kc()
+    public void Gets_kc_and_instructional_items()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-51");
 
-        var result = ((OkObjectResult)controller.GetByKc(-10).Result)?.Value as List<InstructionalItemDto>;
+        var result = ((OkObjectResult)controller.GetKcWithInstruction(-10).Result)?.Value as KnowledgeComponentDto;
 
         result.ShouldNotBeNull();
-        result.Count.ShouldBe(3);
+        result.InstructionalItems.ShouldNotBeNull();
+        result.InstructionalItems.Count.ShouldBe(3);
     }
 
     [Fact]

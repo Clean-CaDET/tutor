@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
+using Tutor.KnowledgeComponents.API.Dtos.Knowledge;
 using Tutor.KnowledgeComponents.API.Dtos.Knowledge.InstructionalItems;
 using Tutor.KnowledgeComponents.API.Public;
 using Tutor.KnowledgeComponents.API.Public.Authoring;
@@ -12,6 +13,7 @@ namespace Tutor.KnowledgeComponents.Core.UseCases.Authoring;
 
 public class InstructionalItemsService : CrudService<InstructionalItemDto, InstructionalItem>, IInstructionalItemsService
 {
+    private readonly IMapper _mapper;
     private readonly IAccessService _accessService;
     private readonly IInstructionalItemRepository _instructionRepository;
     private readonly IKnowledgeComponentRepository _kcRepository;
@@ -20,18 +22,21 @@ public class InstructionalItemsService : CrudService<InstructionalItemDto, Instr
         IAccessService accessService, IKnowledgeComponentsUnitOfWork unitOfWork,
         IKnowledgeComponentRepository kcRepository) : base(instructionRepository, unitOfWork, mapper)
     {
-        _instructionRepository = instructionRepository;
+        _mapper = mapper;
         _accessService = accessService;
+        _instructionRepository = instructionRepository;
         _kcRepository = kcRepository;
     }
 
-    public Result<List<InstructionalItemDto>> GetByKc(int kcId, int instructorId)
+    public Result<KnowledgeComponentDto> GetWithInstruction(int kcId, int instructorId)
     {
         if (!_accessService.IsKcOwner(kcId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        var items = _instructionRepository.GetByKc(kcId);
-        return MapToDto(items);
+        var kc = _kcRepository.GetWithInstruction(kcId);
+        if (kc == null) return Result.Fail(FailureCode.NotFound);
+
+        return _mapper.Map<KnowledgeComponentDto>(kc);
     }
 
     public Result<InstructionalItemDto> Create(InstructionalItemDto instruction, int instructorId)

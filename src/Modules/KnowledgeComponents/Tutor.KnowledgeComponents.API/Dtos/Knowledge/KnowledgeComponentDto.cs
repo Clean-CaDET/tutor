@@ -1,4 +1,6 @@
-﻿namespace Tutor.KnowledgeComponents.API.Dtos.Knowledge;
+﻿using Tutor.KnowledgeComponents.API.Dtos.Knowledge.InstructionalItems;
+
+namespace Tutor.KnowledgeComponents.API.Dtos.Knowledge;
 
 public class KnowledgeComponentDto
 {
@@ -11,4 +13,5 @@ public class KnowledgeComponentDto
     public int KnowledgeUnitId { get; set; }
     public int ExpectedDurationInMinutes { get; set; }
     public string IndexingDegree { get; set; }
+    public List<InstructionalItemDto>? InstructionalItems { get; set; }
 }
