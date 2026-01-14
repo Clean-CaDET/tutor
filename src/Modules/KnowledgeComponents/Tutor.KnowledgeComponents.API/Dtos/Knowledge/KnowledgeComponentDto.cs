@@ -10,4 +10,5 @@ public class KnowledgeComponentDto
     public int? ParentId { get; set; }
     public int KnowledgeUnitId { get; set; }
     public int ExpectedDurationInMinutes { get; set; }
+    public string IndexingDegree { get; set; }
 }

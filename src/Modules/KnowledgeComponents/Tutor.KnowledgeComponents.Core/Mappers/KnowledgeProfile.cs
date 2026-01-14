@@ -10,8 +10,10 @@ public class KnowledgeProfile : Profile
 {
     public KnowledgeProfile()
     {
-        CreateMap<KnowledgeComponent, KnowledgeComponentDto>();
-        CreateMap<KnowledgeComponentDto, KnowledgeComponent>();
+        CreateMap<KnowledgeComponent, KnowledgeComponentDto>()
+            .ForMember(dest => dest.IndexingDegree, opt => opt.MapFrom(src => src.IndexingDegree.ToString()));
+        CreateMap<KnowledgeComponentDto, KnowledgeComponent>()
+            .ForMember(dest => dest.IndexingDegree, opt => opt.MapFrom(src => Enum.Parse<KcIndexingDegree>(src.IndexingDegree)));
 
         CreateMap<InstructionalItem, InstructionalItemDto>().IncludeAllDerived();
         CreateMap<Markdown, TextDto>();
