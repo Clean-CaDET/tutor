@@ -28,7 +28,7 @@ public class InstructionalItemsService : CrudService<InstructionalItemDto, Instr
         _kcRepository = kcRepository;
     }
 
-    public Result<KnowledgeComponentDto> GetWithInstruction(int kcId, int instructorId)
+    public Result<KnowledgeComponentDto> GetKcWithInstruction(int kcId, int instructorId)
     {
         if (!_accessService.IsKcOwner(kcId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
