@@ -118,6 +118,19 @@ public class KnowledgeComponentTests : BaseKnowledgeComponentsIntegrationTest
         dbContext.KcMasteries.Count(m => m.KnowledgeComponentId == kcId).ShouldBe(0);
     }
 
+    [Fact]
+    public void Kc_with_children_should_not_be_deleted()
+    {
+        var kcId = -10;
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+
+        var result = (ObjectResult)controller.Delete(kcId);
+
+        result.ShouldNotBeNull();
+        result.StatusCode.ShouldBe(409);
+    }
+
     private static KnowledgeComponentController CreateController(IServiceScope scope)
     {
         return new KnowledgeComponentController(scope.ServiceProvider.GetRequiredService<IKnowledgeComponentService>())
