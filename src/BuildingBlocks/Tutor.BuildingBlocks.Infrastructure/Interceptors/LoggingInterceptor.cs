@@ -30,8 +30,8 @@ public class LoggingInterceptor : IInterceptor
             else
             {
                 var errors = (ReadOnlyCollection<IError>)result!.Errors;
-                _logger.LogWarning("Call: {@Class}.{@Method}. Fail: {@Errors}.",
-                    invocation.TargetType, invocation.Method.Name, errors);
+                _logger.LogWarning("Call: {Class}.{Method}. Fail: {Errors}.",
+                    invocation.TargetType, invocation.Method.Name, errors.Select(e => e.Message).ToList());
             }
         }
         catch (Exception e)

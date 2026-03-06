@@ -67,7 +67,6 @@ public static class KnowledgeComponentsStartup
         services.AddProxiedScoped<IKnowledgeMasteryQuerier, StructureService>();
 
         services.AddProxiedScoped<IEvaluationService, EvaluationService>();
-        services.AddProxiedScoped<IHelpService, HelpService>();
         services.AddProxiedScoped<ISelectionService, SelectionService>();
 
         services.AddProxiedScoped<IKcProgressMonitor, KcProgressMonitor>();
