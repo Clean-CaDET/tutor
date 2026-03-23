@@ -19,7 +19,7 @@ public class TokenWalletCommandTests : BaseCoursesIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
 
-        var result = ((OkObjectResult)controller.Get(-1, -1).Result)?.Value as TokenWalletDto;
+        var result = ((OkObjectResult)controller.Get(-1, -1).Result!).Value as TokenWalletDto;
 
         result.ShouldNotBeNull();
         result.LearnerId.ShouldBe(-1);
@@ -35,7 +35,7 @@ public class TokenWalletCommandTests : BaseCoursesIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
 
-        var result = ((OkObjectResult)controller.Get(-2, -1).Result)?.Value as TokenWalletDto;
+        var result = ((OkObjectResult)controller.Get(-2, -1).Result!).Value as TokenWalletDto;
 
         result.ShouldNotBeNull();
         result.LearnerId.ShouldBe(-2);

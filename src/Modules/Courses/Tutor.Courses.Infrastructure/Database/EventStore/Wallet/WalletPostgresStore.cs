@@ -47,7 +47,7 @@ public class WalletPostgresStore<TEvent> : IEventStore<TEvent> where TEvent : Do
             .Where(e => e.LearnerId == userId && primaryEntityIds.Contains(e.CourseId))
             .AsNoTracking()
             .Select(e => e.DomainEvent)
-            .ToList()
+            .AsEnumerable()
             .Select(_eventSerializer.Deserialize)
             .ToList();
     }

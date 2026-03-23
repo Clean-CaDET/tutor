@@ -114,7 +114,7 @@ public class TokenAwareChatService : IAiChatService
         var charCount = request.Messages.Sum(m => m.Content.Length);
         if (!string.IsNullOrEmpty(request.SystemPrompt))
             charCount += request.SystemPrompt.Length;
-        return charCount / 4 + 50; // Rough estimate: ~4 chars per token + buffer
+        return (charCount / 4) + 50; // Rough estimate: ~4 chars per token + buffer
     }
 
     private static int EstimateChunkTokens(string chunk)

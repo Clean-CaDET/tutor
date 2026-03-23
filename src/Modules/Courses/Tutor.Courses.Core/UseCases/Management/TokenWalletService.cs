@@ -11,14 +11,12 @@ public class TokenWalletService : ITokenWalletService
 {
     private readonly IMapper _mapper;
     private readonly IWalletRepository _walletRepository;
-    private readonly IOwnedCourseRepository _ownedCourseRepository;
     private readonly ICoursesUnitOfWork _unitOfWork;
 
-    public TokenWalletService(IMapper mapper, IWalletRepository walletRepository, IOwnedCourseRepository ownedCourseRepository, ICoursesUnitOfWork unitOfWork)
+    public TokenWalletService(IMapper mapper, IWalletRepository walletRepository, ICoursesUnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _walletRepository = walletRepository;
-        _ownedCourseRepository = ownedCourseRepository;
         _unitOfWork = unitOfWork;
     }
 

@@ -84,7 +84,6 @@ public class LearningTaskCommandTests : BaseLearningTasksIntegrationTest
                 Code = "U1-LT2-A1",
                 Name = "test",
                 Guidance = "guidance",
-                Examples = new List<ExampleDto> { new() { Code = "U1-LT2-A1-E1", Url = "test" } },
                 SubmissionFormat = new SubmissionFormatDto {Type = "Link", ValidationRule = "validation", Guidelines = "guidlanes"},
                 Standards = new List<StandardDto> { new() { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
             }, new()
@@ -93,7 +92,6 @@ public class LearningTaskCommandTests : BaseLearningTasksIntegrationTest
                 Code = "U1-LT2-A1",
                 Name = "test",
                 Guidance = "guidance",
-                Examples = new List<ExampleDto> { new() { Code = "U1-LT2-A1-E1", Url = "test" } },
                 SubmissionFormat = new SubmissionFormatDto {Type = "Link", ValidationRule = "validation", Guidelines = "guidlanes"},
                 Standards = new List<StandardDto> { new() { Name = "Standard", Description = "Standard description", MaxPoints = 10 } },
             }}
