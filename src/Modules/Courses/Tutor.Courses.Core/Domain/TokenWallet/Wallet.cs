@@ -23,18 +23,6 @@ public class Wallet : EventSourcedAggregateRoot
 
     public Result<TokenSpendingResult> SpendTokens(TokenSpendingRequest request)
     {
-        if (RemainingBalance < request.TotalTokens)
-        {
-            Causes(new TokenSpendingBlocked
-            {
-                UnitId = request.UnitId,
-                RequestedTokens = request.TotalTokens,
-                FeatureType = request.FeatureType,
-                BlockReason = "Insufficient token balance"
-            });
-            return Result.Fail<TokenSpendingResult>("Insufficient token balance");
-        }
-
         Causes(new TokensSpent
         {
             UnitId = request.UnitId,
@@ -81,10 +69,5 @@ public class Wallet : EventSourcedAggregateRoot
     private void When(TokensDeposited @event)
     {
         TotalAllowance += @event.Amount;
-    }
-
-    private void When(TokenSpendingBlocked @event)
-    {
-        // Event recorded for observability, no state change
     }
 }

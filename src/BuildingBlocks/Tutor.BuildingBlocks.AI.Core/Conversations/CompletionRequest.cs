@@ -15,7 +15,7 @@ public record CompletionRequest
     public double? Temperature { get; init; }
 
     /// <summary>
-    /// Optional metadata for passing context to decorators or middleware (e.g., token spending context).
+    /// Optional metadata for passing context to decorators or middleware.
     /// </summary>
     public IReadOnlyDictionary<string, object>? Metadata { get; init; }
 

@@ -21,20 +21,33 @@ public class TokenSpendingService : ITokenSpendingService
         _mapper = mapper;
     }
 
+    public Result HasSufficientBalance(int learnerId, int courseId, int totalCharacterCount)
+    {
+        var wallet = _walletRepository.Get(learnerId, courseId);
+        if (wallet == null)
+            return Result.Fail(FailureCode.NotFound + ": No wallet found for learner");
+
+        if (wallet.RemainingBalance < EstimateTokens(totalCharacterCount))
+            return Result.Fail("Insufficient token balance");
+
+        return Result.Ok();
+    }
+
+    private static int EstimateTokens(int totalCharacterCount)
+    {
+        return (totalCharacterCount / 4) + 50;
+    }
+
     public Result<TokenSpendingResultDto> SpendTokens(TokenSpendingRequestDto request)
     {
         var wallet = _walletRepository.Get(request.LearnerId, request.CourseId);
         if (wallet == null)
             return Result.Fail(FailureCode.NotFound + ": No wallet found for learner");
-
-        if (!Enum.TryParse<AiFeatureType>(request.FeatureType, out var featureType))
+        if (!Enum.TryParse<AiFeatureType>(request.FeatureType, out _))
             return Result.Fail("Invalid feature type: " + request.FeatureType);
 
         var spendingRequest = _mapper.Map<TokenSpendingRequest>(request);
-
         var result = wallet.SpendTokens(spendingRequest);
-        if (result.IsFailed)
-            return Result.Fail(result.Errors);
 
         _walletRepository.Update(wallet);
         var saveResult = _unitOfWork.Save();

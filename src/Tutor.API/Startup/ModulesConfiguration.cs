@@ -1,4 +1,5 @@
 using Tutor.BuildingBlocks.AI.Infrastructure;
+using Tutor.BuildingBlocks.Infrastructure.Security;
 using Tutor.Courses.Infrastructure;
 using Tutor.KnowledgeComponents.Infrastructure;
 using Tutor.LearningTasks.Infrastructure;
@@ -13,10 +14,10 @@ public static class ModulesConfiguration
     {
         services.AddAIServices(new AiServiceConfiguration
         {
-            ApiKey = "TODO",
-            ChatModelId = "gpt-4.1-mini",
-            EmbeddingModelId = "text-embedding-3-small"
-        }); // TODO: Move configuration to environment variables
+            ApiKey = EnvironmentConnection.GetSecret("OPENAI_API_KEY") ?? "",
+            ChatModelId = Environment.GetEnvironmentVariable("AI_CHAT_MODEL") ?? "gpt-4.1-mini",
+            EmbeddingModelId = Environment.GetEnvironmentVariable("AI_EMBEDDING_MODEL") ?? "text-embedding-3-small"
+        });
 
         services.ConfigureStakeholdersModule();
         services.ConfigureCoursesModule();

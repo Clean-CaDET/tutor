@@ -9,7 +9,6 @@ public static class WalletEventSerializationConfiguration
     {
         { typeof(WalletInitialized), "WalletInitialized" },
         { typeof(TokensDeposited), "TokensDeposited" },
-        { typeof(TokensSpent), "TokensSpent" },
-        { typeof(TokenSpendingBlocked), "TokenSpendingBlocked" }
+        { typeof(TokensSpent), "TokensSpent" }
     }.ToImmutableDictionary();
 }

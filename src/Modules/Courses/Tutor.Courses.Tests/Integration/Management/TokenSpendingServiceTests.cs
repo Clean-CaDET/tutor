@@ -112,20 +112,15 @@ public class TokenSpendingServiceTests : BaseCoursesIntegrationTest
 
         var result = service.SpendTokens(request);
 
-        result.IsFailed.ShouldBeTrue();
-        result.Errors[0].Message.ShouldContain("Insufficient");
+        result.IsSuccess.ShouldBeTrue();
+        result.Value.TokensSpent.ShouldBe(3000000);
+        result.Value.RemainingBalance.ShouldBe(-1000000);
 
         dbContext.ChangeTracker.Clear();
         var wallet = dbContext.TokenWallets.FirstOrDefault(w => w.LearnerId == -1 && w.CourseId == -1);
         wallet.ShouldNotBeNull();
-        wallet.TotalSpent.ShouldBe(0); // No change
-
-        // Verify blocking event was recorded
-        var blockingEvent = dbContext.WalletEvents
-            .Where(e => e.LearnerId == -1 && e.CourseId == -1)
-            .OrderByDescending(e => e.TimeStamp)
-            .FirstOrDefault();
-        blockingEvent.ShouldNotBeNull();
+        wallet.RemainingBalance.ShouldBe(-1000000);
+        wallet.TotalSpent.ShouldBe(3000000);
     }
 
     [Fact]
@@ -228,5 +223,42 @@ public class TokenSpendingServiceTests : BaseCoursesIntegrationTest
         var wallet = dbContext.TokenWallets.FirstOrDefault(w => w.LearnerId == -1 && w.CourseId == -1);
         wallet.ShouldNotBeNull();
         wallet.TotalSpent.ShouldBe(450); // 75 + 150 + 225
+    }
+
+    [Fact]
+    public void Has_sufficient_balance_for_small_prompt()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var service = scope.ServiceProvider.GetRequiredService<ITokenSpendingService>();
+
+        // 400 chars => estimated 400/4 + 50 = 150 tokens, wallet has 2,000,000
+        var result = service.HasSufficientBalance(-1, -1, 400);
+
+        result.IsSuccess.ShouldBeTrue();
+    }
+
+    [Fact]
+    public void Has_insufficient_balance_for_large_prompt()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var service = scope.ServiceProvider.GetRequiredService<ITokenSpendingService>();
+
+        // 8,000,000 chars => estimated 8,000,000/4 + 50 = 2,000,050 tokens, wallet has 2,000,000
+        var result = service.HasSufficientBalance(-1, -1, 8_000_000);
+
+        result.IsFailed.ShouldBeTrue();
+        result.Errors[0].Message.ShouldContain("Insufficient");
+    }
+
+    [Fact]
+    public void Has_insufficient_balance_when_wallet_not_found()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var service = scope.ServiceProvider.GetRequiredService<ITokenSpendingService>();
+
+        var result = service.HasSufficientBalance(-999, -999, 400);
+
+        result.IsFailed.ShouldBeTrue();
+        result.Errors[0].Message.ShouldContain("wallet");
     }
 }

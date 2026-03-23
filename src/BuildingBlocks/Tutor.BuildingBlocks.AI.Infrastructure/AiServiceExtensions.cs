@@ -16,6 +16,9 @@ public static class AiServiceExtensions
     /// </summary>
     public static IServiceCollection AddAIServices(this IServiceCollection services, AiServiceConfiguration configuration)
     {
+        if (string.IsNullOrWhiteSpace(configuration.ApiKey))
+            return services;
+
         var kernelBuilder = Kernel.CreateBuilder();
 
         kernelBuilder.AddOpenAIChatCompletion(modelId: configuration.ChatModelId, apiKey: configuration.ApiKey);
