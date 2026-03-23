@@ -8,13 +8,13 @@ public static class DbConnectionStringBuilder
     {
         var server = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "localhost";
         var port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "5432";
-        var database = EnvironmentConnection.GetSecret("DATABASE_SCHEMA") ?? "tutor-v10";
+        var database = EnvironmentConnection.GetSecret("DATABASE_SCHEMA") ?? "tutor-v9";
         var schema = EnvironmentConnection.GetSecret("DATABASE_SCHEMA_NAME") ?? schemaName;
         var user = EnvironmentConnection.GetSecret("DATABASE_USERNAME") ?? "postgres";
         var password = EnvironmentConnection.GetSecret("DATABASE_PASSWORD") ?? "admin";
         var pooling = Environment.GetEnvironmentVariable("DATABASE_POOLING") ?? "true";
 
         return
-            $"Server={server};Port={port};Database={database};SearchPath={schema};User ID={user};Password={password};Pooling={pooling};";
+            $"Server={server};Port={port};Database={database};SearchPath={schema},public;User ID={user};Password={password};Pooling={pooling};";
     }
 }

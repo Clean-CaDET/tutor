@@ -60,19 +60,23 @@ public abstract class BaseTestFactory<TDbContext> : WebApplicationFactory<Progra
 
     protected static Action<DbContextOptionsBuilder> SetupTestContext()
     {
+        var dataSourceBuilder = new NpgsqlDataSourceBuilder(CreateConnectionString());
+        dataSourceBuilder.EnableDynamicJson();
+        var dataSource = dataSourceBuilder.Build();
+
+        return opt => opt.UseNpgsql(dataSource);
+    }
+
+    protected static string CreateConnectionString()
+    {
         var server = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "localhost";
         var port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "5432";
-        var database = EnvironmentConnection.GetSecret("DATABASE_SCHEMA") ?? "tutor-v10-test";
+        var database = EnvironmentConnection.GetSecret("DATABASE_SCHEMA") ?? "tutor-v3.0-test";
         var user = EnvironmentConnection.GetSecret("DATABASE_USERNAME") ?? "postgres";
         var password = EnvironmentConnection.GetSecret("DATABASE_PASSWORD") ?? "admin";
         var pooling = Environment.GetEnvironmentVariable("DATABASE_POOLING") ?? "true";
 
         var connectionString = $"Server={server};Port={port};Database={database};User ID={user};Password={password};Pooling={pooling};Include Error Detail=True";
-
-        var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
-        dataSourceBuilder.EnableDynamicJson();
-        var dataSource = dataSourceBuilder.Build();
-
-        return opt => opt.UseNpgsql(dataSource);
+        return connectionString;
     }
 }

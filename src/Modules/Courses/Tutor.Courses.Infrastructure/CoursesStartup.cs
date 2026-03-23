@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
+using Tutor.BuildingBlocks.Core.Domain.EventSourcing;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.BuildingBlocks.Infrastructure.Database;
+using Tutor.BuildingBlocks.Infrastructure.Database.EventStore.DefaultEventSerializer;
 using Tutor.BuildingBlocks.Infrastructure.Interceptors;
 using Tutor.Courses.API.Internal;
 using Tutor.Courses.API.Public.Analysis;
@@ -14,6 +16,7 @@ using Tutor.Courses.API.Public.Supervision;
 using Tutor.Courses.Core.Domain;
 using Tutor.Courses.Core.Domain.Reflections;
 using Tutor.Courses.Core.Domain.RepositoryInterfaces;
+using Tutor.Courses.Core.Domain.TokenWallet.Events;
 using Tutor.Courses.Core.Mappers;
 using Tutor.Courses.Core.UseCases;
 using Tutor.Courses.Core.UseCases.Analysis;
@@ -23,6 +26,7 @@ using Tutor.Courses.Core.UseCases.Management;
 using Tutor.Courses.Core.UseCases.Monitoring;
 using Tutor.Courses.Core.UseCases.Supervision;
 using Tutor.Courses.Infrastructure.Database;
+using Tutor.Courses.Infrastructure.Database.EventStore.Wallet;
 using Tutor.Courses.Infrastructure.Database.Repositories;
 
 namespace Tutor.Courses.Infrastructure;
@@ -65,6 +69,10 @@ public static class CoursesStartup
         
         services.AddProxiedScoped<IUnitProgressService, UnitProgressService>();
         services.AddProxiedScoped<IUnitProgressRatingService, UnitProgressRatingService>();
+
+        // Token Wallet services
+        services.AddProxiedScoped<ITokenWalletService, TokenWalletService>();
+        services.AddProxiedScoped<ITokenSpendingService, TokenSpendingService>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
@@ -85,7 +93,13 @@ public static class CoursesStartup
         services.AddScoped(typeof(ICrudRepository<SystemPrompt>), typeof(CrudDatabaseRepository<SystemPrompt, CoursesContext>));
 
         services.AddScoped<ICoursesUnitOfWork, CoursesUnitOfWork>();
-        
+
+        // Token Wallet infrastructure
+        services.AddScoped<IWalletRepository, TokenWalletDatabaseRepository<WalletEvent>>();
+        services.AddScoped<IEventStore<WalletEvent>, WalletPostgresStore<WalletEvent>>();
+        services.AddSingleton<IEventSerializer<WalletEvent>>(
+            new DefaultEventSerializer<WalletEvent>(WalletEventSerializationConfiguration.EventRelatedTypes));
+
         var dataSourceBuilder = new NpgsqlDataSourceBuilder(DbConnectionStringBuilder.Build("courses"));
         dataSourceBuilder.EnableDynamicJson();
         var dataSource = dataSourceBuilder.Build();
