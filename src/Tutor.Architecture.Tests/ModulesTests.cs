@@ -48,7 +48,7 @@ public class ModulesTests : BaseArchitecturalTests
         var allTypesFromCoreAssembly = GetExaminedTypes($"Tutor.{moduleName}.Core").ToList();
         var domainTypes = allTypesFromCoreAssembly.Where(x => x.FullName.Contains(".Domain.")).ToList();
         var nonDomainTypes = allTypesFromCoreAssembly.Where(x => !x.FullName.Contains(".Domain."));
-        var typesFromOtherAssemblies = GetForbiddenTypes("Tutor.BuildingBlocks.Core", $"Tutor.{moduleName}.Core");
+        var typesFromOtherAssemblies = GetForbiddenTypes("Tutor.BuildingBlocks.Core", "Tutor.BuildingBlocks.AI.Core", $"Tutor.{moduleName}.Core");
 
         var otherAssemblyRule = Types().That().Are(domainTypes).Should().NotDependOnAny(typesFromOtherAssemblies);
         var sameAssemblyRule = Types().That().Are(domainTypes).Should().NotDependOnAny(nonDomainTypes);

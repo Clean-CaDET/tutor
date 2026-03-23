@@ -71,7 +71,7 @@ public abstract class BaseTestFactory<TDbContext> : WebApplicationFactory<Progra
     {
         var server = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "localhost";
         var port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "5432";
-        var database = EnvironmentConnection.GetSecret("DATABASE_SCHEMA") ?? "tutor-v10-test";
+        var database = EnvironmentConnection.GetSecret("DATABASE_SCHEMA") ?? "tutor-v3.0-test";
         var user = EnvironmentConnection.GetSecret("DATABASE_USERNAME") ?? "postgres";
         var password = EnvironmentConnection.GetSecret("DATABASE_PASSWORD") ?? "admin";
         var pooling = Environment.GetEnvironmentVariable("DATABASE_POOLING") ?? "true";

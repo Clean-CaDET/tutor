@@ -17,6 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BuildingBlocks\Tutor.BuildingBlocks.AI.Core\Tutor.BuildingBlocks.AI.Core.csproj" />
+    <ProjectReference Include="..\BuildingBlocks\Tutor.BuildingBlocks.AI.Infrastructure\Tutor.BuildingBlocks.AI.Infrastructure.csproj" />
     <ProjectReference Include="..\BuildingBlocks\Tutor.BuildingBlocks.Core\Tutor.BuildingBlocks.Core.csproj" />
     <ProjectReference Include="..\BuildingBlocks\Tutor.BuildingBlocks.Infrastructure\Tutor.BuildingBlocks.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Courses\Tutor.Courses.API\Tutor.Courses.API.csproj" />
