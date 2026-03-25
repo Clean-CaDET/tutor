@@ -1,6 +1,7 @@
 using Tutor.BuildingBlocks.AI.Infrastructure;
 using Tutor.BuildingBlocks.Infrastructure.Security;
 using Tutor.Courses.Infrastructure;
+using Tutor.Elaborations.Infrastructure;
 using Tutor.KnowledgeComponents.Infrastructure;
 using Tutor.LearningTasks.Infrastructure;
 using Tutor.LearningUtils.Infrastructure;
@@ -14,7 +15,7 @@ public static class ModulesConfiguration
     {
         services.AddAIServices(new AiServiceConfiguration
         {
-            ApiKey = EnvironmentConnection.GetSecret("OPENAI_API_KEY") ?? "",
+            ApiKey = EnvironmentConnection.GetSecret("OPENAI_API_KEY") ?? "TODO",
             ChatModelId = Environment.GetEnvironmentVariable("AI_CHAT_MODEL") ?? "gpt-4.1-mini",
             EmbeddingModelId = Environment.GetEnvironmentVariable("AI_EMBEDDING_MODEL") ?? "text-embedding-3-small"
         });
@@ -24,6 +25,7 @@ public static class ModulesConfiguration
         services.ConfigureLearningUtilitiesModule();
         services.ConfigureKnowledgeComponentsModule();
         services.ConfigureLearningTasksModule();
+        services.ConfigureElaborationsModule();
 
         return services;
     }

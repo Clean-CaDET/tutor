@@ -49,6 +49,11 @@ public class OwnedCourseService : BaseService<CourseDto, Course>, IOwnedCourseSe
         return MapToDto(updatedCourse);
     }
 
+    public bool IsCourseOwner(int courseId, int instructorId)
+    {
+        return _ownedCourseRepository.IsCourseOwner(courseId, instructorId);
+    }
+
     public bool IsUnitOwner(int unitId, int instructorId)
     {
         return _ownedCourseRepository.IsUnitOwner(unitId, instructorId);

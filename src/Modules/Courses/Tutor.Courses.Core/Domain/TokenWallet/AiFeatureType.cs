@@ -4,5 +4,6 @@ public enum AiFeatureType
 {
     Kc,
     Task,
-    Reflection
+    Reflection,
+    Elaboration
 }

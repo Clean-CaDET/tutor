@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Tutor.BuildingBlocks.Infrastructure\Tutor.BuildingBlocks.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Tutor.BuildingBlocks.AI.Infrastructure\Tutor.BuildingBlocks.AI.Infrastructure.csproj" />
+    <ProjectReference Include="..\Tutor.Elaborations.Core\Tutor.Elaborations.Core.csproj" />
+  </ItemGroup>
+
+</Project>
