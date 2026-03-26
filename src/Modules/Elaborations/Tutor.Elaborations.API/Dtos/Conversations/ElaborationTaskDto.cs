@@ -8,4 +8,5 @@ public class ElaborationTaskDto
     public string ExpectedLevel { get; set; } = string.Empty;
     public int Order { get; set; }
     public string? ConceptRecordTitle { get; set; }
+    public bool HasCompletedAttempt { get; set; }
 }

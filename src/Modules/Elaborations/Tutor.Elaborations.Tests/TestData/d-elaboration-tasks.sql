@@ -13,3 +13,11 @@ VALUES (-3, -1, -2, 0, 1);
 -- Task -4: Inheritance at Beginner, Unit -3 (owned ONLY by Instructor -52, NOT -51)
 INSERT INTO elaborations."ElaborationTasks"("Id", "ConceptRecordId", "UnitId", "ExpectedLevel", "Order")
 VALUES (-4, -2, -3, 0, 1);
+
+-- Task -5: Encapsulation at Intermediate, Unit -2 (isolated for StartConversation tests)
+INSERT INTO elaborations."ElaborationTasks"("Id", "ConceptRecordId", "UnitId", "ExpectedLevel", "Order")
+VALUES (-5, -1, -2, 1, 2);
+
+-- Task -6: Encapsulation at Advanced, Unit -2 (isolated for Start+Submit flow test)
+INSERT INTO elaborations."ElaborationTasks"("Id", "ConceptRecordId", "UnitId", "ExpectedLevel", "Order")
+VALUES (-6, -1, -2, 2, 3);

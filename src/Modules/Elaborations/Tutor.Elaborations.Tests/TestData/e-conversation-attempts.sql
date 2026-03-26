@@ -138,3 +138,7 @@ INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Correctn
 VALUES (-76, -76, 1, 1, 1, 1, 'Vague', null, '[]'::jsonb, '[]'::jsonb);
 INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "PrecisionScore", "ConcisenessScore", "Justification", "NovelMisconceptions", "PropositionsCoveredIds", "MisconceptionsTriggeredIds")
 VALUES (-78, -78, 1, 1, 1, 1, 'Vague', null, '[]'::jsonb, '[]'::jsonb);
+
+-- Attempt -7: Learner -3, Task -5, InProgress (isolated for abandon test — no other test touches this)
+INSERT INTO elaborations."ConversationAttempts"("Id", "ElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
+VALUES (-7, -5, -3, 0, '2024-06-07 10:00:00+00', null, null);

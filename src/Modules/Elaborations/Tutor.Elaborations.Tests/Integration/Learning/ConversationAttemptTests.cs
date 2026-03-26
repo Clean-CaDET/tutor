@@ -20,7 +20,7 @@ public class ConversationAttemptTests : BaseElaborationsIntegrationTest
         var controller = CreateController(scope, "-3");
         var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
 
-        var actionResult = controller.AbandonAttempt(-3).Result;
+        var actionResult = controller.AbandonAttempt(-7).Result;
         var result = (actionResult as OkObjectResult)?.Value as ConversationAttemptDto;
 
         dbContext.ChangeTracker.Clear();

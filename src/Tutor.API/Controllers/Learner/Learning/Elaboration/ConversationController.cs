@@ -25,13 +25,32 @@ public class ConversationController : BaseApiController
         return CreateResponse(result);
     }
 
-    [HttpPost("elaboration-tasks/{taskId:int}/turns")]
-    public async IAsyncEnumerable<string> SubmitTurn(int taskId,
+    [HttpGet("elaboration-tasks/{taskId:int}")]
+    public ActionResult<ElaborationTaskDetailDto> GetTaskDetail(int taskId)
+    {
+        var result = _conversationService.GetTaskDetail(taskId, User.LearnerId());
+        return CreateResponse(result);
+    }
+
+    [HttpPost("elaboration-tasks/{taskId:int}/conversations")]
+    public async IAsyncEnumerable<string> StartConversation(int taskId,
+        [FromBody] SubmitTurnRequestDto dto,
+        [EnumeratorCancellation] CancellationToken ct)
+    {
+        await foreach (var token in _conversationService.StartConversationAsync(
+            taskId, dto.Content, User.LearnerId(), ct))
+        {
+            yield return token;
+        }
+    }
+
+    [HttpPost("elaboration-tasks/attempts/{attemptId:int}/turns")]
+    public async IAsyncEnumerable<string> SubmitTurn(int attemptId,
         [FromBody] SubmitTurnRequestDto dto,
         [EnumeratorCancellation] CancellationToken ct)
     {
         await foreach (var token in _conversationService.SubmitTurnAsync(
-            taskId, dto.Content, User.LearnerId(), ct))
+            attemptId, dto.Content, User.LearnerId(), ct))
         {
             yield return token;
         }
@@ -44,17 +63,4 @@ public class ConversationController : BaseApiController
         return CreateResponse(result);
     }
 
-    [HttpGet("elaboration-tasks/attempts/{attemptId:int}")]
-    public ActionResult<ConversationAttemptDto> GetAttempt(int attemptId)
-    {
-        var result = _conversationService.GetAttempt(attemptId, User.LearnerId());
-        return CreateResponse(result);
-    }
-
-    [HttpGet("elaboration-tasks/{taskId:int}/attempts")]
-    public ActionResult<List<ConversationAttemptDto>> GetAttempts(int taskId)
-    {
-        var result = _conversationService.GetAttempts(taskId, User.LearnerId());
-        return CreateResponse(result);
-    }
 }

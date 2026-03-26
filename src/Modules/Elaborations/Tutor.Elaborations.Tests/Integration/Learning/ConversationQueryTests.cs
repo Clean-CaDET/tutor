@@ -23,6 +23,8 @@ public class ConversationQueryTests : BaseElaborationsIntegrationTest
 
         result.ShouldNotBeNull();
         result.Count.ShouldBe(2);
+        result.First(t => t.Id == -1).HasCompletedAttempt.ShouldBeTrue();
+        result.First(t => t.Id == -2).HasCompletedAttempt.ShouldBeFalse();
     }
 
     [Fact]
@@ -39,60 +41,61 @@ public class ConversationQueryTests : BaseElaborationsIntegrationTest
     }
 
     [Fact]
-    public void Gets_attempt()
+    public void Gets_task_detail()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
 
-        var actionResult = controller.GetAttempt(-1).Result;
-        var result = (actionResult as OkObjectResult)?.Value as ConversationAttemptDto;
+        var actionResult = controller.GetTaskDetail(-1).Result;
+        var result = (actionResult as OkObjectResult)?.Value as ElaborationTaskDetailDto;
 
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);
-        result.Status.ShouldBe("Completed");
-        result.Summary.ShouldNotBeNullOrEmpty();
-        result.Turns.Count.ShouldBe(3);
+        result.ConceptTitle.ShouldNotBeNullOrEmpty();
+        result.ConceptDefinition.ShouldNotBeNullOrEmpty();
+        result.ExpectedLevel.ShouldBe("Beginner");
+        result.Attempts.Count.ShouldBe(2);
+        result.Attempts.Any(a => a.Status == "Completed").ShouldBeTrue();
+        result.Attempts.Any(a => a.Status == "Abandoned").ShouldBeTrue();
     }
 
     [Fact]
-    public void Gets_attempts_for_task()
-    {
-        using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope, "-2");
-
-        var actionResult = controller.GetAttempts(-1).Result;
-        var result = (actionResult as OkObjectResult)?.Value as List<ConversationAttemptDto>;
-
-        result.ShouldNotBeNull();
-        result.Count.ShouldBe(2);
-        result.Any(a => a.Status == "Completed").ShouldBeTrue();
-        result.Any(a => a.Status == "Abandoned").ShouldBeTrue();
-    }
-
-    [Fact]
-    public void Fails_to_get_nonexistent_attempt()
-    {
-        using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope, "-2");
-
-        var actionResult = controller.GetAttempt(-999).Result;
-        var objectResult = actionResult as ObjectResult;
-
-        objectResult.ShouldNotBeNull();
-        objectResult.StatusCode.ShouldBe(404);
-    }
-
-    [Fact]
-    public void Wrong_learner_fails_to_get_attempt()
+    public void Gets_task_detail_with_active_attempt()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-3");
 
-        var actionResult = controller.GetAttempt(-1).Result;
+        var actionResult = controller.GetTaskDetail(-2).Result;
+        var result = (actionResult as OkObjectResult)?.Value as ElaborationTaskDetailDto;
+
+        result.ShouldNotBeNull();
+        result.Attempts.Any(a => a.Status == "InProgress").ShouldBeTrue();
+    }
+
+    [Fact]
+    public void Gets_task_detail_unenrolled_fails()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-1");
+
+        var actionResult = controller.GetTaskDetail(-1).Result;
         var objectResult = actionResult as ObjectResult;
 
         objectResult.ShouldNotBeNull();
         objectResult.StatusCode.ShouldBe(403);
+    }
+
+    [Fact]
+    public void Gets_task_detail_nonexistent_fails()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-2");
+
+        var actionResult = controller.GetTaskDetail(-999).Result;
+        var objectResult = actionResult as ObjectResult;
+
+        objectResult.ShouldNotBeNull();
+        objectResult.StatusCode.ShouldBe(404);
     }
 
     private static ConversationController CreateController(IServiceScope scope, string learnerId)

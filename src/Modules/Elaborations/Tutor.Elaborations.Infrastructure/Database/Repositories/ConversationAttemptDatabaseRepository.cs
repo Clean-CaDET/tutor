@@ -43,4 +43,15 @@ public class ConversationAttemptDatabaseRepository :
                 && ca.LearnerId == learnerId
                 && ca.StartedAt >= since);
     }
+
+    public HashSet<int> GetTaskIdsWithCompletedAttempts(List<int> taskIds, int learnerId)
+    {
+        return DbContext.ConversationAttempts
+            .Where(ca => taskIds.Contains(ca.ElaborationTaskId)
+                && ca.LearnerId == learnerId
+                && ca.Status == AttemptStatus.Completed)
+            .Select(ca => ca.ElaborationTaskId)
+            .Distinct()
+            .ToHashSet();
+    }
 }

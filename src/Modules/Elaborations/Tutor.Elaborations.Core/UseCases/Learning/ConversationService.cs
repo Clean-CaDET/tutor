@@ -8,6 +8,7 @@ using Tutor.Courses.API.Internal;
 using Tutor.Elaborations.API.Dtos.Conversations;
 using Tutor.Elaborations.API.Public;
 using Tutor.Elaborations.API.Public.Learning;
+using Tutor.Elaborations.Core.Domain.ConceptRecords;
 using Tutor.Elaborations.Core.Domain.Conversations;
 using Tutor.Elaborations.Core.Domain.ElaborationTasks;
 using Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
@@ -20,7 +21,7 @@ public class ConversationService : IConversationService
 
     private readonly IConversationAttemptRepository _attemptRepo;
     private readonly IElaborationTaskRepository _taskRepo;
-    private readonly Domain.ConceptRecords.IConceptRecordRepository _conceptRecordRepo;
+    private readonly IConceptRecordRepository _conceptRecordRepo;
     private readonly TurnOrchestrator _turnOrchestrator;
     private readonly ITokenSpendingService _tokenSpendingService;
     private readonly IAccessServices _accessServices;
@@ -29,7 +30,7 @@ public class ConversationService : IConversationService
 
     public ConversationService(IConversationAttemptRepository attemptRepo,
         IElaborationTaskRepository taskRepo,
-        Domain.ConceptRecords.IConceptRecordRepository conceptRecordRepo,
+        IConceptRecordRepository conceptRecordRepo,
         TurnOrchestrator turnOrchestrator, ITokenSpendingService tokenSpendingService,
         IAccessServices accessServices, IElaborationsUnitOfWork unitOfWork, IMapper mapper)
     {
@@ -49,10 +50,41 @@ public class ConversationService : IConversationService
             return Result.Fail(FailureCode.Forbidden);
 
         var tasks = _taskRepo.GetByUnit(unitId);
-        return Result.Ok(tasks.Select(t => _mapper.Map<ElaborationTaskDto>(t)).ToList());
+        var taskDtos = tasks.Select(t => _mapper.Map<ElaborationTaskDto>(t)).ToList();
+        var taskIds = taskDtos.Select(t => t.Id).ToList();
+        var completedTaskIds = _attemptRepo.GetTaskIdsWithCompletedAttempts(taskIds, learnerId);
+
+        foreach (var dto in taskDtos)
+            dto.HasCompletedAttempt = completedTaskIds.Contains(dto.Id);
+
+        return Result.Ok(taskDtos);
     }
 
-    public async IAsyncEnumerable<string> SubmitTurnAsync(int taskId, string content,
+    public Result<ElaborationTaskDetailDto> GetTaskDetail(int taskId, int learnerId)
+    {
+        var task = _taskRepo.Get(taskId);
+        if (task == null) return Result.Fail(FailureCode.NotFound);
+
+        if (!_accessServices.IsEnrolledInUnit(task.UnitId, learnerId))
+            return Result.Fail(FailureCode.Forbidden);
+
+        var conceptRecord = _conceptRecordRepo.Get(task.ConceptRecordId);
+        if (conceptRecord == null) return Result.Fail(FailureCode.NotFound);
+
+        var attempts = _attemptRepo.GetByTaskAndLearner(taskId, learnerId);
+
+        return Result.Ok(new ElaborationTaskDetailDto
+        {
+            Id = task.Id,
+            ExpectedLevel = task.ExpectedLevel.ToString(),
+            Order = task.Order,
+            ConceptTitle = conceptRecord.Title,
+            ConceptDefinition = conceptRecord.CanonicalDefinition,
+            Attempts = attempts.Select(a => _mapper.Map<ConversationAttemptDto>(a)).ToList()
+        });
+    }
+
+    public async IAsyncEnumerable<string> StartConversationAsync(int taskId, string content,
         int learnerId, [EnumeratorCancellation] CancellationToken ct)
     {
         var task = _taskRepo.Get(taskId);
@@ -69,20 +101,71 @@ public class ConversationService : IConversationService
         if (balanceCheck.IsFailed)
             { yield return BuildErrorChunk("Insufficient token balance. Contact your administrator.", 402); yield break; }
 
-        var attempt = _attemptRepo.GetActiveAttempt(taskId, learnerId);
-        if (attempt == null)
-        {
-            var recentCount = _attemptRepo.CountRecentAttempts(
-                taskId, learnerId, DateTime.UtcNow.AddHours(-24));
-            if (recentCount >= MaxAttemptsPerDay)
-                { yield return BuildErrorChunk("You've practiced this concept recently. Come back tomorrow for another attempt.", 429); yield break; }
+        var existing = _attemptRepo.GetActiveAttempt(taskId, learnerId);
+        if (existing != null)
+            { yield return BuildErrorChunk("An active conversation already exists.", 409, existing.Id); yield break; }
 
-            attempt = new ConversationAttempt(taskId, learnerId);
-            _attemptRepo.Create(attempt);
-        }
+        var recentCount = _attemptRepo.CountRecentAttempts(
+            taskId, learnerId, DateTime.UtcNow.AddHours(-24));
+        if (recentCount >= MaxAttemptsPerDay)
+            { yield return BuildErrorChunk("You've practiced this concept recently. Come back tomorrow for another attempt.", 429); yield break; }
+
+        var attempt = new ConversationAttempt(taskId, learnerId);
+        _attemptRepo.Create(attempt);
 
         var levelRecord = conceptRecord.DeriveForLevel(task.ExpectedLevel);
 
+        await foreach (var token in RunTurnPipelineAsync(attempt, task, levelRecord, content, ct))
+            yield return token;
+    }
+
+    public async IAsyncEnumerable<string> SubmitTurnAsync(int attemptId, string content,
+        int learnerId, [EnumeratorCancellation] CancellationToken ct)
+    {
+        var attempt = _attemptRepo.Get(attemptId);
+        if (attempt == null) { yield return BuildErrorChunk("Attempt not found.", 404); yield break; }
+        if (attempt.LearnerId != learnerId) { yield return BuildErrorChunk("Access denied.", 403); yield break; }
+        if (attempt.Status != AttemptStatus.InProgress) { yield return BuildErrorChunk("Conversation is no longer active.", 409); yield break; }
+
+        var task = _taskRepo.Get(attempt.ElaborationTaskId);
+        if (task == null) { yield return BuildErrorChunk("Task not found.", 404); yield break; }
+
+        if (!_accessServices.IsEnrolledInUnit(task.UnitId, learnerId))
+            { yield return BuildErrorChunk("Not enrolled in unit.", 403); yield break; }
+
+        var conceptRecord = _conceptRecordRepo.Get(task.ConceptRecordId);
+        if (conceptRecord == null) { yield return BuildErrorChunk("Concept record not found.", 404); yield break; }
+
+        var balanceCheck = _tokenSpendingService.HasSufficientBalanceForUnit(
+            learnerId, task.UnitId, content.Length);
+        if (balanceCheck.IsFailed)
+            { yield return BuildErrorChunk("Insufficient token balance. Contact your administrator.", 402); yield break; }
+
+        var levelRecord = conceptRecord.DeriveForLevel(task.ExpectedLevel);
+
+        await foreach (var token in RunTurnPipelineAsync(attempt, task, levelRecord, content, ct))
+            yield return token;
+    }
+
+    public Result<ConversationAttemptDto> AbandonAttempt(int attemptId, int learnerId)
+    {
+        var attempt = _attemptRepo.Get(attemptId);
+        if (attempt == null) return Result.Fail(FailureCode.NotFound);
+        if (attempt.LearnerId != learnerId) return Result.Fail(FailureCode.Forbidden);
+        if (attempt.Status != AttemptStatus.InProgress) return Result.Fail(FailureCode.Conflict);
+
+        attempt.Abandon();
+        _attemptRepo.Update(attempt);
+        _unitOfWork.Save();
+
+        return Result.Ok(_mapper.Map<ConversationAttemptDto>(attempt));
+    }
+
+    private async IAsyncEnumerable<string> RunTurnPipelineAsync(
+        ConversationAttempt attempt, ElaborationTask task,
+        ConceptRecord levelRecord, string content,
+        [EnumeratorCancellation] CancellationToken ct)
+    {
         // Synchronous phase: evaluate
         var evalResult = await _turnOrchestrator.EvaluateAsync(
             content, attempt.Turns.ToList(), levelRecord, ct);
@@ -131,57 +214,30 @@ public class ConversationService : IConversationService
         _unitOfWork.Save();
 
         // Spend tokens — estimate from content lengths
-        var totalChars = content.Length + fullResponse.Length;
         _tokenSpendingService.SpendTokensForUnit(new TokenSpendingRequestDto
         {
-            LearnerId = learnerId,
+            LearnerId = attempt.LearnerId,
             UnitId = task.UnitId,
             PromptTokens = content.Length / 4,
             CompletionTokens = fullResponse.Length / 4,
             FeatureType = "Elaboration",
-            EntityId = taskId,
+            EntityId = task.Id,
             PromptSummary = "Concept conversation turn"
         });
 
         // Final metadata chunk
         yield return JsonSerializer.Serialize(new SubmitTurnResponseDto
         {
+            AttemptId = attempt.Id,
             Status = attempt.Status.ToString(),
             Summary = summary
         });
     }
 
-    public Result<ConversationAttemptDto> AbandonAttempt(int attemptId, int learnerId)
+    private static string BuildErrorChunk(string message, int code, int? attemptId = null)
     {
-        var attempt = _attemptRepo.Get(attemptId);
-        if (attempt == null) return Result.Fail(FailureCode.NotFound);
-        if (attempt.LearnerId != learnerId) return Result.Fail(FailureCode.Forbidden);
-        if (attempt.Status != AttemptStatus.InProgress) return Result.Fail(FailureCode.Conflict);
-
-        attempt.Abandon();
-        _attemptRepo.Update(attempt);
-        _unitOfWork.Save();
-
-        return Result.Ok(_mapper.Map<ConversationAttemptDto>(attempt));
-    }
-
-    public Result<ConversationAttemptDto> GetAttempt(int attemptId, int learnerId)
-    {
-        var attempt = _attemptRepo.Get(attemptId);
-        if (attempt == null) return Result.Fail(FailureCode.NotFound);
-        if (attempt.LearnerId != learnerId) return Result.Fail(FailureCode.Forbidden);
-
-        return Result.Ok(_mapper.Map<ConversationAttemptDto>(attempt));
-    }
-
-    public Result<List<ConversationAttemptDto>> GetAttempts(int taskId, int learnerId)
-    {
-        var attempts = _attemptRepo.GetByTaskAndLearner(taskId, learnerId);
-        return Result.Ok(attempts.Select(a => _mapper.Map<ConversationAttemptDto>(a)).ToList());
-    }
-
-    private static string BuildErrorChunk(string message, int code)
-    {
+        if (attemptId.HasValue)
+            return JsonSerializer.Serialize(new { error = message, code, attemptId = attemptId.Value });
         return JsonSerializer.Serialize(new { error = message, code });
     }
 }
