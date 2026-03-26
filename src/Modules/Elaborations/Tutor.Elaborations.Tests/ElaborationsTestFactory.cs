@@ -16,6 +16,9 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
 {
     public Mock<IAiChatService> MockChatService { get; } = new();
 
+    protected override Type[] GetRequiredDbContextTypes() =>
+        [typeof(CoursesContext), typeof(ElaborationsContext)];
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         base.ConfigureWebHost(builder);

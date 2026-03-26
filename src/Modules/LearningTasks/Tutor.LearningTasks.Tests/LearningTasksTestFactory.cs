@@ -8,6 +8,15 @@ namespace Tutor.LearningTasks.Tests;
 
 public class LearningTasksTestFactory : BaseTestFactory<LearningTasksContext>
 {
+    protected override Type[] GetRequiredDbContextTypes() =>
+        [typeof(CoursesContext), typeof(LearningTasksContext)];
+
+    protected override List<string> GetOrderedTestDataFolders() =>
+    [
+        "../../../../../Courses/Tutor.Courses.Tests/TestData/",
+        "../../../TestData/"
+    ];
+
     protected override IServiceCollection ReplaceNeededDbContexts(IServiceCollection services)
     {
         var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<LearningTasksContext>));

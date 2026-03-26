@@ -10,6 +10,18 @@ namespace Tutor.Courses.Tests;
 
 public class CoursesTestFactory : BaseTestFactory<CoursesContext>
 {
+    protected override Type[] GetRequiredDbContextTypes() =>
+        [typeof(StakeholdersContext), typeof(CoursesContext),
+         typeof(KnowledgeComponentsContext), typeof(LearningTasksContext)];
+
+    protected override List<string> GetOrderedTestDataFolders() =>
+    [
+        "../../../../../Stakeholders/Tutor.Stakeholders.Tests/TestData/",
+        "../../../../../KnowledgeComponents/Tutor.KnowledgeComponents.Tests/TestData/",
+        "../../../../../LearningTasks/Tutor.LearningTasks.Tests/TestData/",
+        "../../../TestData/"
+    ];
+
     protected override IServiceCollection ReplaceNeededDbContexts(IServiceCollection services)
     {
         var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<CoursesContext>));
