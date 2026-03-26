@@ -12,6 +12,15 @@ public class ConceptRecord : AggregateRoot
     public List<BoundaryCondition> BoundaryConditions { get; private set; } = new();
     public List<CommonMisconception> CommonMisconceptions { get; private set; } = new();
 
+    public void Update(ConceptRecord conceptRecord)
+    {
+        Title = conceptRecord.Title;
+        CanonicalDefinition = conceptRecord.CanonicalDefinition;
+        KeyPropositions = conceptRecord.KeyPropositions;
+        BoundaryConditions = conceptRecord.BoundaryConditions;
+        CommonMisconceptions = conceptRecord.CommonMisconceptions;
+    }
+
     public ConceptRecord DeriveForLevel(PropositionLevel level)
     {
         return new ConceptRecord

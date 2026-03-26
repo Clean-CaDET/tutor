@@ -93,12 +93,12 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
         dbContext.Database.BeginTransaction();
 
-        var result = (OkResult)controller.Delete(-1, -2);
+        var result = (OkResult)controller.Delete(-1, -4);
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-        var stored = dbContext.ConceptRecords.FirstOrDefault(cr => cr.Id == -2);
+        var stored = dbContext.ConceptRecords.FirstOrDefault(cr => cr.Id == -4);
         stored.ShouldBeNull();
     }
 

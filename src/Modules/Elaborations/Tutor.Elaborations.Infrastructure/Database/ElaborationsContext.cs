@@ -48,6 +48,12 @@ public class ElaborationsContext : DbContext
     private static void ConfigureElaborationTasks(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ElaborationTask>()
+            .HasOne<ConceptRecord>()
+            .WithMany()
+            .HasForeignKey(et => et.ConceptRecordId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<ElaborationTask>()
             .HasIndex(et => new { et.UnitId, et.Order });
     }
 

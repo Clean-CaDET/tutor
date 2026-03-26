@@ -42,15 +42,20 @@ public class ElaborationTaskService : CrudService<ElaborationTaskDto, Elaboratio
     {
         if (!_accessServices.IsUnitOwner(task.UnitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
-
-        return Update(task);
+        var existing = _taskRepository.Get(task.Id);
+        if (existing == null || existing.UnitId != task.UnitId)
+            return Result.Fail(FailureCode.NotFound);
+        existing.Update(MapToDomain(task));
+        return Update(existing);
     }
 
     public Result Delete(int id, int unitId, int instructorId)
     {
         if (!_accessServices.IsUnitOwner(unitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
-
+        var existing = _taskRepository.Get(id);
+        if (existing == null || existing.UnitId != unitId)
+            return Result.Fail(FailureCode.NotFound);
         return Delete(id);
     }
 }

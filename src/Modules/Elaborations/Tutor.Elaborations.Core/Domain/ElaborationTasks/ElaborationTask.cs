@@ -9,4 +9,11 @@ public class ElaborationTask : Entity
     public int UnitId { get; internal set; }
     public PropositionLevel ExpectedLevel { get; private set; }
     public int Order { get; private set; }
+
+    public void Update(ElaborationTask task)
+    {
+        ConceptRecordId = task.ConceptRecordId;
+        ExpectedLevel = task.ExpectedLevel;
+        Order = task.Order;
+    }
 }

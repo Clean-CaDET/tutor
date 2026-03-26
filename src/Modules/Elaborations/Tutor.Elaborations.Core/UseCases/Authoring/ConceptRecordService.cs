@@ -50,7 +50,11 @@ public class ConceptRecordService : CrudService<ConceptRecordDto, ConceptRecord>
     {
         if (!_accessServices.IsCourseOwner(conceptRecord.CourseId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
-        return Update(conceptRecord);
+        var existing = _conceptRecordRepository.Get(conceptRecord.Id);
+        if (existing == null || existing.CourseId != conceptRecord.CourseId)
+            return Result.Fail(FailureCode.NotFound);
+        existing.Update(MapToDomain(conceptRecord));
+        return Update(existing);
     }
 
     public Result Delete(int id, int courseId, int instructorId)

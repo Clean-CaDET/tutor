@@ -42,7 +42,7 @@ public class ConceptRecordQueryTests : BaseElaborationsIntegrationTest
         var result = (actionResult as OkObjectResult)?.Value as List<ConceptRecordDto>;
 
         result.ShouldNotBeNull();
-        result.Count.ShouldBe(2);
+        result.Count.ShouldBe(3);
     }
 
     [Fact]

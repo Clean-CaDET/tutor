@@ -26,6 +26,10 @@ VALUES (-2, -1, 'Inheritance', 'Inheritance allows a class to derive behavior fr
 INSERT INTO elaborations."KeyPropositions"("Id", "ConceptRecordId", "Statement", "Level", "Order")
 VALUES (-21, -2, 'Child class inherits parent behavior', 0, 1);
 
+-- ConceptRecord -4: "Abstraction" (Course -1, no task references, for delete test)
+INSERT INTO elaborations."ConceptRecords"("Id", "CourseId", "Title", "CanonicalDefinition")
+VALUES (-4, -1, 'Abstraction', 'Abstraction focuses on essential qualities rather than specific details.');
+
 -- ConceptRecord -3: "Polymorphism" (Course -2, for non-owner tests)
 INSERT INTO elaborations."ConceptRecords"("Id", "CourseId", "Title", "CanonicalDefinition")
 VALUES (-3, -2, 'Polymorphism', 'Polymorphism enables objects to be treated as instances of their parent type.');
