@@ -11,6 +11,7 @@ public class ConceptRecord : AggregateRoot
     public List<KeyProposition> KeyPropositions { get; private set; } = new();
     public List<BoundaryCondition> BoundaryConditions { get; private set; } = new();
     public List<CommonMisconception> CommonMisconceptions { get; private set; } = new();
+    public List<KeyRelation> KeyRelations { get; private set; } = new();
 
     public void Update(ConceptRecord conceptRecord)
     {
@@ -19,24 +20,33 @@ public class ConceptRecord : AggregateRoot
         KeyPropositions = conceptRecord.KeyPropositions;
         BoundaryConditions = conceptRecord.BoundaryConditions;
         CommonMisconceptions = conceptRecord.CommonMisconceptions;
+        KeyRelations = conceptRecord.KeyRelations;
     }
 
     public ConceptRecord DeriveForLevel(PropositionLevel level)
     {
+        var filteredKPs = KeyPropositions
+            .Where(kp => kp.Level <= level)
+            .OrderBy(kp => kp.Order).ToList();
+        var filteredKPIds = filteredKPs.Select(kp => kp.Id).ToHashSet();
+
         return new ConceptRecord
         {
             Id = Id,
             CourseId = CourseId,
             Title = Title,
             CanonicalDefinition = CanonicalDefinition,
-            KeyPropositions = KeyPropositions
-                .Where(kp => kp.Level <= level)
-                .OrderBy(kp => kp.Order).ToList(),
+            KeyPropositions = filteredKPs,
             BoundaryConditions = BoundaryConditions
                 .Where(bc => bc.Level <= level)
                 .OrderBy(bc => bc.Order).ToList(),
             CommonMisconceptions = CommonMisconceptions
-                .OrderBy(cm => cm.Order).ToList()
+                .OrderBy(cm => cm.Order).ToList(),
+            KeyRelations = KeyRelations
+                .Where(kr => kr.Level <= level)
+                .Where(kr => filteredKPIds.Contains(kr.SourceKeyPropositionId)
+                          && filteredKPIds.Contains(kr.TargetKeyPropositionId))
+                .OrderBy(kr => kr.Order).ToList()
         };
     }
 
@@ -44,5 +54,17 @@ public class ConceptRecord : AggregateRoot
     {
         var coveredIds = attempt.GetCoveredPropositionIds();
         return KeyPropositions.All(kp => coveredIds.Contains(kp.Id));
+    }
+
+    public bool AreAllKeyRelationsArticulated(ConversationAttempt attempt)
+    {
+        if (KeyRelations.Count == 0) return true;
+        var articulatedIds = attempt.GetArticulatedRelationIds();
+        return KeyRelations.All(kr => articulatedIds.Contains(kr.Id));
+    }
+
+    public bool IsAttemptComplete(ConversationAttempt attempt)
+    {
+        return AreAllPropositionsCovered(attempt) && AreAllKeyRelationsArticulated(attempt);
     }
 }

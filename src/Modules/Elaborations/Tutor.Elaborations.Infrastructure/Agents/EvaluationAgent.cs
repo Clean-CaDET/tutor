@@ -39,10 +39,11 @@ public class EvaluationAgent : IEvaluationAgent
 
             var evaluation = new TurnEvaluation(
                 parsed.CorrectnessScore, parsed.CompletenessScore,
-                parsed.PrecisionScore, parsed.ConcisenessScore,
+                parsed.DiscriminationScore, parsed.IntegrationScore,
                 parsed.Justification ?? string.Empty, parsed.NovelMisconceptions,
                 parsed.PropositionsCoveredIds ?? new List<int>(),
-                parsed.MisconceptionsTriggeredIds ?? new List<int>());
+                parsed.MisconceptionsTriggeredIds ?? new List<int>(),
+                parsed.RelationsArticulatedIds ?? new List<int>());
 
             return Result.Ok(new EvaluationResult(evaluation, parsed.IsSubstantive));
         }
@@ -67,11 +68,12 @@ public class EvaluationAgent : IEvaluationAgent
     {
         public int CorrectnessScore { get; set; }
         public int CompletenessScore { get; set; }
-        public int PrecisionScore { get; set; }
-        public int ConcisenessScore { get; set; }
+        public int? DiscriminationScore { get; set; }
+        public int? IntegrationScore { get; set; }
         public string? Justification { get; set; }
         public List<int>? PropositionsCoveredIds { get; set; }
         public List<int>? MisconceptionsTriggeredIds { get; set; }
+        public List<int>? RelationsArticulatedIds { get; set; }
         public string? NovelMisconceptions { get; set; }
         public bool IsSubstantive { get; set; }
     }

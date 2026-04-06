@@ -281,6 +281,57 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     }
 
     [Fact]
+    public async Task Concept_record_with_relations_completes_when_relations_articulated()
+    {
+        // Task -7 → CR -5 (KPs -50, -51 + KR -100). Strict completion: covering both KPs is not enough.
+        Factory.MockChatService.Reset();
+        Factory.SetupEvaluationMock(
+            propositionsCoveredIds: [-50, -51],
+            relationsArticulatedIds: [-100],
+            integrationScore: 3);
+        Factory.SetupDialogueMock();
+        Factory.SetupSummaryMock("Polymorphism mechanics summary.");
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-3");
+        var dto = new SubmitTurnRequestDto
+        {
+            Content = "Override matters because the runtime picks the actual type's implementation."
+        };
+
+        var tokens = await CollectStreamAsync(controller.StartConversation(-7, dto, CancellationToken.None));
+
+        var metadata = JsonSerializer.Deserialize<SubmitTurnResponseDto>(tokens.Last());
+        metadata.ShouldNotBeNull();
+        metadata.Status.ShouldBe("Completed");
+        metadata.Summary.ShouldNotBeNullOrEmpty();
+    }
+
+    [Fact]
+    public async Task Concept_record_with_relations_does_not_complete_when_only_KPs_covered()
+    {
+        // Task -7 → CR -5. Covering KPs but NOT articulating the relation should NOT complete.
+        Factory.MockChatService.Reset();
+        Factory.SetupEvaluationMock(
+            propositionsCoveredIds: [-50, -51],
+            relationsArticulatedIds: [],
+            integrationScore: 1);
+        Factory.SetupDialogueMock();
+        Factory.SetupSummaryMock();
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-3");
+        var dto = new SubmitTurnRequestDto
+        {
+            Content = "Override is a thing and runtime types exist, but I won't say how they connect."
+        };
+
+        var tokens = await CollectStreamAsync(controller.StartConversation(-7, dto, CancellationToken.None));
+
+        var metadata = JsonSerializer.Deserialize<SubmitTurnResponseDto>(tokens.Last());
+        metadata.ShouldNotBeNull();
+        metadata.Status.ShouldBe("InProgress");
+    }
+
+    [Fact]
     public async Task Submit_completed_attempt_fails()
     {
         using var scope = Factory.Services.CreateScope();

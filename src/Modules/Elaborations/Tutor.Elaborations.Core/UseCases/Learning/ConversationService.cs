@@ -174,12 +174,20 @@ public class ConversationService : IConversationService
         var evaluation = evalResult.Value.Evaluation;
         attempt.AddLearnerTurn(content, evalResult.Value.IsSubstantive, evaluation);
 
-        var isCompleted = levelRecord.AreAllPropositionsCovered(attempt);
+        var isCompleted = levelRecord.IsAttemptComplete(attempt);
+        var coveredKpIds = attempt.GetCoveredPropositionIds();
+        var articulatedRelationIds = attempt.GetArticulatedRelationIds();
         var state = new ConversationState
         {
             IsCompleted = isCompleted,
             IsSoftCapReached = attempt.IsSoftCapReached(),
-            IsHardCapReached = attempt.IsHardCapReached()
+            IsHardCapReached = attempt.IsHardCapReached(),
+            UncoveredKeyPropositionIds = levelRecord.KeyPropositions
+                .Where(kp => !coveredKpIds.Contains(kp.Id))
+                .Select(kp => kp.Id).ToList(),
+            UnarticulatedKeyRelationIds = levelRecord.KeyRelations
+                .Where(kr => !articulatedRelationIds.Contains(kr.Id))
+                .Select(kr => kr.Id).ToList()
         };
 
         // Partial save: protects against stream interruption

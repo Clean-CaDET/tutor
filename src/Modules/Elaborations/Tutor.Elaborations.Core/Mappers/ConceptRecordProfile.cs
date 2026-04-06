@@ -14,5 +14,7 @@ public class ConceptRecordProfile : Profile
         CreateMap<BoundaryConditionDto, BoundaryCondition>().ReverseMap()
             .ForMember(d => d.Level, opt => opt.MapFrom(s => s.Level.ToString()));
         CreateMap<CommonMisconceptionDto, CommonMisconception>().ReverseMap();
+        CreateMap<KeyRelationDto, KeyRelation>().ReverseMap()
+            .ForMember(d => d.Level, opt => opt.MapFrom(s => s.Level.ToString()));
     }
 }

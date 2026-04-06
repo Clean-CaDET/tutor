@@ -31,9 +31,22 @@ public static class DialoguePromptBuilder
             sb.AppendLine($"- [KP-{kp.Id}] {kp.Statement}");
         sb.AppendLine();
 
+        if (record.KeyRelations.Any())
+        {
+            sb.AppendLine("## Key Relations (for your reference only, never reveal the mechanism text):");
+            var kpById = record.KeyPropositions.ToDictionary(kp => kp.Id, kp => kp.Statement);
+            foreach (var kr in record.KeyRelations)
+            {
+                var sourceText = kpById.GetValueOrDefault(kr.SourceKeyPropositionId, $"KP-{kr.SourceKeyPropositionId}");
+                var targetText = kpById.GetValueOrDefault(kr.TargetKeyPropositionId, $"KP-{kr.TargetKeyPropositionId}");
+                sb.AppendLine($"- [KR-{kr.Id}] {sourceText} → {targetText}. Mechanism: {kr.Mechanism}");
+            }
+            sb.AppendLine();
+        }
+
         if (state.IsCompleted)
         {
-            sb.AppendLine("## The learner has covered all required propositions.");
+            sb.AppendLine("## The learner has covered all required propositions and articulated all required relations.");
             sb.AppendLine("Provide a brief closing acknowledgment. Do not ask more questions.");
         }
         else if (state.IsHardCapReached)
@@ -41,10 +54,24 @@ public static class DialoguePromptBuilder
             sb.AppendLine("## The conversation has reached its maximum length.");
             sb.AppendLine("Provide a brief closing summary. Do not ask more questions.");
         }
-        else if (state.IsSoftCapReached)
+        else
         {
-            sb.AppendLine("## The learner is approaching the end of the conversation.");
-            sb.AppendLine("Suggest wrapping up. Focus on the most important uncovered proposition.");
+            if (state.UncoveredKeyPropositionIds.Any() || state.UnarticulatedKeyRelationIds.Any())
+            {
+                sb.AppendLine("## Focus areas for the next question:");
+                if (state.UncoveredKeyPropositionIds.Any())
+                    sb.AppendLine($"- Uncovered key propositions: {string.Join(", ", state.UncoveredKeyPropositionIds.Select(id => $"KP-{id}"))}");
+                if (state.UnarticulatedKeyRelationIds.Any())
+                    sb.AppendLine($"- Unarticulated key relations: {string.Join(", ", state.UnarticulatedKeyRelationIds.Select(id => $"KR-{id}"))}");
+                sb.AppendLine("Pick the most important gap and probe it. Never reveal the underlying statement or mechanism text.");
+                sb.AppendLine();
+            }
+
+            if (state.IsSoftCapReached)
+            {
+                sb.AppendLine("## The learner is approaching the end of the conversation.");
+                sb.AppendLine("Suggest wrapping up. Focus on the most important uncovered gap above.");
+            }
         }
 
         return sb.ToString();

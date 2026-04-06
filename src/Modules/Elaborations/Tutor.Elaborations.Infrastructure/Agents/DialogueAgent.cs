@@ -23,10 +23,16 @@ public class DialogueAgent : IDialogueAgent
         var systemPrompt = DialoguePromptBuilder.BuildSystemPrompt(conceptRecord, state);
         var messageData = DialoguePromptBuilder.BuildMessages(history);
 
-        var evalSummary = $"[Evaluation: correctness={evaluation.CorrectnessScore}, " +
-            $"completeness={evaluation.CompletenessScore}, " +
-            $"precision={evaluation.PrecisionScore}, " +
-            $"conciseness={evaluation.ConcisenessScore}. " +
+        var summaryParts = new List<string>
+        {
+            $"correctness={evaluation.CorrectnessScore}",
+            $"completeness={evaluation.CompletenessScore}"
+        };
+        if (evaluation.DiscriminationScore.HasValue)
+            summaryParts.Add($"discrimination={evaluation.DiscriminationScore.Value}");
+        if (evaluation.IntegrationScore.HasValue)
+            summaryParts.Add($"integration={evaluation.IntegrationScore.Value}");
+        var evalSummary = $"[Evaluation: {string.Join(", ", summaryParts)}. " +
             $"Justification: {evaluation.Justification}]";
         messageData.Add(("user", evalSummary));
 

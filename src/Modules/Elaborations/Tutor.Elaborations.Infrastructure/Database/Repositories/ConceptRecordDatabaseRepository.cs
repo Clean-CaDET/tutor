@@ -15,6 +15,7 @@ public class ConceptRecordDatabaseRepository :
             .Include(cr => cr.KeyPropositions.OrderBy(kp => kp.Order))
             .Include(cr => cr.BoundaryConditions.OrderBy(bc => bc.Order))
             .Include(cr => cr.CommonMisconceptions.OrderBy(cm => cm.Order))
+            .Include(cr => cr.KeyRelations.OrderBy(kr => kr.Order))
             .FirstOrDefault(cr => cr.Id == id);
     }
 
@@ -24,6 +25,7 @@ public class ConceptRecordDatabaseRepository :
             .Include(cr => cr.KeyPropositions.OrderBy(kp => kp.Order))
             .Include(cr => cr.BoundaryConditions.OrderBy(bc => bc.Order))
             .Include(cr => cr.CommonMisconceptions.OrderBy(cm => cm.Order))
+            .Include(cr => cr.KeyRelations.OrderBy(kr => kr.Order))
             .Where(cr => cr.CourseId == courseId)
             .ToList();
     }

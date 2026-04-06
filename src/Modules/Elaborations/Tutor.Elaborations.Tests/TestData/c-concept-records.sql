@@ -36,3 +36,15 @@ VALUES (-3, -2, 'Polymorphism', 'Polymorphism enables objects to be treated as i
 
 INSERT INTO elaborations."KeyPropositions"("Id", "ConceptRecordId", "Statement", "Level", "Order")
 VALUES (-31, -3, 'Objects can take multiple forms', 0, 1);
+
+-- ConceptRecord -5: "Polymorphism Mechanics" (Course -1, KPs + KR only — exercises relations and minimal-prompt path)
+INSERT INTO elaborations."ConceptRecords"("Id", "CourseId", "Title", "CanonicalDefinition")
+VALUES (-5, -1, 'Polymorphism Mechanics', 'Polymorphism resolves method calls at runtime via dynamic dispatch.');
+
+INSERT INTO elaborations."KeyPropositions"("Id", "ConceptRecordId", "Statement", "Level", "Order")
+VALUES (-50, -5, 'A subclass can override a parent method', 0, 1);
+INSERT INTO elaborations."KeyPropositions"("Id", "ConceptRecordId", "Statement", "Level", "Order")
+VALUES (-51, -5, 'The runtime selects the implementation by the actual type', 0, 2);
+
+INSERT INTO elaborations."KeyRelations"("Id", "ConceptRecordId", "SourceKeyPropositionId", "TargetKeyPropositionId", "Mechanism", "Level", "Order")
+VALUES (-100, -5, -50, -51, 'Override matters because dispatch happens at runtime, not compile time', 0, 1);

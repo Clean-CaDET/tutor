@@ -21,3 +21,7 @@ VALUES (-5, -1, -2, 1, 2);
 -- Task -6: Encapsulation at Advanced, Unit -2 (isolated for Start+Submit flow test)
 INSERT INTO elaborations."ElaborationTasks"("Id", "ConceptRecordId", "UnitId", "ExpectedLevel", "Order")
 VALUES (-6, -1, -2, 2, 3);
+
+-- Task -7: Polymorphism Mechanics (CR -5) at Beginner, Unit -2 (isolated, has KeyRelation -100)
+INSERT INTO elaborations."ElaborationTasks"("Id", "ConceptRecordId", "UnitId", "ExpectedLevel", "Order")
+VALUES (-7, -5, -2, 0, 4);

@@ -42,7 +42,30 @@ public class ConceptRecordQueryTests : BaseElaborationsIntegrationTest
         var result = (actionResult as OkObjectResult)?.Value as List<ConceptRecordDto>;
 
         result.ShouldNotBeNull();
-        result.Count.ShouldBe(3);
+        result.Count.ShouldBe(4);
+        var withRelations = result.SingleOrDefault(cr => cr.Id == -5);
+        withRelations.ShouldNotBeNull();
+        withRelations.KeyRelations.Count.ShouldBe(1);
+        withRelations.KeyRelations[0].SourceKeyPropositionId.ShouldBe(-50);
+        withRelations.KeyRelations[0].TargetKeyPropositionId.ShouldBe(-51);
+        withRelations.KeyRelations[0].Mechanism.ShouldContain("dispatch happens at runtime");
+    }
+
+    [Fact]
+    public void Gets_record_with_relations()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+
+        var actionResult = controller.Get(-1, -5).Result;
+        var result = (actionResult as OkObjectResult)?.Value as ConceptRecordDto;
+
+        result.ShouldNotBeNull();
+        result.KeyPropositions.Count.ShouldBe(2);
+        result.BoundaryConditions.Count.ShouldBe(0);
+        result.CommonMisconceptions.Count.ShouldBe(0);
+        result.KeyRelations.Count.ShouldBe(1);
+        result.KeyRelations[0].Level.ShouldBe("Beginner");
     }
 
     [Fact]

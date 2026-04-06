@@ -11,6 +11,7 @@ public class ElaborationsContext : DbContext
     public DbSet<KeyProposition> KeyPropositions { get; set; }
     public DbSet<BoundaryCondition> BoundaryConditions { get; set; }
     public DbSet<CommonMisconception> CommonMisconceptions { get; set; }
+    public DbSet<KeyRelation> KeyRelations { get; set; }
     public DbSet<ElaborationTask> ElaborationTasks { get; set; }
     public DbSet<ConversationAttempt> ConversationAttempts { get; set; }
     public DbSet<ConversationTurn> ConversationTurns { get; set; }
@@ -43,6 +44,11 @@ public class ElaborationsContext : DbContext
             .HasMany(cr => cr.CommonMisconceptions)
             .WithOne()
             .HasForeignKey(cm => cm.ConceptRecordId);
+
+        modelBuilder.Entity<ConceptRecord>()
+            .HasMany(cr => cr.KeyRelations)
+            .WithOne()
+            .HasForeignKey(kr => kr.ConceptRecordId);
     }
 
     private static void ConfigureElaborationTasks(ModelBuilder modelBuilder)
@@ -80,6 +86,8 @@ public class ElaborationsContext : DbContext
             entity.Property(te => te.PropositionsCoveredIds)
                 .HasColumnType("jsonb");
             entity.Property(te => te.MisconceptionsTriggeredIds)
+                .HasColumnType("jsonb");
+            entity.Property(te => te.RelationsArticulatedIds)
                 .HasColumnType("jsonb");
         });
     }

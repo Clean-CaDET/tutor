@@ -36,7 +36,8 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
             CommonMisconceptions = new List<CommonMisconceptionDto>
             {
                 new() { Description = "A misconception", Correction = "The correction", Order = 1 }
-            }
+            },
+            KeyRelations = new List<KeyRelationDto>()
         };
         dbContext.Database.BeginTransaction();
 
@@ -51,6 +52,7 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
         result.KeyPropositions[0].Level.ShouldBe("Beginner");
         result.BoundaryConditions.Count.ShouldBe(1);
         result.CommonMisconceptions.Count.ShouldBe(1);
+        result.KeyRelations.Count.ShouldBe(0);
     }
 
     [Fact]
@@ -70,7 +72,8 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
                 new() { Statement = "Updated proposition", Level = "Beginner", Order = 1 }
             },
             BoundaryConditions = new List<BoundaryConditionDto>(),
-            CommonMisconceptions = new List<CommonMisconceptionDto>()
+            CommonMisconceptions = new List<CommonMisconceptionDto>(),
+            KeyRelations = new List<KeyRelationDto>()
         };
         dbContext.Database.BeginTransaction();
 
@@ -83,6 +86,54 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
         result.Title.ShouldBe("Updated Encapsulation");
         result.KeyPropositions.Count.ShouldBe(1);
         result.KeyPropositions[0].Statement.ShouldBe("Updated proposition");
+    }
+
+    [Fact]
+    public void Updates_relations_round_trip()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
+        // CR -5 has KPs -50 and -51 already; add a second relation alongside the seeded -100.
+        var updatedEntity = new ConceptRecordDto
+        {
+            Id = -5,
+            CourseId = -1,
+            Title = "Polymorphism Mechanics",
+            CanonicalDefinition = "Polymorphism resolves method calls at runtime via dynamic dispatch.",
+            KeyPropositions = new List<KeyPropositionDto>
+            {
+                new() { Id = -50, Statement = "A subclass can override a parent method", Level = "Beginner", Order = 1 },
+                new() { Id = -51, Statement = "The runtime selects the implementation by the actual type", Level = "Beginner", Order = 2 }
+            },
+            BoundaryConditions = new List<BoundaryConditionDto>(),
+            CommonMisconceptions = new List<CommonMisconceptionDto>(),
+            KeyRelations = new List<KeyRelationDto>
+            {
+                new()
+                {
+                    SourceKeyPropositionId = -50, TargetKeyPropositionId = -51,
+                    Mechanism = "Override matters because dispatch happens at runtime",
+                    Level = "Beginner", Order = 1
+                },
+                new()
+                {
+                    SourceKeyPropositionId = -51, TargetKeyPropositionId = -50,
+                    Mechanism = "Runtime type lookup is what makes the override observable",
+                    Level = "Beginner", Order = 2
+                }
+            }
+        };
+        dbContext.Database.BeginTransaction();
+
+        var actionResult = controller.Update(-1, -5, updatedEntity).Result;
+        var result = (actionResult as OkObjectResult)?.Value as ConceptRecordDto;
+
+        dbContext.ChangeTracker.Clear();
+        result.ShouldNotBeNull();
+        result.KeyRelations.Count.ShouldBe(2);
+        result.KeyRelations[0].Mechanism.ShouldContain("dispatch happens at runtime");
+        result.KeyRelations[0].Level.ShouldBe("Beginner");
     }
 
     [Fact]
@@ -127,7 +178,8 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
             CanonicalDefinition = "Fail",
             KeyPropositions = new List<KeyPropositionDto>(),
             BoundaryConditions = new List<BoundaryConditionDto>(),
-            CommonMisconceptions = new List<CommonMisconceptionDto>()
+            CommonMisconceptions = new List<CommonMisconceptionDto>(),
+            KeyRelations = new List<KeyRelationDto>()
         };
 
         var actionResult = controller.Create(-2, newEntity).Result;
@@ -150,7 +202,8 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
             CanonicalDefinition = "Fail",
             KeyPropositions = new List<KeyPropositionDto>(),
             BoundaryConditions = new List<BoundaryConditionDto>(),
-            CommonMisconceptions = new List<CommonMisconceptionDto>()
+            CommonMisconceptions = new List<CommonMisconceptionDto>(),
+            KeyRelations = new List<KeyRelationDto>()
         };
 
         var actionResult = controller.Update(-2, -3, updatedEntity).Result;

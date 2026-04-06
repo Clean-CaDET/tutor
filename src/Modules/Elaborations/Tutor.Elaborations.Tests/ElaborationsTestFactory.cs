@@ -50,21 +50,30 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
         SetupSummaryMock();
     }
 
-    public void SetupEvaluationMock(List<int>? propositionsCoveredIds = null, bool isSubstantive = true)
+    public void SetupEvaluationMock(List<int>? propositionsCoveredIds = null,
+        List<int>? relationsArticulatedIds = null,
+        int? discriminationScore = 2, int? integrationScore = null,
+        bool isSubstantive = true)
     {
         var coveredIds = propositionsCoveredIds != null && propositionsCoveredIds.Count > 0
             ? string.Join(",", propositionsCoveredIds)
             : "";
+        var articulatedIds = relationsArticulatedIds != null && relationsArticulatedIds.Count > 0
+            ? string.Join(",", relationsArticulatedIds)
+            : "";
+        var discriminationJson = discriminationScore.HasValue ? discriminationScore.Value.ToString() : "null";
+        var integrationJson = integrationScore.HasValue ? integrationScore.Value.ToString() : "null";
 
         var evalJson = $$"""
             {
                 "correctnessScore": 2,
                 "completenessScore": 2,
-                "precisionScore": 2,
-                "concisenessScore": 2,
+                "discriminationScore": {{discriminationJson}},
+                "integrationScore": {{integrationJson}},
                 "justification": "Good explanation of the concept.",
                 "propositionsCoveredIds": [{{coveredIds}}],
                 "misconceptionsTriggeredIds": [],
+                "relationsArticulatedIds": [{{articulatedIds}}],
                 "novelMisconceptions": null,
                 "isSubstantive": {{isSubstantive.ToString().ToLower()}}
             }

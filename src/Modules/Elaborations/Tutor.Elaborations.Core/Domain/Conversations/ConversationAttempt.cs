@@ -33,6 +33,14 @@ public class ConversationAttempt : AggregateRoot
             .ToHashSet();
     }
 
+    public ISet<int> GetArticulatedRelationIds()
+    {
+        return Turns
+            .Where(t => t.Evaluation != null)
+            .SelectMany(t => t.Evaluation!.RelationsArticulatedIds)
+            .ToHashSet();
+    }
+
     public int CountSubstantiveLearnerTurns()
     {
         return Turns.Count(t => t.Role == TurnRole.Learner && t.IsSubstantive);
