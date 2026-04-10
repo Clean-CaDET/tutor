@@ -26,8 +26,7 @@ public class ConceptRecord : AggregateRoot
     public ConceptRecord DeriveForLevel(PropositionLevel level)
     {
         var filteredKPs = KeyPropositions
-            .Where(kp => kp.Level <= level)
-            .OrderBy(kp => kp.Order).ToList();
+            .Where(kp => kp.Level <= level).ToList();
         var filteredKPIds = filteredKPs.Select(kp => kp.Id).ToHashSet();
 
         return new ConceptRecord
@@ -38,15 +37,13 @@ public class ConceptRecord : AggregateRoot
             CanonicalDefinition = CanonicalDefinition,
             KeyPropositions = filteredKPs,
             BoundaryConditions = BoundaryConditions
-                .Where(bc => bc.Level <= level)
-                .OrderBy(bc => bc.Order).ToList(),
-            CommonMisconceptions = CommonMisconceptions
-                .OrderBy(cm => cm.Order).ToList(),
+                .Where(bc => bc.Level <= level).ToList(),
+            CommonMisconceptions = CommonMisconceptions.ToList(),
             KeyRelations = KeyRelations
                 .Where(kr => kr.Level <= level)
                 .Where(kr => filteredKPIds.Contains(kr.SourceKeyPropositionId)
                           && filteredKPIds.Contains(kr.TargetKeyPropositionId))
-                .OrderBy(kr => kr.Order).ToList()
+                .ToList()
         };
     }
 

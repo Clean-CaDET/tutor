@@ -7,5 +7,4 @@ public class CommonMisconception : Entity
     public int ConceptRecordId { get; private set; }
     public string Description { get; private set; } = string.Empty;
     public string Correction { get; private set; } = string.Empty;
-    public int Order { get; private set; }
 }

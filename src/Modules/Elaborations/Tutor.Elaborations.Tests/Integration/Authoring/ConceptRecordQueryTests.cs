@@ -26,8 +26,7 @@ public class ConceptRecordQueryTests : BaseElaborationsIntegrationTest
         result.CourseId.ShouldBe(-1);
         result.Title.ShouldBe("Encapsulation");
         result.KeyPropositions.Count.ShouldBe(3);
-        result.KeyPropositions[0].Statement.ShouldBe("Data and methods are bundled in a class");
-        result.KeyPropositions[0].Level.ShouldBe("Beginner");
+        result.KeyPropositions.ShouldContain(kp => kp.Statement == "Data and methods are bundled in a class" && kp.Level == "Beginner");
         result.BoundaryConditions.Count.ShouldBe(2);
         result.CommonMisconceptions.Count.ShouldBe(2);
     }

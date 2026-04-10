@@ -12,20 +12,20 @@ public class ConceptRecordDatabaseRepository :
     public new ConceptRecord? Get(int id)
     {
         return DbContext.ConceptRecords
-            .Include(cr => cr.KeyPropositions.OrderBy(kp => kp.Order))
-            .Include(cr => cr.BoundaryConditions.OrderBy(bc => bc.Order))
-            .Include(cr => cr.CommonMisconceptions.OrderBy(cm => cm.Order))
-            .Include(cr => cr.KeyRelations.OrderBy(kr => kr.Order))
+            .Include(cr => cr.KeyPropositions)
+            .Include(cr => cr.BoundaryConditions)
+            .Include(cr => cr.CommonMisconceptions)
+            .Include(cr => cr.KeyRelations)
             .FirstOrDefault(cr => cr.Id == id);
     }
 
     public List<ConceptRecord> GetByCourse(int courseId)
     {
         return DbContext.ConceptRecords
-            .Include(cr => cr.KeyPropositions.OrderBy(kp => kp.Order))
-            .Include(cr => cr.BoundaryConditions.OrderBy(bc => bc.Order))
-            .Include(cr => cr.CommonMisconceptions.OrderBy(cm => cm.Order))
-            .Include(cr => cr.KeyRelations.OrderBy(kr => kr.Order))
+            .Include(cr => cr.KeyPropositions)
+            .Include(cr => cr.BoundaryConditions)
+            .Include(cr => cr.CommonMisconceptions)
+            .Include(cr => cr.KeyRelations)
             .Where(cr => cr.CourseId == courseId)
             .ToList();
     }

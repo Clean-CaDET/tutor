@@ -9,5 +9,4 @@ public class KeyRelation : Entity
     public int TargetKeyPropositionId { get; private set; }
     public string Mechanism { get; private set; } = string.Empty;
     public PropositionLevel Level { get; private set; }
-    public int Order { get; private set; }
 }

@@ -26,16 +26,16 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
             CanonicalDefinition = "A new concept definition.",
             KeyPropositions = new List<KeyPropositionDto>
             {
-                new() { Statement = "First proposition", Level = "Beginner", Order = 1 },
-                new() { Statement = "Second proposition", Level = "Intermediate", Order = 2 }
+                new() { Statement = "First proposition", Level = "Beginner" },
+                new() { Statement = "Second proposition", Level = "Intermediate" }
             },
             BoundaryConditions = new List<BoundaryConditionDto>
             {
-                new() { Statement = "A boundary condition", Level = "Beginner", Order = 1 }
+                new() { Statement = "A boundary condition", Level = "Beginner" }
             },
             CommonMisconceptions = new List<CommonMisconceptionDto>
             {
-                new() { Description = "A misconception", Correction = "The correction", Order = 1 }
+                new() { Description = "A misconception", Correction = "The correction" }
             },
             KeyRelations = new List<KeyRelationDto>()
         };
@@ -69,7 +69,7 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
             CanonicalDefinition = "Updated definition.",
             KeyPropositions = new List<KeyPropositionDto>
             {
-                new() { Statement = "Updated proposition", Level = "Beginner", Order = 1 }
+                new() { Statement = "Updated proposition", Level = "Beginner" }
             },
             BoundaryConditions = new List<BoundaryConditionDto>(),
             CommonMisconceptions = new List<CommonMisconceptionDto>(),
@@ -103,8 +103,8 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
             CanonicalDefinition = "Polymorphism resolves method calls at runtime via dynamic dispatch.",
             KeyPropositions = new List<KeyPropositionDto>
             {
-                new() { Id = -50, Statement = "A subclass can override a parent method", Level = "Beginner", Order = 1 },
-                new() { Id = -51, Statement = "The runtime selects the implementation by the actual type", Level = "Beginner", Order = 2 }
+                new() { Id = -50, Statement = "A subclass can override a parent method", Level = "Beginner" },
+                new() { Id = -51, Statement = "The runtime selects the implementation by the actual type", Level = "Beginner" }
             },
             BoundaryConditions = new List<BoundaryConditionDto>(),
             CommonMisconceptions = new List<CommonMisconceptionDto>(),
@@ -114,13 +114,13 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
                 {
                     SourceKeyPropositionId = -50, TargetKeyPropositionId = -51,
                     Mechanism = "Override matters because dispatch happens at runtime",
-                    Level = "Beginner", Order = 1
+                    Level = "Beginner"
                 },
                 new()
                 {
                     SourceKeyPropositionId = -51, TargetKeyPropositionId = -50,
                     Mechanism = "Runtime type lookup is what makes the override observable",
-                    Level = "Beginner", Order = 2
+                    Level = "Beginner"
                 }
             }
         };

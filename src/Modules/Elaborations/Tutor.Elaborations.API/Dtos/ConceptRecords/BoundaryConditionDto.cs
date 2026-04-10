@@ -5,5 +5,4 @@ public class BoundaryConditionDto
     public int Id { get; set; }
     public string Statement { get; set; } = string.Empty;
     public string Level { get; set; } = string.Empty;
-    public int Order { get; set; }
 }

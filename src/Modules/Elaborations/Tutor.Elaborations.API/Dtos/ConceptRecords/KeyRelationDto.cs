@@ -7,5 +7,4 @@ public class KeyRelationDto
     public int TargetKeyPropositionId { get; set; }
     public string Mechanism { get; set; } = string.Empty;
     public string Level { get; set; } = string.Empty;
-    public int Order { get; set; }
 }
