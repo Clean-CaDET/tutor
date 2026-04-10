@@ -50,14 +50,28 @@ public class ConversationService : IConversationService
             return Result.Fail(FailureCode.Forbidden);
 
         var tasks = _taskRepo.GetByUnit(unitId);
-        var taskDtos = tasks.Select(t => _mapper.Map<ElaborationTaskDto>(t)).ToList();
-        var taskIds = taskDtos.Select(t => t.Id).ToList();
+
+        return Result.Ok(PopulateDtos(learnerId, tasks));
+    }
+
+    private List<ElaborationTaskDto> PopulateDtos(int learnerId, List<ElaborationTask> tasks)
+    {
+        var taskIds = tasks.Select(t => t.Id).ToList();
         var completedTaskIds = _attemptRepo.GetTaskIdsWithCompletedAttempts(taskIds, learnerId);
 
-        foreach (var dto in taskDtos)
-            dto.HasCompletedAttempt = completedTaskIds.Contains(dto.Id);
+        var crIds = tasks.Select(t => t.ConceptRecordId).Distinct().ToList();
+        var titleMap = _conceptRecordRepo.GetMany(crIds)
+            .ToDictionary(cr => cr.Id, cr => cr.Title);
 
-        return Result.Ok(taskDtos);
+        var taskDtos = tasks.Select(t => _mapper.Map<ElaborationTaskDto>(t)).ToList();
+        foreach (var dto in taskDtos)
+        {
+            dto.HasCompletedAttempt = completedTaskIds.Contains(dto.Id);
+            if (titleMap.TryGetValue(dto.ConceptRecordId, out var title))
+                dto.ConceptRecordTitle = title;
+        }
+
+        return taskDtos;
     }
 
     public Result<ElaborationTaskDetailDto> GetTaskDetail(int taskId, int learnerId)
@@ -91,7 +105,10 @@ public class ConversationService : IConversationService
         if (task == null) { yield return BuildErrorChunk("Task not found.", 404); yield break; }
 
         if (!_accessServices.IsEnrolledInUnit(task.UnitId, learnerId))
-            { yield return BuildErrorChunk("Not enrolled in unit.", 403); yield break; }
+        {
+            yield return BuildErrorChunk("Not enrolled in unit.", 403);
+            yield break;
+        }
 
         var conceptRecord = _conceptRecordRepo.Get(task.ConceptRecordId);
         if (conceptRecord == null) { yield return BuildErrorChunk("Concept record not found.", 404); yield break; }
@@ -99,16 +116,25 @@ public class ConversationService : IConversationService
         var balanceCheck = _tokenSpendingService.HasSufficientBalanceForUnit(
             learnerId, task.UnitId, content.Length);
         if (balanceCheck.IsFailed)
-            { yield return BuildErrorChunk("Insufficient token balance. Contact your administrator.", 402); yield break; }
+        {
+            yield return BuildErrorChunk("Insufficient token balance. Contact your administrator.", 402);
+            yield break;
+        }
 
         var existing = _attemptRepo.GetActiveAttempt(taskId, learnerId);
         if (existing != null)
-            { yield return BuildErrorChunk("An active conversation already exists.", 409, existing.Id); yield break; }
+        {
+            yield return BuildErrorChunk("An active conversation already exists.", 409, existing.Id);
+            yield break;
+        }
 
         var recentCount = _attemptRepo.CountRecentAttempts(
             taskId, learnerId, DateTime.UtcNow.AddHours(-24));
         if (recentCount >= MaxAttemptsPerDay)
-            { yield return BuildErrorChunk("You've practiced this concept recently. Come back tomorrow for another attempt.", 429); yield break; }
+        {
+            yield return BuildErrorChunk("You've practiced this concept recently. Come back tomorrow for another attempt.", 429);
+            yield break;
+        }
 
         var attempt = new ConversationAttempt(taskId, learnerId);
         _attemptRepo.Create(attempt);
@@ -131,15 +157,25 @@ public class ConversationService : IConversationService
         if (task == null) { yield return BuildErrorChunk("Task not found.", 404); yield break; }
 
         if (!_accessServices.IsEnrolledInUnit(task.UnitId, learnerId))
-            { yield return BuildErrorChunk("Not enrolled in unit.", 403); yield break; }
+        {
+            yield return BuildErrorChunk("Not enrolled in unit.", 403);
+            yield break;
+        }
 
         var conceptRecord = _conceptRecordRepo.Get(task.ConceptRecordId);
-        if (conceptRecord == null) { yield return BuildErrorChunk("Concept record not found.", 404); yield break; }
+        if (conceptRecord == null)
+        {
+            yield return BuildErrorChunk("Concept record not found.", 404);
+            yield break;
+        }
 
         var balanceCheck = _tokenSpendingService.HasSufficientBalanceForUnit(
             learnerId, task.UnitId, content.Length);
         if (balanceCheck.IsFailed)
-            { yield return BuildErrorChunk("Insufficient token balance. Contact your administrator.", 402); yield break; }
+        {
+            yield return BuildErrorChunk("Insufficient token balance. Contact your administrator.", 402);
+            yield break;
+        }
 
         var levelRecord = conceptRecord.DeriveForLevel(task.ExpectedLevel);
 
