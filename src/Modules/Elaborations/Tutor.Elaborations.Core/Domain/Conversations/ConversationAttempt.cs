@@ -7,7 +7,7 @@ public class ConversationAttempt : AggregateRoot
     private const int SoftCapSubstantiveTurns = 6;
     private const int HardCapTotalTurns = 10;
 
-    public int ElaborationTaskId { get; private set; }
+    public int ConceptElaborationTaskId { get; private set; }
     public int LearnerId { get; private set; }
     public AttemptStatus Status { get; private set; }
     public DateTime StartedAt { get; private set; }
@@ -17,9 +17,9 @@ public class ConversationAttempt : AggregateRoot
 
     private ConversationAttempt() { }
 
-    public ConversationAttempt(int elaborationTaskId, int learnerId)
+    public ConversationAttempt(int conceptElaborationTaskId, int learnerId)
     {
-        ElaborationTaskId = elaborationTaskId;
+        ConceptElaborationTaskId = conceptElaborationTaskId;
         LearnerId = learnerId;
         Status = AttemptStatus.InProgress;
         StartedAt = DateTime.UtcNow;

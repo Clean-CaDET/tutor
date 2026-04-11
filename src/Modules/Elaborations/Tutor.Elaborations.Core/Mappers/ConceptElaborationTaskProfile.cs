@@ -1,14 +1,14 @@
 using AutoMapper;
-using Tutor.Elaborations.API.Dtos.ConceptRecords;
-using Tutor.Elaborations.Core.Domain.ConceptRecords;
+using Tutor.Elaborations.API.Dtos.ConceptElaborationTasks;
+using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 
 namespace Tutor.Elaborations.Core.Mappers;
 
-public class ConceptRecordProfile : Profile
+public class ConceptElaborationTaskProfile : Profile
 {
-    public ConceptRecordProfile()
+    public ConceptElaborationTaskProfile()
     {
-        CreateMap<ConceptRecordDto, ConceptRecord>()
+        CreateMap<ConceptElaborationTaskDto, ConceptElaborationTask>()
             .AfterMap((src, dest) =>
             {
                 for (var i = 0; i < src.KeyRelations.Count; i++)
@@ -25,17 +25,15 @@ public class ConceptRecordProfile : Profile
                     else kr.TargetKeyPropositionId = target.Id;
                 }
             })
-            .ReverseMap();
-        CreateMap<KeyPropositionDto, KeyProposition>().ReverseMap()
-            .ForMember(d => d.Level, opt => opt.MapFrom(s => s.Level.ToString()));
-        CreateMap<BoundaryConditionDto, BoundaryCondition>().ReverseMap()
-            .ForMember(d => d.Level, opt => opt.MapFrom(s => s.Level.ToString()));
+            .ReverseMap()
+            .ForMember(d => d.Attempts, opt => opt.Ignore());
+        CreateMap<KeyPropositionDto, KeyProposition>().ReverseMap();
+        CreateMap<BoundaryConditionDto, BoundaryCondition>().ReverseMap();
         CreateMap<CommonMisconceptionDto, CommonMisconception>().ReverseMap();
         CreateMap<KeyRelationDto, KeyRelation>()
             .ForMember(d => d.SourceKeyProposition, opt => opt.Ignore())
             .ForMember(d => d.TargetKeyProposition, opt => opt.Ignore())
             .ReverseMap()
-            .ForMember(d => d.Level, opt => opt.MapFrom(s => s.Level.ToString()))
             .ForMember(d => d.SourceKeyPropositionIndex, opt => opt.Ignore())
             .ForMember(d => d.TargetKeyPropositionIndex, opt => opt.Ignore());
     }

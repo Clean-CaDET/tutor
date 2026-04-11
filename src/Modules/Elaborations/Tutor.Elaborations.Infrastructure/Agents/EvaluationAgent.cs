@@ -1,7 +1,7 @@
 using System.Text.Json;
 using FluentResults;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
-using Tutor.Elaborations.Core.Domain.ConceptRecords;
+using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
 using Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 using Tutor.Elaborations.Infrastructure.Agents.Prompts;
@@ -18,10 +18,10 @@ public class EvaluationAgent : IEvaluationAgent
     }
 
     public async Task<Result<EvaluationResult>> EvaluateAsync(string content,
-        List<ConversationTurn> history, ConceptRecord conceptRecord,
+        List<ConversationTurn> history, ConceptElaborationTask task,
         CancellationToken ct)
     {
-        var systemPrompt = EvaluationPromptBuilder.BuildSystemPrompt(conceptRecord);
+        var systemPrompt = EvaluationPromptBuilder.BuildSystemPrompt(task);
         var messageData = EvaluationPromptBuilder.BuildMessages(content, history);
 
         var messages = messageData.Select(m =>

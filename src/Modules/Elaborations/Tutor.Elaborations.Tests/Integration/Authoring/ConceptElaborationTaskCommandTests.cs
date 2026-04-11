@@ -2,16 +2,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Instructor.Authoring.Elaboration;
-using Tutor.Elaborations.API.Dtos.ConceptRecords;
+using Tutor.Elaborations.API.Dtos.ConceptElaborationTasks;
 using Tutor.Elaborations.API.Public.Authoring;
 using Tutor.Elaborations.Infrastructure.Database;
 
 namespace Tutor.Elaborations.Tests.Integration.Authoring;
 
 [Collection("Sequential")]
-public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
+public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTest
 {
-    public ConceptRecordCommandTests(ElaborationsTestFactory factory) : base(factory) { }
+    public ConceptElaborationTaskCommandTests(ElaborationsTestFactory factory) : base(factory) { }
 
     [Fact]
     public void Creates()
@@ -19,19 +19,20 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
-        var newEntity = new ConceptRecordDto
+        var newEntity = new ConceptElaborationTaskDto
         {
-            CourseId = -1,
+            UnitId = -1,
+            Order = 10,
             Title = "New Concept",
             CanonicalDefinition = "A new concept definition.",
             KeyPropositions = new List<KeyPropositionDto>
             {
-                new() { Statement = "First proposition", Level = "Beginner" },
-                new() { Statement = "Second proposition", Level = "Intermediate" }
+                new() { Statement = "First proposition" },
+                new() { Statement = "Second proposition" }
             },
             BoundaryConditions = new List<BoundaryConditionDto>
             {
-                new() { Statement = "A boundary condition", Level = "Beginner" }
+                new() { Statement = "A boundary condition" }
             },
             CommonMisconceptions = new List<CommonMisconceptionDto>
             {
@@ -42,14 +43,14 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
         dbContext.Database.BeginTransaction();
 
         var actionResult = controller.Create(-1, newEntity).Result;
-        var result = (actionResult as OkObjectResult)?.Value as ConceptRecordDto;
+        var result = (actionResult as OkObjectResult)?.Value as ConceptElaborationTaskDto;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.Title.ShouldBe(newEntity.Title);
-        result.CourseId.ShouldBe(-1);
+        result.UnitId.ShouldBe(-1);
+        result.Order.ShouldBe(10);
         result.KeyPropositions.Count.ShouldBe(2);
-        result.KeyPropositions[0].Level.ShouldBe("Beginner");
         result.BoundaryConditions.Count.ShouldBe(1);
         result.CommonMisconceptions.Count.ShouldBe(1);
         result.KeyRelations.Count.ShouldBe(0);
@@ -61,15 +62,16 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
-        var newEntity = new ConceptRecordDto
+        var newEntity = new ConceptElaborationTaskDto
         {
-            CourseId = -1,
+            UnitId = -1,
+            Order = 11,
             Title = "Concept With Relations",
             CanonicalDefinition = "A concept created with KPs and KRs in one request.",
             KeyPropositions = new List<KeyPropositionDto>
             {
-                new() { Statement = "First proposition", Level = "Beginner" },
-                new() { Statement = "Second proposition", Level = "Beginner" }
+                new() { Statement = "First proposition" },
+                new() { Statement = "Second proposition" }
             },
             BoundaryConditions = new List<BoundaryConditionDto>(),
             CommonMisconceptions = new List<CommonMisconceptionDto>(),
@@ -78,14 +80,14 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
                 new()
                 {
                     SourceKeyPropositionIndex = 0, TargetKeyPropositionIndex = 1,
-                    Mechanism = "First enables second", Level = "Beginner"
+                    Mechanism = "First enables second"
                 }
             }
         };
         dbContext.Database.BeginTransaction();
 
         var actionResult = controller.Create(-1, newEntity).Result;
-        var result = (actionResult as OkObjectResult)?.Value as ConceptRecordDto;
+        var result = (actionResult as OkObjectResult)?.Value as ConceptElaborationTaskDto;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
@@ -104,15 +106,16 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
-        var updatedEntity = new ConceptRecordDto
+        var updatedEntity = new ConceptElaborationTaskDto
         {
             Id = -1,
-            CourseId = -1,
+            UnitId = -1,
+            Order = 1,
             Title = "Updated Encapsulation",
             CanonicalDefinition = "Updated definition.",
             KeyPropositions = new List<KeyPropositionDto>
             {
-                new() { Statement = "Updated proposition", Level = "Beginner" }
+                new() { Statement = "Updated proposition" }
             },
             BoundaryConditions = new List<BoundaryConditionDto>(),
             CommonMisconceptions = new List<CommonMisconceptionDto>(),
@@ -121,7 +124,7 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
         dbContext.Database.BeginTransaction();
 
         var actionResult = controller.Update(-1, -1, updatedEntity).Result;
-        var result = (actionResult as OkObjectResult)?.Value as ConceptRecordDto;
+        var result = (actionResult as OkObjectResult)?.Value as ConceptElaborationTaskDto;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
@@ -137,17 +140,19 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
-        var updatedEntity = new ConceptRecordDto
+        // CET -7 has KPs -70, -71 and KR -370 (source=-70, target=-71).
+        var updatedEntity = new ConceptElaborationTaskDto
         {
-            Id = -5,
-            CourseId = -1,
+            Id = -7,
+            UnitId = -2,
+            Order = 4,
             Title = "Polymorphism Mechanics",
             CanonicalDefinition = "Polymorphism resolves method calls at runtime via dynamic dispatch.",
             KeyPropositions = new List<KeyPropositionDto>
             {
-                new() { Id = -50, Statement = "A subclass can override a parent method", Level = "Beginner" },
-                new() { Id = -51, Statement = "The runtime selects the implementation by the actual type", Level = "Beginner" },
-                new() { Statement = "Dispatch table resolves virtual calls", Level = "Intermediate" }
+                new() { Id = -70, Statement = "A subclass can override a parent method" },
+                new() { Id = -71, Statement = "The runtime selects the implementation by the actual type" },
+                new() { Statement = "Dispatch table resolves virtual calls" }
             },
             BoundaryConditions = new List<BoundaryConditionDto>(),
             CommonMisconceptions = new List<CommonMisconceptionDto>(),
@@ -156,21 +161,19 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
                 new()
                 {
                     SourceKeyPropositionIndex = 0, TargetKeyPropositionIndex = 1,
-                    Mechanism = "Override matters because dispatch happens at runtime",
-                    Level = "Beginner"
+                    Mechanism = "Override matters because dispatch happens at runtime"
                 },
                 new()
                 {
                     SourceKeyPropositionIndex = 1, TargetKeyPropositionIndex = 2,
-                    Mechanism = "Runtime dispatch uses vtable lookup",
-                    Level = "Intermediate"
+                    Mechanism = "Runtime dispatch uses vtable lookup"
                 }
             }
         };
         dbContext.Database.BeginTransaction();
 
-        var actionResult = controller.Update(-1, -5, updatedEntity).Result;
-        var result = (actionResult as OkObjectResult)?.Value as ConceptRecordDto;
+        var actionResult = controller.Update(-2, -7, updatedEntity).Result;
+        var result = (actionResult as OkObjectResult)?.Value as ConceptElaborationTaskDto;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
@@ -186,17 +189,17 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
-        // CR -5 has KP -50, KP -51, and KR -100 (source=-50, target=-51).
-        // Remove KR and KP -51, keeping only KP -50.
-        var updatedEntity = new ConceptRecordDto
+        // CET -7 has KPs -70, -71 and KR -370. Remove KR and KP -71, keeping only KP -70.
+        var updatedEntity = new ConceptElaborationTaskDto
         {
-            Id = -5,
-            CourseId = -1,
+            Id = -7,
+            UnitId = -2,
+            Order = 4,
             Title = "Polymorphism Mechanics",
             CanonicalDefinition = "Polymorphism resolves method calls at runtime via dynamic dispatch.",
             KeyPropositions = new List<KeyPropositionDto>
             {
-                new() { Id = -50, Statement = "A subclass can override a parent method", Level = "Beginner" }
+                new() { Id = -70, Statement = "A subclass can override a parent method" }
             },
             BoundaryConditions = new List<BoundaryConditionDto>(),
             CommonMisconceptions = new List<CommonMisconceptionDto>(),
@@ -204,8 +207,8 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
         };
         dbContext.Database.BeginTransaction();
 
-        var actionResult = controller.Update(-1, -5, updatedEntity).Result;
-        var result = (actionResult as OkObjectResult)?.Value as ConceptRecordDto;
+        var actionResult = controller.Update(-2, -7, updatedEntity).Result;
+        var result = (actionResult as OkObjectResult)?.Value as ConceptElaborationTaskDto;
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
@@ -221,12 +224,12 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
         dbContext.Database.BeginTransaction();
 
-        var result = (OkResult)controller.Delete(-1, -4);
+        var result = (OkResult)controller.Delete(-2, -7);
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.StatusCode.ShouldBe(200);
-        var stored = dbContext.ConceptRecords.FirstOrDefault(cr => cr.Id == -4);
+        var stored = dbContext.ConceptElaborationTasks.FirstOrDefault(cet => cet.Id == -7);
         stored.ShouldBeNull();
     }
 
@@ -248,9 +251,10 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
-        var newEntity = new ConceptRecordDto
+        var newEntity = new ConceptElaborationTaskDto
         {
-            CourseId = -2,
+            UnitId = -3,
+            Order = 99,
             Title = "Should Fail",
             CanonicalDefinition = "Fail",
             KeyPropositions = new List<KeyPropositionDto>(),
@@ -259,7 +263,7 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
             KeyRelations = new List<KeyRelationDto>()
         };
 
-        var actionResult = controller.Create(-2, newEntity).Result;
+        var actionResult = controller.Create(-3, newEntity).Result;
         var objectResult = actionResult as ObjectResult;
 
         objectResult.ShouldNotBeNull();
@@ -271,10 +275,11 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
-        var updatedEntity = new ConceptRecordDto
+        var updatedEntity = new ConceptElaborationTaskDto
         {
-            Id = -3,
-            CourseId = -2,
+            Id = -4,
+            UnitId = -3,
+            Order = 1,
             Title = "Should Fail",
             CanonicalDefinition = "Fail",
             KeyPropositions = new List<KeyPropositionDto>(),
@@ -283,7 +288,7 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
             KeyRelations = new List<KeyRelationDto>()
         };
 
-        var actionResult = controller.Update(-2, -3, updatedEntity).Result;
+        var actionResult = controller.Update(-3, -4, updatedEntity).Result;
         var objectResult = actionResult as ObjectResult;
 
         objectResult.ShouldNotBeNull();
@@ -296,16 +301,17 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
 
-        var actionResult = controller.Delete(-2, -3);
+        var actionResult = controller.Delete(-3, -4);
         var objectResult = actionResult as ObjectResult;
 
         objectResult.ShouldNotBeNull();
         objectResult.StatusCode.ShouldBe(403);
     }
 
-    private static ConceptRecordController CreateController(IServiceScope scope)
+    private static ConceptElaborationTaskController CreateController(IServiceScope scope)
     {
-        return new ConceptRecordController(scope.ServiceProvider.GetRequiredService<IConceptRecordService>())
+        return new ConceptElaborationTaskController(
+            scope.ServiceProvider.GetRequiredService<IConceptElaborationTaskService>())
         {
             ControllerContext = BuildContext("-51", "instructor")
         };

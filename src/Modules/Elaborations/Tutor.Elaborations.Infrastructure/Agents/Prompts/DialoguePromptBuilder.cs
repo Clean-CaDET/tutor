@@ -1,5 +1,5 @@
 using System.Text;
-using Tutor.Elaborations.Core.Domain.ConceptRecords;
+using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
 using Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 
@@ -7,7 +7,7 @@ namespace Tutor.Elaborations.Infrastructure.Agents.Prompts;
 
 public static class DialoguePromptBuilder
 {
-    public static string BuildSystemPrompt(ConceptRecord record, ConversationState state)
+    public static string BuildSystemPrompt(ConceptElaborationTask task, ConversationState state)
     {
         var sb = new StringBuilder();
         sb.AppendLine("You are a Socratic dialogue agent for a tutoring system. You speak Serbian.");
@@ -22,20 +22,20 @@ public static class DialoguePromptBuilder
         sb.AppendLine("- Allow productive divergence within the concept space.");
         sb.AppendLine();
 
-        sb.AppendLine($"## Concept: {record.Title}");
-        sb.AppendLine($"Definition: {record.CanonicalDefinition}");
+        sb.AppendLine($"## Concept: {task.Title}");
+        sb.AppendLine($"Definition: {task.CanonicalDefinition}");
         sb.AppendLine();
 
         sb.AppendLine("## Key Propositions (for your reference only, never reveal):");
-        foreach (var kp in record.KeyPropositions)
+        foreach (var kp in task.KeyPropositions)
             sb.AppendLine($"- [KP-{kp.Id}] {kp.Statement}");
         sb.AppendLine();
 
-        if (record.KeyRelations.Any())
+        if (task.KeyRelations.Any())
         {
             sb.AppendLine("## Key Relations (for your reference only, never reveal the mechanism text):");
-            var kpById = record.KeyPropositions.ToDictionary(kp => kp.Id, kp => kp.Statement);
-            foreach (var kr in record.KeyRelations)
+            var kpById = task.KeyPropositions.ToDictionary(kp => kp.Id, kp => kp.Statement);
+            foreach (var kr in task.KeyRelations)
             {
                 var sourceText = kpById.GetValueOrDefault(kr.SourceKeyPropositionId, $"KP-{kr.SourceKeyPropositionId}");
                 var targetText = kpById.GetValueOrDefault(kr.TargetKeyPropositionId, $"KP-{kr.TargetKeyPropositionId}");

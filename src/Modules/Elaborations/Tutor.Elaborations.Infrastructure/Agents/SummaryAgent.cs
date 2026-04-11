@@ -1,6 +1,6 @@
 using FluentResults;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
-using Tutor.Elaborations.Core.Domain.ConceptRecords;
+using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
 using Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 using Tutor.Elaborations.Infrastructure.Agents.Prompts;
@@ -17,9 +17,9 @@ public class SummaryAgent : ISummaryAgent
     }
 
     public async Task<Result<string>> SummarizeAsync(ConversationAttempt attempt,
-        ConceptRecord conceptRecord, CancellationToken ct)
+        ConceptElaborationTask task, CancellationToken ct)
     {
-        var systemPrompt = SummaryPromptBuilder.BuildSystemPrompt(attempt, conceptRecord);
+        var systemPrompt = SummaryPromptBuilder.BuildSystemPrompt(attempt, task);
         var transcript = SummaryPromptBuilder.BuildTranscript(attempt);
 
         var request = CompletionRequest.SingleMessage(transcript, systemPrompt, maxTokens: 256, temperature: 0.5);

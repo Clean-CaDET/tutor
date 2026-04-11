@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Tutor.API.Controllers.Learner.Learning.Elaboration;
-using Tutor.Elaborations.API.Dtos.Conversations;
+using Tutor.Elaborations.API.Dtos.ConceptElaborationTasks;
 using Tutor.Elaborations.API.Public.Learning;
 
 namespace Tutor.Elaborations.Tests.Integration.Learning;
@@ -19,7 +19,7 @@ public class ConversationQueryTests : BaseElaborationsIntegrationTest
         var controller = CreateController(scope, "-2");
 
         var actionResult = controller.GetTasksForUnit(-1).Result;
-        var result = (actionResult as OkObjectResult)?.Value as List<ElaborationTaskDto>;
+        var result = (actionResult as OkObjectResult)?.Value as List<ConceptElaborationTaskSummaryDto>;
 
         result.ShouldNotBeNull();
         result.Count.ShouldBe(2);
@@ -47,13 +47,13 @@ public class ConversationQueryTests : BaseElaborationsIntegrationTest
         var controller = CreateController(scope, "-2");
 
         var actionResult = controller.GetTaskDetail(-1).Result;
-        var result = (actionResult as OkObjectResult)?.Value as ElaborationTaskDetailDto;
+        var result = (actionResult as OkObjectResult)?.Value as ConceptElaborationTaskDto;
 
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);
-        result.ConceptTitle.ShouldNotBeNullOrEmpty();
-        result.ConceptDefinition.ShouldNotBeNullOrEmpty();
-        result.ExpectedLevel.ShouldBe("Beginner");
+        result.Title.ShouldNotBeNullOrEmpty();
+        result.CanonicalDefinition.ShouldNotBeNullOrEmpty();
+        result.Attempts.ShouldNotBeNull();
         result.Attempts.Count.ShouldBe(2);
         result.Attempts.Any(a => a.Status == "Completed").ShouldBeTrue();
         result.Attempts.Any(a => a.Status == "Abandoned").ShouldBeTrue();
@@ -66,9 +66,10 @@ public class ConversationQueryTests : BaseElaborationsIntegrationTest
         var controller = CreateController(scope, "-3");
 
         var actionResult = controller.GetTaskDetail(-2).Result;
-        var result = (actionResult as OkObjectResult)?.Value as ElaborationTaskDetailDto;
+        var result = (actionResult as OkObjectResult)?.Value as ConceptElaborationTaskDto;
 
         result.ShouldNotBeNull();
+        result.Attempts.ShouldNotBeNull();
         result.Attempts.Any(a => a.Status == "InProgress").ShouldBeTrue();
     }
 

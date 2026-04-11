@@ -13,18 +13,19 @@ using Tutor.Elaborations.Infrastructure.Database;
 namespace Tutor.Elaborations.Tests.Integration.Learning;
 
 // Test data layout:
-// Task -1: Encapsulation/Beginner, Unit -1 (1 KP in scope: -11)
-// Task -2: Encapsulation/Intermediate, Unit -1 (2 KPs: -11, -12)
-// Task -3: Encapsulation/Beginner, Unit -2
-// Task -5: Encapsulation/Intermediate, Unit -2 (isolated for StartConversation)
-// Task -6: Encapsulation/Advanced, Unit -2 (isolated for Start+Submit flow)
+// CET -1: Encapsulation (Basics), Unit -1 (1 KP: -10)
+// CET -2: Encapsulation (Members), Unit -1 (2 KPs: -20, -21)
+// CET -3: Encapsulation (Basics — Unit 2), Unit -2 (1 KP: -30)
+// CET -5: Encapsulation (Members — Unit 2), Unit -2 (2 KPs: -50, -51) — isolated for StartConversation
+// CET -6: Encapsulation (Invariants), Unit -2 (3 KPs: -60, -61, -62) — isolated for Start+Submit flow
+// CET -7: Polymorphism Mechanics, Unit -2 (2 KPs: -70, -71 + KR -370) — isolated
 // Learner -2: enrolled in Units -1, -2 | Learner -3: enrolled in Units -1, -2
 // Learner -1: NOT enrolled | Learner -4: exhausted wallet
-// Attempt -3: Learner -3, Task -1, InProgress (2 turns — for conflict + eval failure tests)
-// Attempt -4: Learner -3, Task -2, InProgress (KP -11 covered — completion test)
-// Attempt -5: Learner -2, Task -2, InProgress (9 learner turns — hard cap seed)
-// Attempt -6: Learner -3, Task -3, InProgress (5 substantive turns — soft cap seed)
-// Attempt -7: Learner -3, Task -5, InProgress (isolated for abandon test)
+// Attempt -3: Learner -3, CET -1, InProgress (2 turns — for conflict + eval failure tests)
+// Attempt -4: Learner -3, CET -2, InProgress (KP -20 covered — completion test)
+// Attempt -5: Learner -2, CET -2, InProgress (9 learner turns — hard cap seed)
+// Attempt -6: Learner -3, CET -3, InProgress (5 substantive turns — soft cap seed)
+// Attempt -7: Learner -3, CET -5, InProgress (isolated for abandon test)
 [Collection("Sequential")]
 public class ConversationTurnTests : BaseElaborationsIntegrationTest
 {
@@ -52,7 +53,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
         dbContext.ChangeTracker.Clear();
         var attempt = dbContext.ConversationAttempts.Include(a => a.Turns)
-            .FirstOrDefault(a => a.ElaborationTaskId == -5 && a.LearnerId == -2 && a.Status == 0);
+            .FirstOrDefault(a => a.ConceptElaborationTaskId == -5 && a.LearnerId == -2 && a.Status == 0);
         attempt.ShouldNotBeNull();
         attempt.Turns.Count.ShouldBeGreaterThanOrEqualTo(2);
     }
@@ -61,7 +62,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     public async Task All_propositions_covered_completes()
     {
         Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock([-11, -12]);
+        Factory.SetupEvaluationMock([-20, -21]);
         Factory.SetupDialogueMock();
         Factory.SetupSummaryMock("Completed conversation summary.");
         using var scope = Factory.Services.CreateScope();
@@ -281,13 +282,13 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     }
 
     [Fact]
-    public async Task Concept_record_with_relations_completes_when_relations_articulated()
+    public async Task Concept_with_relations_completes_when_relations_articulated()
     {
-        // Task -7 → CR -5 (KPs -50, -51 + KR -100). Strict completion: covering both KPs is not enough.
+        // CET -7 (KPs -70, -71 + KR -370). Strict completion: covering both KPs is not enough.
         Factory.MockChatService.Reset();
         Factory.SetupEvaluationMock(
-            propositionsCoveredIds: [-50, -51],
-            relationsArticulatedIds: [-100],
+            propositionsCoveredIds: [-70, -71],
+            relationsArticulatedIds: [-370],
             integrationScore: 3);
         Factory.SetupDialogueMock();
         Factory.SetupSummaryMock("Polymorphism mechanics summary.");
@@ -307,18 +308,19 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     }
 
     [Fact]
-    public async Task Concept_record_with_relations_does_not_complete_when_only_KPs_covered()
+    public async Task Concept_with_relations_does_not_complete_when_only_KPs_covered()
     {
-        // Task -7 → CR -5. Covering KPs but NOT articulating the relation should NOT complete.
+        // CET -7. Covering KPs but NOT articulating the relation should NOT complete.
+        // Uses learner -2 so test doesn't collide with the "completes" test (also on CET -7).
         Factory.MockChatService.Reset();
         Factory.SetupEvaluationMock(
-            propositionsCoveredIds: [-50, -51],
+            propositionsCoveredIds: [-70, -71],
             relationsArticulatedIds: [],
             integrationScore: 1);
         Factory.SetupDialogueMock();
         Factory.SetupSummaryMock();
         using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope, "-3");
+        var controller = CreateController(scope, "-2");
         var dto = new SubmitTurnRequestDto
         {
             Content = "Override is a thing and runtime types exist, but I won't say how they connect."

@@ -1,4 +1,4 @@
-namespace Tutor.Elaborations.API.Dtos.ConceptRecords;
+namespace Tutor.Elaborations.API.Dtos.ConceptElaborationTasks;
 
 public class KeyRelationDto
 {
@@ -8,5 +8,4 @@ public class KeyRelationDto
     public int? SourceKeyPropositionIndex { get; set; }
     public int? TargetKeyPropositionIndex { get; set; }
     public string Mechanism { get; set; } = string.Empty;
-    public string Level { get; set; } = string.Empty;
 }

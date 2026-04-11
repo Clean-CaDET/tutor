@@ -5,12 +5,12 @@ using FluentResults;
 using Tutor.BuildingBlocks.Core.UseCases;
 using Tutor.Courses.API.Dtos.TokenWallet;
 using Tutor.Courses.API.Internal;
+using Tutor.Elaborations.API.Dtos.ConceptElaborationTasks;
 using Tutor.Elaborations.API.Dtos.Conversations;
 using Tutor.Elaborations.API.Public;
 using Tutor.Elaborations.API.Public.Learning;
-using Tutor.Elaborations.Core.Domain.ConceptRecords;
+using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
-using Tutor.Elaborations.Core.Domain.ElaborationTasks;
 using Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 
 namespace Tutor.Elaborations.Core.UseCases.Learning;
@@ -20,8 +20,7 @@ public class ConversationService : IConversationService
     private const int MaxAttemptsPerDay = 3;
 
     private readonly IConversationAttemptRepository _attemptRepo;
-    private readonly IElaborationTaskRepository _taskRepo;
-    private readonly IConceptRecordRepository _conceptRecordRepo;
+    private readonly IConceptElaborationTaskRepository _taskRepo;
     private readonly TurnOrchestrator _turnOrchestrator;
     private readonly ITokenSpendingService _tokenSpendingService;
     private readonly IAccessServices _accessServices;
@@ -29,14 +28,12 @@ public class ConversationService : IConversationService
     private readonly IMapper _mapper;
 
     public ConversationService(IConversationAttemptRepository attemptRepo,
-        IElaborationTaskRepository taskRepo,
-        IConceptRecordRepository conceptRecordRepo,
+        IConceptElaborationTaskRepository taskRepo,
         TurnOrchestrator turnOrchestrator, ITokenSpendingService tokenSpendingService,
         IAccessServices accessServices, IElaborationsUnitOfWork unitOfWork, IMapper mapper)
     {
         _attemptRepo = attemptRepo;
         _taskRepo = taskRepo;
-        _conceptRecordRepo = conceptRecordRepo;
         _turnOrchestrator = turnOrchestrator;
         _tokenSpendingService = tokenSpendingService;
         _accessServices = accessServices;
@@ -44,37 +41,26 @@ public class ConversationService : IConversationService
         _mapper = mapper;
     }
 
-    public Result<List<ElaborationTaskDto>> GetTasksForUnit(int unitId, int learnerId)
+    public Result<List<ConceptElaborationTaskSummaryDto>> GetTasksForUnit(int unitId, int learnerId)
     {
         if (!_accessServices.IsEnrolledInUnit(unitId, learnerId))
             return Result.Fail(FailureCode.Forbidden);
 
         var tasks = _taskRepo.GetByUnit(unitId);
-
-        return Result.Ok(PopulateDtos(learnerId, tasks));
-    }
-
-    private List<ElaborationTaskDto> PopulateDtos(int learnerId, List<ElaborationTask> tasks)
-    {
         var taskIds = tasks.Select(t => t.Id).ToList();
         var completedTaskIds = _attemptRepo.GetTaskIdsWithCompletedAttempts(taskIds, learnerId);
 
-        var crIds = tasks.Select(t => t.ConceptRecordId).Distinct().ToList();
-        var titleMap = _conceptRecordRepo.GetMany(crIds)
-            .ToDictionary(cr => cr.Id, cr => cr.Title);
-
-        var taskDtos = tasks.Select(t => _mapper.Map<ElaborationTaskDto>(t)).ToList();
-        foreach (var dto in taskDtos)
+        return Result.Ok(tasks.Select(t => new ConceptElaborationTaskSummaryDto
         {
-            dto.HasCompletedAttempt = completedTaskIds.Contains(dto.Id);
-            if (titleMap.TryGetValue(dto.ConceptRecordId, out var title))
-                dto.ConceptRecordTitle = title;
-        }
-
-        return taskDtos;
+            Id = t.Id,
+            UnitId = t.UnitId,
+            Order = t.Order,
+            Title = t.Title,
+            HasCompletedAttempt = completedTaskIds.Contains(t.Id)
+        }).ToList());
     }
 
-    public Result<ElaborationTaskDetailDto> GetTaskDetail(int taskId, int learnerId)
+    public Result<ConceptElaborationTaskDto> GetTaskDetail(int taskId, int learnerId)
     {
         var task = _taskRepo.Get(taskId);
         if (task == null) return Result.Fail(FailureCode.NotFound);
@@ -82,20 +68,11 @@ public class ConversationService : IConversationService
         if (!_accessServices.IsEnrolledInUnit(task.UnitId, learnerId))
             return Result.Fail(FailureCode.Forbidden);
 
-        var conceptRecord = _conceptRecordRepo.Get(task.ConceptRecordId);
-        if (conceptRecord == null) return Result.Fail(FailureCode.NotFound);
-
         var attempts = _attemptRepo.GetByTaskAndLearner(taskId, learnerId);
 
-        return Result.Ok(new ElaborationTaskDetailDto
-        {
-            Id = task.Id,
-            ExpectedLevel = task.ExpectedLevel.ToString(),
-            Order = task.Order,
-            ConceptTitle = conceptRecord.Title,
-            ConceptDefinition = conceptRecord.CanonicalDefinition,
-            Attempts = attempts.Select(a => _mapper.Map<ConversationAttemptDto>(a)).ToList()
-        });
+        var dto = _mapper.Map<ConceptElaborationTaskDto>(task);
+        dto.Attempts = attempts.Select(a => _mapper.Map<ConversationAttemptDto>(a)).ToList();
+        return Result.Ok(dto);
     }
 
     public async IAsyncEnumerable<string> StartConversationAsync(int taskId, string content,
@@ -109,9 +86,6 @@ public class ConversationService : IConversationService
             yield return BuildErrorChunk("Not enrolled in unit.", 403);
             yield break;
         }
-
-        var conceptRecord = _conceptRecordRepo.Get(task.ConceptRecordId);
-        if (conceptRecord == null) { yield return BuildErrorChunk("Concept record not found.", 404); yield break; }
 
         var balanceCheck = _tokenSpendingService.HasSufficientBalanceForUnit(
             learnerId, task.UnitId, content.Length);
@@ -139,9 +113,7 @@ public class ConversationService : IConversationService
         var attempt = new ConversationAttempt(taskId, learnerId);
         _attemptRepo.Create(attempt);
 
-        var levelRecord = conceptRecord.DeriveForLevel(task.ExpectedLevel);
-
-        await foreach (var token in RunTurnPipelineAsync(attempt, task, levelRecord, content, ct))
+        await foreach (var token in RunTurnPipelineAsync(attempt, task, content, ct))
             yield return token;
     }
 
@@ -153,19 +125,12 @@ public class ConversationService : IConversationService
         if (attempt.LearnerId != learnerId) { yield return BuildErrorChunk("Access denied.", 403); yield break; }
         if (attempt.Status != AttemptStatus.InProgress) { yield return BuildErrorChunk("Conversation is no longer active.", 409); yield break; }
 
-        var task = _taskRepo.Get(attempt.ElaborationTaskId);
+        var task = _taskRepo.Get(attempt.ConceptElaborationTaskId);
         if (task == null) { yield return BuildErrorChunk("Task not found.", 404); yield break; }
 
         if (!_accessServices.IsEnrolledInUnit(task.UnitId, learnerId))
         {
             yield return BuildErrorChunk("Not enrolled in unit.", 403);
-            yield break;
-        }
-
-        var conceptRecord = _conceptRecordRepo.Get(task.ConceptRecordId);
-        if (conceptRecord == null)
-        {
-            yield return BuildErrorChunk("Concept record not found.", 404);
             yield break;
         }
 
@@ -177,9 +142,7 @@ public class ConversationService : IConversationService
             yield break;
         }
 
-        var levelRecord = conceptRecord.DeriveForLevel(task.ExpectedLevel);
-
-        await foreach (var token in RunTurnPipelineAsync(attempt, task, levelRecord, content, ct))
+        await foreach (var token in RunTurnPipelineAsync(attempt, task, content, ct))
             yield return token;
     }
 
@@ -198,19 +161,18 @@ public class ConversationService : IConversationService
     }
 
     private async IAsyncEnumerable<string> RunTurnPipelineAsync(
-        ConversationAttempt attempt, ElaborationTask task,
-        ConceptRecord levelRecord, string content,
+        ConversationAttempt attempt, ConceptElaborationTask task, string content,
         [EnumeratorCancellation] CancellationToken ct)
     {
         // Synchronous phase: evaluate
         var evalResult = await _turnOrchestrator.EvaluateAsync(
-            content, attempt.Turns.ToList(), levelRecord, ct);
+            content, attempt.Turns.ToList(), task, ct);
         if (evalResult.IsFailed) { yield return BuildErrorChunk("Evaluation failed. Please try again.", 500); yield break; }
 
         var evaluation = evalResult.Value.Evaluation;
         attempt.AddLearnerTurn(content, evalResult.Value.IsSubstantive, evaluation);
 
-        var isCompleted = levelRecord.IsAttemptComplete(attempt);
+        var isCompleted = task.IsAttemptComplete(attempt);
         var coveredKpIds = attempt.GetCoveredPropositionIds();
         var articulatedRelationIds = attempt.GetArticulatedRelationIds();
         var state = new ConversationState
@@ -218,10 +180,10 @@ public class ConversationService : IConversationService
             IsCompleted = isCompleted,
             IsSoftCapReached = attempt.IsSoftCapReached(),
             IsHardCapReached = attempt.IsHardCapReached(),
-            UncoveredKeyPropositionIds = levelRecord.KeyPropositions
+            UncoveredKeyPropositionIds = task.KeyPropositions
                 .Where(kp => !coveredKpIds.Contains(kp.Id))
                 .Select(kp => kp.Id).ToList(),
-            UnarticulatedKeyRelationIds = levelRecord.KeyRelations
+            UnarticulatedKeyRelationIds = task.KeyRelations
                 .Where(kr => !articulatedRelationIds.Contains(kr.Id))
                 .Select(kr => kr.Id).ToList()
         };
@@ -232,7 +194,7 @@ public class ConversationService : IConversationService
         // Streaming phase: dialogue
         var fullResponse = new System.Text.StringBuilder();
         await foreach (var token in _turnOrchestrator.StreamDialogueAsync(
-            evaluation, attempt.Turns.ToList(), levelRecord, state, ct))
+            evaluation, attempt.Turns.ToList(), task, state, ct))
         {
             fullResponse.Append(token);
             yield return token;
@@ -244,13 +206,13 @@ public class ConversationService : IConversationService
         string? summary = null;
         if (isCompleted)
         {
-            var summaryResult = await _turnOrchestrator.SummarizeAsync(attempt, levelRecord, ct);
+            var summaryResult = await _turnOrchestrator.SummarizeAsync(attempt, task, ct);
             summary = summaryResult.IsSuccess ? summaryResult.Value : null;
             attempt.Complete(summary);
         }
         else if (state.IsHardCapReached)
         {
-            var summaryResult = await _turnOrchestrator.SummarizeAsync(attempt, levelRecord, ct);
+            var summaryResult = await _turnOrchestrator.SummarizeAsync(attempt, task, ct);
             summary = summaryResult.IsSuccess ? summaryResult.Value : null;
             attempt.Expire(summary);
         }

@@ -1,4 +1,4 @@
-namespace Tutor.Elaborations.API.Dtos.ConceptRecords;
+namespace Tutor.Elaborations.API.Dtos.ConceptElaborationTasks;
 
 public class CommonMisconceptionDto
 {

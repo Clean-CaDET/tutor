@@ -1,34 +1,34 @@
 using System.Text;
-using Tutor.Elaborations.Core.Domain.ConceptRecords;
+using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
 
 namespace Tutor.Elaborations.Infrastructure.Agents.Prompts;
 
 public static class EvaluationPromptBuilder
 {
-    public static string BuildSystemPrompt(ConceptRecord record)
+    public static string BuildSystemPrompt(ConceptElaborationTask task)
     {
-        var hasBoundaryConditions = record.BoundaryConditions.Any();
-        var hasCommonMisconceptions = record.CommonMisconceptions.Any();
-        var hasKeyRelations = record.KeyRelations.Any();
+        var hasBoundaryConditions = task.BoundaryConditions.Any();
+        var hasCommonMisconceptions = task.CommonMisconceptions.Any();
+        var hasKeyRelations = task.KeyRelations.Any();
 
         var sb = new StringBuilder();
         sb.AppendLine("You are an evaluation agent for a Socratic tutoring system.");
         sb.AppendLine("Your task: evaluate the learner's latest response against the concept rubric below.");
         sb.AppendLine();
-        sb.AppendLine($"## Concept: {record.Title}");
-        sb.AppendLine($"Definition: {record.CanonicalDefinition}");
+        sb.AppendLine($"## Concept: {task.Title}");
+        sb.AppendLine($"Definition: {task.CanonicalDefinition}");
         sb.AppendLine();
 
         sb.AppendLine("## Key Propositions:");
-        foreach (var kp in record.KeyPropositions)
+        foreach (var kp in task.KeyPropositions)
             sb.AppendLine($"- [KP-{kp.Id}] {kp.Statement}");
         sb.AppendLine();
 
         if (hasBoundaryConditions)
         {
             sb.AppendLine("## Boundary Conditions:");
-            foreach (var bc in record.BoundaryConditions)
+            foreach (var bc in task.BoundaryConditions)
                 sb.AppendLine($"- [BC-{bc.Id}] {bc.Statement}");
             sb.AppendLine();
         }
@@ -36,7 +36,7 @@ public static class EvaluationPromptBuilder
         if (hasCommonMisconceptions)
         {
             sb.AppendLine("## Common Misconceptions:");
-            foreach (var cm in record.CommonMisconceptions.Take(8))
+            foreach (var cm in task.CommonMisconceptions.Take(8))
                 sb.AppendLine($"- [CM-{cm.Id}] {cm.Description} → Correction: {cm.Correction}");
             sb.AppendLine();
         }
@@ -44,8 +44,8 @@ public static class EvaluationPromptBuilder
         if (hasKeyRelations)
         {
             sb.AppendLine("## Key Relations:");
-            var kpById = record.KeyPropositions.ToDictionary(kp => kp.Id, kp => kp.Statement);
-            foreach (var kr in record.KeyRelations)
+            var kpById = task.KeyPropositions.ToDictionary(kp => kp.Id, kp => kp.Statement);
+            foreach (var kr in task.KeyRelations)
             {
                 var sourceText = kpById.GetValueOrDefault(kr.SourceKeyPropositionId, $"KP-{kr.SourceKeyPropositionId}");
                 var targetText = kpById.GetValueOrDefault(kr.TargetKeyPropositionId, $"KP-{kr.TargetKeyPropositionId}");

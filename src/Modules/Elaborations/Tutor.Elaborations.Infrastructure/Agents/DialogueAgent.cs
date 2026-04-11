@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
-using Tutor.Elaborations.Core.Domain.ConceptRecords;
+using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
 using Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 using Tutor.Elaborations.Infrastructure.Agents.Prompts;
@@ -17,10 +17,10 @@ public class DialogueAgent : IDialogueAgent
     }
 
     public async IAsyncEnumerable<string> StreamAsync(TurnEvaluation evaluation,
-        List<ConversationTurn> history, ConceptRecord conceptRecord,
+        List<ConversationTurn> history, ConceptElaborationTask task,
         ConversationState state, [EnumeratorCancellation] CancellationToken ct)
     {
-        var systemPrompt = DialoguePromptBuilder.BuildSystemPrompt(conceptRecord, state);
+        var systemPrompt = DialoguePromptBuilder.BuildSystemPrompt(task, state);
         var messageData = DialoguePromptBuilder.BuildMessages(history);
 
         var summaryParts = new List<string>

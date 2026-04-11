@@ -7,9 +7,8 @@ using Tutor.Elaborations.API.Internal;
 using Tutor.Elaborations.API.Public;
 using Tutor.Elaborations.API.Public.Authoring;
 using Tutor.Elaborations.API.Public.Learning;
-using Tutor.Elaborations.Core.Domain.ConceptRecords;
+using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
-using Tutor.Elaborations.Core.Domain.ElaborationTasks;
 using Tutor.Elaborations.Core.Mappers;
 using Tutor.Elaborations.Core.UseCases;
 using Tutor.Elaborations.Core.UseCases.Authoring;
@@ -34,23 +33,21 @@ public static class ElaborationsStartup
 
     private static void SetupAutoMapper(IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(ConceptRecordProfile).Assembly);
+        services.AddAutoMapper(typeof(ConceptElaborationTaskProfile).Assembly);
     }
 
     private static void SetupCore(IServiceCollection services)
     {
-        services.AddProxiedScoped<IConceptRecordService, ConceptRecordService>();
-        services.AddProxiedScoped<IElaborationTaskService, ElaborationTaskService>();
+        services.AddProxiedScoped<IConceptElaborationTaskService, ConceptElaborationTaskService>();
         services.AddProxiedScoped<IConversationService, ConversationService>();
         services.AddProxiedScoped<IAccessServices, AccessServices>();
-        services.AddProxiedScoped<IElaborationTaskQuerier, ElaborationTaskQuerier>();
+        services.AddProxiedScoped<IConceptElaborationTaskQuerier, ConceptElaborationTaskQuerier>();
         services.AddScoped<TurnOrchestrator>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)
     {
-        services.AddScoped<IConceptRecordRepository, ConceptRecordDatabaseRepository>();
-        services.AddScoped<IElaborationTaskRepository, ElaborationTaskDatabaseRepository>();
+        services.AddScoped<IConceptElaborationTaskRepository, ConceptElaborationTaskDatabaseRepository>();
         services.AddScoped<IConversationAttemptRepository, ConversationAttemptDatabaseRepository>();
 
         services.AddScoped<IEvaluationAgent, EvaluationAgent>();

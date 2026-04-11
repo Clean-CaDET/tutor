@@ -1,5 +1,5 @@
--- Attempt -1: Learner -2, Task -1, Completed with 3 turns (for query tests)
-INSERT INTO elaborations."ConversationAttempts"("Id", "ElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
+-- Attempt -1: Learner -2, CET -1, Completed with 3 turns (for query tests)
+INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
 VALUES (-1, -1, -2, 1, '2024-06-01 10:00:00+00', '2024-06-01 10:15:00+00', 'Good understanding of encapsulation basics.');
 
 INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "IsSubstantive", "Order", "Timestamp")
@@ -10,16 +10,16 @@ INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Rol
 VALUES (-3, -1, 0, 'Access modifiers like public and private control visibility.', true, 2, '2024-06-01 10:02:00+00');
 
 INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "DiscriminationScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredIds", "MisconceptionsTriggeredIds", "RelationsArticulatedIds")
-VALUES (-1, -1, 2, 2, 2, null, 'Accurate basic description', null, '[-11]'::jsonb, '[]'::jsonb, '[]'::jsonb);
+VALUES (-1, -1, 2, 2, 2, null, 'Accurate basic description', null, '[-10]'::jsonb, '[]'::jsonb, '[]'::jsonb);
 INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "DiscriminationScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredIds", "MisconceptionsTriggeredIds", "RelationsArticulatedIds")
-VALUES (-3, -3, 2, 2, 2, null, 'Good description of access modifiers', null, '[-12]'::jsonb, '[]'::jsonb, '[]'::jsonb);
+VALUES (-3, -3, 2, 2, 2, null, 'Good description of access modifiers', null, '[-10]'::jsonb, '[]'::jsonb, '[]'::jsonb);
 
--- Attempt -2: Learner -2, Task -1, Abandoned (for query tests)
-INSERT INTO elaborations."ConversationAttempts"("Id", "ElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
+-- Attempt -2: Learner -2, CET -1, Abandoned (for query tests)
+INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
 VALUES (-2, -1, -2, 2, '2024-06-02 10:00:00+00', '2024-06-02 10:05:00+00', null);
 
--- Attempt -3: Learner -3, Task -1, InProgress with 2 turns (for abandon + follow-up tests)
-INSERT INTO elaborations."ConversationAttempts"("Id", "ElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
+-- Attempt -3: Learner -3, CET -1, InProgress with 2 turns (for abandon + follow-up tests)
+INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
 VALUES (-3, -1, -3, 0, '2024-06-03 10:00:00+00', null, null);
 
 INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "IsSubstantive", "Order", "Timestamp")
@@ -28,10 +28,10 @@ INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Rol
 VALUES (-5, -3, 1, 'What else can you tell me about encapsulation?', true, 1, '2024-06-03 10:01:05+00');
 
 INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "DiscriminationScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredIds", "MisconceptionsTriggeredIds", "RelationsArticulatedIds")
-VALUES (-4, -4, 1, 1, 1, null, 'Partially correct but incomplete', null, '[]'::jsonb, '[-11]'::jsonb, '[]'::jsonb);
+VALUES (-4, -4, 1, 1, 1, null, 'Partially correct but incomplete', null, '[]'::jsonb, '[-210]'::jsonb, '[]'::jsonb);
 
--- Attempt -4: Learner -3, Task -2, InProgress (for completion test: KP -11 already covered, submit to cover -12)
-INSERT INTO elaborations."ConversationAttempts"("Id", "ElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
+-- Attempt -4: Learner -3, CET -2, InProgress (for completion test: KP -20 already covered, submit to cover -21)
+INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
 VALUES (-4, -2, -3, 0, '2024-06-04 10:00:00+00', null, null);
 
 INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "IsSubstantive", "Order", "Timestamp")
@@ -40,10 +40,10 @@ INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Rol
 VALUES (-7, -4, 1, 'Good. What about access control?', true, 1, '2024-06-04 10:01:05+00');
 
 INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "DiscriminationScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredIds", "MisconceptionsTriggeredIds", "RelationsArticulatedIds")
-VALUES (-6, -6, 2, 2, 2, null, 'Covers bundling proposition', null, '[-11]'::jsonb, '[]'::jsonb, '[]'::jsonb);
+VALUES (-6, -6, 2, 2, 2, null, 'Covers bundling proposition', null, '[-20]'::jsonb, '[]'::jsonb, '[]'::jsonb);
 
--- Attempt -5: Learner -2, Task -2, InProgress with 9 learner + 9 system turns (for hard cap test)
-INSERT INTO elaborations."ConversationAttempts"("Id", "ElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
+-- Attempt -5: Learner -2, CET -2, InProgress with 9 learner + 9 system turns (for hard cap test)
+INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
 VALUES (-5, -2, -2, 0, '2024-06-05 10:00:00+00', null, null);
 
 INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "IsSubstantive", "Order", "Timestamp")
@@ -103,8 +103,8 @@ VALUES (-64, -64, 1, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::
 INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "DiscriminationScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredIds", "MisconceptionsTriggeredIds", "RelationsArticulatedIds")
 VALUES (-66, -66, 1, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb);
 
--- Attempt -6: Learner -3, Task -3, InProgress with 5 substantive learner + 5 system turns (for soft cap test)
-INSERT INTO elaborations."ConversationAttempts"("Id", "ElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
+-- Attempt -6: Learner -3, CET -3, InProgress with 5 substantive learner + 5 system turns (for soft cap test)
+INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
 VALUES (-6, -3, -3, 0, '2024-06-06 10:00:00+00', null, null);
 
 INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "IsSubstantive", "Order", "Timestamp")
@@ -139,6 +139,6 @@ VALUES (-76, -76, 1, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::
 INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "DiscriminationScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredIds", "MisconceptionsTriggeredIds", "RelationsArticulatedIds")
 VALUES (-78, -78, 1, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb);
 
--- Attempt -7: Learner -3, Task -5, InProgress (isolated for abandon test — no other test touches this)
-INSERT INTO elaborations."ConversationAttempts"("Id", "ElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
+-- Attempt -7: Learner -3, CET -5, InProgress (isolated for abandon test — no other test touches this)
+INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
 VALUES (-7, -5, -3, 0, '2024-06-07 10:00:00+00', null, null);

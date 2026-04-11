@@ -1,12 +1,13 @@
 using FluentResults;
+using Tutor.Elaborations.API.Dtos.ConceptElaborationTasks;
 using Tutor.Elaborations.API.Dtos.Conversations;
 
 namespace Tutor.Elaborations.API.Public.Learning;
 
 public interface IConversationService
 {
-    Result<List<ElaborationTaskDto>> GetTasksForUnit(int unitId, int learnerId);
-    Result<ElaborationTaskDetailDto> GetTaskDetail(int taskId, int learnerId);
+    Result<List<ConceptElaborationTaskSummaryDto>> GetTasksForUnit(int unitId, int learnerId);
+    Result<ConceptElaborationTaskDto> GetTaskDetail(int taskId, int learnerId);
     IAsyncEnumerable<string> StartConversationAsync(
         int taskId, string content, int learnerId, CancellationToken ct);
     IAsyncEnumerable<string> SubmitTurnAsync(

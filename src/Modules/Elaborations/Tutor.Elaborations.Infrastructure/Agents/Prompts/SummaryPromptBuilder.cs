@@ -1,22 +1,22 @@
 using System.Text;
-using Tutor.Elaborations.Core.Domain.ConceptRecords;
+using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
 
 namespace Tutor.Elaborations.Infrastructure.Agents.Prompts;
 
 public static class SummaryPromptBuilder
 {
-    public static string BuildSystemPrompt(ConversationAttempt attempt, ConceptRecord record)
+    public static string BuildSystemPrompt(ConversationAttempt attempt, ConceptElaborationTask task)
     {
         var sb = new StringBuilder();
         sb.AppendLine("You are a summary agent. Write a brief natural-language summary of the conversation.");
         sb.AppendLine("Paraphrase what the learner demonstrated understanding of. Never quote proposition statements verbatim.");
         sb.AppendLine("Write in Serbian. Keep the summary to 2-4 sentences.");
         sb.AppendLine();
-        sb.AppendLine($"Concept: {record.Title}");
+        sb.AppendLine($"Concept: {task.Title}");
 
         var coveredIds = attempt.GetCoveredPropositionIds();
-        var covered = record.KeyPropositions.Where(kp => coveredIds.Contains(kp.Id)).ToList();
+        var covered = task.KeyPropositions.Where(kp => coveredIds.Contains(kp.Id)).ToList();
         if (covered.Count > 0)
         {
             sb.AppendLine("Propositions the learner covered (paraphrase, do not quote):");

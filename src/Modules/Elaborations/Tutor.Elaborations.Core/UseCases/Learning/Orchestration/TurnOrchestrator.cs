@@ -1,5 +1,5 @@
 using FluentResults;
-using Tutor.Elaborations.Core.Domain.ConceptRecords;
+using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
 
 namespace Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
@@ -19,22 +19,22 @@ public class TurnOrchestrator
     }
 
     public async Task<Result<EvaluationResult>> EvaluateAsync(string content,
-        List<ConversationTurn> history, ConceptRecord conceptRecord,
+        List<ConversationTurn> history, ConceptElaborationTask task,
         CancellationToken ct)
     {
-        return await _evaluationAgent.EvaluateAsync(content, history, conceptRecord, ct);
+        return await _evaluationAgent.EvaluateAsync(content, history, task, ct);
     }
 
     public IAsyncEnumerable<string> StreamDialogueAsync(TurnEvaluation evaluation,
-        List<ConversationTurn> history, ConceptRecord conceptRecord,
+        List<ConversationTurn> history, ConceptElaborationTask task,
         ConversationState state, CancellationToken ct)
     {
-        return _dialogueAgent.StreamAsync(evaluation, history, conceptRecord, state, ct);
+        return _dialogueAgent.StreamAsync(evaluation, history, task, state, ct);
     }
 
     public async Task<Result<string>> SummarizeAsync(ConversationAttempt attempt,
-        ConceptRecord conceptRecord, CancellationToken ct)
+        ConceptElaborationTask task, CancellationToken ct)
     {
-        return await _summaryAgent.SummarizeAsync(attempt, conceptRecord, ct);
+        return await _summaryAgent.SummarizeAsync(attempt, task, ct);
     }
 }

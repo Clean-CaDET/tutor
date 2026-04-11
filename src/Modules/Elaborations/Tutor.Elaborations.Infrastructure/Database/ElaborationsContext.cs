@@ -1,18 +1,16 @@
 using Microsoft.EntityFrameworkCore;
-using Tutor.Elaborations.Core.Domain.ConceptRecords;
+using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
-using Tutor.Elaborations.Core.Domain.ElaborationTasks;
 
 namespace Tutor.Elaborations.Infrastructure.Database;
 
 public class ElaborationsContext : DbContext
 {
-    public DbSet<ConceptRecord> ConceptRecords { get; set; }
+    public DbSet<ConceptElaborationTask> ConceptElaborationTasks { get; set; }
     public DbSet<KeyProposition> KeyPropositions { get; set; }
     public DbSet<BoundaryCondition> BoundaryConditions { get; set; }
     public DbSet<CommonMisconception> CommonMisconceptions { get; set; }
     public DbSet<KeyRelation> KeyRelations { get; set; }
-    public DbSet<ElaborationTask> ElaborationTasks { get; set; }
     public DbSet<ConversationAttempt> ConversationAttempts { get; set; }
     public DbSet<ConversationTurn> ConversationTurns { get; set; }
     public DbSet<TurnEvaluation> TurnEvaluations { get; set; }
@@ -23,32 +21,34 @@ public class ElaborationsContext : DbContext
     {
         modelBuilder.HasDefaultSchema("elaborations");
 
-        ConfigureConceptRecords(modelBuilder);
-        ConfigureElaborationTasks(modelBuilder);
+        ConfigureConceptElaborationTasks(modelBuilder);
         ConfigureConversations(modelBuilder);
     }
 
-    private static void ConfigureConceptRecords(ModelBuilder modelBuilder)
+    private static void ConfigureConceptElaborationTasks(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ConceptRecord>()
-            .HasMany(cr => cr.KeyPropositions)
+        modelBuilder.Entity<ConceptElaborationTask>()
+            .HasMany(cet => cet.KeyPropositions)
             .WithOne()
-            .HasForeignKey(kp => kp.ConceptRecordId);
+            .HasForeignKey(kp => kp.ConceptElaborationTaskId);
 
-        modelBuilder.Entity<ConceptRecord>()
-            .HasMany(cr => cr.BoundaryConditions)
+        modelBuilder.Entity<ConceptElaborationTask>()
+            .HasMany(cet => cet.BoundaryConditions)
             .WithOne()
-            .HasForeignKey(bc => bc.ConceptRecordId);
+            .HasForeignKey(bc => bc.ConceptElaborationTaskId);
 
-        modelBuilder.Entity<ConceptRecord>()
-            .HasMany(cr => cr.CommonMisconceptions)
+        modelBuilder.Entity<ConceptElaborationTask>()
+            .HasMany(cet => cet.CommonMisconceptions)
             .WithOne()
-            .HasForeignKey(cm => cm.ConceptRecordId);
+            .HasForeignKey(cm => cm.ConceptElaborationTaskId);
 
-        modelBuilder.Entity<ConceptRecord>()
-            .HasMany(cr => cr.KeyRelations)
+        modelBuilder.Entity<ConceptElaborationTask>()
+            .HasMany(cet => cet.KeyRelations)
             .WithOne()
-            .HasForeignKey(kr => kr.ConceptRecordId);
+            .HasForeignKey(kr => kr.ConceptElaborationTaskId);
+
+        modelBuilder.Entity<ConceptElaborationTask>()
+            .HasIndex(cet => new { cet.UnitId, cet.Order });
 
         modelBuilder.Entity<KeyRelation>()
             .HasOne(kr => kr.SourceKeyProposition)
@@ -63,18 +63,6 @@ public class ElaborationsContext : DbContext
             .OnDelete(DeleteBehavior.ClientNoAction);
     }
 
-    private static void ConfigureElaborationTasks(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<ElaborationTask>()
-            .HasOne<ConceptRecord>()
-            .WithMany()
-            .HasForeignKey(et => et.ConceptRecordId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<ElaborationTask>()
-            .HasIndex(et => new { et.UnitId, et.Order });
-    }
-
     private static void ConfigureConversations(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ConversationAttempt>()
@@ -83,7 +71,7 @@ public class ElaborationsContext : DbContext
             .HasForeignKey(ct => ct.ConversationAttemptId);
 
         modelBuilder.Entity<ConversationAttempt>()
-            .HasIndex(ca => new { ca.ElaborationTaskId, ca.LearnerId });
+            .HasIndex(ca => new { ca.ConceptElaborationTaskId, ca.LearnerId });
 
         modelBuilder.Entity<ConversationTurn>()
             .HasOne(ct => ct.Evaluation)

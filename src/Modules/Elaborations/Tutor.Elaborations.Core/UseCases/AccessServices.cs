@@ -15,11 +15,6 @@ public class AccessServices : IAccessServices
         _enrollmentValidator = enrollmentValidator;
     }
 
-    public bool IsCourseOwner(int courseId, int instructorId)
-    {
-        return _ownershipValidator.IsCourseOwner(courseId, instructorId);
-    }
-
     public bool IsUnitOwner(int unitId, int instructorId)
     {
         return _ownershipValidator.IsUnitOwner(unitId, instructorId);

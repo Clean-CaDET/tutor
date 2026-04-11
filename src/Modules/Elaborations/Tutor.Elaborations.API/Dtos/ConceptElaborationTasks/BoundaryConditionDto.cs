@@ -1,8 +1,7 @@
-namespace Tutor.Elaborations.API.Dtos.ConceptRecords;
+namespace Tutor.Elaborations.API.Dtos.ConceptElaborationTasks;
 
 public class BoundaryConditionDto
 {
     public int Id { get; set; }
     public string Statement { get; set; } = string.Empty;
-    public string Level { get; set; } = string.Empty;
 }
