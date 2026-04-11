@@ -49,6 +49,18 @@ public class ElaborationsContext : DbContext
             .HasMany(cr => cr.KeyRelations)
             .WithOne()
             .HasForeignKey(kr => kr.ConceptRecordId);
+
+        modelBuilder.Entity<KeyRelation>()
+            .HasOne(kr => kr.SourceKeyProposition)
+            .WithMany()
+            .HasForeignKey(kr => kr.SourceKeyPropositionId)
+            .OnDelete(DeleteBehavior.ClientNoAction);
+
+        modelBuilder.Entity<KeyRelation>()
+            .HasOne(kr => kr.TargetKeyProposition)
+            .WithMany()
+            .HasForeignKey(kr => kr.TargetKeyPropositionId)
+            .OnDelete(DeleteBehavior.ClientNoAction);
     }
 
     private static void ConfigureElaborationTasks(ModelBuilder modelBuilder)

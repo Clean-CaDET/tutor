@@ -56,6 +56,49 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
     }
 
     [Fact]
+    public void Creates_with_relations()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
+        var newEntity = new ConceptRecordDto
+        {
+            CourseId = -1,
+            Title = "Concept With Relations",
+            CanonicalDefinition = "A concept created with KPs and KRs in one request.",
+            KeyPropositions = new List<KeyPropositionDto>
+            {
+                new() { Statement = "First proposition", Level = "Beginner" },
+                new() { Statement = "Second proposition", Level = "Beginner" }
+            },
+            BoundaryConditions = new List<BoundaryConditionDto>(),
+            CommonMisconceptions = new List<CommonMisconceptionDto>(),
+            KeyRelations = new List<KeyRelationDto>
+            {
+                new()
+                {
+                    SourceKeyPropositionIndex = 0, TargetKeyPropositionIndex = 1,
+                    Mechanism = "First enables second", Level = "Beginner"
+                }
+            }
+        };
+        dbContext.Database.BeginTransaction();
+
+        var actionResult = controller.Create(-1, newEntity).Result;
+        var result = (actionResult as OkObjectResult)?.Value as ConceptRecordDto;
+
+        dbContext.ChangeTracker.Clear();
+        result.ShouldNotBeNull();
+        result.KeyPropositions.Count.ShouldBe(2);
+        result.KeyRelations.Count.ShouldBe(1);
+        result.KeyRelations[0].Mechanism.ShouldBe("First enables second");
+        result.KeyRelations[0].SourceKeyPropositionId.ShouldNotBe(0);
+        result.KeyRelations[0].TargetKeyPropositionId.ShouldNotBe(0);
+        result.KeyRelations[0].SourceKeyPropositionId.ShouldNotBe(
+            result.KeyRelations[0].TargetKeyPropositionId);
+    }
+
+    [Fact]
     public void Updates()
     {
         using var scope = Factory.Services.CreateScope();
@@ -89,12 +132,11 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
     }
 
     [Fact]
-    public void Updates_relations_round_trip()
+    public void Updates_relations_with_indices()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
-        // CR -5 has KPs -50 and -51 already; add a second relation alongside the seeded -100.
         var updatedEntity = new ConceptRecordDto
         {
             Id = -5,
@@ -104,7 +146,8 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
             KeyPropositions = new List<KeyPropositionDto>
             {
                 new() { Id = -50, Statement = "A subclass can override a parent method", Level = "Beginner" },
-                new() { Id = -51, Statement = "The runtime selects the implementation by the actual type", Level = "Beginner" }
+                new() { Id = -51, Statement = "The runtime selects the implementation by the actual type", Level = "Beginner" },
+                new() { Statement = "Dispatch table resolves virtual calls", Level = "Intermediate" }
             },
             BoundaryConditions = new List<BoundaryConditionDto>(),
             CommonMisconceptions = new List<CommonMisconceptionDto>(),
@@ -112,15 +155,15 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
             {
                 new()
                 {
-                    SourceKeyPropositionId = -50, TargetKeyPropositionId = -51,
+                    SourceKeyPropositionIndex = 0, TargetKeyPropositionIndex = 1,
                     Mechanism = "Override matters because dispatch happens at runtime",
                     Level = "Beginner"
                 },
                 new()
                 {
-                    SourceKeyPropositionId = -51, TargetKeyPropositionId = -50,
-                    Mechanism = "Runtime type lookup is what makes the override observable",
-                    Level = "Beginner"
+                    SourceKeyPropositionIndex = 1, TargetKeyPropositionIndex = 2,
+                    Mechanism = "Runtime dispatch uses vtable lookup",
+                    Level = "Intermediate"
                 }
             }
         };
@@ -131,9 +174,43 @@ public class ConceptRecordCommandTests : BaseElaborationsIntegrationTest
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
+        result.KeyPropositions.Count.ShouldBe(3);
         result.KeyRelations.Count.ShouldBe(2);
-        result.KeyRelations[0].Mechanism.ShouldContain("dispatch happens at runtime");
-        result.KeyRelations[0].Level.ShouldBe("Beginner");
+        result.KeyRelations.ShouldContain(kr => kr.Mechanism.Contains("dispatch happens at runtime"));
+        result.KeyRelations.ShouldContain(kr => kr.Mechanism.Contains("vtable lookup"));
+    }
+
+    [Fact]
+    public void Removes_relation_and_referenced_kp()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope);
+        var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
+        // CR -5 has KP -50, KP -51, and KR -100 (source=-50, target=-51).
+        // Remove KR and KP -51, keeping only KP -50.
+        var updatedEntity = new ConceptRecordDto
+        {
+            Id = -5,
+            CourseId = -1,
+            Title = "Polymorphism Mechanics",
+            CanonicalDefinition = "Polymorphism resolves method calls at runtime via dynamic dispatch.",
+            KeyPropositions = new List<KeyPropositionDto>
+            {
+                new() { Id = -50, Statement = "A subclass can override a parent method", Level = "Beginner" }
+            },
+            BoundaryConditions = new List<BoundaryConditionDto>(),
+            CommonMisconceptions = new List<CommonMisconceptionDto>(),
+            KeyRelations = new List<KeyRelationDto>()
+        };
+        dbContext.Database.BeginTransaction();
+
+        var actionResult = controller.Update(-1, -5, updatedEntity).Result;
+        var result = (actionResult as OkObjectResult)?.Value as ConceptRecordDto;
+
+        dbContext.ChangeTracker.Clear();
+        result.ShouldNotBeNull();
+        result.KeyPropositions.Count.ShouldBe(1);
+        result.KeyRelations.Count.ShouldBe(0);
     }
 
     [Fact]
