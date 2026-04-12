@@ -1,6 +1,6 @@
 namespace Tutor.Elaborations.API.Dtos.ConceptElaborationTasks;
 
-public class ConceptElaborationTaskSummaryDto
+public class LearnerElaborationSummaryDto
 {
     public int Id { get; set; }
     public int UnitId { get; set; }

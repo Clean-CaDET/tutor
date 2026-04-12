@@ -20,7 +20,7 @@ public class ConversationController : BaseApiController
     }
 
     [HttpGet("units/{unitId:int}/concept-elaborations")]
-    public ActionResult<List<ConceptElaborationTaskSummaryDto>> GetTasksForUnit(int unitId)
+    public ActionResult<List<LearnerElaborationSummaryDto>> GetTasksForUnit(int unitId)
     {
         var result = _conversationService.GetTasksForUnit(unitId, User.LearnerId());
         return CreateResponse(result);

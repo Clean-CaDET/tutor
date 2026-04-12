@@ -19,7 +19,7 @@ public class ConversationQueryTests : BaseElaborationsIntegrationTest
         var controller = CreateController(scope, "-2");
 
         var actionResult = controller.GetTasksForUnit(-1).Result;
-        var result = (actionResult as OkObjectResult)?.Value as List<ConceptElaborationTaskSummaryDto>;
+        var result = (actionResult as OkObjectResult)?.Value as List<LearnerElaborationSummaryDto>;
 
         result.ShouldNotBeNull();
         result.Count.ShouldBe(2);

@@ -18,16 +18,9 @@ public class ConceptElaborationTaskController : BaseApiController
     }
 
     [HttpGet]
-    public ActionResult<List<ConceptElaborationTaskSummaryDto>> GetByUnit(int unitId)
+    public ActionResult<List<ConceptElaborationTaskDto>> GetByUnit(int unitId)
     {
         var result = _service.GetByUnit(unitId, User.InstructorId());
-        return CreateResponse(result);
-    }
-
-    [HttpGet("{id:int}")]
-    public ActionResult<ConceptElaborationTaskDto> Get(int unitId, int id)
-    {
-        var result = _service.Get(id, unitId, User.InstructorId());
         return CreateResponse(result);
     }
 

@@ -22,22 +22,12 @@ public class ConceptElaborationTaskService :
         _accessServices = accessServices;
     }
 
-    public Result<ConceptElaborationTaskDto> Get(int id, int unitId, int instructorId)
-    {
-        if (!_accessServices.IsUnitOwner(unitId, instructorId))
-            return Result.Fail(FailureCode.Forbidden);
-        var task = _taskRepository.Get(id);
-        if (task == null || task.UnitId != unitId)
-            return Result.Fail(FailureCode.NotFound);
-        return MapToDto(task);
-    }
-
-    public Result<List<ConceptElaborationTaskSummaryDto>> GetByUnit(int unitId, int instructorId)
+    public Result<List<ConceptElaborationTaskDto>> GetByUnit(int unitId, int instructorId)
     {
         if (!_accessServices.IsUnitOwner(unitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
         var tasks = _taskRepository.GetByUnit(unitId);
-        return Result.Ok(tasks.Select(ToSummary).ToList());
+        return MapToDto(tasks);
     }
 
     public Result<ConceptElaborationTaskDto> Create(ConceptElaborationTaskDto task, int instructorId)
@@ -66,16 +56,5 @@ public class ConceptElaborationTaskService :
         if (task == null || task.UnitId != unitId)
             return Result.Fail(FailureCode.NotFound);
         return Delete(id);
-    }
-
-    private static ConceptElaborationTaskSummaryDto ToSummary(ConceptElaborationTask task)
-    {
-        return new ConceptElaborationTaskSummaryDto
-        {
-            Id = task.Id,
-            UnitId = task.UnitId,
-            Order = task.Order,
-            Title = task.Title
-        };
     }
 }

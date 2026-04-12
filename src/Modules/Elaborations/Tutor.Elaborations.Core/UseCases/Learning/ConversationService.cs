@@ -41,7 +41,7 @@ public class ConversationService : IConversationService
         _mapper = mapper;
     }
 
-    public Result<List<ConceptElaborationTaskSummaryDto>> GetTasksForUnit(int unitId, int learnerId)
+    public Result<List<LearnerElaborationSummaryDto>> GetTasksForUnit(int unitId, int learnerId)
     {
         if (!_accessServices.IsEnrolledInUnit(unitId, learnerId))
             return Result.Fail(FailureCode.Forbidden);
@@ -50,7 +50,7 @@ public class ConversationService : IConversationService
         var taskIds = tasks.Select(t => t.Id).ToList();
         var completedTaskIds = _attemptRepo.GetTaskIdsWithCompletedAttempts(taskIds, learnerId);
 
-        return Result.Ok(tasks.Select(t => new ConceptElaborationTaskSummaryDto
+        return Result.Ok(tasks.Select(t => new LearnerElaborationSummaryDto
         {
             Id = t.Id,
             UnitId = t.UnitId,
