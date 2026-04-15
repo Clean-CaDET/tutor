@@ -42,7 +42,6 @@ public static class ElaborationsStartup
         services.AddProxiedScoped<IConversationService, ConversationService>();
         services.AddProxiedScoped<IAccessServices, AccessServices>();
         services.AddProxiedScoped<IConceptElaborationTaskQuerier, ConceptElaborationTaskQuerier>();
-        services.AddScoped<TurnOrchestrator>();
     }
 
     private static void SetupInfrastructure(IServiceCollection services)

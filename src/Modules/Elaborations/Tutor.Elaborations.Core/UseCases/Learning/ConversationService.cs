@@ -22,7 +22,9 @@ public class ConversationService : IConversationService
 
     private readonly IConversationAttemptRepository _attemptRepo;
     private readonly IConceptElaborationTaskRepository _taskRepo;
-    private readonly TurnOrchestrator _turnOrchestrator;
+    private readonly IEvaluationAgent _evaluationAgent;
+    private readonly IDialogueAgent _dialogueAgent;
+    private readonly ISummaryAgent _summaryAgent;
     private readonly ITokenSpendingService _tokenSpendingService;
     private readonly IAccessServices _accessServices;
     private readonly IElaborationsUnitOfWork _unitOfWork;
@@ -30,12 +32,15 @@ public class ConversationService : IConversationService
 
     public ConversationService(IConversationAttemptRepository attemptRepo,
         IConceptElaborationTaskRepository taskRepo,
-        TurnOrchestrator turnOrchestrator, ITokenSpendingService tokenSpendingService,
-        IAccessServices accessServices, IElaborationsUnitOfWork unitOfWork, IMapper mapper)
+        IEvaluationAgent evaluationAgent, IDialogueAgent dialogueAgent, ISummaryAgent summaryAgent,
+        ITokenSpendingService tokenSpendingService, IAccessServices accessServices,
+        IElaborationsUnitOfWork unitOfWork, IMapper mapper)
     {
         _attemptRepo = attemptRepo;
         _taskRepo = taskRepo;
-        _turnOrchestrator = turnOrchestrator;
+        _evaluationAgent = evaluationAgent;
+        _dialogueAgent = dialogueAgent;
+        _summaryAgent = summaryAgent;
         _tokenSpendingService = tokenSpendingService;
         _accessServices = accessServices;
         _unitOfWork = unitOfWork;
@@ -166,7 +171,7 @@ public class ConversationService : IConversationService
         [EnumeratorCancellation] CancellationToken ct)
     {
         // Synchronous phase: evaluate
-        var evalResult = await _turnOrchestrator.EvaluateAsync(
+        var evalResult = await _evaluationAgent.EvaluateAsync(
             content, attempt.Turns.ToList(), task, ct);
         if (evalResult.IsFailed) { yield return BuildErrorChunk("Evaluation failed. Please try again.", 500); yield break; }
 
@@ -179,7 +184,7 @@ public class ConversationService : IConversationService
         // Streaming phase: dialogue
         var fullResponse = new StringBuilder();
         var state = CreateConversationState(attempt, task);
-        await foreach (var token in _turnOrchestrator.StreamDialogueAsync(
+        await foreach (var token in _dialogueAgent.StreamAsync(
                            evaluation, attempt.Turns.ToList(), task, state, ct))
         {
             fullResponse.Append(token);
@@ -192,13 +197,13 @@ public class ConversationService : IConversationService
         string? summary = null;
         if (state.IsCompleted)
         {
-            var summaryResult = await _turnOrchestrator.SummarizeAsync(attempt, task, ct);
+            var summaryResult = await _summaryAgent.SummarizeAsync(attempt, task, ct);
             summary = summaryResult.IsSuccess ? summaryResult.Value : null;
             attempt.Complete(summary);
         }
         else if (state.IsHardCapReached)
         {
-            var summaryResult = await _turnOrchestrator.SummarizeAsync(attempt, task, ct);
+            var summaryResult = await _summaryAgent.SummarizeAsync(attempt, task, ct);
             summary = summaryResult.IsSuccess ? summaryResult.Value : null;
             attempt.Expire(summary);
         }
