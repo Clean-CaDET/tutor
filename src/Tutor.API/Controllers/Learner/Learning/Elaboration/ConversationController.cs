@@ -27,9 +27,9 @@ public class ConversationController : BaseApiController
     }
 
     [HttpGet("concept-elaborations/{taskId:int}")]
-    public ActionResult<ConceptElaborationTaskDto> GetTaskDetail(int taskId)
+    public ActionResult<ConceptElaborationTaskDto> GetTaskWithAttempts(int taskId)
     {
-        var result = _conversationService.GetTaskDetail(taskId, User.LearnerId());
+        var result = _conversationService.GetTaskWithAttempts(taskId, User.LearnerId());
         return CreateResponse(result);
     }
 

@@ -10,6 +10,7 @@ namespace Tutor.Elaborations.Infrastructure.Agents;
 
 public class EvaluationAgent : IEvaluationAgent
 {
+    private const int MaxReattempts = 2;
     private readonly IAiChatService _chatService;
 
     public EvaluationAgent(IAiChatService chatService)
@@ -18,8 +19,25 @@ public class EvaluationAgent : IEvaluationAgent
     }
 
     public async Task<Result<EvaluationResult>> EvaluateAsync(string content,
-        List<ConversationTurn> history, ConceptElaborationTask task,
-        CancellationToken ct)
+        List<ConversationTurn> history, ConceptElaborationTask task, CancellationToken ct)
+    {
+        var request = CreateRequestWithPromptAndParams(content, history, task);
+
+        for (var attempt = 0; attempt < MaxReattempts; attempt++)
+        {
+            var result = await _chatService.CompleteAsync(request, ct);
+            if (result.IsFailed) continue;
+
+            var evaluation = TryParseResponse(result.Value.Content);
+            if (evaluation == null) continue;
+
+            return evaluation;
+        }
+
+        return Result.Fail("Failed to parse evaluation response after retries.");
+    }
+
+    private static CompletionRequest CreateRequestWithPromptAndParams(string content, List<ConversationTurn> history, ConceptElaborationTask task)
     {
         var systemPrompt = EvaluationPromptBuilder.BuildSystemPrompt(task);
         var messageData = EvaluationPromptBuilder.BuildMessages(content, history);
@@ -27,15 +45,16 @@ public class EvaluationAgent : IEvaluationAgent
         var messages = messageData.Select(m =>
             m.role == "user" ? ChatMessage.FromUser(m.content) : ChatMessage.FromAssistant(m.content));
 
-        var request = CompletionRequest.Create(messages, systemPrompt, maxTokens: 1024, temperature: 0.1);
+        return CompletionRequest.Create(messages, systemPrompt, maxTokens: 1024, temperature: 0.1);
+    }
 
-        for (var attempt = 0; attempt < 2; attempt++)
+    private static EvaluationResult? TryParseResponse(string json)
+    {
+        try
         {
-            var result = await _chatService.CompleteAsync(request, ct);
-            if (result.IsFailed) continue;
-
-            var parsed = TryParseResponse(result.Value.Content);
-            if (parsed == null) continue;
+            var parsed = JsonSerializer.Deserialize<EvaluationResponse>(json,
+                new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+            if(parsed == null) return null;
 
             var evaluation = new TurnEvaluation(
                 parsed.CorrectnessScore, parsed.CompletenessScore,
@@ -45,18 +64,7 @@ public class EvaluationAgent : IEvaluationAgent
                 parsed.MisconceptionsTriggeredIds ?? new List<int>(),
                 parsed.RelationsArticulatedIds ?? new List<int>());
 
-            return Result.Ok(new EvaluationResult(evaluation, parsed.IsSubstantive));
-        }
-
-        return Result.Fail("Failed to parse evaluation response after retries.");
-    }
-
-    private static EvaluationResponse? TryParseResponse(string json)
-    {
-        try
-        {
-            return JsonSerializer.Deserialize<EvaluationResponse>(json,
-                new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+            return new EvaluationResult(evaluation, parsed.IsSubstantive);
         }
         catch
         {

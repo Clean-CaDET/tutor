@@ -7,7 +7,7 @@ namespace Tutor.Elaborations.API.Public.Learning;
 public interface IConversationService
 {
     Result<List<LearnerElaborationSummaryDto>> GetTasksForUnit(int unitId, int learnerId);
-    Result<ConceptElaborationTaskDto> GetTaskDetail(int taskId, int learnerId);
+    Result<ConceptElaborationTaskDto> GetTaskWithAttempts(int taskId, int learnerId);
     IAsyncEnumerable<string> StartConversationAsync(
         int taskId, string content, int learnerId, CancellationToken ct);
     IAsyncEnumerable<string> SubmitTurnAsync(

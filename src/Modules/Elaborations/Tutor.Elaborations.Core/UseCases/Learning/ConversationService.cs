@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.Json;
 using AutoMapper;
 using FluentResults;
@@ -60,7 +61,7 @@ public class ConversationService : IConversationService
         }).ToList());
     }
 
-    public Result<ConceptElaborationTaskDto> GetTaskDetail(int taskId, int learnerId)
+    public Result<ConceptElaborationTaskDto> GetTaskWithAttempts(int taskId, int learnerId)
     {
         var task = _taskRepo.Get(taskId);
         if (task == null) return Result.Fail(FailureCode.NotFound);
@@ -172,29 +173,14 @@ public class ConversationService : IConversationService
         var evaluation = evalResult.Value.Evaluation;
         attempt.AddLearnerTurn(content, evalResult.Value.IsSubstantive, evaluation);
 
-        var isCompleted = task.IsAttemptComplete(attempt);
-        var coveredKpIds = attempt.GetCoveredPropositionIds();
-        var articulatedRelationIds = attempt.GetArticulatedRelationIds();
-        var state = new ConversationState
-        {
-            IsCompleted = isCompleted,
-            IsSoftCapReached = attempt.IsSoftCapReached(),
-            IsHardCapReached = attempt.IsHardCapReached(),
-            UncoveredKeyPropositionIds = task.KeyPropositions
-                .Where(kp => !coveredKpIds.Contains(kp.Id))
-                .Select(kp => kp.Id).ToList(),
-            UnarticulatedKeyRelationIds = task.KeyRelations
-                .Where(kr => !articulatedRelationIds.Contains(kr.Id))
-                .Select(kr => kr.Id).ToList()
-        };
-
         // Partial save: protects against stream interruption
         _unitOfWork.Save();
 
         // Streaming phase: dialogue
-        var fullResponse = new System.Text.StringBuilder();
+        var fullResponse = new StringBuilder();
+        var state = CreateConversationState(attempt, task);
         await foreach (var token in _turnOrchestrator.StreamDialogueAsync(
-            evaluation, attempt.Turns.ToList(), task, state, ct))
+                           evaluation, attempt.Turns.ToList(), task, state, ct))
         {
             fullResponse.Append(token);
             yield return token;
@@ -204,7 +190,7 @@ public class ConversationService : IConversationService
         attempt.AddSystemTurn(fullResponse.ToString());
 
         string? summary = null;
-        if (isCompleted)
+        if (state.IsCompleted)
         {
             var summaryResult = await _turnOrchestrator.SummarizeAsync(attempt, task, ct);
             summary = summaryResult.IsSuccess ? summaryResult.Value : null;
@@ -238,6 +224,24 @@ public class ConversationService : IConversationService
             Status = attempt.Status.ToString(),
             Summary = summary
         });
+    }
+
+    private static ConversationState CreateConversationState(ConversationAttempt attempt, ConceptElaborationTask task)
+    {
+        var coveredKpIds = attempt.GetCoveredPropositionIds();
+        var articulatedRelationIds = attempt.GetArticulatedRelationIds();
+        return new ConversationState
+        {
+            IsCompleted = task.IsAttemptComplete(attempt),
+            IsSoftCapReached = attempt.IsSoftCapReached(),
+            IsHardCapReached = attempt.IsHardCapReached(),
+            UncoveredKeyPropositionIds = task.KeyPropositions
+                .Where(kp => !coveredKpIds.Contains(kp.Id))
+                .Select(kp => kp.Id).ToList(),
+            UnarticulatedKeyRelationIds = task.KeyRelations
+                .Where(kr => !articulatedRelationIds.Contains(kr.Id))
+                .Select(kr => kr.Id).ToList()
+        };
     }
 
     private static string BuildErrorChunk(string message, int code, int? attemptId = null)

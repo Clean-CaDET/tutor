@@ -46,7 +46,7 @@ public class ConversationQueryTests : BaseElaborationsIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
 
-        var actionResult = controller.GetTaskDetail(-1).Result;
+        var actionResult = controller.GetTaskWithAttempts(-1).Result;
         var result = (actionResult as OkObjectResult)?.Value as ConceptElaborationTaskDto;
 
         result.ShouldNotBeNull();
@@ -65,7 +65,7 @@ public class ConversationQueryTests : BaseElaborationsIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-3");
 
-        var actionResult = controller.GetTaskDetail(-2).Result;
+        var actionResult = controller.GetTaskWithAttempts(-2).Result;
         var result = (actionResult as OkObjectResult)?.Value as ConceptElaborationTaskDto;
 
         result.ShouldNotBeNull();
@@ -79,7 +79,7 @@ public class ConversationQueryTests : BaseElaborationsIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-1");
 
-        var actionResult = controller.GetTaskDetail(-1).Result;
+        var actionResult = controller.GetTaskWithAttempts(-1).Result;
         var objectResult = actionResult as ObjectResult;
 
         objectResult.ShouldNotBeNull();
@@ -92,7 +92,7 @@ public class ConversationQueryTests : BaseElaborationsIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
 
-        var actionResult = controller.GetTaskDetail(-999).Result;
+        var actionResult = controller.GetTaskWithAttempts(-999).Result;
         var objectResult = actionResult as ObjectResult;
 
         objectResult.ShouldNotBeNull();

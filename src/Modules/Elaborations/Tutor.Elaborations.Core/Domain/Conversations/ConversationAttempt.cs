@@ -90,10 +90,4 @@ public class ConversationAttempt : AggregateRoot
         CompletedAt = DateTime.UtcNow;
         Summary = summary;
     }
-
-    public void Block()
-    {
-        Status = AttemptStatus.Blocked;
-        CompletedAt = DateTime.UtcNow;
-    }
 }

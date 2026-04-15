@@ -5,6 +5,5 @@ public enum AttemptStatus
     InProgress,
     Completed,
     Abandoned,
-    Expired,
-    Blocked
+    Expired
 }
