@@ -119,8 +119,8 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
         var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
         dbContext.ChangeTracker.Clear();
         var attempt = dbContext.ConversationAttempts.Include(a => a.Turns)
-            .First(a => a.Id == -6);
-        attempt.Turns.Count(t => t.Role == 0 && t.IsSubstantive).ShouldBe(6);
+            .ThenInclude(t => t.Evaluation).First(a => a.Id == -6);
+        attempt.Turns.Count(t => t.Role == 0 && t.Evaluation?.IsSubstantive == true).ShouldBe(6);
     }
 
     [Fact]

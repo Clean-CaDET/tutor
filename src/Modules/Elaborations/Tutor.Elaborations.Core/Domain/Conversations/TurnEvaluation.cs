@@ -5,6 +5,7 @@ namespace Tutor.Elaborations.Core.Domain.Conversations;
 public class TurnEvaluation : Entity
 {
     public int ConversationTurnId { get; private set; }
+    public bool IsSubstantive { get; private set; }
     public int CorrectnessScore { get; private set; }
     public int CompletenessScore { get; private set; }
     public int? DiscriminationScore { get; private set; }
@@ -17,12 +18,10 @@ public class TurnEvaluation : Entity
 
     private TurnEvaluation() { }
 
-    public TurnEvaluation(int correctnessScore, int completenessScore,
-        int? discriminationScore, int? integrationScore,
-        string justification, string? novelMisconceptions,
-        List<int> propositionsCoveredIds, List<int> misconceptionsTriggeredIds,
-        List<int> relationsArticulatedIds)
+    public TurnEvaluation(bool isSubstantive, int correctnessScore, int completenessScore, int? discriminationScore, int? integrationScore,
+        string justification, string? novelMisconceptions, List<int> propositionsCoveredIds, List<int> misconceptionsTriggeredIds, List<int> relationsArticulatedIds)
     {
+        IsSubstantive = isSubstantive;
         CorrectnessScore = correctnessScore;
         CompletenessScore = completenessScore;
         DiscriminationScore = discriminationScore;

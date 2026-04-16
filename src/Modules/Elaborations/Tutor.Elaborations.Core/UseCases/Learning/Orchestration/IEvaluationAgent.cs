@@ -6,7 +6,7 @@ namespace Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 
 public interface IEvaluationAgent
 {
-    Task<Result<EvaluationResult>> EvaluateAsync(string content,
+    Task<Result<TurnEvaluation>> EvaluateAsync(string content,
         List<ConversationTurn> history, ConceptElaborationTask task,
         CancellationToken ct);
 }

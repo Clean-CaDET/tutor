@@ -175,8 +175,8 @@ public class ConversationService : IConversationService
             content, attempt.Turns.ToList(), task, ct);
         if (evalResult.IsFailed) { yield return BuildErrorChunk("Evaluation failed. Please try again.", 500); yield break; }
 
-        var evaluation = evalResult.Value.Evaluation;
-        attempt.AddLearnerTurn(content, evalResult.Value.IsSubstantive, evaluation);
+        var evaluation = evalResult.Value;
+        attempt.AddLearnerTurn(content, evaluation);
 
         // Partial save: protects against stream interruption
         _unitOfWork.Save();

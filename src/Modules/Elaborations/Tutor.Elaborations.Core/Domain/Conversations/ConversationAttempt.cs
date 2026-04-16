@@ -43,7 +43,7 @@ public class ConversationAttempt : AggregateRoot
 
     public int CountSubstantiveLearnerTurns()
     {
-        return Turns.Count(t => t.Role == TurnRole.Learner && t.IsSubstantive);
+        return Turns.Count(t => t.Role == TurnRole.Learner && t.Evaluation?.IsSubstantive == true);
     }
 
     public int CountTotalLearnerTurns()
@@ -55,18 +55,16 @@ public class ConversationAttempt : AggregateRoot
 
     public bool IsHardCapReached() => CountTotalLearnerTurns() >= HardCapTotalTurns;
 
-    public ConversationTurn AddLearnerTurn(string content,
-        bool isSubstantive, TurnEvaluation? evaluation)
+    public ConversationTurn AddLearnerTurn(string content, TurnEvaluation? evaluation)
     {
-        var turn = new ConversationTurn(TurnRole.Learner, content,
-            isSubstantive, Turns.Count, evaluation);
+        var turn = new ConversationTurn(TurnRole.Learner, content, Turns.Count, evaluation);
         Turns.Add(turn);
         return turn;
     }
 
     public ConversationTurn AddSystemTurn(string content)
     {
-        var turn = new ConversationTurn(TurnRole.System, content, true, Turns.Count);
+        var turn = new ConversationTurn(TurnRole.System, content, Turns.Count);
         Turns.Add(turn);
         return turn;
     }

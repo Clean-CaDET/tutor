@@ -18,7 +18,7 @@ public class EvaluationAgent : IEvaluationAgent
         _chatService = chatService;
     }
 
-    public async Task<Result<EvaluationResult>> EvaluateAsync(string content,
+    public async Task<Result<TurnEvaluation>> EvaluateAsync(string content,
         List<ConversationTurn> history, ConceptElaborationTask task, CancellationToken ct)
     {
         var request = CreateRequestWithPromptAndParams(content, history, task);
@@ -48,7 +48,7 @@ public class EvaluationAgent : IEvaluationAgent
         return CompletionRequest.Create(messages, systemPrompt, maxTokens: 1024, temperature: 0.1);
     }
 
-    private static EvaluationResult? TryParseResponse(string json)
+    private static TurnEvaluation? TryParseResponse(string json)
     {
         try
         {
@@ -56,15 +56,13 @@ public class EvaluationAgent : IEvaluationAgent
                 new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
             if(parsed == null) return null;
 
-            var evaluation = new TurnEvaluation(
+            return new TurnEvaluation(parsed.IsSubstantive,
                 parsed.CorrectnessScore, parsed.CompletenessScore,
                 parsed.DiscriminationScore, parsed.IntegrationScore,
                 parsed.Justification ?? string.Empty, parsed.NovelMisconceptions,
                 parsed.PropositionsCoveredIds ?? new List<int>(),
                 parsed.MisconceptionsTriggeredIds ?? new List<int>(),
                 parsed.RelationsArticulatedIds ?? new List<int>());
-
-            return new EvaluationResult(evaluation, parsed.IsSubstantive);
         }
         catch
         {

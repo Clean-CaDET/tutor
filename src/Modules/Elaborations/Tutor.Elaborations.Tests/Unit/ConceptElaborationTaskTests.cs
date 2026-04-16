@@ -79,14 +79,14 @@ public class ConceptElaborationTaskTests
 
         var evalCtor = typeof(TurnEvaluation).GetConstructors().First(c => c.GetParameters().Length > 0);
         var evaluation = (TurnEvaluation)evalCtor.Invoke([
-            2, 2, (int?)null, (int?)null, "test", null,
+            true, 2, 2, (int?)null, (int?)null, "test", null,
             coveredKpIds, new List<int>(), articulatedRelationIds
         ]);
 
         var turnCtor = typeof(ConversationTurn).GetConstructors(
                 BindingFlags.NonPublic | BindingFlags.Instance)
             .First(c => c.GetParameters().Length > 0);
-        var turn = (ConversationTurn)turnCtor.Invoke([TurnRole.Learner, "x", true, 0, evaluation]);
+        var turn = (ConversationTurn)turnCtor.Invoke([TurnRole.Learner, "x", 0, evaluation]);
 
         SetProp(attempt, "Turns", new List<ConversationTurn> { turn });
         return attempt;
