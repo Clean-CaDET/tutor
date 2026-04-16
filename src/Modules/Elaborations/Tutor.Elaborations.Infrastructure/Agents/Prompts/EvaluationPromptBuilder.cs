@@ -8,9 +8,9 @@ public static class EvaluationPromptBuilder
 {
     public static string BuildSystemPrompt(ConceptElaborationTask task)
     {
-        var hasBoundaryConditions = task.BoundaryConditions.Any();
-        var hasCommonMisconceptions = task.CommonMisconceptions.Any();
-        var hasKeyRelations = task.KeyRelations.Any();
+        var hasBoundaryConditions = task.BoundaryConditions.Count != 0;
+        var hasCommonMisconceptions = task.CommonMisconceptions.Count != 0;
+        var hasKeyRelations = task.KeyRelations.Count != 0;
 
         var sb = new StringBuilder();
         sb.AppendLine("You are an evaluation agent for a Socratic tutoring system.");
@@ -54,6 +54,14 @@ public static class EvaluationPromptBuilder
             sb.AppendLine();
         }
 
+        sb.AppendLine(CreateScoringRules(hasBoundaryConditions, hasKeyRelations, hasCommonMisconceptions));
+
+        return sb.ToString();
+    }
+
+    private static string CreateScoringRules(bool hasBoundaryConditions, bool hasKeyRelations, bool hasCommonMisconceptions)
+    {
+        var sb = new StringBuilder();
         sb.AppendLine("## Scoring Rules:");
         var correctnessLine = hasBoundaryConditions
             ? "- Correctness (1-3): Are stated claims true? Check against KPs and BCs."
@@ -86,7 +94,6 @@ public static class EvaluationPromptBuilder
             sb.AppendLine("  \"novelMisconceptions\": \"any misconceptions not in the list, or null\",");
         sb.AppendLine("  \"isSubstantive\": true/false");
         sb.AppendLine("}");
-
         return sb.ToString();
     }
 

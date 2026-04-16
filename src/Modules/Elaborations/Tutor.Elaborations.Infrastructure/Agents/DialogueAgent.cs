@@ -17,11 +17,11 @@ public class DialogueAgent : IDialogueAgent
     }
 
     public async IAsyncEnumerable<string> StreamAsync(TurnEvaluation evaluation,
-        List<ConversationTurn> history, ConceptElaborationTask task,
-        ConversationState state, [EnumeratorCancellation] CancellationToken ct)
+        ConversationAttempt attempt, ConceptElaborationTask task,
+        [EnumeratorCancellation] CancellationToken ct)
     {
-        var systemPrompt = DialoguePromptBuilder.BuildSystemPrompt(task, state);
-        var messageData = DialoguePromptBuilder.BuildMessages(history);
+        var systemPrompt = DialoguePromptBuilder.BuildSystemPrompt(task, attempt);
+        var messageData = DialoguePromptBuilder.BuildMessages(attempt.Turns.ToList());
 
         var summaryParts = new List<string>
         {

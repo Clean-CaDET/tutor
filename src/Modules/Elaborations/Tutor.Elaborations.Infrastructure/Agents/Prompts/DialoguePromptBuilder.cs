@@ -1,13 +1,12 @@
 using System.Text;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
-using Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 
 namespace Tutor.Elaborations.Infrastructure.Agents.Prompts;
 
 public static class DialoguePromptBuilder
 {
-    public static string BuildSystemPrompt(ConceptElaborationTask task, ConversationState state)
+    public static string BuildSystemPrompt(ConceptElaborationTask task, ConversationAttempt attempt)
     {
         var sb = new StringBuilder();
         sb.AppendLine("You are a Socratic dialogue agent for a tutoring system. You speak Serbian.");
@@ -31,7 +30,7 @@ public static class DialoguePromptBuilder
             sb.AppendLine($"- [KP-{kp.Id}] {kp.Statement}");
         sb.AppendLine();
 
-        if (task.KeyRelations.Any())
+        if (task.KeyRelations.Count != 0)
         {
             sb.AppendLine("## Key Relations (for your reference only, never reveal the mechanism text):");
             var kpById = task.KeyPropositions.ToDictionary(kp => kp.Id, kp => kp.Statement);
@@ -44,36 +43,45 @@ public static class DialoguePromptBuilder
             sb.AppendLine();
         }
 
-        if (state.IsCompleted)
+        sb.AppendLine(CreateClosing(task, attempt));
+
+        return sb.ToString();
+    }
+
+    private static string CreateClosing(ConceptElaborationTask task, ConversationAttempt attempt)
+    {
+        var sb = new StringBuilder();
+        if (task.IsAttemptComplete(attempt))
         {
             sb.AppendLine("## The learner has covered all required propositions and articulated all required relations.");
             sb.AppendLine("Provide a brief closing acknowledgment. Do not ask more questions.");
         }
-        else if (state.IsHardCapReached)
+        else if (attempt.IsHardCapReached())
         {
             sb.AppendLine("## The conversation has reached its maximum length.");
             sb.AppendLine("Provide a brief closing summary. Do not ask more questions.");
         }
         else
         {
-            if (state.UncoveredKeyPropositionIds.Any() || state.UnarticulatedKeyRelationIds.Any())
+            var uncoveredKpIds = task.GetUncoveredPropositionIds(attempt);
+            var unarticulatedKrIds = task.GetUnarticulatedRelationIds(attempt);
+            if (uncoveredKpIds.Any() || unarticulatedKrIds.Any())
             {
                 sb.AppendLine("## Focus areas for the next question:");
-                if (state.UncoveredKeyPropositionIds.Any())
-                    sb.AppendLine($"- Uncovered key propositions: {string.Join(", ", state.UncoveredKeyPropositionIds.Select(id => $"KP-{id}"))}");
-                if (state.UnarticulatedKeyRelationIds.Any())
-                    sb.AppendLine($"- Unarticulated key relations: {string.Join(", ", state.UnarticulatedKeyRelationIds.Select(id => $"KR-{id}"))}");
+                if (uncoveredKpIds.Any())
+                    sb.AppendLine($"- Uncovered key propositions: {string.Join(", ", uncoveredKpIds.Select(id => $"KP-{id}"))}");
+                if (unarticulatedKrIds.Any())
+                    sb.AppendLine($"- Unarticulated key relations: {string.Join(", ", unarticulatedKrIds.Select(id => $"KR-{id}"))}");
                 sb.AppendLine("Pick the most important gap and probe it. Never reveal the underlying statement or mechanism text.");
                 sb.AppendLine();
             }
 
-            if (state.IsSoftCapReached)
+            if (attempt.IsSoftCapReached())
             {
                 sb.AppendLine("## The learner is approaching the end of the conversation.");
                 sb.AppendLine("Suggest wrapping up. Focus on the most important uncovered gap above.");
             }
         }
-
         return sb.ToString();
     }
 

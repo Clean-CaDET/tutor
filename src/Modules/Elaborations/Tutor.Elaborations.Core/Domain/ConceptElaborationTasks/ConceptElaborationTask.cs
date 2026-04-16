@@ -42,4 +42,16 @@ public class ConceptElaborationTask : AggregateRoot
     {
         return AreAllPropositionsCovered(attempt) && AreAllKeyRelationsArticulated(attempt);
     }
+
+    public List<int> GetUncoveredPropositionIds(ConversationAttempt attempt)
+    {
+        var coveredIds = attempt.GetCoveredPropositionIds();
+        return KeyPropositions.Where(kp => !coveredIds.Contains(kp.Id)).Select(kp => kp.Id).ToList();
+    }
+
+    public List<int> GetUnarticulatedRelationIds(ConversationAttempt attempt)
+    {
+        var articulatedIds = attempt.GetArticulatedRelationIds();
+        return KeyRelations.Where(kr => !articulatedIds.Contains(kr.Id)).Select(kr => kr.Id).ToList();
+    }
 }
