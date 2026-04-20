@@ -8,6 +8,7 @@ using Tutor.API.Controllers.Learner.Learning.Elaboration;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
 using Tutor.Elaborations.API.Dtos.Conversations;
 using Tutor.Elaborations.API.Public.Learning;
+using Tutor.Elaborations.Core.Domain.Conversations;
 using Tutor.Elaborations.Infrastructure.Database;
 
 namespace Tutor.Elaborations.Tests.Integration.Learning;
@@ -120,7 +121,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
         dbContext.ChangeTracker.Clear();
         var attempt = dbContext.ConversationAttempts.Include(a => a.Turns)
             .ThenInclude(t => t.Evaluation).First(a => a.Id == -6);
-        attempt.Turns.Count(t => t.Role == 0 && t.Evaluation?.IsSubstantive == true).ShouldBe(6);
+        attempt.Turns.Count(t => t.Role == TurnRole.Learner && t.Intent == TurnIntent.Substantive).ShouldBe(6);
     }
 
     [Fact]

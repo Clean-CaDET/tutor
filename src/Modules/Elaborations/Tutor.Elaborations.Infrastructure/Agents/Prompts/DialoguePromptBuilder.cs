@@ -6,7 +6,17 @@ namespace Tutor.Elaborations.Infrastructure.Agents.Prompts;
 
 public static class DialoguePromptBuilder
 {
-    public static string BuildSystemPrompt(ConceptElaborationTask task, ConversationAttempt attempt)
+    public static string BuildSystemPrompt(ConceptElaborationTask task, ConversationAttempt attempt, TurnIntent intent)
+    {
+        return intent switch
+        {
+            TurnIntent.Clarification => BuildClarificationPrompt(task),
+            TurnIntent.OffTopic => BuildOffTopicPrompt(task),
+            _ => BuildSubstantivePrompt(task, attempt)
+        };
+    }
+
+    private static string BuildSubstantivePrompt(ConceptElaborationTask task, ConversationAttempt attempt)
     {
         var sb = new StringBuilder();
         sb.AppendLine("You are a Socratic dialogue agent for a tutoring system. You speak Serbian.");
@@ -17,10 +27,51 @@ public static class DialoguePromptBuilder
         sb.AppendLine("- NEVER reveal key propositions, boundary conditions, or misconception text.");
         sb.AppendLine("- Every response: acknowledge → identify gap → ask targeted question.");
         sb.AppendLine("- Use concise language. Respect cognitive load.");
-        sb.AppendLine("- For non-substantive turns, gently redirect without penalty.");
         sb.AppendLine("- Allow productive divergence within the concept space.");
         sb.AppendLine();
 
+        AppendConceptReference(sb, task);
+        sb.AppendLine(BuildSubstantiveClosing(task, attempt));
+        return sb.ToString();
+    }
+
+    private static string BuildClarificationPrompt(ConceptElaborationTask task)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("You are a tutoring assistant helping a learner during a Socratic elaboration task. You speak Serbian.");
+        sb.AppendLine("The learner has asked a clarifying question. Answer it directly using the reference material below.");
+        sb.AppendLine();
+        sb.AppendLine("## Rules:");
+        sb.AppendLine("- Keep the answer brief and focused on the learner's question.");
+        sb.AppendLine("- You MAY use the definition, boundary conditions, and general framing to answer.");
+        sb.AppendLine("- NEVER directly reveal key propositions or key-relation mechanism text — those are what the learner must articulate themselves.");
+        sb.AppendLine("- After answering, invite the learner to resume their elaboration with one short prompt.");
+        sb.AppendLine();
+
+        AppendConceptReference(sb, task);
+        return sb.ToString();
+    }
+
+    private static string BuildOffTopicPrompt(ConceptElaborationTask task)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("You are a tutoring assistant helping a learner during a Socratic elaboration task. You speak Serbian.");
+        sb.AppendLine("The learner's message is off-topic for this task. This includes small talk, jokes, personal questions, and refusals or disengagement (e.g., \"I don't feel like it\", \"this is boring\").");
+        sb.AppendLine();
+        sb.AppendLine("## Rules:");
+        sb.AppendLine("- Acknowledge very briefly (one short clause) without engaging with the off-topic content.");
+        sb.AppendLine("- Firmly but kindly redirect the learner back to elaborating the concept. End with a concrete prompt tied to the concept.");
+        sb.AppendLine("- Do NOT answer off-topic questions, comment on unrelated material, or validate the off-topic direction.");
+        sb.AppendLine("- Do NOT offer to change the topic, discuss something else, or pause the session. If the learner wants to stop, they can use the abandon option themselves — do not suggest it.");
+        sb.AppendLine("- Do NOT ask how the learner is feeling or explore their mood.");
+        sb.AppendLine();
+        sb.AppendLine($"## Concept: {task.Title}");
+        sb.AppendLine("Remind the learner of the concept they are elaborating and give them a concrete, small next step on it.");
+        return sb.ToString();
+    }
+
+    private static void AppendConceptReference(StringBuilder sb, ConceptElaborationTask task)
+    {
         sb.AppendLine($"## Concept: {task.Title}");
         sb.AppendLine($"Definition: {task.CanonicalDefinition}");
         sb.AppendLine();
@@ -29,6 +80,14 @@ public static class DialoguePromptBuilder
         foreach (var kp in task.KeyPropositions)
             sb.AppendLine($"- [KP-{kp.Id}] {kp.Statement}");
         sb.AppendLine();
+
+        if (task.BoundaryConditions.Count != 0)
+        {
+            sb.AppendLine("## Boundary Conditions (non-examples you may reference when clarifying):");
+            foreach (var bc in task.BoundaryConditions)
+                sb.AppendLine($"- [BC-{bc.Id}] {bc.Statement}");
+            sb.AppendLine();
+        }
 
         if (task.KeyRelations.Count != 0)
         {
@@ -42,13 +101,9 @@ public static class DialoguePromptBuilder
             }
             sb.AppendLine();
         }
-
-        sb.AppendLine(CreateClosing(task, attempt));
-
-        return sb.ToString();
     }
 
-    private static string CreateClosing(ConceptElaborationTask task, ConversationAttempt attempt)
+    private static string BuildSubstantiveClosing(ConceptElaborationTask task, ConversationAttempt attempt)
     {
         var sb = new StringBuilder();
         if (task.IsAttemptComplete(attempt))

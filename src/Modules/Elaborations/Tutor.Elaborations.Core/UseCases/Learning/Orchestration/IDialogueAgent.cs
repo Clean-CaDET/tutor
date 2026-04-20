@@ -5,7 +5,7 @@ namespace Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 
 public interface IDialogueAgent
 {
-    IAsyncEnumerable<string> StreamAsync(TurnEvaluation evaluation,
+    IAsyncEnumerable<string> StreamAsync(TurnAnalysis analysis,
         ConversationAttempt attempt, ConceptElaborationTask task,
         CancellationToken ct);
 }

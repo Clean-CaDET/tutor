@@ -53,7 +53,23 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
     public void SetupEvaluationMock(List<int>? propositionsCoveredIds = null,
         List<int>? relationsArticulatedIds = null,
         int? discriminationScore = 2, int? integrationScore = null,
-        bool isSubstantive = true)
+        string intent = "Substantive")
+    {
+        var evalJson = intent == "Substantive"
+            ? BuildSubstantiveEvalJson(propositionsCoveredIds, relationsArticulatedIds, discriminationScore, integrationScore)
+            : $$"""{ "intent": "{{intent}}" }""";
+
+        MockChatService.Setup(x => x.CompleteAsync(
+                It.Is<CompletionRequest>(r => r.MaxTokens == 1024), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result.Ok(new CompletionResponse
+            {
+                Content = evalJson,
+                Usage = new TokenUsage(100, 50)
+            }));
+    }
+
+    private static string BuildSubstantiveEvalJson(List<int>? propositionsCoveredIds,
+        List<int>? relationsArticulatedIds, int? discriminationScore, int? integrationScore)
     {
         var coveredIds = propositionsCoveredIds != null && propositionsCoveredIds.Count > 0
             ? string.Join(",", propositionsCoveredIds)
@@ -64,8 +80,9 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
         var discriminationJson = discriminationScore.HasValue ? discriminationScore.Value.ToString() : "null";
         var integrationJson = integrationScore.HasValue ? integrationScore.Value.ToString() : "null";
 
-        var evalJson = $$"""
+        return $$"""
             {
+                "intent": "Substantive",
                 "correctnessScore": 2,
                 "completenessScore": 2,
                 "discriminationScore": {{discriminationJson}},
@@ -74,18 +91,9 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
                 "propositionsCoveredIds": [{{coveredIds}}],
                 "misconceptionsTriggeredIds": [],
                 "relationsArticulatedIds": [{{articulatedIds}}],
-                "novelMisconceptions": null,
-                "isSubstantive": {{isSubstantive.ToString().ToLower()}}
+                "novelMisconceptions": null
             }
             """;
-
-        MockChatService.Setup(x => x.CompleteAsync(
-                It.Is<CompletionRequest>(r => r.MaxTokens == 1024), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result.Ok(new CompletionResponse
-            {
-                Content = evalJson,
-                Usage = new TokenUsage(100, 50)
-            }));
     }
 
     public void SetupDialogueMock(params string[] tokens)

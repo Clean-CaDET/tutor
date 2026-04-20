@@ -30,8 +30,7 @@ public class ConversationService : IConversationService
     private readonly IElaborationsUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public ConversationService(IConversationAttemptRepository attemptRepo,
-        IConceptElaborationTaskRepository taskRepo,
+    public ConversationService(IConversationAttemptRepository attemptRepo, IConceptElaborationTaskRepository taskRepo,
         IEvaluationAgent evaluationAgent, IDialogueAgent dialogueAgent, ISummaryAgent summaryAgent,
         ITokenSpendingService tokenSpendingService, IAccessServices accessServices,
         IElaborationsUnitOfWork unitOfWork, IMapper mapper)
@@ -81,8 +80,7 @@ public class ConversationService : IConversationService
         return Result.Ok(dto);
     }
 
-    public async IAsyncEnumerable<string> StartConversationAsync(int taskId, string content,
-        int learnerId, [EnumeratorCancellation] CancellationToken ct)
+    public async IAsyncEnumerable<string> StartConversationAsync(int taskId, string content, int learnerId, [EnumeratorCancellation] CancellationToken ct)
     {
         var task = _taskRepo.Get(taskId);
         if (task == null) { yield return BuildErrorChunk("Task not found.", 404); yield break; }
@@ -123,8 +121,7 @@ public class ConversationService : IConversationService
             yield return token;
     }
 
-    public async IAsyncEnumerable<string> SubmitTurnAsync(int attemptId, string content,
-        int learnerId, [EnumeratorCancellation] CancellationToken ct)
+    public async IAsyncEnumerable<string> SubmitTurnAsync(int attemptId, string content, int learnerId, [EnumeratorCancellation] CancellationToken ct)
     {
         var attempt = _attemptRepo.Get(attemptId);
         if (attempt == null) { yield return BuildErrorChunk("Attempt not found.", 404); yield break; }
@@ -166,24 +163,22 @@ public class ConversationService : IConversationService
         return Result.Ok(_mapper.Map<ConversationAttemptDto>(attempt));
     }
 
-    private async IAsyncEnumerable<string> RunTurnPipelineAsync(
-        ConversationAttempt attempt, ConceptElaborationTask task, string content,
-        [EnumeratorCancellation] CancellationToken ct)
+    private async IAsyncEnumerable<string> RunTurnPipelineAsync(ConversationAttempt attempt, ConceptElaborationTask task, string content, [EnumeratorCancellation] CancellationToken ct)
     {
-        // Synchronous phase: evaluate
-        var evalResult = await _evaluationAgent.EvaluateAsync(
+        // Synchronous phase: classify + evaluate
+        var analysisResult = await _evaluationAgent.AnalyzeAsync(
             content, attempt.Turns.ToList(), task, ct);
-        if (evalResult.IsFailed) { yield return BuildErrorChunk("Evaluation failed. Please try again.", 500); yield break; }
+        if (analysisResult.IsFailed) { yield return BuildErrorChunk("Evaluation failed. Please try again.", 500); yield break; }
 
-        var evaluation = evalResult.Value;
-        attempt.AddLearnerTurn(content, evaluation);
+        var analysis = analysisResult.Value;
+        attempt.AddLearnerTurn(content, analysis.Intent, analysis.Evaluation);
 
         // Partial save: protects against stream interruption
         _unitOfWork.Save();
 
         // Streaming phase: dialogue
         var fullResponse = new StringBuilder();
-        await foreach (var token in _dialogueAgent.StreamAsync(evaluation, attempt, task, ct))
+        await foreach (var token in _dialogueAgent.StreamAsync(analysis, attempt, task, ct))
         {
             fullResponse.Append(token);
             yield return token;
