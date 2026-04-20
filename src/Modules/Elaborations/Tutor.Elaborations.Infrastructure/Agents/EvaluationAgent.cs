@@ -83,7 +83,7 @@ public class EvaluationAgent : IEvaluationAgent
                 parsed.PropositionsCoveredIds ?? new List<int>(),
                 parsed.MisconceptionsTriggeredIds ?? new List<int>(),
                 parsed.RelationsArticulatedIds ?? new List<int>());
-            return TurnAnalysis.Substantive(evaluation);
+            return TurnAnalysis.Substantive(evaluation, parsed.HasMultipleConcerns ?? false);
         }
         catch (Exception ex)
         {
@@ -104,5 +104,6 @@ public class EvaluationAgent : IEvaluationAgent
         public List<int>? MisconceptionsTriggeredIds { get; set; }
         public List<int>? RelationsArticulatedIds { get; set; }
         public string? NovelMisconceptions { get; set; }
+        public bool? HasMultipleConcerns { get; set; }
     }
 }

@@ -20,34 +20,14 @@ public class DialogueAgent : IDialogueAgent
         ConversationAttempt attempt, ConceptElaborationTask task,
         [EnumeratorCancellation] CancellationToken ct)
     {
-        var systemPrompt = DialoguePromptBuilder.BuildSystemPrompt(task, attempt, analysis.Intent);
-        var messageData = DialoguePromptBuilder.BuildMessages(attempt.Turns.ToList());
+        var systemPrompt = DialoguePromptBuilder.BuildSystemPrompt(task, attempt, analysis);
+        var userMessage = DialoguePromptBuilder.BuildUserMessage(attempt.Turns.ToList(), analysis);
 
-        if (analysis.Intent == TurnIntent.Substantive && analysis.Evaluation != null)
-            messageData.Add(("user", BuildEvaluationSummary(analysis.Evaluation)));
-
-        var messages = messageData.Select(m =>
-            m.role == "user" ? ChatMessage.FromUser(m.content) : ChatMessage.FromAssistant(m.content));
-
-        var request = CompletionRequest.Create(messages, systemPrompt, maxTokens: 512, temperature: 0.7);
+        var request = CompletionRequest.SingleMessage(userMessage, systemPrompt, maxTokens: 512, temperature: 0.7);
 
         await foreach (var token in _chatService.StreamAsync(request, ct))
         {
             yield return token;
         }
-    }
-
-    private static string BuildEvaluationSummary(TurnEvaluation evaluation)
-    {
-        var summaryParts = new List<string>
-        {
-            $"correctness={evaluation.CorrectnessScore}",
-            $"completeness={evaluation.CompletenessScore}"
-        };
-        if (evaluation.DiscriminationScore.HasValue)
-            summaryParts.Add($"discrimination={evaluation.DiscriminationScore.Value}");
-        if (evaluation.IntegrationScore.HasValue)
-            summaryParts.Add($"integration={evaluation.IntegrationScore.Value}");
-        return $"[Evaluation: {string.Join(", ", summaryParts)}. Justification: {evaluation.Justification}]";
     }
 }

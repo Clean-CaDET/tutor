@@ -1,72 +1,148 @@
 using System.Text;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
+using Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 
 namespace Tutor.Elaborations.Infrastructure.Agents.Prompts;
 
 public static class DialoguePromptBuilder
 {
-    public static string BuildSystemPrompt(ConceptElaborationTask task, ConversationAttempt attempt, TurnIntent intent)
+    public static string BuildSystemPrompt(ConceptElaborationTask task, ConversationAttempt attempt, TurnAnalysis analysis)
     {
-        return intent switch
+        return analysis.Intent switch
         {
             TurnIntent.Clarification => BuildClarificationPrompt(task),
             TurnIntent.OffTopic => BuildOffTopicPrompt(task),
-            _ => BuildSubstantivePrompt(task, attempt)
+            _ => analysis.HasMultipleConcerns
+                ? BuildFixModePrompt(task, attempt)
+                : BuildProbeModePrompt(task, attempt)
         };
     }
 
-    private static string BuildSubstantivePrompt(ConceptElaborationTask task, ConversationAttempt attempt)
+    private static string BuildFixModePrompt(ConceptElaborationTask task, ConversationAttempt attempt)
     {
         var sb = new StringBuilder();
-        sb.AppendLine("You are a Socratic dialogue agent for a tutoring system. You speak Serbian.");
-        sb.AppendLine("Your role: guide the learner to explain a concept by asking targeted questions.");
+        sb.AppendLine("You are a Socratic tutoring agent. Speak Serbian.");
+        sb.AppendLine("The learner's latest answer has multiple concerns. Your job is to surface them so the learner can consolidate their existing answer before moving on.");
         sb.AppendLine();
         sb.AppendLine("## Rules:");
-        sb.AppendLine("- NEVER provide answers, definitions, or explanations.");
-        sb.AppendLine("- NEVER reveal key propositions, boundary conditions, or misconception text.");
-        sb.AppendLine("- Every response: acknowledge → identify gap → ask targeted question.");
-        sb.AppendLine("- Use concise language. Respect cognitive load.");
-        sb.AppendLine("- Allow productive divergence within the concept space.");
+        sb.AppendLine("- NEVER provide answers, definitions, or explanations, and NEVER reveal key proposition, boundary condition, or misconception text.");
+        sb.AppendLine("- Respond with ONLY a short bulleted list pushing back on each concern in the learner's latest answer — inaccuracies, triggered or novel misconceptions, and vague or hand-wavy claims. Close the bullets with a brief invitation to address them.");
+        sb.AppendLine("- Do NOT ask a new question about an uncovered key proposition or key relation — the learner must consolidate what they said before expanding.");
+        sb.AppendLine("- Silence on an error reads as agreement, so surface every concern.");
+        sb.AppendLine("- Concise language. Respect cognitive load.");
         sb.AppendLine();
 
         AppendConceptReference(sb, task);
-        sb.AppendLine(BuildSubstantiveClosing(task, attempt));
+
+        if (attempt.IsSoftCapReached())
+        {
+            sb.AppendLine("## The learner is approaching the end of the conversation.");
+            sb.AppendLine("Close the bullets with a note that you'll wrap up once these concerns are addressed.");
+        }
+        return sb.ToString();
+    }
+
+    private static string BuildProbeModePrompt(ConceptElaborationTask task, ConversationAttempt attempt)
+    {
+        if (task.IsAttemptComplete(attempt))
+            return BuildClosedDialoguePrompt(task,
+                "## The learner has covered all required propositions and articulated all required relations.",
+                "Acknowledge completion in general terms only (e.g., \"dobro si obuhvatio koncept\").");
+
+        if (attempt.IsHardCapReached())
+            return BuildClosedDialoguePrompt(task,
+                "## The conversation has reached its maximum length.",
+                "Acknowledge that the conversation is ending in general terms only.");
+
+        var sb = new StringBuilder();
+        sb.AppendLine("You are a Socratic tutoring agent. Speak Serbian.");
+        sb.AppendLine("Guide the learner to explain the concept by asking targeted questions.");
+        sb.AppendLine();
+        sb.AppendLine("## Rules:");
+        sb.AppendLine("- NEVER provide answers, definitions, or explanations, and NEVER reveal key proposition, boundary condition, or misconception text.");
+        sb.AppendLine("- If the evaluation reports a single concern (inaccuracy, triggered or novel misconception, or vague claim), push back on it in one short line BEFORE your Socratic question. If there is no concern, skip the pushback.");
+        sb.AppendLine("- Ask ONE Socratic question about a single uncovered key proposition or unarticulated key relation. Do not list remaining gaps.");
+        sb.AppendLine("- Concise language. Respect cognitive load. Allow productive divergence within the concept space.");
+        sb.AppendLine();
+
+        AppendConceptReference(sb, task);
+
+        var uncoveredKpIds = task.GetUncoveredPropositionIds(attempt);
+        var unarticulatedKrIds = task.GetUnarticulatedRelationIds(attempt);
+        var hasGaps = uncoveredKpIds.Any() || unarticulatedKrIds.Any();
+
+        if (hasGaps)
+        {
+            sb.AppendLine("## Uncovered ground (pick ONE to probe):");
+            if (uncoveredKpIds.Any())
+                sb.AppendLine($"- Uncovered key propositions: {string.Join(", ", uncoveredKpIds.Select(id => $"KP-{id}"))}");
+            if (unarticulatedKrIds.Any())
+                sb.AppendLine($"- Unarticulated key relations: {string.Join(", ", unarticulatedKrIds.Select(id => $"KR-{id}"))}");
+            sb.AppendLine("Never reveal the underlying statement or mechanism text.");
+            sb.AppendLine();
+        }
+
+        if (attempt.IsSoftCapReached())
+        {
+            sb.AppendLine("## The learner is approaching the end of the conversation.");
+            sb.AppendLine(hasGaps
+                ? "Suggest wrapping up. Focus the Socratic question on the most important uncovered gap above."
+                : "Suggest wrapping up. Use the Socratic question to briefly probe whatever feels least articulated so far.");
+        }
+        return sb.ToString();
+    }
+
+    private static string BuildClosedDialoguePrompt(ConceptElaborationTask task, string header, string acknowledgmentLine)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine("You are a Socratic tutoring agent. Speak Serbian.");
+        sb.AppendLine();
+        sb.AppendLine(header);
+        sb.AppendLine("Produce a closing turn with exactly these properties:");
+        sb.AppendLine("- Two sentences maximum.");
+        sb.AppendLine($"- {acknowledgmentLine}");
+        sb.AppendLine("- DO NOT summarize the learner's explanation or the concept.");
+        sb.AppendLine("- DO NOT list, restate, or paraphrase any key proposition, boundary condition, or relation — not even ones already articulated.");
+        sb.AppendLine("- DO NOT use bullet points or structured lists.");
+        sb.AppendLine("- DO NOT ask further questions.");
+        sb.AppendLine("The summary agent will write the summary separately; your job here is only to close the dialogue.");
+        sb.AppendLine();
+        sb.AppendLine($"## Concept: {task.Title}");
         return sb.ToString();
     }
 
     private static string BuildClarificationPrompt(ConceptElaborationTask task)
     {
         var sb = new StringBuilder();
-        sb.AppendLine("You are a tutoring assistant helping a learner during a Socratic elaboration task. You speak Serbian.");
-        sb.AppendLine("The learner has asked a clarifying question. Answer it directly using the reference material below.");
+        sb.AppendLine("You are a Socratic tutoring assistant. Speak Serbian.");
+        sb.AppendLine("The learner has asked a clarifying question. Answer it using ONLY the reference below.");
         sb.AppendLine();
         sb.AppendLine("## Rules:");
-        sb.AppendLine("- Keep the answer brief and focused on the learner's question.");
-        sb.AppendLine("- You MAY use the definition, boundary conditions, and general framing to answer.");
-        sb.AppendLine("- NEVER directly reveal key propositions or key-relation mechanism text — those are what the learner must articulate themselves.");
-        sb.AppendLine("- After answering, invite the learner to resume their elaboration with one short prompt.");
+        sb.AppendLine("- Answer is MAX three sentences. Address only the specific thing asked — do not expand.");
+        sb.AppendLine("- If the learner asks for a summary, \"the answer\", an explanation, or anything that would require producing the concept's content, REFUSE and redirect. Example: \"Rezime mora da dođe od tebe — to je ono što vežbamo. Pokušaj da formulišeš u svojim rečima.\"");
+        sb.AppendLine("- NEVER produce a list or multi-sentence breakdown.");
+        sb.AppendLine("- After answering, invite the learner to resume elaboration with one short prompt.");
+        sb.AppendLine();
+        sb.AppendLine($"## Concept: {task.Title}");
+        sb.AppendLine($"Question: {task.CanonicalDefinition}");
         sb.AppendLine();
 
-        AppendConceptReference(sb, task);
         return sb.ToString();
     }
 
     private static string BuildOffTopicPrompt(ConceptElaborationTask task)
     {
         var sb = new StringBuilder();
-        sb.AppendLine("You are a tutoring assistant helping a learner during a Socratic elaboration task. You speak Serbian.");
-        sb.AppendLine("The learner's message is off-topic for this task. This includes small talk, jokes, personal questions, and refusals or disengagement (e.g., \"I don't feel like it\", \"this is boring\").");
+        sb.AppendLine("You are a Socratic tutoring assistant. Speak Serbian.");
+        sb.AppendLine("The learner's last message is off-topic — small talk, jokes, personal content, refusals, or disengagement.");
         sb.AppendLine();
         sb.AppendLine("## Rules:");
-        sb.AppendLine("- Acknowledge very briefly (one short clause) without engaging with the off-topic content.");
-        sb.AppendLine("- Firmly but kindly redirect the learner back to elaborating the concept. End with a concrete prompt tied to the concept.");
-        sb.AppendLine("- Do NOT answer off-topic questions, comment on unrelated material, or validate the off-topic direction.");
-        sb.AppendLine("- Do NOT offer to change the topic, discuss something else, or pause the session. If the learner wants to stop, they can use the abandon option themselves — do not suggest it.");
-        sb.AppendLine("- Do NOT ask how the learner is feeling or explore their mood.");
+        sb.AppendLine("- Acknowledge in one short clause without engaging with the off-topic content.");
+        sb.AppendLine("- Firmly but kindly redirect to the concept. End with a concrete, small next step on it.");
+        sb.AppendLine("- Do NOT answer off-topic questions, validate the off-topic direction, offer to change topic, suggest pausing or abandoning, or ask about the learner's mood.");
         sb.AppendLine();
         sb.AppendLine($"## Concept: {task.Title}");
-        sb.AppendLine("Remind the learner of the concept they are elaborating and give them a concrete, small next step on it.");
         return sb.ToString();
     }
 
@@ -75,23 +151,33 @@ public static class DialoguePromptBuilder
         sb.AppendLine($"## Concept: {task.Title}");
         sb.AppendLine($"Definition: {task.CanonicalDefinition}");
         sb.AppendLine();
+        sb.AppendLine("The reference blocks below are for your use only. Never reveal any statement or mechanism text verbatim or paraphrased.");
+        sb.AppendLine();
 
-        sb.AppendLine("## Key Propositions (for your reference only, never reveal):");
+        sb.AppendLine("## Key Propositions:");
         foreach (var kp in task.KeyPropositions)
             sb.AppendLine($"- [KP-{kp.Id}] {kp.Statement}");
         sb.AppendLine();
 
         if (task.BoundaryConditions.Count != 0)
         {
-            sb.AppendLine("## Boundary Conditions (non-examples you may reference when clarifying):");
+            sb.AppendLine("## Boundary Conditions:");
             foreach (var bc in task.BoundaryConditions)
                 sb.AppendLine($"- [BC-{bc.Id}] {bc.Statement}");
             sb.AppendLine();
         }
 
+        if (task.CommonMisconceptions.Count != 0)
+        {
+            sb.AppendLine("## Common Misconceptions:");
+            foreach (var cm in task.CommonMisconceptions)
+                sb.AppendLine($"- [CM-{cm.Id}] {cm.Description} (correction: {cm.Correction})");
+            sb.AppendLine();
+        }
+
         if (task.KeyRelations.Count != 0)
         {
-            sb.AppendLine("## Key Relations (for your reference only, never reveal the mechanism text):");
+            sb.AppendLine("## Key Relations:");
             var kpById = task.KeyPropositions.ToDictionary(kp => kp.Id, kp => kp.Statement);
             foreach (var kr in task.KeyRelations)
             {
@@ -103,51 +189,61 @@ public static class DialoguePromptBuilder
         }
     }
 
-    private static string BuildSubstantiveClosing(ConceptElaborationTask task, ConversationAttempt attempt)
+    public static string BuildUserMessage(List<ConversationTurn> history, TurnAnalysis analysis)
     {
         var sb = new StringBuilder();
-        if (task.IsAttemptComplete(attempt))
+
+        sb.AppendLine("## Conversation so far");
+        if (history.Count == 0)
         {
-            sb.AppendLine("## The learner has covered all required propositions and articulated all required relations.");
-            sb.AppendLine("Provide a brief closing acknowledgment. Do not ask more questions.");
-        }
-        else if (attempt.IsHardCapReached())
-        {
-            sb.AppendLine("## The conversation has reached its maximum length.");
-            sb.AppendLine("Provide a brief closing summary. Do not ask more questions.");
+            sb.AppendLine("(no prior turns)");
         }
         else
         {
-            var uncoveredKpIds = task.GetUncoveredPropositionIds(attempt);
-            var unarticulatedKrIds = task.GetUnarticulatedRelationIds(attempt);
-            if (uncoveredKpIds.Any() || unarticulatedKrIds.Any())
+            foreach (var turn in history)
             {
-                sb.AppendLine("## Focus areas for the next question:");
-                if (uncoveredKpIds.Any())
-                    sb.AppendLine($"- Uncovered key propositions: {string.Join(", ", uncoveredKpIds.Select(id => $"KP-{id}"))}");
-                if (unarticulatedKrIds.Any())
-                    sb.AppendLine($"- Unarticulated key relations: {string.Join(", ", unarticulatedKrIds.Select(id => $"KR-{id}"))}");
-                sb.AppendLine("Pick the most important gap and probe it. Never reveal the underlying statement or mechanism text.");
-                sb.AppendLine();
-            }
-
-            if (attempt.IsSoftCapReached())
-            {
-                sb.AppendLine("## The learner is approaching the end of the conversation.");
-                sb.AppendLine("Suggest wrapping up. Focus on the most important uncovered gap above.");
+                var label = turn.Role == TurnRole.Learner ? "LEARNER" : "TUTOR";
+                sb.AppendLine($"[{label}]: {turn.Content}");
             }
         }
+        sb.AppendLine();
+
+        if (analysis.Intent == TurnIntent.Substantive && analysis.Evaluation != null)
+        {
+            sb.AppendLine("## Evaluation of the latest LEARNER turn (from the evaluation agent — NOT from the learner)");
+            sb.AppendLine(BuildEvaluationSummaryBody(analysis.Evaluation));
+            sb.AppendLine();
+        }
+
+        sb.AppendLine(analysis.Intent switch
+        {
+            TurnIntent.Clarification => "Produce the TUTOR's next turn per the system prompt. The latest LEARNER turn is a clarifying question.",
+            TurnIntent.OffTopic      => "Produce the TUTOR's next turn per the system prompt. The latest LEARNER turn is off-topic and must be redirected.",
+            _                        => "Produce the TUTOR's next turn per the system prompt, responding to the latest LEARNER turn."
+        });
+
         return sb.ToString();
     }
 
-    public static List<(string role, string content)> BuildMessages(List<ConversationTurn> history)
+    private static string BuildEvaluationSummaryBody(TurnEvaluation evaluation)
     {
-        var messages = new List<(string role, string content)>();
-        foreach (var turn in history)
+        var parts = new List<string>
         {
-            var role = turn.Role == TurnRole.Learner ? "user" : "assistant";
-            messages.Add((role, turn.Content));
-        }
-        return messages;
+            $"correctness={evaluation.CorrectnessScore}",
+            $"completeness={evaluation.CompletenessScore}"
+        };
+        if (evaluation.DiscriminationScore.HasValue)
+            parts.Add($"discrimination={evaluation.DiscriminationScore.Value}");
+        if (evaluation.IntegrationScore.HasValue)
+            parts.Add($"integration={evaluation.IntegrationScore.Value}");
+
+        var sb = new StringBuilder();
+        sb.AppendLine($"Scores: {string.Join(", ", parts)}");
+        sb.AppendLine($"Justification: {evaluation.Justification}");
+        if (evaluation.MisconceptionsTriggeredIds.Count != 0)
+            sb.AppendLine($"Triggered misconceptions: {string.Join(", ", evaluation.MisconceptionsTriggeredIds.Select(id => $"CM-{id}"))}");
+        if (!string.IsNullOrWhiteSpace(evaluation.NovelMisconceptions))
+            sb.AppendLine($"Novel misconceptions: {evaluation.NovelMisconceptions}");
+        return sb.ToString().TrimEnd();
     }
 }

@@ -92,6 +92,16 @@ public static class EvaluationPromptBuilder
         sb.AppendLine("- Evaluate concepts, not language. Grammar and style must not reduce scores.");
         sb.AppendLine("- Resist sycophancy. Evaluate strictly against rubric.");
         sb.AppendLine();
+        sb.AppendLine("## Concern count (used to route the dialogue agent):");
+        sb.AppendLine("Count distinct concerns in the message. A concern is any of:");
+        sb.AppendLine("  - a stated inaccuracy (a claim that contradicts a KP or BC);");
+        if (hasCommonMisconceptions)
+            sb.AppendLine("  - a triggered known misconception or a novel misconception;");
+        else
+            sb.AppendLine("  - a novel misconception (none are pre-catalogued for this concept);");
+        sb.AppendLine("  - a vague or hand-wavy claim that references a KP without articulating it.");
+        sb.AppendLine("Output hasMultipleConcerns=true if the count is two or more; false otherwise. A clean or single-concern answer is false.");
+        sb.AppendLine();
 
         sb.AppendLine("## Output Format (JSON only, no other text):");
         sb.AppendLine("If intent is Clarification or OffTopic, output exactly:");
@@ -111,6 +121,7 @@ public static class EvaluationPromptBuilder
         if (hasCommonMisconceptions) fields.Add("\"misconceptionsTriggeredIds\": [number list of CM IDs triggered]");
         if (hasKeyRelations) fields.Add("\"relationsArticulatedIds\": [number list of KR IDs articulated with mechanism this turn]");
         if (hasCommonMisconceptions) fields.Add("\"novelMisconceptions\": \"any misconceptions not in the list, or null\"");
+        fields.Add("\"hasMultipleConcerns\": true|false");
 
         sb.AppendLine("{");
         sb.AppendLine(string.Join(",\n", fields.Select(f => "  " + f)));
