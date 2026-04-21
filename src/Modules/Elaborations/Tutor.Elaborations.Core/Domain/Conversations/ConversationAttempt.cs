@@ -1,4 +1,5 @@
 using Tutor.BuildingBlocks.Core.Domain;
+using Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 
 namespace Tutor.Elaborations.Core.Domain.Conversations;
 
@@ -62,9 +63,11 @@ public class ConversationAttempt : AggregateRoot
         return turn;
     }
 
-    public ConversationTurn AddSystemTurn(string content)
+    public ConversationTurn AddSystemTurn(string content, ProbeDirective? probeDirective = null)
     {
-        var turn = new ConversationTurn(TurnRole.System, content, Turns.Count);
+        var turn = new ConversationTurn(
+            TurnRole.System, content, Turns.Count,
+            intent: null, evaluation: null, probeDirective: probeDirective);
         Turns.Add(turn);
         return turn;
     }

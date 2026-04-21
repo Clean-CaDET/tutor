@@ -4,5 +4,7 @@ public enum TurnIntent
 {
     Substantive,
     Clarification,
-    OffTopic
+    OffTopic,
+    Stuck,
+    MetaHelp
 }

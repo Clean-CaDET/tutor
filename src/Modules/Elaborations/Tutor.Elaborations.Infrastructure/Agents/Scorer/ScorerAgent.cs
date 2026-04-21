@@ -5,63 +5,49 @@ using Tutor.BuildingBlocks.AI.Core.Conversations;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
 using Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
-using Tutor.Elaborations.Infrastructure.Agents.Prompts;
+using Tutor.Elaborations.Core.UseCases.Learning.Orchestration.Agents;
 
-namespace Tutor.Elaborations.Infrastructure.Agents;
+namespace Tutor.Elaborations.Infrastructure.Agents.Scorer;
 
-public class EvaluationAgent : IEvaluationAgent
+public class ScorerAgent : IScorer
 {
     private const int MaxAttempts = 2;
     private readonly IAiChatService _chatService;
-    private readonly ILogger<EvaluationAgent> _logger;
+    private readonly ILogger<ScorerAgent> _logger;
 
-    public EvaluationAgent(IAiChatService chatService, ILogger<EvaluationAgent> logger)
+    public ScorerAgent(IAiChatService chatService, ILogger<ScorerAgent> logger)
     {
         _chatService = chatService;
         _logger = logger;
     }
 
-    public async Task<Result<TurnAnalysis>> AnalyzeAsync(string content,
-        List<ConversationTurn> history, ConceptElaborationTask task, CancellationToken ct)
+    public async Task<Result<TurnEvaluation>> ScoreAsync(
+        string content, List<ConversationTurn> history,
+        ConceptElaborationTask task, CancellationToken ct)
     {
-        var request = CreateRequestWithPromptAndParams(content, history, task);
+        var systemPrompt = ScorerPromptBuilder.BuildSystemPrompt(task);
+        var userMessage = ScorerPromptBuilder.BuildUserMessage(content, history);
+        var request = CompletionRequest.SingleMessage(userMessage, systemPrompt, maxTokens: 1024, temperature: 0.0);
 
         for (var attempt = 0; attempt < MaxAttempts; attempt++)
         {
             var result = await _chatService.CompleteAsync(request, ct);
             if (result.IsFailed) continue;
 
-            var analysis = TryParseResponse(result.Value.Content, task);
-            if (analysis == null) continue;
-
-            return analysis;
+            var evaluation = TryParse(result.Value.Content, task);
+            if (evaluation != null) return evaluation;
         }
 
-        return Result.Fail("Failed to parse evaluation response after retries.");
+        return Result.Fail("Scoring failed.");
     }
 
-    private static CompletionRequest CreateRequestWithPromptAndParams(
-        string content, List<ConversationTurn> history, ConceptElaborationTask task)
-    {
-        var systemPrompt = EvaluationPromptBuilder.BuildSystemPrompt(task);
-        var userMessage = EvaluationPromptBuilder.BuildUserMessage(content, history);
-
-        return CompletionRequest.SingleMessage(userMessage, systemPrompt, maxTokens: 1024, temperature: 0.0);
-    }
-
-    private TurnAnalysis? TryParseResponse(string json, ConceptElaborationTask task)
+    private TurnEvaluation? TryParse(string json, ConceptElaborationTask task)
     {
         try
         {
-            var parsed = JsonSerializer.Deserialize<EvaluationResponse>(json,
+            var parsed = JsonSerializer.Deserialize<ScorerResponse>(json,
                 new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-            if (parsed == null || string.IsNullOrWhiteSpace(parsed.Intent)) return null;
-
-            if (!Enum.TryParse<TurnIntent>(parsed.Intent, ignoreCase: true, out var intent))
-                return null;
-
-            if (intent != TurnIntent.Substantive)
-                return new TurnAnalysis(intent, null);
+            if (parsed == null) return null;
 
             if (parsed.CorrectnessScore is < 1 or > 3) return null;
             if (parsed.CompletenessScore is < 1 or > 3) return null;
@@ -76,25 +62,24 @@ public class EvaluationAgent : IEvaluationAgent
             if (parsed.RelationsArticulatedIds?.Any(id => !validKrIds.Contains(id)) == true) return null;
             if (parsed.MisconceptionsTriggeredIds?.Any(id => !validCmIds.Contains(id)) == true) return null;
 
-            var evaluation = new TurnEvaluation(
+            return new TurnEvaluation(
                 parsed.CorrectnessScore, parsed.CompletenessScore,
                 parsed.DiscriminationScore, parsed.IntegrationScore,
                 parsed.Justification ?? string.Empty, parsed.NovelMisconceptions,
                 parsed.PropositionsCoveredIds ?? new List<int>(),
                 parsed.MisconceptionsTriggeredIds ?? new List<int>(),
-                parsed.RelationsArticulatedIds ?? new List<int>());
-            return TurnAnalysis.Substantive(evaluation, parsed.HasMultipleConcerns ?? false);
+                parsed.RelationsArticulatedIds ?? new List<int>(),
+                parsed.HasMultipleConcerns ?? false);
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "TryParseResponse failed to parse evaluation JSON.");
+            _logger.LogWarning(ex, "ScorerAgent failed to parse response.");
             return null;
         }
     }
 
-    private class EvaluationResponse
+    private class ScorerResponse
     {
-        public string? Intent { get; set; }
         public int CorrectnessScore { get; set; }
         public int CompletenessScore { get; set; }
         public int? DiscriminationScore { get; set; }

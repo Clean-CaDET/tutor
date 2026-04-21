@@ -2,7 +2,7 @@ using System.Text;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
 
-namespace Tutor.Elaborations.Infrastructure.Agents.Prompts;
+namespace Tutor.Elaborations.Infrastructure.Agents.Summary;
 
 public static class SummaryPromptBuilder
 {

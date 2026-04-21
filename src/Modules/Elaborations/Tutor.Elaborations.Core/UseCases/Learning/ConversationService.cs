@@ -1,5 +1,4 @@
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.Json;
 using AutoMapper;
 using FluentResults;
@@ -22,24 +21,20 @@ public class ConversationService : IConversationService
 
     private readonly IConversationAttemptRepository _attemptRepo;
     private readonly IConceptElaborationTaskRepository _taskRepo;
-    private readonly IEvaluationAgent _evaluationAgent;
-    private readonly IDialogueAgent _dialogueAgent;
-    private readonly ISummaryAgent _summaryAgent;
+    private readonly IAgentOrchestratorService _orchestrator;
     private readonly ITokenSpendingService _tokenSpendingService;
     private readonly IAccessServices _accessServices;
     private readonly IElaborationsUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public ConversationService(IConversationAttemptRepository attemptRepo, IConceptElaborationTaskRepository taskRepo,
-        IEvaluationAgent evaluationAgent, IDialogueAgent dialogueAgent, ISummaryAgent summaryAgent,
-        ITokenSpendingService tokenSpendingService, IAccessServices accessServices,
-        IElaborationsUnitOfWork unitOfWork, IMapper mapper)
+    public ConversationService(
+        IConversationAttemptRepository attemptRepo, IConceptElaborationTaskRepository taskRepo,
+        IAgentOrchestratorService orchestrator, ITokenSpendingService tokenSpendingService,
+        IAccessServices accessServices, IElaborationsUnitOfWork unitOfWork, IMapper mapper)
     {
         _attemptRepo = attemptRepo;
         _taskRepo = taskRepo;
-        _evaluationAgent = evaluationAgent;
-        _dialogueAgent = dialogueAgent;
-        _summaryAgent = summaryAgent;
+        _orchestrator = orchestrator;
         _tokenSpendingService = tokenSpendingService;
         _accessServices = accessServices;
         _unitOfWork = unitOfWork;
@@ -163,65 +158,50 @@ public class ConversationService : IConversationService
         return Result.Ok(_mapper.Map<ConversationAttemptDto>(attempt));
     }
 
-    private async IAsyncEnumerable<string> RunTurnPipelineAsync(ConversationAttempt attempt, ConceptElaborationTask task, string content, [EnumeratorCancellation] CancellationToken ct)
+    private async IAsyncEnumerable<string> RunTurnPipelineAsync(
+        ConversationAttempt attempt, ConceptElaborationTask task, string content,
+        [EnumeratorCancellation] CancellationToken ct)
     {
-        // Synchronous phase: classify + evaluate
-        var analysisResult = await _evaluationAgent.AnalyzeAsync(
-            content, attempt.Turns.ToList(), task, ct);
-        if (analysisResult.IsFailed) { yield return BuildErrorChunk("Evaluation failed. Please try again.", 500); yield break; }
+        var completionLength = 0;
 
-        var analysis = analysisResult.Value;
-        attempt.AddLearnerTurn(content, analysis.Intent, analysis.Evaluation);
-
-        // Partial save: protects against stream interruption
-        _unitOfWork.Save();
-
-        // Streaming phase: dialogue
-        var fullResponse = new StringBuilder();
-        await foreach (var token in _dialogueAgent.StreamAsync(analysis, attempt, task, ct))
+        await foreach (var chunk in _orchestrator.ProcessTurnAsync(attempt, task, content, ct))
         {
-            fullResponse.Append(token);
-            yield return token;
+            switch (chunk)
+            {
+                case TokenChunk token:
+                    completionLength += token.Token.Length;
+                    yield return token.Token;
+                    break;
+
+                case CheckpointChunk:
+                    _unitOfWork.Save();
+                    break;
+
+                case ErrorChunk error:
+                    yield return BuildErrorChunk(error.Message, error.Code);
+                    yield break;
+
+                case FinalChunk final:
+                    _unitOfWork.Save();
+                    _tokenSpendingService.SpendTokensForUnit(new TokenSpendingRequestDto
+                    {
+                        LearnerId = attempt.LearnerId,
+                        UnitId = task.UnitId,
+                        PromptTokens = content.Length / 4,
+                        CompletionTokens = completionLength / 4,
+                        FeatureType = "Elaboration",
+                        EntityId = task.Id,
+                        PromptSummary = "Concept conversation turn"
+                    });
+                    yield return JsonSerializer.Serialize(new SubmitTurnResponseDto
+                    {
+                        AttemptId = final.AttemptId,
+                        Status = final.Status.ToString(),
+                        Summary = final.Summary
+                    });
+                    yield break;
+            }
         }
-
-        // Post-stream persistence
-        attempt.AddSystemTurn(fullResponse.ToString());
-
-        string? summary = null;
-        if (task.IsAttemptComplete(attempt))
-        {
-            var summaryResult = await _summaryAgent.SummarizeAsync(attempt, task, ct);
-            summary = summaryResult.IsSuccess ? summaryResult.Value : null;
-            attempt.Complete(summary);
-        }
-        else if (attempt.IsHardCapReached())
-        {
-            var summaryResult = await _summaryAgent.SummarizeAsync(attempt, task, ct);
-            summary = summaryResult.IsSuccess ? summaryResult.Value : null;
-            attempt.Expire(summary);
-        }
-
-        _unitOfWork.Save();
-
-        // Spend tokens — estimate from content lengths
-        _tokenSpendingService.SpendTokensForUnit(new TokenSpendingRequestDto
-        {
-            LearnerId = attempt.LearnerId,
-            UnitId = task.UnitId,
-            PromptTokens = content.Length / 4,
-            CompletionTokens = fullResponse.Length / 4,
-            FeatureType = "Elaboration",
-            EntityId = task.Id,
-            PromptSummary = "Concept conversation turn"
-        });
-
-        // Final metadata chunk
-        yield return JsonSerializer.Serialize(new SubmitTurnResponseDto
-        {
-            AttemptId = attempt.Id,
-            Status = attempt.Status.ToString(),
-            Summary = summary
-        });
     }
 
     private static string BuildErrorChunk(string message, int code, int? attemptId = null)

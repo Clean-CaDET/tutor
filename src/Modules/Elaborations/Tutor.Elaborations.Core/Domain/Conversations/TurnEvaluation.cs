@@ -14,13 +14,16 @@ public class TurnEvaluation : Entity
     public List<int> PropositionsCoveredIds { get; private set; } = new();
     public List<int> MisconceptionsTriggeredIds { get; private set; } = new();
     public List<int> RelationsArticulatedIds { get; private set; } = new();
+    public bool HasMultipleConcerns { get; private set; }
 
     private TurnEvaluation() { }
 
-    public TurnEvaluation(int correctnessScore, int completenessScore,
+    public TurnEvaluation(
+        int correctnessScore, int completenessScore,
         int? discriminationScore, int? integrationScore,
         string justification, string? novelMisconceptions,
-        List<int> propositionsCoveredIds, List<int> misconceptionsTriggeredIds, List<int> relationsArticulatedIds)
+        List<int> propositionsCoveredIds, List<int> misconceptionsTriggeredIds,
+        List<int> relationsArticulatedIds, bool hasMultipleConcerns)
     {
         CorrectnessScore = correctnessScore;
         CompletenessScore = completenessScore;
@@ -31,5 +34,6 @@ public class TurnEvaluation : Entity
         PropositionsCoveredIds = propositionsCoveredIds;
         MisconceptionsTriggeredIds = misconceptionsTriggeredIds;
         RelationsArticulatedIds = relationsArticulatedIds;
+        HasMultipleConcerns = hasMultipleConcerns;
     }
 }

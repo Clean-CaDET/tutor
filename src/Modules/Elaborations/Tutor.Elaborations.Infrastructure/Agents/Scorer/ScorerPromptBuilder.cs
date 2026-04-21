@@ -2,9 +2,9 @@ using System.Text;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
 
-namespace Tutor.Elaborations.Infrastructure.Agents.Prompts;
+namespace Tutor.Elaborations.Infrastructure.Agents.Scorer;
 
-public static class EvaluationPromptBuilder
+public static class ScorerPromptBuilder
 {
     public static string BuildSystemPrompt(ConceptElaborationTask task)
     {
@@ -13,8 +13,8 @@ public static class EvaluationPromptBuilder
         var hasKeyRelations = task.KeyRelations.Count != 0;
 
         var sb = new StringBuilder();
-        sb.AppendLine("You are an evaluation agent for a Socratic tutoring system.");
-        sb.AppendLine("Your task: classify the learner's latest message, then (only if Substantive) score it against the concept rubric. Output JSON. DO NOT OUTPUT ANYTHING ELSE.");
+        sb.AppendLine("You are a scoring agent for a Socratic tutoring system.");
+        sb.AppendLine("The learner's latest message is known to be Substantive (an attempt at explanation). Score it against the concept rubric and tag which propositions/relations/misconceptions it hits. Output JSON only, no other text.");
         sb.AppendLine();
         sb.AppendLine($"## Concept: {task.Title}");
         sb.AppendLine($"Definition: {task.CanonicalDefinition}");
@@ -54,63 +54,36 @@ public static class EvaluationPromptBuilder
             sb.AppendLine();
         }
 
-        sb.AppendLine(CreateIntentRules());
-        sb.AppendLine(CreateScoringRules(hasBoundaryConditions, hasKeyRelations, hasCommonMisconceptions));
-
-        return sb.ToString();
-    }
-
-    private static string CreateIntentRules()
-    {
-        var sb = new StringBuilder();
-        sb.AppendLine("## Intent Classification (decide first):");
-        sb.AppendLine("- Substantive: the learner attempts to explain, define, relate, or apply the concept. Even a weak or partial attempt counts.");
-        sb.AppendLine("- Clarification: the learner asks a genuine information-seeking question about the task, the concept, or a previous tutor message. Must be a direct question (what / why / how / can you give an example / what do you mean by ...?). A message is Clarification ONLY if removing the rest and keeping just the question still makes sense.");
-        sb.AppendLine("- OffTopic: everything else. This includes small talk, jokes, personal questions, refusals or disengagement (\"I don't want to\", \"I'm not in the mood\", \"this is boring\", \"can we do something else\"), meta-comments about the conversation, and any message that is neither a concept explanation nor an information-seeking question. When in doubt between Clarification and OffTopic, choose OffTopic.");
-        sb.AppendLine();
-        sb.AppendLine("## Echo rule (apply before scoring)");
-        sb.AppendLine("If the message to score is a verbatim or near-verbatim repetition of any [TUTOR] line in the conversation so far, classify intent as OffTopic. Credit for a Key Proposition or Key Relation requires the learner to articulate it in their own words, not repeat the tutor.");
-        sb.AppendLine();
         sb.AppendLine("## Scope rule");
-        sb.AppendLine("Score only the message demarcated as '## Message to score'. Do not attribute content from [TUTOR] lines to the learner. If the learner's message expresses agreement with, approval of, or deference to something the tutor said (e.g. 'I bet you'd explain it well', 'that's right', 'you said it'), that is not articulation of the concept — classify as OffTopic.");
-        return sb.ToString();
-    }
+        sb.AppendLine("Score only the message demarcated as '## Message to score'. Do not credit the learner for content that appears in [TUTOR] lines or that the learner has only repeated from a preceding [TUTOR] line.");
+        sb.AppendLine();
 
-    private static string CreateScoringRules(bool hasBoundaryConditions, bool hasKeyRelations, bool hasCommonMisconceptions)
-    {
-        var sb = new StringBuilder();
-        sb.AppendLine("## Scoring Rules (apply only when intent is Substantive):");
-        var correctnessLine = hasBoundaryConditions
+        sb.AppendLine("## Rubric:");
+        sb.AppendLine(hasBoundaryConditions
             ? "- Correctness (1-3): Are stated claims true? Check against KPs and BCs."
-            : "- Correctness (1-3): Are stated claims true? Check against KPs.";
-        sb.AppendLine(correctnessLine);
-        sb.AppendLine("- Completeness (1-3): Are essential KPs covered?");
+            : "- Correctness (1-3): Are stated claims true? Check against KPs.");
+        sb.AppendLine("- Completeness (1-3): Are essential KPs covered in THIS message?");
         if (hasBoundaryConditions)
             sb.AppendLine("- Discrimination (1-3): Does the explanation correctly exclude non-examples? Check BCs.");
         if (hasKeyRelations)
-            sb.AppendLine("- Integration (1-3): Did the learner articulate the key relations *with mechanism*? Score 1 if no relation articulated, 2 if relations mentioned without mechanism, 3 if relations articulated with explicit mechanism matching the authored description.");
+            sb.AppendLine("- Integration (1-3): Did the learner articulate key relations *with mechanism*? 1=no relation, 2=relation without mechanism, 3=relation with mechanism matching the authored description.");
         sb.AppendLine("- Evaluate concepts, not language. Grammar and style must not reduce scores.");
         sb.AppendLine("- Resist sycophancy. Evaluate strictly against rubric.");
         sb.AppendLine();
-        sb.AppendLine("## Concern count (used to route the dialogue agent):");
+
+        sb.AppendLine("## Concern count (used by the orchestrator to route to critique vs probe):");
         sb.AppendLine("Count distinct concerns in the message. A concern is any of:");
         sb.AppendLine("  - a stated inaccuracy (a claim that contradicts a KP or BC);");
-        if (hasCommonMisconceptions)
-            sb.AppendLine("  - a triggered known misconception or a novel misconception;");
-        else
-            sb.AppendLine("  - a novel misconception (none are pre-catalogued for this concept);");
+        sb.AppendLine(hasCommonMisconceptions
+            ? "  - a triggered known misconception or a novel misconception;"
+            : "  - a novel misconception (none are pre-catalogued for this concept);");
         sb.AppendLine("  - a vague or hand-wavy claim that references a KP without articulating it.");
-        sb.AppendLine("Output hasMultipleConcerns=true if the count is two or more; false otherwise. A clean or single-concern answer is false.");
+        sb.AppendLine("Set hasMultipleConcerns=true if the count is two or more; false otherwise.");
         sb.AppendLine();
 
         sb.AppendLine("## Output Format (JSON only, no other text):");
-        sb.AppendLine("If intent is Clarification or OffTopic, output exactly:");
-        sb.AppendLine("{ \"intent\": \"Clarification\" }  // or \"OffTopic\"");
-        sb.AppendLine();
-        sb.AppendLine("If intent is Substantive, output:");
         var fields = new List<string>
         {
-            "\"intent\": \"Substantive\"",
             "\"correctnessScore\": 1-3",
             "\"completenessScore\": 1-3"
         };
@@ -129,11 +102,9 @@ public static class EvaluationPromptBuilder
         return sb.ToString();
     }
 
-    public static string BuildUserMessage(
-        string learnerContent, List<ConversationTurn> history)
+    public static string BuildUserMessage(string learnerContent, List<ConversationTurn> history)
     {
         var sb = new StringBuilder();
-
         sb.AppendLine("## Conversation so far (for context only — DO NOT score this)");
         if (history.Count == 0)
         {
@@ -148,13 +119,10 @@ public static class EvaluationPromptBuilder
             }
         }
         sb.AppendLine();
-
         sb.AppendLine("## Message to score (this is the ONLY message you are scoring)");
         sb.AppendLine($"[LEARNER]: {learnerContent}");
         sb.AppendLine();
-
-        sb.AppendLine("Score only the final [LEARNER] message under '## Message to score'. Do not credit the learner for content that appears in [TUTOR] lines or that the learner has only repeated from a preceding [TUTOR] line.");
-
+        sb.AppendLine("Score only the final [LEARNER] message under '## Message to score'.");
         return sb.ToString();
     }
 }

@@ -55,16 +55,28 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
         int? discriminationScore = 2, int? integrationScore = null,
         string intent = "Substantive")
     {
-        var evalJson = intent == "Substantive"
-            ? BuildSubstantiveEvalJson(propositionsCoveredIds, relationsArticulatedIds, discriminationScore, integrationScore)
-            : $$"""{ "intent": "{{intent}}" }""";
+        SetupIntentMock(intent);
 
+        if (intent != "Substantive") return;
+
+        var scorerJson = BuildSubstantiveEvalJson(propositionsCoveredIds, relationsArticulatedIds, discriminationScore, integrationScore);
         MockChatService.Setup(x => x.CompleteAsync(
                 It.Is<CompletionRequest>(r => r.MaxTokens == 1024), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result.Ok(new CompletionResponse
             {
-                Content = evalJson,
+                Content = scorerJson,
                 Usage = new TokenUsage(100, 50)
+            }));
+    }
+
+    public void SetupIntentMock(string intent = "Substantive")
+    {
+        MockChatService.Setup(x => x.CompleteAsync(
+                It.Is<CompletionRequest>(r => r.MaxTokens == 64), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result.Ok(new CompletionResponse
+            {
+                Content = $$"""{ "intent": "{{intent}}" }""",
+                Usage = new TokenUsage(30, 5)
             }));
     }
 

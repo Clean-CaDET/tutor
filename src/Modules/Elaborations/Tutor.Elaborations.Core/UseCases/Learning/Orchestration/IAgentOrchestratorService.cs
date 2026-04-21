@@ -3,9 +3,9 @@ using Tutor.Elaborations.Core.Domain.Conversations;
 
 namespace Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 
-public interface IDialogueAgent
+public interface IAgentOrchestratorService
 {
-    IAsyncEnumerable<string> StreamAsync(TurnAnalysis analysis,
+    IAsyncEnumerable<OrchestratorChunk> ProcessTurnAsync(
         ConversationAttempt attempt, ConceptElaborationTask task,
-        CancellationToken ct);
+        string learnerContent, CancellationToken ct);
 }
