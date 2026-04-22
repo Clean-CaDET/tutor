@@ -9,7 +9,7 @@ public class ClosingAgent : StreamingAgent, IClosingAgent
 {
     public ClosingAgent(IAiChatService chatService) : base(chatService) { }
 
-    public IAsyncEnumerable<string> StreamAsync(
+    public IAsyncEnumerable<StreamOutput> StreamAsync(
         ConceptElaborationTask task, ClosingReason reason, CancellationToken ct)
     {
         var systemPrompt = ClosingPromptBuilder.BuildSystemPrompt(task, reason);

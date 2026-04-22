@@ -9,7 +9,7 @@ public class RedirectAgent : StreamingAgent, IRedirectAgent
 {
     public RedirectAgent(IAiChatService chatService) : base(chatService) { }
 
-    public IAsyncEnumerable<string> StreamAsync(ConceptElaborationTask task, CancellationToken ct)
+    public IAsyncEnumerable<StreamOutput> StreamAsync(ConceptElaborationTask task, CancellationToken ct)
     {
         var systemPrompt = RedirectPromptBuilder.BuildSystemPrompt(task);
         var userMessage = RedirectPromptBuilder.BuildUserMessage();

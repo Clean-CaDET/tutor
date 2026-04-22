@@ -10,7 +10,7 @@ public class MetaHelpAgent : StreamingAgent, IMetaHelpAgent
 {
     public MetaHelpAgent(IAiChatService chatService) : base(chatService) { }
 
-    public IAsyncEnumerable<string> StreamAsync(
+    public IAsyncEnumerable<StreamOutput> StreamAsync(
         ConceptElaborationTask task, string progressLine, ProbeDirective? nextTarget,
         CancellationToken ct)
     {

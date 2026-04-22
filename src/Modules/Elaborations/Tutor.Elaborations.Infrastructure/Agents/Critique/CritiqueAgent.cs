@@ -10,7 +10,7 @@ public class CritiqueAgent : StreamingAgent, ICritiqueAgent
 {
     public CritiqueAgent(IAiChatService chatService) : base(chatService) { }
 
-    public IAsyncEnumerable<string> StreamAsync(
+    public IAsyncEnumerable<StreamOutput> StreamAsync(
         TurnEvaluation evaluation, ConversationAttempt attempt, ConceptElaborationTask task,
         CancellationToken ct)
     {

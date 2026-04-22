@@ -11,7 +11,7 @@ public class ScaffoldingAgent : StreamingAgent, IScaffoldingAgent
 {
     public ScaffoldingAgent(IAiChatService chatService) : base(chatService) { }
 
-    public IAsyncEnumerable<string> StreamAsync(
+    public IAsyncEnumerable<StreamOutput> StreamAsync(
         ProbeDirective target, ConversationAttempt attempt, ConceptElaborationTask task,
         CancellationToken ct)
     {

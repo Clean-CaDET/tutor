@@ -6,8 +6,6 @@ public abstract record OrchestratorChunk;
 
 public sealed record TokenChunk(string Token) : OrchestratorChunk;
 
-public sealed record CheckpointChunk : OrchestratorChunk;
-
 public sealed record FinalChunk(
     int AttemptId,
     AttemptStatus Status,

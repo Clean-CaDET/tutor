@@ -11,7 +11,7 @@ public class ClarificationAgent : StreamingAgent, IClarificationAgent
 {
     public ClarificationAgent(IAiChatService chatService) : base(chatService) { }
 
-    public IAsyncEnumerable<string> StreamAsync(
+    public IAsyncEnumerable<StreamOutput> StreamAsync(
         ConversationAttempt attempt, ConceptElaborationTask task, ProbeDirective? lastProbe,
         CancellationToken ct)
     {

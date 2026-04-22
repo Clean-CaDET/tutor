@@ -55,19 +55,6 @@ public abstract class StructuredAgent
         return Result.Fail<TResult>(failureMessage);
     }
 
-    protected async Task<Result<string>> CompleteTextAsync(
-        string systemPrompt, string userMessage,
-        int maxTokens, double temperature,
-        string failureMessage,
-        CancellationToken ct)
-    {
-        var request = CompletionRequest.SingleMessage(userMessage, systemPrompt, maxTokens, temperature);
-        var result = await ChatService.CompleteAsync(request, ct);
-        return result.IsSuccess
-            ? Result.Ok(result.Value.Content)
-            : Result.Fail(failureMessage);
-    }
-
     private TResponse? TryDeserialize<TResponse>(string json) where TResponse : class
     {
         try

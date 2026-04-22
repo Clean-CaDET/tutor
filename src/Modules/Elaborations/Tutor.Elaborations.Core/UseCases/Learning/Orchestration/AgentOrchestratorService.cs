@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using System.Text;
+using Tutor.BuildingBlocks.AI.Core.Agents;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
 using Tutor.Elaborations.Core.UseCases.Learning.Orchestration.Agents;
@@ -67,15 +68,27 @@ public class AgentOrchestratorService : IAgentOrchestratorService
         }
 
         attempt.AddLearnerTurn(learnerContent, intent, evaluation);
-        yield return new CheckpointChunk();
 
         var route = DecideRoute(attempt, task, intent, evaluation);
 
         var fullResponse = new StringBuilder();
-        await foreach (var token in Stream(route, attempt, task, ct))
+        StreamFailure? streamFailure = null;
+        await foreach (var chunk in Stream(route, attempt, task, ct))
         {
-            fullResponse.Append(token);
-            yield return new TokenChunk(token);
+            if (chunk is StreamFailure failure)
+            {
+                streamFailure = failure;
+                break;
+            }
+            var content = ((StreamToken)chunk).Content;
+            fullResponse.Append(content);
+            yield return new TokenChunk(content);
+        }
+
+        if (streamFailure != null)
+        {
+            yield return new ErrorChunk(streamFailure.Reason, 500);
+            yield break;
         }
 
         attempt.AddSystemTurn(fullResponse.ToString(), route.ProbeDirective);
@@ -98,7 +111,7 @@ public class AgentOrchestratorService : IAgentOrchestratorService
             attempt.Id, attempt.Status, intent, summary, route.ProbeDirective);
     }
 
-    private IAsyncEnumerable<string> Stream(
+    private IAsyncEnumerable<StreamOutput> Stream(
         RouteDecision route, ConversationAttempt attempt,
         ConceptElaborationTask task, CancellationToken ct)
     {

@@ -118,13 +118,10 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
 
     public void SetupSummaryMock(string summary = "Test summary of the conversation.")
     {
-        MockChatService.Setup(x => x.CompleteAsync(
-                It.Is<CompletionRequest>(r => r.MaxTokens == 256), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result.Ok(new CompletionResponse
-            {
-                Content = summary,
-                Usage = new TokenUsage(80, 40)
-            }));
+        MockChatService.Setup(x => x.StreamAsync(
+                It.Is<CompletionRequest>(r => r.MaxTokens == 256 && r.Temperature == 0.5),
+                It.IsAny<CancellationToken>()))
+            .Returns(MockStream([summary]));
     }
 
     private static async IAsyncEnumerable<string> MockStream(

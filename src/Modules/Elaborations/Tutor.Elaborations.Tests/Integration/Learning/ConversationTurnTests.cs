@@ -76,7 +76,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
         metadata.ShouldNotBeNull();
         metadata.Status.ShouldBe("Completed");
         metadata.Summary.ShouldNotBeNullOrEmpty();
-        Factory.MockChatService.Verify(x => x.CompleteAsync(
+        Factory.MockChatService.Verify(x => x.StreamAsync(
             It.Is<CompletionRequest>(r => r.MaxTokens == 256), It.IsAny<CancellationToken>()), Times.Once);
     }
 

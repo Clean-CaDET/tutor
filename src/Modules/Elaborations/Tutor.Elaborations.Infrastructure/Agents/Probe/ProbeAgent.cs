@@ -11,7 +11,7 @@ public class ProbeAgent : StreamingAgent, IProbeAgent
 {
     public ProbeAgent(IAiChatService chatService) : base(chatService) { }
 
-    public IAsyncEnumerable<string> StreamAsync(
+    public IAsyncEnumerable<StreamOutput> StreamAsync(
         ProbeDirective directive, ConversationAttempt attempt, ConceptElaborationTask task,
         CancellationToken ct)
     {

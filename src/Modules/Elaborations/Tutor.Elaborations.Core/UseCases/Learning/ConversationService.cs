@@ -111,6 +111,7 @@ public class ConversationService : IConversationService
 
         var attempt = new ConversationAttempt(taskId, learnerId);
         _attemptRepo.Create(attempt);
+        _unitOfWork.Save();
 
         await foreach (var token in RunTurnPipelineAsync(attempt, task, content, ct))
             yield return token;
@@ -171,10 +172,6 @@ public class ConversationService : IConversationService
                 case TokenChunk token:
                     completionLength += token.Token.Length;
                     yield return token.Token;
-                    break;
-
-                case CheckpointChunk:
-                    _unitOfWork.Save();
                     break;
 
                 case ErrorChunk error:
