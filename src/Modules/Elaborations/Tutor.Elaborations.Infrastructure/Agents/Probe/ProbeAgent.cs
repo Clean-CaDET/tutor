@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Tutor.BuildingBlocks.AI.Core.Agents;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
@@ -9,7 +10,8 @@ namespace Tutor.Elaborations.Infrastructure.Agents.Probe;
 
 public class ProbeAgent : StreamingAgent, IProbeAgent
 {
-    public ProbeAgent(IAiChatService chatService) : base(chatService) { }
+    public ProbeAgent(IAiChatService chatService, ITurnUsageTracker usageTracker, ILogger<ProbeAgent> logger)
+        : base(chatService, usageTracker, logger) { }
 
     public IAsyncEnumerable<StreamOutput> StreamAsync(
         ProbeDirective directive, ConversationAttempt attempt, ConceptElaborationTask task,

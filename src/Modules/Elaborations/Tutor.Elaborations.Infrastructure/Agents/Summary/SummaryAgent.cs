@@ -1,5 +1,6 @@
 using System.Text;
 using FluentResults;
+using Microsoft.Extensions.Logging;
 using Tutor.BuildingBlocks.AI.Core.Agents;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
@@ -10,7 +11,8 @@ namespace Tutor.Elaborations.Infrastructure.Agents.Summary;
 
 public class SummaryAgent : StreamingAgent, ISummaryAgent
 {
-    public SummaryAgent(IAiChatService chatService) : base(chatService) { }
+    public SummaryAgent(IAiChatService chatService, ITurnUsageTracker usageTracker, ILogger<SummaryAgent> logger)
+        : base(chatService, usageTracker, logger) { }
 
     public async Task<Result<string>> SummarizeAsync(
         ConversationAttempt attempt, ConceptElaborationTask task, CancellationToken ct)

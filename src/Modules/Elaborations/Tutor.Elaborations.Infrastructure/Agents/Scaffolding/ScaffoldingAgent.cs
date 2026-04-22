@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Tutor.BuildingBlocks.AI.Core.Agents;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
@@ -9,7 +10,8 @@ namespace Tutor.Elaborations.Infrastructure.Agents.Scaffolding;
 
 public class ScaffoldingAgent : StreamingAgent, IScaffoldingAgent
 {
-    public ScaffoldingAgent(IAiChatService chatService) : base(chatService) { }
+    public ScaffoldingAgent(IAiChatService chatService, ITurnUsageTracker usageTracker, ILogger<ScaffoldingAgent> logger)
+        : base(chatService, usageTracker, logger) { }
 
     public IAsyncEnumerable<StreamOutput> StreamAsync(
         ProbeDirective target, ConversationAttempt attempt, ConceptElaborationTask task,

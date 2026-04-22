@@ -17,4 +17,7 @@ public record CompletionResponse
 public record TokenUsage(int PromptTokens, int CompletionTokens)
 {
     public int TotalTokens => PromptTokens + CompletionTokens;
+
+    public TokenUsage Subtract(TokenUsage other) =>
+        new(PromptTokens - other.PromptTokens, CompletionTokens - other.CompletionTokens);
 }

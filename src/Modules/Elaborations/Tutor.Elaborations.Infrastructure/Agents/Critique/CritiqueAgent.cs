@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Tutor.BuildingBlocks.AI.Core.Agents;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
@@ -8,7 +9,8 @@ namespace Tutor.Elaborations.Infrastructure.Agents.Critique;
 
 public class CritiqueAgent : StreamingAgent, ICritiqueAgent
 {
-    public CritiqueAgent(IAiChatService chatService) : base(chatService) { }
+    public CritiqueAgent(IAiChatService chatService, ITurnUsageTracker usageTracker, ILogger<CritiqueAgent> logger)
+        : base(chatService, usageTracker, logger) { }
 
     public IAsyncEnumerable<StreamOutput> StreamAsync(
         TurnEvaluation evaluation, ConversationAttempt attempt, ConceptElaborationTask task,

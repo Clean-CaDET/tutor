@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Tutor.BuildingBlocks.AI.Core.Agents;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
@@ -9,7 +10,8 @@ namespace Tutor.Elaborations.Infrastructure.Agents.Clarification;
 
 public class ClarificationAgent : StreamingAgent, IClarificationAgent
 {
-    public ClarificationAgent(IAiChatService chatService) : base(chatService) { }
+    public ClarificationAgent(IAiChatService chatService, ITurnUsageTracker usageTracker, ILogger<ClarificationAgent> logger)
+        : base(chatService, usageTracker, logger) { }
 
     public IAsyncEnumerable<StreamOutput> StreamAsync(
         ConversationAttempt attempt, ConceptElaborationTask task, ProbeDirective? lastProbe,

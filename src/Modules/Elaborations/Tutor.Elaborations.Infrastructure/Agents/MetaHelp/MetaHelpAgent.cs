@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Tutor.BuildingBlocks.AI.Core.Agents;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
@@ -8,7 +9,8 @@ namespace Tutor.Elaborations.Infrastructure.Agents.MetaHelp;
 
 public class MetaHelpAgent : StreamingAgent, IMetaHelpAgent
 {
-    public MetaHelpAgent(IAiChatService chatService) : base(chatService) { }
+    public MetaHelpAgent(IAiChatService chatService, ITurnUsageTracker usageTracker, ILogger<MetaHelpAgent> logger)
+        : base(chatService, usageTracker, logger) { }
 
     public IAsyncEnumerable<StreamOutput> StreamAsync(
         ConceptElaborationTask task, string progressLine, ProbeDirective? nextTarget,
