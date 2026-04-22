@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using System.Text;
+using Microsoft.Extensions.Logging;
 using Tutor.BuildingBlocks.AI.Core.Agents;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
@@ -21,13 +22,15 @@ public class AgentOrchestratorService : IAgentOrchestratorService
     private readonly IScaffoldingAgent _scaffoldingAgent;
     private readonly IClosingAgent _closingAgent;
     private readonly ISummaryAgent _summaryAgent;
+    private readonly ILogger<AgentOrchestratorService> _logger;
 
     public AgentOrchestratorService(
         IIntentClassifier classifier, IScorer scorer,
         IProbeAgent probeAgent, ICritiqueAgent critiqueAgent,
         IClarificationAgent clarificationAgent, IRedirectAgent redirectAgent,
         IMetaHelpAgent metaHelpAgent, IScaffoldingAgent scaffoldingAgent,
-        IClosingAgent closingAgent, ISummaryAgent summaryAgent)
+        IClosingAgent closingAgent, ISummaryAgent summaryAgent,
+        ILogger<AgentOrchestratorService> logger)
     {
         _classifier = classifier;
         _scorer = scorer;
@@ -39,12 +42,19 @@ public class AgentOrchestratorService : IAgentOrchestratorService
         _scaffoldingAgent = scaffoldingAgent;
         _closingAgent = closingAgent;
         _summaryAgent = summaryAgent;
+        _logger = logger;
     }
 
     public async IAsyncEnumerable<OrchestratorChunk> ProcessTurnAsync(
         ConversationAttempt attempt, ConceptElaborationTask task,
         string learnerContent, [EnumeratorCancellation] CancellationToken ct)
     {
+        using var turnScope = _logger.BeginScope(new Dictionary<string, object>
+        {
+            ["AttemptId"] = attempt.Id,
+            ["TurnOrd"] = attempt.Turns.Count
+        });
+
         var history = attempt.Turns.ToList();
 
         var intentResult = await _classifier.ClassifyAsync(learnerContent, history, task, ct);

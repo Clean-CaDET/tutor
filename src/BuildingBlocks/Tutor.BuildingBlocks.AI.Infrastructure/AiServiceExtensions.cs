@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.SemanticKernel;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
 using Tutor.BuildingBlocks.AI.Core.Embeddings;
@@ -30,7 +31,10 @@ public static class AiServiceExtensions
 
         var kernel = kernelBuilder.Build();
         services.AddSingleton(kernel);
-        services.AddSingleton<IAiChatService, SemanticKernelChatService>();
+        services.AddSingleton<SemanticKernelChatService>();
+        services.AddSingleton<IAiChatService>(sp => new LoggingAiChatServiceDecorator(
+            sp.GetRequiredService<SemanticKernelChatService>(),
+            sp.GetRequiredService<ILogger<LoggingAiChatServiceDecorator>>()));
 
         if (!string.IsNullOrWhiteSpace(configuration.EmbeddingModelId))
         {

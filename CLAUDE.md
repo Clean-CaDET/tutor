@@ -6,7 +6,7 @@ An intelligent tutoring system for structured learning with knowledge and skill 
 
 ## Architecture
 
-27 projects organized as 5 domain modules, each with 4 layers, plus shared BuildingBlocks and host.
+Projects organized as 6 domain modules, each with 4 layers, plus shared BuildingBlocks and host.
 
 **Layer Responsibilities:**
 - **API** - Public contracts, DTOs, internal service interfaces (what other modules can consume)
@@ -60,19 +60,15 @@ An intelligent tutoring system for structured learning with knowledge and skill 
 - **KnowledgeComponent** - Atomic learning objective (code, name, expectedDuration)
 - **AssessmentItem** - Questions to test understanding: MCQ (single choice), MRQ (multiple choice), SAQ (short answer)
 - **InstructionalItem** - Learning content: Text, Video, or Image with ordering
-- **SessionTracker** - Manages a learner's session state for a KC
 - **Submission** - Learner's answer to an assessment item
 - **Evaluation** - Feedback on a submission (correct/incorrect, hints, explanations)
-- **KCMastery** - Tracks whether a learner has mastered a KC
-- **MoveOn Criteria** - Rules for when a KC is considered satisfied (Completed, Passed, CompletedAndPassed, CompletedOrPassed)
+- **KcMastery** - Tracks whether a learner has mastered a KC
 
 **Use Cases:**
 - **Authoring**: Instructors create KCs with expected duration, add/reorder assessment items (MCQ/MRQ/SAQ with feedback patterns), add/reorder instructional items (text/video/image), clone KCs for reuse
 - **Learning**: Learners launch a learning session for a KC, system selects appropriate assessment items based on progress, learners view instructional content, submit answers and receive immediate evaluation with feedback, can pause/continue/terminate sessions
 - **Mastery**: System tracks completion (all items seen) and passing (sufficient correct answers), applies move-on criteria to determine if KC is satisfied, records mastery status
 - **Analytics**: Instructors view KC statistics (submission counts, correctness rates), system detects common misconceptions from wrong answer patterns, tracks most frequent errors per assessment
-
-**Domain Events:** SessionLaunched, KCStarted, KCCompleted, KCPassed, KCSatisfied (used for analytics and cross-module notifications)
 
 **Dependencies:** → Courses.API (for unit context)
 
@@ -82,18 +78,13 @@ An intelligent tutoring system for structured learning with knowledge and skill 
 **Key Entities:**
 - **LearningTask** - A practical exercise (name, description, maxPoints, isTemplate)
 - **Activity** - A step within a task, contains examples, guidance text, and submission requirements
-- **StepProgress** - Tracks learner's progress on a single step (answer, submission time)
 - **TaskProgress** - Overall progress on a task (started, completed, graded status)
-- **StandardEvaluation** - Instructor's grade and comment for a step
-- **SubmissionFormat** - Defines how learners should submit (text, file upload, etc.)
 
 **Use Cases:**
 - **Authoring**: Instructors create tasks with multiple steps (activities), define examples with video walkthroughs, write guidance text for each step, specify submission format and point values, clone tasks as templates, move tasks between units
 - **Learning**: Learners view task list for a unit with progress summaries, open a task to see step-by-step instructions, access examples (watch videos with play/pause/finish tracking), read guidance materials, submit answers for each step
 - **Progress**: System creates/updates task progress records, tracks which steps are completed, records submission timestamps and content
 - **Grading**: Instructors view learner submissions, grade individual steps with points and comments, view group summaries showing progress across all learners, bulk retrieve progress for a cohort
-
-**Domain Events:** TaskOpened, TaskCompleted, TaskGraded, StepOpened, StepSubmitted, StepGraded, ExampleOpened, GuidanceOpened, VideoPlayed, VideoPaused, VideoFinished (for learning analytics)
 
 **Dependencies:** → Courses.API (for unit context)
 
@@ -105,7 +96,6 @@ An intelligent tutoring system for structured learning with knowledge and skill 
 
 **Use Cases:**
 - **Note-taking**: Learners create notes while studying a unit, update note content, reorder notes, delete notes, retrieve all notes for a unit
-- **Export**: Learners export their notes to a downloadable file format
 
 **Dependencies:** → Stakeholders.API (for learner context)
 
@@ -155,7 +145,6 @@ Generic AI services available for module-specific features. Core defines abstrac
 - `IAiChatService` - Chat completions with `CompleteAsync` (returns full response) and `StreamAsync` (token streaming). Configure via `CompletionRequest` (messages, system prompt, temperature, max tokens).
 - `ITextEmbeddingService` - Convert text to vectors via `GenerateEmbeddingAsync` (single) or `GenerateEmbeddingsAsync` (batch).
 - `IVectorStore<TMetadata>` - Store/search embeddings with custom metadata. Supports `UpsertAsync`, `SearchAsync` (cosine similarity with filters), `DeleteAsync`. Each module registers its own instance with `AddVectorStore<TMetadata>()`.
-- `IInputGuardrail` / `IOutputGuardrail` - Validate user input before LLM calls and LLM output before returning to users. Use `CompositeInputGuardrail` / `CompositeOutputGuardrail` to chain multiple validators.
 
 **Registration:**
 ```csharp
@@ -227,5 +216,5 @@ When creating a DTO and matching domain object in a Module.Core project, look fo
 
 # Coding Style
 - Methods with 3 or less parameters should have their headers and invocations fit into one row.
-- Methods with more than 3 parameters should have their headers and invocations separate into multiple rows, where each row should contain 2 or 3 parameters.
+- Methods with more than 3 parameters should have their headers and invocations separate into multiple rows, where each row should contain 3 parameters.
 - Do not write method headers and invocations where one row is one parameter.

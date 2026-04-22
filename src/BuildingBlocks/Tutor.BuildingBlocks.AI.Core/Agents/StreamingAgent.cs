@@ -18,12 +18,11 @@ public abstract class StreamingAgent
         ChatService = chatService;
     }
 
-    protected async IAsyncEnumerable<StreamOutput> StreamAsync(
-        string systemPrompt, string userMessage,
-        int maxTokens, double temperature,
-        [EnumeratorCancellation] CancellationToken ct)
+    protected async IAsyncEnumerable<StreamOutput> StreamAsync(string systemPrompt, string userMessage,
+        int maxTokens, double temperature, [EnumeratorCancellation] CancellationToken ct)
     {
-        var request = CompletionRequest.SingleMessage(userMessage, systemPrompt, maxTokens, temperature);
+        var request = CompletionRequest.SingleMessage(userMessage, systemPrompt, maxTokens, temperature)
+            with { Metadata = new Dictionary<string, object> { ["AgentName"] = GetType().Name } };
         var tokenCount = 0;
 
         var enumerator = ChatService.StreamAsync(request, ct).GetAsyncEnumerator(ct);
