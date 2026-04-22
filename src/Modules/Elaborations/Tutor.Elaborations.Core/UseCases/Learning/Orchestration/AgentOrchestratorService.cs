@@ -2,6 +2,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using Tutor.BuildingBlocks.AI.Core.Agents;
+using Tutor.BuildingBlocks.AI.Core.Conversations;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
 using Tutor.Elaborations.Core.UseCases.Learning.Orchestration.Agents;
@@ -22,6 +23,7 @@ public class AgentOrchestratorService : IAgentOrchestratorService
     private readonly IScaffoldingAgent _scaffoldingAgent;
     private readonly IClosingAgent _closingAgent;
     private readonly ISummaryAgent _summaryAgent;
+    private readonly ITurnUsageTracker _usageTracker;
     private readonly ILogger<AgentOrchestratorService> _logger;
 
     public AgentOrchestratorService(
@@ -30,7 +32,7 @@ public class AgentOrchestratorService : IAgentOrchestratorService
         IClarificationAgent clarificationAgent, IRedirectAgent redirectAgent,
         IMetaHelpAgent metaHelpAgent, IScaffoldingAgent scaffoldingAgent,
         IClosingAgent closingAgent, ISummaryAgent summaryAgent,
-        ILogger<AgentOrchestratorService> logger)
+        ITurnUsageTracker usageTracker, ILogger<AgentOrchestratorService> logger)
     {
         _classifier = classifier;
         _scorer = scorer;
@@ -42,6 +44,7 @@ public class AgentOrchestratorService : IAgentOrchestratorService
         _scaffoldingAgent = scaffoldingAgent;
         _closingAgent = closingAgent;
         _summaryAgent = summaryAgent;
+        _usageTracker = usageTracker;
         _logger = logger;
     }
 
@@ -118,7 +121,7 @@ public class AgentOrchestratorService : IAgentOrchestratorService
         }
 
         yield return new FinalChunk(
-            attempt.Id, attempt.Status, intent, summary, route.ProbeDirective);
+            attempt.Id, attempt.Status, intent, summary, route.ProbeDirective, _usageTracker.Total);
     }
 
     private IAsyncEnumerable<StreamOutput> Stream(

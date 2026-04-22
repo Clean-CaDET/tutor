@@ -31,8 +31,9 @@ public static class AiServiceExtensions
 
         var kernel = kernelBuilder.Build();
         services.AddSingleton(kernel);
-        services.AddSingleton<SemanticKernelChatService>();
-        services.AddSingleton<IAiChatService>(sp => new LoggingAiChatServiceDecorator(
+        services.AddScoped<ITurnUsageTracker, TurnUsageTracker>();
+        services.AddScoped<SemanticKernelChatService>();
+        services.AddScoped<IAiChatService>(sp => new LoggingAiChatServiceDecorator(
             sp.GetRequiredService<SemanticKernelChatService>(),
             sp.GetRequiredService<ILogger<LoggingAiChatServiceDecorator>>()));
 

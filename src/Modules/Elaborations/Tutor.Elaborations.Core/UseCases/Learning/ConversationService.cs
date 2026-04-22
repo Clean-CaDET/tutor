@@ -163,14 +163,11 @@ public class ConversationService : IConversationService
         ConversationAttempt attempt, ConceptElaborationTask task, string content,
         [EnumeratorCancellation] CancellationToken ct)
     {
-        var completionLength = 0;
-
         await foreach (var chunk in _orchestrator.ProcessTurnAsync(attempt, task, content, ct))
         {
             switch (chunk)
             {
                 case TokenChunk token:
-                    completionLength += token.Token.Length;
                     yield return token.Token;
                     break;
 
@@ -184,8 +181,8 @@ public class ConversationService : IConversationService
                     {
                         LearnerId = attempt.LearnerId,
                         UnitId = task.UnitId,
-                        PromptTokens = content.Length / 4,
-                        CompletionTokens = completionLength / 4,
+                        PromptTokens = final.Usage.PromptTokens,
+                        CompletionTokens = final.Usage.CompletionTokens,
                         FeatureType = "Elaboration",
                         EntityId = task.Id,
                         PromptSummary = "Concept conversation turn"
