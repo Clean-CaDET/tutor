@@ -7,7 +7,7 @@ public class TokenSpendingRequestDto
     public int UnitId { get; set; }
     public int PromptTokens { get; set; }
     public int CompletionTokens { get; set; }
-    public string FeatureType { get; set; } = string.Empty; // "Kc", "Task", "Reflection"
+    public string FeatureType { get; set; } = string.Empty; // "Kc", "Task", "Reflection", "Elaboration"
     public int? EntityId { get; set; }
     public string? PromptSummary { get; set; }
 }

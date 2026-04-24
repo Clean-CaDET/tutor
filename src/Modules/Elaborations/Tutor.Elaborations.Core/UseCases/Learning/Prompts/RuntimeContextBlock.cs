@@ -1,4 +1,5 @@
 using System.Text;
+using Tutor.Elaborations.Core.Domain.Conversations;
 
 namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 
@@ -17,7 +18,7 @@ public static class RuntimeContextBlock
             sb.AppendLine($"<progress>{ctx.ProgressLine}</progress>");
 
         if (ctx.Target is { } t)
-            sb.AppendLine($"<target type=\"{t.Type}\" key=\"{t.Key}\" level=\"{t.Level}\">{t.Statement}</target>");
+            sb.AppendLine($"<target>{t}</target>");
 
         if (ctx.SoftCapReached)
             sb.AppendLine("<soft-cap/>");
@@ -32,7 +33,7 @@ public static class RuntimeContextBlock
         return sb.ToString();
     }
 
-    private static string RenderEvaluation(Domain.Conversations.TurnEvaluation e)
+    private static string RenderEvaluation(TurnEvaluation e)
     {
         var sb = new StringBuilder();
         var attrs = new List<string>

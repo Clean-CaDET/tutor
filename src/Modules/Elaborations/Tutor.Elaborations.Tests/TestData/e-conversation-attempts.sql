@@ -43,8 +43,8 @@ INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Correctn
 VALUES (-6, -6, 2, 2, 2, null, 'Covers bundling proposition', null, '["P1"]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
 
 -- Attempt -5: Learner -2, CET -2, InProgress with 9 learner + 9 system turns (for hard cap test)
-INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
-VALUES (-5, -2, -2, 0, '2024-06-05 10:00:00+00', null, null);
+INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary", "HardCapTotalTurns", "SoftCapTotalTurns")
+VALUES (-5, -2, -2, 0, '2024-06-05 10:00:00+00', null, null, 6, 2);
 
 INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
 VALUES (-50, -5, 0, 'Turn 1', 0, '2024-06-05 10:01:00+00', 0);

@@ -50,7 +50,7 @@ public static class ElaborationsStartup
         services.AddScoped<IConceptElaborationTaskRepository, ConceptElaborationTaskDatabaseRepository>();
         services.AddScoped<IConversationAttemptRepository, ConversationAttemptDatabaseRepository>();
 
-        services.AddScoped<IAgentOrchestratorService, AgentOrchestratorService>();
+        services.AddScoped<IAgentOrchestrator, AgentOrchestrator>();
         services.AddScoped<IAgentStream, AgentStream>();
         services.AddScoped<IAgentJson, AgentJson>();
 

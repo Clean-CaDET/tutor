@@ -8,7 +8,7 @@ public class ConceptElaborationTask : AggregateRoot
     public int UnitId { get; internal set; }
     public int Order { get; private set; }
     public string Title { get; private set; } = string.Empty;
-    public ConceptRecord ConceptRecord { get; private set; } = null!;
+    public ConceptRecord? ConceptRecord { get; private set; }
 
     private ConceptElaborationTask() { }
 
@@ -22,6 +22,8 @@ public class ConceptElaborationTask : AggregateRoot
 
     public void Update(ConceptElaborationTask incoming)
     {
+        if (incoming.ConceptRecord == null || ConceptRecord == null)
+            throw new InvalidOperationException("ConceptRecord cannot be null when updating.");
         Title = incoming.Title;
         Order = incoming.Order;
         ConceptRecord.Update(incoming.ConceptRecord);

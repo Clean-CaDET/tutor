@@ -7,10 +7,10 @@ public class ConceptRecord : Entity
 {
     public int ConceptElaborationTaskId { get; private set; }
     public string CanonicalDefinition { get; private set; } = string.Empty;
-    public List<KeyProposition> KeyPropositions { get; private set; } = new();
-    public List<BoundaryCondition> BoundaryConditions { get; private set; } = new();
-    public List<CommonMisconception> CommonMisconceptions { get; private set; } = new();
-    public List<KeyRelation> KeyRelations { get; private set; } = new();
+    public List<KeyProposition> KeyPropositions { get; private set; } = [];
+    public List<BoundaryCondition> BoundaryConditions { get; private set; } = [];
+    public List<CommonMisconception> CommonMisconceptions { get; private set; } = [];
+    public List<KeyRelation> KeyRelations { get; private set; } = [];
 
     private ConceptRecord() { }
 
@@ -38,7 +38,7 @@ public class ConceptRecord : Entity
 
     public bool AreAllPropositionsCovered(ConversationAttempt attempt)
     {
-        var covered = attempt.GetCoveredPropositionKeys();
+        var covered = attempt.GetArticulatedPropositionKeys();
         return KeyPropositions.All(kp => covered.Contains(kp.Key));
     }
 
@@ -54,15 +54,22 @@ public class ConceptRecord : Entity
         return AreAllPropositionsCovered(attempt) && AreAllKeyRelationsArticulated(attempt);
     }
 
-    public List<string> GetUncoveredPropositionKeys(ConversationAttempt attempt)
+    public string PickNextTarget(ConversationAttempt attempt)
     {
-        var covered = attempt.GetCoveredPropositionKeys();
-        return KeyPropositions.Where(kp => !covered.Contains(kp.Key)).Select(kp => kp.Key).ToList();
+        var articulatedKps = attempt.GetArticulatedPropositionKeys();
+        var nextTarget = KeyPropositions.Where(kp => !articulatedKps.Contains(kp.Key))
+            .Select(kp => kp.Statement).FirstOrDefault();
+        if (nextTarget != null) return nextTarget;
+
+        var articulatedKrs = attempt.GetArticulatedRelationKeys();
+        var nextRelation = KeyRelations.First(kr => !articulatedKrs.Contains(kr.Key));
+        var source = KeyPropositions.First(kp => kp.Key == nextRelation.SourceKey).Statement;
+        var target = KeyPropositions.First(kp => kp.Key == nextRelation.TargetKey).Statement;
+        return $"{source} → {target}. Mechanism: {nextRelation.Mechanism}";
     }
 
-    public List<string> GetUnarticulatedRelationKeys(ConversationAttempt attempt)
+    public int CountPropositionsAndRelations()
     {
-        var articulated = attempt.GetArticulatedRelationKeys();
-        return KeyRelations.Where(kr => !articulated.Contains(kr.Key)).Select(kr => kr.Key).ToList();
+        return KeyPropositions.Count + KeyRelations.Count;
     }
 }

@@ -21,7 +21,7 @@ public class ConversationService : IConversationService
 
     private readonly IConversationAttemptRepository _attemptRepo;
     private readonly IConceptElaborationTaskRepository _taskRepo;
-    private readonly IAgentOrchestratorService _orchestrator;
+    private readonly IAgentOrchestrator _orchestrator;
     private readonly ITokenSpendingService _tokenSpendingService;
     private readonly IAccessServices _accessServices;
     private readonly IElaborationsUnitOfWork _unitOfWork;
@@ -29,7 +29,7 @@ public class ConversationService : IConversationService
 
     public ConversationService(
         IConversationAttemptRepository attemptRepo, IConceptElaborationTaskRepository taskRepo,
-        IAgentOrchestratorService orchestrator, ITokenSpendingService tokenSpendingService,
+        IAgentOrchestrator orchestrator, ITokenSpendingService tokenSpendingService,
         IAccessServices accessServices, IElaborationsUnitOfWork unitOfWork, IMapper mapper)
     {
         _attemptRepo = attemptRepo;
@@ -109,9 +109,7 @@ public class ConversationService : IConversationService
             yield break;
         }
 
-        if (task.ConceptRecord == null) { yield return BuildErrorChunk("Concept record missing.", 500); yield break; }
-
-        var attempt = new ConversationAttempt(taskId, learnerId);
+        var attempt = new ConversationAttempt(taskId, learnerId, task.ConceptRecord!.CountPropositionsAndRelations());
         _attemptRepo.Create(attempt);
         _unitOfWork.Save();
 
@@ -143,8 +141,6 @@ public class ConversationService : IConversationService
             yield break;
         }
 
-        if (task.ConceptRecord == null) { yield return BuildErrorChunk("Concept record missing.", 500); yield break; }
-
         await foreach (var token in RunTurnPipelineAsync(attempt, task, content, ct))
             yield return token;
     }
@@ -163,11 +159,12 @@ public class ConversationService : IConversationService
         return Result.Ok(_mapper.Map<ConversationAttemptDto>(attempt));
     }
 
-    private async IAsyncEnumerable<string> RunTurnPipelineAsync(
-        ConversationAttempt attempt, ConceptElaborationTask task,
-        string content, [EnumeratorCancellation] CancellationToken ct)
+    private async IAsyncEnumerable<string> RunTurnPipelineAsync(ConversationAttempt attempt,
+        ConceptElaborationTask task, string content, [EnumeratorCancellation] CancellationToken ct)
     {
-        await foreach (var chunk in _orchestrator.ProcessTurnAsync(attempt, task, task.ConceptRecord, content, ct))
+        if (task.ConceptRecord == null) { yield return BuildErrorChunk("Concept record missing.", 500); yield break; }
+
+        await foreach (var chunk in _orchestrator.ProcessTurnAsync(attempt, task.ConceptRecord, content, ct))
         {
             switch (chunk)
             {
@@ -180,7 +177,7 @@ public class ConversationService : IConversationService
                     yield break;
 
                 case FinalChunk final:
-                    _unitOfWork.Save();
+                    _unitOfWork.Save(); // Save attempt status and turn additions
                     _tokenSpendingService.SpendTokensForUnit(new TokenSpendingRequestDto
                     {
                         LearnerId = attempt.LearnerId,
@@ -189,7 +186,7 @@ public class ConversationService : IConversationService
                         CompletionTokens = final.Usage.CompletionTokens,
                         FeatureType = "Elaboration",
                         EntityId = task.Id,
-                        PromptSummary = "Concept conversation turn"
+                        PromptSummary = $"Conversation turn for attempt: {final.AttemptId}"
                     });
                     yield return JsonSerializer.Serialize(new SubmitTurnResponseDto
                     {

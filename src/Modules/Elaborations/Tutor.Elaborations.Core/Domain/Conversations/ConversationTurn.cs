@@ -12,8 +12,7 @@ public class ConversationTurn : Entity
     public DateTime Timestamp { get; private set; }
     public TurnIntent? Intent { get; private set; }
     public TurnEvaluation? Evaluation { get; private set; }
-    public ProbeTargetType? ProbeTargetType { get; private set; }
-    public string? ProbeTargetKey { get; private set; }
+    public string? ProbeTarget { get; private set; }
     public int? ProbeLevel { get; private set; }
 
     private ConversationTurn() { }
@@ -29,8 +28,7 @@ public class ConversationTurn : Entity
         Timestamp = DateTime.UtcNow;
         Intent = intent;
         Evaluation = evaluation;
-        ProbeTargetType = probeDirective?.TargetType;
-        ProbeTargetKey = probeDirective?.TargetKey;
+        ProbeTarget = probeDirective?.Target;
         ProbeLevel = probeDirective?.Level;
     }
 }

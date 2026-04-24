@@ -10,8 +10,7 @@ namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 public sealed record AgentTurnContext(
     string Instruction,
     string? ProgressLine = null,
-    TargetDirective? Target = null,
+    string? Target = null,
     bool SoftCapReached = false,
     TurnEvaluation? Evaluation = null,
-    string? CurrentLearnerMessage = null,
-    string? ConceptTitle = null);
+    string? CurrentLearnerMessage = null);

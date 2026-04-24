@@ -11,8 +11,7 @@ namespace Tutor.Elaborations.Infrastructure.Agents;
 
 public class AgentJson : StructuredAgent, IAgentJson
 {
-    public AgentJson(IAiChatService chatService, ILogger<AgentJson> logger)
-        : base(chatService, logger) { }
+    public AgentJson(IAiChatService chatService, ILogger<AgentJson> logger) : base(chatService, logger) { }
 
     public Task<Result<TResult>> CompleteAsync<TResponse, TResult>(
         AgentKind kind, IReadOnlyList<ConversationTurn> history,

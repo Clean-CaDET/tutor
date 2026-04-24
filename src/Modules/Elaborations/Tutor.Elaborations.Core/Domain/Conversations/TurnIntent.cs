@@ -6,5 +6,5 @@ public enum TurnIntent
     Clarification,
     OffTopic,
     Stuck,
-    MetaHelp
+    SummaryRequest
 }
