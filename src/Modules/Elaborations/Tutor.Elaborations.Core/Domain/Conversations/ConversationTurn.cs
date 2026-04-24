@@ -13,7 +13,7 @@ public class ConversationTurn : Entity
     public TurnIntent? Intent { get; private set; }
     public TurnEvaluation? Evaluation { get; private set; }
     public ProbeTargetType? ProbeTargetType { get; private set; }
-    public int? ProbeTargetId { get; private set; }
+    public string? ProbeTargetKey { get; private set; }
     public int? ProbeLevel { get; private set; }
 
     private ConversationTurn() { }
@@ -30,7 +30,7 @@ public class ConversationTurn : Entity
         Intent = intent;
         Evaluation = evaluation;
         ProbeTargetType = probeDirective?.TargetType;
-        ProbeTargetId = probeDirective?.TargetId;
+        ProbeTargetKey = probeDirective?.TargetKey;
         ProbeLevel = probeDirective?.Level;
     }
 }

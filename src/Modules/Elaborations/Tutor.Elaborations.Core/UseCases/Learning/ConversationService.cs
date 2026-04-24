@@ -62,7 +62,7 @@ public class ConversationService : IConversationService
 
     public Result<ConceptElaborationTaskDto> GetTaskWithAttempts(int taskId, int learnerId)
     {
-        var task = _taskRepo.Get(taskId);
+        var task = _taskRepo.GetWithRecord(taskId);
         if (task == null) return Result.Fail(FailureCode.NotFound);
 
         if (!_accessServices.IsEnrolledInUnit(task.UnitId, learnerId))
@@ -77,7 +77,7 @@ public class ConversationService : IConversationService
 
     public async IAsyncEnumerable<string> StartConversationAsync(int taskId, string content, int learnerId, [EnumeratorCancellation] CancellationToken ct)
     {
-        var task = _taskRepo.Get(taskId);
+        var task = _taskRepo.GetWithRecord(taskId);
         if (task == null) { yield return BuildErrorChunk("Task not found.", 404); yield break; }
 
         if (!_accessServices.IsEnrolledInUnit(task.UnitId, learnerId))
@@ -109,6 +109,8 @@ public class ConversationService : IConversationService
             yield break;
         }
 
+        if (task.ConceptRecord == null) { yield return BuildErrorChunk("Concept record missing.", 500); yield break; }
+
         var attempt = new ConversationAttempt(taskId, learnerId);
         _attemptRepo.Create(attempt);
         _unitOfWork.Save();
@@ -124,7 +126,7 @@ public class ConversationService : IConversationService
         if (attempt.LearnerId != learnerId) { yield return BuildErrorChunk("Access denied.", 403); yield break; }
         if (attempt.Status != AttemptStatus.InProgress) { yield return BuildErrorChunk("Conversation is no longer active.", 409); yield break; }
 
-        var task = _taskRepo.Get(attempt.ConceptElaborationTaskId);
+        var task = _taskRepo.GetWithRecord(attempt.ConceptElaborationTaskId);
         if (task == null) { yield return BuildErrorChunk("Task not found.", 404); yield break; }
 
         if (!_accessServices.IsEnrolledInUnit(task.UnitId, learnerId))
@@ -140,6 +142,8 @@ public class ConversationService : IConversationService
             yield return BuildErrorChunk("Insufficient token balance. Contact your administrator.", 402);
             yield break;
         }
+
+        if (task.ConceptRecord == null) { yield return BuildErrorChunk("Concept record missing.", 500); yield break; }
 
         await foreach (var token in RunTurnPipelineAsync(attempt, task, content, ct))
             yield return token;
@@ -160,10 +164,10 @@ public class ConversationService : IConversationService
     }
 
     private async IAsyncEnumerable<string> RunTurnPipelineAsync(
-        ConversationAttempt attempt, ConceptElaborationTask task, string content,
-        [EnumeratorCancellation] CancellationToken ct)
+        ConversationAttempt attempt, ConceptElaborationTask task,
+        string content, [EnumeratorCancellation] CancellationToken ct)
     {
-        await foreach (var chunk in _orchestrator.ProcessTurnAsync(attempt, task, content, ct))
+        await foreach (var chunk in _orchestrator.ProcessTurnAsync(attempt, task, task.ConceptRecord, content, ct))
         {
             switch (chunk)
             {

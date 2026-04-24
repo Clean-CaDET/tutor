@@ -26,19 +26,19 @@ public class ConversationAttempt : AggregateRoot
         StartedAt = DateTime.UtcNow;
     }
 
-    public ISet<int> GetCoveredPropositionIds()
+    public ISet<string> GetCoveredPropositionKeys()
     {
         return Turns
             .Where(t => t.Evaluation != null)
-            .SelectMany(t => t.Evaluation!.PropositionsCoveredIds)
+            .SelectMany(t => t.Evaluation!.PropositionsCoveredKeys)
             .ToHashSet();
     }
 
-    public ISet<int> GetArticulatedRelationIds()
+    public ISet<string> GetArticulatedRelationKeys()
     {
         return Turns
             .Where(t => t.Evaluation != null)
-            .SelectMany(t => t.Evaluation!.RelationsArticulatedIds)
+            .SelectMany(t => t.Evaluation!.RelationsArticulatedKeys)
             .ToHashSet();
     }
 

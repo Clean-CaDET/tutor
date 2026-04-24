@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
+using Tutor.Elaborations.Core.Domain.ConceptRecords;
 using Tutor.Elaborations.Core.Domain.Conversations;
 
 namespace Tutor.Elaborations.Infrastructure.Database;
@@ -7,10 +8,7 @@ namespace Tutor.Elaborations.Infrastructure.Database;
 public class ElaborationsContext : DbContext
 {
     public DbSet<ConceptElaborationTask> ConceptElaborationTasks { get; set; }
-    public DbSet<KeyProposition> KeyPropositions { get; set; }
-    public DbSet<BoundaryCondition> BoundaryConditions { get; set; }
-    public DbSet<CommonMisconception> CommonMisconceptions { get; set; }
-    public DbSet<KeyRelation> KeyRelations { get; set; }
+    public DbSet<ConceptRecord> ConceptRecords { get; set; }
     public DbSet<ConversationAttempt> ConversationAttempts { get; set; }
     public DbSet<ConversationTurn> ConversationTurns { get; set; }
     public DbSet<TurnEvaluation> TurnEvaluations { get; set; }
@@ -22,45 +20,31 @@ public class ElaborationsContext : DbContext
         modelBuilder.HasDefaultSchema("elaborations");
 
         ConfigureConceptElaborationTasks(modelBuilder);
+        ConfigureConceptRecords(modelBuilder);
         ConfigureConversations(modelBuilder);
     }
 
     private static void ConfigureConceptElaborationTasks(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ConceptElaborationTask>()
-            .HasMany(cet => cet.KeyPropositions)
-            .WithOne()
-            .HasForeignKey(kp => kp.ConceptElaborationTaskId);
+        modelBuilder.Entity<ConceptElaborationTask>(entity =>
+        {
+            entity.HasIndex(cet => new { cet.UnitId, cet.Order });
+            entity.HasOne(cet => cet.ConceptRecord)
+                .WithOne()
+                .HasForeignKey<ConceptRecord>(r => r.ConceptElaborationTaskId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+    }
 
-        modelBuilder.Entity<ConceptElaborationTask>()
-            .HasMany(cet => cet.BoundaryConditions)
-            .WithOne()
-            .HasForeignKey(bc => bc.ConceptElaborationTaskId);
-
-        modelBuilder.Entity<ConceptElaborationTask>()
-            .HasMany(cet => cet.CommonMisconceptions)
-            .WithOne()
-            .HasForeignKey(cm => cm.ConceptElaborationTaskId);
-
-        modelBuilder.Entity<ConceptElaborationTask>()
-            .HasMany(cet => cet.KeyRelations)
-            .WithOne()
-            .HasForeignKey(kr => kr.ConceptElaborationTaskId);
-
-        modelBuilder.Entity<ConceptElaborationTask>()
-            .HasIndex(cet => new { cet.UnitId, cet.Order });
-
-        modelBuilder.Entity<KeyRelation>()
-            .HasOne(kr => kr.SourceKeyProposition)
-            .WithMany()
-            .HasForeignKey(kr => kr.SourceKeyPropositionId)
-            .OnDelete(DeleteBehavior.ClientNoAction);
-
-        modelBuilder.Entity<KeyRelation>()
-            .HasOne(kr => kr.TargetKeyProposition)
-            .WithMany()
-            .HasForeignKey(kr => kr.TargetKeyPropositionId)
-            .OnDelete(DeleteBehavior.ClientNoAction);
+    private static void ConfigureConceptRecords(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ConceptRecord>(entity =>
+        {
+            entity.Property(r => r.KeyPropositions).HasColumnType("jsonb");
+            entity.Property(r => r.BoundaryConditions).HasColumnType("jsonb");
+            entity.Property(r => r.CommonMisconceptions).HasColumnType("jsonb");
+            entity.Property(r => r.KeyRelations).HasColumnType("jsonb");
+        });
     }
 
     private static void ConfigureConversations(ModelBuilder modelBuilder)
@@ -83,11 +67,11 @@ public class ElaborationsContext : DbContext
 
         modelBuilder.Entity<TurnEvaluation>(entity =>
         {
-            entity.Property(te => te.PropositionsCoveredIds)
+            entity.Property(te => te.PropositionsCoveredKeys)
                 .HasColumnType("jsonb");
-            entity.Property(te => te.MisconceptionsTriggeredIds)
+            entity.Property(te => te.MisconceptionsTriggeredKeys)
                 .HasColumnType("jsonb");
-            entity.Property(te => te.RelationsArticulatedIds)
+            entity.Property(te => te.RelationsArticulatedKeys)
                 .HasColumnType("jsonb");
         });
     }

@@ -9,23 +9,25 @@ public class ConceptElaborationTaskDatabaseRepository :
 {
     public ConceptElaborationTaskDatabaseRepository(ElaborationsContext dbContext) : base(dbContext) { }
 
-    public new ConceptElaborationTask? Get(int id)
+    public ConceptElaborationTask? GetWithRecord(int id)
     {
         return DbContext.ConceptElaborationTasks
-            .Include(cet => cet.KeyPropositions)
-            .Include(cet => cet.BoundaryConditions)
-            .Include(cet => cet.CommonMisconceptions)
-            .Include(cet => cet.KeyRelations)
+            .Include(cet => cet.ConceptRecord)
             .FirstOrDefault(cet => cet.Id == id);
     }
 
     public List<ConceptElaborationTask> GetByUnit(int unitId)
     {
         return DbContext.ConceptElaborationTasks
-            .Include(cet => cet.KeyPropositions)
-            .Include(cet => cet.BoundaryConditions)
-            .Include(cet => cet.CommonMisconceptions)
-            .Include(cet => cet.KeyRelations)
+            .Where(cet => cet.UnitId == unitId)
+            .OrderBy(cet => cet.Order)
+            .ToList();
+    }
+
+    public List<ConceptElaborationTask> GetByUnitWithRecords(int unitId)
+    {
+        return DbContext.ConceptElaborationTasks
+            .Include(cet => cet.ConceptRecord)
             .Where(cet => cet.UnitId == unitId)
             .OrderBy(cet => cet.Order)
             .ToList();

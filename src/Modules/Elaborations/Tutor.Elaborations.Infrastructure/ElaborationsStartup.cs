@@ -16,16 +16,7 @@ using Tutor.Elaborations.Core.UseCases.Learning;
 using Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 using Tutor.Elaborations.Core.UseCases.Learning.Orchestration.Agents;
 using Tutor.Elaborations.Core.UseCases.Monitoring;
-using Tutor.Elaborations.Infrastructure.Agents.Clarification;
-using Tutor.Elaborations.Infrastructure.Agents.Closing;
-using Tutor.Elaborations.Infrastructure.Agents.Critique;
-using Tutor.Elaborations.Infrastructure.Agents.IntentClassifier;
-using Tutor.Elaborations.Infrastructure.Agents.MetaHelp;
-using Tutor.Elaborations.Infrastructure.Agents.Probe;
-using Tutor.Elaborations.Infrastructure.Agents.Redirect;
-using Tutor.Elaborations.Infrastructure.Agents.Scaffolding;
-using Tutor.Elaborations.Infrastructure.Agents.Scorer;
-using Tutor.Elaborations.Infrastructure.Agents.Summary;
+using Tutor.Elaborations.Infrastructure.Agents;
 using Tutor.Elaborations.Infrastructure.Database;
 using Tutor.Elaborations.Infrastructure.Database.Repositories;
 
@@ -60,18 +51,8 @@ public static class ElaborationsStartup
         services.AddScoped<IConversationAttemptRepository, ConversationAttemptDatabaseRepository>();
 
         services.AddScoped<IAgentOrchestratorService, AgentOrchestratorService>();
-
-        services.AddScoped<IIntentClassifier, IntentClassifierAgent>();
-        services.AddScoped<IScorer, ScorerAgent>();
-
-        services.AddScoped<IProbeAgent, ProbeAgent>();
-        services.AddScoped<ICritiqueAgent, CritiqueAgent>();
-        services.AddScoped<IClarificationAgent, ClarificationAgent>();
-        services.AddScoped<IRedirectAgent, RedirectAgent>();
-        services.AddScoped<IMetaHelpAgent, MetaHelpAgent>();
-        services.AddScoped<IScaffoldingAgent, ScaffoldingAgent>();
-        services.AddScoped<IClosingAgent, ClosingAgent>();
-        services.AddScoped<ISummaryAgent, SummaryAgent>();
+        services.AddScoped<IAgentStream, AgentStream>();
+        services.AddScoped<IAgentJson, AgentJson>();
 
         services.AddScoped<IElaborationsUnitOfWork, ElaborationsUnitOfWork>();
 

@@ -6,10 +6,10 @@ using Tutor.BuildingBlocks.AI.Core.Conversations;
 namespace Tutor.BuildingBlocks.AI.Core.Agents;
 
 /// <summary>
-/// Base class for agents that stream a single-message LLM completion token by token.
-/// Derived agents build their own system and user prompts and delegate the network plumbing here.
-/// Yields <see cref="StreamToken"/> per content chunk and a terminal <see cref="StreamFailure"/>
-/// on provider exception or empty response.
+/// Base class for agents that stream an LLM completion token by token.
+/// Derived agents build a <see cref="CompletionRequest"/> (system prompt + native-role messages)
+/// and delegate the network plumbing here. Yields <see cref="StreamToken"/> per content chunk
+/// and a terminal <see cref="StreamFailure"/> on provider exception or empty response.
 /// </summary>
 public abstract class StreamingAgent
 {
@@ -24,11 +24,9 @@ public abstract class StreamingAgent
         _logger = logger;
     }
 
-    protected async IAsyncEnumerable<StreamOutput> StreamAsync(string systemPrompt, string userMessage,
-        int maxTokens, double temperature, [EnumeratorCancellation] CancellationToken ct)
+    protected async IAsyncEnumerable<StreamOutput> StreamAsync(
+        CompletionRequest request, string agentLabel, [EnumeratorCancellation] CancellationToken ct)
     {
-        var request = CompletionRequest.SingleMessage(userMessage, systemPrompt, maxTokens, temperature);
-
         var sw = Stopwatch.StartNew();
         var usageBefore = _usageTracker.Total;
         var charCount = 0;
@@ -99,7 +97,7 @@ public abstract class StreamingAgent
                 "Agent={Agent} Status={Status} DurationMs={DurationMs} PromptTokens={PromptTokens} " +
                 "CompletionTokens={CompletionTokens} ResponseChars={ResponseChars} Attempts={Attempts} " +
                 "FailureCategory={FailureCategory}",
-                GetType().Name, status, sw.ElapsedMilliseconds,
+                agentLabel, status, sw.ElapsedMilliseconds,
                 delta.PromptTokens, delta.CompletionTokens, charCount, 1, failureCategory);
         }
     }

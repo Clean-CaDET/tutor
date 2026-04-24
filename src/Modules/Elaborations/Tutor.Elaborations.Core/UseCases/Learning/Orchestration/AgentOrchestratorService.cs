@@ -1,11 +1,15 @@
 using System.Runtime.CompilerServices;
 using System.Text;
+using FluentResults;
 using Microsoft.Extensions.Logging;
 using Tutor.BuildingBlocks.AI.Core.Agents;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
+using Tutor.Elaborations.Core.Domain.ConceptRecords;
 using Tutor.Elaborations.Core.Domain.Conversations;
 using Tutor.Elaborations.Core.UseCases.Learning.Orchestration.Agents;
+using Tutor.Elaborations.Core.UseCases.Learning.Prompts;
+using Tutor.Elaborations.Core.UseCases.Learning.Prompts.Agents;
 
 namespace Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 
@@ -13,43 +17,23 @@ public class AgentOrchestratorService : IAgentOrchestratorService
 {
     private const int ScaffoldingLevel = 4;
 
-    private readonly IIntentClassifier _classifier;
-    private readonly IScorer _scorer;
-    private readonly IProbeAgent _probeAgent;
-    private readonly ICritiqueAgent _critiqueAgent;
-    private readonly IClarificationAgent _clarificationAgent;
-    private readonly IRedirectAgent _redirectAgent;
-    private readonly IMetaHelpAgent _metaHelpAgent;
-    private readonly IScaffoldingAgent _scaffoldingAgent;
-    private readonly IClosingAgent _closingAgent;
-    private readonly ISummaryAgent _summaryAgent;
+    private readonly IAgentStream _stream;
+    private readonly IAgentJson _json;
     private readonly ITurnUsageTracker _usageTracker;
     private readonly ILogger<AgentOrchestratorService> _logger;
 
     public AgentOrchestratorService(
-        IIntentClassifier classifier, IScorer scorer,
-        IProbeAgent probeAgent, ICritiqueAgent critiqueAgent,
-        IClarificationAgent clarificationAgent, IRedirectAgent redirectAgent,
-        IMetaHelpAgent metaHelpAgent, IScaffoldingAgent scaffoldingAgent,
-        IClosingAgent closingAgent, ISummaryAgent summaryAgent,
+        IAgentStream stream, IAgentJson json,
         ITurnUsageTracker usageTracker, ILogger<AgentOrchestratorService> logger)
     {
-        _classifier = classifier;
-        _scorer = scorer;
-        _probeAgent = probeAgent;
-        _critiqueAgent = critiqueAgent;
-        _clarificationAgent = clarificationAgent;
-        _redirectAgent = redirectAgent;
-        _metaHelpAgent = metaHelpAgent;
-        _scaffoldingAgent = scaffoldingAgent;
-        _closingAgent = closingAgent;
-        _summaryAgent = summaryAgent;
+        _stream = stream;
+        _json = json;
         _usageTracker = usageTracker;
         _logger = logger;
     }
 
     public async IAsyncEnumerable<OrchestratorChunk> ProcessTurnAsync(
-        ConversationAttempt attempt, ConceptElaborationTask task,
+        ConversationAttempt attempt, ConceptElaborationTask task, ConceptRecord record,
         string learnerContent, [EnumeratorCancellation] CancellationToken ct)
     {
         using var turnScope = _logger.BeginScope(new Dictionary<string, object>
@@ -58,9 +42,9 @@ public class AgentOrchestratorService : IAgentOrchestratorService
             ["TurnOrd"] = attempt.Turns.Count
         });
 
-        var history = attempt.Turns.ToList();
+        var historyBeforeTurn = (IReadOnlyList<ConversationTurn>)attempt.Turns.ToList();
 
-        var intentResult = await _classifier.ClassifyAsync(learnerContent, history, task, ct);
+        var intentResult = await ClassifyIntentAsync(historyBeforeTurn, record, task, learnerContent, ct);
         if (intentResult.IsFailed)
         {
             yield return new ErrorChunk("Intent classification failed.", 500);
@@ -71,7 +55,7 @@ public class AgentOrchestratorService : IAgentOrchestratorService
         TurnEvaluation? evaluation = null;
         if (intent == TurnIntent.Substantive)
         {
-            var scoreResult = await _scorer.ScoreAsync(learnerContent, history, task, ct);
+            var scoreResult = await ScoreTurnAsync(historyBeforeTurn, record, task, learnerContent, ct);
             if (scoreResult.IsFailed)
             {
                 yield return new ErrorChunk("Scoring failed.", 500);
@@ -82,11 +66,14 @@ public class AgentOrchestratorService : IAgentOrchestratorService
 
         attempt.AddLearnerTurn(learnerContent, intent, evaluation);
 
-        var route = DecideRoute(attempt, task, intent, evaluation);
+        var route = DecideRoute(attempt, record, intent, evaluation);
+        var historyForStreaming = (IReadOnlyList<ConversationTurn>)attempt.Turns.ToList();
+
+        var (streamKind, streamCtx) = BuildStreamContext(route, task, record, attempt.IsSoftCapReached());
 
         var fullResponse = new StringBuilder();
         StreamFailure? streamFailure = null;
-        await foreach (var chunk in Stream(route, attempt, task, ct))
+        await foreach (var chunk in _stream.StreamAsync(streamKind, historyForStreaming, record, streamCtx, ct))
         {
             if (chunk is StreamFailure failure)
             {
@@ -107,45 +94,146 @@ public class AgentOrchestratorService : IAgentOrchestratorService
         attempt.AddSystemTurn(fullResponse.ToString(), route.ProbeDirective);
 
         string? summary = null;
-        if (route.Closing == ClosingReason.AllCovered)
+        if (route.Closing is ClosingReason.AllCovered or ClosingReason.HardCapReached)
         {
-            var summaryResult = await _summaryAgent.SummarizeAsync(attempt, task, ct);
-            summary = summaryResult.IsSuccess ? summaryResult.Value : null;
-            attempt.Complete(summary);
-        }
-        else if (route.Closing == ClosingReason.HardCapReached)
-        {
-            var summaryResult = await _summaryAgent.SummarizeAsync(attempt, task, ct);
-            summary = summaryResult.IsSuccess ? summaryResult.Value : null;
-            attempt.Expire(summary);
+            summary = await SummarizeAsync(attempt.Turns, record, task, ct);
+            if (route.Closing == ClosingReason.AllCovered) attempt.Complete(summary);
+            else attempt.Expire(summary);
         }
 
         yield return new FinalChunk(
             attempt.Id, attempt.Status, intent, summary, route.ProbeDirective, _usageTracker.Total);
     }
 
-    private IAsyncEnumerable<StreamOutput> Stream(
-        RouteDecision route, ConversationAttempt attempt,
-        ConceptElaborationTask task, CancellationToken ct)
+    private Task<Result<TurnIntent>> ClassifyIntentAsync(
+        IReadOnlyList<ConversationTurn> history, ConceptRecord record,
+        ConceptElaborationTask task, string learnerContent, CancellationToken ct)
     {
-        return route.Kind switch
-        {
-            RouteKind.Probe => _probeAgent.StreamAsync(route.ProbeDirective!, attempt, task, ct),
-            RouteKind.Scaffold => _scaffoldingAgent.StreamAsync(route.ProbeDirective!, attempt, task, ct),
-            RouteKind.Critique => _critiqueAgent.StreamAsync(route.Evaluation!, attempt, task, ct),
-            RouteKind.Clarification => _clarificationAgent.StreamAsync(attempt, task, route.LastProbe, ct),
-            RouteKind.Redirect => _redirectAgent.StreamAsync(task, ct),
-            RouteKind.MetaHelp => _metaHelpAgent.StreamAsync(task, route.ProgressLine!, route.NextTarget, ct),
-            RouteKind.Closing => _closingAgent.StreamAsync(task, route.Closing!.Value, ct),
-            _ => throw new InvalidOperationException($"Unknown route kind: {route.Kind}")
-        };
+        var ctx = new AgentTurnContext(
+            Instruction: "Classify the current learner message. Return JSON only.",
+            CurrentLearnerMessage: learnerContent,
+            ConceptTitle: task.Title);
+
+        return _json.CompleteAsync<IntentResponse, TurnIntent>(
+            AgentKind.IntentClassifier, history, record, ctx,
+            r => Enum.TryParse<TurnIntent>(r.Intent, ignoreCase: true, out var intent)
+                ? Result.Ok(intent)
+                : Result.Fail<TurnIntent>("Unrecognized intent."),
+            "Intent classification failed.", ct);
     }
 
+    private Task<Result<TurnEvaluation>> ScoreTurnAsync(
+        IReadOnlyList<ConversationTurn> history, ConceptRecord record,
+        ConceptElaborationTask task, string learnerContent, CancellationToken ct)
+    {
+        var ctx = new AgentTurnContext(
+            Instruction: "Score the current learner message against the rubric. Return JSON only.",
+            CurrentLearnerMessage: learnerContent,
+            ConceptTitle: task.Title);
+
+        return _json.CompleteAsync<ScorerResponse, TurnEvaluation>(
+            AgentKind.Scorer, history, record, ctx,
+            r => MapToEvaluation(r, record),
+            "Scoring failed.", ct);
+    }
+
+    private async Task<string?> SummarizeAsync(
+        IEnumerable<ConversationTurn> turns, ConceptRecord record,
+        ConceptElaborationTask task, CancellationToken ct)
+    {
+        var history = (IReadOnlyList<ConversationTurn>)turns.ToList();
+        var ctx = new AgentTurnContext(
+            Instruction: "Summarize what the learner demonstrated understanding of in 2-4 sentences in Serbian. Paraphrase only, no verbatim quotes of rubric items.",
+            ConceptTitle: task.Title);
+
+        var buffer = new StringBuilder();
+        await foreach (var chunk in _stream.StreamAsync(AgentKind.Summary, history, record, ctx, ct))
+        {
+            if (chunk is StreamFailure) return null;
+            buffer.Append(((StreamToken)chunk).Content);
+        }
+
+        return buffer.Length > 0 ? buffer.ToString() : null;
+    }
+
+    private static Result<TurnEvaluation> MapToEvaluation(ScorerResponse parsed, ConceptRecord record)
+    {
+        if (parsed.CorrectnessScore is < 1 or > 3) return Result.Fail("Correctness out of range.");
+        if (parsed.CompletenessScore is < 1 or > 3) return Result.Fail("Completeness out of range.");
+        if (parsed.DiscriminationScore is not null and (< 1 or > 3)) return Result.Fail("Discrimination out of range.");
+        if (parsed.IntegrationScore is not null and (< 1 or > 3)) return Result.Fail("Integration out of range.");
+
+        var validKpKeys = record.KeyPropositions.Select(kp => kp.Key).ToHashSet();
+        var validKrKeys = record.KeyRelations.Select(kr => kr.Key).ToHashSet();
+        var validCmKeys = record.CommonMisconceptions.Select(cm => cm.Key).ToHashSet();
+
+        if (parsed.PropositionsCoveredKeys?.Any(k => !validKpKeys.Contains(k)) == true)
+            return Result.Fail("Unknown proposition key.");
+        if (parsed.RelationsArticulatedKeys?.Any(k => !validKrKeys.Contains(k)) == true)
+            return Result.Fail("Unknown relation key.");
+        if (parsed.MisconceptionsTriggeredKeys?.Any(k => !validCmKeys.Contains(k)) == true)
+            return Result.Fail("Unknown misconception key.");
+
+        return new TurnEvaluation(
+            parsed.CorrectnessScore, parsed.CompletenessScore,
+            parsed.DiscriminationScore, parsed.IntegrationScore,
+            parsed.Justification ?? string.Empty, parsed.NovelMisconceptions,
+            parsed.PropositionsCoveredKeys ?? new List<string>(),
+            parsed.MisconceptionsTriggeredKeys ?? new List<string>(),
+            parsed.RelationsArticulatedKeys ?? new List<string>(),
+            parsed.HasMultipleConcerns ?? false);
+    }
+
+    private static (AgentKind Kind, AgentTurnContext Ctx) BuildStreamContext(
+        RouteDecision route, ConceptElaborationTask task, ConceptRecord record, bool softCap) =>
+        route.Kind switch
+        {
+            RouteKind.Probe => (AgentKind.Probe, new AgentTurnContext(
+                Instruction: "Produce one probe question for the target at the given level.",
+                Target: ResolveTarget(record, route.ProbeDirective),
+                SoftCapReached: softCap,
+                ConceptTitle: task.Title)),
+
+            RouteKind.Scaffold => (AgentKind.Scaffolding, new AgentTurnContext(
+                Instruction: "Produce a scaffold (forced choice, code skeleton, or analogy) that helps the learner reach the target without revealing it.",
+                Target: ResolveTarget(record, route.ProbeDirective),
+                ConceptTitle: task.Title)),
+
+            RouteKind.Critique => (AgentKind.Critique, new AgentTurnContext(
+                Instruction: "Produce a short bulleted critique of the latest learner turn based on the evaluation. Do not ask a new Socratic question.",
+                Evaluation: route.Evaluation,
+                SoftCapReached: softCap,
+                ConceptTitle: task.Title)),
+
+            RouteKind.Clarification => (AgentKind.Clarification, new AgentTurnContext(
+                Instruction: "Rephrase the tutor's prior question in simpler terms. Do not answer it. Then invite the learner to resume.",
+                Target: ResolveTarget(record, route.LastProbe),
+                ConceptTitle: task.Title)),
+
+            RouteKind.Redirect => (AgentKind.Redirect, new AgentTurnContext(
+                Instruction: "Redirect the learner back to the concept with a concrete small next step.",
+                ConceptTitle: task.Title)),
+
+            RouteKind.MetaHelp => (AgentKind.MetaHelp, new AgentTurnContext(
+                Instruction: "Answer the learner's meta/procedural question: open with the progress line verbatim, then pivot to the remaining gap.",
+                ProgressLine: route.ProgressLine,
+                Target: ResolveTarget(record, route.NextTarget),
+                ConceptTitle: task.Title)),
+
+            RouteKind.Closing => (AgentKind.Closing, new AgentTurnContext(
+                Instruction: route.Closing == ClosingReason.AllCovered
+                    ? "reason=AllCovered. Acknowledge that the learner has covered the concept in 2 sentences max."
+                    : "reason=HardCapReached. Acknowledge that the conversation is ending in 2 sentences max.",
+                ConceptTitle: task.Title)),
+
+            _ => throw new InvalidOperationException($"Unknown route kind: {route.Kind}")
+        };
+
     private RouteDecision DecideRoute(
-        ConversationAttempt attempt, ConceptElaborationTask task,
+        ConversationAttempt attempt, ConceptRecord record,
         TurnIntent intent, TurnEvaluation? evaluation)
     {
-        if (task.IsAttemptComplete(attempt))
+        if (record.IsAttemptComplete(attempt))
             return RouteDecision.Close(ClosingReason.AllCovered);
 
         if (attempt.IsHardCapReached())
@@ -161,17 +249,17 @@ public class AgentOrchestratorService : IAgentOrchestratorService
 
             case TurnIntent.MetaHelp:
             {
-                var progressLine = RenderProgressLine(attempt, task);
-                var next = PickNextTarget(attempt, task);
+                var progressLine = RenderProgressLine(attempt, record);
+                var next = PickNextTarget(attempt, record);
                 return RouteDecision.Meta(progressLine, next);
             }
 
             case TurnIntent.Stuck:
             {
-                var next = PickNextTarget(attempt, task);
+                var next = PickNextTarget(attempt, record);
                 if (next == null) return RouteDecision.Close(ClosingReason.AllCovered);
                 var level = DeriveLevel(attempt, next);
-                var directive = new ProbeDirective(next.Value.Type, next.Value.Id, Math.Max(level, ScaffoldingLevel));
+                var directive = new ProbeDirective(next.Value.Type, next.Value.Key, Math.Max(level, ScaffoldingLevel));
                 return RouteDecision.Scaffold(directive);
             }
 
@@ -180,10 +268,10 @@ public class AgentOrchestratorService : IAgentOrchestratorService
                 if (evaluation is { HasMultipleConcerns: true })
                     return RouteDecision.CritiqueFor(evaluation);
 
-                var next = PickNextTarget(attempt, task);
+                var next = PickNextTarget(attempt, record);
                 if (next == null) return RouteDecision.Close(ClosingReason.AllCovered);
                 var level = DeriveLevel(attempt, next);
-                var directive = new ProbeDirective(next.Value.Type, next.Value.Id, level);
+                var directive = new ProbeDirective(next.Value.Type, next.Value.Key, level);
 
                 return level >= ScaffoldingLevel
                     ? RouteDecision.Scaffold(directive)
@@ -195,27 +283,33 @@ public class AgentOrchestratorService : IAgentOrchestratorService
         }
     }
 
-    private static (ProbeTargetType Type, int Id)? PickNextTarget(
-        ConversationAttempt attempt, ConceptElaborationTask task)
+    private static (ProbeTargetType Type, string Key)? PickNextTarget(
+        ConversationAttempt attempt, ConceptRecord record)
     {
-        var uncoveredKp = task.GetUncoveredPropositionIds(attempt);
+        var uncoveredKp = record.GetUncoveredPropositionKeys(attempt);
         if (uncoveredKp.Count > 0)
-            return (ProbeTargetType.KeyProposition, uncoveredKp.Min());
+            return (ProbeTargetType.KeyProposition, uncoveredKp.OrderBy(KeyOrder).First());
 
-        var unarticulatedKr = task.GetUnarticulatedRelationIds(attempt);
+        var unarticulatedKr = record.GetUnarticulatedRelationKeys(attempt);
         return unarticulatedKr.Count > 0
-            ? (ProbeTargetType.KeyRelation, unarticulatedKr.Min())
+            ? (ProbeTargetType.KeyRelation, unarticulatedKr.OrderBy(KeyOrder).First())
             : null;
     }
 
+    private static int KeyOrder(string key)
+    {
+        // Natural keys are a single-letter prefix followed by digits (e.g., P1, R10, B3).
+        return int.TryParse(key.AsSpan(1), out var n) ? n : int.MaxValue;
+    }
+
     private static int DeriveLevel(
-        ConversationAttempt attempt, (ProbeTargetType Type, int Id)? target)
+        ConversationAttempt attempt, (ProbeTargetType Type, string Key)? target)
     {
         if (target == null) return 1;
         var priorProbes = attempt.Turns.Count(t =>
             t.Role == TurnRole.System &&
             t.ProbeTargetType == target.Value.Type &&
-            t.ProbeTargetId == target.Value.Id);
+            t.ProbeTargetKey == target.Value.Key);
         return priorProbes + 1;
     }
 
@@ -226,19 +320,41 @@ public class AgentOrchestratorService : IAgentOrchestratorService
             .OrderByDescending(t => t.Order)
             .FirstOrDefault();
         if (last == null) return null;
-        return new ProbeDirective(last.ProbeTargetType!.Value, last.ProbeTargetId!.Value, last.ProbeLevel!.Value);
+        return new ProbeDirective(last.ProbeTargetType!.Value, last.ProbeTargetKey!, last.ProbeLevel!.Value);
     }
 
-    private static string RenderProgressLine(ConversationAttempt attempt, ConceptElaborationTask task)
+    private static string RenderProgressLine(ConversationAttempt attempt, ConceptRecord record)
     {
-        var coveredKp = attempt.GetCoveredPropositionIds().Count;
-        var totalKp = task.KeyPropositions.Count;
-        var articulatedKr = attempt.GetArticulatedRelationIds().Count;
-        var totalKr = task.KeyRelations.Count;
+        var coveredKp = attempt.GetCoveredPropositionKeys().Count;
+        var totalKp = record.KeyPropositions.Count;
+        var articulatedKr = attempt.GetArticulatedRelationKeys().Count;
+        var totalKr = record.KeyRelations.Count;
 
         return totalKr > 0
             ? $"Dosadašnji napredak: pokriveno {coveredKp}/{totalKp} ključnih izjava i {articulatedKr}/{totalKr} ključnih veza."
             : $"Dosadašnji napredak: pokriveno {coveredKp}/{totalKp} ključnih izjava.";
+    }
+
+    private static TargetDirective? ResolveTarget(ConceptRecord record, ProbeDirective? directive)
+    {
+        if (directive == null) return null;
+        var statement = ResolveTargetStatement(record, directive);
+        return new TargetDirective(directive.TargetType, directive.TargetKey, directive.Level, statement);
+    }
+
+    private static string ResolveTargetStatement(ConceptRecord record, ProbeDirective directive)
+    {
+        if (directive.TargetType == ProbeTargetType.KeyProposition)
+        {
+            var kp = record.KeyPropositions.FirstOrDefault(p => p.Key == directive.TargetKey);
+            return kp?.Statement ?? "(unknown)";
+        }
+        var kr = record.KeyRelations.FirstOrDefault(r => r.Key == directive.TargetKey);
+        if (kr == null) return "(unknown)";
+        var kpByKey = record.KeyPropositions.ToDictionary(p => p.Key, p => p.Statement);
+        var source = kpByKey.GetValueOrDefault(kr.SourceKey, "?");
+        var target = kpByKey.GetValueOrDefault(kr.TargetKey, "?");
+        return $"{source} → {target}. Mechanism: {kr.Mechanism}";
     }
 
     private enum RouteKind { Probe, Scaffold, Critique, Clarification, Redirect, MetaHelp, Closing }
@@ -257,9 +373,9 @@ public class AgentOrchestratorService : IAgentOrchestratorService
         public static RouteDecision CritiqueFor(TurnEvaluation e) => new(RouteKind.Critique, Evaluation: e);
         public static RouteDecision Clarify(ProbeDirective? last) => new(RouteKind.Clarification, LastProbe: last);
         public static RouteDecision Redirect() => new(RouteKind.Redirect);
-        public static RouteDecision Meta(string progressLine, (ProbeTargetType Type, int Id)? next)
+        public static RouteDecision Meta(string progressLine, (ProbeTargetType Type, string Key)? next)
         {
-            var nextDirective = next == null ? null : new ProbeDirective(next.Value.Type, next.Value.Id, 1);
+            var nextDirective = next == null ? null : new ProbeDirective(next.Value.Type, next.Value.Key, 1);
             return new RouteDecision(RouteKind.MetaHelp, ProgressLine: progressLine, NextTarget: nextDirective);
         }
         public static RouteDecision Close(ClosingReason reason) => new(RouteKind.Closing, Closing: reason);

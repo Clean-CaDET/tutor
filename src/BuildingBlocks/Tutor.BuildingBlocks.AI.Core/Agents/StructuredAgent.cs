@@ -32,12 +32,11 @@ public abstract class StructuredAgent
     /// Runs the request, deserializes the response as <typeparamref name="TResponse"/>, and maps/validates it
     /// through <paramref name="validateAndMap"/>. Retries on LLM failure, malformed JSON, or a failed validation Result.
     /// </summary>
-    protected async Task<Result<TResult>> CompleteJsonAsync<TResponse, TResult>(string systemPrompt, string userMessage,
-        int maxTokens, double temperature, Func<TResponse, Result<TResult>> validateAndMap,
+    protected async Task<Result<TResult>> CompleteJsonAsync<TResponse, TResult>(
+        CompletionRequest request, string agentLabel,
+        Func<TResponse, Result<TResult>> validateAndMap,
         string failureMessage, CancellationToken ct) where TResponse : class
     {
-        var request = CompletionRequest.SingleMessage(userMessage, systemPrompt, maxTokens, temperature);
-
         var sw = Stopwatch.StartNew();
         var promptTokens = 0;
         var completionTokens = 0;
@@ -66,12 +65,12 @@ public abstract class StructuredAgent
                 {
                     _logger.LogWarning(
                         "{Agent} skipping retry due to deterministic finish reason '{FinishReason}'.",
-                        GetType().Name, completion.Value.FinishReason);
+                        agentLabel, completion.Value.FinishReason);
                     failureCategory = "permanent";
                     break;
                 }
 
-                var parsed = TryDeserialize<TResponse>(completion.Value.Content);
+                var parsed = TryDeserialize<TResponse>(completion.Value.Content, agentLabel);
                 if (parsed is null)
                 {
                     failureCategory = "parse";
@@ -98,7 +97,7 @@ public abstract class StructuredAgent
                 "Agent={Agent} Status={Status} DurationMs={DurationMs} PromptTokens={PromptTokens} " +
                 "CompletionTokens={CompletionTokens} ResponseChars={ResponseChars} Attempts={Attempts} " +
                 "FailureCategory={FailureCategory}",
-                GetType().Name, status, sw.ElapsedMilliseconds,
+                agentLabel, status, sw.ElapsedMilliseconds,
                 promptTokens, completionTokens, charCount, attempts, failureCategory);
         }
     }
@@ -108,7 +107,7 @@ public abstract class StructuredAgent
      || string.Equals(finishReason, "max_tokens", StringComparison.OrdinalIgnoreCase)
      || string.Equals(finishReason, "content_filter", StringComparison.OrdinalIgnoreCase);
 
-    private TResponse? TryDeserialize<TResponse>(string json) where TResponse : class
+    private TResponse? TryDeserialize<TResponse>(string json, string agentLabel) where TResponse : class
     {
         try
         {
@@ -116,7 +115,7 @@ public abstract class StructuredAgent
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "{Agent} failed to parse LLM response.", GetType().Name);
+            _logger.LogWarning(ex, "{Agent} failed to parse LLM response.", agentLabel);
             return null;
         }
     }

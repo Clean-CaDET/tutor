@@ -8,53 +8,75 @@ using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 
 namespace Tutor.Elaborations.Core.UseCases.Authoring;
 
-public class ConceptElaborationTaskService :
-    CrudService<ConceptElaborationTaskDto, ConceptElaborationTask>, IConceptElaborationTaskService
+public class ConceptElaborationTaskService : IConceptElaborationTaskService
 {
     private readonly IConceptElaborationTaskRepository _taskRepository;
     private readonly IAccessServices _accessServices;
+    private readonly IElaborationsUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
-    public ConceptElaborationTaskService(IConceptElaborationTaskRepository repository,
-        IAccessServices accessServices, IElaborationsUnitOfWork unitOfWork,
-        IMapper mapper) : base(repository, unitOfWork, mapper)
+    public ConceptElaborationTaskService(
+        IConceptElaborationTaskRepository taskRepository, IAccessServices accessServices,
+        IElaborationsUnitOfWork unitOfWork, IMapper mapper)
     {
-        _taskRepository = repository;
+        _taskRepository = taskRepository;
         _accessServices = accessServices;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
     public Result<List<ConceptElaborationTaskDto>> GetByUnit(int unitId, int instructorId)
     {
         if (!_accessServices.IsUnitOwner(unitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
-        var tasks = _taskRepository.GetByUnit(unitId);
-        return MapToDto(tasks);
+
+        var tasks = _taskRepository.GetByUnitWithRecords(unitId);
+        return Result.Ok(tasks.Select(t => _mapper.Map<ConceptElaborationTaskDto>(t)).ToList());
     }
 
-    public Result<ConceptElaborationTaskDto> Create(ConceptElaborationTaskDto task, int instructorId)
+    public Result<ConceptElaborationTaskDto> Create(ConceptElaborationTaskDto dto, int instructorId)
     {
-        if (!_accessServices.IsUnitOwner(task.UnitId, instructorId))
+        if (!_accessServices.IsUnitOwner(dto.UnitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
-        return Create(task);
+
+        var task = _mapper.Map<ConceptElaborationTask>(dto);
+        task.UnitId = dto.UnitId;
+        var created = _taskRepository.Create(task);
+
+        var saveResult = _unitOfWork.Save();
+        if (saveResult.IsFailed) return saveResult;
+
+        return Result.Ok(_mapper.Map<ConceptElaborationTaskDto>(created));
     }
 
-    public Result<ConceptElaborationTaskDto> Update(ConceptElaborationTaskDto task, int instructorId)
+    public Result<ConceptElaborationTaskDto> Update(ConceptElaborationTaskDto dto, int instructorId)
     {
-        if (!_accessServices.IsUnitOwner(task.UnitId, instructorId))
+        if (!_accessServices.IsUnitOwner(dto.UnitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
-        var existing = _taskRepository.Get(task.Id);
-        if (existing == null || existing.UnitId != task.UnitId)
+
+        var existingTask = _taskRepository.GetWithRecord(dto.Id);
+        if (existingTask == null || existingTask.UnitId != dto.UnitId)
             return Result.Fail(FailureCode.NotFound);
-        existing.Update(MapToDomain(task));
-        return Update(existing);
+
+        existingTask.Update(_mapper.Map<ConceptElaborationTask>(dto));
+        _taskRepository.Update(existingTask);
+
+        var saveResult = _unitOfWork.Save();
+        if (saveResult.IsFailed) return saveResult;
+
+        return Result.Ok(_mapper.Map<ConceptElaborationTaskDto>(existingTask));
     }
 
     public Result Delete(int id, int unitId, int instructorId)
     {
         if (!_accessServices.IsUnitOwner(unitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
+
         var task = _taskRepository.Get(id);
         if (task == null || task.UnitId != unitId)
             return Result.Fail(FailureCode.NotFound);
-        return Delete(id);
+
+        _taskRepository.Delete(task);
+        return _unitOfWork.Save();
     }
 }

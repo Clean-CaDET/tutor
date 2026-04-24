@@ -11,9 +11,9 @@ public class TurnEvaluation : Entity
     public int? IntegrationScore { get; private set; }
     public string Justification { get; private set; } = string.Empty;
     public string? NovelMisconceptions { get; private set; }
-    public List<int> PropositionsCoveredIds { get; private set; } = new();
-    public List<int> MisconceptionsTriggeredIds { get; private set; } = new();
-    public List<int> RelationsArticulatedIds { get; private set; } = new();
+    public List<string> PropositionsCoveredKeys { get; private set; } = new();
+    public List<string> MisconceptionsTriggeredKeys { get; private set; } = new();
+    public List<string> RelationsArticulatedKeys { get; private set; } = new();
     public bool HasMultipleConcerns { get; private set; }
 
     private TurnEvaluation() { }
@@ -22,8 +22,8 @@ public class TurnEvaluation : Entity
         int correctnessScore, int completenessScore,
         int? discriminationScore, int? integrationScore,
         string justification, string? novelMisconceptions,
-        List<int> propositionsCoveredIds, List<int> misconceptionsTriggeredIds,
-        List<int> relationsArticulatedIds, bool hasMultipleConcerns)
+        List<string> propositionsCoveredKeys, List<string> misconceptionsTriggeredKeys,
+        List<string> relationsArticulatedKeys, bool hasMultipleConcerns)
     {
         CorrectnessScore = correctnessScore;
         CompletenessScore = completenessScore;
@@ -31,9 +31,9 @@ public class TurnEvaluation : Entity
         IntegrationScore = integrationScore;
         Justification = justification;
         NovelMisconceptions = novelMisconceptions;
-        PropositionsCoveredIds = propositionsCoveredIds;
-        MisconceptionsTriggeredIds = misconceptionsTriggeredIds;
-        RelationsArticulatedIds = relationsArticulatedIds;
+        PropositionsCoveredKeys = propositionsCoveredKeys;
+        MisconceptionsTriggeredKeys = misconceptionsTriggeredKeys;
+        RelationsArticulatedKeys = relationsArticulatedKeys;
         HasMultipleConcerns = hasMultipleConcerns;
     }
 }
