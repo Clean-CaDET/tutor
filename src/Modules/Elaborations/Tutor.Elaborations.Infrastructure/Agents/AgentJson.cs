@@ -21,10 +21,9 @@ public class AgentJson : StructuredAgent, IAgentJson
         _config = AgentConfigs.ByKind[kind];
     }
 
-    public Task<Result<TResult>> CompleteAsync<TResponse, TResult>(
-        IReadOnlyList<ConversationTurn> history, ConceptRecord record,
-        AgentTurnContext ctx, Func<TResponse, Result<TResult>> validateAndMap,
-        string failureMessage, CancellationToken ct) where TResponse : class
+    public Task<Result<TResponse>> CompleteAsync<TResponse>(
+        IReadOnlyList<ConversationTurn> history, ConceptRecord record, AgentTurnContext ctx,
+        CancellationToken ct) where TResponse : class
     {
         var messages = ConversationHistoryMapper.Map(history, _config.HistoryWindow);
         messages.Add(ChatMessage.FromUser(RuntimeContextBlock.Render(ctx)));
@@ -33,6 +32,6 @@ public class AgentJson : StructuredAgent, IAgentJson
             messages, _config.BuildSystemPrompt(record),
             maxTokens: _config.MaxTokens, temperature: _config.Temperature);
 
-        return CompleteJsonAsync(request, _kind.ToString(), validateAndMap, failureMessage, ct);
+        return CompleteJsonAsync<TResponse>(request, _kind.ToString(), ct);
     }
 }

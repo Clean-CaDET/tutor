@@ -6,10 +6,6 @@ using Tutor.BuildingBlocks.AI.Core.Conversations;
 
 namespace Tutor.BuildingBlocks.AI.Core.Agents;
 
-/// <summary>
-/// Base class for agents that consume a full (non-streamed) LLM completion, optionally parsing JSON into a typed result.
-/// Handles the retry loop, deserialization, and logging so derived agents only define their DTO and mapping rules.
-/// </summary>
 public abstract class StructuredAgent
 {
     private const int MaxAttempts = 2;
@@ -28,14 +24,8 @@ public abstract class StructuredAgent
         _logger = logger;
     }
 
-    /// <summary>
-    /// Runs the request, deserializes the response as <typeparamref name="TResponse"/>, and maps/validates it
-    /// through <paramref name="validateAndMap"/>. Retries on LLM failure, malformed JSON, or a failed validation Result.
-    /// </summary>
-    protected async Task<Result<TResult>> CompleteJsonAsync<TResponse, TResult>(
-        CompletionRequest request, string agentLabel,
-        Func<TResponse, Result<TResult>> validateAndMap,
-        string failureMessage, CancellationToken ct) where TResponse : class
+    protected async Task<Result<TResponse>> CompleteJsonAsync<TResponse>(
+        CompletionRequest request, string agentLabel, CancellationToken ct) where TResponse : class
     {
         var sw = Stopwatch.StartNew();
         var promptTokens = 0;
@@ -77,17 +67,12 @@ public abstract class StructuredAgent
                     continue;
                 }
 
-                var mapped = validateAndMap(parsed);
-                if (mapped.IsSuccess)
-                {
-                    status = "ok";
-                    failureCategory = null;
-                    return mapped;
-                }
-                failureCategory = "validation";
+                status = "ok";
+                failureCategory = null;
+                return parsed;
             }
 
-            return Result.Fail<TResult>(failureMessage);
+            return Result.Fail($"{agentLabel} failed.");
         }
         finally
         {

@@ -218,38 +218,33 @@ public class AgentOrchestrator : IAgentOrchestrator
     private static bool ShouldAppendSoftCapNudge(TurnIntent intent) =>
         intent is TurnIntent.Substantive or TurnIntent.Stuck or TurnIntent.SummaryRequest;
 
-    private Task<Result<TurnIntent>> ClassifyIntentAsync(ConceptRecord record, IReadOnlyList<ConversationTurn> history,
-        string newMessage, CancellationToken ct)
+    private async Task<Result<TurnIntent>> ClassifyIntentAsync(ConceptRecord record,
+        IReadOnlyList<ConversationTurn> history, string newMessage, CancellationToken ct)
     {
         var ctx = new AgentTurnContext(CurrentLearnerMessage: newMessage);
-        return _factory.CreateIntentClassifier().CompleteAsync<IntentResponse, TurnIntent>(
-            history, record, ctx,
-            r => Enum.TryParse<TurnIntent>(r.Intent, ignoreCase: true, out var intent)
-                ? Result.Ok(intent)
-                : Result.Fail<TurnIntent>("Unrecognized intent."),
-            "Intent classification failed.", ct);
+        var result = await _factory.CreateIntentClassifier().CompleteAsync<IntentResponse>(history, record, ctx, ct);
+        if (result.IsFailed) return Result.Fail<TurnIntent>(result.Errors);
+        return Enum.TryParse<TurnIntent>(result.Value.Intent, ignoreCase: true, out var intent)
+            ? intent
+            : Result.Fail("Unrecognized intent.");
     }
 
-    private Task<Result<TurnEvaluation>> ScoreTurnAsync(ConceptRecord record,
-        IReadOnlyList<ConversationTurn> history,
-        string newMessage, CancellationToken ct)
+    private async Task<Result<TurnEvaluation>> ScoreTurnAsync(ConceptRecord record,
+        IReadOnlyList<ConversationTurn> history, string newMessage, CancellationToken ct)
     {
         var ctx = new AgentTurnContext(CurrentLearnerMessage: newMessage);
-        return _factory.CreateTurnScorer().CompleteAsync<ScorerResponse, TurnEvaluation>(
-            history, record, ctx,
-            r => MapToEvaluation(r, record),
-            "Scoring failed.", ct);
+        var result = await _factory.CreateTurnScorer().CompleteAsync<ScorerResponse>(history, record, ctx, ct);
+        if (result.IsFailed) return Result.Fail(result.Errors);
+        return MapToEvaluation(result.Value, record);
     }
 
-    private Task<Result<TurnEvaluation>> ScoreClosingAsync(ConceptRecord record,
-        IReadOnlyList<ConversationTurn> history,
-        string newMessage, CancellationToken ct)
+    private async Task<Result<TurnEvaluation>> ScoreClosingAsync(ConceptRecord record,
+        IReadOnlyList<ConversationTurn> history, string newMessage, CancellationToken ct)
     {
         var ctx = new AgentTurnContext(CurrentLearnerMessage: newMessage);
-        return _factory.CreateClosingScorer().CompleteAsync<ScorerResponse, TurnEvaluation>(
-            history, record, ctx,
-            r => MapToEvaluation(r, record),
-            "Closing scoring failed.", ct);
+        var result = await _factory.CreateClosingScorer().CompleteAsync<ScorerResponse>(history, record, ctx, ct);
+        if (result.IsFailed) return Result.Fail(result.Errors);
+        return MapToEvaluation(result.Value, record);
     }
 
     private static Result<TurnEvaluation> MapToEvaluation(ScorerResponse parsed, ConceptRecord record)
@@ -271,8 +266,8 @@ public class AgentOrchestrator : IAgentOrchestrator
 
         return new TurnEvaluation(
             parsed.CorrectnessScore, parsed.CompletenessScore, parsed.IntegrationScore,
-            parsed.Justification ?? string.Empty, parsed.NovelMisconceptions, parsed.PropositionsCoveredKeys ?? new List<string>(),
-            parsed.MisconceptionsTriggeredKeys ?? new List<string>(), parsed.RelationsArticulatedKeys ?? new List<string>(),
+            parsed.Justification ?? string.Empty, parsed.NovelMisconceptions, parsed.PropositionsCoveredKeys ?? [],
+            parsed.MisconceptionsTriggeredKeys ?? [], parsed.RelationsArticulatedKeys ?? [],
             parsed.HasMultipleConcerns ?? false);
     }
 
