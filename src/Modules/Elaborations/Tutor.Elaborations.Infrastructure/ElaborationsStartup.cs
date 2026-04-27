@@ -14,9 +14,7 @@ using Tutor.Elaborations.Core.UseCases;
 using Tutor.Elaborations.Core.UseCases.Authoring;
 using Tutor.Elaborations.Core.UseCases.Learning;
 using Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
-using Tutor.Elaborations.Core.UseCases.Learning.Orchestration.Agents;
 using Tutor.Elaborations.Core.UseCases.Monitoring;
-using Tutor.Elaborations.Infrastructure.Agents;
 using Tutor.Elaborations.Infrastructure.Database;
 using Tutor.Elaborations.Infrastructure.Database.Repositories;
 
@@ -51,7 +49,6 @@ public static class ElaborationsStartup
         services.AddScoped<IConversationAttemptRepository, ConversationAttemptDatabaseRepository>();
 
         services.AddScoped<IAgentOrchestrator, AgentOrchestrator>();
-        services.AddScoped<IAgentFactory, AgentFactory>();
 
         services.AddScoped<IElaborationsUnitOfWork, ElaborationsUnitOfWork>();
 

@@ -84,8 +84,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
         var metadata = JsonSerializer.Deserialize<SubmitTurnResponseDto>(tokens.Last());
         metadata.ShouldNotBeNull();
         metadata.Status.ShouldBe("Completed");
-        metadata.Summary.ShouldStartWith("Ocena:");
-        metadata.Summary.ShouldEndWith("/10.");
+        metadata.Summary.ShouldBe("6 / 10");
     }
 
     [Fact]

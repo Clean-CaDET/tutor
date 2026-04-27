@@ -6,23 +6,22 @@ using Tutor.BuildingBlocks.AI.Core.Agents;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
 using Tutor.Elaborations.Core.Domain.ConceptRecords;
 using Tutor.Elaborations.Core.Domain.Conversations;
-using Tutor.Elaborations.Core.UseCases.Learning.Orchestration.Agents;
 using Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 using Tutor.Elaborations.Core.UseCases.Learning.Prompts.Agents;
 
 namespace Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 
-public class AgentOrchestrator : IAgentOrchestrator
+public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
 {
     private const int MaxNonSubstantiveClosingTurns = 3;
 
-    private readonly IAgentFactory _factory;
     private readonly ITurnUsageTracker _usageTracker;
     private readonly ILogger<AgentOrchestrator> _logger;
 
-    public AgentOrchestrator(IAgentFactory factory, ITurnUsageTracker usageTracker, ILogger<AgentOrchestrator> logger)
+    public AgentOrchestrator(IAiChatService chatService, ITurnUsageTracker usageTracker,
+        ILogger<AgentOrchestrator> logger)
+        : base(chatService, usageTracker, logger)
     {
-        _factory = factory;
         _usageTracker = usageTracker;
         _logger = logger;
     }
@@ -84,8 +83,9 @@ public class AgentOrchestrator : IAgentOrchestrator
         }
         else if (route is RouteResult.Stream streamRoute)
         {
+            var request = BuildRequest(streamRoute.Kind, attempt.Turns, record, streamRoute.Ctx);
             StreamFailure? streamFailure = null;
-            await foreach (var chunk in streamRoute.Agent.StreamAsync(attempt.Turns, record, streamRoute.Ctx, ct))
+            await foreach (var chunk in StreamAsync(request, streamRoute.Kind.ToString(), ct))
             {
                 if (chunk is StreamFailure failure) { streamFailure = failure; break; }
                 var content = ((StreamToken)chunk).Content;
@@ -152,7 +152,7 @@ public class AgentOrchestrator : IAgentOrchestrator
         yield return CreateFinalChunk();
     }
 
-    private RouteResult Route(ConceptRecord record, ConversationAttempt attempt,
+    private static RouteResult Route(ConceptRecord record, ConversationAttempt attempt,
         TurnIntent intent, TurnEvaluation? evaluation)
     {
         if (record.IsAttemptComplete(attempt) || attempt.IsHardCapReached())
@@ -163,14 +163,14 @@ public class AgentOrchestrator : IAgentOrchestrator
             case TurnIntent.Substantive:
             {
                 if (evaluation is { HasMultipleConcerns: true })
-                    return new RouteResult.Stream(_factory.CreateCritique(),
+                    return new RouteResult.Stream(AgentKind.Critique,
                         new AgentTurnContext(Evaluation: evaluation),
                         ProbeDirective: null);
                 var next = record.PickNextTarget(attempt, attempt.GetStalledTargets());
                 if (next == null) return new RouteResult.Transition();
                 var ladderLevel = attempt.GetProbeLevelFor(next);
-                var agent = attempt.IsScaffolding(ladderLevel) ? _factory.CreateScaffolding() : _factory.CreateProbe();
-                return new RouteResult.Stream(agent, new AgentTurnContext(Target: next, Level: ladderLevel), new ProbeDirective(next, ladderLevel));
+                var kind = attempt.IsScaffolding(ladderLevel) ? AgentKind.Scaffolding : AgentKind.Probe;
+                return new RouteResult.Stream(kind, new AgentTurnContext(Target: next, Level: ladderLevel), new ProbeDirective(next, ladderLevel));
             }
 
             case TurnIntent.Stuck:
@@ -183,13 +183,13 @@ public class AgentOrchestrator : IAgentOrchestrator
                     if (stuckTarget == null) return new RouteResult.Transition();
                     var first = attempt.FirstScaffoldLadderLevel;
                     return new RouteResult.Stream(
-                        _factory.CreateScaffolding(),
+                        AgentKind.Scaffolding,
                         new AgentTurnContext(Target: stuckTarget, Level: first),
                         new ProbeDirective(stuckTarget, first));
                 }
                 var ladderLevel = attempt.GetProbeLevelFor(stuckTarget);
                 return new RouteResult.Stream(
-                    _factory.CreateScaffolding(),
+                    AgentKind.Scaffolding,
                     new AgentTurnContext(Target: stuckTarget, Level: ladderLevel),
                     new ProbeDirective(stuckTarget, ladderLevel));
             }
@@ -198,16 +198,13 @@ public class AgentOrchestrator : IAgentOrchestrator
             {
                 var last = attempt.GetLastProbe();
                 return new RouteResult.Stream(
-                    _factory.CreateClarification(),
+                    AgentKind.Clarification,
                     new AgentTurnContext(Target: last?.Target),
                     ProbeDirective: null);
             }
 
             case TurnIntent.SummaryRequest:
-                return new RouteResult.Stream(
-                    _factory.CreateSummary(),
-                    new AgentTurnContext(),
-                    ProbeDirective: null);
+                return new RouteResult.Stream(AgentKind.Summary, new AgentTurnContext(), ProbeDirective: null);
 
             case TurnIntent.OffTopic:
             default:
@@ -218,11 +215,22 @@ public class AgentOrchestrator : IAgentOrchestrator
     private static bool ShouldAppendSoftCapNudge(TurnIntent intent) =>
         intent is TurnIntent.Substantive or TurnIntent.Stuck or TurnIntent.SummaryRequest;
 
+    private CompletionRequest BuildRequest(AgentKind kind,
+        IReadOnlyList<ConversationTurn> history, ConceptRecord record, AgentTurnContext ctx)
+    {
+        var config = AgentConfigs.ByKind[kind];
+        var messages = ConversationHistoryMapper.Map(history, config.HistoryWindow);
+        messages.Add(ChatMessage.FromUser(RuntimeContextBlock.Render(ctx)));
+        return CompletionRequest.Create(messages, config.BuildSystemPrompt(record),
+            maxTokens: config.MaxTokens, temperature: config.Temperature);
+    }
+
     private async Task<Result<TurnIntent>> ClassifyIntentAsync(ConceptRecord record,
         IReadOnlyList<ConversationTurn> history, string newMessage, CancellationToken ct)
     {
         var ctx = new AgentTurnContext(CurrentLearnerMessage: newMessage);
-        var result = await _factory.CreateIntentClassifier().CompleteAsync<IntentResponse>(history, record, ctx, ct);
+        var result = await CompleteJsonAsync<IntentResponse>(
+            BuildRequest(AgentKind.IntentClassifier, history, record, ctx), nameof(AgentKind.IntentClassifier), ct);
         if (result.IsFailed) return Result.Fail<TurnIntent>(result.Errors);
         return Enum.TryParse<TurnIntent>(result.Value.Intent, ignoreCase: true, out var intent)
             ? intent
@@ -233,48 +241,25 @@ public class AgentOrchestrator : IAgentOrchestrator
         IReadOnlyList<ConversationTurn> history, string newMessage, CancellationToken ct)
     {
         var ctx = new AgentTurnContext(CurrentLearnerMessage: newMessage);
-        var result = await _factory.CreateTurnScorer().CompleteAsync<ScorerResponse>(history, record, ctx, ct);
+        var result = await CompleteJsonAsync<ScorerResponse>(
+            BuildRequest(AgentKind.TurnScorer, history, record, ctx), nameof(AgentKind.TurnScorer), ct);
         if (result.IsFailed) return Result.Fail(result.Errors);
-        return MapToEvaluation(result.Value, record);
+        return result.Value.ToEvaluation(record);
     }
 
     private async Task<Result<TurnEvaluation>> ScoreClosingAsync(ConceptRecord record,
         IReadOnlyList<ConversationTurn> history, string newMessage, CancellationToken ct)
     {
         var ctx = new AgentTurnContext(CurrentLearnerMessage: newMessage);
-        var result = await _factory.CreateClosingScorer().CompleteAsync<ScorerResponse>(history, record, ctx, ct);
+        var result = await CompleteJsonAsync<ScorerResponse>(
+            BuildRequest(AgentKind.ClosingScorer, history, record, ctx), nameof(AgentKind.ClosingScorer), ct);
         if (result.IsFailed) return Result.Fail(result.Errors);
-        return MapToEvaluation(result.Value, record);
-    }
-
-    private static Result<TurnEvaluation> MapToEvaluation(ScorerResponse parsed, ConceptRecord record)
-    {
-        if (parsed.CorrectnessScore is < 0 or > 5) return Result.Fail("Correctness out of range.");
-        if (parsed.CompletenessScore is < 0 or > 5) return Result.Fail("Completeness out of range.");
-        if (parsed.IntegrationScore is not null and (< 0 or > 5)) return Result.Fail("Integration out of range.");
-
-        var validKpKeys = record.KeyPropositions.Select(kp => kp.Key).ToHashSet();
-        var validKrKeys = record.KeyRelations.Select(kr => kr.Key).ToHashSet();
-        var validCmKeys = record.CommonMisconceptions.Select(cm => cm.Key).ToHashSet();
-
-        if (parsed.PropositionsCoveredKeys?.Any(k => !validKpKeys.Contains(k)) == true)
-            return Result.Fail("Unknown proposition key.");
-        if (parsed.RelationsArticulatedKeys?.Any(k => !validKrKeys.Contains(k)) == true)
-            return Result.Fail("Unknown relation key.");
-        if (parsed.MisconceptionsTriggeredKeys?.Any(k => !validCmKeys.Contains(k)) == true)
-            return Result.Fail("Unknown misconception key.");
-
-        return new TurnEvaluation(
-            parsed.CorrectnessScore, parsed.CompletenessScore, parsed.IntegrationScore,
-            parsed.Justification ?? string.Empty, parsed.NovelMisconceptions, parsed.PropositionsCoveredKeys ?? [],
-            parsed.MisconceptionsTriggeredKeys ?? [], parsed.RelationsArticulatedKeys ?? [],
-            parsed.HasMultipleConcerns ?? false);
+        return result.Value.ToEvaluation(record);
     }
 
     private abstract record RouteResult
     {
-        public sealed record Stream(
-            IAgentStream Agent, AgentTurnContext Ctx, ProbeDirective? ProbeDirective) : RouteResult;
+        public sealed record Stream(AgentKind Kind, AgentTurnContext Ctx, ProbeDirective? ProbeDirective) : RouteResult;
         public sealed record OffTopic : RouteResult;
         public sealed record Transition : RouteResult;
     }

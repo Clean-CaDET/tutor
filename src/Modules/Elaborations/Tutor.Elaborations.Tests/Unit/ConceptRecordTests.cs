@@ -61,24 +61,7 @@ public class ConceptRecordTests
             2, 2, null,
             "test", null, coveredKpKeys,
             new List<string>(), articulatedRelationKeys, false);
-
-        var turnCtor = typeof(ConversationTurn).GetConstructors(
-                BindingFlags.NonPublic | BindingFlags.Instance)
-            .First(c => c.GetParameters().Length > 0);
-        var turn = (ConversationTurn)turnCtor.Invoke([
-            TurnRole.Learner, "x", 0, (TurnIntent?)TurnIntent.Substantive, evaluation, null!
-        ]);
-
-        SetProp(attempt, "Turns", new List<ConversationTurn> { turn });
+        attempt.AddLearnerTurn("x", TurnIntent.Substantive, evaluation);
         return attempt;
-    }
-
-    private static void SetProp(object instance, string propName, object? value)
-    {
-        var prop = instance.GetType().GetProperty(propName,
-            BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-        if (prop == null)
-            throw new InvalidOperationException($"Property {propName} not found on {instance.GetType().Name}");
-        prop.SetValue(instance, value);
     }
 }
