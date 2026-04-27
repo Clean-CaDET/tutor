@@ -26,7 +26,7 @@ public static class ClarificationPrompt
 
         sb.AppendLine("# Runtime Context Format");
         sb.AppendLine("Chat history shows the conversation so far. The last user message is the learner's clarification request.");
-        sb.AppendLine("The final user message contains: optional <target …>…</target> (what the TUTOR was probing — INTERNAL reference only), <instruction>…</instruction>.");
+        sb.AppendLine("The final user message contains: optional <target …>…</target> (what the TUTOR was probing — INTERNAL reference only).");
 
         return sb.ToString();
     }

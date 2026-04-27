@@ -32,10 +32,6 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
                     new() { Key = "P1", Statement = "First proposition" },
                     new() { Key = "P2", Statement = "Second proposition" }
                 },
-                BoundaryConditions = new List<BoundaryConditionDto>
-                {
-                    new() { Key = "B1", Statement = "A boundary condition" }
-                },
                 CommonMisconceptions = new List<CommonMisconceptionDto>
                 {
                     new() { Key = "M1", Description = "A misconception", Correction = "The correction" }
@@ -54,7 +50,6 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
         result.UnitId.ShouldBe(-1);
         result.Order.ShouldBe(10);
         result.ConceptRecord.KeyPropositions.Count.ShouldBe(2);
-        result.ConceptRecord.BoundaryConditions.Count.ShouldBe(1);
         result.ConceptRecord.CommonMisconceptions.Count.ShouldBe(1);
         result.ConceptRecord.KeyRelations.Count.ShouldBe(0);
     }
@@ -78,7 +73,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
                     new() { Key = "P1", Statement = "First proposition" },
                     new() { Key = "P2", Statement = "Second proposition" }
                 },
-                BoundaryConditions = new List<BoundaryConditionDto>(),
+
                 CommonMisconceptions = new List<CommonMisconceptionDto>(),
                 KeyRelations = new List<KeyRelationDto>
                 {
@@ -123,7 +118,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
                 {
                     new() { Key = "P1", Statement = "Updated proposition" }
                 },
-                BoundaryConditions = new List<BoundaryConditionDto>(),
+
                 CommonMisconceptions = new List<CommonMisconceptionDto>(),
                 KeyRelations = new List<KeyRelationDto>()
             }
@@ -163,7 +158,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
                     new() { Key = "P2", Statement = "The runtime selects the implementation by the actual type" },
                     new() { Key = "P3", Statement = "Dispatch table resolves virtual calls" }
                 },
-                BoundaryConditions = new List<BoundaryConditionDto>(),
+
                 CommonMisconceptions = new List<CommonMisconceptionDto>(),
                 KeyRelations = new List<KeyRelationDto>
                 {
@@ -213,7 +208,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
                 {
                     new() { Key = "P1", Statement = "A subclass can override a parent method" }
                 },
-                BoundaryConditions = new List<BoundaryConditionDto>(),
+
                 CommonMisconceptions = new List<CommonMisconceptionDto>(),
                 KeyRelations = new List<KeyRelationDto>()
             }
@@ -275,7 +270,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
             {
                 CanonicalDefinition = "Fail",
                 KeyPropositions = new List<KeyPropositionDto>(),
-                BoundaryConditions = new List<BoundaryConditionDto>(),
+
                 CommonMisconceptions = new List<CommonMisconceptionDto>(),
                 KeyRelations = new List<KeyRelationDto>()
             }
@@ -303,7 +298,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
             {
                 CanonicalDefinition = "Fail",
                 KeyPropositions = new List<KeyPropositionDto>(),
-                BoundaryConditions = new List<BoundaryConditionDto>(),
+
                 CommonMisconceptions = new List<CommonMisconceptionDto>(),
                 KeyRelations = new List<KeyRelationDto>()
             }

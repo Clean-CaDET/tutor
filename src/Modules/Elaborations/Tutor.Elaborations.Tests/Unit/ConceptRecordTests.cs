@@ -46,7 +46,6 @@ public class ConceptRecordTests
             conceptElaborationTaskId: 0,
             canonicalDefinition: "def",
             keyPropositions: kps,
-            boundaryConditions: new List<BoundaryCondition>(),
             commonMisconceptions: new List<CommonMisconception>(),
             keyRelations: relations);
     }
@@ -59,8 +58,9 @@ public class ConceptRecordTests
         var attempt = (ConversationAttempt)ctor.Invoke(null);
 
         var evaluation = new TurnEvaluation(
-            2, 2, null, null, "test", null,
-            coveredKpKeys, new List<string>(), articulatedRelationKeys, false);
+            2, 2, null,
+            "test", null, coveredKpKeys,
+            new List<string>(), articulatedRelationKeys, false);
 
         var turnCtor = typeof(ConversationTurn).GetConstructors(
                 BindingFlags.NonPublic | BindingFlags.Instance)

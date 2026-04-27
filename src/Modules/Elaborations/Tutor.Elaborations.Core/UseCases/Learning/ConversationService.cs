@@ -122,7 +122,8 @@ public class ConversationService : IConversationService
         var attempt = _attemptRepo.Get(attemptId);
         if (attempt == null) { yield return BuildErrorChunk("Attempt not found.", 404); yield break; }
         if (attempt.LearnerId != learnerId) { yield return BuildErrorChunk("Access denied.", 403); yield break; }
-        if (attempt.Status != AttemptStatus.InProgress) { yield return BuildErrorChunk("Conversation is no longer active.", 409); yield break; }
+        if (attempt.Status is not (AttemptStatus.InProgress or AttemptStatus.InClosing))
+        { yield return BuildErrorChunk("Conversation is no longer active.", 409); yield break; }
 
         var task = _taskRepo.GetWithRecord(attempt.ConceptElaborationTaskId);
         if (task == null) { yield return BuildErrorChunk("Task not found.", 404); yield break; }
@@ -150,7 +151,8 @@ public class ConversationService : IConversationService
         var attempt = _attemptRepo.Get(attemptId);
         if (attempt == null) return Result.Fail(FailureCode.NotFound);
         if (attempt.LearnerId != learnerId) return Result.Fail(FailureCode.Forbidden);
-        if (attempt.Status != AttemptStatus.InProgress) return Result.Fail(FailureCode.Conflict);
+        if (attempt.Status is not (AttemptStatus.InProgress or AttemptStatus.InClosing))
+            return Result.Fail(FailureCode.Conflict);
 
         attempt.Abandon();
         _attemptRepo.Update(attempt);
@@ -164,7 +166,7 @@ public class ConversationService : IConversationService
     {
         if (task.ConceptRecord == null) { yield return BuildErrorChunk("Concept record missing.", 500); yield break; }
 
-        await foreach (var chunk in _orchestrator.ProcessTurnAsync(attempt, task.ConceptRecord, content, ct))
+        await foreach (var chunk in _orchestrator.ProcessTurnAsync(task.ConceptRecord, attempt, content, ct))
         {
             switch (chunk)
             {

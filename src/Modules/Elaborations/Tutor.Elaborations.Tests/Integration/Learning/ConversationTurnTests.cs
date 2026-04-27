@@ -60,33 +60,40 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     }
 
     [Fact]
-    public async Task All_propositions_covered_completes()
+    public async Task Closing_turn_substantive_completes_with_grade()
     {
+        // First cover all KPs to move to InClosing, then submit the closing turn.
         Factory.MockChatService.Reset();
         Factory.SetupEvaluationMock(["P1", "P2"]);
         Factory.SetupDialogueMock();
-        Factory.SetupSummaryMock("Completed conversation summary.");
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-3");
-        var dto = new SubmitTurnRequestDto { Content = "Access modifiers control visibility of members." };
 
-        var tokens = await CollectStreamAsync(controller.SubmitTurn(-4, dto, CancellationToken.None));
+        var first = new SubmitTurnRequestDto { Content = "Covers both KPs." };
+        var firstTokens = await CollectStreamAsync(controller.SubmitTurn(-4, first, CancellationToken.None));
+        var firstMeta = JsonSerializer.Deserialize<SubmitTurnResponseDto>(firstTokens.Last());
+        firstMeta.ShouldNotBeNull();
+        firstMeta.Status.ShouldBe("InClosing");
+
+        // Now submit the final articulation — ClosingScorer grades it.
+        Factory.MockChatService.Reset();
+        Factory.SetupEvaluationMock(propositionsCoveredKeys: ["P1", "P2"]);
+        var final = new SubmitTurnRequestDto { Content = "Final consolidated answer." };
+        var tokens = await CollectStreamAsync(controller.SubmitTurn(-4, final, CancellationToken.None));
 
         var metadata = JsonSerializer.Deserialize<SubmitTurnResponseDto>(tokens.Last());
         metadata.ShouldNotBeNull();
         metadata.Status.ShouldBe("Completed");
-        metadata.Summary.ShouldNotBeNullOrEmpty();
-        Factory.MockChatService.Verify(x => x.StreamAsync(
-            It.Is<CompletionRequest>(r => r.MaxTokens == 256), It.IsAny<CancellationToken>()), Times.Once);
+        metadata.Summary.ShouldStartWith("Ocena:");
+        metadata.Summary.ShouldEndWith("/10.");
     }
 
     [Fact]
-    public async Task Hard_cap_reached_expires()
+    public async Task Hard_cap_reached_transitions_to_closing()
     {
         Factory.MockChatService.Reset();
         Factory.SetupEvaluationMock(propositionsCoveredKeys: []);
         Factory.SetupDialogueMock();
-        Factory.SetupSummaryMock("Expired due to hard cap.");
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
         var dto = new SubmitTurnRequestDto { Content = "Final turn attempt." };
@@ -95,8 +102,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
 
         var metadata = JsonSerializer.Deserialize<SubmitTurnResponseDto>(tokens.Last());
         metadata.ShouldNotBeNull();
-        metadata.Status.ShouldBe("Expired");
-        metadata.Summary.ShouldNotBeNullOrEmpty();
+        metadata.Status.ShouldBe("InClosing");
     }
 
     [Fact]
@@ -283,7 +289,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     }
 
     [Fact]
-    public async Task Concept_with_relations_completes_when_relations_articulated()
+    public async Task Concept_with_relations_transitions_to_closing_when_relations_articulated()
     {
         // CET -7 (KPs P1, P2 + KR R1). Strict completion: covering both KPs is not enough.
         Factory.MockChatService.Reset();
@@ -292,7 +298,6 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
             relationsArticulatedKeys: ["R1"],
             integrationScore: 3);
         Factory.SetupDialogueMock();
-        Factory.SetupSummaryMock("Polymorphism mechanics summary.");
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-3");
         var dto = new SubmitTurnRequestDto
@@ -304,8 +309,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
 
         var metadata = JsonSerializer.Deserialize<SubmitTurnResponseDto>(tokens.Last());
         metadata.ShouldNotBeNull();
-        metadata.Status.ShouldBe("Completed");
-        metadata.Summary.ShouldNotBeNullOrEmpty();
+        metadata.Status.ShouldBe("InClosing");
     }
 
     [Fact]

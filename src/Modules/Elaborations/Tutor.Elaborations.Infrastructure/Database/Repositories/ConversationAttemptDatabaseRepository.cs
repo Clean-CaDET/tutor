@@ -24,7 +24,7 @@ public class ConversationAttemptDatabaseRepository :
                 .ThenInclude(t => t.Evaluation)
             .FirstOrDefault(ca => ca.ConceptElaborationTaskId == conceptElaborationTaskId
                 && ca.LearnerId == learnerId
-                && ca.Status == AttemptStatus.InProgress);
+                && (ca.Status == AttemptStatus.InProgress || ca.Status == AttemptStatus.InClosing));
     }
 
     public List<ConversationAttempt> GetByTaskAndLearner(int conceptElaborationTaskId, int learnerId)

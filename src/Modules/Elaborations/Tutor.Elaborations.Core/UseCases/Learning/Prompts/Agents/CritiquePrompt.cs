@@ -22,12 +22,11 @@ public static class CritiquePrompt
         sb.AppendLine("- Close the bullets with a brief invitation to address them. Do not ask a new Socratic question — the learner must consolidate first.");
         sb.AppendLine("- Silence on an error reads as agreement, so surface every in-turn concern.");
         sb.AppendLine("- Concise language. Respect cognitive load.");
-        sb.AppendLine("- If <soft-cap/> is present in the runtime context, signal that you'll wrap up once these are addressed.");
         sb.AppendLine();
 
         sb.AppendLine("# Runtime Context Format");
         sb.AppendLine("Chat history shows the conversation so far (user=learner, assistant=tutor). The latest learner turn is the last user message.");
-        sb.AppendLine("The final user message may contain: <evaluation …>…</evaluation> (scores + triggered misconceptions for the latest turn), <soft-cap/>, <instruction>…</instruction>.");
+        sb.AppendLine("The final user message may contain: <evaluation …>…</evaluation> (scores + triggered misconceptions for the latest turn).");
 
         return sb.ToString();
     }

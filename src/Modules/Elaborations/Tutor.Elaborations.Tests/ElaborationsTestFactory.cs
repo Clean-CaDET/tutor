@@ -51,15 +51,14 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
     }
 
     public void SetupEvaluationMock(List<string>? propositionsCoveredKeys = null,
-        List<string>? relationsArticulatedKeys = null,
-        int? discriminationScore = 2, int? integrationScore = null,
+        List<string>? relationsArticulatedKeys = null, int? integrationScore = null,
         string intent = "Substantive")
     {
         SetupIntentMock(intent);
 
         if (intent != "Substantive") return;
 
-        var scorerJson = BuildSubstantiveEvalJson(propositionsCoveredKeys, relationsArticulatedKeys, discriminationScore, integrationScore);
+        var scorerJson = BuildSubstantiveEvalJson(propositionsCoveredKeys, relationsArticulatedKeys, integrationScore);
         MockChatService.Setup(x => x.CompleteAsync(
                 It.Is<CompletionRequest>(r => r.MaxTokens == 1024), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result.Ok(new CompletionResponse
@@ -81,7 +80,7 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
     }
 
     private static string BuildSubstantiveEvalJson(List<string>? propositionsCoveredKeys,
-        List<string>? relationsArticulatedKeys, int? discriminationScore, int? integrationScore)
+        List<string>? relationsArticulatedKeys, int? integrationScore)
     {
         var coveredKeys = propositionsCoveredKeys != null && propositionsCoveredKeys.Count > 0
             ? string.Join(",", propositionsCoveredKeys.Select(k => $"\"{k}\""))
@@ -89,15 +88,13 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
         var articulatedKeys = relationsArticulatedKeys != null && relationsArticulatedKeys.Count > 0
             ? string.Join(",", relationsArticulatedKeys.Select(k => $"\"{k}\""))
             : "";
-        var discriminationJson = discriminationScore.HasValue ? discriminationScore.Value.ToString() : "null";
         var integrationJson = integrationScore.HasValue ? integrationScore.Value.ToString() : "null";
 
         return $$"""
             {
                 "intent": "Substantive",
-                "correctnessScore": 2,
-                "completenessScore": 2,
-                "discriminationScore": {{discriminationJson}},
+                "correctnessScore": 3,
+                "completenessScore": 3,
                 "integrationScore": {{integrationJson}},
                 "justification": "Good explanation of the concept.",
                 "propositionsCoveredKeys": [{{coveredKeys}}],

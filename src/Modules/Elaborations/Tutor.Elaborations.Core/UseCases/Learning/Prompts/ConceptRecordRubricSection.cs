@@ -26,14 +26,6 @@ public static class ConceptRecordRubricSection
             sb.AppendLine($"- [{kp.Key}] {kp.Statement}");
         sb.AppendLine();
 
-        if (record.BoundaryConditions.Count > 0)
-        {
-            sb.AppendLine("## Boundary Conditions");
-            foreach (var bc in record.BoundaryConditions)
-                sb.AppendLine($"- [{bc.Key}] {bc.Statement}");
-            sb.AppendLine();
-        }
-
         if (record.CommonMisconceptions.Count > 0)
         {
             sb.AppendLine("## Common Misconceptions");

@@ -3,11 +3,10 @@ using Tutor.Elaborations.Core.Domain.ConceptRecords;
 
 namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts.Agents;
 
-public static class ScorerPrompt
+public static class TurnScorerPrompt
 {
     public static string Build(ConceptRecord record)
     {
-        var hasBoundaryConditions = record.BoundaryConditions.Count != 0;
         var hasCommonMisconceptions = record.CommonMisconceptions.Count != 0;
         var hasKeyRelations = record.KeyRelations.Count != 0;
 
@@ -24,21 +23,17 @@ public static class ScorerPrompt
         sb.AppendLine();
 
         sb.AppendLine("# Rubric");
-        sb.AppendLine(hasBoundaryConditions
-            ? "- Correctness (1-3): Are stated claims true? Check against KPs and BCs."
-            : "- Correctness (1-3): Are stated claims true? Check against KPs.");
-        sb.AppendLine("- Completeness (1-3): Are essential KPs covered in THIS message?");
-        if (hasBoundaryConditions)
-            sb.AppendLine("- Discrimination (1-3): Does the explanation correctly exclude non-examples? Check BCs.");
+        sb.AppendLine("- Correctness (0-5): Are stated claims true? Check against KPs.");
+        sb.AppendLine("- Completeness (0-5): Are essential KPs covered in THIS message?");
         if (hasKeyRelations)
-            sb.AppendLine("- Integration (1-3): Did the learner articulate key relations *with mechanism*? 1=no relation, 2=relation without mechanism, 3=relation with mechanism matching the authored description.");
+            sb.AppendLine("- Integration (0-5): Did the learner articulate key relations *with mechanism*? 0=no relation, 1-2=relation without mechanism, 3-5=relation with mechanism matching the authored description.");
         sb.AppendLine("- Evaluate concepts, not language. Grammar and style must not reduce scores.");
         sb.AppendLine("- Resist sycophancy. Evaluate strictly against rubric.");
         sb.AppendLine();
 
         sb.AppendLine("# Concern count (used by the orchestrator to route to critique vs probe)");
         sb.AppendLine("Count distinct concerns in the message. A concern is any of:");
-        sb.AppendLine("  - a stated inaccuracy (a claim that contradicts a KP or BC);");
+        sb.AppendLine("  - a stated inaccuracy (a claim that contradicts a KP);");
         sb.AppendLine(hasCommonMisconceptions
             ? "  - a triggered known misconception or a novel misconception;"
             : "  - a novel misconception (none are pre-catalogued for this concept);");
@@ -48,17 +43,16 @@ public static class ScorerPrompt
 
         sb.AppendLine("# Runtime Context Format");
         sb.AppendLine("Chat history shows prior turns (user=learner, assistant=tutor) for context only — DO NOT score these.");
-        sb.AppendLine("The final user message contains the message to score inside <current-learner-message>…</current-learner-message>, followed by <instruction>…</instruction>.");
+        sb.AppendLine("The final user message contains the message to score inside <current-learner-message>…</current-learner-message>.");
         sb.AppendLine();
 
         sb.AppendLine("# Output Format (JSON only, no other text)");
         var fields = new List<string>
         {
-            "\"correctnessScore\": 1-3",
-            "\"completenessScore\": 1-3"
+            "\"correctnessScore\": 0-5",
+            "\"completenessScore\": 0-5"
         };
-        if (hasBoundaryConditions) fields.Add("\"discriminationScore\": 1-3");
-        if (hasKeyRelations) fields.Add("\"integrationScore\": 1-3");
+        if (hasKeyRelations) fields.Add("\"integrationScore\": 0-5");
         fields.Add("\"justification\": \"brief explanation of scores\"");
         fields.Add("\"propositionsCoveredKeys\": [string list of KP keys covered in this turn, e.g. [\"P1\", \"P2\"]]");
         if (hasCommonMisconceptions) fields.Add("\"misconceptionsTriggeredKeys\": [string list of CM keys triggered, e.g. [\"M1\"]]");

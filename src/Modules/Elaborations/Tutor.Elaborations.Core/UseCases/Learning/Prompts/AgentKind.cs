@@ -3,13 +3,11 @@ namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 public enum AgentKind
 {
     IntentClassifier,
-    Scorer,
+    TurnScorer,
+    ClosingScorer,
     Probe,
     Scaffolding,
     Critique,
     Clarification,
-    Redirect,
-    MetaHelp,
-    Closing,
     Summary
 }

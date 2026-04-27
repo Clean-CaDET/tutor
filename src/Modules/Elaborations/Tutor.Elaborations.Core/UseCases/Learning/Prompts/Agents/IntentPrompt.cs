@@ -32,7 +32,7 @@ public static class IntentPrompt
 
         sb.AppendLine("# Runtime Context Format");
         sb.AppendLine("Chat history shows prior turns (user=learner, assistant=tutor) for context only — DO NOT classify these.");
-        sb.AppendLine("The final user message contains the message to classify inside <current-learner-message>…</current-learner-message>, followed by <instruction>…</instruction>.");
+        sb.AppendLine("The final user message contains the message to classify inside <current-learner-message>…</current-learner-message>.");
         sb.AppendLine();
 
         sb.AppendLine("# Output Format");

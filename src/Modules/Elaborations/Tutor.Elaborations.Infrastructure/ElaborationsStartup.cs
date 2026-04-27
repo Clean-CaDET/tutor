@@ -51,8 +51,7 @@ public static class ElaborationsStartup
         services.AddScoped<IConversationAttemptRepository, ConversationAttemptDatabaseRepository>();
 
         services.AddScoped<IAgentOrchestrator, AgentOrchestrator>();
-        services.AddScoped<IAgentStream, AgentStream>();
-        services.AddScoped<IAgentJson, AgentJson>();
+        services.AddScoped<IAgentFactory, AgentFactory>();
 
         services.AddScoped<IElaborationsUnitOfWork, ElaborationsUnitOfWork>();
 

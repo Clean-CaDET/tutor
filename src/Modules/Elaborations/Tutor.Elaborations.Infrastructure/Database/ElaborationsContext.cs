@@ -41,7 +41,6 @@ public class ElaborationsContext : DbContext
         modelBuilder.Entity<ConceptRecord>(entity =>
         {
             entity.Property(r => r.KeyPropositions).HasColumnType("jsonb");
-            entity.Property(r => r.BoundaryConditions).HasColumnType("jsonb");
             entity.Property(r => r.CommonMisconceptions).HasColumnType("jsonb");
             entity.Property(r => r.KeyRelations).HasColumnType("jsonb");
         });
@@ -53,6 +52,10 @@ public class ElaborationsContext : DbContext
             .HasMany(ca => ca.Turns)
             .WithOne()
             .HasForeignKey(ct => ct.ConversationAttemptId);
+
+        modelBuilder.Entity<ConversationAttempt>()
+            .Navigation(ca => ca.Turns)
+            .HasField("_turns");
 
         modelBuilder.Entity<ConversationAttempt>()
             .HasIndex(ca => new { ca.ConceptElaborationTaskId, ca.LearnerId });

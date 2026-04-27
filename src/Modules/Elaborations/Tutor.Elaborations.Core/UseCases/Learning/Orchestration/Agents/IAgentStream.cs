@@ -8,6 +8,6 @@ namespace Tutor.Elaborations.Core.UseCases.Learning.Orchestration.Agents;
 public interface IAgentStream
 {
     IAsyncEnumerable<StreamOutput> StreamAsync(
-        AgentKind kind, IReadOnlyList<ConversationTurn> history,
-        ConceptRecord record, AgentTurnContext ctx, CancellationToken ct);
+        IReadOnlyList<ConversationTurn> history, ConceptRecord record,
+        AgentTurnContext ctx, CancellationToken ct);
 }

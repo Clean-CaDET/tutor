@@ -20,7 +20,6 @@ public class ConceptElaborationTaskProfile : Profile
             .ReverseMap();
 
         CreateMap<KeyPropositionDto, KeyProposition>().ReverseMap();
-        CreateMap<BoundaryConditionDto, BoundaryCondition>().ReverseMap();
         CreateMap<CommonMisconceptionDto, CommonMisconception>().ReverseMap();
         CreateMap<KeyRelationDto, KeyRelation>().ReverseMap();
     }

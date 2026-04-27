@@ -8,7 +8,6 @@ public class ConceptRecord : Entity
     public int ConceptElaborationTaskId { get; private set; }
     public string CanonicalDefinition { get; private set; } = string.Empty;
     public List<KeyProposition> KeyPropositions { get; private set; } = [];
-    public List<BoundaryCondition> BoundaryConditions { get; private set; } = [];
     public List<CommonMisconception> CommonMisconceptions { get; private set; } = [];
     public List<KeyRelation> KeyRelations { get; private set; } = [];
 
@@ -16,13 +15,12 @@ public class ConceptRecord : Entity
 
     public ConceptRecord(
         int conceptElaborationTaskId, string canonicalDefinition,
-        List<KeyProposition> keyPropositions, List<BoundaryCondition> boundaryConditions,
-        List<CommonMisconception> commonMisconceptions, List<KeyRelation> keyRelations)
+        List<KeyProposition> keyPropositions, List<CommonMisconception> commonMisconceptions,
+        List<KeyRelation> keyRelations)
     {
         ConceptElaborationTaskId = conceptElaborationTaskId;
         CanonicalDefinition = canonicalDefinition;
         KeyPropositions = keyPropositions;
-        BoundaryConditions = boundaryConditions;
         CommonMisconceptions = commonMisconceptions;
         KeyRelations = keyRelations;
     }
@@ -31,7 +29,6 @@ public class ConceptRecord : Entity
     {
         CanonicalDefinition = incoming.CanonicalDefinition;
         KeyPropositions = incoming.KeyPropositions;
-        BoundaryConditions = incoming.BoundaryConditions;
         CommonMisconceptions = incoming.CommonMisconceptions;
         KeyRelations = incoming.KeyRelations;
     }
@@ -54,18 +51,25 @@ public class ConceptRecord : Entity
         return AreAllPropositionsCovered(attempt) && AreAllKeyRelationsArticulated(attempt);
     }
 
-    public string PickNextTarget(ConversationAttempt attempt)
+    public string? PickNextTarget(ConversationAttempt attempt, IReadOnlySet<string>? excludedTargets = null)
     {
         var articulatedKps = attempt.GetArticulatedPropositionKeys();
-        var nextTarget = KeyPropositions.Where(kp => !articulatedKps.Contains(kp.Key))
-            .Select(kp => kp.Statement).FirstOrDefault();
+        var nextTarget = KeyPropositions
+            .Where(kp => !articulatedKps.Contains(kp.Key))
+            .Select(kp => kp.Statement)
+            .FirstOrDefault(s => excludedTargets == null || !excludedTargets.Contains(s));
         if (nextTarget != null) return nextTarget;
 
         var articulatedKrs = attempt.GetArticulatedRelationKeys();
-        var nextRelation = KeyRelations.First(kr => !articulatedKrs.Contains(kr.Key));
-        var source = KeyPropositions.First(kp => kp.Key == nextRelation.SourceKey).Statement;
-        var target = KeyPropositions.First(kp => kp.Key == nextRelation.TargetKey).Statement;
-        return $"{source} → {target}. Mechanism: {nextRelation.Mechanism}";
+        foreach (var kr in KeyRelations.Where(kr => !articulatedKrs.Contains(kr.Key)))
+        {
+            var source = KeyPropositions.First(kp => kp.Key == kr.SourceKey).Statement;
+            var target = KeyPropositions.First(kp => kp.Key == kr.TargetKey).Statement;
+            var composed = $"{source} → {target}. Mechanism: {kr.Mechanism}";
+            if (excludedTargets == null || !excludedTargets.Contains(composed)) return composed;
+        }
+
+        return null;
     }
 
     public int CountPropositionsAndRelations()

@@ -10,21 +10,27 @@ namespace Tutor.Elaborations.Infrastructure.Agents;
 
 public class AgentStream : StreamingAgent, IAgentStream
 {
-    public AgentStream(IAiChatService chatService, ITurnUsageTracker usageTracker, ILogger<AgentStream> logger)
-        : base(chatService, usageTracker, logger) { }
+    private readonly AgentKind _kind;
+    private readonly AgentConfig _config;
+
+    public AgentStream(AgentKind kind, IAiChatService chatService, ITurnUsageTracker usageTracker, ILogger<AgentStream> logger)
+        : base(chatService, usageTracker, logger)
+    {
+        _kind = kind;
+        _config = AgentConfigs.ByKind[kind];
+    }
 
     public IAsyncEnumerable<StreamOutput> StreamAsync(
-        AgentKind kind, IReadOnlyList<ConversationTurn> history,
-        ConceptRecord record, AgentTurnContext ctx, CancellationToken ct)
+        IReadOnlyList<ConversationTurn> history, ConceptRecord record,
+        AgentTurnContext ctx, CancellationToken ct)
     {
-        var config = AgentConfigs.ByKind[kind];
-        var messages = ConversationHistoryMapper.Map(history, config.HistoryWindow);
+        var messages = ConversationHistoryMapper.Map(history, _config.HistoryWindow);
         messages.Add(ChatMessage.FromUser(RuntimeContextBlock.Render(ctx)));
 
         var request = CompletionRequest.Create(
-            messages, config.BuildSystemPrompt(record),
-            maxTokens: config.MaxTokens, temperature: config.Temperature);
+            messages, _config.BuildSystemPrompt(record),
+            maxTokens: _config.MaxTokens, temperature: _config.Temperature);
 
-        return StreamAsync(request, kind.ToString(), ct);
+        return StreamAsync(request, _kind.ToString(), ct);
     }
 }
