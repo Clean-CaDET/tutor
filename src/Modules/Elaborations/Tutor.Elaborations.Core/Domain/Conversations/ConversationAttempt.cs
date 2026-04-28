@@ -120,12 +120,10 @@ public class ConversationAttempt : AggregateRoot
         ClosingTurnCount = _turns.Count;
     }
 
-    public void Complete(string content, TurnIntent intent, TurnEvaluation evaluation)
+    public void Complete(TurnEvaluation evaluation)
     {
-        AddLearnerTurn(content, intent, evaluation);
         Summary = $"{evaluation.Grade()} / 10";
         AddSystemTurn(Summary);
-
         Status = AttemptStatus.Completed;
         CompletedAt = DateTime.UtcNow;
     }

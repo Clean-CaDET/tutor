@@ -12,7 +12,6 @@ public sealed record FinalChunk(
     AttemptStatus Status,
     TurnIntent Intent,
     string? Summary,
-    ProbeDirective? ProbeDirective,
     TokenUsage Usage) : OrchestratorChunk;
 
 public sealed record ErrorChunk(string Message, int Code) : OrchestratorChunk;

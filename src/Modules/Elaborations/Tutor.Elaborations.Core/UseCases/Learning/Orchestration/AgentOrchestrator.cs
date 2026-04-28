@@ -49,6 +49,16 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
             yield break;
         }
 
+        await foreach (var chunk in HandleProgressTurnAsync(record, attempt, newMessage, intent, ct))
+            yield return chunk;
+    }
+
+    private async IAsyncEnumerable<OrchestratorChunk> HandleProgressTurnAsync(ConceptRecord record,
+        ConversationAttempt attempt, string newMessage, TurnIntent intent, [EnumeratorCancellation] CancellationToken ct)
+    {
+        FinalChunk CreateFinalChunk(string? summary = null)
+            => new(attempt.Id, attempt.Status, intent, summary, _usageTracker.Total);
+
         TurnEvaluation? evaluation = null;
         if (intent == TurnIntent.Substantive)
         {
@@ -108,18 +118,14 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
 
         var probeDirective = (route as RouteResult.Stream)?.ProbeDirective;
         attempt.AddSystemTurn(fullResponse.ToString(), probeDirective);
-        yield return CreateFinalChunk(directive: probeDirective);
-        yield break;
-
-        FinalChunk CreateFinalChunk(string? summary = null, ProbeDirective? directive = null)
-            => new(attempt.Id, attempt.Status, intent, summary, directive, _usageTracker.Total);
+        yield return CreateFinalChunk();
     }
 
     private async IAsyncEnumerable<OrchestratorChunk> HandleClosingTurnAsync(ConceptRecord record,
         ConversationAttempt attempt, string newMessage, TurnIntent intent, [EnumeratorCancellation] CancellationToken ct)
     {
-        FinalChunk CreateFinalChunk(string? summary = null, ProbeDirective? directive = null)
-            => new(attempt.Id, attempt.Status, intent, summary, directive, _usageTracker.Total);
+        FinalChunk CreateFinalChunk(string? summary = null)
+            => new(attempt.Id, attempt.Status, intent, summary, _usageTracker.Total);
 
         if (intent == TurnIntent.Substantive)
         {
@@ -129,7 +135,8 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
                 yield return new ErrorChunk("Closing scoring failed.", 500);
                 yield break;
             }
-            attempt.Complete(newMessage, intent, scoreResult.Value);
+            attempt.AddLearnerTurn(newMessage, intent, scoreResult.Value);
+            attempt.Complete(scoreResult.Value);
             yield return new TokenChunk(attempt.Summary!);
             yield return CreateFinalChunk(attempt.Summary);
             yield break;
