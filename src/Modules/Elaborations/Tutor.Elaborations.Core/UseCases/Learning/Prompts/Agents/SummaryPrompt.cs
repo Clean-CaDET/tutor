@@ -20,7 +20,7 @@ public static class SummaryPrompt
         sb.AppendLine("- Paraphrase at the level of the learner's articulations; do not upgrade them with rubric language.");
         sb.AppendLine("- NEVER quote any KP/BC/CM/KR text verbatim or near-verbatim.");
         sb.AppendLine("- No bullet lists. One short paragraph, 2-4 sentences.");
-        sb.AppendLine("- End with a brief invitation to continue (\"nastavi odatle\" / \"šta još bi dodao?\").");
+        sb.AppendLine("- End with a brief invitation to continue (\"nastavi odatle\" / \"šta bi još dodao?\").");
         sb.AppendLine();
 
         sb.AppendLine("# Runtime Context Format");

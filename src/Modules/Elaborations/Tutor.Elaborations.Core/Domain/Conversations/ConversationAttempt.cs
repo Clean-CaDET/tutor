@@ -6,7 +6,7 @@ namespace Tutor.Elaborations.Core.Domain.Conversations;
 public class ConversationAttempt : AggregateRoot
 {
     private const int ProbeLadderLength = 2;
-    private const int ScaffoldLadderLength = 3;
+    private const int ScaffoldLadderLength = 2;
     private const int StalledThreshold = ProbeLadderLength + ScaffoldLadderLength;
 
     public int ConceptElaborationTaskId { get; private set; }

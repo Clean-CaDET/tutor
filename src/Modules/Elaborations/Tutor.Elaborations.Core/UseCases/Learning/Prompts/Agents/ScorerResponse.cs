@@ -16,7 +16,7 @@ public class ScorerResponse
     public string? NovelMisconceptions { get; set; }
     public bool? HasMultipleConcerns { get; set; }
 
-    public Result<TurnEvaluation> MapToEvaluation(ConceptRecord record)
+    public Result<TurnEvaluation> ToEvaluation(ConceptRecord record)
     {
         if (CorrectnessScore is < 0 or > 5) return Result.Fail("Correctness out of range.");
         if (CompletenessScore is < 0 or > 5) return Result.Fail("Completeness out of range.");
@@ -33,6 +33,11 @@ public class ScorerResponse
         if (MisconceptionsTriggeredKeys?.Any(k => !validCmKeys.Contains(k)) == true)
             return Result.Fail("Unknown misconception key.");
 
+        return CreateEvaluation();
+    }
+
+    private TurnEvaluation CreateEvaluation()
+    {
         return new TurnEvaluation(
             CorrectnessScore, CompletenessScore, IntegrationScore,
             Justification ?? string.Empty, NovelMisconceptions, PropositionsCoveredKeys ?? [],

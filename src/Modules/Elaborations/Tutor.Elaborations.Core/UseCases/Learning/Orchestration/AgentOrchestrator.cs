@@ -19,8 +19,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
     private readonly ILogger<AgentOrchestrator> _logger;
 
     public AgentOrchestrator(IAiChatService chatService, ITurnUsageTracker usageTracker,
-        ILogger<AgentOrchestrator> logger)
-        : base(chatService, usageTracker, logger)
+        ILogger<AgentOrchestrator> logger) : base(chatService, usageTracker, logger)
     {
         _usageTracker = usageTracker;
         _logger = logger;
@@ -162,11 +161,10 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
         {
             case TurnIntent.Substantive:
             {
-                if (evaluation is { HasMultipleConcerns: true })
+                if (evaluation != null && evaluation.HasMultipleConcerns)
                     return new RouteResult.Stream(AgentKind.Critique,
-                        new AgentTurnContext(Evaluation: evaluation),
-                        ProbeDirective: null);
-                var next = record.PickNextTarget(attempt, attempt.GetStalledTargets());
+                        new AgentTurnContext(Evaluation: evaluation), null);
+                var next = record.PickNextTarget(attempt);
                 if (next == null) return new RouteResult.Transition();
                 var ladderLevel = attempt.GetProbeLevelFor(next);
                 var kind = attempt.IsScaffolding(ladderLevel) ? AgentKind.Scaffolding : AgentKind.Probe;
@@ -175,11 +173,10 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
 
             case TurnIntent.Stuck:
             {
-                var stalledTargets = attempt.GetStalledTargets();
                 var stuckTarget = attempt.GetLastProbe()?.Target;
-                if (stuckTarget == null || stalledTargets.Contains(stuckTarget))
+                if (stuckTarget == null || attempt.GetStalledTargets().Contains(stuckTarget))
                 {
-                    stuckTarget = record.PickNextTarget(attempt, stalledTargets);
+                    stuckTarget = record.PickNextTarget(attempt);
                     if (stuckTarget == null) return new RouteResult.Transition();
                     var first = attempt.FirstScaffoldLadderLevel;
                     return new RouteResult.Stream(
@@ -200,11 +197,11 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
                 return new RouteResult.Stream(
                     AgentKind.Clarification,
                     new AgentTurnContext(Target: last?.Target),
-                    ProbeDirective: null);
+                    null);
             }
 
             case TurnIntent.SummaryRequest:
-                return new RouteResult.Stream(AgentKind.Summary, new AgentTurnContext(), ProbeDirective: null);
+                return new RouteResult.Stream(AgentKind.Summary, new AgentTurnContext(), null);
 
             case TurnIntent.OffTopic:
             default:
@@ -215,7 +212,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
     private static bool ShouldAppendSoftCapNudge(TurnIntent intent) =>
         intent is TurnIntent.Substantive or TurnIntent.Stuck or TurnIntent.SummaryRequest;
 
-    private CompletionRequest BuildRequest(AgentKind kind,
+    private static CompletionRequest BuildRequest(AgentKind kind,
         IReadOnlyList<ConversationTurn> history, ConceptRecord record, AgentTurnContext ctx)
     {
         var config = AgentConfigs.ByKind[kind];

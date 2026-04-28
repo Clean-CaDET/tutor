@@ -51,13 +51,14 @@ public class ConceptRecord : Entity
         return AreAllPropositionsCovered(attempt) && AreAllKeyRelationsArticulated(attempt);
     }
 
-    public string? PickNextTarget(ConversationAttempt attempt, IReadOnlySet<string>? excludedTargets = null)
+    public string? PickNextTarget(ConversationAttempt attempt)
     {
         var articulatedKps = attempt.GetArticulatedPropositionKeys();
+        var excludedTargets = attempt.GetStalledTargets();
         var nextTarget = KeyPropositions
             .Where(kp => !articulatedKps.Contains(kp.Key))
             .Select(kp => kp.Statement)
-            .FirstOrDefault(s => excludedTargets == null || !excludedTargets.Contains(s));
+            .FirstOrDefault(s => !excludedTargets.Contains(s));
         if (nextTarget != null) return nextTarget;
 
         var articulatedKrs = attempt.GetArticulatedRelationKeys();
@@ -66,7 +67,7 @@ public class ConceptRecord : Entity
             var source = KeyPropositions.First(kp => kp.Key == kr.SourceKey).Statement;
             var target = KeyPropositions.First(kp => kp.Key == kr.TargetKey).Statement;
             var composed = $"{source} → {target}. Mechanism: {kr.Mechanism}";
-            if (excludedTargets == null || !excludedTargets.Contains(composed)) return composed;
+            if (!excludedTargets.Contains(composed)) return composed;
         }
 
         return null;
