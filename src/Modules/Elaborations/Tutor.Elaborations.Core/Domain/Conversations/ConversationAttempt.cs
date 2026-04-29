@@ -1,5 +1,4 @@
 using Tutor.BuildingBlocks.Core.Domain;
-using Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 
 namespace Tutor.Elaborations.Core.Domain.Conversations;
 
@@ -61,21 +60,20 @@ public class ConversationAttempt : AggregateRoot
     public int GetProbeLevelFor(string target)
     {
         var max = Turns
-            .Where(t => t.Role == TurnRole.System && t.ProbeTarget == target && t.ProbeLevel.HasValue)
-            .Select(t => t.ProbeLevel!.Value)
+            .Where(t => t.Role == TurnRole.System && t.Probe?.Target == target)
+            .Select(t => t.Probe!.Level)
             .DefaultIfEmpty(0)
             .Max();
         return max + 1;
     }
 
-    public ProbeDirective? GetLastProbe()
+    public ActiveProbe? GetLastProbe()
     {
-        var last = Turns
-            .Where(t => t.Role == TurnRole.System && t.ProbeTarget != null)
+        return Turns
+            .Where(t => t.Role == TurnRole.System && t.Probe != null)
             .OrderByDescending(t => t.Order)
+            .Select(t => t.Probe)
             .FirstOrDefault();
-        if (last == null) return null;
-        return new ProbeDirective(last.ProbeTarget!, last.ProbeLevel!.Value);
     }
 
     public bool IsScaffolding(int ladderLevel) => ladderLevel > ProbeLadderLength;
@@ -85,8 +83,8 @@ public class ConversationAttempt : AggregateRoot
     public IReadOnlySet<string> GetStalledTargets()
     {
         return Turns
-            .Where(t => t.Role == TurnRole.System && t.ProbeTarget != null && t.ProbeLevel >= StalledThreshold)
-            .Select(t => t.ProbeTarget!)
+            .Where(t => t.Role == TurnRole.System && t.Probe != null && t.Probe.Level >= StalledThreshold)
+            .Select(t => t.Probe!.Target)
             .ToHashSet();
     }
 
@@ -105,10 +103,10 @@ public class ConversationAttempt : AggregateRoot
         return turn;
     }
 
-    public ConversationTurn AddSystemTurn(string content, ProbeDirective? probeDirective = null)
+    public ConversationTurn AddSystemTurn(string content, ActiveProbe? probe = null)
     {
         var turn = new ConversationTurn(TurnRole.System, content, _turns.Count,
-            intent: null, evaluation: null, probeDirective: probeDirective);
+            intent: null, evaluation: null, probe: probe);
         _turns.Add(turn);
         return turn;
     }
@@ -124,6 +122,7 @@ public class ConversationAttempt : AggregateRoot
     {
         Summary = $"{evaluation.Grade()} / 10";
         AddSystemTurn(Summary);
+
         Status = AttemptStatus.Completed;
         CompletedAt = DateTime.UtcNow;
     }

@@ -1,5 +1,4 @@
 using Tutor.BuildingBlocks.Core.Domain;
-using Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 
 namespace Tutor.Elaborations.Core.Domain.Conversations;
 
@@ -12,15 +11,14 @@ public class ConversationTurn : Entity
     public DateTime Timestamp { get; private set; }
     public TurnIntent? Intent { get; private set; }
     public TurnEvaluation? Evaluation { get; private set; }
-    public string? ProbeTarget { get; private set; }
-    public int? ProbeLevel { get; private set; }
+    public ActiveProbe? Probe { get; private set; }
 
     private ConversationTurn() { }
 
     internal ConversationTurn(
         TurnRole role, string content, int order,
         TurnIntent? intent = null, TurnEvaluation? evaluation = null,
-        ProbeDirective? probeDirective = null)
+        ActiveProbe? probe = null)
     {
         Role = role;
         Content = content;
@@ -28,7 +26,6 @@ public class ConversationTurn : Entity
         Timestamp = DateTime.UtcNow;
         Intent = intent;
         Evaluation = evaluation;
-        ProbeTarget = probeDirective?.Target;
-        ProbeLevel = probeDirective?.Level;
+        Probe = probe;
     }
 }

@@ -56,9 +56,6 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
     private async IAsyncEnumerable<OrchestratorChunk> HandleProgressTurnAsync(ConceptRecord record,
         ConversationAttempt attempt, string newMessage, TurnIntent intent, [EnumeratorCancellation] CancellationToken ct)
     {
-        FinalChunk CreateFinalChunk(string? summary = null)
-            => new(attempt.Id, attempt.Status, intent, summary, _usageTracker.Total);
-
         TurnEvaluation? evaluation = null;
         if (intent == TurnIntent.Substantive)
         {
@@ -116,17 +113,18 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
             yield return new TokenChunk(nudge);
         }
 
-        var probeDirective = (route as RouteResult.Stream)?.ProbeDirective;
-        attempt.AddSystemTurn(fullResponse.ToString(), probeDirective);
+        var probe = (route as RouteResult.Stream)?.Probe;
+        attempt.AddSystemTurn(fullResponse.ToString(), probe);
         yield return CreateFinalChunk();
+        yield break;
+
+        FinalChunk CreateFinalChunk(string? summary = null)
+            => new(attempt.Id, attempt.Status, intent, summary, _usageTracker.Total);
     }
 
     private async IAsyncEnumerable<OrchestratorChunk> HandleClosingTurnAsync(ConceptRecord record,
         ConversationAttempt attempt, string newMessage, TurnIntent intent, [EnumeratorCancellation] CancellationToken ct)
     {
-        FinalChunk CreateFinalChunk(string? summary = null)
-            => new(attempt.Id, attempt.Status, intent, summary, _usageTracker.Total);
-
         if (intent == TurnIntent.Substantive)
         {
             var scoreResult = await ScoreClosingAsync(record, attempt.Turns, newMessage, ct);
@@ -156,6 +154,10 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
         attempt.AddSystemTurn(ElaborationTexts.NonSubstantiveInClosingNudge);
         yield return new TokenChunk(ElaborationTexts.NonSubstantiveInClosingNudge);
         yield return CreateFinalChunk();
+        yield break;
+
+        FinalChunk CreateFinalChunk(string? summary = null)
+            => new(attempt.Id, attempt.Status, intent, summary, _usageTracker.Total);
     }
 
     private static RouteResult Route(ConceptRecord record, ConversationAttempt attempt,
@@ -175,7 +177,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
                 if (next == null) return new RouteResult.Transition();
                 var ladderLevel = attempt.GetProbeLevelFor(next);
                 var kind = attempt.IsScaffolding(ladderLevel) ? AgentKind.Scaffolding : AgentKind.Probe;
-                return new RouteResult.Stream(kind, new AgentTurnContext(Target: next, Level: ladderLevel), new ProbeDirective(next, ladderLevel));
+                return new RouteResult.Stream(kind, new AgentTurnContext(Target: next, Level: ladderLevel), new ActiveProbe(next, ladderLevel));
             }
 
             case TurnIntent.Stuck:
@@ -189,13 +191,13 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
                     return new RouteResult.Stream(
                         AgentKind.Scaffolding,
                         new AgentTurnContext(Target: stuckTarget, Level: first),
-                        new ProbeDirective(stuckTarget, first));
+                        new ActiveProbe(stuckTarget, first));
                 }
                 var ladderLevel = attempt.GetProbeLevelFor(stuckTarget);
                 return new RouteResult.Stream(
                     AgentKind.Scaffolding,
                     new AgentTurnContext(Target: stuckTarget, Level: ladderLevel),
-                    new ProbeDirective(stuckTarget, ladderLevel));
+                    new ActiveProbe(stuckTarget, ladderLevel));
             }
 
             case TurnIntent.Clarification:
@@ -263,7 +265,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
 
     private abstract record RouteResult
     {
-        public sealed record Stream(AgentKind Kind, AgentTurnContext Ctx, ProbeDirective? ProbeDirective) : RouteResult;
+        public sealed record Stream(AgentKind Kind, AgentTurnContext Ctx, ActiveProbe? Probe) : RouteResult;
         public sealed record OffTopic : RouteResult;
         public sealed record Transition : RouteResult;
     }

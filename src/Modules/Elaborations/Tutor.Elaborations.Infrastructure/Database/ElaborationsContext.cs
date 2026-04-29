@@ -66,6 +66,9 @@ public class ElaborationsContext : DbContext
             .HasForeignKey<TurnEvaluation>(te => te.ConversationTurnId);
 
         modelBuilder.Entity<ConversationTurn>()
+            .OwnsOne(ct => ct.Probe, probe => probe.ToJson());
+
+        modelBuilder.Entity<ConversationTurn>()
             .HasIndex(ct => new { ct.ConversationAttemptId, ct.Order });
 
         modelBuilder.Entity<TurnEvaluation>(entity =>
