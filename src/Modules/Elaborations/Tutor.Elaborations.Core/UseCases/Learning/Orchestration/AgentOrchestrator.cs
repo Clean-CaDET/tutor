@@ -70,56 +70,169 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
 
         attempt.AddLearnerTurn(newMessage, intent, evaluation);
 
-        var route = Route(record, attempt, intent, evaluation);
-
-        if (route is RouteResult.Transition)
+        if (record.IsAttemptComplete(attempt) || attempt.IsHardCapReached())
         {
             attempt.TransitionToClosing(ElaborationTexts.InClosingTransition);
             yield return new TokenChunk(ElaborationTexts.InClosingTransition);
-            yield return CreateFinalChunk();
+            yield return CreateFinalChunk(attempt, intent);
             yield break;
         }
 
-        var fullResponse = new StringBuilder();
-
-        if (route is RouteResult.OffTopic)
+        var handler = intent switch
         {
-            fullResponse.Append(ElaborationTexts.OffTopic);
-            yield return new TokenChunk(ElaborationTexts.OffTopic);
+            TurnIntent.Substantive    => HandleSubstantiveAsync(record, attempt, evaluation!, ct),
+            TurnIntent.Stuck          => HandleStuckAsync(record, attempt, ct),
+            TurnIntent.Clarification  => HandleClarificationAsync(record, attempt, ct),
+            TurnIntent.SummaryRequest => HandleSummaryRequestAsync(record, attempt, ct),
+            _                         => HandleOffTopicAsync(attempt, ct)
+        };
+        await foreach (var chunk in handler.WithCancellation(ct))
+            yield return chunk;
+    }
+
+    private async IAsyncEnumerable<OrchestratorChunk> HandleSubstantiveAsync(ConceptRecord record,
+        ConversationAttempt attempt, TurnEvaluation evaluation, [EnumeratorCancellation] CancellationToken ct)
+    {
+        AgentKind kind;
+        AgentTurnContext ctx;
+        ActiveProbe? probe;
+
+        if (evaluation.HasMultipleConcerns)
+        {
+            kind = AgentKind.Critique;
+            ctx = new AgentTurnContext(Evaluation: evaluation);
+            probe = null;
         }
-        else if (route is RouteResult.Stream streamRoute)
+        else
         {
-            var request = BuildRequest(streamRoute.Kind, attempt.Turns, record, streamRoute.Ctx);
-            StreamFailure? streamFailure = null;
-            await foreach (var chunk in StreamAsync(request, streamRoute.Kind.ToString(), ct))
+            var next = record.PickNextTarget(attempt);
+            if (next == null)
             {
-                if (chunk is StreamFailure failure) { streamFailure = failure; break; }
-                var content = ((StreamToken)chunk).Content;
-                fullResponse.Append(content);
-                yield return new TokenChunk(content);
-            }
-
-            if (streamFailure != null)
-            {
-                yield return new ErrorChunk(streamFailure.Reason, 500);
+                attempt.TransitionToClosing(ElaborationTexts.InClosingTransition);
+                yield return new TokenChunk(ElaborationTexts.InClosingTransition);
+                yield return CreateFinalChunk(attempt, TurnIntent.Substantive);
                 yield break;
             }
+            var level = attempt.GetProbeLevelFor(next);
+            kind = attempt.IsScaffolding(level) ? AgentKind.Scaffolding : AgentKind.Probe;
+            ctx = new AgentTurnContext(Target: next, Level: level);
+            probe = new ActiveProbe(next, level);
         }
 
-        if (attempt.IsSoftCapReached() && ShouldAppendSoftCapNudge(intent))
+        var fullResponse = new StringBuilder();
+        await foreach (var chunk in StreamAgentAsync(kind, ctx, attempt.Turns, record, fullResponse, ct))
         {
-            var nudge = "\n\n" + ElaborationTexts.SoftCapNudge;
-            fullResponse.Append(nudge);
-            yield return new TokenChunk(nudge);
+            yield return chunk;
+            if (chunk is ErrorChunk) yield break;
         }
 
-        var probe = (route as RouteResult.Stream)?.Probe;
-        attempt.AddSystemTurn(fullResponse.ToString(), probe);
-        yield return CreateFinalChunk();
-        yield break;
+        if (attempt.IsSoftCapReached())
+        {
+            fullResponse.Append(ElaborationTexts.SoftCapNudge);
+            yield return new TokenChunk(ElaborationTexts.SoftCapNudge);
+        }
 
-        FinalChunk CreateFinalChunk(string? summary = null)
-            => new(attempt.Id, attempt.Status, intent, summary, _usageTracker.Total);
+        attempt.AddSystemTurn(fullResponse.ToString(), probe);
+        yield return CreateFinalChunk(attempt, TurnIntent.Substantive);
+    }
+
+    private async IAsyncEnumerable<OrchestratorChunk> HandleStuckAsync(ConceptRecord record,
+        ConversationAttempt attempt, [EnumeratorCancellation] CancellationToken ct)
+    {
+        string? stuckTarget = attempt.GetLastProbe()?.Target;
+        int ladderLevel;
+
+        if (stuckTarget == null || attempt.GetStalledTargets().Contains(stuckTarget))
+        {
+            stuckTarget = record.PickNextTarget(attempt);
+            if (stuckTarget == null)
+            {
+                attempt.TransitionToClosing(ElaborationTexts.InClosingTransition);
+                yield return new TokenChunk(ElaborationTexts.InClosingTransition);
+                yield return CreateFinalChunk(attempt, TurnIntent.Stuck);
+                yield break;
+            }
+            ladderLevel = attempt.FirstScaffoldLadderLevel;
+        }
+        else
+        {
+            ladderLevel = attempt.GetProbeLevelFor(stuckTarget);
+        }
+
+        var probe = new ActiveProbe(stuckTarget, ladderLevel);
+        var ctx = new AgentTurnContext(Target: stuckTarget, Level: ladderLevel);
+        var fullResponse = new StringBuilder();
+        await foreach (var chunk in StreamAgentAsync(AgentKind.Scaffolding, ctx, attempt.Turns, record, fullResponse, ct))
+        {
+            yield return chunk;
+            if (chunk is ErrorChunk) yield break;
+        }
+
+        if (attempt.IsSoftCapReached())
+        {
+            fullResponse.Append(ElaborationTexts.SoftCapNudge);
+            yield return new TokenChunk(ElaborationTexts.SoftCapNudge);
+        }
+
+        attempt.AddSystemTurn(fullResponse.ToString(), probe);
+        yield return CreateFinalChunk(attempt, TurnIntent.Stuck);
+    }
+
+    private async IAsyncEnumerable<OrchestratorChunk> HandleClarificationAsync(ConceptRecord record,
+        ConversationAttempt attempt, [EnumeratorCancellation] CancellationToken ct)
+    {
+        var ctx = new AgentTurnContext(Target: attempt.GetLastProbe()?.Target);
+        var fullResponse = new StringBuilder();
+        await foreach (var chunk in StreamAgentAsync(AgentKind.Clarification, ctx, attempt.Turns, record, fullResponse, ct))
+        {
+            yield return chunk;
+            if (chunk is ErrorChunk) yield break;
+        }
+
+        if (attempt.IsSoftCapReached())
+        {
+            fullResponse.Append(ElaborationTexts.SoftCapNudge);
+            yield return new TokenChunk(ElaborationTexts.SoftCapNudge);
+        }
+
+        attempt.AddSystemTurn(fullResponse.ToString());
+        yield return CreateFinalChunk(attempt, TurnIntent.Clarification);
+    }
+
+    private async IAsyncEnumerable<OrchestratorChunk> HandleSummaryRequestAsync(ConceptRecord record,
+        ConversationAttempt attempt, [EnumeratorCancellation] CancellationToken ct)
+    {
+        var fullResponse = new StringBuilder();
+        await foreach (var chunk in StreamAgentAsync(AgentKind.Summary, new AgentTurnContext(), attempt.Turns, record, fullResponse, ct))
+        {
+            yield return chunk;
+            if (chunk is ErrorChunk) yield break;
+        }
+
+        if (attempt.IsSoftCapReached())
+        {
+            fullResponse.Append(ElaborationTexts.SoftCapNudge);
+            yield return new TokenChunk(ElaborationTexts.SoftCapNudge);
+        }
+
+        attempt.AddSystemTurn(fullResponse.ToString());
+        yield return CreateFinalChunk(attempt, TurnIntent.SummaryRequest);
+    }
+
+    private async IAsyncEnumerable<OrchestratorChunk> HandleOffTopicAsync(
+        ConversationAttempt attempt, [EnumeratorCancellation] CancellationToken ct)
+    {
+        var fullResponse = new StringBuilder(ElaborationTexts.OffTopic);
+        yield return new TokenChunk(ElaborationTexts.OffTopic);
+
+        if (attempt.IsSoftCapReached())
+        {
+            fullResponse.Append(ElaborationTexts.SoftCapNudge);
+            yield return new TokenChunk(ElaborationTexts.SoftCapNudge);
+        }
+
+        attempt.AddSystemTurn(fullResponse.ToString());
+        yield return CreateFinalChunk(attempt, TurnIntent.OffTopic);
     }
 
     private async IAsyncEnumerable<OrchestratorChunk> HandleClosingTurnAsync(ConceptRecord record,
@@ -136,7 +249,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
             attempt.AddLearnerTurn(newMessage, intent, scoreResult.Value);
             attempt.Complete(scoreResult.Value);
             yield return new TokenChunk(attempt.Summary!);
-            yield return CreateFinalChunk(attempt.Summary);
+            yield return CreateFinalChunk(attempt, intent, attempt.Summary);
             yield break;
         }
 
@@ -147,79 +260,34 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
             attempt.AddSystemTurn(ElaborationTexts.ExpiredNotice);
             attempt.Expire(summary: null);
             yield return new TokenChunk(ElaborationTexts.ExpiredNotice);
-            yield return CreateFinalChunk();
+            yield return CreateFinalChunk(attempt, intent);
             yield break;
         }
 
         attempt.AddSystemTurn(ElaborationTexts.NonSubstantiveInClosingNudge);
         yield return new TokenChunk(ElaborationTexts.NonSubstantiveInClosingNudge);
-        yield return CreateFinalChunk();
-        yield break;
-
-        FinalChunk CreateFinalChunk(string? summary = null)
-            => new(attempt.Id, attempt.Status, intent, summary, _usageTracker.Total);
+        yield return CreateFinalChunk(attempt, intent);
     }
 
-    private static RouteResult Route(ConceptRecord record, ConversationAttempt attempt,
-        TurnIntent intent, TurnEvaluation? evaluation)
+    private async IAsyncEnumerable<OrchestratorChunk> StreamAgentAsync(
+        AgentKind kind, AgentTurnContext ctx, IReadOnlyList<ConversationTurn> turns,
+        ConceptRecord record, StringBuilder output, [EnumeratorCancellation] CancellationToken ct)
     {
-        if (record.IsAttemptComplete(attempt) || attempt.IsHardCapReached())
-            return new RouteResult.Transition();
-
-        switch (intent)
+        var request = BuildRequest(kind, turns, record, ctx);
+        StreamFailure? failure = null;
+        await foreach (var chunk in StreamAsync(request, kind.ToString(), ct))
         {
-            case TurnIntent.Substantive:
-            {
-                if (evaluation != null && evaluation.HasMultipleConcerns)
-                    return new RouteResult.Stream(AgentKind.Critique,
-                        new AgentTurnContext(Evaluation: evaluation), null);
-                var next = record.PickNextTarget(attempt);
-                if (next == null) return new RouteResult.Transition();
-                var ladderLevel = attempt.GetProbeLevelFor(next);
-                var kind = attempt.IsScaffolding(ladderLevel) ? AgentKind.Scaffolding : AgentKind.Probe;
-                return new RouteResult.Stream(kind, new AgentTurnContext(Target: next, Level: ladderLevel), new ActiveProbe(next, ladderLevel));
-            }
-
-            case TurnIntent.Stuck:
-            {
-                var stuckTarget = attempt.GetLastProbe()?.Target;
-                if (stuckTarget == null || attempt.GetStalledTargets().Contains(stuckTarget))
-                {
-                    stuckTarget = record.PickNextTarget(attempt);
-                    if (stuckTarget == null) return new RouteResult.Transition();
-                    var first = attempt.FirstScaffoldLadderLevel;
-                    return new RouteResult.Stream(
-                        AgentKind.Scaffolding,
-                        new AgentTurnContext(Target: stuckTarget, Level: first),
-                        new ActiveProbe(stuckTarget, first));
-                }
-                var ladderLevel = attempt.GetProbeLevelFor(stuckTarget);
-                return new RouteResult.Stream(
-                    AgentKind.Scaffolding,
-                    new AgentTurnContext(Target: stuckTarget, Level: ladderLevel),
-                    new ActiveProbe(stuckTarget, ladderLevel));
-            }
-
-            case TurnIntent.Clarification:
-            {
-                var last = attempt.GetLastProbe();
-                return new RouteResult.Stream(
-                    AgentKind.Clarification,
-                    new AgentTurnContext(Target: last?.Target),
-                    null);
-            }
-
-            case TurnIntent.SummaryRequest:
-                return new RouteResult.Stream(AgentKind.Summary, new AgentTurnContext(), null);
-
-            case TurnIntent.OffTopic:
-            default:
-                return new RouteResult.OffTopic();
+            if (chunk is StreamFailure f) { failure = f; break; }
+            var content = ((StreamToken)chunk).Content;
+            output.Append(content);
+            yield return new TokenChunk(content);
         }
+        if (failure != null)
+            yield return new ErrorChunk(failure.Reason, 500);
     }
 
-    private static bool ShouldAppendSoftCapNudge(TurnIntent intent) =>
-        intent is TurnIntent.Substantive or TurnIntent.Stuck or TurnIntent.SummaryRequest;
+    private FinalChunk CreateFinalChunk(ConversationAttempt attempt, TurnIntent intent, string? summary = null)
+        => new(attempt.Id, attempt.Status, intent, summary, _usageTracker.Total);
 
     private static CompletionRequest BuildRequest(AgentKind kind,
         IReadOnlyList<ConversationTurn> history, ConceptRecord record, AgentTurnContext ctx)
@@ -261,12 +329,5 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
             BuildRequest(AgentKind.ClosingScorer, history, record, ctx), nameof(AgentKind.ClosingScorer), ct);
         if (result.IsFailed) return Result.Fail(result.Errors);
         return result.Value.ToEvaluation(record);
-    }
-
-    private abstract record RouteResult
-    {
-        public sealed record Stream(AgentKind Kind, AgentTurnContext Ctx, ActiveProbe? Probe) : RouteResult;
-        public sealed record OffTopic : RouteResult;
-        public sealed record Transition : RouteResult;
     }
 }
