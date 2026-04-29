@@ -14,7 +14,7 @@ public class ConversationAttempt : AggregateRoot
     public DateTime StartedAt { get; private set; }
     public DateTime? CompletedAt { get; private set; }
     public string? Summary { get; private set; }
-    private List<ConversationTurn> _turns = new();
+    private readonly List<ConversationTurn> _turns = new();
     public IReadOnlyList<ConversationTurn> Turns => _turns.AsReadOnly();
     public int? SoftCapTotalTurns { get; private set; }
     public int? HardCapTotalTurns { get; private set; }
@@ -22,14 +22,14 @@ public class ConversationAttempt : AggregateRoot
 
     private ConversationAttempt() { }
 
-    public ConversationAttempt(int conceptElaborationTaskId, int learnerId, int totalItems)
+    public ConversationAttempt(int conceptElaborationTaskId, int learnerId, int totalTargets)
     {
         ConceptElaborationTaskId = conceptElaborationTaskId;
         LearnerId = learnerId;
         Status = AttemptStatus.InProgress;
         StartedAt = DateTime.UtcNow;
-        HardCapTotalTurns = totalItems + 2;
-        SoftCapTotalTurns = Math.Max(totalItems - 2, 2);
+        HardCapTotalTurns = totalTargets + 4;
+        SoftCapTotalTurns = Math.Max(totalTargets, 3);
     }
 
     public ISet<string> GetArticulatedPropositionKeys()

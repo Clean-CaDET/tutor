@@ -34,14 +34,14 @@ public class ConceptElaborationTaskService : IConceptElaborationTaskService
         return Result.Ok(tasks.Select(t => _mapper.Map<ConceptElaborationTaskDto>(t)).ToList());
     }
 
-    public Result<ConceptElaborationTaskDto> Create(ConceptElaborationTaskDto dto, int instructorId)
+    public Result<ConceptElaborationTaskDto> Create(ConceptElaborationTaskDto task, int instructorId)
     {
-        if (!_accessServices.IsUnitOwner(dto.UnitId, instructorId))
+        if (!_accessServices.IsUnitOwner(task.UnitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        var task = _mapper.Map<ConceptElaborationTask>(dto);
-        task.UnitId = dto.UnitId;
-        var created = _taskRepository.Create(task);
+        var newTask = _mapper.Map<ConceptElaborationTask>(task);
+        newTask.UnitId = task.UnitId;
+        var created = _taskRepository.Create(newTask);
 
         var saveResult = _unitOfWork.Save();
         if (saveResult.IsFailed) return saveResult;
@@ -49,16 +49,16 @@ public class ConceptElaborationTaskService : IConceptElaborationTaskService
         return Result.Ok(_mapper.Map<ConceptElaborationTaskDto>(created));
     }
 
-    public Result<ConceptElaborationTaskDto> Update(ConceptElaborationTaskDto dto, int instructorId)
+    public Result<ConceptElaborationTaskDto> Update(ConceptElaborationTaskDto task, int instructorId)
     {
-        if (!_accessServices.IsUnitOwner(dto.UnitId, instructorId))
+        if (!_accessServices.IsUnitOwner(task.UnitId, instructorId))
             return Result.Fail(FailureCode.Forbidden);
 
-        var existingTask = _taskRepository.GetWithRecord(dto.Id);
-        if (existingTask == null || existingTask.UnitId != dto.UnitId)
+        var existingTask = _taskRepository.GetWithRecord(task.Id);
+        if (existingTask == null || existingTask.UnitId != task.UnitId)
             return Result.Fail(FailureCode.NotFound);
 
-        existingTask.Update(_mapper.Map<ConceptElaborationTask>(dto));
+        existingTask.Update(_mapper.Map<ConceptElaborationTask>(task));
         _taskRepository.Update(existingTask);
 
         var saveResult = _unitOfWork.Save();
