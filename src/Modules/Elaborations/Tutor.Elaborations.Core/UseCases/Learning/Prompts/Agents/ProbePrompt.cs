@@ -8,7 +8,7 @@ public static class ProbePrompt
     public static string Build(ConceptRecord record)
     {
         var sb = new StringBuilder();
-        sb.AppendLine(ConceptRecordRubricSection.Render(record));
+        sb.AppendLine(ConceptRubricSection.Render(record));
 
         sb.AppendLine("# Role");
         sb.AppendLine("You are a Socratic tutoring agent. Speak Serbian.");

@@ -4,7 +4,7 @@ using Tutor.Elaborations.Core.Domain.Conversations;
 
 namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts.Agents;
 
-public class ScorerResponse
+public class ScoreResponse
 {
     public int CorrectnessScore { get; set; }
     public int CompletenessScore { get; set; }

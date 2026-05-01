@@ -4,12 +4,12 @@ using Tutor.Elaborations.Core.Domain.ConceptRecords;
 namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 
 /// <summary>
-/// Renders the concept rubric (definition, KPs, BCs, CMs, KRs) as a markdown block.
+/// Renders the concept rubric (definition, KPs, CMs, KRs) as a markdown block.
 /// Output is byte-stable for a given <see cref="ConceptRecord"/> so the whole block
 /// can live at the top of every agent's system prompt and serve as a shared provider-side cache prefix.
 /// No per-turn state (coverage markers, soft-cap flags, progress) is rendered here.
 /// </summary>
-public static class ConceptRecordRubricSection
+public static class ConceptRubricSection
 {
     public static string Render(ConceptRecord record)
     {
