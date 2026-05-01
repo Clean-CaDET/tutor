@@ -24,6 +24,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
             UnitId = -1,
             Order = 10,
             Title = "New Concept",
+            Description = "A new concept for testing.",
             ConceptRecord = new ConceptRecordDto
             {
                 CanonicalDefinition = "A new concept definition.",
@@ -65,6 +66,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
             UnitId = -1,
             Order = 11,
             Title = "Concept With Relations",
+            Description = "A concept created with KPs and KRs.",
             ConceptRecord = new ConceptRecordDto
             {
                 CanonicalDefinition = "A concept created with KPs and KRs in one request.",
@@ -111,6 +113,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
             UnitId = -1,
             Order = 1,
             Title = "Updated Encapsulation",
+            Description = "Updated description.",
             ConceptRecord = new ConceptRecordDto
             {
                 CanonicalDefinition = "Updated definition.",
@@ -149,6 +152,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
             UnitId = -2,
             Order = 4,
             Title = "Polymorphism Mechanics",
+            Description = "Runtime method dispatch and virtual call mechanics.",
             ConceptRecord = new ConceptRecordDto
             {
                 CanonicalDefinition = "Polymorphism resolves method calls at runtime via dynamic dispatch.",
@@ -201,6 +205,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
             UnitId = -2,
             Order = 4,
             Title = "Polymorphism Mechanics",
+            Description = "Runtime method dispatch and virtual call mechanics.",
             ConceptRecord = new ConceptRecordDto
             {
                 CanonicalDefinition = "Polymorphism resolves method calls at runtime via dynamic dispatch.",
@@ -266,6 +271,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
             UnitId = -3,
             Order = 99,
             Title = "Should Fail",
+            Description = "Should not be created.",
             ConceptRecord = new ConceptRecordDto
             {
                 CanonicalDefinition = "Fail",
@@ -294,6 +300,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
             UnitId = -3,
             Order = 1,
             Title = "Should Fail",
+            Description = "Should not be updated.",
             ConceptRecord = new ConceptRecordDto
             {
                 CanonicalDefinition = "Fail",

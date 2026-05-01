@@ -18,7 +18,7 @@ public class ConversationAttempt : AggregateRoot
     public IReadOnlyList<ConversationTurn> Turns => _turns.AsReadOnly();
     public int? SoftCapTotalTurns { get; private set; }
     public int? HardCapTotalTurns { get; private set; }
-    public int? ClosingTurnCount { get; private set; }
+    public int? TurnCountAtClosingStart { get; private set; }
 
     private ConversationAttempt() { }
 
@@ -88,11 +88,18 @@ public class ConversationAttempt : AggregateRoot
             .ToHashSet();
     }
 
+    public ActiveProbe? GetNextProbe()
+    {
+        var last = GetLastProbe();
+        if (last == null || GetStalledTargets().Contains(last.Target)) return null;
+        return new ActiveProbe(last.Target, GetProbeLevelFor(last.Target));
+    }
+
     public int CountNonSubstantiveClosingTurns()
     {
-        if (ClosingTurnCount == null) return 0;
+        if (TurnCountAtClosingStart == null) return 0;
         return Turns
-            .Skip(ClosingTurnCount.Value)
+            .Skip(TurnCountAtClosingStart.Value)
             .Count(t => t.Role == TurnRole.Learner && t.Intent != TurnIntent.Substantive);
     }
 
@@ -115,7 +122,7 @@ public class ConversationAttempt : AggregateRoot
     {
         AddSystemTurn(closingMessage);
         Status = AttemptStatus.InClosing;
-        ClosingTurnCount = _turns.Count;
+        TurnCountAtClosingStart = _turns.Count;
     }
 
     public void Complete(TurnEvaluation evaluation)

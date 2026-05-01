@@ -1,5 +1,5 @@
 using System.Text;
-using Tutor.Elaborations.Core.Domain.ConceptRecords;
+using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 
 namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts.Agents;
 

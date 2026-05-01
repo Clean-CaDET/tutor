@@ -10,7 +10,6 @@ public sealed record TokenChunk(string Token) : OrchestratorChunk;
 public sealed record FinalChunk(
     int AttemptId,
     AttemptStatus Status,
-    TurnIntent Intent,
     string? Summary,
     TokenUsage Usage) : OrchestratorChunk;
 

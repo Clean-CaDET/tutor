@@ -77,22 +77,8 @@ public class ConversationService : IConversationService
 
     public async IAsyncEnumerable<string> StartConversationAsync(int taskId, string content, int learnerId, [EnumeratorCancellation] CancellationToken ct)
     {
-        var task = _taskRepo.GetWithRecord(taskId);
-        if (task == null) { yield return BuildErrorChunk("Task not found.", 404); yield break; }
-
-        if (!_accessServices.IsEnrolledInUnit(task.UnitId, learnerId))
-        {
-            yield return BuildErrorChunk("Not enrolled in unit.", 403);
-            yield break;
-        }
-
-        var balanceCheck = _tokenSpendingService.HasSufficientBalanceForUnit(
-            learnerId, task.UnitId, content.Length);
-        if (balanceCheck.IsFailed)
-        {
-            yield return BuildErrorChunk("Insufficient token balance. Contact your administrator.", 402);
-            yield break;
-        }
+        var (task, taskError) = ValidateTaskAccess(taskId, learnerId, content);
+        if (taskError != null) { yield return taskError; yield break; }
 
         var existing = _attemptRepo.GetActiveAttempt(taskId, learnerId);
         if (existing != null)
@@ -124,24 +110,10 @@ public class ConversationService : IConversationService
         if (attempt.LearnerId != learnerId) { yield return BuildErrorChunk("Access denied.", 403); yield break; }
         if (attempt.Status is not (AttemptStatus.InProgress or AttemptStatus.InClosing)) { yield return BuildErrorChunk("Conversation is no longer active.", 409); yield break; }
 
-        var task = _taskRepo.GetWithRecord(attempt.ConceptElaborationTaskId);
-        if (task == null) { yield return BuildErrorChunk("Task not found.", 404); yield break; }
+        var (task, taskError) = ValidateTaskAccess(attempt.ConceptElaborationTaskId, learnerId, content);
+        if (taskError != null) { yield return taskError; yield break; }
 
-        if (!_accessServices.IsEnrolledInUnit(task.UnitId, learnerId))
-        {
-            yield return BuildErrorChunk("Not enrolled in unit.", 403);
-            yield break;
-        }
-
-        var balanceCheck = _tokenSpendingService.HasSufficientBalanceForUnit(
-            learnerId, task.UnitId, content.Length);
-        if (balanceCheck.IsFailed)
-        {
-            yield return BuildErrorChunk("Insufficient token balance. Contact your administrator.", 402);
-            yield break;
-        }
-
-        await foreach (var token in RunTurnPipelineAsync(attempt, task, content, ct))
+        await foreach (var token in RunTurnPipelineAsync(attempt, task!, content, ct))
             yield return token;
     }
 
@@ -198,6 +170,18 @@ public class ConversationService : IConversationService
                     yield break;
             }
         }
+    }
+
+    private (ConceptElaborationTask? Task, string? Error) ValidateTaskAccess(int taskId, int learnerId, string content)
+    {
+        var task = _taskRepo.GetWithRecord(taskId);
+        if (task == null) return (null, BuildErrorChunk("Task not found.", 404));
+        if (!_accessServices.IsEnrolledInUnit(task.UnitId, learnerId))
+            return (null, BuildErrorChunk("Not enrolled in unit.", 403));
+        var balanceCheck = _tokenSpendingService.HasSufficientBalanceForUnit(learnerId, task.UnitId, content.Length);
+        if (balanceCheck.IsFailed)
+            return (null, BuildErrorChunk("Insufficient token balance. Contact your administrator.", 402));
+        return (task, null);
     }
 
     private static string BuildErrorChunk(string message, int code, int? attemptId = null)

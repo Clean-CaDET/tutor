@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using Tutor.BuildingBlocks.Core.Domain;
 
-namespace Tutor.Elaborations.Core.Domain.ConceptRecords;
+namespace Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 
 public class KeyProposition : ValueObject
 {

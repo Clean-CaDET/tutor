@@ -1,7 +1,6 @@
 using AutoMapper;
 using Tutor.Elaborations.API.Dtos.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
-using Tutor.Elaborations.Core.Domain.ConceptRecords;
 
 namespace Tutor.Elaborations.Core.Mappers;
 

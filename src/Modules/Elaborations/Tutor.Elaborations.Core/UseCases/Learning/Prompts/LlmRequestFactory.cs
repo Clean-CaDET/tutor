@@ -1,6 +1,6 @@
 using System.Text;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
-using Tutor.Elaborations.Core.Domain.ConceptRecords;
+using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
 using Tutor.Elaborations.Core.UseCases.Learning.Prompts.Agents;
 
@@ -8,21 +8,24 @@ namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 
 public static class LlmRequestFactory
 {
-    public static CompletionRequest ForProbing(IReadOnlyList<ConversationTurn> turns, ConceptRecord record, ActiveProbe probe)
+    public static CompletionRequest ForProbing(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
+        ActiveProbe probe)
     {
         var messages = ToMessages(turns);
         messages.Add(ChatMessage.FromUser(RenderProbe(probe)));
         return CompletionRequest.Create(messages, ProbePrompt.Build(record), maxTokens: 256, temperature: 0.7);
     }
 
-    public static CompletionRequest ForScaffolding(IReadOnlyList<ConversationTurn> turns, ConceptRecord record, ActiveProbe probe)
+    public static CompletionRequest ForScaffolding(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
+        ActiveProbe probe)
     {
         var messages = ToMessages(turns);
         messages.Add(ChatMessage.FromUser(RenderProbe(probe)));
         return CompletionRequest.Create(messages, ScaffoldingPrompt.Build(record), maxTokens: 512, temperature: 0.7);
     }
 
-    public static CompletionRequest ForClarification(IReadOnlyList<ConversationTurn> turns, ConceptRecord record, ActiveProbe? lastProbe)
+    public static CompletionRequest ForClarification(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
+        ActiveProbe? lastProbe)
     {
         var messages = ToMessages(turns);
         if (lastProbe != null)
@@ -30,33 +33,37 @@ public static class LlmRequestFactory
         return CompletionRequest.Create(messages, ClarificationPrompt.Build(record), maxTokens: 256, temperature: 0.5);
     }
 
-    public static CompletionRequest ForCritique(IReadOnlyList<ConversationTurn> turns, ConceptRecord record, TurnEvaluation evaluation)
+    public static CompletionRequest ForCritique(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
+        TurnEvaluation evaluation)
     {
         var messages = ToMessages(turns);
         messages.Add(ChatMessage.FromUser(RenderEvaluation(evaluation)));
         return CompletionRequest.Create(messages, CritiquePrompt.Build(record), maxTokens: 512, temperature: 0.7);
     }
 
-    public static CompletionRequest ForSummary(IReadOnlyList<ConversationTurn> turns, ConceptRecord record)
+    public static CompletionRequest ForSummary(ConceptRecord record, IReadOnlyList<ConversationTurn> turns)
     {
         return CompletionRequest.Create(ToMessages(turns), SummaryPrompt.Build(record), maxTokens: 256, temperature: 0.5);
     }
 
-    public static CompletionRequest ForIntentClassification(IReadOnlyList<ConversationTurn> turns, ConceptRecord record, string message)
+    public static CompletionRequest ForIntentClassification(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
+        string message)
     {
         var messages = ToMessages(turns, 6);
         messages.Add(ChatMessage.FromUser($"<current-learner-message>{message}</current-learner-message>"));
         return CompletionRequest.Create(messages, IntentPrompt.Build(record), maxTokens: 64, temperature: 0.0);
     }
 
-    public static CompletionRequest ForTurnScoring(IReadOnlyList<ConversationTurn> turns, ConceptRecord record, string message)
+    public static CompletionRequest ForTurnScoring(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
+        string message)
     {
         var messages = ToMessages(turns);
         messages.Add(ChatMessage.FromUser($"<current-learner-message>{message}</current-learner-message>"));
         return CompletionRequest.Create(messages, ScoreTurnPrompt.Build(record), maxTokens: 1024, temperature: 0.0);
     }
 
-    public static CompletionRequest ForClosingScoring(IReadOnlyList<ConversationTurn> turns, ConceptRecord record, string message)
+    public static CompletionRequest ForClosingScoring(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
+        string message)
     {
         var messages = ToMessages(turns);
         messages.Add(ChatMessage.FromUser($"<current-learner-message>{message}</current-learner-message>"));

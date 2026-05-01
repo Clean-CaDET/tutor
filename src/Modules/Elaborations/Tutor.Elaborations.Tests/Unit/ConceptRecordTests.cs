@@ -1,6 +1,6 @@
 using System.Reflection;
 using Shouldly;
-using Tutor.Elaborations.Core.Domain.ConceptRecords;
+using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
 
 namespace Tutor.Elaborations.Tests.Unit;

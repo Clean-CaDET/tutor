@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using Tutor.BuildingBlocks.AI.Core.Agents;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
-using Tutor.Elaborations.Core.Domain.ConceptRecords;
+using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
 using Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 using Tutor.Elaborations.Core.UseCases.Learning.Prompts.Agents;
@@ -75,7 +75,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
         {
             attempt.TransitionToClosing(SystemTurnCodes.InClosingTransition);
             yield return new TokenChunk(SystemTurnCodes.InClosingTransition);
-            yield return CreateFinalChunk(attempt, intent);
+            yield return CreateFinalChunk(attempt);
             yield break;
         }
 
@@ -100,7 +100,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
 
         if (evaluation.HasMultipleConcerns)
         {
-            request = LlmRequestFactory.ForCritique(attempt.Turns, record, evaluation);
+            request = LlmRequestFactory.ForCritique(record, attempt.Turns, evaluation);
             label = "Critique";
         }
         else
@@ -110,15 +110,15 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
             {
                 attempt.TransitionToClosing(SystemTurnCodes.InClosingTransition);
                 yield return new TokenChunk(SystemTurnCodes.InClosingTransition);
-                yield return CreateFinalChunk(attempt, TurnIntent.Substantive);
+                yield return CreateFinalChunk(attempt);
                 yield break;
             }
             var level = attempt.GetProbeLevelFor(next);
             probe = new ActiveProbe(next, level);
             var isScaffolding = attempt.IsScaffolding(level);
             request = isScaffolding
-                ? LlmRequestFactory.ForScaffolding(attempt.Turns, record, probe)
-                : LlmRequestFactory.ForProbing(attempt.Turns, record, probe);
+                ? LlmRequestFactory.ForScaffolding(record, attempt.Turns, probe)
+                : LlmRequestFactory.ForProbing(record, attempt.Turns, probe);
             label = isScaffolding ? "Scaffolding" : "Probing";
         }
 
@@ -136,35 +136,24 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
         }
 
         attempt.AddSystemTurn(fullResponse.ToString(), probe);
-        yield return CreateFinalChunk(attempt, TurnIntent.Substantive);
+        yield return CreateFinalChunk(attempt);
     }
 
     private async IAsyncEnumerable<OrchestratorChunk> HandleStuckAsync(ConceptRecord record,
         ConversationAttempt attempt, [EnumeratorCancellation] CancellationToken ct)
     {
-        string? stuckTarget = attempt.GetLastProbe()?.Target;
-        int ladderLevel;
+        var probe = GetNextProbe(record, attempt);
 
-        if (stuckTarget == null || attempt.GetStalledTargets().Contains(stuckTarget))
+        if (probe == null)
         {
-            stuckTarget = record.PickNextTarget(attempt);
-            if (stuckTarget == null)
-            {
-                attempt.TransitionToClosing(SystemTurnCodes.InClosingTransition);
-                yield return new TokenChunk(SystemTurnCodes.InClosingTransition);
-                yield return CreateFinalChunk(attempt, TurnIntent.Stuck);
-                yield break;
-            }
-            ladderLevel = attempt.FirstScaffoldLadderLevel;
-        }
-        else
-        {
-            ladderLevel = attempt.GetProbeLevelFor(stuckTarget);
+            attempt.TransitionToClosing(SystemTurnCodes.InClosingTransition);
+            yield return new TokenChunk(SystemTurnCodes.InClosingTransition);
+            yield return CreateFinalChunk(attempt);
+            yield break;
         }
 
-        var probe = new ActiveProbe(stuckTarget, ladderLevel);
         var fullResponse = new StringBuilder();
-        await foreach (var chunk in StreamAgentAsync(LlmRequestFactory.ForScaffolding(attempt.Turns, record, probe), "Scaffolding", fullResponse, ct))
+        await foreach (var chunk in StreamAgentAsync(LlmRequestFactory.ForScaffolding(record, attempt.Turns, probe), "Scaffolding", fullResponse, ct))
         {
             yield return chunk;
             if (chunk is ErrorChunk) yield break;
@@ -177,14 +166,22 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
         }
 
         attempt.AddSystemTurn(fullResponse.ToString(), probe);
-        yield return CreateFinalChunk(attempt, TurnIntent.Stuck);
+        yield return CreateFinalChunk(attempt);
+    }
+
+    private static ActiveProbe? GetNextProbe(ConceptRecord record, ConversationAttempt attempt)
+    {
+        var nextProbe = attempt.GetNextProbe();
+        if (nextProbe != null) return nextProbe;
+        var nextTarget = record.PickNextTarget(attempt);
+        return nextTarget == null ? null : new ActiveProbe(nextTarget, attempt.FirstScaffoldLadderLevel);
     }
 
     private async IAsyncEnumerable<OrchestratorChunk> HandleClarificationAsync(ConceptRecord record,
         ConversationAttempt attempt, [EnumeratorCancellation] CancellationToken ct)
     {
         var fullResponse = new StringBuilder();
-        await foreach (var chunk in StreamAgentAsync(LlmRequestFactory.ForClarification(attempt.Turns, record, attempt.GetLastProbe()), "Clarification", fullResponse, ct))
+        await foreach (var chunk in StreamAgentAsync(LlmRequestFactory.ForClarification(record, attempt.Turns, attempt.GetLastProbe()), "Clarification", fullResponse, ct))
         {
             yield return chunk;
             if (chunk is ErrorChunk) yield break;
@@ -197,14 +194,14 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
         }
 
         attempt.AddSystemTurn(fullResponse.ToString());
-        yield return CreateFinalChunk(attempt, TurnIntent.Clarification);
+        yield return CreateFinalChunk(attempt);
     }
 
     private async IAsyncEnumerable<OrchestratorChunk> HandleSummaryRequestAsync(ConceptRecord record,
         ConversationAttempt attempt, [EnumeratorCancellation] CancellationToken ct)
     {
         var fullResponse = new StringBuilder();
-        await foreach (var chunk in StreamAgentAsync(LlmRequestFactory.ForSummary(attempt.Turns, record), "Summary", fullResponse, ct))
+        await foreach (var chunk in StreamAgentAsync(LlmRequestFactory.ForSummary(record, attempt.Turns), "Summary", fullResponse, ct))
         {
             yield return chunk;
             if (chunk is ErrorChunk) yield break;
@@ -217,7 +214,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
         }
 
         attempt.AddSystemTurn(fullResponse.ToString());
-        yield return CreateFinalChunk(attempt, TurnIntent.SummaryRequest);
+        yield return CreateFinalChunk(attempt);
     }
 
     private async IAsyncEnumerable<OrchestratorChunk> HandleOffTopicAsync(ConversationAttempt attempt)
@@ -232,7 +229,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
         }
 
         attempt.AddSystemTurn(fullResponse.ToString());
-        yield return CreateFinalChunk(attempt, TurnIntent.OffTopic);
+        yield return CreateFinalChunk(attempt);
     }
 
     private async IAsyncEnumerable<OrchestratorChunk> HandleClosingTurnAsync(ConceptRecord record,
@@ -249,7 +246,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
             attempt.AddLearnerTurn(newMessage, intent, scoreResult.Value);
             attempt.Complete(scoreResult.Value);
             yield return new TokenChunk(attempt.Summary!);
-            yield return CreateFinalChunk(attempt, intent, attempt.Summary);
+            yield return CreateFinalChunk(attempt, attempt.Summary);
             yield break;
         }
 
@@ -259,18 +256,17 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
         {
             attempt.Expire(SystemTurnCodes.ExpiredNotice);
             yield return new TokenChunk(SystemTurnCodes.ExpiredNotice);
-            yield return CreateFinalChunk(attempt, intent);
+            yield return CreateFinalChunk(attempt);
             yield break;
         }
 
         attempt.AddSystemTurn(SystemTurnCodes.NonSubstantiveInClosingNudge);
         yield return new TokenChunk(SystemTurnCodes.NonSubstantiveInClosingNudge);
-        yield return CreateFinalChunk(attempt, intent);
+        yield return CreateFinalChunk(attempt);
     }
 
-    private async IAsyncEnumerable<OrchestratorChunk> StreamAgentAsync(
-        CompletionRequest request, string label,
-        StringBuilder output, [EnumeratorCancellation] CancellationToken ct)
+    private async IAsyncEnumerable<OrchestratorChunk> StreamAgentAsync(CompletionRequest request,
+        string label, StringBuilder output, [EnumeratorCancellation] CancellationToken ct)
     {
         StreamFailure? failure = null;
         await foreach (var chunk in StreamAsync(request, label, ct))
@@ -284,14 +280,14 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
             yield return new ErrorChunk(failure.Reason, 500);
     }
 
-    private FinalChunk CreateFinalChunk(ConversationAttempt attempt, TurnIntent intent, string? summary = null)
-        => new(attempt.Id, attempt.Status, intent, summary, _usageTracker.Total);
+    private FinalChunk CreateFinalChunk(ConversationAttempt attempt, string? summary = null)
+        => new(attempt.Id, attempt.Status, summary, _usageTracker.Total);
 
     private async Task<Result<TurnIntent>> ClassifyIntentAsync(ConceptRecord record,
         IReadOnlyList<ConversationTurn> history, string newMessage, CancellationToken ct)
     {
         var result = await CompleteJsonAsync<IntentResponse>(
-            LlmRequestFactory.ForIntentClassification(history, record, newMessage), "IntentClassification", ct);
+            LlmRequestFactory.ForIntentClassification(record, history, newMessage), "IntentClassification", ct);
         if (result.IsFailed) return Result.Fail<TurnIntent>(result.Errors);
         return Enum.TryParse<TurnIntent>(result.Value.Intent, ignoreCase: true, out var intent)
             ? intent
@@ -302,7 +298,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
         IReadOnlyList<ConversationTurn> history, string newMessage, CancellationToken ct)
     {
         var result = await CompleteJsonAsync<ScoreResponse>(
-            LlmRequestFactory.ForTurnScoring(history, record, newMessage), "TurnScoring", ct);
+            LlmRequestFactory.ForTurnScoring(record, history, newMessage), "TurnScoring", ct);
         if (result.IsFailed) return Result.Fail(result.Errors);
         return result.Value.ToEvaluation(record);
     }
@@ -311,7 +307,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
         IReadOnlyList<ConversationTurn> history, string newMessage, CancellationToken ct)
     {
         var result = await CompleteJsonAsync<ScoreResponse>(
-            LlmRequestFactory.ForClosingScoring(history, record, newMessage), "ClosingScoring", ct);
+            LlmRequestFactory.ForClosingScoring(record, history, newMessage), "ClosingScoring", ct);
         if (result.IsFailed) return Result.Fail(result.Errors);
         return result.Value.ToEvaluation(record);
     }

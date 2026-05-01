@@ -1,7 +1,7 @@
 using Tutor.BuildingBlocks.Core.Domain;
 using Tutor.Elaborations.Core.Domain.Conversations;
 
-namespace Tutor.Elaborations.Core.Domain.ConceptRecords;
+namespace Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 
 public class ConceptRecord : Entity
 {
