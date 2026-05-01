@@ -42,15 +42,16 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
         }
         var intent = intentResult.Value;
 
-        if (attempt.Status == AttemptStatus.InClosing)
+        if (attempt.Status == AttemptStatus.InProgress)
+        {
+            await foreach (var chunk in HandleProgressTurnAsync(record, attempt, newMessage, intent, ct))
+                yield return chunk;
+        }
+        else if(attempt.Status == AttemptStatus.InClosing)
         {
             await foreach (var chunk in HandleClosingTurnAsync(record, attempt, newMessage, intent, ct))
                 yield return chunk;
-            yield break;
         }
-
-        await foreach (var chunk in HandleProgressTurnAsync(record, attempt, newMessage, intent, ct))
-            yield return chunk;
     }
 
     private async IAsyncEnumerable<OrchestratorChunk> HandleProgressTurnAsync(ConceptRecord record,
@@ -72,8 +73,8 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
 
         if (record.IsAttemptComplete(attempt) || attempt.IsHardCapReached())
         {
-            attempt.TransitionToClosing(ElaborationTexts.InClosingTransition);
-            yield return new TokenChunk(ElaborationTexts.InClosingTransition);
+            attempt.TransitionToClosing(SystemTurnCodes.InClosingTransition);
+            yield return new TokenChunk(SystemTurnCodes.InClosingTransition);
             yield return CreateFinalChunk(attempt, intent);
             yield break;
         }
@@ -84,7 +85,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
             TurnIntent.Stuck          => HandleStuckAsync(record, attempt, ct),
             TurnIntent.Clarification  => HandleClarificationAsync(record, attempt, ct),
             TurnIntent.SummaryRequest => HandleSummaryRequestAsync(record, attempt, ct),
-            _                         => HandleOffTopicAsync(attempt, ct)
+            _                         => HandleOffTopicAsync(attempt)
         };
         await foreach (var chunk in handler.WithCancellation(ct))
             yield return chunk;
@@ -108,8 +109,8 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
             var next = record.PickNextTarget(attempt);
             if (next == null)
             {
-                attempt.TransitionToClosing(ElaborationTexts.InClosingTransition);
-                yield return new TokenChunk(ElaborationTexts.InClosingTransition);
+                attempt.TransitionToClosing(SystemTurnCodes.InClosingTransition);
+                yield return new TokenChunk(SystemTurnCodes.InClosingTransition);
                 yield return CreateFinalChunk(attempt, TurnIntent.Substantive);
                 yield break;
             }
@@ -128,8 +129,8 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
 
         if (attempt.IsSoftCapReached())
         {
-            fullResponse.Append(ElaborationTexts.SoftCapNudge);
-            yield return new TokenChunk(ElaborationTexts.SoftCapNudge);
+            fullResponse.Append(SystemTurnCodes.SoftCapNudge);
+            yield return new TokenChunk(SystemTurnCodes.SoftCapNudge);
         }
 
         attempt.AddSystemTurn(fullResponse.ToString(), probe);
@@ -147,8 +148,8 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
             stuckTarget = record.PickNextTarget(attempt);
             if (stuckTarget == null)
             {
-                attempt.TransitionToClosing(ElaborationTexts.InClosingTransition);
-                yield return new TokenChunk(ElaborationTexts.InClosingTransition);
+                attempt.TransitionToClosing(SystemTurnCodes.InClosingTransition);
+                yield return new TokenChunk(SystemTurnCodes.InClosingTransition);
                 yield return CreateFinalChunk(attempt, TurnIntent.Stuck);
                 yield break;
             }
@@ -170,8 +171,8 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
 
         if (attempt.IsSoftCapReached())
         {
-            fullResponse.Append(ElaborationTexts.SoftCapNudge);
-            yield return new TokenChunk(ElaborationTexts.SoftCapNudge);
+            fullResponse.Append(SystemTurnCodes.SoftCapNudge);
+            yield return new TokenChunk(SystemTurnCodes.SoftCapNudge);
         }
 
         attempt.AddSystemTurn(fullResponse.ToString(), probe);
@@ -191,8 +192,8 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
 
         if (attempt.IsSoftCapReached())
         {
-            fullResponse.Append(ElaborationTexts.SoftCapNudge);
-            yield return new TokenChunk(ElaborationTexts.SoftCapNudge);
+            fullResponse.Append(SystemTurnCodes.SoftCapNudge);
+            yield return new TokenChunk(SystemTurnCodes.SoftCapNudge);
         }
 
         attempt.AddSystemTurn(fullResponse.ToString());
@@ -211,24 +212,23 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
 
         if (attempt.IsSoftCapReached())
         {
-            fullResponse.Append(ElaborationTexts.SoftCapNudge);
-            yield return new TokenChunk(ElaborationTexts.SoftCapNudge);
+            fullResponse.Append(SystemTurnCodes.SoftCapNudge);
+            yield return new TokenChunk(SystemTurnCodes.SoftCapNudge);
         }
 
         attempt.AddSystemTurn(fullResponse.ToString());
         yield return CreateFinalChunk(attempt, TurnIntent.SummaryRequest);
     }
 
-    private async IAsyncEnumerable<OrchestratorChunk> HandleOffTopicAsync(
-        ConversationAttempt attempt, [EnumeratorCancellation] CancellationToken ct)
+    private async IAsyncEnumerable<OrchestratorChunk> HandleOffTopicAsync(ConversationAttempt attempt)
     {
-        var fullResponse = new StringBuilder(ElaborationTexts.OffTopic);
-        yield return new TokenChunk(ElaborationTexts.OffTopic);
+        var fullResponse = new StringBuilder(SystemTurnCodes.OffTopic);
+        yield return new TokenChunk(SystemTurnCodes.OffTopic);
 
         if (attempt.IsSoftCapReached())
         {
-            fullResponse.Append(ElaborationTexts.SoftCapNudge);
-            yield return new TokenChunk(ElaborationTexts.SoftCapNudge);
+            fullResponse.Append(SystemTurnCodes.SoftCapNudge);
+            yield return new TokenChunk(SystemTurnCodes.SoftCapNudge);
         }
 
         attempt.AddSystemTurn(fullResponse.ToString());
@@ -253,19 +253,18 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
             yield break;
         }
 
-        attempt.AddLearnerTurn(newMessage, intent, null);
+        attempt.AddLearnerTurn(newMessage, intent);
 
         if (attempt.CountNonSubstantiveClosingTurns() >= MaxNonSubstantiveClosingTurns)
         {
-            attempt.AddSystemTurn(ElaborationTexts.ExpiredNotice);
-            attempt.Expire(summary: null);
-            yield return new TokenChunk(ElaborationTexts.ExpiredNotice);
+            attempt.Expire(SystemTurnCodes.ExpiredNotice);
+            yield return new TokenChunk(SystemTurnCodes.ExpiredNotice);
             yield return CreateFinalChunk(attempt, intent);
             yield break;
         }
 
-        attempt.AddSystemTurn(ElaborationTexts.NonSubstantiveInClosingNudge);
-        yield return new TokenChunk(ElaborationTexts.NonSubstantiveInClosingNudge);
+        attempt.AddSystemTurn(SystemTurnCodes.NonSubstantiveInClosingNudge);
+        yield return new TokenChunk(SystemTurnCodes.NonSubstantiveInClosingNudge);
         yield return CreateFinalChunk(attempt, intent);
     }
 

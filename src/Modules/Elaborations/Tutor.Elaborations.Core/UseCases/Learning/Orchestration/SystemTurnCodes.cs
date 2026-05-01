@@ -1,6 +1,6 @@
 namespace Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 
-public static class ElaborationTexts
+public static class SystemTurnCodes
 {
     public const string SoftCapNudge = "SOFT_CAP";
     public const string InClosingTransition = "CLOSING_TRANSITION";

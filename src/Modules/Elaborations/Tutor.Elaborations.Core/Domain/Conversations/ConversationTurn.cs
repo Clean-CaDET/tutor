@@ -15,11 +15,12 @@ public class ConversationTurn : Entity
 
     private ConversationTurn() { }
 
-    internal ConversationTurn(
-        TurnRole role, string content, int order,
+    internal ConversationTurn(TurnRole role, string content, int order,
         TurnIntent? intent = null, TurnEvaluation? evaluation = null,
         ActiveProbe? probe = null)
     {
+        if(role == TurnRole.Learner && intent == TurnIntent.Substantive && evaluation == null)
+            throw new ArgumentException("Substantive learner turns must have an evaluation.");
         Role = role;
         Content = content;
         Order = order;

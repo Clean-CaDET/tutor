@@ -96,7 +96,7 @@ public class ConversationAttempt : AggregateRoot
             .Count(t => t.Role == TurnRole.Learner && t.Intent != TurnIntent.Substantive);
     }
 
-    public ConversationTurn AddLearnerTurn(string content, TurnIntent intent, TurnEvaluation? evaluation)
+    public ConversationTurn AddLearnerTurn(string content, TurnIntent intent, TurnEvaluation? evaluation = null)
     {
         var turn = new ConversationTurn(TurnRole.Learner, content, _turns.Count, intent, evaluation);
         _turns.Add(turn);
@@ -133,8 +133,9 @@ public class ConversationAttempt : AggregateRoot
         CompletedAt = DateTime.UtcNow;
     }
 
-    public void Expire(string? summary)
+    public void Expire(string summary)
     {
+        AddSystemTurn(summary);
         Status = AttemptStatus.Expired;
         CompletedAt = DateTime.UtcNow;
         Summary = summary;

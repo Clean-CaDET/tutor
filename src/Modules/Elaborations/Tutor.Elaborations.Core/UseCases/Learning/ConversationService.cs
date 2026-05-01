@@ -122,8 +122,7 @@ public class ConversationService : IConversationService
         var attempt = _attemptRepo.Get(attemptId);
         if (attempt == null) { yield return BuildErrorChunk("Attempt not found.", 404); yield break; }
         if (attempt.LearnerId != learnerId) { yield return BuildErrorChunk("Access denied.", 403); yield break; }
-        if (attempt.Status is not (AttemptStatus.InProgress or AttemptStatus.InClosing))
-        { yield return BuildErrorChunk("Conversation is no longer active.", 409); yield break; }
+        if (attempt.Status is not (AttemptStatus.InProgress or AttemptStatus.InClosing)) { yield return BuildErrorChunk("Conversation is no longer active.", 409); yield break; }
 
         var task = _taskRepo.GetWithRecord(attempt.ConceptElaborationTaskId);
         if (task == null) { yield return BuildErrorChunk("Task not found.", 404); yield break; }
