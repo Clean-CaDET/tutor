@@ -1,4 +1,4 @@
-namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts.Agents;
+namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 
 public class IntentResponse
 {

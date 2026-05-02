@@ -2,7 +2,7 @@ using FluentResults;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
 
-namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts.Agents;
+namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 
 public class ScoreResponse
 {
@@ -22,18 +22,24 @@ public class ScoreResponse
         if (CompletenessScore is < 0 or > 5) return Result.Fail("Completeness out of range.");
         if (IntegrationScore is not null and (< 0 or > 5)) return Result.Fail("Integration out of range.");
 
+        if (!KeysExist(record)) return Result.Fail("Unknown keys found.");
+
+        return CreateEvaluation();
+    }
+
+    private bool KeysExist(ConceptRecord record)
+    {
         var validKpKeys = record.KeyPropositions.Select(kp => kp.Key).ToHashSet();
         var validKrKeys = record.KeyRelations.Select(kr => kr.Key).ToHashSet();
         var validCmKeys = record.CommonMisconceptions.Select(cm => cm.Key).ToHashSet();
 
         if (PropositionsCoveredKeys?.Any(k => !validKpKeys.Contains(k)) == true)
-            return Result.Fail("Unknown proposition key.");
+            return false;
         if (RelationsArticulatedKeys?.Any(k => !validKrKeys.Contains(k)) == true)
-            return Result.Fail("Unknown relation key.");
+            return false;
         if (MisconceptionsTriggeredKeys?.Any(k => !validCmKeys.Contains(k)) == true)
-            return Result.Fail("Unknown misconception key.");
-
-        return CreateEvaluation();
+            return false;
+        return true;
     }
 
     private TurnEvaluation CreateEvaluation()

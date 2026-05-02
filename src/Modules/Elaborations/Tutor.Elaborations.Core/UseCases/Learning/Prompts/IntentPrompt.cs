@@ -1,7 +1,7 @@
 using System.Text;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 
-namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts.Agents;
+namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 
 public static class IntentPrompt
 {

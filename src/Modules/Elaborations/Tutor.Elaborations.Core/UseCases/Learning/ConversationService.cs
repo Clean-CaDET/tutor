@@ -95,7 +95,7 @@ public class ConversationService : IConversationService
             yield break;
         }
 
-        var attempt = new ConversationAttempt(taskId, learnerId, task.ConceptRecord!.CountPropositionsAndRelations());
+        var attempt = new ConversationAttempt(taskId, learnerId, task!.ConceptRecord!.CountPropositionsAndRelations());
         _attemptRepo.Create(attempt);
         _unitOfWork.Save();
 

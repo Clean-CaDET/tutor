@@ -2,7 +2,6 @@ using System.Text;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
-using Tutor.Elaborations.Core.UseCases.Learning.Prompts.Agents;
 
 namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 
@@ -59,15 +58,13 @@ public static class LlmRequestFactory
     {
         var messages = ToMessages(turns);
         messages.Add(ChatMessage.FromUser($"<current-learner-message>{message}</current-learner-message>"));
-        return CompletionRequest.Create(messages, ScoreTurnPrompt.Build(record), maxTokens: 1024, temperature: 0.0);
+        return CompletionRequest.Create(messages, ScorePrompt.Build(record), maxTokens: 1024, temperature: 0.0);
     }
 
-    public static CompletionRequest ForClosingScoring(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
-        string message)
+    public static CompletionRequest ForClosingScoring(ConceptRecord record, string message)
     {
-        var messages = ToMessages(turns);
-        messages.Add(ChatMessage.FromUser($"<current-learner-message>{message}</current-learner-message>"));
-        return CompletionRequest.Create(messages, ScoreClosingPrompt.Build(record), maxTokens: 1024, temperature: 0.0);
+        var messages = new List<ChatMessage> { ChatMessage.FromUser($"<current-learner-message>{message}</current-learner-message>") };
+        return CompletionRequest.Create(messages, ScorePrompt.Build(record), maxTokens: 1024, temperature: 0.0);
     }
 
     private static List<ChatMessage> ToMessages(IEnumerable<ConversationTurn> turns, int? lastN = null)

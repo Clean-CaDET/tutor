@@ -7,7 +7,6 @@ using Tutor.BuildingBlocks.AI.Core.Conversations;
 using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 using Tutor.Elaborations.Core.Domain.Conversations;
 using Tutor.Elaborations.Core.UseCases.Learning.Prompts;
-using Tutor.Elaborations.Core.UseCases.Learning.Prompts.Agents;
 
 namespace Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 
@@ -217,7 +216,9 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
         yield return CreateFinalChunk(attempt);
     }
 
+    #pragma warning disable CS1998
     private async IAsyncEnumerable<OrchestratorChunk> HandleOffTopicAsync(ConversationAttempt attempt)
+    #pragma warning restore CS1998
     {
         var fullResponse = new StringBuilder(SystemTurnCodes.OffTopic);
         yield return new TokenChunk(SystemTurnCodes.OffTopic);
@@ -237,7 +238,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
     {
         if (intent == TurnIntent.Substantive)
         {
-            var scoreResult = await ScoreClosingAsync(record, attempt.Turns, newMessage, ct);
+            var scoreResult = await ScoreClosingAsync(record, newMessage, ct);
             if (scoreResult.IsFailed)
             {
                 yield return new ErrorChunk("Closing scoring failed.", 500);
@@ -304,10 +305,10 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
     }
 
     private async Task<Result<TurnEvaluation>> ScoreClosingAsync(ConceptRecord record,
-        IReadOnlyList<ConversationTurn> history, string newMessage, CancellationToken ct)
+        string newMessage, CancellationToken ct)
     {
         var result = await CompleteJsonAsync<ScoreResponse>(
-            LlmRequestFactory.ForClosingScoring(record, history, newMessage), "ClosingScoring", ct);
+            LlmRequestFactory.ForClosingScoring(record, newMessage), "ClosingScoring", ct);
         if (result.IsFailed) return Result.Fail(result.Errors);
         return result.Value.ToEvaluation(record);
     }
