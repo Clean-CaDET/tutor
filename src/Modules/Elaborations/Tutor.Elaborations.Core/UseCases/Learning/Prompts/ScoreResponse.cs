@@ -20,7 +20,7 @@ public class ScoreResponse
     {
         if (CorrectnessScore is < 0 or > 5) return Result.Fail("Correctness out of range.");
         if (CompletenessScore is < 0 or > 5) return Result.Fail("Completeness out of range.");
-        if (IntegrationScore is not null and (< 0 or > 5)) return Result.Fail("Integration out of range.");
+        if (IntegrationScore is < 0 or > 5) return Result.Fail("Integration out of range.");
 
         if (!KeysExist(record)) return Result.Fail("Unknown keys found.");
 

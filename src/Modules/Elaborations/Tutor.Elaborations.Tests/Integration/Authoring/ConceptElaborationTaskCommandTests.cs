@@ -50,6 +50,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
         result.Title.ShouldBe(newEntity.Title);
         result.UnitId.ShouldBe(-1);
         result.Order.ShouldBe(10);
+        result.ConceptRecord.ShouldNotBeNull();
         result.ConceptRecord.KeyPropositions.Count.ShouldBe(2);
         result.ConceptRecord.CommonMisconceptions.Count.ShouldBe(1);
         result.ConceptRecord.KeyRelations.Count.ShouldBe(0);
@@ -94,6 +95,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
+        result.ConceptRecord.ShouldNotBeNull();
         result.ConceptRecord.KeyPropositions.Count.ShouldBe(2);
         result.ConceptRecord.KeyRelations.Count.ShouldBe(1);
         result.ConceptRecord.KeyRelations[0].Mechanism.ShouldBe("First enables second");
@@ -135,6 +137,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);
         result.Title.ShouldBe("Updated Encapsulation");
+        result.ConceptRecord.ShouldNotBeNull();
         result.ConceptRecord.KeyPropositions.Count.ShouldBe(1);
         result.ConceptRecord.KeyPropositions[0].Statement.ShouldBe("Updated proposition");
     }
@@ -186,6 +189,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
+        result.ConceptRecord.ShouldNotBeNull();
         result.ConceptRecord.KeyPropositions.Count.ShouldBe(3);
         result.ConceptRecord.KeyRelations.Count.ShouldBe(2);
         result.ConceptRecord.KeyRelations.ShouldContain(kr => kr.Mechanism.Contains("dispatch happens at runtime"));
@@ -225,6 +229,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
 
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
+        result.ConceptRecord.ShouldNotBeNull();
         result.ConceptRecord.KeyPropositions.Count.ShouldBe(1);
         result.ConceptRecord.KeyRelations.Count.ShouldBe(0);
     }
