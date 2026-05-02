@@ -9,6 +9,6 @@ public class ConceptElaborationTaskDto
     public int Order { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public ConceptRecordDto ConceptRecord { get; set; } = new();
+    public ConceptRecordDto? ConceptRecord { get; set; }
     public List<ConversationAttemptDto>? Attempts { get; set; }
 }

@@ -52,7 +52,7 @@ public class ConversationQueryTests : BaseElaborationsIntegrationTest
         result.ShouldNotBeNull();
         result.Id.ShouldBe(-1);
         result.Title.ShouldNotBeNullOrEmpty();
-        result.ConceptRecord.CanonicalDefinition.ShouldNotBeNullOrEmpty();
+        result.ConceptRecord.ShouldBeNull();
         result.Attempts.ShouldNotBeNull();
         result.Attempts.Count.ShouldBe(2);
         result.Attempts.Any(a => a.Status == "Completed").ShouldBeTrue();

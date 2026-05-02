@@ -62,7 +62,7 @@ public class ConversationService : IConversationService
 
     public Result<ConceptElaborationTaskDto> GetTaskWithAttempts(int taskId, int learnerId)
     {
-        var task = _taskRepo.GetWithRecord(taskId);
+        var task = _taskRepo.Get(taskId);
         if (task == null) return Result.Fail(FailureCode.NotFound);
 
         if (!_accessServices.IsEnrolledInUnit(task.UnitId, learnerId))
