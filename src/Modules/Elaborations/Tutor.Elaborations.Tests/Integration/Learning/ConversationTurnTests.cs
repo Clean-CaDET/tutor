@@ -14,12 +14,12 @@ using Tutor.Elaborations.Infrastructure.Database;
 namespace Tutor.Elaborations.Tests.Integration.Learning;
 
 // Test data layout (each task owns its own natural keys: P1, P2, R1, ...):
-// CET -1: Encapsulation (Basics), Unit -1 (P1, B1, M1)
-// CET -2: Encapsulation (Members), Unit -1 (P1, P2, B1, B2, M1, M2)
-// CET -3: Encapsulation (Basics — Unit 2), Unit -2 (P1)
-// CET -5: Encapsulation (Members — Unit 2), Unit -2 (P1, P2) — isolated for StartConversation
-// CET -6: Encapsulation (Invariants), Unit -2 (P1, P2, P3) — isolated for Start+Submit flow
-// CET -7: Polymorphism Mechanics, Unit -2 (P1, P2 + R1) — isolated
+// CET -1: Encapsulation (Basics), Unit -1      — KPs: P1 | CMs: M1
+// CET -2: Encapsulation (Members), Unit -1     — KPs: P1, P2 | CMs: M1, M2
+// CET -3: Encapsulation (Basics — Unit 2), -2  — KPs: P1
+// CET -5: Encapsulation (Members — Unit 2), -2 — KPs: P1, P2 — isolated for StartConversation
+// CET -6: Encapsulation (Invariants), Unit -2  — KPs: P1, P2, P3 — isolated for Start+Submit flow
+// CET -7: Polymorphism Mechanics, Unit -2      — KPs: P1, P2 | KRs: R1 — isolated
 // Learner -2: enrolled in Units -1, -2 | Learner -3: enrolled in Units -1, -2
 // Learner -1: NOT enrolled | Learner -4: exhausted wallet
 // Attempt -3: Learner -3, CET -1, InProgress (2 turns — for conflict + eval failure tests)
@@ -36,7 +36,8 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     public async Task Starts_conversation_with_first_turn()
     {
         Factory.MockChatService.Reset();
-        Factory.SetupDefaultMocks();
+        Factory.SetupEvaluationMock([("P1", "proposition", 0), ("P2", "proposition", 0)]);
+        Factory.SetupDialogueMock();
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
         var dto = new SubmitTurnRequestDto { Content = "Encapsulation bundles data and methods." };
@@ -62,9 +63,9 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     [Fact]
     public async Task Closing_turn_substantive_completes_with_grade()
     {
-        // First cover all KPs to move to InClosing, then submit the closing turn.
+        // CET -2 (P1, P2). Attempt -4 already has P1 covered. Submit P2 → InClosing, then final answer → grade.
         Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock(["P1", "P2"]);
+        Factory.SetupEvaluationMock([("P1", "proposition", 3), ("P2", "proposition", 3)]);
         Factory.SetupDialogueMock();
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-3");
@@ -76,22 +77,24 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
         firstMeta.Status.ShouldBe("InClosing");
 
         // Now submit the final articulation — ClosingScorer grades it.
+        // CET -2 has 2 rubric items (P1, P2). Both grade 3 → grade = 6/(3×2)×10 = 10.
         Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock(propositionsCoveredKeys: ["P1", "P2"]);
+        Factory.SetupEvaluationMock([("P1", "proposition", 3), ("P2", "proposition", 3)]);
         var final = new SubmitTurnRequestDto { Content = "Final consolidated answer." };
         var tokens = await CollectStreamAsync(controller.SubmitTurn(-4, final, CancellationToken.None));
 
         var metadata = JsonSerializer.Deserialize<SubmitTurnResponseDto>(tokens.Last());
         metadata.ShouldNotBeNull();
         metadata.Status.ShouldBe("Completed");
-        metadata.Summary.ShouldBe("6 / 10");
+        metadata.Summary.ShouldBe("10 / 10");
     }
 
     [Fact]
     public async Task Hard_cap_reached_transitions_to_closing()
     {
+        // Attempt -5: CET -2 (P1, P2), 9 learner turns already — hard cap is totalTargets+4 = 6.
         Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock(propositionsCoveredKeys: []);
+        Factory.SetupEvaluationMock([("P1", "proposition", 0), ("P2", "proposition", 0)]);
         Factory.SetupDialogueMock();
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
@@ -107,8 +110,9 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     [Fact]
     public async Task Soft_cap_reached_continues()
     {
+        // Attempt -6: CET -3 (P1 only), 5 substantive turns already.
         Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock(propositionsCoveredKeys: []);
+        Factory.SetupEvaluationMock([("P1", "proposition", 0)]);
         Factory.SetupDialogueMock();
         Factory.SetupSummaryMock();
         using var scope = Factory.Services.CreateScope();
@@ -147,7 +151,6 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     public async Task Start_insufficient_tokens_fails()
     {
         Factory.MockChatService.Reset();
-        Factory.SetupDefaultMocks();
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-4");
         var dto = new SubmitTurnRequestDto { Content = "Should fail due to exhausted wallet." };
@@ -163,7 +166,6 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     public async Task Start_max_daily_attempts_fails()
     {
         Factory.MockChatService.Reset();
-        Factory.SetupDefaultMocks();
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
         var dto = new SubmitTurnRequestDto { Content = "Should fail due to daily limit." };
@@ -210,8 +212,10 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     [Fact]
     public async Task Start_then_submit_adds_turns_to_same_attempt()
     {
+        // CET -6 (P1, P2, P3).
         Factory.MockChatService.Reset();
-        Factory.SetupDefaultMocks();
+        Factory.SetupEvaluationMock([("P1", "proposition", 0), ("P2", "proposition", 0), ("P3", "proposition", 0)]);
+        Factory.SetupDialogueMock();
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
         var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
@@ -230,7 +234,8 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
 
         // Submit second turn — should add to the same attempt
         Factory.MockChatService.Reset();
-        Factory.SetupDefaultMocks();
+        Factory.SetupEvaluationMock([("P1", "proposition", 0), ("P2", "proposition", 0), ("P3", "proposition", 0)]);
+        Factory.SetupDialogueMock();
         var secondDto = new SubmitTurnRequestDto { Content = "Second turn for reuse test." };
         var tokens = await CollectStreamAsync(controller.SubmitTurn(attemptId, secondDto, CancellationToken.None));
 
@@ -290,12 +295,9 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     [Fact]
     public async Task Concept_with_relations_transitions_to_closing_when_relations_articulated()
     {
-        // CET -7 (KPs P1, P2 + KR R1). Strict completion: covering both KPs is not enough.
+        // CET -7 (KPs P1, P2 + KR R1). Covering both KPs and articulating R1 completes the attempt.
         Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock(
-            propositionsCoveredKeys: ["P1", "P2"],
-            relationsArticulatedKeys: ["R1"],
-            integrationScore: 3);
+        Factory.SetupEvaluationMock([("P1", "proposition", 3), ("P2", "proposition", 3), ("R1", "relation", 3)]);
         Factory.SetupDialogueMock();
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-3");
@@ -314,13 +316,10 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     [Fact]
     public async Task Concept_with_relations_does_not_complete_when_only_KPs_covered()
     {
-        // CET -7. Covering KPs but NOT articulating the relation should NOT complete.
+        // CET -7. Covering KPs but NOT articulating R1 should NOT complete.
         // Uses learner -2 so test doesn't collide with the "completes" test (also on CET -7).
         Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock(
-            propositionsCoveredKeys: ["P1", "P2"],
-            relationsArticulatedKeys: [],
-            integrationScore: 1);
+        Factory.SetupEvaluationMock([("P1", "proposition", 3), ("P2", "proposition", 3), ("R1", "relation", 0)]);
         Factory.SetupDialogueMock();
         Factory.SetupSummaryMock();
         using var scope = Factory.Services.CreateScope();

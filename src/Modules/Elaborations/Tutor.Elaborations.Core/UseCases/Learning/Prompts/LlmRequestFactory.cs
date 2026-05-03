@@ -84,20 +84,14 @@ public static class LlmRequestFactory
     private static string RenderEvaluation(TurnEvaluation e)
     {
         var sb = new StringBuilder();
-        var attrs = new List<string>
-        {
-            $"correctness=\"{e.CorrectnessScore}\"",
-            $"completeness=\"{e.CompletenessScore}\""
-        };
-        if (e.IntegrationScore.HasValue) attrs.Add($"integration=\"{e.IntegrationScore.Value}\"");
-        attrs.Add($"hasMultipleConcerns=\"{e.HasMultipleConcerns.ToString().ToLowerInvariant()}\"");
+        sb.Append($"<evaluation hasMultipleConcerns=\"{e.HasMultipleConcerns.ToString().ToLowerInvariant()}\">");
 
-        sb.Append($"<evaluation {string.Join(' ', attrs)}>");
-        sb.Append($"<justification>{e.Justification}</justification>");
+        var vagueKeys = e.Assessments.Where(a => a.Grade == 1).Select(a => a.Key).ToList();
+        if (vagueKeys.Count > 0)
+            sb.Append($"<vague-items>{string.Join(", ", vagueKeys)}</vague-items>");
         if (e.MisconceptionsTriggeredKeys.Count > 0)
             sb.Append($"<triggered-misconceptions>{string.Join(", ", e.MisconceptionsTriggeredKeys)}</triggered-misconceptions>");
-        if (!string.IsNullOrWhiteSpace(e.NovelMisconceptions))
-            sb.Append($"<novel-misconceptions>{e.NovelMisconceptions}</novel-misconceptions>");
+
         sb.Append("</evaluation>");
         return sb.ToString();
     }

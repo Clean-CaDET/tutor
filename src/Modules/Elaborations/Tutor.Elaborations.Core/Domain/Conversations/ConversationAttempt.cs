@@ -125,9 +125,9 @@ public class ConversationAttempt : AggregateRoot
         TurnCountAtClosingStart = _turns.Count;
     }
 
-    public void Complete(TurnEvaluation evaluation)
+    public void Complete(int grade)
     {
-        Summary = $"{evaluation.Grade()} / 10";
+        Summary = $"{grade} / 10";
         AddSystemTurn(Summary);
 
         Status = AttemptStatus.Completed;

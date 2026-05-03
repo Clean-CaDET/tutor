@@ -17,10 +17,10 @@ public static class IntentPrompt
 
         sb.AppendLine("# Intent categories");
         sb.AppendLine("- **Substantive**: the learner attempts to explain, define, relate, or apply the concept. Even a weak or partial attempt counts.");
-        sb.AppendLine("- **Clarification**: the learner asks a genuine information-seeking question about the task or the tutor's last message (what / why / how / what do you mean by …?). Must be a direct question — if removing the rest and keeping just the question still makes sense.");
-        sb.AppendLine("- **Stuck**: the learner signals confusion, inability, or not-knowing without asking a question — e.g. \"ne znam\", \"ne razumem\", \"nisam siguran\", \"teško mi je\". Not a refusal of the task, just a stall.");
-        sb.AppendLine("- **SummaryRequest**: the learner asks a procedural/meta question about the conversation itself — e.g. \"rezimiraj šta sam rekao\", \"koliko mi je ostalo\", \"objasni mi još jednom šta tražiš\".");
-        sb.AppendLine("- **OffTopic**: everything else — small talk, greetings, jokes, personal content, refusals (\"ne želim\", \"dosadno mi je\"), meta-comments about the conversation, deference or agreement without articulation (\"da, u pravu si\").");
+        sb.AppendLine("- **Clarification**: the learner asks a genuine information-seeking question about the task or the tutor's last message (e.g. what do you mean by …? / what is expected …? / what should I do …?). Must be a direct question.");
+        sb.AppendLine("- **Stuck**: the learner signals confusion, inability, or not-knowing without asking a question — e.g. I don't know… / I don't understand… / I am not sure… / This is hard…. Not a refusal of the task, just a stall.");
+        sb.AppendLine("- **SummaryRequest**: the learner asks a recap for the conversation itself — e.g. summarize what was said… / list what was correct so far…");
+        sb.AppendLine("- **OffTopic**: everything else — small talk, greetings, jokes, personal content, refusals, meta-comments about the conversation, deference or agreement without articulation");
         sb.AppendLine();
 
         sb.AppendLine("# Disambiguation rules");

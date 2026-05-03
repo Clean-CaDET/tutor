@@ -72,12 +72,8 @@ public class ElaborationsContext : DbContext
 
         modelBuilder.Entity<TurnEvaluation>(entity =>
         {
-            entity.Property(te => te.PropositionsCoveredKeys)
-                .HasColumnType("jsonb");
-            entity.Property(te => te.MisconceptionsTriggeredKeys)
-                .HasColumnType("jsonb");
-            entity.Property(te => te.RelationsArticulatedKeys)
-                .HasColumnType("jsonb");
+            entity.Property(te => te.Assessments).HasColumnType("jsonb");
+            entity.Property(te => te.MisconceptionsTriggeredKeys).HasColumnType("jsonb");
         });
     }
 }

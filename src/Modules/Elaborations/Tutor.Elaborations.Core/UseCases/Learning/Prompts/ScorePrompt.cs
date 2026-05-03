@@ -7,69 +7,56 @@ public static class ScorePrompt
 {
     public static string Build(ConceptRecord record, bool isClosingEvaluation = false)
     {
-        var hasCommonMisconceptions = record.CommonMisconceptions.Count != 0;
-        var hasKeyRelations = record.KeyRelations.Count != 0;
-
         var sb = new StringBuilder();
         sb.AppendLine(ConceptRubricSection.Render(record));
 
         sb.AppendLine("# Role");
-        sb.AppendLine("You are a scoring agent for a Socratic tutoring system.");
-        sb.AppendLine("The learner's latest message is known to be Substantive (an attempt at explanation). Score it against the concept rubric and tag which propositions/relations/misconceptions it hits. Output JSON only, no other text.");
+        sb.AppendLine("You are a scoring agent for a Socratic tutoring system. Output JSON only, no other text.");
         sb.AppendLine();
 
         sb.AppendLine("# Scope rule");
         if (isClosingEvaluation)
-        {
-            sb.AppendLine("Score only the text inside <current-learner-message>…</current-learner-message>. This is the learner's final consolidated answer submitted in isolation — no conversation history is provided. Evaluate it as a standalone response.");
-        }
+            sb.AppendLine("Score only the text inside <current-learner-message>…</current-learner-message>. This is the learner's final consolidated answer submitted in isolation. Evaluate it as a standalone response.");
         else
-        {
             sb.AppendLine("Score only the text inside <current-learner-message>…</current-learner-message> in the final user message. Do not credit the learner for content that appears in prior assistant turns or that the learner has only repeated from a preceding assistant turn.");
+        sb.AppendLine();
+
+        sb.AppendLine("# Rating task");
+        sb.AppendLine("Rate EVERY Key Proposition and Key Relation from the concept rubric above. All must appear in the output, even if not addressed.");
+        sb.AppendLine("Use this scale:");
+        sb.AppendLine("  0 — not addressed in this message");
+        sb.AppendLine("  1 — vague or incomplete: concept touched but not clearly articulated");
+        sb.AppendLine("  2 — partially correct: core idea present but missing detail or precision");
+        sb.AppendLine("  3 — well-articulated: accurate and sufficiently complete");
+        sb.AppendLine("For each item, set type to \"proposition\" for Key Propositions and \"relation\" for Key Relations.");
+        sb.AppendLine("Evaluate concepts, not language. Grammar and style must not reduce scores.");
+        sb.AppendLine("Resist sycophancy. Evaluate strictly against the rubric.");
+        sb.AppendLine();
+
+        if (record.CommonMisconceptions.Count != 0)
+        {
+            sb.AppendLine("# Misconception detection");
+            sb.AppendLine("List the keys of any known misconceptions triggered in this message.");
+            sb.AppendLine();
         }
-        sb.AppendLine();
-
-        sb.AppendLine("# Rubric");
-        sb.AppendLine("- Correctness (0-5): Are stated claims true? Check against KPs.");
-        sb.AppendLine("- Completeness (0-5): Are essential KPs covered in this message?");
-        if (hasKeyRelations)
-            sb.AppendLine("- Integration (0-5): Did the learner articulate key relations *with mechanism*? 0=no relation, 1-2=relation without mechanism, 3-5=relation with mechanism matching the authored description.");
-        sb.AppendLine("- Evaluate concepts, not language. Grammar and style must not reduce scores.");
-        sb.AppendLine("- Resist sycophancy. Evaluate strictly against rubric.");
-        sb.AppendLine();
-
-        sb.AppendLine("# Concern count");
-        sb.AppendLine("Count distinct concerns in the message. A concern is any of:");
-        sb.AppendLine("  - a stated inaccuracy (a claim that contradicts a KP);");
-        sb.AppendLine(hasCommonMisconceptions
-            ? "  - a triggered known misconception or a novel misconception;"
-            : "  - a novel misconception (none are pre-catalogued for this concept);");
-        sb.AppendLine("  - a vague or hand-wavy claim that references a KP without articulating it.");
-        sb.AppendLine("Set hasMultipleConcerns=true if the count is two or more; false otherwise.");
-        sb.AppendLine();
 
         sb.AppendLine("# Runtime Context Format");
         sb.AppendLine("Chat history shows prior turns (user=learner, assistant=tutor) for context only — DO NOT score these.");
         sb.AppendLine("The final user message contains the message to score inside <current-learner-message>…</current-learner-message>.");
         sb.AppendLine();
 
-        var fields = new List<string>
-        {
-            "\"correctnessScore\": 0-5",
-            "\"completenessScore\": 0-5"
-        };
-        if (hasKeyRelations) fields.Add("\"integrationScore\": 0-5");
-        fields.Add("\"justification\": \"brief explanation of scores\"");
-        fields.Add("\"propositionsCoveredKeys\": [string list of KP keys covered, e.g. [\"P1\", \"P2\"]]");
-        if (hasCommonMisconceptions) fields.Add("\"misconceptionsTriggeredKeys\": [string list of CM keys triggered, e.g. [\"M1\"]]");
-        if (hasKeyRelations) fields.Add("\"relationsArticulatedKeys\": [string list of KR keys articulated with mechanism, e.g. [\"R1\"]]");
-        if (hasCommonMisconceptions) fields.Add("\"novelMisconceptions\": \"any misconceptions not in the list, or null\"");
-        fields.Add("\"hasMultipleConcerns\": true|false");
-
+        var assessmentExample = record.KeyPropositions.Count > 0
+            ? $"{{ \"key\": \"{record.KeyPropositions[0].Key}\", \"type\": \"proposition\", \"grade\": 0 }}"
+            : "{ \"key\": \"P1\", \"type\": \"proposition\", \"grade\": 0 }";
         sb.AppendLine("# Output Format (JSON only, no other text)");
         sb.AppendLine("{");
-        sb.AppendLine(string.Join(",\n", fields.Select(f => "  " + f)));
+        sb.AppendLine($"  \"assessments\": [ {assessmentExample}, … one entry per KP and KR ],");
+        if (record.CommonMisconceptions.Count != 0)
+            sb.AppendLine("  \"misconceptionsTriggeredKeys\": [string list of CM keys triggered, e.g. [\"M1\"]]");
+        else
+            sb.AppendLine("  \"misconceptionsTriggeredKeys\": []");
         sb.AppendLine("}");
+
         return sb.ToString();
     }
 }

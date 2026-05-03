@@ -57,10 +57,10 @@ public class ConceptRecordTests
             .GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, Type.EmptyTypes)!;
         var attempt = (ConversationAttempt)ctor.Invoke(null);
 
-        var evaluation = new TurnEvaluation(
-            2, 2, null,
-            "test", null, coveredKpKeys,
-            new List<string>(), articulatedRelationKeys, false);
+        var assessments = coveredKpKeys.Select(k => new ScoredTarget(k, ScoredTargetType.Proposition, 3))
+            .Concat(articulatedRelationKeys.Select(k => new ScoredTarget(k, ScoredTargetType.Relation, 3)))
+            .ToList();
+        var evaluation = new TurnEvaluation(assessments, [], hasMultipleConcerns: false);
         attempt.AddLearnerTurn("x", TurnIntent.Substantive, evaluation);
         return attempt;
     }

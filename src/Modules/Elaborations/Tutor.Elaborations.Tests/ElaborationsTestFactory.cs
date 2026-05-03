@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Text;
 using FluentResults;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -43,22 +44,16 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
         return services;
     }
 
-    public void SetupDefaultMocks()
-    {
-        SetupEvaluationMock();
-        SetupDialogueMock();
-        SetupSummaryMock();
-    }
-
-    public void SetupEvaluationMock(List<string>? propositionsCoveredKeys = null,
-        List<string>? relationsArticulatedKeys = null, int? integrationScore = null,
+    public void SetupEvaluationMock(
+        List<(string key, string type, int grade)> assessments,
+        List<string>? misconceptionsTriggeredKeys = null,
         string intent = "Substantive")
     {
         SetupIntentMock(intent);
 
         if (intent != "Substantive") return;
 
-        var scorerJson = BuildSubstantiveEvalJson(propositionsCoveredKeys, relationsArticulatedKeys, integrationScore);
+        var scorerJson = BuildSubstantiveEvalJson(assessments, misconceptionsTriggeredKeys ?? []);
         MockChatService.Setup(x => x.CompleteAsync(
                 It.Is<CompletionRequest>(r => r.MaxTokens == 1024), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result.Ok(new CompletionResponse
@@ -79,30 +74,18 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
             }));
     }
 
-    private static string BuildSubstantiveEvalJson(List<string>? propositionsCoveredKeys,
-        List<string>? relationsArticulatedKeys, int? integrationScore)
+    private static string BuildSubstantiveEvalJson(
+        List<(string key, string type, int grade)> assessments,
+        List<string> misconceptions)
     {
-        var coveredKeys = propositionsCoveredKeys != null && propositionsCoveredKeys.Count > 0
-            ? string.Join(",", propositionsCoveredKeys.Select(k => $"\"{k}\""))
-            : "";
-        var articulatedKeys = relationsArticulatedKeys != null && relationsArticulatedKeys.Count > 0
-            ? string.Join(",", relationsArticulatedKeys.Select(k => $"\"{k}\""))
-            : "";
-        var integrationJson = integrationScore.HasValue ? integrationScore.Value.ToString() : "null";
-
-        return $$"""
-            {
-                "intent": "Substantive",
-                "correctnessScore": 3,
-                "completenessScore": 3,
-                "integrationScore": {{integrationJson}},
-                "justification": "Good explanation of the concept.",
-                "propositionsCoveredKeys": [{{coveredKeys}}],
-                "misconceptionsTriggeredKeys": [],
-                "relationsArticulatedKeys": [{{articulatedKeys}}],
-                "novelMisconceptions": null
-            }
-            """;
+        var sb = new StringBuilder();
+        sb.Append("{ \"assessments\": [");
+        sb.Append(string.Join(", ", assessments.Select(a =>
+            $"{{ \"key\": \"{a.key}\", \"type\": \"{a.type}\", \"grade\": {a.grade} }}")));
+        sb.Append("], \"misconceptionsTriggeredKeys\": [");
+        sb.Append(string.Join(", ", misconceptions.Select(m => $"\"{m}\"")));
+        sb.Append("]}");
+        return sb.ToString();
     }
 
     public void SetupDialogueMock(params string[] tokens)

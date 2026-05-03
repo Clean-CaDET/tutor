@@ -9,10 +9,10 @@ VALUES (-2, -1, 1, 'Good start! Can you tell me more about access modifiers?', 1
 INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
 VALUES (-3, -1, 0, 'Access modifiers like public and private control visibility.', 2, '2024-06-01 10:02:00+00', 0);
 
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-1, -1, 3, 3, null, 'Accurate basic description', null, '["P1"]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-3, -3, 3, 3, null, 'Good description of access modifiers', null, '["P1"]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-1, -1, '[{{"Key":"P1","Type":0,"Grade":3}}]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-3, -3, '[{{"Key":"P1","Type":0,"Grade":3}}]'::jsonb, '[]'::jsonb, false);
 
 -- Attempt -2: Learner -2, CET -1, Abandoned (for query tests)
 INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
@@ -27,8 +27,8 @@ VALUES (-4, -3, 0, 'Encapsulation is about data hiding.', 0, '2024-06-03 10:01:0
 INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
 VALUES (-5, -3, 1, 'What else can you tell me about encapsulation?', 1, '2024-06-03 10:01:05+00', null);
 
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-4, -4, 1, 1, null, 'Partially correct but incomplete', null, '[]'::jsonb, '["M1"]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-4, -4, '[]'::jsonb, '["M1"]'::jsonb, false);
 
 -- Attempt -4: Learner -3, CET -2, InProgress (for completion test: KP P1 already covered, submit to cover P2)
 INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
@@ -39,8 +39,8 @@ VALUES (-6, -4, 0, 'Encapsulation bundles data and methods together.', 0, '2024-
 INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
 VALUES (-7, -4, 1, 'Good. What about access control?', 1, '2024-06-04 10:01:05+00', null);
 
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-6, -6, 3, 3, null, 'Covers bundling proposition', null, '["P1"]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-6, -6, '[{{"Key":"P1","Type":0,"Grade":3}}]'::jsonb, '[]'::jsonb, false);
 
 -- Attempt -5: Learner -2, CET -2, InProgress with 9 learner + 9 system turns (for hard cap test)
 INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary", "HardCapTotalTurns", "SoftCapTotalTurns")
@@ -83,25 +83,25 @@ VALUES (-66, -5, 0, 'Turn 9', 16, '2024-06-05 10:09:00+00', 0);
 INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
 VALUES (-67, -5, 1, 'Response 9', 17, '2024-06-05 10:09:05+00', null);
 
--- Evaluations for the 9 learner turns (all with empty propositions - never completes)
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-50, -50, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-52, -52, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-54, -54, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-56, -56, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-58, -58, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-60, -60, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-62, -62, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-64, -64, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-66, -66, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
+-- Evaluations for the 9 learner turns (all with empty assessments — never completes)
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-50, -50, '[]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-52, -52, '[]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-54, -54, '[]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-56, -56, '[]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-58, -58, '[]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-60, -60, '[]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-62, -62, '[]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-64, -64, '[]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-66, -66, '[]'::jsonb, '[]'::jsonb, false);
 
 -- Attempt -6: Learner -3, CET -3, InProgress with 5 substantive learner + 5 system turns (for soft cap test)
 INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
@@ -128,16 +128,16 @@ VALUES (-78, -6, 0, 'Turn 5', 8, '2024-06-06 10:05:00+00', 0);
 INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
 VALUES (-79, -6, 1, 'Response 5', 9, '2024-06-06 10:05:05+00', null);
 
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-70, -70, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-72, -72, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-74, -74, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-76, -76, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "CorrectnessScore", "CompletenessScore", "IntegrationScore", "Justification", "NovelMisconceptions", "PropositionsCoveredKeys", "MisconceptionsTriggeredKeys", "RelationsArticulatedKeys", "HasMultipleConcerns")
-VALUES (-78, -78, 1, 1, null, 'Vague', null, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-70, -70, '[]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-72, -72, '[]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-74, -74, '[]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-76, -76, '[]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
+VALUES (-78, -78, '[]'::jsonb, '[]'::jsonb, false);
 
 -- Attempt -7: Learner -3, CET -5, InProgress (isolated for abandon test — no other test touches this)
 INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")

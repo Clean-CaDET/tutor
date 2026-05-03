@@ -245,7 +245,8 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
                 yield break;
             }
             attempt.AddLearnerTurn(newMessage, intent, scoreResult.Value);
-            attempt.Complete(scoreResult.Value);
+            var grade = ComputeGrade(scoreResult.Value, record.CountPropositionsAndRelations());
+            attempt.Complete(grade);
             yield return new TokenChunk(attempt.Summary!);
             yield return CreateFinalChunk(attempt, attempt.Summary);
             yield break;
@@ -312,4 +313,8 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
         if (result.IsFailed) return Result.Fail(result.Errors);
         return result.Value.ToEvaluation(record);
     }
+
+    private static int ComputeGrade(TurnEvaluation evaluation, int totalRubricItems) =>
+        totalRubricItems == 0 ? 0
+        : (int)Math.Round(evaluation.Assessments.Sum(a => a.Grade) / (3.0 * totalRubricItems) * 10);
 }
