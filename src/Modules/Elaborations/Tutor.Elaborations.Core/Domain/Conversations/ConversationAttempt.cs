@@ -36,7 +36,7 @@ public class ConversationAttempt : AggregateRoot
     {
         return Turns
             .Where(t => t.Evaluation != null)
-            .SelectMany(t => t.Evaluation!.PropositionsCoveredKeys)
+            .SelectMany(t => t.Evaluation!.PropositionsCoveredKeys())
             .ToHashSet();
     }
 
@@ -44,7 +44,7 @@ public class ConversationAttempt : AggregateRoot
     {
         return Turns
             .Where(t => t.Evaluation != null)
-            .SelectMany(t => t.Evaluation!.RelationsArticulatedKeys)
+            .SelectMany(t => t.Evaluation!.RelationsArticulatedKeys())
             .ToHashSet();
     }
 

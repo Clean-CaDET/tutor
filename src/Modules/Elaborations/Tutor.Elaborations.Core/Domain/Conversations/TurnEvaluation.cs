@@ -9,11 +9,17 @@ public class TurnEvaluation : Entity
     public List<string> MisconceptionsTriggeredKeys { get; private set; } = [];
     public bool HasMultipleConcerns { get; private set; }
 
-    public IReadOnlyList<string> PropositionsCoveredKeys =>
-        Assessments.Where(a => a.Type == ScoredTargetType.Proposition && a.Grade == 3).Select(a => a.Key).ToList();
+    public IReadOnlyList<string> PropositionsCoveredKeys()
+    {
+        return Assessments.Where(a => a.Type == ScoredTargetType.Proposition && a.Grade == 3)
+            .Select(a => a.Key).ToList();
+    }
 
-    public IReadOnlyList<string> RelationsArticulatedKeys =>
-        Assessments.Where(a => a.Type == ScoredTargetType.Relation && a.Grade == 3).Select(a => a.Key).ToList();
+    public IReadOnlyList<string> RelationsArticulatedKeys()
+    {
+        return Assessments.Where(a => a.Type == ScoredTargetType.Relation && a.Grade == 3)
+            .Select(a => a.Key).ToList();
+    }
 
     private TurnEvaluation() { }
 

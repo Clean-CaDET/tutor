@@ -28,24 +28,9 @@ public class ScoreResponse
         if (!returnedKeys.SetEquals(allKeys)) return Result.Fail("Incomplete or unknown keys in assessments.");
         if (Assessments.Any(a => a.Grade is < 0 or > 3)) return Result.Fail("Grade out of range.");
 
-        var scoredTargets = new List<ScoredTarget>();
-        foreach (var dto in Assessments)
-        {
-            ScoredTargetType? type = dto.Type.ToLowerInvariant() switch
-            {
-                "proposition" => ScoredTargetType.Proposition,
-                "relation" => ScoredTargetType.Relation,
-                _ => null
-            };
-            if (type == null) return Result.Fail($"Unknown type '{dto.Type}'.");
-            if (type == ScoredTargetType.Proposition && !kpKeys.Contains(dto.Key))
-                return Result.Fail($"Key '{dto.Key}' typed as proposition but is a relation.");
-            if (type == ScoredTargetType.Relation && !krKeys.Contains(dto.Key))
-                return Result.Fail($"Key '{dto.Key}' typed as relation but is a proposition.");
-
-            if (dto.Grade > 0)
-                scoredTargets.Add(new ScoredTarget(dto.Key, type.Value, dto.Grade));
-        }
+        var creationResult = CreateScoredTargets(kpKeys, krKeys);
+        if(creationResult.IsFailed) return Result.Fail(creationResult.Errors);
+        var scoredTargets = creationResult.Value;
 
         var misconceptions = MisconceptionsTriggeredKeys ?? [];
         var validCmKeys = record.CommonMisconceptions.Select(cm => cm.Key).ToHashSet();
@@ -53,5 +38,33 @@ public class ScoreResponse
 
         var concerns = scoredTargets.Count(a => a.Grade == 1) + misconceptions.Count;
         return new TurnEvaluation(scoredTargets, misconceptions, hasMultipleConcerns: concerns >= 2);
+    }
+
+    private Result<List<ScoredTarget>> CreateScoredTargets(HashSet<string> kpKeys, HashSet<string> krKeys)
+    {
+        var scoredTargets = new List<ScoredTarget>();
+        foreach (var dto in Assessments!)
+        {
+            ScoredTargetType? type = dto.Type.ToLowerInvariant() switch
+            {
+                "proposition" => ScoredTargetType.Proposition,
+                "relation" => ScoredTargetType.Relation,
+                _ => null
+            };
+            switch (type)
+            {
+                case null:
+                    return Result.Fail($"Unknown type '{dto.Type}'.");
+                case ScoredTargetType.Proposition when !kpKeys.Contains(dto.Key):
+                    return Result.Fail($"Key '{dto.Key}' typed as proposition but is a relation.");
+                case ScoredTargetType.Relation when !krKeys.Contains(dto.Key):
+                    return Result.Fail($"Key '{dto.Key}' typed as relation but is a proposition.");
+            }
+
+            if (dto.Grade > 0)
+                scoredTargets.Add(new ScoredTarget(dto.Key, type.Value, dto.Grade));
+        }
+
+        return scoredTargets;
     }
 }
