@@ -33,22 +33,22 @@ public class ConceptRecord : Entity
         KeyRelations = incoming.KeyRelations;
     }
 
-    public bool AreAllPropositionsCovered(ConversationAttempt attempt)
+    public bool IsAttemptComplete(ConversationAttempt attempt)
+    {
+        return AreAllPropositionsCovered(attempt) && AreAllKeyRelationsArticulated(attempt);
+    }
+
+    private bool AreAllPropositionsCovered(ConversationAttempt attempt)
     {
         var covered = attempt.GetArticulatedPropositionKeys();
         return KeyPropositions.All(kp => covered.Contains(kp.Key));
     }
 
-    public bool AreAllKeyRelationsArticulated(ConversationAttempt attempt)
+    private bool AreAllKeyRelationsArticulated(ConversationAttempt attempt)
     {
         if (KeyRelations.Count == 0) return true;
         var articulated = attempt.GetArticulatedRelationKeys();
         return KeyRelations.All(kr => articulated.Contains(kr.Key));
-    }
-
-    public bool IsAttemptComplete(ConversationAttempt attempt)
-    {
-        return AreAllPropositionsCovered(attempt) && AreAllKeyRelationsArticulated(attempt);
     }
 
     public string? PickNextTarget(ConversationAttempt attempt)

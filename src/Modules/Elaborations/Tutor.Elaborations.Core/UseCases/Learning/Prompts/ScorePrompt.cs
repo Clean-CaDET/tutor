@@ -5,7 +5,7 @@ namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 
 public static class ScorePrompt
 {
-    public static string Build(ConceptRecord record)
+    public static string Build(ConceptRecord record, bool isClosingEvaluation = false)
     {
         var hasCommonMisconceptions = record.CommonMisconceptions.Count != 0;
         var hasKeyRelations = record.KeyRelations.Count != 0;
@@ -19,7 +19,14 @@ public static class ScorePrompt
         sb.AppendLine();
 
         sb.AppendLine("# Scope rule");
-        sb.AppendLine("Score only the text inside <current-learner-message>…</current-learner-message> in the final user message. Do not credit the learner for content that appears in prior assistant turns or that the learner has only repeated from a preceding assistant turn.");
+        if (isClosingEvaluation)
+        {
+            sb.AppendLine("Score only the text inside <current-learner-message>…</current-learner-message>. This is the learner's final consolidated answer submitted in isolation — no conversation history is provided. Evaluate it as a standalone response.");
+        }
+        else
+        {
+            sb.AppendLine("Score only the text inside <current-learner-message>…</current-learner-message> in the final user message. Do not credit the learner for content that appears in prior assistant turns or that the learner has only repeated from a preceding assistant turn.");
+        }
         sb.AppendLine();
 
         sb.AppendLine("# Rubric");

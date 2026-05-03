@@ -26,7 +26,7 @@ public static class CritiquePrompt
 
         sb.AppendLine("# Runtime Context Format");
         sb.AppendLine("Chat history shows the conversation so far (user=learner, assistant=tutor). The latest learner turn is the last user message.");
-        sb.AppendLine("The final user message may contain: <evaluation …>…</evaluation> (scores + triggered misconceptions for the latest turn).");
+        sb.AppendLine("The final user message contains the learner's latest turn, followed by <evaluation …>…</evaluation> (scores + triggered misconceptions for the latest turn).");
 
         return sb.ToString();
     }

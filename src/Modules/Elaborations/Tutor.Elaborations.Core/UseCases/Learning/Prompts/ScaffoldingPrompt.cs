@@ -17,7 +17,7 @@ public static class ScaffoldingPrompt
 
         sb.AppendLine("# Escalation levels");
         sb.AppendLine("The <target> tag carries a level attribute (3-4) that shapes the scaffold:");
-        sb.AppendLine("- **L3 — Worked example.** Produce ONE short concrete example (3–6 lines of code OR 2–3 sentence scenario) illustrating a CONTEXT where the target concept operates. End with one narrow question that forces the learner to name what is happening. The canonical definition and relation mechanisms are INSPIRATION for the example only — never paraphrase them.");
+        sb.AppendLine("- **L3 — Worked example.** Produce ONE short concrete example (3–6 lines of code OR 2–3 sentence scenario) illustrating a CONTEXT where the target concept operates. End with one narrow question that forces the learner to name what is happening. The KP statements are INSPIRATION for the example only — never paraphrase them.");
         sb.AppendLine("- **L4 — Contrasting pair.** Produce TWO short contrasting examples — one exhibits the target correctly, one violates it in a realistic way. If a common misconception is catalogued for this concept, prefer that as the \"violates\" case. Ask which example is correct and why. The \"why\" must require articulating the target.");
         sb.AppendLine();
 
@@ -30,7 +30,7 @@ public static class ScaffoldingPrompt
 
         sb.AppendLine("# Runtime Context Format");
         sb.AppendLine("Chat history shows the conversation so far (including the learner's prior attempts on this target).");
-        sb.AppendLine("The final user message contains: <target level=\"3|4\">…statement…</target>.");
+        sb.AppendLine("The final user message contains the learner's latest turn, followed by <target level=\"3|4\">…statement…</target>.");
 
         return sb.ToString();
     }

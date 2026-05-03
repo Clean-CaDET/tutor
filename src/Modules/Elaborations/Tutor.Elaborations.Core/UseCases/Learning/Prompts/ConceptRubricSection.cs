@@ -4,7 +4,7 @@ using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 
 /// <summary>
-/// Renders the concept rubric (definition, KPs, CMs, KRs) as a markdown block.
+/// Renders the concept rubric (KPs, CMs, KRs) as a markdown block.
 /// Output is byte-stable for a given <see cref="ConceptRecord"/> so the whole block
 /// can live at the top of every agent's system prompt and serve as a shared provider-side cache prefix.
 /// No per-turn state (coverage markers, soft-cap flags, progress) is rendered here.
@@ -17,10 +17,6 @@ public static class ConceptRubricSection
 
         sb.AppendLine("# Concept");
         sb.AppendLine();
-        sb.AppendLine("## Canonical Definition");
-        sb.AppendLine(record.CanonicalDefinition);
-        sb.AppendLine();
-
         sb.AppendLine("## Key Propositions");
         foreach (var kp in record.KeyPropositions)
             sb.AppendLine($"- [{kp.Key}] {kp.Statement}");

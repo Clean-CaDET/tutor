@@ -30,7 +30,7 @@ public static class ProbePrompt
 
         sb.AppendLine("# Runtime Context Format");
         sb.AppendLine("Chat history shows the conversation so far (user=learner, assistant=tutor).");
-        sb.AppendLine("The final user message contains: <target level=\"1-2\">…statement…</target>.");
+        sb.AppendLine("The final user message contains the learner's latest turn, followed by <target level=\"1-2\">…statement…</target>.");
 
         return sb.ToString();
     }

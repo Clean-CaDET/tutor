@@ -10,34 +10,25 @@ public static class LlmRequestFactory
     public static CompletionRequest ForProbing(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
         ActiveProbe probe)
     {
-        var messages = ToMessages(turns);
-        messages.Add(ChatMessage.FromUser(RenderProbe(probe)));
-        return CompletionRequest.Create(messages, ProbePrompt.Build(record), maxTokens: 256, temperature: 0.7);
+        return CompletionRequest.Create(ToMessages(turns, RenderProbe(probe)), ProbePrompt.Build(record), maxTokens: 256, temperature: 0.7);
     }
 
     public static CompletionRequest ForScaffolding(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
         ActiveProbe probe)
     {
-        var messages = ToMessages(turns);
-        messages.Add(ChatMessage.FromUser(RenderProbe(probe)));
-        return CompletionRequest.Create(messages, ScaffoldingPrompt.Build(record), maxTokens: 512, temperature: 0.7);
+        return CompletionRequest.Create(ToMessages(turns, RenderProbe(probe)), ScaffoldingPrompt.Build(record), maxTokens: 512, temperature: 0.7);
     }
 
     public static CompletionRequest ForClarification(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
         ActiveProbe? lastProbe)
     {
-        var messages = ToMessages(turns);
-        if (lastProbe != null)
-            messages.Add(ChatMessage.FromUser(RenderProbe(lastProbe)));
-        return CompletionRequest.Create(messages, ClarificationPrompt.Build(record), maxTokens: 256, temperature: 0.5);
+        return CompletionRequest.Create(ToMessages(turns, lastProbe != null ? RenderProbe(lastProbe) : null), ClarificationPrompt.Build(record), maxTokens: 256, temperature: 0.5);
     }
 
     public static CompletionRequest ForCritique(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
         TurnEvaluation evaluation)
     {
-        var messages = ToMessages(turns);
-        messages.Add(ChatMessage.FromUser(RenderEvaluation(evaluation)));
-        return CompletionRequest.Create(messages, CritiquePrompt.Build(record), maxTokens: 512, temperature: 0.7);
+        return CompletionRequest.Create(ToMessages(turns, RenderEvaluation(evaluation)), CritiquePrompt.Build(record), maxTokens: 512, temperature: 0.7);
     }
 
     public static CompletionRequest ForSummary(ConceptRecord record, IReadOnlyList<ConversationTurn> turns)
@@ -48,7 +39,7 @@ public static class LlmRequestFactory
     public static CompletionRequest ForIntentClassification(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
         string message)
     {
-        var messages = ToMessages(turns, 6);
+        var messages = ToMessages(turns.OrderBy(t => t.Order).TakeLast(6));
         messages.Add(ChatMessage.FromUser($"<current-learner-message>{message}</current-learner-message>"));
         return CompletionRequest.Create(messages, IntentPrompt.Build(record), maxTokens: 64, temperature: 0.0);
     }
@@ -64,16 +55,25 @@ public static class LlmRequestFactory
     public static CompletionRequest ForClosingScoring(ConceptRecord record, string message)
     {
         var messages = new List<ChatMessage> { ChatMessage.FromUser($"<current-learner-message>{message}</current-learner-message>") };
-        return CompletionRequest.Create(messages, ScorePrompt.Build(record), maxTokens: 1024, temperature: 0.0);
+        return CompletionRequest.Create(messages, ScorePrompt.Build(record, isClosingEvaluation: true), maxTokens: 1024, temperature: 0.0);
     }
 
-    private static List<ChatMessage> ToMessages(IEnumerable<ConversationTurn> turns, int? lastN = null)
+    private static List<ChatMessage> ToMessages(IEnumerable<ConversationTurn> turns, string? appendToLast = null)
     {
-        var ordered = turns.OrderBy(t => t.Order);
-        var window = lastN is { } n ? ordered.TakeLast(n) : ordered;
-        return window.Select(t => t.Role == TurnRole.Learner
-            ? ChatMessage.FromUser(t.Content)
-            : ChatMessage.FromAssistant(t.Content)).ToList();
+        var messages = turns.OrderBy(t => t.Order)
+            .Select(t => t.Role == TurnRole.Learner
+                ? ChatMessage.FromUser(t.Content)
+                : ChatMessage.FromAssistant(t.Content))
+            .ToList();
+
+        if (appendToLast == null) return messages;
+
+        if (messages.Count > 0 && messages[^1].Role == ChatRole.User)
+            messages[^1] = ChatMessage.FromUser(messages[^1].Content + "\n" + appendToLast);
+        else
+            messages.Add(ChatMessage.FromUser(appendToLast));
+
+        return messages;
     }
 
     private static string RenderProbe(ActiveProbe probe)
