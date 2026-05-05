@@ -17,7 +17,7 @@ namespace Tutor.Elaborations.Core.UseCases.Learning;
 
 public class ConversationService : IConversationService
 {
-    private const int MaxAttemptsPerDay = 3;
+    private const int MaxAttemptsPerDay = 30;
 
     private readonly IConversationAttemptRepository _attemptRepo;
     private readonly IConceptElaborationTaskRepository _taskRepo;
@@ -95,7 +95,7 @@ public class ConversationService : IConversationService
             yield break;
         }
 
-        var attempt = new ConversationAttempt(taskId, learnerId, task!.ConceptRecord!.CountPropositionsAndRelations());
+        var attempt = new ConversationAttempt(taskId, learnerId, task!.ConceptRecord!.CountTargets());
         _attemptRepo.Create(attempt);
         _unitOfWork.Save();
 

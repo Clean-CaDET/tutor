@@ -73,7 +73,7 @@ public class ConceptRecord : Entity
         return null;
     }
 
-    public int CountPropositionsAndRelations()
+    public int CountTargets()
     {
         return KeyPropositions.Count + KeyRelations.Count;
     }

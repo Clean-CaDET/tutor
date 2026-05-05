@@ -16,7 +16,7 @@ public static class LlmRequestFactory
     public static CompletionRequest ForScaffolding(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
         ActiveProbe probe)
     {
-        return CompletionRequest.Create(ToMessages(turns, RenderProbe(probe)), ScaffoldingPrompt.Build(record), maxTokens: 512, temperature: 0.7);
+        return CompletionRequest.Create(ToMessages(turns, RenderProbe(probe)), ScaffoldingPrompt.Build(record), maxTokens: 1024, temperature: 0.7);
     }
 
     public static CompletionRequest ForClarification(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
@@ -33,7 +33,7 @@ public static class LlmRequestFactory
 
     public static CompletionRequest ForSummary(ConceptRecord record, IReadOnlyList<ConversationTurn> turns)
     {
-        return CompletionRequest.Create(ToMessages(turns), SummaryPrompt.Build(record), maxTokens: 256, temperature: 0.5);
+        return CompletionRequest.Create(ToMessages(turns), SummaryPrompt.Build(record), maxTokens: 512, temperature: 0.5);
     }
 
     public static CompletionRequest ForIntentClassification(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,

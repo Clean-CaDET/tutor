@@ -53,9 +53,9 @@ public class ConversationAttempt : AggregateRoot
         return Turns.Count(t => t.Role == TurnRole.Learner);
     }
 
-    public bool IsSoftCapReached() => CountTotalLearnerTurns() >= SoftCapTotalTurns;
+    public bool IsSoftCapReached() => CountTotalLearnerTurns() == SoftCapTotalTurns;
 
-    public bool IsHardCapReached() => CountTotalLearnerTurns() >= HardCapTotalTurns;
+    public bool IsHardCapReached() => CountTotalLearnerTurns() == HardCapTotalTurns;
 
     public int GetProbeLevelFor(string target)
     {
