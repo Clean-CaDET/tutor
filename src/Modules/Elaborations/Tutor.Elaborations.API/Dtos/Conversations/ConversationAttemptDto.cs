@@ -8,5 +8,5 @@ public class ConversationAttemptDto
     public DateTime StartedAt { get; set; }
     public DateTime? CompletedAt { get; set; }
     public double? FinalGrade { get; set; }
-    public List<ConversationTurnDto> Turns { get; set; } = new();
+    public List<ConversationRoundDto> Rounds { get; set; } = new();
 }

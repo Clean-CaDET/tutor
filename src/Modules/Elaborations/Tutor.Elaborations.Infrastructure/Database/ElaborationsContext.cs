@@ -9,7 +9,7 @@ public class ElaborationsContext : DbContext
     public DbSet<ConceptElaborationTask> ConceptElaborationTasks { get; set; }
     public DbSet<ConceptRecord> ConceptRecords { get; set; }
     public DbSet<ConversationAttempt> ConversationAttempts { get; set; }
-    public DbSet<ConversationTurn> ConversationTurns { get; set; }
+    public DbSet<ConversationRound> ConversationRounds { get; set; }
     public DbSet<TurnEvaluation> TurnEvaluations { get; set; }
 
     public ElaborationsContext(DbContextOptions<ElaborationsContext> options) : base(options) { }
@@ -48,27 +48,27 @@ public class ElaborationsContext : DbContext
     private static void ConfigureConversations(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ConversationAttempt>()
-            .HasMany(ca => ca.Turns)
+            .HasMany(ca => ca.Rounds)
             .WithOne()
-            .HasForeignKey(ct => ct.ConversationAttemptId);
+            .HasForeignKey(r => r.ConversationAttemptId);
 
         modelBuilder.Entity<ConversationAttempt>()
-            .Navigation(ca => ca.Turns)
-            .HasField("_turns");
+            .Navigation(ca => ca.Rounds)
+            .HasField("_rounds");
 
         modelBuilder.Entity<ConversationAttempt>()
             .HasIndex(ca => new { ca.ConceptElaborationTaskId, ca.LearnerId });
 
-        modelBuilder.Entity<ConversationTurn>()
-            .HasOne(ct => ct.Evaluation)
+        modelBuilder.Entity<ConversationRound>()
+            .HasOne(r => r.Evaluation)
             .WithOne()
-            .HasForeignKey<TurnEvaluation>(te => te.ConversationTurnId);
+            .HasForeignKey<TurnEvaluation>(te => te.ConversationRoundId);
 
-        modelBuilder.Entity<ConversationTurn>()
-            .HasIndex(ct => new { ct.ConversationAttemptId, ct.Order });
+        modelBuilder.Entity<ConversationRound>()
+            .HasIndex(r => new { r.ConversationAttemptId, r.Order });
 
-        modelBuilder.Entity<ConversationTurn>()
-            .Property(ct => ct.FeedbackTargets).HasColumnType("jsonb");
+        modelBuilder.Entity<ConversationRound>()
+            .Property(r => r.FeedbackTargets).HasColumnType("jsonb");
 
         modelBuilder.Entity<TurnEvaluation>(entity =>
         {

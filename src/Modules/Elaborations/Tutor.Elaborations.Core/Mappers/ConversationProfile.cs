@@ -10,7 +10,6 @@ public class ConversationProfile : Profile
     {
         CreateMap<ConversationAttemptDto, ConversationAttempt>().ReverseMap()
             .ForMember(d => d.Status, opt => opt.MapFrom(s => s.Status.ToString()));
-        CreateMap<ConversationTurnDto, ConversationTurn>().ReverseMap()
-            .ForMember(d => d.Role, opt => opt.MapFrom(s => s.Role.ToString()));
+        CreateMap<ConversationRoundDto, ConversationRound>().ReverseMap();
     }
 }

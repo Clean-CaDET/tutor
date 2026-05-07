@@ -126,8 +126,8 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
         var attemptId = firstMetadata.AttemptId;
 
         dbContext.ChangeTracker.Clear();
-        var turnCountAfterFirst = dbContext.ConversationAttempts
-            .Include(a => a.Turns).First(a => a.Id == attemptId).Turns.Count;
+        var roundCountAfterFirst = dbContext.ConversationAttempts
+            .Include(a => a.Rounds).First(a => a.Id == attemptId).Rounds.Count;
 
         Factory.MockChatService.Reset();
         Factory.SetupEvaluationMock(
@@ -142,8 +142,8 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
         metadata.ShouldNotBeNull();
         metadata.Status.ShouldBe("InProgress");
         metadata.AttemptId.ShouldBe(attemptId);
-        var reusedAttempt = dbContext.ConversationAttempts.Include(a => a.Turns).First(a => a.Id == attemptId);
-        reusedAttempt.Turns.Count.ShouldBe(turnCountAfterFirst + 2);
+        var reusedAttempt = dbContext.ConversationAttempts.Include(a => a.Rounds).First(a => a.Id == attemptId);
+        reusedAttempt.Rounds.Count.ShouldBe(roundCountAfterFirst + 1);
     }
 
     [Fact]

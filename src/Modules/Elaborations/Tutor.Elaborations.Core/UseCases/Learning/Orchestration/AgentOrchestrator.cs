@@ -29,7 +29,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
         using var scope = _logger.BeginScope(new Dictionary<string, object>
         {
             ["AttemptId"] = attempt.Id,
-            ["RoundCount"] = attempt.RoundCount
+            ["RoundCount"] = attempt.Rounds.Count
         });
 
         var scoreResult = await ScoreElaborationAsync(record, elaboration, ct);
@@ -40,7 +40,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
         }
         var evaluation = scoreResult.Value;
 
-        attempt.AddLearnerTurn(elaboration, evaluation);
+        attempt.BeginRound(elaboration, evaluation);
 
         if (attempt.IsGoodEnough())
         {
@@ -72,7 +72,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
             yield return new TokenChunk(SystemTurnCodes.StagnationRedirect);
         }
 
-        attempt.AddSystemTurn(fullResponse.ToString(), targets);
+        attempt.CompleteCurrentRound(fullResponse.ToString(), targets);
         yield return CreateFinalChunk(attempt);
     }
 

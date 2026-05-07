@@ -12,16 +12,16 @@ public class ConversationAttemptDatabaseRepository :
     public new ConversationAttempt? Get(int id)
     {
         return DbContext.ConversationAttempts
-            .Include(ca => ca.Turns.OrderBy(t => t.Order))
-                .ThenInclude(t => t.Evaluation)
+            .Include(ca => ca.Rounds.OrderBy(r => r.Order))
+                .ThenInclude(r => r.Evaluation)
             .FirstOrDefault(ca => ca.Id == id);
     }
 
     public ConversationAttempt? GetActiveAttempt(int conceptElaborationTaskId, int learnerId)
     {
         return DbContext.ConversationAttempts
-            .Include(ca => ca.Turns.OrderBy(t => t.Order))
-                .ThenInclude(t => t.Evaluation)
+            .Include(ca => ca.Rounds.OrderBy(r => r.Order))
+                .ThenInclude(r => r.Evaluation)
             .FirstOrDefault(ca => ca.ConceptElaborationTaskId == conceptElaborationTaskId
                 && ca.LearnerId == learnerId
                 && ca.Status == AttemptStatus.InProgress);
@@ -30,7 +30,7 @@ public class ConversationAttemptDatabaseRepository :
     public List<ConversationAttempt> GetByTaskAndLearner(int conceptElaborationTaskId, int learnerId)
     {
         return DbContext.ConversationAttempts
-            .Include(ca => ca.Turns.OrderBy(t => t.Order))
+            .Include(ca => ca.Rounds.OrderBy(r => r.Order))
             .Where(ca => ca.ConceptElaborationTaskId == conceptElaborationTaskId && ca.LearnerId == learnerId)
             .OrderByDescending(ca => ca.StartedAt)
             .ToList();

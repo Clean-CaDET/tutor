@@ -12,9 +12,8 @@ public class ConversationAttempt : AggregateRoot
     public double FinalGrade { get; private set; }
     public int TotalTargets { get; private set; }
     public int MaxRounds { get; private set; }
-    public int RoundCount { get; private set; }
-    private readonly List<ConversationTurn> _turns = new();
-    public IReadOnlyList<ConversationTurn> Turns => _turns.AsReadOnly();
+    private readonly List<ConversationRound> _rounds = new();
+    public IReadOnlyList<ConversationRound> Rounds => _rounds.AsReadOnly();
 
     private ConversationAttempt() { }
 
@@ -28,86 +27,121 @@ public class ConversationAttempt : AggregateRoot
         MaxRounds = Math.Max(4, (int)Math.Ceiling(totalTargets / 3.0) + 2);
     }
 
-    public bool IsHardCapReached() => RoundCount >= MaxRounds;
+    public bool IsHardCapReached() => _rounds.Count >= MaxRounds;
 
     public bool IsStagnating()
     {
-        var scores = Turns
-            .Where(t => t.Role == TurnRole.Learner && t.Evaluation != null)
-            .OrderBy(t => t.Order)
+        var scores = _rounds
             .TakeLast(3)
-            .Select(t => t.Evaluation!.TotalScore())
+            .Select(r => r.Evaluation.TotalScore())
             .ToList();
         if (scores.Count < 3) return false;
         return scores[2] <= scores[1] && scores[1] <= scores[0];
     }
 
-    public ConversationTurn AddLearnerTurn(string content, TurnEvaluation evaluation)
+    public void BeginRound(string elaboration, TurnEvaluation evaluation)
     {
-        var turn = new ConversationTurn(content, _turns.Count, evaluation);
-        _turns.Add(turn);
-
+        _rounds.Add(new ConversationRound(_rounds.Count, elaboration, evaluation));
         FinalGrade = evaluation.ComputeGrade(TotalTargets);
-        RoundCount++;
-        return turn;
     }
 
-    public ConversationTurn AddSystemTurn(string content, IReadOnlyList<FeedbackTarget> feedbackTargets)
+    public void CompleteCurrentRound(string feedbackContent, IReadOnlyList<FeedbackTarget> feedbackTargets)
     {
-        var turn = new ConversationTurn(content, _turns.Count, feedbackTargets);
-        _turns.Add(turn);
-        return turn;
+        _rounds[^1].Complete(feedbackContent, feedbackTargets);
     }
 
     public IReadOnlyList<FeedbackTarget> SelectFeedbackTargets(int maxItems = 2)
     {
-        var latestEvaluation = Turns[^1].Evaluation!;
-
-        var lastSurfacedGrade = BuildLastSurfacedGradeMap();
+        var excludedProbes = GetExcludedProbes();
+        var activeProbes = GetRecentActiveProbes(2);
+        var deficientTargets = _rounds[^1].Evaluation.GetDeficientTargets(excludedProbes);
         var targets = new List<FeedbackTarget>();
 
-        foreach (var key in latestEvaluation.MisconceptionsTriggeredKeys)
-        {
-            targets.Add(new FeedbackTarget(key, TargetType.Misconception, 0, lastSurfacedGrade.ContainsKey(key)));
-            if (targets.Count >= maxItems) return targets;
-        }
+        targets.AddRange(CreateMomentumProbes(deficientTargets, activeProbes)); // Active probes where grade improved
+        if (targets.Count >= maxItems) return targets.Take(maxItems).ToList();
 
-        var subpar = latestEvaluation.Assessments
-            .Where(a => a.Grade < 2)
-            .Select(a =>
-            {
-                bool surfaced = lastSurfacedGrade.TryGetValue(a.Key, out var prevGrade);
-                bool improved = surfaced && a.Grade > prevGrade;
-                bool stagnant = surfaced && !improved;
-                return (a.Key, a.Type, a.Grade, NeedsSupport: stagnant,
-                    GroupOrder: improved ? 0 : !surfaced ? 1 : 2);
-            })
-            .OrderBy(x => x.GroupOrder)
-            .ThenBy(x => x.Grade == -1 ? 0 : x.Grade == 1 ? 1 : 2);
+        targets.AddRange(CreateStagnantProbes(deficientTargets, activeProbes)); // Active probes where grade did not improve
+        if (targets.Count >= maxItems) return targets.Take(maxItems).ToList();
 
-        foreach (var item in subpar)
-        {
-            targets.Add(new FeedbackTarget(item.Key, item.Type, item.Grade, item.NeedsSupport));
-            if (targets.Count >= maxItems) return targets;
-        }
+        targets.AddRange(CreateNewProbes(deficientTargets, activeProbes)); // No active probes
 
-        return targets;
+        return targets.Take(maxItems).ToList();
     }
 
-    private Dictionary<string, int> BuildLastSurfacedGradeMap()
+    private static List<FeedbackTarget> CreateMomentumProbes(List<ScoredTarget> deficientTargets, List<FeedbackTarget> activeProbes)
     {
-        var result = new Dictionary<string, int>();
-        foreach (var systemTurn in Turns
-            .Where(t => t.Role == TurnRole.System && t.FeedbackTargets.Count > 0)
-            .OrderByDescending(t => t.Order))
+        var momentumProbes = new List<FeedbackTarget>();
+        foreach (var target in deficientTargets)
         {
-            foreach (var target in systemTurn.FeedbackTargets)
+            var relatedProbe = activeProbes.Find(probe => probe.ScoredTarget.SameTarget(target));
+            if (relatedProbe?.ScoredTarget.Grade < target.Grade)
             {
-                if (!result.ContainsKey(target.Key))
-                    result[target.Key] = target.Grade;
+                momentumProbes.Add(new FeedbackTarget(target, 0));
             }
         }
-        return result;
+
+        return momentumProbes;
+    }
+
+    private static List<FeedbackTarget> CreateStagnantProbes(List<ScoredTarget> deficientTargets, List<FeedbackTarget> activeProbes)
+    {
+        var stagnantProbes = new List<FeedbackTarget>();
+        foreach (var target in deficientTargets)
+        {
+            var relatedProbe = activeProbes.Find(probe => probe.ScoredTarget.SameTarget(target));
+            if (relatedProbe == null || relatedProbe.ScoredTarget.Grade < target.Grade) continue;
+            if (relatedProbe.ScoredTarget.Grade == target.Grade)
+            {
+                stagnantProbes.Add(new FeedbackTarget(target, relatedProbe.ProbesWithoutGradeChangeCount + 1));
+                continue;
+            }
+            stagnantProbes.Add(new FeedbackTarget(target, 0));
+        }
+        return stagnantProbes;
+    }
+
+    private static List<FeedbackTarget> CreateNewProbes(List<ScoredTarget> deficientTargets, List<FeedbackTarget> activeProbes)
+    {
+        var newProbes = new List<FeedbackTarget>();
+        foreach (var target in deficientTargets)
+        {
+            var relatedProbe = activeProbes.Find(probe => probe.ScoredTarget.SameTarget(target));
+            if (relatedProbe == null)
+            {
+                newProbes.Add(new FeedbackTarget(target, 0));
+            }
+        }
+
+        return newProbes;
+    }
+
+    private List<FeedbackTarget> GetRecentActiveProbes(int lookBack)
+    {
+        var activeProbes = new List<FeedbackTarget>();
+        foreach (var round in _rounds.SkipLast(1).Reverse().Take(lookBack))
+        {
+            foreach (var target in round.FeedbackTargets)
+            {
+                if (target.IsStalled()) continue;
+                if (activeProbes.Any(p => p.ScoredTarget.SameTarget(target.ScoredTarget))) continue;
+                activeProbes.Add(target);
+            }
+        }
+        return activeProbes;
+    }
+
+    private List<FeedbackTarget> GetExcludedProbes()
+    {
+        var excludedProbes = new List<FeedbackTarget>();
+        foreach (var round in _rounds.SkipLast(1).Reverse())
+        {
+            foreach (var target in round.FeedbackTargets.Where(t => t.IsStalled()))
+            {
+                if (!excludedProbes.Any(p => p.ScoredTarget.SameTarget(target.ScoredTarget)))
+                    excludedProbes.Add(target);
+            }
+        }
+        return excludedProbes;
     }
 
     public void Complete()
@@ -128,8 +162,5 @@ public class ConversationAttempt : AggregateRoot
         CompletedAt = DateTime.UtcNow;
     }
 
-    public bool IsGoodEnough()
-    {
-        return FinalGrade > 0.9;
-    }
+    public bool IsGoodEnough() => FinalGrade > 0.9;
 }

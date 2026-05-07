@@ -1,3 +1,6 @@
 namespace Tutor.Elaborations.Core.Domain.Conversations;
 
-public record FeedbackTarget(string Key, TargetType Type, int Grade, bool NeedsSupport);
+public record FeedbackTarget(ScoredTarget ScoredTarget, int ProbesWithoutGradeChangeCount)
+{
+    public bool IsStalled() => ProbesWithoutGradeChangeCount >= 2;
+};
