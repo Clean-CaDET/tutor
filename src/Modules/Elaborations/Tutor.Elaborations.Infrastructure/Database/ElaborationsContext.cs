@@ -65,10 +65,10 @@ public class ElaborationsContext : DbContext
             .HasForeignKey<TurnEvaluation>(te => te.ConversationTurnId);
 
         modelBuilder.Entity<ConversationTurn>()
-            .OwnsOne(ct => ct.Probe, probe => probe.ToJson());
+            .HasIndex(ct => new { ct.ConversationAttemptId, ct.Order });
 
         modelBuilder.Entity<ConversationTurn>()
-            .HasIndex(ct => new { ct.ConversationAttemptId, ct.Order });
+            .Property(ct => ct.FeedbackTargets).HasColumnType("jsonb");
 
         modelBuilder.Entity<TurnEvaluation>(entity =>
         {

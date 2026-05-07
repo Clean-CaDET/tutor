@@ -1,144 +1,71 @@
--- Attempt -1: Learner -2, CET -1, Completed with 3 turns (for query tests)
-INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
-VALUES (-1, -1, -2, 2, '2024-06-01 10:00:00+00', '2024-06-01 10:15:00+00', 'Good understanding of encapsulation basics.');
+-- Attempt -1: Learner -2, CET -1, Completed (for query tests and cannot-submit tests)
+INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "FinalGrade", "TotalTargets", "MaxRounds", "RoundCount")
+VALUES (-1, -1, -2, 1, '2024-06-01 10:00:00+00', '2024-06-01 10:15:00+00', 1.0, 1, 4, 1);
 
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-1, -1, 0, 'Encapsulation bundles data and methods in a class.', 0, '2024-06-01 10:01:00+00', 0);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-2, -1, 1, 'Good start! Can you tell me more about access modifiers?', 1, '2024-06-01 10:01:05+00', null);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-3, -1, 0, 'Access modifiers like public and private control visibility.', 2, '2024-06-01 10:02:00+00', 0);
+INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp")
+VALUES (-1, -1, 0, 'Encapsulation bundles data and methods in a class, hiding implementation details.', 0, '2024-06-01 10:01:00+00');
+INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp")
+VALUES (-2, -1, 1, '1.00', 1, '2024-06-01 10:01:05+00');
 
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-1, -1, '[{{"Key":"P1","Type":0,"Grade":3}}]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-3, -3, '[{{"Key":"P1","Type":0,"Grade":3}}]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys")
+VALUES (-1, -1, '[{{"Key":"P1","Type":0,"Grade":2}}]'::jsonb, '[]'::jsonb);
 
 -- Attempt -2: Learner -2, CET -1, Abandoned (for query tests)
-INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
-VALUES (-2, -1, -2, 3, '2024-06-02 10:00:00+00', '2024-06-02 10:05:00+00', null);
+INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "FinalGrade", "TotalTargets", "MaxRounds", "RoundCount")
+VALUES (-2, -1, -2, 2, '2024-06-02 10:00:00+00', '2024-06-02 10:05:00+00', 0.0, 1, 4, 0);
 
--- Attempt -3: Learner -3, CET -1, InProgress with 2 turns (for abandon + follow-up tests)
-INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
-VALUES (-3, -1, -3, 0, '2024-06-03 10:00:00+00', null, null);
+-- Attempt -3: Learner -3, CET -1, InProgress, RoundCount=1 (conflict + eval failure tests)
+INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "FinalGrade", "TotalTargets", "MaxRounds", "RoundCount")
+VALUES (-3, -1, -3, 0, '2024-06-03 10:00:00+00', null, 0.0, 1, 4, 1);
 
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-4, -3, 0, 'Encapsulation is about data hiding.', 0, '2024-06-03 10:01:00+00', 0);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-5, -3, 1, 'What else can you tell me about encapsulation?', 1, '2024-06-03 10:01:05+00', null);
+INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp")
+VALUES (-4, -3, 0, 'Encapsulation is about data hiding.', 0, '2024-06-03 10:01:00+00');
+INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp")
+VALUES (-5, -3, 1, 'What else can you tell me about encapsulation?', 1, '2024-06-03 10:01:05+00');
 
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-4, -4, '[]'::jsonb, '["M1"]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys")
+VALUES (-4, -4, '[{{"Key":"P1","Type":0,"Grade":0}}]'::jsonb, '["M1"]'::jsonb);
 
--- Attempt -4: Learner -3, CET -2, InProgress (for completion test: KP P1 already covered, submit to cover P2)
-INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
-VALUES (-4, -2, -3, 0, '2024-06-04 10:00:00+00', null, null);
+-- Attempt -4: Learner -3, CET -2, InProgress, RoundCount=1 (completion test: submit all grade 2 → Completed)
+INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "FinalGrade", "TotalTargets", "MaxRounds", "RoundCount")
+VALUES (-4, -2, -3, 0, '2024-06-04 10:00:00+00', null, 0.0, 2, 4, 1);
 
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-6, -4, 0, 'Encapsulation bundles data and methods together.', 0, '2024-06-04 10:01:00+00', 0);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-7, -4, 1, 'Good. What about access control?', 1, '2024-06-04 10:01:05+00', null);
+INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp")
+VALUES (-6, -4, 0, 'Encapsulation bundles data and methods, but access control is unclear.', 0, '2024-06-04 10:01:00+00');
+INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp")
+VALUES (-7, -4, 1, 'Consider elaborating on how access modifiers enforce encapsulation.', 1, '2024-06-04 10:01:05+00');
 
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-6, -6, '[{{"Key":"P1","Type":0,"Grade":3}}]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys")
+VALUES (-6, -6, '[{{"Key":"P1","Type":0,"Grade":1}},{{"Key":"P2","Type":0,"Grade":0}}]'::jsonb, '[]'::jsonb);
 
--- Attempt -5: Learner -2, CET -2, InProgress with 9 learner + 9 system turns (for hard cap test)
-INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary", "HardCapTotalTurns", "SoftCapTotalTurns")
-VALUES (-5, -2, -2, 0, '2024-06-05 10:00:00+00', null, null, 6, 2);
+-- Attempt -5: Learner -2, CET -2, InProgress, RoundCount=3, MaxRounds=4 (hard cap test: next submission expires)
+INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "FinalGrade", "TotalTargets", "MaxRounds", "RoundCount")
+VALUES (-5, -2, -2, 0, '2024-06-05 10:00:00+00', null, 0.0, 2, 4, 3);
 
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-50, -5, 0, 'Turn 1', 0, '2024-06-05 10:01:00+00', 0);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-51, -5, 1, 'Response 1', 1, '2024-06-05 10:01:05+00', null);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-52, -5, 0, 'Turn 2', 2, '2024-06-05 10:02:00+00', 0);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-53, -5, 1, 'Response 2', 3, '2024-06-05 10:02:05+00', null);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-54, -5, 0, 'Turn 3', 4, '2024-06-05 10:03:00+00', 0);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-55, -5, 1, 'Response 3', 5, '2024-06-05 10:03:05+00', null);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-56, -5, 0, 'Turn 4', 6, '2024-06-05 10:04:00+00', 0);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-57, -5, 1, 'Response 4', 7, '2024-06-05 10:04:05+00', null);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-58, -5, 0, 'Turn 5', 8, '2024-06-05 10:05:00+00', 0);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-59, -5, 1, 'Response 5', 9, '2024-06-05 10:05:05+00', null);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-60, -5, 0, 'Turn 6', 10, '2024-06-05 10:06:00+00', 0);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-61, -5, 1, 'Response 6', 11, '2024-06-05 10:06:05+00', null);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-62, -5, 0, 'Turn 7', 12, '2024-06-05 10:07:00+00', 0);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-63, -5, 1, 'Response 7', 13, '2024-06-05 10:07:05+00', null);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-64, -5, 0, 'Turn 8', 14, '2024-06-05 10:08:00+00', 0);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-65, -5, 1, 'Response 8', 15, '2024-06-05 10:08:05+00', null);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-66, -5, 0, 'Turn 9', 16, '2024-06-05 10:09:00+00', 0);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-67, -5, 1, 'Response 9', 17, '2024-06-05 10:09:05+00', null);
+INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp")
+VALUES (-50, -5, 0, 'Round 1 elaboration.', 0, '2024-06-05 10:01:00+00');
+INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp")
+VALUES (-51, -5, 1, 'Feedback 1.', 1, '2024-06-05 10:01:05+00');
+INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp")
+VALUES (-52, -5, 0, 'Round 2 elaboration.', 2, '2024-06-05 10:02:00+00');
+INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp")
+VALUES (-53, -5, 1, 'Feedback 2.', 3, '2024-06-05 10:02:05+00');
+INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp")
+VALUES (-54, -5, 0, 'Round 3 elaboration.', 4, '2024-06-05 10:03:00+00');
+INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp")
+VALUES (-55, -5, 1, 'Feedback 3.', 5, '2024-06-05 10:03:05+00');
 
--- Evaluations for the 9 learner turns (all with empty assessments — never completes)
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-50, -50, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-52, -52, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-54, -54, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-56, -56, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-58, -58, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-60, -60, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-62, -62, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-64, -64, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-66, -66, '[]'::jsonb, '[]'::jsonb, false);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys")
+VALUES (-50, -50, '[{{"Key":"P1","Type":0,"Grade":0}},{{"Key":"P2","Type":0,"Grade":0}}]'::jsonb, '[]'::jsonb);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys")
+VALUES (-52, -52, '[{{"Key":"P1","Type":0,"Grade":0}},{{"Key":"P2","Type":0,"Grade":0}}]'::jsonb, '[]'::jsonb);
+INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys")
+VALUES (-54, -54, '[{{"Key":"P1","Type":0,"Grade":0}},{{"Key":"P2","Type":0,"Grade":0}}]'::jsonb, '[]'::jsonb);
 
--- Attempt -6: Learner -3, CET -3, InProgress with 5 substantive learner + 5 system turns (for soft cap test)
-INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
-VALUES (-6, -3, -3, 0, '2024-06-06 10:00:00+00', null, null);
+-- Attempt -6: Learner -3, CET -3, InProgress, RoundCount=0 (isolated for Start+Submit flow test)
+INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "FinalGrade", "TotalTargets", "MaxRounds", "RoundCount")
+VALUES (-6, -3, -3, 0, '2024-06-06 10:00:00+00', null, 0.0, 1, 4, 0);
 
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-70, -6, 0, 'Turn 1', 0, '2024-06-06 10:01:00+00', 0);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-71, -6, 1, 'Response 1', 1, '2024-06-06 10:01:05+00', null);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-72, -6, 0, 'Turn 2', 2, '2024-06-06 10:02:00+00', 0);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-73, -6, 1, 'Response 2', 3, '2024-06-06 10:02:05+00', null);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-74, -6, 0, 'Turn 3', 4, '2024-06-06 10:03:00+00', 0);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-75, -6, 1, 'Response 3', 5, '2024-06-06 10:03:05+00', null);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-76, -6, 0, 'Turn 4', 6, '2024-06-06 10:04:00+00', 0);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-77, -6, 1, 'Response 4', 7, '2024-06-06 10:04:05+00', null);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-78, -6, 0, 'Turn 5', 8, '2024-06-06 10:05:00+00', 0);
-INSERT INTO elaborations."ConversationTurns"("Id", "ConversationAttemptId", "Role", "Content", "Order", "Timestamp", "Intent")
-VALUES (-79, -6, 1, 'Response 5', 9, '2024-06-06 10:05:05+00', null);
-
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-70, -70, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-72, -72, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-74, -74, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-76, -76, '[]'::jsonb, '[]'::jsonb, false);
-INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationTurnId", "Assessments", "MisconceptionsTriggeredKeys", "HasMultipleConcerns")
-VALUES (-78, -78, '[]'::jsonb, '[]'::jsonb, false);
-
--- Attempt -7: Learner -3, CET -5, InProgress (isolated for abandon test — no other test touches this)
-INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "Summary")
-VALUES (-7, -5, -3, 0, '2024-06-07 10:00:00+00', null, null);
+-- Attempt -7: Learner -3, CET -5, InProgress, RoundCount=0 (isolated for abandon test)
+INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId", "LearnerId", "Status", "StartedAt", "CompletedAt", "FinalGrade", "TotalTargets", "MaxRounds", "RoundCount")
+VALUES (-7, -5, -3, 0, '2024-06-07 10:00:00+00', null, 0.0, 2, 4, 0);

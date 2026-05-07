@@ -10,7 +10,7 @@ public sealed record TokenChunk(string Token) : OrchestratorChunk;
 public sealed record FinalChunk(
     int AttemptId,
     AttemptStatus Status,
-    string? Summary,
+    double? FinalGrade,
     TokenUsage Usage) : OrchestratorChunk;
 
 public sealed record ErrorChunk(string Message, int Code) : OrchestratorChunk;

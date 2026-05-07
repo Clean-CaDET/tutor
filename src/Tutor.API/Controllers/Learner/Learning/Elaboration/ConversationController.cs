@@ -35,23 +35,23 @@ public class ConversationController : BaseApiController
 
     [HttpPost("concept-elaborations/{taskId:int}/conversations")]
     public async IAsyncEnumerable<string> StartConversation(int taskId,
-        [FromBody] SubmitTurnRequestDto dto,
+        [FromBody] SubmitElaborationRequestDto dto,
         [EnumeratorCancellation] CancellationToken ct)
     {
         await foreach (var token in _conversationService.StartConversationAsync(
-            taskId, dto.Content, User.LearnerId(), ct))
+            taskId, dto.Elaboration, User.LearnerId(), ct))
         {
             yield return token;
         }
     }
 
-    [HttpPost("concept-elaborations/attempts/{attemptId:int}/turns")]
-    public async IAsyncEnumerable<string> SubmitTurn(int attemptId,
-        [FromBody] SubmitTurnRequestDto dto,
+    [HttpPost("concept-elaborations/attempts/{attemptId:int}/elaborations")]
+    public async IAsyncEnumerable<string> SubmitElaboration(int attemptId,
+        [FromBody] SubmitElaborationRequestDto dto,
         [EnumeratorCancellation] CancellationToken ct)
     {
-        await foreach (var token in _conversationService.SubmitTurnAsync(
-            attemptId, dto.Content, User.LearnerId(), ct))
+        await foreach (var token in _conversationService.SubmitElaborationAsync(
+            attemptId, dto.Elaboration, User.LearnerId(), ct))
         {
             yield return token;
         }

@@ -8,25 +8,24 @@ using Tutor.API.Controllers.Learner.Learning.Elaboration;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
 using Tutor.Elaborations.API.Dtos.Conversations;
 using Tutor.Elaborations.API.Public.Learning;
-using Tutor.Elaborations.Core.Domain.Conversations;
 using Tutor.Elaborations.Infrastructure.Database;
 
 namespace Tutor.Elaborations.Tests.Integration.Learning;
 
-// Test data layout (each task owns its own natural keys: P1, P2, R1, ...):
+// Test data layout:
 // CET -1: Encapsulation (Basics), Unit -1      — KPs: P1 | CMs: M1
 // CET -2: Encapsulation (Members), Unit -1     — KPs: P1, P2 | CMs: M1, M2
 // CET -3: Encapsulation (Basics — Unit 2), -2  — KPs: P1
 // CET -5: Encapsulation (Members — Unit 2), -2 — KPs: P1, P2 — isolated for StartConversation
 // CET -6: Encapsulation (Invariants), Unit -2  — KPs: P1, P2, P3 — isolated for Start+Submit flow
-// CET -7: Polymorphism Mechanics, Unit -2      — KPs: P1, P2 | KRs: R1 — isolated
+// CET -7: Polymorphism Mechanics, Unit -2      — KPs: P1, P2 | KRs: R1
 // Learner -2: enrolled in Units -1, -2 | Learner -3: enrolled in Units -1, -2
 // Learner -1: NOT enrolled | Learner -4: exhausted wallet
-// Attempt -3: Learner -3, CET -1, InProgress (2 turns — for conflict + eval failure tests)
-// Attempt -4: Learner -3, CET -2, InProgress (P1 covered — completion test)
-// Attempt -5: Learner -2, CET -2, InProgress (9 learner turns — hard cap seed)
-// Attempt -6: Learner -3, CET -3, InProgress (5 substantive turns — soft cap seed)
-// Attempt -7: Learner -3, CET -5, InProgress (isolated for abandon test)
+// Attempt -1: Learner -2, CET -1, Completed   (for conflict / cannot-submit tests)
+// Attempt -3: Learner -3, CET -1, InProgress, RoundCount=1 (conflict + eval failure tests)
+// Attempt -4: Learner -3, CET -2, InProgress, RoundCount=1 (completion test)
+// Attempt -5: Learner -2, CET -2, InProgress, RoundCount=3 (hard cap test — MaxRounds=4)
+// Attempt -7: Learner -3, CET -5, InProgress  (isolated for abandon test)
 [Collection("Sequential")]
 public class ConversationTurnTests : BaseElaborationsIntegrationTest
 {
@@ -40,97 +39,111 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
         Factory.SetupDialogueMock();
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
-        var dto = new SubmitTurnRequestDto { Content = "Encapsulation bundles data and methods." };
+        var dto = new SubmitElaborationRequestDto { Elaboration = "Encapsulation bundles data and methods." };
 
         var tokens = await CollectStreamAsync(controller.StartConversation(-5, dto, CancellationToken.None));
 
         tokens.Count.ShouldBeGreaterThan(1);
-        var metadata = JsonSerializer.Deserialize<SubmitTurnResponseDto>(tokens.Last());
+        var metadata = JsonSerializer.Deserialize<SubmitElaborationResponseDto>(tokens.Last());
         metadata.ShouldNotBeNull();
         metadata.Status.ShouldBe("InProgress");
         metadata.AttemptId.ShouldBeGreaterThan(0);
         Factory.MockChatService.Verify(x => x.CompleteAsync(
             It.Is<CompletionRequest>(r => r.MaxTokens == 1024), It.IsAny<CancellationToken>()), Times.Once);
-
-        var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
-        dbContext.ChangeTracker.Clear();
-        var attempt = dbContext.ConversationAttempts.Include(a => a.Turns)
-            .FirstOrDefault(a => a.ConceptElaborationTaskId == -5 && a.LearnerId == -2 && a.Status == 0);
-        attempt.ShouldNotBeNull();
-        attempt.Turns.Count.ShouldBeGreaterThanOrEqualTo(2);
     }
 
     [Fact]
-    public async Task Closing_turn_substantive_completes_with_grade()
+    public async Task Submission_completes_when_all_targets_adequate()
     {
-        // CET -2 (P1, P2). Attempt -4 already has P1 covered. Submit P2 → InClosing, then final answer → grade.
+        // CET -2 has P1, P2. Attempt -4 has RoundCount=1. Submit with all grade 2 → Completed.
         Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock([("P1", "proposition", 3), ("P2", "proposition", 3)]);
-        Factory.SetupDialogueMock();
+        Factory.SetupEvaluationMock([("P1", "proposition", 2), ("P2", "proposition", 2)]);
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-3");
+        var dto = new SubmitElaborationRequestDto { Elaboration = "Covers both propositions adequately." };
 
-        var first = new SubmitTurnRequestDto { Content = "Covers both KPs." };
-        var firstTokens = await CollectStreamAsync(controller.SubmitTurn(-4, first, CancellationToken.None));
-        var firstMeta = JsonSerializer.Deserialize<SubmitTurnResponseDto>(firstTokens.Last());
-        firstMeta.ShouldNotBeNull();
-        firstMeta.Status.ShouldBe("InClosing");
+        var tokens = await CollectStreamAsync(controller.SubmitElaboration(-4, dto, CancellationToken.None));
 
-        // Now submit the final articulation — ClosingScorer grades it.
-        // CET -2 has 2 rubric items (P1, P2). Both grade 3 → grade = 6/(3×2)×10 = 10.
-        Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock([("P1", "proposition", 3), ("P2", "proposition", 3)]);
-        var final = new SubmitTurnRequestDto { Content = "Final consolidated answer." };
-        var tokens = await CollectStreamAsync(controller.SubmitTurn(-4, final, CancellationToken.None));
-
-        var metadata = JsonSerializer.Deserialize<SubmitTurnResponseDto>(tokens.Last());
+        var metadata = JsonSerializer.Deserialize<SubmitElaborationResponseDto>(tokens.Last());
         metadata.ShouldNotBeNull();
         metadata.Status.ShouldBe("Completed");
-        metadata.Summary.ShouldBe("10 / 10");
     }
 
     [Fact]
-    public async Task Hard_cap_reached_transitions_to_closing()
+    public async Task Hard_cap_expires_attempt()
     {
-        // Attempt -5: CET -2 (P1, P2), 9 learner turns already — hard cap is totalTargets+4 = 6.
+        // Attempt -5: CET -2, RoundCount=3, MaxRounds=4. Next submission hits cap → Expired.
         Factory.MockChatService.Reset();
         Factory.SetupEvaluationMock([("P1", "proposition", 0), ("P2", "proposition", 0)]);
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-2");
+        var dto = new SubmitElaborationRequestDto { Elaboration = "Attempt at the hard cap boundary." };
+
+        var tokens = await CollectStreamAsync(controller.SubmitElaboration(-5, dto, CancellationToken.None));
+
+        var metadata = JsonSerializer.Deserialize<SubmitElaborationResponseDto>(tokens.Last());
+        metadata.ShouldNotBeNull();
+        metadata.Status.ShouldBe("Expired");
+    }
+
+    [Fact]
+    public async Task Submission_with_KPs_and_KR_completes_when_all_adequate()
+    {
+        // CET -7 (KPs P1, P2 + KR R1 = 3 targets). All grade 2 → Completed immediately.
+        Factory.MockChatService.Reset();
+        Factory.SetupEvaluationMock(
+            [("P1", "proposition", 2), ("P2", "proposition", 2), ("R1", "relation", 2)]);
+        using var scope = Factory.Services.CreateScope();
+        var controller = CreateController(scope, "-3");
+        var dto = new SubmitElaborationRequestDto
+        {
+            Elaboration = "Override works because the runtime dispatches on the actual type, linking polymorphism to dynamic dispatch."
+        };
+
+        var tokens = await CollectStreamAsync(controller.StartConversation(-7, dto, CancellationToken.None));
+
+        var metadata = JsonSerializer.Deserialize<SubmitElaborationResponseDto>(tokens.Last());
+        metadata.ShouldNotBeNull();
+        metadata.Status.ShouldBe("Completed");
+    }
+
+    [Fact]
+    public async Task Start_then_submit_adds_turns_to_same_attempt()
+    {
+        // CET -6 (P1, P2, P3). Start creates attempt; submit reuses it.
+        Factory.MockChatService.Reset();
+        Factory.SetupEvaluationMock(
+            [("P1", "proposition", 0), ("P2", "proposition", 0), ("P3", "proposition", 0)]);
         Factory.SetupDialogueMock();
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
-        var dto = new SubmitTurnRequestDto { Content = "Final turn attempt." };
+        var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
+        var firstDto = new SubmitElaborationRequestDto { Elaboration = "First elaboration." };
 
-        var tokens = await CollectStreamAsync(controller.SubmitTurn(-5, dto, CancellationToken.None));
+        var firstTokens = await CollectStreamAsync(controller.StartConversation(-6, firstDto, CancellationToken.None));
+        var firstMetadata = JsonSerializer.Deserialize<SubmitElaborationResponseDto>(firstTokens.Last());
+        firstMetadata.ShouldNotBeNull();
+        var attemptId = firstMetadata.AttemptId;
 
-        var metadata = JsonSerializer.Deserialize<SubmitTurnResponseDto>(tokens.Last());
-        metadata.ShouldNotBeNull();
-        metadata.Status.ShouldBe("InClosing");
-    }
+        dbContext.ChangeTracker.Clear();
+        var turnCountAfterFirst = dbContext.ConversationAttempts
+            .Include(a => a.Turns).First(a => a.Id == attemptId).Turns.Count;
 
-    [Fact]
-    public async Task Soft_cap_reached_continues()
-    {
-        // Attempt -6: CET -3 (P1 only), 5 substantive turns already.
         Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock([("P1", "proposition", 0)]);
+        Factory.SetupEvaluationMock(
+            [("P1", "proposition", 0), ("P2", "proposition", 0), ("P3", "proposition", 0)]);
         Factory.SetupDialogueMock();
-        Factory.SetupSummaryMock();
-        using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope, "-3");
-        var dto = new SubmitTurnRequestDto { Content = "Sixth substantive turn." };
+        var secondDto = new SubmitElaborationRequestDto { Elaboration = "Revised elaboration." };
 
-        var tokens = await CollectStreamAsync(controller.SubmitTurn(-6, dto, CancellationToken.None));
+        var tokens = await CollectStreamAsync(controller.SubmitElaboration(attemptId, secondDto, CancellationToken.None));
 
-        tokens.Count.ShouldBeGreaterThan(1);
-        var metadata = JsonSerializer.Deserialize<SubmitTurnResponseDto>(tokens.Last());
+        dbContext.ChangeTracker.Clear();
+        var metadata = JsonSerializer.Deserialize<SubmitElaborationResponseDto>(tokens.Last());
         metadata.ShouldNotBeNull();
         metadata.Status.ShouldBe("InProgress");
-
-        var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
-        dbContext.ChangeTracker.Clear();
-        var attempt = dbContext.ConversationAttempts.Include(a => a.Turns)
-            .ThenInclude(t => t.Evaluation).First(a => a.Id == -6);
-        attempt.Turns.Count(t => t.Role == TurnRole.Learner && t.Intent == TurnIntent.Substantive).ShouldBe(6);
+        metadata.AttemptId.ShouldBe(attemptId);
+        var reusedAttempt = dbContext.ConversationAttempts.Include(a => a.Turns).First(a => a.Id == attemptId);
+        reusedAttempt.Turns.Count.ShouldBe(turnCountAfterFirst + 2);
     }
 
     [Fact]
@@ -138,7 +151,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-1");
-        var dto = new SubmitTurnRequestDto { Content = "Should fail." };
+        var dto = new SubmitElaborationRequestDto { Elaboration = "Should fail." };
 
         var tokens = await CollectStreamAsync(controller.StartConversation(-1, dto, CancellationToken.None));
 
@@ -153,7 +166,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
         Factory.MockChatService.Reset();
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-4");
-        var dto = new SubmitTurnRequestDto { Content = "Should fail due to exhausted wallet." };
+        var dto = new SubmitElaborationRequestDto { Elaboration = "Should fail due to exhausted wallet." };
 
         var tokens = await CollectStreamAsync(controller.StartConversation(-1, dto, CancellationToken.None));
 
@@ -168,7 +181,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
         Factory.MockChatService.Reset();
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
-        var dto = new SubmitTurnRequestDto { Content = "Should fail due to daily limit." };
+        var dto = new SubmitElaborationRequestDto { Elaboration = "Should fail due to daily limit." };
 
         var tokens = await CollectStreamAsync(controller.StartConversation(-3, dto, CancellationToken.None));
 
@@ -186,9 +199,9 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
             .ReturnsAsync(Result.Fail<CompletionResponse>("LLM unavailable"));
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-3");
-        var dto = new SubmitTurnRequestDto { Content = "Should trigger eval failure." };
+        var dto = new SubmitElaborationRequestDto { Elaboration = "Should trigger eval failure." };
 
-        var tokens = await CollectStreamAsync(controller.SubmitTurn(-3, dto, CancellationToken.None));
+        var tokens = await CollectStreamAsync(controller.SubmitElaboration(-3, dto, CancellationToken.None));
 
         tokens.Count.ShouldBe(1, $"Got: [{string.Join("|", tokens)}]");
         var error = JsonSerializer.Deserialize<JsonElement>(tokens[0]);
@@ -200,7 +213,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
-        var dto = new SubmitTurnRequestDto { Content = "Task does not exist." };
+        var dto = new SubmitElaborationRequestDto { Elaboration = "Task does not exist." };
 
         var tokens = await CollectStreamAsync(controller.StartConversation(-999, dto, CancellationToken.None));
 
@@ -210,51 +223,11 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     }
 
     [Fact]
-    public async Task Start_then_submit_adds_turns_to_same_attempt()
-    {
-        // CET -6 (P1, P2, P3).
-        Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock([("P1", "proposition", 0), ("P2", "proposition", 0), ("P3", "proposition", 0)]);
-        Factory.SetupDialogueMock();
-        using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope, "-2");
-        var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
-        var firstDto = new SubmitTurnRequestDto { Content = "First turn for reuse test." };
-        var firstTokens = await CollectStreamAsync(controller.StartConversation(-6, firstDto, CancellationToken.None));
-
-        var firstMetadata = JsonSerializer.Deserialize<SubmitTurnResponseDto>(firstTokens.Last());
-        firstMetadata.ShouldNotBeNull();
-        var attemptId = firstMetadata.AttemptId;
-        attemptId.ShouldBeGreaterThan(0);
-
-        dbContext.ChangeTracker.Clear();
-        var createdAttempt = dbContext.ConversationAttempts.Include(a => a.Turns)
-            .First(a => a.Id == attemptId);
-        var turnCountAfterFirst = createdAttempt.Turns.Count;
-
-        // Submit second turn — should add to the same attempt
-        Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock([("P1", "proposition", 0), ("P2", "proposition", 0), ("P3", "proposition", 0)]);
-        Factory.SetupDialogueMock();
-        var secondDto = new SubmitTurnRequestDto { Content = "Second turn for reuse test." };
-        var tokens = await CollectStreamAsync(controller.SubmitTurn(attemptId, secondDto, CancellationToken.None));
-
-        dbContext.ChangeTracker.Clear();
-        var metadata = JsonSerializer.Deserialize<SubmitTurnResponseDto>(tokens.Last());
-        metadata.ShouldNotBeNull();
-        metadata.Status.ShouldBe("InProgress");
-        metadata.AttemptId.ShouldBe(attemptId);
-        var reusedAttempt = dbContext.ConversationAttempts.Include(a => a.Turns)
-            .First(a => a.Id == attemptId);
-        reusedAttempt.Turns.Count.ShouldBe(turnCountAfterFirst + 2);
-    }
-
-    [Fact]
     public async Task Start_with_active_attempt_returns_conflict()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-3");
-        var dto = new SubmitTurnRequestDto { Content = "Should conflict." };
+        var dto = new SubmitElaborationRequestDto { Elaboration = "Should conflict." };
 
         var tokens = await CollectStreamAsync(controller.StartConversation(-1, dto, CancellationToken.None));
 
@@ -269,9 +242,9 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
-        var dto = new SubmitTurnRequestDto { Content = "Attempt does not exist." };
+        var dto = new SubmitElaborationRequestDto { Elaboration = "Attempt does not exist." };
 
-        var tokens = await CollectStreamAsync(controller.SubmitTurn(-999, dto, CancellationToken.None));
+        var tokens = await CollectStreamAsync(controller.SubmitElaboration(-999, dto, CancellationToken.None));
 
         tokens.Count.ShouldBe(1);
         var error = JsonSerializer.Deserialize<JsonElement>(tokens[0]);
@@ -283,9 +256,9 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
-        var dto = new SubmitTurnRequestDto { Content = "Not my attempt." };
+        var dto = new SubmitElaborationRequestDto { Elaboration = "Not my attempt." };
 
-        var tokens = await CollectStreamAsync(controller.SubmitTurn(-4, dto, CancellationToken.None));
+        var tokens = await CollectStreamAsync(controller.SubmitElaboration(-4, dto, CancellationToken.None));
 
         tokens.Count.ShouldBe(1);
         var error = JsonSerializer.Deserialize<JsonElement>(tokens[0]);
@@ -293,57 +266,13 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     }
 
     [Fact]
-    public async Task Concept_with_relations_transitions_to_closing_when_relations_articulated()
-    {
-        // CET -7 (KPs P1, P2 + KR R1). Covering both KPs and articulating R1 completes the attempt.
-        Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock([("P1", "proposition", 3), ("P2", "proposition", 3), ("R1", "relation", 3)]);
-        Factory.SetupDialogueMock();
-        using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope, "-3");
-        var dto = new SubmitTurnRequestDto
-        {
-            Content = "Override matters because the runtime picks the actual type's implementation."
-        };
-
-        var tokens = await CollectStreamAsync(controller.StartConversation(-7, dto, CancellationToken.None));
-
-        var metadata = JsonSerializer.Deserialize<SubmitTurnResponseDto>(tokens.Last());
-        metadata.ShouldNotBeNull();
-        metadata.Status.ShouldBe("InClosing");
-    }
-
-    [Fact]
-    public async Task Concept_with_relations_does_not_complete_when_only_KPs_covered()
-    {
-        // CET -7. Covering KPs but NOT articulating R1 should NOT complete.
-        // Uses learner -2 so test doesn't collide with the "completes" test (also on CET -7).
-        Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock([("P1", "proposition", 3), ("P2", "proposition", 3), ("R1", "relation", 0)]);
-        Factory.SetupDialogueMock();
-        Factory.SetupSummaryMock();
-        using var scope = Factory.Services.CreateScope();
-        var controller = CreateController(scope, "-2");
-        var dto = new SubmitTurnRequestDto
-        {
-            Content = "Override is a thing and runtime types exist, but I won't say how they connect."
-        };
-
-        var tokens = await CollectStreamAsync(controller.StartConversation(-7, dto, CancellationToken.None));
-
-        var metadata = JsonSerializer.Deserialize<SubmitTurnResponseDto>(tokens.Last());
-        metadata.ShouldNotBeNull();
-        metadata.Status.ShouldBe("InProgress");
-    }
-
-    [Fact]
     public async Task Submit_completed_attempt_fails()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
-        var dto = new SubmitTurnRequestDto { Content = "Attempt already done." };
+        var dto = new SubmitElaborationRequestDto { Elaboration = "Attempt already done." };
 
-        var tokens = await CollectStreamAsync(controller.SubmitTurn(-1, dto, CancellationToken.None));
+        var tokens = await CollectStreamAsync(controller.SubmitElaboration(-1, dto, CancellationToken.None));
 
         tokens.Count.ShouldBe(1);
         var error = JsonSerializer.Deserialize<JsonElement>(tokens[0]);

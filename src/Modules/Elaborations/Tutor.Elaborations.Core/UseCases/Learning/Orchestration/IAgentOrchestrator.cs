@@ -5,6 +5,6 @@ namespace Tutor.Elaborations.Core.UseCases.Learning.Orchestration;
 
 public interface IAgentOrchestrator
 {
-    IAsyncEnumerable<OrchestratorChunk> ProcessTurnAsync(
-        ConceptRecord record, ConversationAttempt attempt, string newMessage, CancellationToken ct);
+    IAsyncEnumerable<OrchestratorChunk> ProcessSubmissionAsync(
+        ConceptRecord record, ConversationAttempt attempt, string elaboration, CancellationToken ct);
 }

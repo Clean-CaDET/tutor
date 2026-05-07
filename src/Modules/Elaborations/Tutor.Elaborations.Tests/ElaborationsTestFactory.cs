@@ -46,14 +46,9 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
 
     public void SetupEvaluationMock(
         List<(string key, string type, int grade)> assessments,
-        List<string>? misconceptionsTriggeredKeys = null,
-        string intent = "Substantive")
+        List<string>? misconceptionsTriggeredKeys = null)
     {
-        SetupIntentMock(intent);
-
-        if (intent != "Substantive") return;
-
-        var scorerJson = BuildSubstantiveEvalJson(assessments, misconceptionsTriggeredKeys ?? []);
+        var scorerJson = BuildScorerJson(assessments, misconceptionsTriggeredKeys ?? []);
         MockChatService.Setup(x => x.CompleteAsync(
                 It.Is<CompletionRequest>(r => r.MaxTokens == 1024), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result.Ok(new CompletionResponse
@@ -63,18 +58,7 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
             }));
     }
 
-    public void SetupIntentMock(string intent = "Substantive")
-    {
-        MockChatService.Setup(x => x.CompleteAsync(
-                It.Is<CompletionRequest>(r => r.MaxTokens == 64), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result.Ok(new CompletionResponse
-            {
-                Content = $$"""{ "intent": "{{intent}}" }""",
-                Usage = new TokenUsage(30, 5)
-            }));
-    }
-
-    private static string BuildSubstantiveEvalJson(
+    private static string BuildScorerJson(
         List<(string key, string type, int grade)> assessments,
         List<string> misconceptions)
     {
@@ -90,18 +74,10 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
 
     public void SetupDialogueMock(params string[] tokens)
     {
-        var mockTokens = tokens.Length > 0 ? tokens : ["Mock ", "response."];
+        var mockTokens = tokens.Length > 0 ? tokens : ["Mock ", "feedback."];
         MockChatService.Setup(x => x.StreamAsync(
                 It.IsAny<CompletionRequest>(), It.IsAny<CancellationToken>()))
             .Returns(MockStream(mockTokens));
-    }
-
-    public void SetupSummaryMock(string summary = "Test summary of the conversation.")
-    {
-        MockChatService.Setup(x => x.StreamAsync(
-                It.Is<CompletionRequest>(r => r.MaxTokens == 256 && r.Temperature == 0.5),
-                It.IsAny<CancellationToken>()))
-            .Returns(MockStream([summary]));
     }
 
     private static async IAsyncEnumerable<string> MockStream(

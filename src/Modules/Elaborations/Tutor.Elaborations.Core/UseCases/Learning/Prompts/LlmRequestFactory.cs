@@ -7,92 +7,33 @@ namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 
 public static class LlmRequestFactory
 {
-    public static CompletionRequest ForProbing(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
-        ActiveProbe probe)
+    public static CompletionRequest ForElaborationScoring(ConceptRecord record, string elaboration)
     {
-        return CompletionRequest.Create(ToMessages(turns, RenderProbe(probe)), ProbePrompt.Build(record), maxTokens: 256, temperature: 0.7);
-    }
-
-    public static CompletionRequest ForScaffolding(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
-        ActiveProbe probe)
-    {
-        return CompletionRequest.Create(ToMessages(turns, RenderProbe(probe)), ScaffoldingPrompt.Build(record), maxTokens: 1024, temperature: 0.7);
-    }
-
-    public static CompletionRequest ForClarification(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
-        ActiveProbe? lastProbe)
-    {
-        return CompletionRequest.Create(ToMessages(turns, lastProbe != null ? RenderProbe(lastProbe) : null), ClarificationPrompt.Build(record), maxTokens: 256, temperature: 0.5);
-    }
-
-    public static CompletionRequest ForCritique(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
-        TurnEvaluation evaluation)
-    {
-        return CompletionRequest.Create(ToMessages(turns, RenderEvaluation(evaluation)), CritiquePrompt.Build(record), maxTokens: 512, temperature: 0.7);
-    }
-
-    public static CompletionRequest ForSummary(ConceptRecord record, IReadOnlyList<ConversationTurn> turns)
-    {
-        return CompletionRequest.Create(ToMessages(turns), SummaryPrompt.Build(record), maxTokens: 512, temperature: 0.5);
-    }
-
-    public static CompletionRequest ForIntentClassification(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
-        string message)
-    {
-        var messages = ToMessages(turns.OrderBy(t => t.Order).TakeLast(6));
-        messages.Add(ChatMessage.FromUser($"<current-learner-message>{message}</current-learner-message>"));
-        return CompletionRequest.Create(messages, IntentPrompt.Build(record), maxTokens: 64, temperature: 0.0);
-    }
-
-    public static CompletionRequest ForTurnScoring(ConceptRecord record, IReadOnlyList<ConversationTurn> turns,
-        string message)
-    {
-        var messages = ToMessages(turns);
-        messages.Add(ChatMessage.FromUser($"<current-learner-message>{message}</current-learner-message>"));
+        var messages = new List<ChatMessage> { ChatMessage.FromUser($"<elaboration>{elaboration}</elaboration>") };
         return CompletionRequest.Create(messages, ScorePrompt.Build(record), maxTokens: 1024, temperature: 0.0);
     }
 
-    public static CompletionRequest ForClosingScoring(ConceptRecord record, string message)
+    public static CompletionRequest ForEvaluationFeedback(ConceptRecord record, string elaboration,
+        IReadOnlyList<FeedbackTarget> targets)
     {
-        var messages = new List<ChatMessage> { ChatMessage.FromUser($"<current-learner-message>{message}</current-learner-message>") };
-        return CompletionRequest.Create(messages, ScorePrompt.Build(record, isClosingEvaluation: true), maxTokens: 1024, temperature: 0.0);
+        var messages = new List<ChatMessage> { ChatMessage.FromUser(RenderFeedbackInput(elaboration, targets)) };
+        return CompletionRequest.Create(messages, EvaluationFeedbackPrompt.Build(record), maxTokens: 512, temperature: 0.7);
     }
 
-    private static List<ChatMessage> ToMessages(IEnumerable<ConversationTurn> turns, string? appendToLast = null)
-    {
-        var messages = turns.OrderBy(t => t.Order)
-            .Select(t => t.Role == TurnRole.Learner
-                ? ChatMessage.FromUser(t.Content)
-                : ChatMessage.FromAssistant(t.Content))
-            .ToList();
-
-        if (appendToLast == null) return messages;
-
-        if (messages.Count > 0 && messages[^1].Role == ChatRole.User)
-            messages[^1] = ChatMessage.FromUser(messages[^1].Content + "\n" + appendToLast);
-        else
-            messages.Add(ChatMessage.FromUser(appendToLast));
-
-        return messages;
-    }
-
-    private static string RenderProbe(ActiveProbe probe)
-    {
-        return $"<target level=\"{probe.Level}\">{probe.Target}</target>";
-    }
-
-    private static string RenderEvaluation(TurnEvaluation e)
+    private static string RenderFeedbackInput(string elaboration, IReadOnlyList<FeedbackTarget> targets)
     {
         var sb = new StringBuilder();
-        sb.Append($"<evaluation hasMultipleConcerns=\"{e.HasMultipleConcerns.ToString().ToLowerInvariant()}\">");
-
-        var vagueKeys = e.Assessments.Where(a => a.Grade == 1).Select(a => a.Key).ToList();
-        if (vagueKeys.Count > 0)
-            sb.Append($"<vague-items>{string.Join(", ", vagueKeys)}</vague-items>");
-        if (e.MisconceptionsTriggeredKeys.Count > 0)
-            sb.Append($"<triggered-misconceptions>{string.Join(", ", e.MisconceptionsTriggeredKeys)}</triggered-misconceptions>");
-
-        sb.Append("</evaluation>");
+        sb.AppendLine($"<elaboration>{elaboration}</elaboration>");
+        sb.Append("<gaps>");
+        foreach (var t in targets)
+        {
+            var support = t.NeedsSupport.ToString().ToLowerInvariant();
+            if (t.Type == TargetType.Misconception)
+                sb.Append($"<misconception key=\"{t.Key}\" needsSupport=\"{support}\"/>");
+            else
+                sb.Append($"<gap key=\"{t.Key}\" type=\"{t.Type.ToString()!.ToLowerInvariant()}\" grade=\"{t.Grade}\" needsSupport=\"{support}\"/>");
+        }
+        sb.Append("</gaps>");
         return sb.ToString();
     }
 }

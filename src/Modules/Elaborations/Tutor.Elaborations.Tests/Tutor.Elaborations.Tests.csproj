@@ -27,4 +27,8 @@
     <ProjectReference Include="..\..\..\Tutor.API\Tutor.API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Unit\" />
+  </ItemGroup>
+
 </Project>

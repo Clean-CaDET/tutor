@@ -1,5 +1,4 @@
 using Tutor.BuildingBlocks.Core.Domain;
-using Tutor.Elaborations.Core.Domain.Conversations;
 
 namespace Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 
@@ -33,48 +32,5 @@ public class ConceptRecord : Entity
         KeyRelations = incoming.KeyRelations;
     }
 
-    public bool IsAttemptComplete(ConversationAttempt attempt)
-    {
-        return AreAllPropositionsCovered(attempt) && AreAllKeyRelationsArticulated(attempt);
-    }
-
-    private bool AreAllPropositionsCovered(ConversationAttempt attempt)
-    {
-        var covered = attempt.GetArticulatedPropositionKeys();
-        return KeyPropositions.All(kp => covered.Contains(kp.Key));
-    }
-
-    private bool AreAllKeyRelationsArticulated(ConversationAttempt attempt)
-    {
-        if (KeyRelations.Count == 0) return true;
-        var articulated = attempt.GetArticulatedRelationKeys();
-        return KeyRelations.All(kr => articulated.Contains(kr.Key));
-    }
-
-    public string? PickNextTarget(ConversationAttempt attempt)
-    {
-        var articulatedKps = attempt.GetArticulatedPropositionKeys();
-        var excludedTargets = attempt.GetStalledTargets();
-        var nextTarget = KeyPropositions
-            .Where(kp => !articulatedKps.Contains(kp.Key))
-            .Select(kp => kp.Statement)
-            .FirstOrDefault(s => !excludedTargets.Contains(s));
-        if (nextTarget != null) return nextTarget;
-
-        var articulatedKrs = attempt.GetArticulatedRelationKeys();
-        foreach (var kr in KeyRelations.Where(kr => !articulatedKrs.Contains(kr.Key)))
-        {
-            var source = KeyPropositions.First(kp => kp.Key == kr.SourceKey).Statement;
-            var target = KeyPropositions.First(kp => kp.Key == kr.TargetKey).Statement;
-            var composed = $"{source} → {target}. Mechanism: {kr.Mechanism}";
-            if (!excludedTargets.Contains(composed)) return composed;
-        }
-
-        return null;
-    }
-
-    public int CountTargets()
-    {
-        return KeyPropositions.Count + KeyRelations.Count;
-    }
+    public int CountTargets() => KeyPropositions.Count + KeyRelations.Count;
 }

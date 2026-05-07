@@ -4,17 +4,10 @@ using Tutor.Elaborations.Core.Domain.Conversations;
 
 namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 
-public class ScoreResponse
+public class ScoreResponseDto
 {
     public List<ScoredTargetDto>? Assessments { get; set; }
     public List<string>? MisconceptionsTriggeredKeys { get; set; }
-
-    public class ScoredTargetDto
-    {
-        public string Key { get; set; } = "";
-        public string Type { get; set; } = "";
-        public int Grade { get; set; }
-    }
 
     public Result<TurnEvaluation> ToEvaluation(ConceptRecord record)
     {
@@ -26,18 +19,16 @@ public class ScoreResponse
 
         var returnedKeys = Assessments.Select(a => a.Key).ToHashSet();
         if (!returnedKeys.SetEquals(allKeys)) return Result.Fail("Incomplete or unknown keys in assessments.");
-        if (Assessments.Any(a => a.Grade is < 0 or > 3)) return Result.Fail("Grade out of range.");
+        if (Assessments.Any(a => a.Grade is < -1 or > 2)) return Result.Fail("Grade out of range.");
 
-        var creationResult = CreateScoredTargets(kpKeys, krKeys);
-        if(creationResult.IsFailed) return Result.Fail(creationResult.Errors);
-        var scoredTargets = creationResult.Value;
+        var scoredTargets = CreateScoredTargets(kpKeys, krKeys);
+        if (scoredTargets.IsFailed) return Result.Fail(scoredTargets.Errors);
 
         var misconceptions = MisconceptionsTriggeredKeys ?? [];
         var validCmKeys = record.CommonMisconceptions.Select(cm => cm.Key).ToHashSet();
         if (misconceptions.Any(k => !validCmKeys.Contains(k))) return Result.Fail("Unknown misconception key.");
 
-        var concerns = scoredTargets.Count(a => a.Grade == 1) + misconceptions.Count;
-        return new TurnEvaluation(scoredTargets, misconceptions, hasMultipleConcerns: concerns >= 2);
+        return new TurnEvaluation(scoredTargets.Value, misconceptions);
     }
 
     private Result<List<ScoredTarget>> CreateScoredTargets(HashSet<string> kpKeys, HashSet<string> krKeys)
@@ -45,26 +36,30 @@ public class ScoreResponse
         var scoredTargets = new List<ScoredTarget>();
         foreach (var dto in Assessments!)
         {
-            ScoredTargetType? type = dto.Type.ToLowerInvariant() switch
+            TargetType? type = dto.Type.ToLowerInvariant() switch
             {
-                "proposition" => ScoredTargetType.Proposition,
-                "relation" => ScoredTargetType.Relation,
+                "proposition" => TargetType.Proposition,
+                "relation" => TargetType.Relation,
                 _ => null
             };
             switch (type)
             {
                 case null:
                     return Result.Fail($"Unknown type '{dto.Type}'.");
-                case ScoredTargetType.Proposition when !kpKeys.Contains(dto.Key):
+                case TargetType.Proposition when !kpKeys.Contains(dto.Key):
                     return Result.Fail($"Key '{dto.Key}' typed as proposition but is a relation.");
-                case ScoredTargetType.Relation when !krKeys.Contains(dto.Key):
+                case TargetType.Relation when !krKeys.Contains(dto.Key):
                     return Result.Fail($"Key '{dto.Key}' typed as relation but is a proposition.");
             }
-
-            if (dto.Grade > 0)
-                scoredTargets.Add(new ScoredTarget(dto.Key, type.Value, dto.Grade));
+            scoredTargets.Add(new ScoredTarget(dto.Key, type.Value, dto.Grade));
         }
-
         return scoredTargets;
     }
+}
+
+public class ScoredTargetDto
+{
+    public string Key { get; set; } = "";
+    public string Type { get; set; } = "";
+    public int Grade { get; set; }
 }

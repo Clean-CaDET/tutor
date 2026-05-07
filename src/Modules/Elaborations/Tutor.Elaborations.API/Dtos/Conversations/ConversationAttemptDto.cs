@@ -7,6 +7,6 @@ public class ConversationAttemptDto
     public string Status { get; set; } = string.Empty;
     public DateTime StartedAt { get; set; }
     public DateTime? CompletedAt { get; set; }
-    public string? Summary { get; set; }
+    public double? FinalGrade { get; set; }
     public List<ConversationTurnDto> Turns { get; set; } = new();
 }

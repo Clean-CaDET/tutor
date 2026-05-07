@@ -9,24 +9,28 @@ public class ConversationTurn : Entity
     public string Content { get; private set; } = string.Empty;
     public int Order { get; private set; }
     public DateTime Timestamp { get; private set; }
-    public TurnIntent? Intent { get; private set; }
     public TurnEvaluation? Evaluation { get; private set; }
-    public ActiveProbe? Probe { get; private set; }
+
+    public IReadOnlyList<FeedbackTarget> FeedbackTargets { get; private set; } = [];
 
     private ConversationTurn() { }
 
-    internal ConversationTurn(TurnRole role, string content, int order,
-        TurnIntent? intent = null, TurnEvaluation? evaluation = null,
-        ActiveProbe? probe = null)
+    internal ConversationTurn(string content, int order, TurnEvaluation? evaluation)
     {
-        if(role == TurnRole.Learner && intent == TurnIntent.Substantive && evaluation == null)
-            throw new ArgumentException("Substantive learner turns must have an evaluation.");
-        Role = role;
+        Role = TurnRole.Learner;
+        Timestamp = DateTime.UtcNow;
         Content = content;
         Order = order;
-        Timestamp = DateTime.UtcNow;
-        Intent = intent;
         Evaluation = evaluation;
-        Probe = probe;
+        FeedbackTargets = [];
+    }
+
+    internal ConversationTurn(string content, int order, IReadOnlyList<FeedbackTarget> feedbackTargets)
+    {
+        Role = TurnRole.System;
+        Timestamp = DateTime.UtcNow;
+        Content = content;
+        Order = order;
+        FeedbackTargets = feedbackTargets;
     }
 }
