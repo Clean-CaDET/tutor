@@ -2,21 +2,21 @@ using Tutor.BuildingBlocks.Core.Domain;
 
 namespace Tutor.Elaborations.Core.Domain.Conversations;
 
-public class TurnEvaluation : Entity
+public class RoundEvaluation : Entity
 {
     public int ConversationRoundId { get; private set; }
     public List<ScoredTarget> Assessments { get; private set; } = [];
     public List<string> MisconceptionsTriggeredKeys { get; private set; } = [];
 
-    private TurnEvaluation() { }
+    private RoundEvaluation() { }
 
-    public TurnEvaluation(List<ScoredTarget> assessments, List<string> misconceptionsTriggeredKeys)
+    public RoundEvaluation(List<ScoredTarget> assessments, List<string> misconceptionsTriggeredKeys)
     {
         Assessments = assessments;
         MisconceptionsTriggeredKeys = misconceptionsTriggeredKeys;
     }
 
-    public int TotalScore() => Assessments.Sum(a => a.Grade);
+    public int ComputeTotalScore() => Assessments.Sum(a => a.Grade);
 
     public double ComputeGrade(int totalTargets)
     {
@@ -24,7 +24,7 @@ public class TurnEvaluation : Entity
         return Math.Round(Math.Max(0.0, normalizedScore - (0.2 * MisconceptionsTriggeredKeys.Count)), 2);
     }
 
-    public List<ScoredTarget> GetDeficientTargets(List<FeedbackTarget> excludedProbes)
+    public List<ScoredTarget> GetDeficientTargets(List<Probe> excludedProbes)
     {
         var misconceptionTargets = MisconceptionsTriggeredKeys.Select(key => new ScoredTarget(key, TargetType.Misconception, -2));
         var unfinishedTargets = Assessments.Where(a => a.Grade < 2);

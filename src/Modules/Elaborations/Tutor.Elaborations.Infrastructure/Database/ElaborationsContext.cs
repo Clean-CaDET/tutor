@@ -10,7 +10,7 @@ public class ElaborationsContext : DbContext
     public DbSet<ConceptRecord> ConceptRecords { get; set; }
     public DbSet<ConversationAttempt> ConversationAttempts { get; set; }
     public DbSet<ConversationRound> ConversationRounds { get; set; }
-    public DbSet<TurnEvaluation> TurnEvaluations { get; set; }
+    public DbSet<RoundEvaluation> RoundEvaluations { get; set; }
 
     public ElaborationsContext(DbContextOptions<ElaborationsContext> options) : base(options) { }
 
@@ -62,15 +62,15 @@ public class ElaborationsContext : DbContext
         modelBuilder.Entity<ConversationRound>()
             .HasOne(r => r.Evaluation)
             .WithOne()
-            .HasForeignKey<TurnEvaluation>(te => te.ConversationRoundId);
+            .HasForeignKey<RoundEvaluation>(te => te.ConversationRoundId);
 
         modelBuilder.Entity<ConversationRound>()
             .HasIndex(r => new { r.ConversationAttemptId, r.Order });
 
         modelBuilder.Entity<ConversationRound>()
-            .Property(r => r.FeedbackTargets).HasColumnType("jsonb");
+            .Property(r => r.Probes).HasColumnType("jsonb");
 
-        modelBuilder.Entity<TurnEvaluation>(entity =>
+        modelBuilder.Entity<RoundEvaluation>(entity =>
         {
             entity.Property(te => te.Assessments).HasColumnType("jsonb");
             entity.Property(te => te.MisconceptionsTriggeredKeys).HasColumnType("jsonb");

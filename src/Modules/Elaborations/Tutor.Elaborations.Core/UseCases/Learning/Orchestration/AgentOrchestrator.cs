@@ -57,10 +57,10 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
             yield break;
         }
 
-        var targets = attempt.SelectFeedbackTargets();
+        var probes = attempt.SelectProbes();
         var fullResponse = new StringBuilder();
         await foreach (var chunk in StreamAgentAsync(
-            LlmRequestFactory.ForEvaluationFeedback(record, elaboration, targets), "EvaluationFeedback", fullResponse, ct))
+            LlmRequestFactory.ForEvaluationFeedback(record, elaboration, probes), "EvaluationFeedback", fullResponse, ct))
         {
             yield return chunk;
             if (chunk is ErrorChunk) yield break;
@@ -72,7 +72,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
             yield return new TokenChunk(SystemTurnCodes.StagnationRedirect);
         }
 
-        attempt.CompleteCurrentRound(fullResponse.ToString(), targets);
+        attempt.CompleteRound(fullResponse.ToString(), probes);
         yield return CreateFinalChunk(attempt);
     }
 
@@ -91,7 +91,7 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
             yield return new ErrorChunk(failure.Reason, 500);
     }
 
-    private async Task<Result<TurnEvaluation>> ScoreElaborationAsync(ConceptRecord record, string elaboration, CancellationToken ct)
+    private async Task<Result<RoundEvaluation>> ScoreElaborationAsync(ConceptRecord record, string elaboration, CancellationToken ct)
     {
         var result = await CompleteJsonAsync<ScoreResponseDto>(
             LlmRequestFactory.ForElaborationScoring(record, elaboration), "ElaborationScoring", ct);

@@ -8,13 +8,13 @@ public class ConversationRound : Entity
     public int Order { get; private set; }
     public string ElaborationContent { get; private set; } = string.Empty;
     public DateTime SubmittedAt { get; private set; }
-    public TurnEvaluation Evaluation { get; private set; } = null!;
+    public RoundEvaluation Evaluation { get; private set; } = null!;
     public string? FeedbackContent { get; private set; }
-    public IReadOnlyList<FeedbackTarget> FeedbackTargets { get; private set; } = [];
+    public IReadOnlyList<Probe> Probes { get; private set; } = [];
 
     private ConversationRound() { }
 
-    internal ConversationRound(int order, string elaborationContent, TurnEvaluation evaluation)
+    internal ConversationRound(int order, string elaborationContent, RoundEvaluation evaluation)
     {
         Order = order;
         ElaborationContent = elaborationContent;
@@ -22,9 +22,9 @@ public class ConversationRound : Entity
         Evaluation = evaluation;
     }
 
-    internal void Complete(string feedbackContent, IReadOnlyList<FeedbackTarget> feedbackTargets)
+    internal void Complete(string feedbackContent, IReadOnlyList<Probe> probes)
     {
         FeedbackContent = feedbackContent;
-        FeedbackTargets = feedbackTargets;
+        Probes = probes;
     }
 }

@@ -33,115 +33,105 @@ public class ConversationAttempt : AggregateRoot
     {
         var scores = _rounds
             .TakeLast(3)
-            .Select(r => r.Evaluation.TotalScore())
+            .Select(r => r.Evaluation.ComputeTotalScore())
             .ToList();
         if (scores.Count < 3) return false;
         return scores[2] <= scores[1] && scores[1] <= scores[0];
     }
 
-    public void BeginRound(string elaboration, TurnEvaluation evaluation)
+    public void BeginRound(string elaboration, RoundEvaluation evaluation)
     {
         _rounds.Add(new ConversationRound(_rounds.Count, elaboration, evaluation));
         FinalGrade = evaluation.ComputeGrade(TotalTargets);
     }
 
-    public void CompleteCurrentRound(string feedbackContent, IReadOnlyList<FeedbackTarget> feedbackTargets)
+    public void CompleteRound(string feedbackContent, IReadOnlyList<Probe> probes)
     {
-        _rounds[^1].Complete(feedbackContent, feedbackTargets);
+        _rounds[^1].Complete(feedbackContent, probes);
     }
 
-    public IReadOnlyList<FeedbackTarget> SelectFeedbackTargets(int maxItems = 2)
+    public IReadOnlyList<Probe> SelectProbes(int maxItems = 2)
     {
         var excludedProbes = GetExcludedProbes();
         var activeProbes = GetRecentActiveProbes(2);
         var deficientTargets = _rounds[^1].Evaluation.GetDeficientTargets(excludedProbes);
-        var targets = new List<FeedbackTarget>();
+        var probes = new List<Probe>();
 
-        targets.AddRange(CreateMomentumProbes(deficientTargets, activeProbes)); // Active probes where grade improved
-        if (targets.Count >= maxItems) return targets.Take(maxItems).ToList();
+        probes.AddRange(CreateMomentumProbes(deficientTargets, activeProbes));
+        if (probes.Count >= maxItems) return probes.Take(maxItems).ToList();
 
-        targets.AddRange(CreateStagnantProbes(deficientTargets, activeProbes)); // Active probes where grade did not improve
-        if (targets.Count >= maxItems) return targets.Take(maxItems).ToList();
+        probes.AddRange(CreateStagnantProbes(deficientTargets, activeProbes));
+        if (probes.Count >= maxItems) return probes.Take(maxItems).ToList();
 
-        targets.AddRange(CreateNewProbes(deficientTargets, activeProbes)); // No active probes
+        probes.AddRange(CreateNewProbes(deficientTargets, activeProbes));
 
-        return targets.Take(maxItems).ToList();
+        return probes.Take(maxItems).ToList();
     }
 
-    private static List<FeedbackTarget> CreateMomentumProbes(List<ScoredTarget> deficientTargets, List<FeedbackTarget> activeProbes)
+    private static List<Probe> CreateMomentumProbes(List<ScoredTarget> deficientTargets, List<Probe> activeProbes)
     {
-        var momentumProbes = new List<FeedbackTarget>();
+        var result = new List<Probe>();
         foreach (var target in deficientTargets)
         {
-            var relatedProbe = activeProbes.Find(probe => probe.ScoredTarget.SameTarget(target));
-            if (relatedProbe?.ScoredTarget.Grade < target.Grade)
-            {
-                momentumProbes.Add(new FeedbackTarget(target, 0));
-            }
+            var related = activeProbes.Find(p => p.ScoredTarget.SameTarget(target));
+            if (related?.ScoredTarget.Grade < target.Grade)
+                result.Add(new Probe(target, 0));
         }
-
-        return momentumProbes;
+        return result;
     }
 
-    private static List<FeedbackTarget> CreateStagnantProbes(List<ScoredTarget> deficientTargets, List<FeedbackTarget> activeProbes)
+    private static List<Probe> CreateStagnantProbes(List<ScoredTarget> deficientTargets, List<Probe> activeProbes)
     {
-        var stagnantProbes = new List<FeedbackTarget>();
+        var result = new List<Probe>();
         foreach (var target in deficientTargets)
         {
-            var relatedProbe = activeProbes.Find(probe => probe.ScoredTarget.SameTarget(target));
-            if (relatedProbe == null || relatedProbe.ScoredTarget.Grade < target.Grade) continue;
-            if (relatedProbe.ScoredTarget.Grade == target.Grade)
-            {
-                stagnantProbes.Add(new FeedbackTarget(target, relatedProbe.ProbesWithoutGradeChangeCount + 1));
-                continue;
-            }
-            stagnantProbes.Add(new FeedbackTarget(target, 0));
+            var related = activeProbes.Find(p => p.ScoredTarget.SameTarget(target));
+            if (related == null || related.ScoredTarget.Grade < target.Grade) continue;
+            result.Add(related.ScoredTarget.Grade == target.Grade
+                ? new Probe(target, related.StagnantCount + 1)
+                : new Probe(target, 0));
         }
-        return stagnantProbes;
+        return result;
     }
 
-    private static List<FeedbackTarget> CreateNewProbes(List<ScoredTarget> deficientTargets, List<FeedbackTarget> activeProbes)
+    private static List<Probe> CreateNewProbes(List<ScoredTarget> deficientTargets, List<Probe> activeProbes)
     {
-        var newProbes = new List<FeedbackTarget>();
+        var result = new List<Probe>();
         foreach (var target in deficientTargets)
         {
-            var relatedProbe = activeProbes.Find(probe => probe.ScoredTarget.SameTarget(target));
-            if (relatedProbe == null)
-            {
-                newProbes.Add(new FeedbackTarget(target, 0));
-            }
+            if (activeProbes.Find(p => p.ScoredTarget.SameTarget(target)) == null)
+                result.Add(new Probe(target, 0));
         }
-
-        return newProbes;
+        return result;
     }
 
-    private List<FeedbackTarget> GetRecentActiveProbes(int lookBack)
+    private List<Probe> GetRecentActiveProbes(int lookBack)
     {
-        var activeProbes = new List<FeedbackTarget>();
+        var result = new List<Probe>();
         foreach (var round in _rounds.SkipLast(1).Reverse().Take(lookBack))
         {
-            foreach (var target in round.FeedbackTargets)
+            foreach (var probe in round.Probes)
             {
-                if (target.IsStalled()) continue;
-                if (activeProbes.Any(p => p.ScoredTarget.SameTarget(target.ScoredTarget))) continue;
-                activeProbes.Add(target);
+                if (probe.IsStalled()) continue;
+                if (result.Any(p => p.ScoredTarget.SameTarget(probe.ScoredTarget))) continue;
+                result.Add(probe);
             }
         }
-        return activeProbes;
+        return result;
     }
 
-    private List<FeedbackTarget> GetExcludedProbes()
+    private List<Probe> GetExcludedProbes()
     {
-        var excludedProbes = new List<FeedbackTarget>();
+        var result = new List<Probe>();
         foreach (var round in _rounds.SkipLast(1).Reverse())
         {
-            foreach (var target in round.FeedbackTargets.Where(t => t.IsStalled()))
+            foreach (var probe in round.Probes.Where(p => p.IsStalled()))
             {
-                if (!excludedProbes.Any(p => p.ScoredTarget.SameTarget(target.ScoredTarget)))
-                    excludedProbes.Add(target);
+                if (!result.Any(p => p.ScoredTarget.SameTarget(probe.ScoredTarget)))
+                    result.Add(probe);
             }
         }
-        return excludedProbes;
+        return result;
     }
 
     public void Complete()

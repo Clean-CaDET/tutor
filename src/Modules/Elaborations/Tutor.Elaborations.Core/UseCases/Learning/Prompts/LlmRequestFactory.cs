@@ -14,33 +14,33 @@ public static class LlmRequestFactory
     }
 
     public static CompletionRequest ForEvaluationFeedback(ConceptRecord record, string elaboration,
-        IReadOnlyList<FeedbackTarget> targets)
+        IReadOnlyList<Probe> probes)
     {
-        var messages = new List<ChatMessage> { ChatMessage.FromUser(RenderFeedbackInput(elaboration, targets)) };
+        var messages = new List<ChatMessage> { ChatMessage.FromUser(RenderFeedbackInput(elaboration, probes)) };
         return CompletionRequest.Create(messages, EvaluationFeedbackPrompt.Build(record), maxTokens: 512, temperature: 0.7);
     }
 
-    private static string RenderFeedbackInput(string elaboration, IReadOnlyList<FeedbackTarget> targets)
+    private static string RenderFeedbackInput(string elaboration, IReadOnlyList<Probe> probes)
     {
         var sb = new StringBuilder();
         sb.AppendLine($"<elaboration>{elaboration}</elaboration>");
 
-        var misconceptions = targets.Where(t => t.ScoredTarget.Type == TargetType.Misconception).ToList();
-        var gaps = targets.Where(t => t.ScoredTarget.Type != TargetType.Misconception).ToList();
+        var misconceptions = probes.Where(p => p.ScoredTarget.Type == TargetType.Misconception).ToList();
+        var gaps = probes.Where(p => p.ScoredTarget.Type != TargetType.Misconception).ToList();
 
         if (misconceptions.Count > 0)
         {
             sb.Append("<misconceptions>");
-            foreach (var t in misconceptions)
-                sb.Append($"<misconception key=\"{t.ScoredTarget.Key}\" probeCount=\"{t.ProbesWithoutGradeChangeCount}\"/>");
+            foreach (var p in misconceptions)
+                sb.Append($"<misconception key=\"{p.ScoredTarget.Key}\" stagnantCount=\"{p.StagnantCount}\"/>");
             sb.Append("</misconceptions>");
         }
 
         if (gaps.Count > 0)
         {
             sb.Append("<gaps>");
-            foreach (var t in gaps)
-                sb.Append($"<gap key=\"{t.ScoredTarget.Key}\" type=\"{t.ScoredTarget.Type.ToString().ToLowerInvariant()}\" grade=\"{t.ScoredTarget.Grade}\" probeCount=\"{t.ProbesWithoutGradeChangeCount}\"/>");
+            foreach (var p in gaps)
+                sb.Append($"<gap key=\"{p.ScoredTarget.Key}\" type=\"{p.ScoredTarget.Type.ToString().ToLowerInvariant()}\" grade=\"{p.ScoredTarget.Grade}\" stagnantCount=\"{p.StagnantCount}\"/>");
             sb.Append("</gaps>");
         }
 

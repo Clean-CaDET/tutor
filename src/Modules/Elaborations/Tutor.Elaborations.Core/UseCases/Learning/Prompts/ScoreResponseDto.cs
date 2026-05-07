@@ -9,7 +9,7 @@ public class ScoreResponseDto
     public List<ScoredTargetDto>? Assessments { get; set; }
     public List<string>? MisconceptionsTriggeredKeys { get; set; }
 
-    public Result<TurnEvaluation> ToEvaluation(ConceptRecord record)
+    public Result<RoundEvaluation> ToEvaluation(ConceptRecord record)
     {
         if (Assessments == null) return Result.Fail("Assessments missing.");
 
@@ -28,7 +28,7 @@ public class ScoreResponseDto
         var validCmKeys = record.CommonMisconceptions.Select(cm => cm.Key).ToHashSet();
         if (misconceptions.Any(k => !validCmKeys.Contains(k))) return Result.Fail("Unknown misconception key.");
 
-        return new TurnEvaluation(scoredTargets.Value, misconceptions);
+        return new RoundEvaluation(scoredTargets.Value, misconceptions);
     }
 
     private Result<List<ScoredTarget>> CreateScoredTargets(HashSet<string> kpKeys, HashSet<string> krKeys)
