@@ -21,7 +21,7 @@ public class TurnEvaluation : Entity
     public double ComputeGrade(int totalTargets)
     {
         var normalizedScore = Assessments.Sum(a => a.Grade) / (2.0 * totalTargets);
-        return Math.Round(Math.Max(0.0, normalizedScore - 0.2 * MisconceptionsTriggeredKeys.Count), 2);
+        return Math.Round(Math.Max(0.0, normalizedScore - (0.2 * MisconceptionsTriggeredKeys.Count)), 2);
     }
 
     public List<ScoredTarget> GetDeficientTargets(List<FeedbackTarget> excludedProbes)

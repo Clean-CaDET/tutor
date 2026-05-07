@@ -19,20 +19,32 @@ public static class EvaluationFeedbackPrompt
         sb.AppendLine("# Runtime kontekst");
         sb.AppendLine("Dobijaš:");
         sb.AppendLine("  <elaboration>: tekst koji je učenik napisao");
-        sb.AppendLine("  <gaps>: nedostaci u elaboraciji, svrstani po kategoriji i ključu iz rubrike");
-        sb.AppendLine("    <misconception key=\"M1\" needsSupport=\"true|false\"/>: pogrešno razumevanje (CM ključ)");
-        sb.AppendLine("    <gap key=\"P1\" type=\"proposition|relation\" grade=\"-1|0|1\" needsSupport=\"true|false\"/>: nedostatak KP/KR");
+        sb.AppendLine("  <misconceptions>: CM ključevi koje je učenik pogrešno primenio");
+        sb.AppendLine("    <misconception key=\"M1\" probeCount=\"0|1\"/>: probeCount = broj puta probeovano bez napretka");
+        sb.AppendLine("  <gaps>: nedostaci u KP/KR elaboraciji");
+        sb.AppendLine("    <gap key=\"P1\" type=\"proposition|relation\" grade=\"-1|0|1\" probeCount=\"0|1\"/>");
+        sb.AppendLine("      grade: -1 = netačna tvrdnja | 0 = izostavljena oblast | 1 = nejasna/parcijalna tvrdnja");
+        sb.AppendLine("      probeCount: broj puta probeovano bez napretka");
         sb.AppendLine();
 
-        sb.AppendLine("# Pravila za odabir stavki");
-        sb.AppendLine("Stavke su već odabrane i prioritizovane. Daj povratnu informaciju za svaku stavku u <gaps>.");
+        sb.AppendLine("Stavke su već odabrane i prioritizovane. Daj povratnu informaciju za svaku stavku.");
         sb.AppendLine();
 
-        sb.AppendLine("# Eskalacija na osnovu needsSupport");
-        sb.AppendLine("  needsSupport=false: Postavi fokusirano pitanje koje sugeriše da nešto nije jasno,");
-        sb.AppendLine("                      bez otkrivanja odgovora.");
-        sb.AppendLine("  needsSupport=true:  Imenuj problem direktno i kratko ispravi, ali bez navođenja");
-        sb.AppendLine("                      tačnog teksta ključnih proposicija ili relacija iz rubrike.");
+        sb.AppendLine("# Smernice po tipu i broju proba");
+        sb.AppendLine();
+        sb.AppendLine("Misconceptions:");
+        sb.AppendLine("  probeCount=0: Imenuj zabludu i objasni zašto je pogrešna; pozovi učenika da je ispravi.");
+        sb.AppendLine("  probeCount=1: Pojačaj ispravku konkretnim kontrastom ili primerom; budi direktniji.");
+        sb.AppendLine();
+        sb.AppendLine("Gaps — grade=\"-1\" (netačno):");
+        sb.AppendLine("  probeCount=0: Postavi pitanje koje dovodi u pitanje netačnu tvrdnju, bez otkrivanja odgovora.");
+        sb.AppendLine("  probeCount=1: Imenuj grešku direktno i kratko objasni zašto je netačna; pozovi na ispravku.");
+        sb.AppendLine("Gaps — grade=\"0\" (izostavlja oblast):");
+        sb.AppendLine("  probeCount=0: Postavi otvoreno pitanje koje poziva učenika da pokrije tu oblast.");
+        sb.AppendLine("  probeCount=1: Naznači direktno da je ta oblast izostavljena; daj usmerenje bez otkrivanja odgovora.");
+        sb.AppendLine("Gaps — grade=\"1\" (nejasno/parcijalno):");
+        sb.AppendLine("  probeCount=0: Postavi pitanje koje traži veću preciznost ili dubinu.");
+        sb.AppendLine("  probeCount=1: Imenuj šta nedostaje u preciznosti; ukaži šta bi potpuniji odgovor sadržao.");
         sb.AppendLine();
 
         sb.AppendLine("# Format izlaza");

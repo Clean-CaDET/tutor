@@ -24,16 +24,26 @@ public static class LlmRequestFactory
     {
         var sb = new StringBuilder();
         sb.AppendLine($"<elaboration>{elaboration}</elaboration>");
-        sb.Append("<gaps>");
-        foreach (var t in targets)
+
+        var misconceptions = targets.Where(t => t.ScoredTarget.Type == TargetType.Misconception).ToList();
+        var gaps = targets.Where(t => t.ScoredTarget.Type != TargetType.Misconception).ToList();
+
+        if (misconceptions.Count > 0)
         {
-            var support = t.NeedsSupport.ToString().ToLowerInvariant();
-            if (t.Type == TargetType.Misconception)
-                sb.Append($"<misconception key=\"{t.Key}\" needsSupport=\"{support}\"/>");
-            else
-                sb.Append($"<gap key=\"{t.Key}\" type=\"{t.Type.ToString()!.ToLowerInvariant()}\" grade=\"{t.Grade}\" needsSupport=\"{support}\"/>");
+            sb.Append("<misconceptions>");
+            foreach (var t in misconceptions)
+                sb.Append($"<misconception key=\"{t.ScoredTarget.Key}\" probeCount=\"{t.ProbesWithoutGradeChangeCount}\"/>");
+            sb.Append("</misconceptions>");
         }
-        sb.Append("</gaps>");
+
+        if (gaps.Count > 0)
+        {
+            sb.Append("<gaps>");
+            foreach (var t in gaps)
+                sb.Append($"<gap key=\"{t.ScoredTarget.Key}\" type=\"{t.ScoredTarget.Type.ToString().ToLowerInvariant()}\" grade=\"{t.ScoredTarget.Grade}\" probeCount=\"{t.ProbesWithoutGradeChangeCount}\"/>");
+            sb.Append("</gaps>");
+        }
+
         return sb.ToString();
     }
 }

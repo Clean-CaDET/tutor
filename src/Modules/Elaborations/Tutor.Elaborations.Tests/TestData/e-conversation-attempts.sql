@@ -17,7 +17,7 @@ INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId"
 VALUES (-3, -1, -3, 0, '2024-06-03 10:00:00+00', null, 0.0, 1, 4);
 
 INSERT INTO elaborations."ConversationRounds"("Id", "ConversationAttemptId", "Order", "ElaborationContent", "SubmittedAt", "FeedbackContent", "FeedbackTargets")
-VALUES (-3, -3, 0, 'Encapsulation is about data hiding.', '2024-06-03 10:01:00+00', 'What else can you tell me about encapsulation?', '[{{"Key":"P1","Type":0,"Grade":0,"NeedsSupport":false}}]'::jsonb);
+VALUES (-3, -3, 0, 'Encapsulation is about data hiding.', '2024-06-03 10:01:00+00', 'What else can you tell me about encapsulation?', '[{{"ScoredTarget":{{"Key":"P1","Type":0,"Grade":0}},"ProbesWithoutGradeChangeCount":0}}]'::jsonb);
 
 INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationRoundId", "Assessments", "MisconceptionsTriggeredKeys")
 VALUES (-3, -3, '[{{"Key":"P1","Type":0,"Grade":0}}]'::jsonb, '["M1"]'::jsonb);
@@ -27,7 +27,7 @@ INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId"
 VALUES (-4, -2, -3, 0, '2024-06-04 10:00:00+00', null, 0.0, 2, 4);
 
 INSERT INTO elaborations."ConversationRounds"("Id", "ConversationAttemptId", "Order", "ElaborationContent", "SubmittedAt", "FeedbackContent", "FeedbackTargets")
-VALUES (-4, -4, 0, 'Encapsulation bundles data and methods, but access control is unclear.', '2024-06-04 10:01:00+00', 'Consider elaborating on how access modifiers enforce encapsulation.', '[{{"Key":"P2","Type":0,"Grade":0,"NeedsSupport":false}}]'::jsonb);
+VALUES (-4, -4, 0, 'Encapsulation bundles data and methods, but access control is unclear.', '2024-06-04 10:01:00+00', 'Consider elaborating on how access modifiers enforce encapsulation.', '[{{"ScoredTarget":{{"Key":"P2","Type":0,"Grade":0}},"ProbesWithoutGradeChangeCount":0}}]'::jsonb);
 
 INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationRoundId", "Assessments", "MisconceptionsTriggeredKeys")
 VALUES (-4, -4, '[{{"Key":"P1","Type":0,"Grade":1}},{{"Key":"P2","Type":0,"Grade":0}}]'::jsonb, '[]'::jsonb);
@@ -37,11 +37,11 @@ INSERT INTO elaborations."ConversationAttempts"("Id", "ConceptElaborationTaskId"
 VALUES (-5, -2, -2, 0, '2024-06-05 10:00:00+00', null, 0.0, 2, 4);
 
 INSERT INTO elaborations."ConversationRounds"("Id", "ConversationAttemptId", "Order", "ElaborationContent", "SubmittedAt", "FeedbackContent", "FeedbackTargets")
-VALUES (-50, -5, 0, 'Round 1 elaboration.', '2024-06-05 10:01:00+00', 'Feedback 1.', '[{{"Key":"P1","Type":0,"Grade":0,"NeedsSupport":false}},{{"Key":"P2","Type":0,"Grade":0,"NeedsSupport":false}}]'::jsonb);
+VALUES (-50, -5, 0, 'Round 1 elaboration.', '2024-06-05 10:01:00+00', 'Feedback 1.', '[{{"ScoredTarget":{{"Key":"P1","Type":0,"Grade":0}},"ProbesWithoutGradeChangeCount":0}},{{"ScoredTarget":{{"Key":"P2","Type":0,"Grade":0}},"ProbesWithoutGradeChangeCount":0}}]'::jsonb);
 INSERT INTO elaborations."ConversationRounds"("Id", "ConversationAttemptId", "Order", "ElaborationContent", "SubmittedAt", "FeedbackContent", "FeedbackTargets")
-VALUES (-52, -5, 1, 'Round 2 elaboration.', '2024-06-05 10:02:00+00', 'Feedback 2.', '[{{"Key":"P1","Type":0,"Grade":0,"NeedsSupport":true}},{{"Key":"P2","Type":0,"Grade":0,"NeedsSupport":true}}]'::jsonb);
+VALUES (-52, -5, 1, 'Round 2 elaboration.', '2024-06-05 10:02:00+00', 'Feedback 2.', '[{{"ScoredTarget":{{"Key":"P1","Type":0,"Grade":0}},"ProbesWithoutGradeChangeCount":1}},{{"ScoredTarget":{{"Key":"P2","Type":0,"Grade":0}},"ProbesWithoutGradeChangeCount":1}}]'::jsonb);
 INSERT INTO elaborations."ConversationRounds"("Id", "ConversationAttemptId", "Order", "ElaborationContent", "SubmittedAt", "FeedbackContent", "FeedbackTargets")
-VALUES (-54, -5, 2, 'Round 3 elaboration.', '2024-06-05 10:03:00+00', 'Feedback 3.', '[{{"Key":"P1","Type":0,"Grade":0,"NeedsSupport":true}},{{"Key":"P2","Type":0,"Grade":0,"NeedsSupport":true}}]'::jsonb);
+VALUES (-54, -5, 2, 'Round 3 elaboration.', '2024-06-05 10:03:00+00', 'Feedback 3.', '[{{"ScoredTarget":{{"Key":"P1","Type":0,"Grade":0}},"ProbesWithoutGradeChangeCount":2}},{{"ScoredTarget":{{"Key":"P2","Type":0,"Grade":0}},"ProbesWithoutGradeChangeCount":2}}]'::jsonb);
 
 INSERT INTO elaborations."TurnEvaluations"("Id", "ConversationRoundId", "Assessments", "MisconceptionsTriggeredKeys")
 VALUES (-50, -50, '[{{"Key":"P1","Type":0,"Grade":0}},{{"Key":"P2","Type":0,"Grade":0}}]'::jsonb, '[]'::jsonb);

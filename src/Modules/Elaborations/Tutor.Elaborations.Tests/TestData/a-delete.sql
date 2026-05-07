@@ -1,5 +1,5 @@
 DELETE FROM elaborations."TurnEvaluations";
-DELETE FROM elaborations."ConversationTurns";
+DELETE FROM elaborations."ConversationRounds";
 DELETE FROM elaborations."ConversationAttempts";
 DELETE FROM elaborations."ConceptRecords";
 DELETE FROM elaborations."ConceptElaborationTasks";
