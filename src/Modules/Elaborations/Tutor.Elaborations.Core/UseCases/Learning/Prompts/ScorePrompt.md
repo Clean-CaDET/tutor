@@ -27,13 +27,13 @@ For grades -1, 1, and 2, evidence MUST contain at least one verbatim quote. For 
 - Resist sycophancy. Default to lower grades when ambiguous. Vague restatement of part of a KP is a 1, not a 2, even when the prose is fluent.
 
 # Misconception detection
-- Flag a misconception if the learner's text contains reasoning or claims that reflect that misunderstanding, even if the learner also states something correct nearby.
-- List the keys of any known misconceptions triggered in this Elaboration.
+- Flag a misconception only when the learner's text contains a claim or piece of reasoning that directly reflects the flawed thinking in the Description. Vagueness, omission, or failure to mention the correct idea does not trigger a misconception.
+- For each misconception you flag, evidence MUST contain a verbatim quote. If you cannot find one, do not flag it.
 
 # Output Format (JSON only, no other text)
 {
   "assessments": [ { "key": "P1", "type": "proposition", "evidence": "exact quotes", "grade": 0 }, … one entry per KP and KR ],
-  "misconceptionsTriggeredKeys": [ "M1", … string list of CM keys triggered (empty array if none)]
+  "misconceptions": [ { "key": "M1", "evidence": "exact verbatim quote" }, … (empty array if none) ]
 }
 "grade" must be an integer in {-1, 0, 1, 2}.
 

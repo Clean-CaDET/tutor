@@ -7,7 +7,7 @@ namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 public class ScoreResponseDto
 {
     public List<ScoredTargetDto>? Assessments { get; set; }
-    public List<string>? MisconceptionsTriggeredKeys { get; set; }
+    public List<MisconceptionDto>? Misconceptions { get; set; }
 
     public Result<RoundEvaluation> ToEvaluation(ConceptRecord record)
     {
@@ -24,11 +24,14 @@ public class ScoreResponseDto
         var scoredTargets = CreateScoredTargets(kpKeys, krKeys);
         if (scoredTargets.IsFailed) return Result.Fail(scoredTargets.Errors);
 
-        var misconceptions = MisconceptionsTriggeredKeys ?? [];
+        var misconceptions = Misconceptions ?? [];
         var validCmKeys = record.CommonMisconceptions.Select(cm => cm.Key).ToHashSet();
-        if (misconceptions.Any(k => !validCmKeys.Contains(k))) return Result.Fail("Unknown misconception key.");
+        if (misconceptions.Any(m => !validCmKeys.Contains(m.Key))) return Result.Fail("Unknown misconception key.");
 
-        return new RoundEvaluation(scoredTargets.Value, misconceptions);
+        var triggeredMisconceptions = misconceptions
+            .Select(m => new ScoredTarget(m.Key, TargetType.Misconception, -2, m.Evidence))
+            .ToList();
+        return new RoundEvaluation(scoredTargets.Value, triggeredMisconceptions);
     }
 
     private Result<List<ScoredTarget>> CreateScoredTargets(HashSet<string> kpKeys, HashSet<string> krKeys)
@@ -56,6 +59,8 @@ public class ScoreResponseDto
         return scoredTargets;
     }
 }
+
+public record MisconceptionDto(string Key, string Evidence);
 
 public class ScoredTargetDto
 {

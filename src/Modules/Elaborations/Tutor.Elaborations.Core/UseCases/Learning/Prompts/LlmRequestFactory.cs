@@ -7,17 +7,20 @@ namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 
 public static class LlmRequestFactory
 {
+    private static readonly string ScoreTemplate = LoadTemplate("ScorePrompt.md");
+    private static readonly string EvaluationFeedbackTemplate = LoadTemplate("EvaluationFeedbackPrompt.md");
+
     public static CompletionRequest ForElaborationScoring(ConceptRecord record, string elaboration)
     {
         var messages = new List<ChatMessage> { ChatMessage.FromUser($"<elaboration>{elaboration}</elaboration>") };
-        return CompletionRequest.Create(messages, ScorePrompt.Build(record), maxTokens: 1024, temperature: 0.0);
+        return CompletionRequest.Create(messages, ScoreTemplate + "\n" + ConceptRubricSection.Render(record), maxTokens: 1024, temperature: 0.0);
     }
 
     public static CompletionRequest ForEvaluationFeedback(ConceptRecord record, string elaboration,
         IReadOnlyList<Probe> probes)
     {
         var messages = new List<ChatMessage> { ChatMessage.FromUser(RenderFeedbackInput(elaboration, probes)) };
-        return CompletionRequest.Create(messages, EvaluationFeedbackPrompt.Build(record), maxTokens: 512, temperature: 0.7);
+        return CompletionRequest.Create(messages, EvaluationFeedbackTemplate + "\n" + ConceptRubricSection.Render(record), maxTokens: 512, temperature: 0.7);
     }
 
     private static string RenderFeedbackInput(string elaboration, IReadOnlyList<Probe> probes)
@@ -45,5 +48,14 @@ public static class LlmRequestFactory
         }
 
         return sb.ToString();
+    }
+
+    private static string LoadTemplate(string fileName)
+    {
+        var assembly = typeof(LlmRequestFactory).Assembly;
+        using var stream = assembly.GetManifestResourceStream(
+            $"Tutor.Elaborations.Core.UseCases.Learning.Prompts.{fileName}")!;
+        using var reader = new StreamReader(stream);
+        return reader.ReadToEnd();
     }
 }
