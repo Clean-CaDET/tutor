@@ -32,7 +32,7 @@ public static class LlmRequestFactory
         {
             sb.Append("<misconceptions>");
             foreach (var p in misconceptions)
-                sb.Append($"<misconception key=\"{p.ScoredTarget.Key}\" stagnantCount=\"{p.StagnantCount}\"/>");
+                sb.Append($"<misconception key=\"{p.ScoredTarget.Key}\" stagnantCount=\"{p.StagnantCount}\" evidence=\"{p.ScoredTarget.Evidence}\"/>");
             sb.Append("</misconceptions>");
         }
 
@@ -40,7 +40,7 @@ public static class LlmRequestFactory
         {
             sb.Append("<gaps>");
             foreach (var p in gaps)
-                sb.Append($"<gap key=\"{p.ScoredTarget.Key}\" type=\"{p.ScoredTarget.Type.ToString().ToLowerInvariant()}\" grade=\"{p.ScoredTarget.Grade}\" stagnantCount=\"{p.StagnantCount}\"/>");
+                sb.Append($"<gap key=\"{p.ScoredTarget.Key}\" type=\"{p.ScoredTarget.Type.ToString().ToLowerInvariant()}\" grade=\"{p.ScoredTarget.Grade}\" stagnantCount=\"{p.StagnantCount}\" evidence=\"{p.ScoredTarget.Evidence}\"/>");
             sb.Append("</gaps>");
         }
 

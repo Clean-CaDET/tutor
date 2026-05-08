@@ -51,7 +51,7 @@ public class ScoreResponseDto
                 case TargetType.Relation when !krKeys.Contains(dto.Key):
                     return Result.Fail($"Key '{dto.Key}' typed as relation but is a proposition.");
             }
-            scoredTargets.Add(new ScoredTarget(dto.Key, type.Value, dto.Grade));
+            scoredTargets.Add(new ScoredTarget(dto.Key, type.Value, dto.Grade, dto.Evidence ?? ""));
         }
         return scoredTargets;
     }
@@ -61,5 +61,6 @@ public class ScoredTargetDto
 {
     public string Key { get; set; } = "";
     public string Type { get; set; } = "";
+    public string Evidence { get; set; } = "";
     public int Grade { get; set; }
 }

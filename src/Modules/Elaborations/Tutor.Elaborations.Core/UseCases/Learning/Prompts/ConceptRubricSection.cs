@@ -22,14 +22,6 @@ public static class ConceptRubricSection
             sb.AppendLine($"- [{kp.Key}] {kp.Statement}");
         sb.AppendLine();
 
-        if (record.CommonMisconceptions.Count > 0)
-        {
-            sb.AppendLine("## Common Misconceptions");
-            foreach (var cm in record.CommonMisconceptions)
-                sb.AppendLine($"- [{cm.Key}] {cm.Description} — correction: {cm.Correction}");
-            sb.AppendLine();
-        }
-
         if (record.KeyRelations.Count > 0)
         {
             sb.AppendLine("## Key Relations");
@@ -40,6 +32,14 @@ public static class ConceptRubricSection
                 var target = kpByKey.GetValueOrDefault(kr.TargetKey, kr.TargetKey);
                 sb.AppendLine($"- [{kr.Key}] {source} → {target}. Mechanism: {kr.Mechanism}");
             }
+        }
+
+        if (record.CommonMisconceptions.Count > 0)
+        {
+            sb.AppendLine("## Common Misconceptions");
+            foreach (var cm in record.CommonMisconceptions)
+                sb.AppendLine($"- [{cm.Key}] {cm.Description} — correction: {cm.Correction}");
+            sb.AppendLine();
         }
 
         return sb.ToString().TrimEnd() + "\n";
