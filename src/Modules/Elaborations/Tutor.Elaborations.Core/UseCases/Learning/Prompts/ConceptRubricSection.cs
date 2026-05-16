@@ -38,7 +38,7 @@ public static class ConceptRubricSection
         {
             sb.AppendLine("## Common Misconceptions");
             foreach (var cm in record.CommonMisconceptions)
-                sb.AppendLine($"- [{cm.Key}] {cm.Description} — correction: {cm.Correction}");
+                sb.AppendLine($"- [{cm.Key}] {cm.Description} — Correction: {cm.Correction}");
             sb.AppendLine();
         }
 

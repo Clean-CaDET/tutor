@@ -45,17 +45,30 @@ def fetch_rounds(cursor, attempt_id):
     return results
 
 
+def resolve_ids(cursor, args):
+    if len(args) == 1 and re.fullmatch(r'\d+\+', args[0]):
+        min_id = int(args[0][:-1])
+        cursor.execute(
+            'SELECT DISTINCT "ConversationAttemptId" FROM elaborations."ConversationRounds"'
+            ' WHERE "ConversationAttemptId" >= %s ORDER BY "ConversationAttemptId"',
+            (min_id,)
+        )
+        return [row["ConversationAttemptId"] for row in cursor.fetchall()]
+    return [int(arg) for arg in args]
+
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: python fetch_conversations.py <id1> [id2] ...")
+        print("       python fetch_conversations.py <id>+   (fetch all attempts with Id >= id)")
         sys.exit(1)
 
-    ids = [int(arg) for arg in sys.argv[1:]]
     OUTPUT_DIR.mkdir(exist_ok=True)
 
     conn = psycopg2.connect(DSN)
     try:
         with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            ids = resolve_ids(cur, sys.argv[1:])
             for attempt_id in ids:
                 rounds = fetch_rounds(cur, attempt_id)
                 out = OUTPUT_DIR / f"{attempt_id}.json"

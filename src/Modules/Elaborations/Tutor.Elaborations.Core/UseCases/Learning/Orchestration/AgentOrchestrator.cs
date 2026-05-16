@@ -52,7 +52,6 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
         if (attempt.IsHardCapReached())
         {
             attempt.Expire();
-            yield return new TokenChunk(SystemTurnCodes.ExpiredNotice);
             yield return CreateFinalChunk(attempt);
             yield break;
         }
@@ -68,8 +67,11 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
 
         if (attempt.IsStagnating())
         {
-            fullResponse.Append(SystemTurnCodes.StagnationRedirect);
             yield return new TokenChunk(SystemTurnCodes.StagnationRedirect);
+        }
+        else
+        {
+            yield return new TokenChunk(SystemTurnCodes.Push);
         }
 
         attempt.CompleteRound(fullResponse.ToString(), probes);
