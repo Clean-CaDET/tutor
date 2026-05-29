@@ -19,11 +19,11 @@ public static class LlmRequestFactory
     public static CompletionRequest ForEvaluationFeedback(ConceptRecord record, string elaboration,
         IReadOnlyList<Probe> probes)
     {
-        var messages = new List<ChatMessage> { ChatMessage.FromUser(RenderFeedbackInput(elaboration, probes)) };
+        var messages = new List<ChatMessage> { ChatMessage.FromUser(RenderFeedbackInput(record, elaboration, probes)) };
         return CompletionRequest.Create(messages, EvaluationFeedbackTemplate + "\n" + ConceptRubricSection.Render(record), maxTokens: 512, temperature: 0.7);
     }
 
-    private static string RenderFeedbackInput(string elaboration, IReadOnlyList<Probe> probes)
+    private static string RenderFeedbackInput(ConceptRecord record, string elaboration, IReadOnlyList<Probe> probes)
     {
         var sb = new StringBuilder();
         sb.AppendLine($"<elaboration>{elaboration}</elaboration>");
@@ -33,9 +33,12 @@ public static class LlmRequestFactory
 
         if (misconceptions.Count > 0)
         {
+            var correctionByKey = record.KeyPropositions
+                .Where(kp => kp.Misconception != null)
+                .ToDictionary(kp => kp.Key, kp => kp.Misconception!.Correction);
             sb.Append("<misconceptions>");
             foreach (var p in misconceptions)
-                sb.Append($"<misconception key=\"{p.ScoredTarget.Key}\" stagnantCount=\"{p.StagnantCount}\" evidence=\"{p.ScoredTarget.Evidence}\"/>");
+                sb.Append($"<misconception key=\"{p.ScoredTarget.Key}\" stagnantCount=\"{p.StagnantCount}\" evidence=\"{p.ScoredTarget.Evidence}\" correction=\"{correctionByKey.GetValueOrDefault(p.ScoredTarget.Key, "")}\"/>");
             sb.Append("</misconceptions>");
         }
 
