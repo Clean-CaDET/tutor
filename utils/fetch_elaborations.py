@@ -5,10 +5,11 @@ import psycopg2
 import psycopg2.extras
 from pathlib import Path
 
-DSN = "host=localhost port=5432 dbname=tutor-v9 user=postgres password=admin options='-c search_path=elaborations,public'"
+CONFIG = json.loads((Path(__file__).parent / "util.config").read_text())
+DSN = CONFIG["dsn"]
 
 SQL_PATH = Path(__file__).parent / "conversation-rounds.sql"
-OUTPUT_DIR = Path(__file__).parent / "conversations"
+OUTPUT_DIR = Path(__file__).parent / "data/conversations"
 
 
 def to_json(data):
