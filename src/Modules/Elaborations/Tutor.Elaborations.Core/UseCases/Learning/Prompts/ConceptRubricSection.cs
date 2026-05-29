@@ -4,7 +4,7 @@ using Tutor.Elaborations.Core.Domain.ConceptElaborationTasks;
 namespace Tutor.Elaborations.Core.UseCases.Learning.Prompts;
 
 /// <summary>
-/// Renders the concept rubric (KPs, CMs, KRs) as a markdown block.
+/// Renders the concept rubric (KPs with their scoped misconceptions) as a markdown block.
 /// Output is byte-stable for a given <see cref="ConceptRecord"/> so the whole block
 /// can live at the top of every agent's system prompt and serve as a shared provider-side cache prefix.
 /// No per-turn state (coverage markers, soft-cap flags, progress) is rendered here.
@@ -19,27 +19,10 @@ public static class ConceptRubricSection
         sb.AppendLine();
         sb.AppendLine("## Key Propositions");
         foreach (var kp in record.KeyPropositions)
+        {
             sb.AppendLine($"- [{kp.Key}] {kp.Statement}");
-        sb.AppendLine();
-
-        if (record.KeyRelations.Count > 0)
-        {
-            sb.AppendLine("## Key Relations");
-            var kpByKey = record.KeyPropositions.ToDictionary(kp => kp.Key, kp => kp.Statement);
-            foreach (var kr in record.KeyRelations)
-            {
-                var source = kpByKey.GetValueOrDefault(kr.SourceKey, kr.SourceKey);
-                var target = kpByKey.GetValueOrDefault(kr.TargetKey, kr.TargetKey);
-                sb.AppendLine($"- [{kr.Key}] {source} → {target}. Mechanism: {kr.Mechanism}");
-            }
-        }
-
-        if (record.CommonMisconceptions.Count > 0)
-        {
-            sb.AppendLine("## Common Misconceptions");
-            foreach (var cm in record.CommonMisconceptions)
-                sb.AppendLine($"- [{cm.Key}] {cm.Description} — Correction: {cm.Correction}");
-            sb.AppendLine();
+            if (kp.Misconception != null)
+                sb.AppendLine($"  - Misconception: {kp.Misconception.Description} — Correction: {kp.Misconception.Correction}");
         }
 
         return sb.ToString().TrimEnd() + "\n";

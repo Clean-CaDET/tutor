@@ -28,8 +28,8 @@ public static class LlmRequestFactory
         var sb = new StringBuilder();
         sb.AppendLine($"<elaboration>{elaboration}</elaboration>");
 
-        var misconceptions = probes.Where(p => p.ScoredTarget.Type == TargetType.Misconception).ToList();
-        var gaps = probes.Where(p => p.ScoredTarget.Type != TargetType.Misconception).ToList();
+        var misconceptions = probes.Where(p => p.ScoredTarget.Grade == -2).ToList();
+        var gaps = probes.Where(p => p.ScoredTarget.Grade != -2).ToList();
 
         if (misconceptions.Count > 0)
         {
@@ -43,7 +43,7 @@ public static class LlmRequestFactory
         {
             sb.Append("<gaps>");
             foreach (var p in gaps)
-                sb.Append($"<gap key=\"{p.ScoredTarget.Key}\" type=\"{p.ScoredTarget.Type.ToString().ToLowerInvariant()}\" grade=\"{p.ScoredTarget.Grade}\" stagnantCount=\"{p.StagnantCount}\" evidence=\"{p.ScoredTarget.Evidence}\"/>");
+                sb.Append($"<gap key=\"{p.ScoredTarget.Key}\" grade=\"{p.ScoredTarget.Grade}\" stagnantCount=\"{p.StagnantCount}\" evidence=\"{p.ScoredTarget.Evidence}\"/>");
             sb.Append("</gaps>");
         }
 

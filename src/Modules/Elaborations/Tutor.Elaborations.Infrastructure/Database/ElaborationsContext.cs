@@ -40,8 +40,6 @@ public class ElaborationsContext : DbContext
         modelBuilder.Entity<ConceptRecord>(entity =>
         {
             entity.Property(r => r.KeyPropositions).HasColumnType("jsonb");
-            entity.Property(r => r.CommonMisconceptions).HasColumnType("jsonb");
-            entity.Property(r => r.KeyRelations).HasColumnType("jsonb");
         });
     }
 
@@ -73,7 +71,6 @@ public class ElaborationsContext : DbContext
         modelBuilder.Entity<RoundEvaluation>(entity =>
         {
             entity.Property(te => te.Assessments).HasColumnType("jsonb");
-            entity.Property(te => te.TriggeredMisconceptions).HasColumnType("jsonb");
         });
     }
 }
