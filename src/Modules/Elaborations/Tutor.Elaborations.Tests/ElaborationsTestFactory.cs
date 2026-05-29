@@ -44,13 +44,11 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
         return services;
     }
 
-    public void SetupEvaluationMock(
-        List<(string key, string type, int grade)> assessments,
-        List<string>? misconceptionsTriggeredKeys = null)
+    public void SetupEvaluationMock(List<(string key, int grade)> assessments)
     {
-        var scorerJson = BuildScorerJson(assessments, misconceptionsTriggeredKeys ?? []);
+        var scorerJson = BuildScorerJson(assessments);
         MockChatService.Setup(x => x.CompleteAsync(
-                It.Is<CompletionRequest>(r => r.MaxTokens == 1024), It.IsAny<CancellationToken>()))
+                It.Is<CompletionRequest>(r => r.MaxTokens == 2048), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result.Ok(new CompletionResponse
             {
                 Content = scorerJson,
@@ -58,16 +56,12 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
             }));
     }
 
-    private static string BuildScorerJson(
-        List<(string key, string type, int grade)> assessments,
-        List<string> misconceptions)
+    private static string BuildScorerJson(List<(string key, int grade)> assessments)
     {
         var sb = new StringBuilder();
         sb.Append("{ \"assessments\": [");
         sb.Append(string.Join(", ", assessments.Select(a =>
-            $"{{ \"key\": \"{a.key}\", \"type\": \"{a.type}\", \"grade\": {a.grade} }}")));
-        sb.Append("], \"misconceptionsTriggeredKeys\": [");
-        sb.Append(string.Join(", ", misconceptions.Select(m => $"\"{m}\"")));
+            $"{{ \"key\": \"{a.key}\", \"grade\": {a.grade}, \"evidence\": \"{(a.grade == 0 ? "" : "evidence")}\" }}")));
         sb.Append("]}");
         return sb.ToString();
     }

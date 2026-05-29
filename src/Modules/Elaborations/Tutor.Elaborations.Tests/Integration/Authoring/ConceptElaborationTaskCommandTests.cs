@@ -30,14 +30,16 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
                 CanonicalDefinition = "A new concept definition.",
                 KeyPropositions = new List<KeyPropositionDto>
                 {
-                    new() { Key = "P1", Statement = "First proposition" },
+                    new()
+                    {
+                        Key = "P1", Statement = "First proposition",
+                        Misconception = new MisconceptionDto
+                        {
+                            Description = "A misconception", Correction = "The correction"
+                        }
+                    },
                     new() { Key = "P2", Statement = "Second proposition" }
-                },
-                CommonMisconceptions = new List<CommonMisconceptionDto>
-                {
-                    new() { Key = "M1", Description = "A misconception", Correction = "The correction" }
-                },
-                KeyRelations = new List<KeyRelationDto>()
+                }
             }
         };
         dbContext.Database.BeginTransaction();
@@ -52,12 +54,15 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
         result.Order.ShouldBe(10);
         result.ConceptRecord.ShouldNotBeNull();
         result.ConceptRecord.KeyPropositions.Count.ShouldBe(2);
-        result.ConceptRecord.CommonMisconceptions.Count.ShouldBe(1);
-        result.ConceptRecord.KeyRelations.Count.ShouldBe(0);
+        var created = result.ConceptRecord.KeyPropositions.First(p => p.Key == "P1");
+        created.Misconception.ShouldNotBeNull();
+        created.Misconception.Description.ShouldBe("A misconception");
+        created.Misconception.Correction.ShouldBe("The correction");
+        result.ConceptRecord.KeyPropositions.First(p => p.Key == "P2").Misconception.ShouldBeNull();
     }
 
     [Fact]
-    public void Creates_with_relations()
+    public void Creates_without_misconception_leaves_it_null()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
@@ -66,25 +71,15 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
         {
             UnitId = -1,
             Order = 11,
-            Title = "Concept With Relations",
-            Description = "A concept created with KPs and KRs.",
+            Title = "Concept Without Misconceptions",
+            Description = "A concept created with plain propositions.",
             ConceptRecord = new ConceptRecordDto
             {
-                CanonicalDefinition = "A concept created with KPs and KRs in one request.",
+                CanonicalDefinition = "A concept created with two plain propositions.",
                 KeyPropositions = new List<KeyPropositionDto>
                 {
                     new() { Key = "P1", Statement = "First proposition" },
                     new() { Key = "P2", Statement = "Second proposition" }
-                },
-
-                CommonMisconceptions = new List<CommonMisconceptionDto>(),
-                KeyRelations = new List<KeyRelationDto>
-                {
-                    new()
-                    {
-                        Key = "R1", SourceKey = "P1", TargetKey = "P2",
-                        Mechanism = "First enables second"
-                    }
                 }
             }
         };
@@ -97,10 +92,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
         result.ShouldNotBeNull();
         result.ConceptRecord.ShouldNotBeNull();
         result.ConceptRecord.KeyPropositions.Count.ShouldBe(2);
-        result.ConceptRecord.KeyRelations.Count.ShouldBe(1);
-        result.ConceptRecord.KeyRelations[0].Mechanism.ShouldBe("First enables second");
-        result.ConceptRecord.KeyRelations[0].SourceKey.ShouldBe("P1");
-        result.ConceptRecord.KeyRelations[0].TargetKey.ShouldBe("P2");
+        result.ConceptRecord.KeyPropositions.ShouldAllBe(p => p.Misconception == null);
     }
 
     [Fact]
@@ -122,10 +114,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
                 KeyPropositions = new List<KeyPropositionDto>
                 {
                     new() { Key = "P1", Statement = "Updated proposition" }
-                },
-
-                CommonMisconceptions = new List<CommonMisconceptionDto>(),
-                KeyRelations = new List<KeyRelationDto>()
+                }
             }
         };
         dbContext.Database.BeginTransaction();
@@ -143,12 +132,12 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
     }
 
     [Fact]
-    public void Updates_relations_with_natural_keys()
+    public void Updates_changes_kp_misconception()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
-        // CET -7 has KPs P1, P2 and KR R1 (source=P1, target=P2).
+        // CET -7 has KPs P1, P2 with no misconceptions. Give P1 a scoped misconception.
         var updatedEntity = new ConceptElaborationTaskDto
         {
             Id = -7,
@@ -161,24 +150,16 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
                 CanonicalDefinition = "Polymorphism resolves method calls at runtime via dynamic dispatch.",
                 KeyPropositions = new List<KeyPropositionDto>
                 {
-                    new() { Key = "P1", Statement = "A subclass can override a parent method" },
-                    new() { Key = "P2", Statement = "The runtime selects the implementation by the actual type" },
-                    new() { Key = "P3", Statement = "Dispatch table resolves virtual calls" }
-                },
-
-                CommonMisconceptions = new List<CommonMisconceptionDto>(),
-                KeyRelations = new List<KeyRelationDto>
-                {
                     new()
                     {
-                        Key = "R1", SourceKey = "P1", TargetKey = "P2",
-                        Mechanism = "Override matters because dispatch happens at runtime"
+                        Key = "P1", Statement = "A subclass can override a parent method",
+                        Misconception = new MisconceptionDto
+                        {
+                            Description = "Overriding and overloading are the same thing",
+                            Correction = "Overriding replaces behavior at runtime; overloading is resolved at compile time"
+                        }
                     },
-                    new()
-                    {
-                        Key = "R2", SourceKey = "P2", TargetKey = "P3",
-                        Mechanism = "Runtime dispatch uses vtable lookup"
-                    }
+                    new() { Key = "P2", Statement = "The runtime selects the implementation by the actual type" }
                 }
             }
         };
@@ -190,19 +171,20 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
         dbContext.ChangeTracker.Clear();
         result.ShouldNotBeNull();
         result.ConceptRecord.ShouldNotBeNull();
-        result.ConceptRecord.KeyPropositions.Count.ShouldBe(3);
-        result.ConceptRecord.KeyRelations.Count.ShouldBe(2);
-        result.ConceptRecord.KeyRelations.ShouldContain(kr => kr.Mechanism.Contains("dispatch happens at runtime"));
-        result.ConceptRecord.KeyRelations.ShouldContain(kr => kr.Mechanism.Contains("vtable lookup"));
+        result.ConceptRecord.KeyPropositions.Count.ShouldBe(2);
+        var p1 = result.ConceptRecord.KeyPropositions.First(p => p.Key == "P1");
+        p1.Misconception.ShouldNotBeNull();
+        p1.Misconception.Description.ShouldBe("Overriding and overloading are the same thing");
+        result.ConceptRecord.KeyPropositions.First(p => p.Key == "P2").Misconception.ShouldBeNull();
     }
 
     [Fact]
-    public void Removes_relation_and_referenced_kp()
+    public void Removes_kp()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope);
         var dbContext = scope.ServiceProvider.GetRequiredService<ElaborationsContext>();
-        // CET -7 has KPs P1, P2 and KR R1. Remove KR and KP P2, keeping only P1.
+        // CET -7 has KPs P1, P2. Remove KP P2, keeping only P1.
         var updatedEntity = new ConceptElaborationTaskDto
         {
             Id = -7,
@@ -216,10 +198,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
                 KeyPropositions = new List<KeyPropositionDto>
                 {
                     new() { Key = "P1", Statement = "A subclass can override a parent method" }
-                },
-
-                CommonMisconceptions = new List<CommonMisconceptionDto>(),
-                KeyRelations = new List<KeyRelationDto>()
+                }
             }
         };
         dbContext.Database.BeginTransaction();
@@ -231,7 +210,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
         result.ShouldNotBeNull();
         result.ConceptRecord.ShouldNotBeNull();
         result.ConceptRecord.KeyPropositions.Count.ShouldBe(1);
-        result.ConceptRecord.KeyRelations.Count.ShouldBe(0);
+        result.ConceptRecord.KeyPropositions[0].Key.ShouldBe("P1");
     }
 
     [Fact]
@@ -280,10 +259,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
             ConceptRecord = new ConceptRecordDto
             {
                 CanonicalDefinition = "Fail",
-                KeyPropositions = new List<KeyPropositionDto>(),
-
-                CommonMisconceptions = new List<CommonMisconceptionDto>(),
-                KeyRelations = new List<KeyRelationDto>()
+                KeyPropositions = new List<KeyPropositionDto>()
             }
         };
 
@@ -309,10 +285,7 @@ public class ConceptElaborationTaskCommandTests : BaseElaborationsIntegrationTes
             ConceptRecord = new ConceptRecordDto
             {
                 CanonicalDefinition = "Fail",
-                KeyPropositions = new List<KeyPropositionDto>(),
-
-                CommonMisconceptions = new List<CommonMisconceptionDto>(),
-                KeyRelations = new List<KeyRelationDto>()
+                KeyPropositions = new List<KeyPropositionDto>()
             }
         };
 

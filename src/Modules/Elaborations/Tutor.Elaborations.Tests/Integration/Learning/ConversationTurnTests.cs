@@ -13,12 +13,12 @@ using Tutor.Elaborations.Infrastructure.Database;
 namespace Tutor.Elaborations.Tests.Integration.Learning;
 
 // Test data layout:
-// CET -1: Encapsulation (Basics), Unit -1      — KPs: P1 | CMs: M1
-// CET -2: Encapsulation (Members), Unit -1     — KPs: P1, P2 | CMs: M1, M2
+// CET -1: Encapsulation (Basics), Unit -1      — KPs: P1 (P1 carries a misconception)
+// CET -2: Encapsulation (Members), Unit -1     — KPs: P1, P2 (both carry a misconception)
 // CET -3: Encapsulation (Basics — Unit 2), -2  — KPs: P1
 // CET -5: Encapsulation (Members — Unit 2), -2 — KPs: P1, P2 — isolated for StartConversation
 // CET -6: Encapsulation (Invariants), Unit -2  — KPs: P1, P2, P3 — isolated for Start+Submit flow
-// CET -7: Polymorphism Mechanics, Unit -2      — KPs: P1, P2 | KRs: R1
+// CET -7: Polymorphism Mechanics, Unit -2      — KPs: P1, P2
 // Learner -2: enrolled in Units -1, -2 | Learner -3: enrolled in Units -1, -2
 // Learner -1: NOT enrolled | Learner -4: exhausted wallet
 // Attempt -1: Learner -2, CET -1, Completed   (for conflict / cannot-submit tests)
@@ -35,7 +35,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     public async Task Starts_conversation_with_first_turn()
     {
         Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock([("P1", "proposition", 0), ("P2", "proposition", 0)]);
+        Factory.SetupEvaluationMock([("P1", 0), ("P2", 0)]);
         Factory.SetupDialogueMock();
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
@@ -49,7 +49,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
         metadata.Status.ShouldBe("InProgress");
         metadata.AttemptId.ShouldBeGreaterThan(0);
         Factory.MockChatService.Verify(x => x.CompleteAsync(
-            It.Is<CompletionRequest>(r => r.MaxTokens == 1024), It.IsAny<CancellationToken>()), Times.Once);
+            It.Is<CompletionRequest>(r => r.MaxTokens == 2048), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     {
         // CET -2 has P1, P2. Attempt -4 has RoundCount=1. Submit with all grade 2 → Completed.
         Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock([("P1", "proposition", 2), ("P2", "proposition", 2)]);
+        Factory.SetupEvaluationMock([("P1", 2), ("P2", 2)]);
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-3");
         var dto = new SubmitElaborationRequestDto { Elaboration = "Covers both propositions adequately." };
@@ -74,7 +74,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     {
         // Attempt -5: CET -2, RoundCount=3, MaxRounds=4. Next submission hits cap → Expired.
         Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock([("P1", "proposition", 0), ("P2", "proposition", 0)]);
+        Factory.SetupEvaluationMock([("P1", 0), ("P2", 0)]);
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
         var dto = new SubmitElaborationRequestDto { Elaboration = "Attempt at the hard cap boundary." };
@@ -87,17 +87,16 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     }
 
     [Fact]
-    public async Task Submission_with_KPs_and_KR_completes_when_all_adequate()
+    public async Task Submission_completes_when_all_kps_adequate()
     {
-        // CET -7 (KPs P1, P2 + KR R1 = 3 targets). All grade 2 → Completed immediately.
+        // CET -7 (KPs P1, P2 = 2 targets). All grade 2 → Completed immediately.
         Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock(
-            [("P1", "proposition", 2), ("P2", "proposition", 2), ("R1", "relation", 2)]);
+        Factory.SetupEvaluationMock([("P1", 2), ("P2", 2)]);
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-3");
         var dto = new SubmitElaborationRequestDto
         {
-            Elaboration = "Override works because the runtime dispatches on the actual type, linking polymorphism to dynamic dispatch."
+            Elaboration = "A subclass can override a parent method, and the runtime selects the implementation by the actual type."
         };
 
         var tokens = await CollectStreamAsync(controller.StartConversation(-7, dto, CancellationToken.None));
@@ -112,8 +111,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
     {
         // CET -6 (P1, P2, P3). Start creates attempt; submit reuses it.
         Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock(
-            [("P1", "proposition", 0), ("P2", "proposition", 0), ("P3", "proposition", 0)]);
+        Factory.SetupEvaluationMock([("P1", 0), ("P2", 0), ("P3", 0)]);
         Factory.SetupDialogueMock();
         using var scope = Factory.Services.CreateScope();
         var controller = CreateController(scope, "-2");
@@ -130,8 +128,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
             .Include(a => a.Rounds).First(a => a.Id == attemptId).Rounds.Count;
 
         Factory.MockChatService.Reset();
-        Factory.SetupEvaluationMock(
-            [("P1", "proposition", 0), ("P2", "proposition", 0), ("P3", "proposition", 0)]);
+        Factory.SetupEvaluationMock([("P1", 0), ("P2", 0), ("P3", 0)]);
         Factory.SetupDialogueMock();
         var secondDto = new SubmitElaborationRequestDto { Elaboration = "Revised elaboration." };
 
