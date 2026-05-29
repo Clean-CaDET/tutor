@@ -13,7 +13,7 @@ public static class LlmRequestFactory
     public static CompletionRequest ForElaborationScoring(ConceptRecord record, string elaboration)
     {
         var messages = new List<ChatMessage> { ChatMessage.FromUser($"<elaboration>{elaboration}</elaboration>") };
-        return CompletionRequest.Create(messages, ScoreTemplate + "\n" + ConceptRubricSection.Render(record), maxTokens: 1024, temperature: 0.0);
+        return CompletionRequest.Create(messages, ScoreTemplate + "\n" + ConceptRubricSection.Render(record), maxTokens: 2048, temperature: 0.0);
     }
 
     public static CompletionRequest ForEvaluationFeedback(ConceptRecord record, string elaboration,

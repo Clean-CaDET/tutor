@@ -28,6 +28,8 @@ For grades -1, 1, and 2, evidence MUST contain at least one verbatim quote. For 
 
 # Misconception detection
 - Flag a misconception only when the learner's text contains a claim or piece of reasoning that directly reflects the flawed thinking in the Description. Vagueness, omission, or failure to mention the correct idea does not trigger a misconception.
+- Do not flag a misconception when the quoted text states the correct idea or the opposite of the flawed claim, even if it concerns the same topic, section, or vocabulary. Shared keywords with the Description are not enough — the text must assert the specific error itself.
+- The quote must come from the part of the elaboration the Description is about. A claim about a different section or aspect of the concept does not trigger the misconception.
 - For each misconception you flag, evidence MUST contain a verbatim quote. If you cannot find one, do not flag it.
 
 # Output Format (JSON only, no other text)

@@ -1,6 +1,7 @@
 using FluentResults;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
 using System.Runtime.CompilerServices;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
 
@@ -97,19 +98,26 @@ public class SemanticKernelChatService : IAiChatService
 
     private static PromptExecutionSettings? BuildExecutionSettings(CompletionRequest request, bool streaming)
     {
-        if (!streaming && request.MaxTokens is null && request.Temperature is null)
-            return null;
+        bool hasSettings = streaming || request.MaxTokens is not null
+            || request.Temperature is not null || request.ReasoningEffort is not null;
+        if (!hasSettings) return null;
 
-        var extensionData = new Dictionary<string, object>
+        var settings = new OpenAIPromptExecutionSettings
         {
-            ["max_tokens"] = request.MaxTokens ?? 4096,
-            ["temperature"] = request.Temperature ?? 0.7
+            MaxTokens = request.MaxTokens ?? 4096,
+            ReasoningEffort = request.ReasoningEffort
         };
 
-        if (streaming)
-            extensionData["stream_options"] = new Dictionary<string, object> { ["include_usage"] = true };
+        if (request.ReasoningEffort is null)
+            settings.Temperature = request.Temperature ?? 0.7;
 
-        return new PromptExecutionSettings { ExtensionData = extensionData };
+        if (streaming)
+            settings.ExtensionData = new Dictionary<string, object>
+            {
+                ["stream_options"] = new Dictionary<string, object> { ["include_usage"] = true }
+            };
+
+        return settings;
     }
 
     private static TokenUsage? TryExtractTokenUsage(IReadOnlyDictionary<string, object?>? metadata)

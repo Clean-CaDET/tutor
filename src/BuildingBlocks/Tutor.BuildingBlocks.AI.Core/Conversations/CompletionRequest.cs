@@ -15,6 +15,11 @@ public record CompletionRequest
     public double? Temperature { get; init; }
 
     /// <summary>
+    /// Controls reasoning depth ("low", "medium", "high"). When set, Temperature is ignored.
+    /// </summary>
+    public string? ReasoningEffort { get; init; }
+
+    /// <summary>
     /// Optional metadata for passing context to decorators or middleware.
     /// </summary>
     public IReadOnlyDictionary<string, object>? Metadata { get; init; }
