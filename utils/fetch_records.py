@@ -1,12 +1,8 @@
 import sys
-import json
 import re
-import psycopg2
-import psycopg2.extras
 from pathlib import Path
 
-CONFIG = json.loads((Path(__file__).parent / "util.config").read_text())
-DSN = CONFIG["dsn"]
+from common import db_cursor, to_json, parse_json_field
 
 OUTPUT_DIR = Path(__file__).parent / "data/records"
 
@@ -15,35 +11,31 @@ SELECT
     cet."Id",
     cet."Title",
     cet."Description",
-    cr."KeyPropositions",
-    cr."CommonMisconceptions",
-    cr."KeyRelations"
+    cr."CanonicalDefinition",
+    cr."KeyPropositions"
 FROM elaborations."ConceptRecords" cr
 JOIN elaborations."ConceptElaborationTasks" cet
     ON cr."ConceptElaborationTaskId" = cet."Id"
 """
 
 
-def to_json(data):
-    raw = json.dumps(data, indent=2, default=str, ensure_ascii=False)
-    return re.sub(r'\{[^{}\[\]]*\}', lambda m: re.sub(r'\s+', ' ', m.group()), raw, flags=re.DOTALL)
+def build_record(row):
+    return {
+        "Id": row["Id"],
+        "Title": row["Title"],
+        "Description": row["Description"],
+        "CanonicalDefinition": row["CanonicalDefinition"],
+        "KeyPropositions": parse_json_field(row["KeyPropositions"]),
+    }
 
 
-def parse_json_field(value):
-    if isinstance(value, str):
-        return json.loads(value)
-    return value
-
-
-def fetch_all(cursor):
-    cursor.execute(SQL)
-    return cursor.fetchall()
-
-
-def fetch_by_ids(cursor, ids):
-    placeholders = ",".join(["%s"] * len(ids))
-    cursor.execute(SQL + f' WHERE cet."Id" IN ({placeholders})', ids)
-    return cursor.fetchall()
+def get_records(cursor, ids=None):
+    if ids is None:
+        cursor.execute(SQL)
+    else:
+        placeholders = ",".join(["%s"] * len(ids))
+        cursor.execute(SQL + f' WHERE cet."Id" IN ({placeholders})', ids)
+    return [build_record(row) for row in cursor.fetchall()]
 
 
 def resolve_ids(cursor, args):
@@ -61,26 +53,12 @@ def resolve_ids(cursor, args):
 
 def main():
     OUTPUT_DIR.mkdir(exist_ok=True)
-
-    conn = psycopg2.connect(DSN)
-    try:
-        with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
-            ids = resolve_ids(cur, sys.argv[1:])
-            rows = fetch_by_ids(cur, ids) if ids is not None else fetch_all(cur)
-            for row in rows:
-                record = {
-                    "Id": row["Id"],
-                    "Title": row["Title"],
-                    "Description": row["Description"],
-                    "KeyPropositions": parse_json_field(row["KeyPropositions"]),
-                    "CommonMisconceptions": parse_json_field(row["CommonMisconceptions"]),
-                    "KeyRelations": parse_json_field(row["KeyRelations"]),
-                }
-                out = OUTPUT_DIR / f"{row['Id']}.json"
-                out.write_text(to_json(record), encoding="utf-8")
-                print(f"{row['Id']}: {row['Title']} -> {out}")
-    finally:
-        conn.close()
+    with db_cursor() as cur:
+        ids = resolve_ids(cur, sys.argv[1:])
+        for record in get_records(cur, ids):
+            out = OUTPUT_DIR / f"{record['Id']}.json"
+            out.write_text(to_json(record), encoding="utf-8")
+            print(f"{record['Id']}: {record['Title']} -> {out}")
 
 
 if __name__ == "__main__":
