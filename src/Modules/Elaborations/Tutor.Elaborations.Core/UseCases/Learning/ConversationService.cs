@@ -17,7 +17,7 @@ namespace Tutor.Elaborations.Core.UseCases.Learning;
 
 public class ConversationService : IConversationService
 {
-    private const int MaxAttemptsPerDay = 3;
+    private const int MaxAttemptsPerDay = 4;
 
     private readonly IConversationAttemptRepository _attemptRepo;
     private readonly IConceptElaborationTaskRepository _taskRepo;
@@ -169,7 +169,8 @@ public class ConversationService : IConversationService
                     yield return JsonSerializer.Serialize(new SubmitElaborationResponseDto
                     {
                         AttemptId = final.AttemptId,
-                        Status = final.Status.ToString()
+                        Status = final.Status.ToString(),
+                        FinalGrade = final.FinalGrade
                     });
                     yield break;
             }

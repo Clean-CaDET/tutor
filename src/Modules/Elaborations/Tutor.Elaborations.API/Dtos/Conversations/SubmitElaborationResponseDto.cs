@@ -4,4 +4,5 @@ public class SubmitElaborationResponseDto
 {
     public int AttemptId { get; set; }
     public string Status { get; set; } = string.Empty;
+    public double? FinalGrade { get; set; }
 }

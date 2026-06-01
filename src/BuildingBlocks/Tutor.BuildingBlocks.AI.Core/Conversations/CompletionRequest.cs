@@ -24,25 +24,15 @@ public record CompletionRequest
     /// </summary>
     public IReadOnlyDictionary<string, object>? Metadata { get; init; }
 
-    public static CompletionRequest Create(IEnumerable<ChatMessage> messages, string? systemPrompt, int? maxTokens, double? temperature)
+    public static CompletionRequest Create(IEnumerable<ChatMessage> messages, string? systemPrompt, int? maxTokens, double? temperature = null, string? reasoningEffort = null)
     {
         return new CompletionRequest
         {
             Messages = messages.ToList(),
             SystemPrompt = systemPrompt,
             MaxTokens = maxTokens,
-            Temperature = temperature
-        };
-    }
-
-    public static CompletionRequest SingleMessage(string userMessage, string? systemPrompt, int? maxTokens, double? temperature)
-    {
-        return new CompletionRequest
-        {
-            Messages = [ChatMessage.FromUser(userMessage)],
-            SystemPrompt = systemPrompt,
-            MaxTokens = maxTokens,
-            Temperature = temperature
+            Temperature = temperature,
+            ReasoningEffort = reasoningEffort
         };
     }
 }
