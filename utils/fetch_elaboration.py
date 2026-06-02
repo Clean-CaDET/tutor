@@ -1,12 +1,12 @@
-import sys
 import re
+import argparse
 from pathlib import Path
 
 from common import db_cursor, to_json
 import fetch_records
 import fetch_conversations
 
-RESULTS_DIR = Path(__file__).parent / "data/results"
+DEFAULT_RESULTS_DIR = Path(__file__).parent / "data/results"
 
 
 def safe_folder_name(record):
@@ -23,11 +23,25 @@ def write_conversation(folder, messages_dir, attempt):
 
 
 def main():
-    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    parser = argparse.ArgumentParser(
+        description="Fetch concept elaboration records with their conversations."
+    )
+    parser.add_argument(
+        "ids", nargs="*",
+        help="Task ids to fetch (e.g. 1 2 3 or 5+). Omit to fetch all records."
+    )
+    parser.add_argument(
+        "-o", "--output", type=Path, default=DEFAULT_RESULTS_DIR,
+        help=f"Output directory (default: {DEFAULT_RESULTS_DIR})"
+    )
+    args = parser.parse_args()
+
+    results_dir = args.output
+    results_dir.mkdir(parents=True, exist_ok=True)
     with db_cursor() as cur:
-        ids = fetch_records.resolve_ids(cur, sys.argv[1:])
+        ids = fetch_records.resolve_ids(cur, args.ids)
         for record in fetch_records.get_records(cur, ids):
-            folder = RESULTS_DIR / safe_folder_name(record)
+            folder = results_dir / safe_folder_name(record)
             messages_dir = folder / "messages"
             messages_dir.mkdir(parents=True, exist_ok=True)
 
