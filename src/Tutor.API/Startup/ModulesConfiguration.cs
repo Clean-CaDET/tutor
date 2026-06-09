@@ -16,7 +16,7 @@ public static class ModulesConfiguration
         services.AddAIServices(new AiServiceConfiguration
         {
             ApiKey = EnvironmentConnection.GetSecret("OPENAI_API_KEY") ?? "TODO",
-            ChatModelId = Environment.GetEnvironmentVariable("AI_CHAT_MODEL") ?? "gpt-4.1-mini",
+            ChatModelId = Environment.GetEnvironmentVariable("AI_CHAT_MODEL") ?? "gpt-5.4-mini",
             EmbeddingModelId = Environment.GetEnvironmentVariable("AI_EMBEDDING_MODEL") ?? "text-embedding-3-small"
         });
 
