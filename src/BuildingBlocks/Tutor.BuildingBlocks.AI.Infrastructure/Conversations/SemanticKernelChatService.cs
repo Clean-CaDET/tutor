@@ -108,9 +108,6 @@ public class SemanticKernelChatService : IAiChatService
             ReasoningEffort = request.ReasoningEffort
         };
 
-        if (request.ReasoningEffort is null)
-            settings.Temperature = request.Temperature ?? 0.7;
-
         if (streaming)
             settings.ExtensionData = new Dictionary<string, object>
             {

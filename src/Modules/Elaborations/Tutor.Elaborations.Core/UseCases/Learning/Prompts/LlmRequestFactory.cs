@@ -20,11 +20,12 @@ public static class LlmRequestFactory
         IReadOnlyList<Probe> probes)
     {
         var messages = new List<ChatMessage> { ChatMessage.FromUser(RenderFeedbackInput(record, elaboration, probes)) };
-        return CompletionRequest.Create(messages, EvaluationFeedbackTemplate + "\n" + ConceptRubricSection.Render(record), maxTokens: 2048);
+        return CompletionRequest.Create(messages, EvaluationFeedbackTemplate, maxTokens: 4096);
     }
 
     private static string RenderFeedbackInput(ConceptRecord record, string elaboration, IReadOnlyList<Probe> probes)
     {
+        var statementByKey = record.KeyPropositions.ToDictionary(kp => kp.Key, kp => kp.Statement);
         var correctionByKey = record.KeyPropositions
             .Where(kp => kp.Misconception != null)
             .ToDictionary(kp => kp.Key, kp => kp.Misconception!.Correction);
@@ -44,7 +45,7 @@ public static class LlmRequestFactory
             var hintAttr = (target.Grade == 0 || target.Grade == 1) && hintByKey.TryGetValue(target.Key, out var hint)
                 ? $" hint=\"{hint}\""
                 : "";
-            sb.Append($"<gap key=\"{target.Key}\" grade=\"{target.Grade}\" stagnantCount=\"{p.StagnantCount}\" evidence=\"{target.Evidence}\"{correctionAttr}{hintAttr}/>");
+            sb.Append($"<gap key=\"{target.Key}\" grade=\"{target.Grade}\" statement=\"{statementByKey.GetValueOrDefault(target.Key, "")}\" stagnantCount=\"{p.StagnantCount}\" evidence=\"{target.Evidence}\"{correctionAttr}{hintAttr}/>");
         }
         sb.Append("</gaps>");
 

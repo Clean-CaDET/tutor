@@ -97,7 +97,6 @@ public class ConversationService : IConversationService
 
         var attempt = new ConversationAttempt(taskId, learnerId, task!.ConceptRecord!.CountTargets());
         _attemptRepo.Create(attempt);
-        _unitOfWork.Save();
 
         await foreach (var token in RunSubmissionPipelineAsync(attempt, task, elaboration, ct))
             yield return token;
@@ -164,11 +163,11 @@ public class ConversationService : IConversationService
                         CompletionTokens = final.Usage.CompletionTokens,
                         FeatureType = "Elaboration",
                         EntityId = task.Id,
-                        PromptSummary = $"Elaboration submission for attempt: {final.AttemptId}"
+                        PromptSummary = $"Elaboration submission for attempt: {attempt.Id}"
                     });
                     yield return JsonSerializer.Serialize(new SubmitElaborationResponseDto
                     {
-                        AttemptId = final.AttemptId,
+                        AttemptId = attempt.Id,
                         Status = final.Status.ToString(),
                         FinalGrade = final.FinalGrade
                     });

@@ -154,7 +154,7 @@ public class ConversationAttempt : AggregateRoot
 
     public bool IsGoodEnough() => FinalGrade > 0.9;
 
-    public bool IsWeak() => FinalGrade < 0.25;
+    public bool IsWeak() => FinalGrade < 0.2;
 
     public bool HasImproved(double? threshold = 0.05)
     {
