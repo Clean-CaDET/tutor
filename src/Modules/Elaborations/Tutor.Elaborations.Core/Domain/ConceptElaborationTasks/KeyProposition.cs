@@ -9,14 +9,17 @@ public class KeyProposition : ValueObject
     public string Key { get; }
     [JsonPropertyName("statement")]
     public string Statement { get; }
+    [JsonPropertyName("hint")]
+    public string? Hint { get; }
     [JsonPropertyName("misconception")]
     public Misconception? Misconception { get; }
 
     [JsonConstructor]
-    public KeyProposition(string key, string statement, Misconception? misconception = null)
+    public KeyProposition(string key, string statement, string? hint = null, Misconception? misconception = null)
     {
         Key = key;
         Statement = statement;
+        Hint = hint;
         Misconception = misconception;
     }
 
@@ -24,6 +27,7 @@ public class KeyProposition : ValueObject
     {
         yield return Key;
         yield return Statement;
+        if (Hint != null) yield return Hint;
         if (Misconception != null) yield return Misconception;
     }
 }

@@ -49,7 +49,7 @@ public class ConversationTurnTests : BaseElaborationsIntegrationTest
         metadata.Status.ShouldBe("InProgress");
         metadata.AttemptId.ShouldBeGreaterThan(0);
         Factory.MockChatService.Verify(x => x.CompleteAsync(
-            It.Is<CompletionRequest>(r => r.MaxTokens == 2048), It.IsAny<CancellationToken>()), Times.Once);
+            It.Is<CompletionRequest>(r => r.MaxTokens == 4096), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]

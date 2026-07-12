@@ -25,30 +25,28 @@ public static class LlmRequestFactory
 
     private static string RenderFeedbackInput(ConceptRecord record, string elaboration, IReadOnlyList<Probe> probes)
     {
+        var correctionByKey = record.KeyPropositions
+            .Where(kp => kp.Misconception != null)
+            .ToDictionary(kp => kp.Key, kp => kp.Misconception!.Correction);
+        var hintByKey = record.KeyPropositions
+            .Where(kp => kp.Hint != null)
+            .ToDictionary(kp => kp.Key, kp => kp.Hint!);
+
         var sb = new StringBuilder();
         sb.AppendLine($"<elaboration>{elaboration}</elaboration>");
-
-        var misconceptions = probes.Where(p => p.ScoredTarget.Grade == -2).ToList();
-        var gaps = probes.Where(p => p.ScoredTarget.Grade != -2).ToList();
-
-        if (misconceptions.Count > 0)
+        sb.Append("<gaps>");
+        foreach (var p in probes)
         {
-            var correctionByKey = record.KeyPropositions
-                .Where(kp => kp.Misconception != null)
-                .ToDictionary(kp => kp.Key, kp => kp.Misconception!.Correction);
-            sb.Append("<misconceptions>");
-            foreach (var p in misconceptions)
-                sb.Append($"<misconception key=\"{p.ScoredTarget.Key}\" stagnantCount=\"{p.StagnantCount}\" evidence=\"{p.ScoredTarget.Evidence}\" correction=\"{correctionByKey.GetValueOrDefault(p.ScoredTarget.Key, "")}\"/>");
-            sb.Append("</misconceptions>");
+            var target = p.ScoredTarget;
+            var correctionAttr = target.Grade == -2
+                ? $" correction=\"{correctionByKey.GetValueOrDefault(target.Key, "")}\""
+                : "";
+            var hintAttr = (target.Grade == 0 || target.Grade == 1) && hintByKey.TryGetValue(target.Key, out var hint)
+                ? $" hint=\"{hint}\""
+                : "";
+            sb.Append($"<gap key=\"{target.Key}\" grade=\"{target.Grade}\" stagnantCount=\"{p.StagnantCount}\" evidence=\"{target.Evidence}\"{correctionAttr}{hintAttr}/>");
         }
-
-        if (gaps.Count > 0)
-        {
-            sb.Append("<gaps>");
-            foreach (var p in gaps)
-                sb.Append($"<gap key=\"{p.ScoredTarget.Key}\" grade=\"{p.ScoredTarget.Grade}\" stagnantCount=\"{p.StagnantCount}\" evidence=\"{p.ScoredTarget.Evidence}\"/>");
-            sb.Append("</gaps>");
-        }
+        sb.Append("</gaps>");
 
         return sb.ToString();
     }

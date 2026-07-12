@@ -56,6 +56,19 @@ public class AgentOrchestrator : LlmCaller, IAgentOrchestrator
             yield break;
         }
 
+        if (attempt.IsWeak())
+        {
+            yield return new TokenChunk(SystemTurnCodes.WeakRedirect);
+        }
+        else if (attempt.HasGreatlyImproved())
+        {
+            yield return new TokenChunk(SystemTurnCodes.GreatProgress);
+        }
+        else if (attempt.HasImproved())
+        {
+            yield return new TokenChunk(SystemTurnCodes.Progress);
+        }
+
         var probes = attempt.SelectProbes();
         var fullResponse = new StringBuilder();
         await foreach (var chunk in StreamAgentAsync(

@@ -153,4 +153,15 @@ public class ConversationAttempt : AggregateRoot
     }
 
     public bool IsGoodEnough() => FinalGrade > 0.9;
+
+    public bool IsWeak() => FinalGrade < 0.25;
+
+    public bool HasImproved(double? threshold = 0.05)
+    {
+        if (_rounds.Count < 2) return false;
+        var previousGrade = _rounds[^2].Evaluation.ComputeGrade(TotalTargets);
+        return FinalGrade - previousGrade > threshold;
+    }
+
+    public bool HasGreatlyImproved() => HasImproved(0.25);
 }
