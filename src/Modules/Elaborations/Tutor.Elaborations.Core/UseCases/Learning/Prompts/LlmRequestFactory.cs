@@ -13,14 +13,14 @@ public static class LlmRequestFactory
     public static CompletionRequest ForElaborationScoring(ConceptRecord record, string elaboration)
     {
         var messages = new List<ChatMessage> { ChatMessage.FromUser($"<elaboration>{elaboration}</elaboration>") };
-        return CompletionRequest.Create(messages, ScoreTemplate + "\n" + ConceptRubricSection.Render(record), maxTokens: 4096);
+        return CompletionRequest.Create(messages, ScoreTemplate + "\n" + ConceptRubricSection.Render(record), maxTokens: 8192);
     }
 
     public static CompletionRequest ForEvaluationFeedback(ConceptRecord record, string elaboration,
         IReadOnlyList<Probe> probes)
     {
         var messages = new List<ChatMessage> { ChatMessage.FromUser(RenderFeedbackInput(record, elaboration, probes)) };
-        return CompletionRequest.Create(messages, EvaluationFeedbackTemplate, maxTokens: 4096);
+        return CompletionRequest.Create(messages, EvaluationFeedbackTemplate, maxTokens: 8192);
     }
 
     private static string RenderFeedbackInput(ConceptRecord record, string elaboration, IReadOnlyList<Probe> probes)

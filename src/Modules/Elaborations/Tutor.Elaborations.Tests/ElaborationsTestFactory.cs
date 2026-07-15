@@ -48,7 +48,7 @@ public class ElaborationsTestFactory : BaseTestFactory<ElaborationsContext>
     {
         var scorerJson = BuildScorerJson(assessments);
         MockChatService.Setup(x => x.CompleteAsync(
-                It.Is<CompletionRequest>(r => r.MaxTokens == 4096), It.IsAny<CancellationToken>()))
+                It.Is<CompletionRequest>(r => r.MaxTokens == 8192), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result.Ok(new CompletionResponse
             {
                 Content = scorerJson,
