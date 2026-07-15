@@ -31,5 +31,6 @@ public class StakeholdersContext : DbContext
             .HasForeignKey<Stakeholder>(s => s.UserId);
 
         modelBuilder.Entity<Learner>().Property(l => l.LearnerType).HasDefaultValue(LearnerType.Regular);
+        modelBuilder.Entity<Learner>().HasIndex(l => l.UserId).IsUnique();
     }
 }

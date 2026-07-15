@@ -33,10 +33,10 @@ public abstract class StakeholderService<TDomain> : CrudService<StakeholderAccou
         }
         entity.UserId = user.Id;
         var registerResult = Create(entity);
-        if (result.IsFailed)
+        if (registerResult.IsFailed)
         {
             UnitOfWork.Rollback();
-            return result;
+            return registerResult;
         }
 
         UnitOfWork.Commit();

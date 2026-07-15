@@ -30,7 +30,8 @@ public static class AiServiceExtensions
 
         var kernel = kernelBuilder.Build();
         services.AddSingleton(kernel);
-        services.AddSingleton<IAiChatService, SemanticKernelChatService>();
+        services.AddScoped<ITurnUsageTracker, TurnUsageTracker>();
+        services.AddScoped<IAiChatService, SemanticKernelChatService>();
 
         if (!string.IsNullOrWhiteSpace(configuration.EmbeddingModelId))
         {

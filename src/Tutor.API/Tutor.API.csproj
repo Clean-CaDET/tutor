@@ -31,6 +31,8 @@
     <ProjectReference Include="..\Modules\LearningUtils\Tutor.LearningUtils.Infrastructure\Tutor.LearningUtils.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Stakeholders\Tutor.Stakeholders.API\Tutor.Stakeholders.API.csproj" />
     <ProjectReference Include="..\Modules\Stakeholders\Tutor.Stakeholders.Infrastructure\Tutor.Stakeholders.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Elaborations\Tutor.Elaborations.API\Tutor.Elaborations.API.csproj" />
+    <ProjectReference Include="..\Modules\Elaborations\Tutor.Elaborations.Infrastructure\Tutor.Elaborations.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

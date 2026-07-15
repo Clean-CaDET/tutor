@@ -1,6 +1,7 @@
 using FluentResults;
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
+using Microsoft.SemanticKernel.Connectors.OpenAI;
 using System.Runtime.CompilerServices;
 using Tutor.BuildingBlocks.AI.Core.Conversations;
 
@@ -12,10 +13,12 @@ namespace Tutor.BuildingBlocks.AI.Infrastructure.Conversations;
 public class SemanticKernelChatService : IAiChatService
 {
     private readonly IChatCompletionService _chatCompletionService;
+    private readonly ITurnUsageTracker _usageTracker;
 
-    public SemanticKernelChatService(Kernel kernel)
+    public SemanticKernelChatService(Kernel kernel, ITurnUsageTracker usageTracker)
     {
         _chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();
+        _usageTracker = usageTracker;
     }
 
     public async Task<Result<CompletionResponse>> CompleteAsync(CompletionRequest request, CancellationToken cancellationToken = default)
@@ -23,10 +26,11 @@ public class SemanticKernelChatService : IAiChatService
         try
         {
             var chatHistory = BuildChatHistory(request);
-            var executionSettings = BuildExecutionSettings(request);
+            var executionSettings = BuildExecutionSettings(request, streaming: false);
 
             var result = await _chatCompletionService.GetChatMessageContentAsync(chatHistory, executionSettings, cancellationToken: cancellationToken);
-            var usage = ExtractTokenUsage(result);
+            var usage = TryExtractTokenUsage(result.Metadata) ?? new TokenUsage(0, 0);
+            _usageTracker.Add(usage);
 
             return Result.Ok(new CompletionResponse
             {
@@ -44,14 +48,23 @@ public class SemanticKernelChatService : IAiChatService
     public async IAsyncEnumerable<string> StreamAsync(CompletionRequest request, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         var chatHistory = BuildChatHistory(request);
-        var executionSettings = BuildExecutionSettings(request);
+        var executionSettings = BuildExecutionSettings(request, streaming: true);
 
-        await foreach (var chunk in _chatCompletionService.GetStreamingChatMessageContentsAsync(chatHistory, executionSettings, cancellationToken: cancellationToken))
+        TokenUsage? capturedUsage = null;
+        try
         {
-            if (!string.IsNullOrEmpty(chunk.Content))
+            await foreach (var chunk in _chatCompletionService.GetStreamingChatMessageContentsAsync(chatHistory, executionSettings, cancellationToken: cancellationToken))
             {
-                yield return chunk.Content;
+                var chunkUsage = TryExtractTokenUsage(chunk.Metadata);
+                if (chunkUsage is not null) capturedUsage = chunkUsage;
+
+                if (!string.IsNullOrEmpty(chunk.Content))
+                    yield return chunk.Content;
             }
+        }
+        finally
+        {
+            if (capturedUsage is not null) _usageTracker.Add(capturedUsage);
         }
     }
 
@@ -83,40 +96,40 @@ public class SemanticKernelChatService : IAiChatService
         return chatHistory;
     }
 
-    private static PromptExecutionSettings? BuildExecutionSettings(CompletionRequest request)
+    private static PromptExecutionSettings? BuildExecutionSettings(CompletionRequest request, bool streaming)
     {
-        if (request.MaxTokens is null && request.Temperature is null)
-        {
-            return null;
-        }
+        bool hasSettings = streaming || request.MaxTokens is not null
+            || request.Temperature is not null || request.ReasoningEffort is not null;
+        if (!hasSettings) return null;
 
-        return new PromptExecutionSettings
+        var settings = new OpenAIPromptExecutionSettings
         {
-            ExtensionData = new Dictionary<string, object>
-            {
-                ["max_tokens"] = request.MaxTokens ?? 4096,
-                ["temperature"] = request.Temperature ?? 0.7
-            }
+            MaxTokens = request.MaxTokens ?? 4096,
+            ReasoningEffort = request.ReasoningEffort
         };
+
+        if (streaming)
+            settings.ExtensionData = new Dictionary<string, object>
+            {
+                ["stream_options"] = new Dictionary<string, object> { ["include_usage"] = true }
+            };
+
+        return settings;
     }
 
-    private static TokenUsage ExtractTokenUsage(ChatMessageContent result)
+    private static TokenUsage? TryExtractTokenUsage(IReadOnlyDictionary<string, object?>? metadata)
     {
-        var promptTokens = 0;
-        var completionTokens = 0;
+        if (metadata is null) return null;
+        if (!metadata.TryGetValue("Usage", out var usage) || usage is null) return null;
 
-        if (result.Metadata?.TryGetValue("Usage", out var usage) == true && usage is not null)
-        {
-            var usageType = usage.GetType();
-            var inputTokensProperty = usageType.GetProperty("InputTokenCount") ?? usageType.GetProperty("PromptTokens");
-            var outputTokensProperty = usageType.GetProperty("OutputTokenCount") ?? usageType.GetProperty("CompletionTokens");
+        var usageType = usage.GetType();
+        var inputTokensProperty = usageType.GetProperty("InputTokenCount") ?? usageType.GetProperty("PromptTokens");
+        var outputTokensProperty = usageType.GetProperty("OutputTokenCount") ?? usageType.GetProperty("CompletionTokens");
 
-            if (inputTokensProperty?.GetValue(usage) is int input)
-                promptTokens = input;
-            if (outputTokensProperty?.GetValue(usage) is int output)
-                completionTokens = output;
-        }
+        var promptTokens = inputTokensProperty?.GetValue(usage) is int input ? input : 0;
+        var completionTokens = outputTokensProperty?.GetValue(usage) is int output ? output : 0;
 
+        if (promptTokens == 0 && completionTokens == 0) return null;
         return new TokenUsage(promptTokens, completionTokens);
     }
 }

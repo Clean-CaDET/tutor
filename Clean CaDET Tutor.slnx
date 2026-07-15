@@ -17,6 +17,12 @@
     <Project Path="src/Modules/Courses/Tutor.Courses.Infrastructure/Tutor.Courses.Infrastructure.csproj" />
     <Project Path="src/Modules/Courses/Tutor.Courses.Tests/Tutor.Courses.Tests.csproj" />
   </Folder>
+  <Folder Name="/src/Modules/Elaborations/">
+    <Project Path="src/Modules/Elaborations/Tutor.Elaborations.API/Tutor.Elaborations.API.csproj" />
+    <Project Path="src/Modules/Elaborations/Tutor.Elaborations.Core/Tutor.Elaborations.Core.csproj" />
+    <Project Path="src/Modules/Elaborations/Tutor.Elaborations.Infrastructure/Tutor.Elaborations.Infrastructure.csproj" />
+    <Project Path="src/Modules/Elaborations/Tutor.Elaborations.Tests/Tutor.Elaborations.Tests.csproj" />
+  </Folder>
   <Folder Name="/src/Modules/KnowledgeComponents/">
     <Project Path="src/Modules/KnowledgeComponents/Tutor.KnowledgeComponents.API/Tutor.KnowledgeComponents.API.csproj" />
     <Project Path="src/Modules/KnowledgeComponents/Tutor.KnowledgeComponents.Core/Tutor.KnowledgeComponents.Core.csproj" />

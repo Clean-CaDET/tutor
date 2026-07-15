@@ -6,7 +6,7 @@ An intelligent tutoring system for structured learning with knowledge and skill 
 
 ## Architecture
 
-27 projects organized as 5 domain modules, each with 4 layers, plus shared BuildingBlocks and host.
+Projects organized as 6 domain modules, each with 4 layers, plus shared BuildingBlocks and host.
 
 **Layer Responsibilities:**
 - **API** - Public contracts, DTOs, internal service interfaces (what other modules can consume)
@@ -37,7 +37,7 @@ An intelligent tutoring system for structured learning with knowledge and skill 
 
 **Key Entities:**
 - **Course** - Top-level container (code, name, description, startDate, isArchived)
-- **KnowledgeUnit** - Weekly learning unit within a course, contains KCs and Tasks
+- **KnowledgeUnit** - Weekly learning unit within a course, contains Reflections, KCs, Tasks
 - **LearnerGroup** - Groups learners for easier management and monitoring
 - **WeeklyFeedback** - Instructor's weekly assessment of learner progress (Red/Yellow/Green semaphore + comment)
 - **Reflection** - Structured questions for learners to reflect on their learning
@@ -60,19 +60,15 @@ An intelligent tutoring system for structured learning with knowledge and skill 
 - **KnowledgeComponent** - Atomic learning objective (code, name, expectedDuration)
 - **AssessmentItem** - Questions to test understanding: MCQ (single choice), MRQ (multiple choice), SAQ (short answer)
 - **InstructionalItem** - Learning content: Text, Video, or Image with ordering
-- **SessionTracker** - Manages a learner's session state for a KC
 - **Submission** - Learner's answer to an assessment item
 - **Evaluation** - Feedback on a submission (correct/incorrect, hints, explanations)
-- **KCMastery** - Tracks whether a learner has mastered a KC
-- **MoveOn Criteria** - Rules for when a KC is considered satisfied (Completed, Passed, CompletedAndPassed, CompletedOrPassed)
+- **KcMastery** - Tracks whether a learner has mastered a KC
 
 **Use Cases:**
 - **Authoring**: Instructors create KCs with expected duration, add/reorder assessment items (MCQ/MRQ/SAQ with feedback patterns), add/reorder instructional items (text/video/image), clone KCs for reuse
 - **Learning**: Learners launch a learning session for a KC, system selects appropriate assessment items based on progress, learners view instructional content, submit answers and receive immediate evaluation with feedback, can pause/continue/terminate sessions
 - **Mastery**: System tracks completion (all items seen) and passing (sufficient correct answers), applies move-on criteria to determine if KC is satisfied, records mastery status
 - **Analytics**: Instructors view KC statistics (submission counts, correctness rates), system detects common misconceptions from wrong answer patterns, tracks most frequent errors per assessment
-
-**Domain Events:** SessionLaunched, KCStarted, KCCompleted, KCPassed, KCSatisfied (used for analytics and cross-module notifications)
 
 **Dependencies:** → Courses.API (for unit context)
 
@@ -82,18 +78,13 @@ An intelligent tutoring system for structured learning with knowledge and skill 
 **Key Entities:**
 - **LearningTask** - A practical exercise (name, description, maxPoints, isTemplate)
 - **Activity** - A step within a task, contains examples, guidance text, and submission requirements
-- **StepProgress** - Tracks learner's progress on a single step (answer, submission time)
 - **TaskProgress** - Overall progress on a task (started, completed, graded status)
-- **StandardEvaluation** - Instructor's grade and comment for a step
-- **SubmissionFormat** - Defines how learners should submit (text, file upload, etc.)
 
 **Use Cases:**
 - **Authoring**: Instructors create tasks with multiple steps (activities), define examples with video walkthroughs, write guidance text for each step, specify submission format and point values, clone tasks as templates, move tasks between units
 - **Learning**: Learners view task list for a unit with progress summaries, open a task to see step-by-step instructions, access examples (watch videos with play/pause/finish tracking), read guidance materials, submit answers for each step
 - **Progress**: System creates/updates task progress records, tracks which steps are completed, records submission timestamps and content
 - **Grading**: Instructors view learner submissions, grade individual steps with points and comments, view group summaries showing progress across all learners, bulk retrieve progress for a cohort
-
-**Domain Events:** TaskOpened, TaskCompleted, TaskGraded, StepOpened, StepSubmitted, StepGraded, ExampleOpened, GuidanceOpened, VideoPlayed, VideoPaused, VideoFinished (for learning analytics)
 
 **Dependencies:** → Courses.API (for unit context)
 
@@ -105,7 +96,6 @@ An intelligent tutoring system for structured learning with knowledge and skill 
 
 **Use Cases:**
 - **Note-taking**: Learners create notes while studying a unit, update note content, reorder notes, delete notes, retrieve all notes for a unit
-- **Export**: Learners export their notes to a downloadable file format
 
 **Dependencies:** → Stakeholders.API (for learner context)
 
@@ -155,7 +145,6 @@ Generic AI services available for module-specific features. Core defines abstrac
 - `IAiChatService` - Chat completions with `CompleteAsync` (returns full response) and `StreamAsync` (token streaming). Configure via `CompletionRequest` (messages, system prompt, temperature, max tokens).
 - `ITextEmbeddingService` - Convert text to vectors via `GenerateEmbeddingAsync` (single) or `GenerateEmbeddingsAsync` (batch).
 - `IVectorStore<TMetadata>` - Store/search embeddings with custom metadata. Supports `UpsertAsync`, `SearchAsync` (cosine similarity with filters), `DeleteAsync`. Each module registers its own instance with `AddVectorStore<TMetadata>()`.
-- `IInputGuardrail` / `IOutputGuardrail` - Validate user input before LLM calls and LLM output before returning to users. Use `CompositeInputGuardrail` / `CompositeOutputGuardrail` to chain multiple validators.
 
 **Registration:**
 ```csharp
@@ -225,7 +214,65 @@ When creating a DTO and matching domain object in a Module.Core project, look fo
 | `LoggingInterceptor` | Automatic logging of service call results | Cross-cutting logging concern |
 | `ProxiedServiceExtensions.AddProxiedScoped` | Register service with interceptors (e.g., logging) | Module DI registration |
 
-# Coding Style
+# Code generation guidelines
+
+## 1. Think Before Coding
+
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
+
+Before implementing:
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them - don't pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
+
+## 2. Simplicity First
+
+**Minimum code that solves the problem. Nothing speculative.**
+
+- No features beyond what was asked.
+- No abstractions for single-use code.
+- No "flexibility" or "configurability" that wasn't requested.
+- No error handling for impossible scenarios.
+- If you write 200 lines and it could be 50, rewrite it.
+
+Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+
+## 3. Surgical Changes
+
+**Touch only what you must. Clean up only your own mess.**
+
+When editing existing code:
+- Don't "improve" adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
+- Match existing style, even if you'd do it differently.
+- If you notice unrelated dead code, mention it - don't delete it.
+
+When your changes create orphans:
+- Remove imports/variables/functions that YOUR changes made unused.
+- Don't remove pre-existing dead code unless asked.
+
+The test: Every changed line should trace directly to the user's request.
+
+## 4. Goal-Driven Execution
+
+**Define success criteria. Loop until verified.**
+
+Transform tasks into verifiable goals:
+- "Add validation" → "Write tests for invalid inputs, then make them pass"
+- "Fix the bug" → "Write a test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
+
+For multi-step tasks, state a brief plan:
+```
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+3. [Step] → verify: [check]
+```
+
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+
+# Style guidelines
 - Methods with 3 or less parameters should have their headers and invocations fit into one row.
-- Methods with more than 3 parameters should have their headers and invocations separate into multiple rows, where each row should contain 2 or 3 parameters.
+- Methods with more than 3 parameters should have their headers and invocations separate into multiple rows, where each row should contain 3 parameters.
 - Do not write method headers and invocations where one row is one parameter.

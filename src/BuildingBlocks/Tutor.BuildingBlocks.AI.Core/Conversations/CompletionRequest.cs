@@ -15,29 +15,24 @@ public record CompletionRequest
     public double? Temperature { get; init; }
 
     /// <summary>
+    /// Controls reasoning depth ("low", "medium", "high"). When set, Temperature is ignored.
+    /// </summary>
+    public string? ReasoningEffort { get; init; }
+
+    /// <summary>
     /// Optional metadata for passing context to decorators or middleware.
     /// </summary>
     public IReadOnlyDictionary<string, object>? Metadata { get; init; }
 
-    public static CompletionRequest Create(IEnumerable<ChatMessage> messages, string? systemPrompt, int? maxTokens, double? temperature)
+    public static CompletionRequest Create(IEnumerable<ChatMessage> messages, string? systemPrompt, int? maxTokens, double? temperature = null, string? reasoningEffort = null)
     {
         return new CompletionRequest
         {
             Messages = messages.ToList(),
             SystemPrompt = systemPrompt,
             MaxTokens = maxTokens,
-            Temperature = temperature
-        };
-    }
-
-    public static CompletionRequest SingleMessage(string userMessage, string? systemPrompt, int? maxTokens, double? temperature)
-    {
-        return new CompletionRequest
-        {
-            Messages = [ChatMessage.FromUser(userMessage)],
-            SystemPrompt = systemPrompt,
-            MaxTokens = maxTokens,
-            Temperature = temperature
+            Temperature = temperature,
+            ReasoningEffort = reasoningEffort
         };
     }
 }

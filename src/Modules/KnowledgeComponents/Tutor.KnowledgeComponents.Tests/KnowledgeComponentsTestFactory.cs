@@ -8,6 +8,15 @@ namespace Tutor.KnowledgeComponents.Tests;
 
 public class KnowledgeComponentsTestFactory : BaseTestFactory<KnowledgeComponentsContext>
 {
+    protected override Type[] GetRequiredDbContextTypes() =>
+        [typeof(CoursesContext), typeof(KnowledgeComponentsContext)];
+
+    protected override List<string> GetOrderedTestDataFolders() =>
+    [
+        "../../../../../Courses/Tutor.Courses.Tests/TestData/",
+        "../../../TestData/"
+    ];
+
     protected override IServiceCollection ReplaceNeededDbContexts(IServiceCollection services)
     {
         var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<KnowledgeComponentsContext>));
